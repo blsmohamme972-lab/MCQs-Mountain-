@@ -247,7 +247,8 @@ build_state:
 content_model:
   top_level_field:
     allowed:
-      - "medicine"      - "pharmacy"
+      - "medicine"
+      - "pharmacy"
       - "dentistry"
 
   hierarchy:
@@ -496,6 +497,7 @@ source_audit:
     - "no audit result is mismatch"
     - "audit source page matches question source_page"
     - "warnings/held items are routed to review"
+
   limitation: >
     Server-side audit.json validation proves the audit record is complete and internally consistent;
     it cannot independently re-compare the PDF because the PDF is intentionally not sent to GitHub Actions.
@@ -745,6 +747,7 @@ student_packs:
 # -------------------------------------------------------------------
 # 19. STUDENT DEVICE
 # -------------------------------------------------------------------
+
 student_device:
   storage: "IndexedDB"
   request_persistent_storage: true
@@ -995,6 +998,7 @@ d1:
       indexes:
         - "INDEX(status, created_at)"
         - "INDEX(group_key, part_index)"
+
     system_state:
       key: "key PK"
 
@@ -1243,7 +1247,8 @@ v1:
     - "Specialties"
     - "Books"
     - "Book covers"
-    - "Textbook / past_exam filters"    - "Chapter downloads"
+    - "Textbook / past_exam filters"
+    - "Chapter downloads"
     - "Offline MCQs"
     - "All supported question-type UIs"
     - "Images"
@@ -1392,21 +1397,3 @@ build_order:
       - "Bot write-access request after value"
       - "Personal opt-in reminders"
       - "Daily quiz polls"
-
-# -------------------------------------------------------------------
-# 35. FINAL ARCHITECTURE SUMMARY
-# -------------------------------------------------------------------
-
-final_architecture_summary: >
-  Telegram is the doorway, identity, compact personal-sync, retention, announcement,
-  moderation and admin-control layer. Cloudflare serves the Mini App and static chapter
-  packs and runs one small Worker with D1 only for shared/social/challenge/publishing metadata.
-  Students study from IndexedDB and do not generate a server request per answer.
-  AI turns source books into schema-v2 ingestion ZIPs and audits them where the PDF is available.
-  The private admin bot stores upload metadata in a D1 publish queue. A serialized GitHub Actions
-  queue-drain job downloads the files from Telegram, hashes and validates them, reuses stable IDs
-  through id_map, builds from the latest GitHub Release state, uploads an inactive Cloudflare
-  Worker version, smoke-tests its Version URL, and only then promotes it. GitHub Release assets
-  preserve the build state and per-book versions so Actions can build independently of the admin
-  computer and a single book can be rolled back without reverting unrelated books. Students remain
-  free; monetization targets institutions, publishers and optional support rather than core studying.
