@@ -264,7 +264,7 @@ figure.qimg img { max-width: 100%; border-radius: 12px; display: block; backgrou
 const CONFIG = {
   APP_NAME: "Kafu",
   BOT_USERNAME: "KafuMcqsbot",          // without @, used for share links
-  CONTENT_BASE: null,                 // e.g. "https://content-1.<subdomain>.workers.dev" — null = built-in sample books
+  CONTENT_BASE: "https://kafu-content-1.blsmohamme97.workers.dev", // published content; samples are offline-only fallback
   IDLE_SECONDS: 180,                  // study timer pauses after 3 minutes without interaction
   MOCK_SECONDS_PER_QUESTION: 60,
 };
@@ -420,12 +420,12 @@ const ICON = {
    Storage — IndexedDB with an in-memory fallback
    ================================================================ */
 const DB = {
-  db: null, mem: { packs: new Map(), meta: new Map() },
+  db: null, mem: { packs: new Map(), meta: new Map(), images: new Map() },
   async open() {
     try {
       this.db = await new Promise((res, rej) => {
-        const r = indexedDB.open("medmcq", 1);
-        r.onupgradeneeded = () => { r.result.createObjectStore("packs"); r.result.createObjectStore("meta"); };
+        const r = indexedDB.open("medmcq", 2);
+        r.onupgradeneeded = () => { const db = r.result; if (!db.objectStoreNames.contains("packs")) db.createObjectStore("packs"); if (!db.objectStoreNames.contains("meta")) db.createObjectStore("meta"); if (!db.objectStoreNames.contains("images")) db.createObjectStore("images"); };
         r.onsuccess = () => res(r.result);
         r.onerror = () => rej(r.error);
       });
@@ -543,43 +543,121 @@ const DOWNLOADING = {};
 const bookById = (id) => CATALOG.books.find((b) => b.id === id);
 const specColor = (id) => (CATALOG.specialties.find((s) => s.id === id) || {}).color || "#16606A";
 
+function normalizeCatalog(catalog) {
+  const c = catalog && typeof catalog === "object" ? catalog : {};
+  c.fields = Array.isArray(c.fields) ? c.fields : [];
+  c.specialties = Array.isArray(c.specialties) ? c.specialties : [];
+  c.books = Array.isArray(c.books) ? c.books : [];
+  c.removed_books = Array.isArray(c.removed_books) ? c.removed_books : [];
+  for (const b of c.books) {
+    b.chapters = Array.isArray(b.chapters) ? b.chapters : [];
+    for (const ch of b.chapters) {
+      if (ch.url && !/^https?:\/\//i.test(ch.url)) ch.url = CONFIG.CONTENT_BASE + ch.url;
+      if (ch.image_url && !/^https?:\/\//i.test(ch.image_url)) ch.image_url = CONFIG.CONTENT_BASE + ch.image_url;
+    }
+    if (b.cover_url && !/^https?:\/\//i.test(b.cover_url)) b.cover_url = CONFIG.CONTENT_BASE + b.cover_url;
+    if (b.index_url && !/^https?:\/\//i.test(b.index_url)) b.index_url = CONFIG.CONTENT_BASE + b.index_url;
+  }
+  return c;
+}
 async function loadCatalog() {
   if (CONFIG.CONTENT_BASE) {
     try {
       const r = await fetch(CONFIG.CONTENT_BASE + "/catalog.json", { cache: "no-cache" });
-      if (r.ok) { const c = await r.json(); await DB.put("meta", "catalog", c); return c; }
+      if (r.ok) {
+        const c = normalizeCatalog(await r.json());
+        await DB.put("meta", "catalog", c);
+        await DB.put("meta", "catalog_source", "published");
+        return c;
+      }
     } catch (e) {}
     const cached = await DB.get("meta", "catalog");
-    if (cached) return cached;
+    if (cached) return normalizeCatalog(cached);
   }
-  return SAMPLE.catalog;
+  // Built-in samples are a last-resort offline fallback only.
+  await DB.put("meta", "catalog_source", "sample").catch(() => {});
+  return normalizeCatalog(JSON.parse(JSON.stringify(SAMPLE.catalog)));
 }
 async function fetchPack(bookId, chId) {
-  const book = bookById(bookId); const ch = book.chapters.find((c) => c.id === chId);
+  const book = bookById(bookId); const ch = book && book.chapters.find((c) => String(c.id) === String(chId));
   if (CONFIG.CONTENT_BASE && ch && ch.url) {
     const r = await fetch(ch.url); if (!r.ok) throw new Error("HTTP " + r.status);
     return r.json();
   }
-  await sleep(450);
+  await sleep(150);
   const p = SAMPLE.packs[bookId + ":" + chId];
   if (!p) throw new Error("missing pack");
   return JSON.parse(JSON.stringify(p));
 }
-function indexPack(p) { for (const q of p.questions) QI[q.id] = { q, b: p.book_id, ch: p.chapter_id }; }
-function unindexPack(p) { for (const q of p.questions) delete QI[q.id]; }
+let fflatePromise = null;
+function ensureFflate() {
+  if (window.fflate && window.fflate.unzipSync) return Promise.resolve(window.fflate);
+  if (fflatePromise) return fflatePromise;
+  fflatePromise = new Promise((resolve, reject) => {
+    const sc = document.createElement("script");
+    sc.src = "https://cdn.jsdelivr.net/npm/fflate@0.8.3/umd/index.js";
+    sc.integrity = "";
+    sc.crossOrigin = "anonymous";
+    sc.onload = () => window.fflate && window.fflate.unzipSync ? resolve(window.fflate) : reject(new Error("fflate unavailable"));
+    sc.onerror = () => reject(new Error("Could not load fflate"));
+    document.head.appendChild(sc);
+  });
+  return fflatePromise;
+}
+const IMAGE_URLS = new Map();
+function imageKey(chKey, name) { return chKey + ":" + name; }
+function releaseImageUrls(chKey) {
+  for (const [k, url] of IMAGE_URLS) if (k.startsWith(chKey + ":")) { URL.revokeObjectURL(url); IMAGE_URLS.delete(k); }
+}
+async function hydratePackImages(chKey, pack) {
+  pack.img = {};
+  for (const name of (pack._image_names || [])) {
+    const blob = await DB.get("images", imageKey(chKey, name)).catch(() => null);
+    if (!blob) continue;
+    const k = imageKey(chKey, name);
+    let url = IMAGE_URLS.get(k);
+    if (!url) { url = URL.createObjectURL(blob); IMAGE_URLS.set(k, url); }
+    pack.img[name] = url;
+  }
+  return pack;
+}
+async function downloadChapterImages(chKey, ch, pack) {
+  if (!ch || !ch.image_url) { pack._image_names = []; pack.img = {}; return 0; }
+  const fflate = await ensureFflate();
+  const r = await fetch(ch.image_url); if (!r.ok) throw new Error("Image ZIP HTTP " + r.status);
+  const compressed = new Uint8Array(await r.arrayBuffer());
+  const files = fflate.unzipSync(compressed);
+  const names = [];
+  for (const [rawName, bytes] of Object.entries(files)) {
+    const name = rawName.split("/").pop();
+    if (!name || !/\.webp$/i.test(name)) continue;
+    const blob = new Blob([bytes], { type: "image/webp" });
+    await DB.put("images", imageKey(chKey, name), blob);
+    names.push(name);
+  }
+  pack._image_names = names;
+  await hydratePackImages(chKey, pack);
+  return compressed.byteLength;
+}
+function indexPack(p) { for (const q of p.questions || []) QI[q.id] = { q, b: p.book_id, ch: p.chapter_id }; }
+function unindexPack(p) { for (const q of p.questions || []) delete QI[q.id]; }
 async function downloadChapter(bookId, chId, quiet) {
   const key = bookId + ":" + chId;
   if (PACKS[key]) return PACKS[key];
   if (DOWNLOADING[key]) return DOWNLOADING[key];
   const job = (async () => {
     try {
+      const book = bookById(bookId);
+      const ch = book && book.chapters.find((c) => String(c.id) === String(chId));
       const pack = await fetchPack(bookId, chId);
+      const imageBytes = await downloadChapterImages(key, ch, pack);
       await DB.put("packs", key, pack);
       PACKS[key] = pack; indexPack(pack);
-      S.dl[key] = { v: pack.version, size: JSON.stringify(pack).length, at: Date.now() };
+      S.dl[key] = { v: pack.version, size: JSON.stringify(pack).length + imageBytes, at: Date.now() };
       saveState();
       return pack;
     } catch (e) {
+      console.error("Chapter download failed", e);
       if (!quiet) toast("Download failed. Check your connection and try again.");
       return null;
     } finally { delete DOWNLOADING[key]; render(); }
@@ -589,9 +667,21 @@ async function downloadChapter(bookId, chId, quiet) {
 }
 async function deleteChapter(key) {
   const p = PACKS[key]; if (p) unindexPack(p);
+  releaseImageUrls(key);
+  for (const name of ((p && p._image_names) || [])) await DB.del("images", imageKey(key, name)).catch(() => {});
   delete PACKS[key]; delete S.dl[key];
   await DB.del("packs", key).catch(() => {});
   saveState();
+}
+async function resolveQuestionRoute(qid) {
+  if (!CONFIG.CONTENT_BASE || !/^Q\d{9}$/.test(qid)) return null;
+  const shard = qid.slice(0, 7);
+  try {
+    const r = await fetch(CONFIG.CONTENT_BASE + "/routes/" + shard + ".json", { cache: "no-cache" });
+    if (!r.ok) return null;
+    const body = await r.json();
+    return body && body.routes ? body.routes[qid] || null : null;
+  } catch (e) { return null; }
 }
 function bookStats(book) {
   let answered = 0, correct = 0;
@@ -722,7 +812,7 @@ function greetingName() {
 }
 function partOfDay() { const h = new Date().getHours(); return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"; }
 function coverHTML(book, cls) {
-  return `<div class="cover ${cls || ""}" style="background:${esc(book.color || specColor(book.specialty))}"><div class="ct">${esc(book.title)}</div><div class="ca">${esc((book.authors || []).join(", "))}</div></div>`;
+  return `<div class="cover ${cls || ""}" style="background:${book.cover_url ? `linear-gradient(rgba(6,20,22,.14),rgba(6,20,22,.42)),url(&quot;${esc(book.cover_url)}&quot;) center/cover no-repeat` : esc(book.color || specColor(book.specialty))}"><div class="ct">${esc(book.title)}</div><div class="ca">${esc((book.authors || []).join(", "))}</div></div>`;
 }
 function rowHTML(action, data, icon, title, sub, right, red) {
   const attrs = Object.entries(data || {}).map(([k, v]) => `data-${k}="${esc(v)}"`).join(" ");
@@ -838,7 +928,12 @@ const VIEWS = {
       const letters = q.type === "mtf" ? "" : keySet.map((o) => LET[order.indexOf(o)]).sort().join(", ");
       const res = q.type === "mtf" ? `${Math.round(r.score * q.answer.length)} of ${q.answer.length} statements correct` : r.correct ? "Correct" : "Not quite. The answer is " + letters + ".";
       const book = bookById(entry.b);
-      explain = `<div class="explain ${r.correct ? "" : "bad"}"><div class="res ${r.correct ? "ok" : "no"}">${esc(res)}</div>${q.explanation ? `<p>${fmt(q.explanation)}</p>` : ""}<div class="src">${esc(book ? book.title : "")}${q.source ? ", " + esc(q.source) : ""}</div></div>`;
+      const p = PACKS[entry.b + ":" + entry.ch];
+      const explanationImages = (q.explanation_images || []).map((name) => {
+        const src = p && p.img && p.img[name];
+        return src ? `<figure class="qimg"><img src="${esc(src)}" alt="Explanation image"></figure>` : "";
+      }).join("");
+      explain = `<div class="explain ${r.correct ? "" : "bad"}"><div class="res ${r.correct ? "ok" : "no"}">${esc(res)}</div>${q.explanation ? `<p>${fmt(q.explanation)}</p>` : ""}${explanationImages}<div class="src">${esc(book ? book.title : "")}${q.source ? ", " + esc(q.source) : ""}</div></div>`;
     }
 
     const images = (q.images || []).map((name) => { const p = PACKS[entry.b + ":" + entry.ch]; const src = p && p.img && p.img[name]; return src ? `<figure class="qimg"><img src="${esc(src)}" alt="Question image"></figure>` : ""; }).join("");
@@ -1087,7 +1182,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
   if (saved) S = Object.assign(S, saved, { settings: Object.assign({ fs: 1 }, saved.settings || {}) });
   CATALOG = await loadCatalog();
   const packs = await DB.all("packs").catch(() => []);
-  for (const [key, p] of packs) { PACKS[key] = p; indexPack(p); }
+  for (const [key, p] of packs) { await hydratePackImages(key, p); PACKS[key] = p; indexPack(p); }
   for (const key of Object.keys(PACKS)) {                // honour takedowns
     if ((CATALOG.removed_books || []).includes(key.split(":")[0]) || !bookById(key.split(":")[0])) await deleteChapter(key);
   }
@@ -1097,9 +1192,19 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
   if (start && /^Q\d{9}$/.test(start)) {
     let hit = QI[start];
     if (!hit) {
+      const route = await resolveQuestionRoute(start);
+      if (route && bookById(route.book_id)) {
+        await downloadChapter(route.book_id, route.chapter_id, true);
+        hit = QI[start];
+      }
+    }
+    if (!hit) {
+      // Cached/legacy catalog fallback; no network scan across every book.
       for (const b of CATALOG.books) for (const c of b.chapters) {
         const sp = SAMPLE.packs[b.id + ":" + c.id];
-        if (!hit && (c.qids ? c.qids.includes(start) : sp && sp.questions.some((q) => q.id === start))) { await downloadChapter(b.id, c.id, true); hit = QI[start]; }
+        if (!hit && (Array.isArray(c.qids) ? c.qids.includes(start) : sp && sp.questions.some((q) => q.id === start))) {
+          await downloadChapter(b.id, c.id, true); hit = QI[start];
+        }
       }
     }
     if (hit) startChapter(hit.b, hit.ch, start); else toast("That question isn't available.");
