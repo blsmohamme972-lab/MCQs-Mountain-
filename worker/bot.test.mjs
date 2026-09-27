@@ -44,7 +44,7 @@ test("webhook silently ignores strangers and only accepts owner private ZIPs", a
     return { ok: true, json: async () => ({ ok: true, result: {} }) };
   };
   const env = { DB: db, BOT_TOKEN: "test", WEBHOOK_SECRET: "secret",
-    OWNER_TELEGRAM_ID: "123", GITHUB_DISPATCH_TOKEN: "dispatch" };
+    OWNER_TELEGRAM_ID: "123", DISPATCH_TOKEN: "dispatch" };
   const pending = [];
   const ctx = { waitUntil(p) { pending.push(p); } };
   const send = async (id, chat, name, secret = "secret") => {
