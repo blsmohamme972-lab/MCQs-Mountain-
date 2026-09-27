@@ -263,6 +263,52 @@ def safe_slug(value: Any) -> str:
     return re.sub(r"[^A-Za-z0-9_-]+", "-", str(value)).strip("-") or "chapter"
 
 
+SPECIALTY_COLORS = [
+    "#16606A", "#7A3B52", "#A8323E", "#6B6E3C",
+    "#4A5F8A", "#795548", "#4E6B50", "#705A8A",
+]
+
+
+def specialty_color(name: str) -> str:
+    digest = hashlib.sha256(name.encode("utf-8")).digest()
+    return SPECIALTY_COLORS[digest[0] % len(SPECIALTY_COLORS)]
+
+
+def route_shard(permanent_id: str) -> str:
+    # Q000001234 -> Q000001.json; at most 1,000 question routes per file.
+    if not re.fullmatch(r"Q\d{9}", permanent_id):
+        raise ValueError(f"invalid permanent id for route: {permanent_id}")
+    return permanent_id[:7]
+
+
+def rebuild_question_routes(conn: sqlite3.Connection, out: Path, base_url: str) -> None:
+    routes_dir = out / "routes"
+    if routes_dir.exists():
+        for old in routes_dir.glob("Q*.json"):
+            old.unlink()
+    routes_dir.mkdir(parents=True, exist_ok=True)
+
+    shards: dict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
+    rows = conn.execute(
+        "SELECT permanent_id, book_id, question_json FROM questions "
+        "WHERE status IN ('source_verified','medical_verified') ORDER BY permanent_id"
+    ).fetchall()
+    for row in rows:
+        q = json.loads(row["question_json"])
+        pid = row["permanent_id"]
+        shards[route_shard(pid)][pid] = {
+            "book_id": row["book_id"],
+            "chapter_id": q.get("chapter_id"),
+        }
+
+    for shard, mapping in shards.items():
+        payload = {"schema": 1, "routes": mapping}
+        (routes_dir / f"{shard}.json").write_text(
+            json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n",
+            encoding="utf-8",
+        )
+
+
 def load_catalog(path: Path) -> dict[str, Any]:
     if path.exists():
         obj = json.loads(path.read_text(encoding="utf-8"))
@@ -429,6 +475,7 @@ def main(argv: list[str] | None = None) -> int:
             "id": chapter_meta.get("id"),
             "title": chapter_meta.get("title", f"Chapter {chapter_id}"),
             "questions": len(qs),
+            "qids": [q["id"] for q in qs],
             "url": base + rel_text if base else rel_text,
             "image_url": (base + rel_img) if base and rel_img else rel_img,
             "bytes": len(raw),
@@ -470,8 +517,34 @@ def main(argv: list[str] | None = None) -> int:
     books.append(catalog_book)
     books.sort(key=lambda b: (b.get("field") or "", b.get("specialty") or "", b.get("title") or ""))
     catalog["books"] = books
+
+    # The app reads fields/specialties directly from catalog.json. Generate them
+    # from active books so publishing one real book never produces an empty Library.
+    field_ids = sorted({b.get("field") for b in books if b.get("field")})
+    default_titles = {
+        "medicine": {"en": "Medicine", "ar": "الطب"},
+        "pharmacy": {"en": "Pharmacy", "ar": "الصيدلة"},
+        "dentistry": {"en": "Dentistry", "ar": "طب الأسنان"},
+    }
+    catalog["fields"] = [
+        {"id": fid, "title": default_titles.get(fid, {"en": fid.title(), "ar": fid})}
+        for fid in field_ids
+    ]
+    specialty_pairs = sorted({
+        (b.get("specialty"), b.get("field"))
+        for b in books if b.get("specialty") and b.get("field")
+    })
+    catalog["specialties"] = [
+        {"id": spec, "field": field, "color": specialty_color(spec)}
+        for spec, field in specialty_pairs
+    ]
+
     catalog["removed_books"] = [x for x in (catalog.get("removed_books") or []) if x != book_id]
     catalog_path.write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    # Deep-link routing is sharded by permanent ID prefix, so startapp=Q#########
+    # resolves with one tiny static request even at very large question counts.
+    rebuild_question_routes(conn, out, args.base_url)
 
     report_path = out / f"publish-report-{book_id}-v{version}.json"
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
