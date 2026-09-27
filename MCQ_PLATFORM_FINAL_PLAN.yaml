@@ -1,11 +1,11 @@
-# MCQ_PLATFORM_FINAL_PLAN_V4.yaml
+# MCQ_PLATFORM_FINAL_PLAN.yaml
 # FINAL AGREED SOURCE OF TRUTH
 # Updated after architecture review on 2026-09-27.
 # This file is intentionally explicit so an AI coding agent can implement the system
 # without having to infer missing architecture decisions.
 
 meta:
-  plan_version: 4
+  plan_version: 5
   schema_version: 2
   status: "FINAL V1 ARCHITECTURE"
   updated_at: "2026-09-27"
@@ -68,24 +68,28 @@ stack:
       - "mass direct-message broadcast engine"
 
   cloudflare:
-    static_assets:
-      use_for:
-        - "Mini App frontend"
-        - "config.json"
-        - "catalog.json"
-        - "book indexes"
-        - "chapter JSON packs"
-        - "chapter image ZIPs"
-        - "book covers"
-    worker:
-      count: 1
-      use_for:
-        - "Telegram initData verification"
-        - "comments/replies/votes/reports API"
-        - "weekly challenge API"
-        - "Telegram bot webhook"
-        - "admin publish-queue webhook"
-        - "moderation callbacks"
+    workers:
+      app:
+        name: "kafu"
+        role: "Mini App static frontend + /api/* + /bot only"
+        static_assets:
+          - "Mini App frontend"
+        dynamic_routes:
+          - "/api/*"
+          - "/bot"
+        deployment_rule: "Book publishing must never redeploy app/API code"
+      content_1:
+        name: "kafu-content-1"
+        role: "Static content only; no application code"
+        static_assets:
+          - "config.json"
+          - "catalog.json"
+          - "book indexes"
+          - "chapter JSON packs"
+          - "chapter image ZIPs"
+          - "book covers"
+        deployment_rule: "Book publishing and per-book rollback update content without touching app code"
+    worker_count_v1: 2
     d1:
       use_for:
         - "minimal users"
