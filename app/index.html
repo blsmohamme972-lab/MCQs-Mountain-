@@ -560,6 +560,14 @@ function normalizeCatalog(catalog) {
   }
   return c;
 }
+function catalogUsable(c) {
+  return c.books.length > 0 && c.specialties.length > 0 && c.books.every((b) =>
+    b && typeof b.id === "string" && typeof b.title === "string" &&
+    c.specialties.some((s) => s && s.id === b.specialty) &&
+    Array.isArray(b.chapters) && b.chapters.length > 0 &&
+    b.chapters.every((ch) => ch && ch.id != null && typeof ch.title === "string" && typeof ch.url === "string")
+  );
+}
 async function loadCatalog() {
   const sample = normalizeCatalog(JSON.parse(JSON.stringify(SAMPLE.catalog)));
   if (CONFIG.CONTENT_BASE) {
@@ -569,16 +577,18 @@ async function loadCatalog() {
         const c = normalizeCatalog(await r.json());
         // Never show an empty/broken Library. Until at least one real book is
         // published, keep the built-in sample catalog visible to students.
-        if (c.books.length) {
+        if (c.books.length && catalogUsable(c)) {
           await DB.put("meta", "catalog", c);
           await DB.put("meta", "catalog_source", "published");
           return c;
         }
       }
     } catch (e) {}
-    const cached = await DB.get("meta", "catalog");
-    const cachedCatalog = cached ? normalizeCatalog(cached) : null;
-    if (cachedCatalog && cachedCatalog.books.length) return cachedCatalog;
+    try {
+      const cached = await DB.get("meta", "catalog");
+      const cachedCatalog = cached ? normalizeCatalog(cached) : null;
+      if (cachedCatalog && catalogUsable(cachedCatalog)) return cachedCatalog;
+    } catch (e) {} // A corrupt cache must not block the sample Library.
   }
   await DB.put("meta", "catalog_source", "sample").catch(() => {});
   return sample;
