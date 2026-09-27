@@ -35,7 +35,7 @@ async function dispatch(env) {
   const repo = env.GITHUB_REPOSITORY || "blsmohamme972-lab/MCQs-Mountain-";
   if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) throw new Error("Invalid GitHub repository");
   const res = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/publish-queue.yml/dispatches`, {
-    method: "POST", headers: { authorization: `Bearer ${env.GITHUB_DISPATCH_TOKEN}`,
+    method: "POST", headers: { authorization: `Bearer ${env.DISPATCH_TOKEN}`,
       accept: "application/vnd.github+json", "x-github-api-version": "2022-11-28",
       "user-agent": "kafu-publish-queue" }, body: JSON.stringify({ ref: "main" }),
   });
