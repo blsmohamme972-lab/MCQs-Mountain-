@@ -933,7 +933,7 @@ const VIEWS = {
         const src = p && p.img && p.img[name];
         return src ? `<figure class="qimg"><img src="${esc(src)}" alt="Explanation image"></figure>` : "";
       }).join("");
-      explain = `<div class="explain ${r.correct ? "" : "bad"}"><div class="res ${r.correct ? "ok" : "no"}">${esc(res)}</div>${q.explanation ? `<p>${fmt(q.explanation)}</p>` : ""}${explanationImages}<div class="src">${esc(book ? book.title : "")}${q.source ? ", " + esc(q.source) : ""}</div></div>`;
+      explain = `<div class="explain ${r.correct ? "" : "bad"}"><div class="res ${r.correct ? "ok" : "no"}">${esc(res)}</div>${q.explanation ? `<p>${fmt(q.explanation)}</p>` : ""}${explanationImages}<div class="src">${esc(book ? book.title : "")}${q.source ? ", " + esc(q.source) : q.source_page ? ", PDF page " + esc(q.source_page) : ""}</div></div>`;
     }
 
     const images = (q.images || []).map((name) => { const p = PACKS[entry.b + ":" + entry.ch]; const src = p && p.img && p.img[name]; return src ? `<figure class="qimg"><img src="${esc(src)}" alt="Question image"></figure>` : ""; }).join("");
