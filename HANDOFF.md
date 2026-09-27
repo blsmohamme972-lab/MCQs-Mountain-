@@ -12,16 +12,17 @@ Repository: `blsmohamme972-lab/MCQs-Mountain-` (private). Telegram bot: `@KafuMc
 
 - M2 Steps 1–2 are merged and complete. The owner verified all four question types and both image types on a phone and in Airplane Mode. Synthetic fixture books are published; see `docs/reports/M2_STEP2.md`.
 - M3 Step 3 (owner-only `/bot` webhook, D1 ZIP queue, Actions drain, admin commands) was merged in PR #4; Kafu Content Contract CI passed.
-- Latest [Deploy Kafu run #8](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36353748871) **failed** at `wrangler d1 migrations apply` with Cloudflare 7403. PR #6 replaced hardcoded account IDs in deploy and queue workflows with `secrets.CLOUDFLARE_ACCOUNT_ID`, but run #8's Actions environment summary showed this secret **empty**. The Worker deployment step was skipped. Prior run #7 attempt 2 failed with 7403 using the hardcoded account.
-- **Setup Kafu Bot has not run.** Do not register the webhook until Deploy Kafu is green. Step 3 phone acceptance has not been performed. See `docs/reports/M3_DEPLOY_RETRY.md` for the exact run result and checklist.
-- The bot token was exposed in a previous agent log. The owner intends to rotate it before public launch. Do not print or log credentials.
+- [Deploy Kafu #9](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36359745068) is **green**. D1 migrations, Worker secret upload, and Worker deployment all passed.
+- [Setup Kafu Bot #1](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36359890053) is **green**. The secure Telegram webhook and owner commands were registered.
+- The owner opened the Mini App in Telegram and confirmed the app loads and Continue studying works. Full Step 3 queue/admin phone acceptance is still pending; see `docs/reports/M3_DEPLOY_RETRY.md`.
+- The bot token was exposed in a previous agent log. The owner has chosen not to rotate it at this stage. Do not print or log credentials.
 
 ## Next actions
 
-1. Confirm `CLOUDFLARE_ACCOUNT_ID` is an Actions **repository secret** in this exact repository, with the intended account ID, and is available to the workflow. Run #8 received an empty value. Check that `D1_DATABASE_ID` identifies a database in that account and `CLOUDFLARE_API_TOKEN` has D1 Edit plus Worker deployment access there. Inspect only names and status, never values. Rerun Deploy Kafu; require green migration and Worker deployment.
-2. Run **Setup Kafu Bot** (`.github/workflows/setup-bot.yml`) and confirm its workflow succeeds. It calls `tools/setup_bot.py` to set the secure `/bot` webhook and owner-scoped commands.
-3. Ask the owner to run the Step 3 phone checks in `docs/reports/M3_DEPLOY_RETRY.md`. Record results under `docs/reports/`; do not mark Step 3 done before webhook and phone proof pass.
-4. Before public launch, rotate the exposed bot token, update the corresponding repository secret and deployment, and remove synthetic fixture books through `/remove`. Verify the new webhook state after rotation.
+1. Complete the remaining Step 3 phone acceptance in `docs/reports/M3_DEPLOY_RETRY.md`: `/help`, `/status`, `/queue`, `/books`, a synthetic valid ZIP upload, duplicate handling, invalid ZIP repair report, multipart release, moderation, rollback/remove, and non-owner silence.
+2. Record screenshots and queue workflow links in `docs/reports/`.
+3. Before public launch, remove synthetic fixture books through `/remove`.
+4. If credentials are rotated later, update repository secrets, redeploy Kafu, rerun Setup Kafu Bot, and verify the webhook again.
 
 ## Architecture and operations
 
@@ -33,4 +34,4 @@ Admin implementation commands: `/queue`, `/books`, `/status`, `/flags`, `/hold`,
 
 ## Working rules
 
-Use branches and pull requests; never commit directly to main. Keep CI green and `PROGRESS.md` current. Save reports under `docs/reports/`. Never change `tools/validate.py` to make a package pass. Never manually alter the `kafu-content-state` release. Explain architecture changes before implementation. Preserve the non-empty Library fallback. Do not publish a real book until Step 3 is accepted.
+Use branches and pull requests; never commit directly to main. Keep CI green and `PROGRESS.md` current. Save reports under `docs/reports/`. Never change `tools/validate.py` to make a package pass. Never manually alter the `kafu-content-state` release. Explain architecture changes before implementation. Preserve the non-empty Library fallback. Do not publish a real book until Step 3 is fully accepted.
