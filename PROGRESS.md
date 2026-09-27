@@ -6,7 +6,7 @@ Last updated: 2026-09-27
 
 **M3 — Bot upload layer**
 
-Status: **M2 Step 2 DONE; M3 Step 3 implemented on branch, CI green; awaiting credentials, deploy and phone test**
+Status: **M2 Step 2 DONE; M3 Step 3 merged with CI green; deploy blocked by Cloudflare D1 authorization, then webhook and phone test pending**
 
 Branch:
 `m3-bot-upload-queue`
@@ -58,4 +58,4 @@ Report:
 
 ## Next
 
-Owner-only secret-protected bot webhook, D1 queue, serialized Actions drain, full image decoding, success/failure reports and admin controls are implemented on `m3-bot-upload-queue`. Automated tests cover queue order and a broken WebP. PR #4 CI run 36349245777 passed. Setup and owner phone acceptance remain; see `docs/SETUP_BOT.md` and `docs/reports/M3_STEP3.md`. Remove fixture books with `/remove` before public launch.
+PR #4 merged on 2026-09-28 with owner-only webhook, D1 queue, serialized Actions drain, image decoding, reports and admin controls. CI passed. Deploy Kafu run 36352381336 failed at D1 migration with Cloudflare 7403 (account unauthorized); Worker deploy skipped. Check D1 account and grant Account → D1 → Edit to the Cloudflare API token in the same account, update `CLOUDFLARE_API_TOKEN`, then rerun Deploy Kafu and Setup Kafu Bot. Phone acceptance remains; see `docs/reports/M3_STEP3.md`. Remove fixture books with `/remove` before public launch.
