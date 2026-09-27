@@ -1,0 +1,8 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "kafu-content-1",
+  "compatibility_date": "2026-09-27",
+  "assets": {
+    "directory": "./dist/content"
+  }
+}
