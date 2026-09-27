@@ -6,7 +6,7 @@ Last updated: 2026-09-27
 
 **M3 — Bot upload layer**
 
-Status: **M2 Step 2 DONE; M3 Step 3 implemented on branch, awaiting CI, credentials, deploy and phone test**
+Status: **M2 Step 2 DONE; M3 Step 3 implemented on branch, CI green; awaiting credentials, deploy and phone test**
 
 Branch:
 `m3-bot-upload-queue`
@@ -58,4 +58,4 @@ Report:
 
 ## Next
 
-Owner-only secret-protected bot webhook, D1 queue, serialized Actions drain, full image decoding, success/failure reports and admin controls are implemented on `m3-bot-upload-queue`. Automated tests cover queue order and a broken WebP. Setup and owner phone acceptance remain; see `docs/SETUP_BOT.md` and `docs/reports/M3_STEP3.md`. Remove fixture books with `/remove` before public launch.
+Owner-only secret-protected bot webhook, D1 queue, serialized Actions drain, full image decoding, success/failure reports and admin controls are implemented on `m3-bot-upload-queue`. Automated tests cover queue order and a broken WebP. PR #4 CI run 36349245777 passed. Setup and owner phone acceptance remain; see `docs/SETUP_BOT.md` and `docs/reports/M3_STEP3.md`. Remove fixture books with `/remove` before public launch.
