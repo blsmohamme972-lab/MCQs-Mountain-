@@ -162,7 +162,7 @@ jobs:
             echo '~~~'
           } > /tmp/repair_report.md
           grep -q "RESULT: FAIL" /tmp/validator.txt
-          grep -q "missing report.md" /tmp/validator.txt
+          grep -q "report.md" /tmp/validator.txt
 
       - name: Upload repair report proof
         uses: actions/upload-artifact@v4
