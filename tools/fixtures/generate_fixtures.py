@@ -9,14 +9,14 @@ Usage:
 """
 
 from __future__ import annotations
-import argparse, hashlib, json, zipfile
+import argparse, base64, hashlib, json, zipfile
 from pathlib import Path
 
-WEBP = (
-    b"RIFF" + (30).to_bytes(4, "little") + b"WEBP" +
-    b"VP8X" + b"\x0a\x00\x00\x00" + b"\x00\x00\x00\x00" +
-    (599).to_bytes(3, "little") + (399).to_bytes(3, "little")
-)
+# Decodable synthetic images. The previous RIFF-only headers passed packaging checks
+# but rendered as broken images in Telegram.
+WEBP_QUESTION = base64.b64decode("UklGRuYCAABXRUJQVlA4INoCAABwGwCdASpAAXgAPm02lkekIyIhKtGIAIANiWdu4XPwyLcvyAwpnTTd55wADrp/qH4X2Kf9ZiwDicNQb/WvyK9sL+g8n3y56I//E4F39bgHogFlUZGoj1XkMg/9SkaiPVeQyD/1HErbzL9mX681+vNfrzX681+vNfHnPVkG1/JL9dNtuO5jY+1MjlNjl7Y+czb26nv+PsenD0p/IUzMzMywDE1Pln8hTMzMzMsAxND5cKDbQbX8kmXUaKW0muNwBaeq8hkH/qUjUR6ryGQf+oc4EH9NAo5sz4TM+EzPhMz4TM+D9gAA/tNxQ/cYuVMqtDEATrP3SfqfONaf/wH8S/sAjVoVY1015MHYXv/uvv/jWHxi45oIEnHcWdem/2chQuJSgCTjuLOvTfErEzP+NJ1+DD4Bxr3wWH802FKROJjya8GF4GhAMJJmSJBxKHeLmhW+/Z60+/x7VE8xNAZYSiNX9ENv7m+fGFJSn4Y4um9z4gXyPDLT8iohQgAACe38FVOseD/vFKr/nm7zqthjBqoi5P/oLNd+1wnDsOUmmv5W1qJylgBzp2+onGfBbIp6Yesv2Jwvyj0fx5H/0yeS+s1/pNmFtYUGcqnI4fJCyYuqFGOttfP8NP9I+ku+6pwl9EUr7uAsms//cZW58Wt3OH6CarjULTnNKxkEjsB4PZv2CLCv6JnfNfzC2ly4ZayvJ/6/rH/hEoiU+UbiVbPHfEmnSRlLVk2UEroHtaSsOASg45cHKzO5JkS4+T3XXmNBGoVieWX+oP/aGzZXJTe9X9tMkYoXGEIojLeuPi2sT5O2BwtvmhI9/7gfib1Hc3wyqoB4RhOsgIzcAE/+awDy3gAFdMOiAAo79xcC7UD9zcu2fbf7O/wTn/QIhnmLaS/LaI9AXGGbRHBffI3IWKzBPzfFS06JadEtOiWnRLTm7Jvdb3xhl7JJSNmL63jCsa2TtF9TgHAAAAAAAAAA")
+WEBP_EXPLANATION = base64.b64decode("UklGRvgCAABXRUJQVlA4IOwCAACQGgCdASpAAXgAPm00lkekIyIhKzF4AIANiWdu4XKQ4DpKnnPJacBvPWAAdZ/8PrmP69XA11n8A4xnVAP6J/UvuA+Kb+88rnzd6KwDXAFmXQ3gqF4JnSCDwsGgRnSCDwsCkRJyp7xEW2m6MEwdo428x5W55l7X+VDGAbcnJ34jOj5I+iym2z+6q0ckgWLxNLdnTDANxJYN1lsobcnJ79HiHLkDUkHYqaoYwDbbeaEXv0e/yoYwDbbdHj5Cq4iyIoz2WDQIzpBB4WDQIzo/Ul5AuKfZVe/yoYwDbk77AAD+ecVH4KF5ZKIKybz3cn5f//wH8S/sBrSHu907ksaBHIUYZ9WjEKN1O8tdxAX9vaneWu4gL+XbLPR1/uV2uOPDfHesQuNyX2zYQo3IcMsIz3cESSeFZWDl6ABmVwC7URtCA58h+aFD5AAAA/zusoqzXaYMWB0kfq/3DkRPNAHiyz5+48XlQVj1qpUfcOpmOW9nNg6s3Q2IN36v7/8QbYjYx7oBhMWT7uvvAxQN9persrsAHM8Pkpe6BNUosCNwBe+o5hwc/V3g7PO/a9U4vFx7sKFZM2Yb630TawCSi+/0WsIWeBk7D+GEfS/jnKq/0mtVi4m+PMMX6ziD+DW4GvRCcxSAhnUOl3WOAi0jJl1eOi/WXCcq6jiPNSdws0ffzbpnaHVn1nn9makFDXjpQK+16hFlDANBbH7cknDjB3v9GOdgtDdOHkYbCXXkznkMy25yGp7cl7Tlnvk9jiZBfP1TsY/gADY1gf7vs6EVuilbnW2UxqmW4aJHP0Q94thgjTPycFt62CtX8tTL6BQqEOSbMppAGISCOqeo8pFIV9JQBGO+Mln5yplUAA4iLAwAHj5SU/wuvei8cXfHh4j+P/eXZEmxnkjh+IvK9WpcnsQ7suq0Fg+BrLPpmjY6nvCWdjf703LDaGp84KsC9R6WNyrc/WdetgsYiBKXGn5anq3utz3JtsKlO2EkvZa5jqAA")
+WEBP_COVER = base64.b64decode("UklGRoACAABXRUJQVlA4IHQCAABwGACdASpAAXgAPm02lkekIyIhKpE4AIANiWdu4XPB/kaw782pqgFPV+AOtaundkBqM/7X6DP9V5Vvm/0QN8A/WYBkIN/AjdCZYZ0XUEjANKiYB/RdQSMA0m6rbzGg8PwOpGwkthJbCS2ElsHnOyiszMzMzMzMzLJXScnTUOVtB90TiF/uB3d3d3d3doRXNQg6qqqqqqqqkYjXp3d3d3d3d3djEomC/6t+i6gkYBpUTAP6LqCRgGlQ8rOp+sYu3ve973y8LyGdhT+lLAAA/uvxN/pJsOAise+XqKnor/FDzW9g1y0ocr/Q1tCRZPicImjUXE7Pf76n4CveqsBXvVWAr3qrAV71VgK96qwFe9VYCveqsAwc+Rn9q1XZcS6sOeMq/1Hp3hvx2bD0YWkrwDkQJ0Xovl86s50Vb9J/8Ikq1Jp/JWMpazeKglywBlB7fsZ+O1KWHQ4qSe53aEgAAIHjuYEePv9rYyqe91wc5g0j1hZ83rCtBQm6O13HRNW1unQ6RfGJwgvxwMOMw06W+frn0ApJwAI3hbRciJ0xriSRWgUOzpo1FP7uAGcdLa17B11adY+kebAOUIJ/wpZurQLazw1eRbK291fsvpD42ei72zGjSe9/hLPgw6W6/LU/LTW/PeIEjXCV8l/zwb21L/+NoM6uj6XWX1UH9BkmkgOmT1VwBXuZsgLgABXJMnTusAAQVvogAAz261sBqe4CsdkZmf+7X08guLm0WzhQhZyL+qZEFON7p9fpnkueriDc0BZOsiYVXobcKz/kl/MqqEvQSzlc6zG+drksUKcvopY6XjiUrQ12tyAx6qcVnqEd1tAAAAAA")
 
 def q(local_id, qtype, stem, options, answer, *, image=False, explanation_image=False, group_id=None):
     return {
@@ -91,10 +91,10 @@ def write_pkg(path, *, book_id, title, version, questions, expected_count, part_
             z.writestr("report.md", "# Kafu synthetic fixture\nNo external source text.\n")
         # Broken fixture intentionally omits report.md + audit.json and has answer Z.
         if cover and not broken:
-            z.writestr("cover.webp", WEBP)
+            z.writestr("cover.webp", WEBP_COVER)
         for item in questions:
             for name in item["images"] + item["explanation_images"]:
-                z.writestr("images/" + name, WEBP)
+                z.writestr("images/" + name, WEBP_EXPLANATION if "_e1.webp" in name else WEBP_QUESTION)
 
 def main():
     ap=argparse.ArgumentParser()
