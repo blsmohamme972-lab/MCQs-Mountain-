@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MedMCQ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root {
+  --bg: #F1F5F5;
+  --surface: #FFFFFF;
+  --surface-2: #E4EDED;
+  --ink: #102A2E;
+  --muted: #5A6F73;
+  --line: #D2DEDE;
+  --teal: #0F4C54;
+  --teal-2: #16606A;
+  --teal-soft: #DCEBEC;
+  --crimson: #A8323E;
+  --crimson-soft: #F6E3E5;
+  --green: #2C7650;
+  --green-soft: #E0F0E7;
+  --btn: #16606A;
+  --on-btn: #FFFFFF;
+  --fs: 1;
+  --ui: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --read: "Lora", Georgia, "Times New Roman", serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C1F22; --surface: #122A2E; --surface-2: #1A363A; --ink: #E6EFEF;
+    --muted: #93A8AB; --line: #25444A; --teal: #6FB9C2; --teal-2: #3E929C;
+    --teal-soft: #173A3F; --crimson: #E58891; --crimson-soft: #3A1E22;
+    --green: #6CC596; --green-soft: #173427; --btn: #1D6E78; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0C1F22; --surface: #122A2E; --surface-2: #1A363A; --ink: #E6EFEF;
+  --muted: #93A8AB; --line: #25444A; --teal: #6FB9C2; --teal-2: #3E929C;
+  --teal-soft: #173A3F; --crimson: #E58891; --crimson-soft: #3A1E22;
+  --green: #6CC596; --green-soft: #173427; --btn: #1D6E78; color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 400 15px/1.5 var(--ui); -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--teal-2); outline-offset: 2px; border-radius: 6px; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 8px 16px 120px; }
+.has-action .wrap { padding-bottom: 140px; }
+
+/* Header */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--bg); border-bottom: 1px solid transparent;
+}
+.top.scrolled { border-bottom-color: var(--line); }
+.top-in { max-width: 640px; margin: 0 auto; display: flex; align-items: center; gap: 8px; padding: 10px 12px; min-height: 52px; }
+.top h1 { font-size: 17px; font-weight: 600; margin: 0; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.icon-btn { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px; color: var(--ink); flex: none; }
+.icon-btn:active { background: var(--surface-2); }
+.icon-btn svg { width: 22px; height: 22px; }
+.tg .back-btn { display: none; }
+
+/* Home */
+.hello { padding: 14px 0 18px; }
+.hello h2 { font-family: var(--read); font-weight: 500; font-size: 30px; line-height: 1.15; margin: 0 0 6px; letter-spacing: -0.01em; }
+.hello p { margin: 0; color: var(--muted); }
+.resume {
+  display: grid; grid-template-columns: 56px 1fr; gap: 14px; align-items: center;
+  background: var(--teal); color: #fff; border-radius: 20px; padding: 16px; width: 100%; text-align: left;
+}
+.resume .spine { height: 76px; border-radius: 6px 10px 10px 6px; box-shadow: inset 5px 0 0 rgba(0,0,0,.2), 0 0 0 1.5px rgba(255,255,255,.55); }
+.resume small { display: block; opacity: .8; font-size: 12.5px; }
+.resume strong { display: block; font-size: 16px; font-weight: 600; line-height: 1.3; margin: 2px 0 8px; }
+.resume .go { display: inline-block; background: #fff; color: var(--teal); font-weight: 600; font-size: 13.5px; padding: 6px 14px; border-radius: 999px; }
+.empty-start { background: var(--surface); border: 1px dashed var(--line); border-radius: 20px; padding: 20px; }
+.empty-start p { margin: 0 0 12px; color: var(--muted); }
+
+h3.sec { font-size: 15px; font-weight: 600; margin: 28px 0 10px; display: flex; justify-content: space-between; align-items: baseline; }
+h3.sec button { font-size: 13.5px; font-weight: 500; color: var(--teal-2); }
+
+.list { background: var(--surface); border-radius: 16px; overflow: hidden; }
+.row {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  padding: 14px 16px; border-bottom: 1px solid var(--line);
+}
+.row:last-child { border-bottom: 0; }
+.row:active { background: var(--surface-2); }
+.row .grow { flex: 1; min-width: 0; }
+.row .t { font-weight: 500; }
+.row .s { color: var(--muted); font-size: 13px; }
+.row .n { color: var(--muted); font-variant-numeric: tabular-nums; }
+.row .ic { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--teal-soft); color: var(--teal-2); flex: none; }
+.row .ic svg { width: 19px; height: 19px; }
+.row .ic.red { background: var(--crimson-soft); color: var(--crimson); }
+.chev { color: var(--muted); width: 18px; height: 18px; flex: none; }
+
+/* Book covers */
+.shelf { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
+.shelf::-webkit-scrollbar { display: none; }
+.cover {
+  position: relative; aspect-ratio: 3 / 4.2; border-radius: 6px 12px 12px 6px; color: #fff;
+  padding: 12px 8px 10px 14px; display: flex; flex-direction: column; justify-content: space-between;
+  box-shadow: inset 6px 0 0 rgba(0,0,0,.2); overflow: hidden;
+}
+.cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(255,255,255,.14), transparent 45%); pointer-events: none; }
+.cover { container-type: inline-size; }
+.cover .ct { font-family: var(--read); font-weight: 600; font-size: clamp(10.5px, 12.5cqi, 17px); line-height: 1.2; -webkit-hyphens: auto; hyphens: auto; overflow-wrap: break-word; }
+.cover .ca { font-size: 10.5px; opacity: .85; }
+.shelf .cover { width: 104px; flex: none; }
+.books { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px 14px; }
+.book-card { text-align: left; display: flex; flex-direction: column; gap: 8px; }
+.book-card .bt { font-weight: 500; font-size: 14px; line-height: 1.3; }
+.book-card .bs { color: var(--muted); font-size: 12.5px; }
+.pbar { height: 4px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+.pbar i { display: block; height: 100%; background: var(--teal-2); border-radius: 4px; }
+
+/* Specialties */
+.specs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.spec { background: var(--surface); border-radius: 16px; padding: 16px 14px; text-align: left; min-height: 92px; display: flex; flex-direction: column; justify-content: space-between; border-left: 4px solid var(--c, var(--teal-2)); }
+.spec .t { font-weight: 600; line-height: 1.25; }
+.spec .s { color: var(--muted); font-size: 12.5px; }
+
+/* Book page */
+.book-head { display: grid; grid-template-columns: 112px 1fr; gap: 16px; padding: 10px 0 18px; }
+.book-head h2 { font-family: var(--read); font-weight: 600; font-size: 22px; line-height: 1.2; margin: 0 0 6px; }
+.book-head .meta { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
+.pill-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-size: 13.5px; font-weight: 500; }
+.pill.on { color: var(--crimson); border-color: var(--crimson); }
+.pill svg { width: 16px; height: 16px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--btn); color: var(--on-btn); font-weight: 600; padding: 12px 18px; border-radius: 14px; }
+.btn.small { padding: 8px 14px; font-size: 13.5px; border-radius: 10px; }
+.btn.ghost { background: var(--surface-2); color: var(--ink); }
+.btn[disabled] { opacity: .45; }
+.ch-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.ch-row:last-child { border-bottom: 0; }
+.ch-row .grow { flex: 1; min-width: 0; }
+.ch-no { width: 28px; color: var(--muted); font-variant-numeric: tabular-nums; flex: none; }
+.spin { width: 18px; height: 18px; border: 2px solid var(--line); border-top-color: var(--teal-2); border-radius: 50%; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Study */
+.study-top { display: flex; align-items: center; gap: 10px; padding: 4px 0 14px; color: var(--muted); font-size: 13px; }
+.study-top .pbar { flex: 1; }
+.timer { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ink); }
+.timer.low { color: var(--crimson); }
+.qmeta { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+.tag { font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 999px; background: var(--teal-soft); color: var(--teal-2); }
+.tag.dr { background: var(--green-soft); color: var(--green); }
+.leadin { font-size: 13.5px; color: var(--muted); background: var(--surface); border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; }
+.stem { font-family: var(--read); font-size: calc(18px * var(--fs)); line-height: 1.6; margin: 0 0 18px; }
+.hint { font-size: 13px; color: var(--muted); margin: -8px 0 12px; }
+.opts { display: flex; flex-direction: column; gap: 10px; }
+.opt {
+  display: flex; gap: 12px; align-items: flex-start; width: 100%; text-align: left;
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; padding: 13px 14px;
+  font-size: calc(15.5px * var(--fs)); line-height: 1.45; transition: border-color .15s, background .15s;
+}
+.opt .l { width: 26px; height: 26px; border-radius: 8px; background: var(--surface-2); display: grid; place-items: center; font-size: 13px; font-weight: 600; flex: none; margin-top: -1px; }
+.opt.multi .l { border-radius: 6px; }
+.opt[aria-pressed="true"] { border-color: var(--teal-2); background: var(--teal-soft); }
+.opt[aria-pressed="true"] .l { background: var(--teal-2); color: #fff; }
+.opt.correct { border-color: var(--green); background: var(--green-soft); }
+.opt.correct .l { background: var(--green); color: #fff; }
+.opt.wrong { border-color: var(--crimson); background: var(--crimson-soft); }
+.opt.wrong .l { background: var(--crimson); color: #fff; }
+.opt:disabled { cursor: default; }
+.tf { background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+.tf.correct { border-color: var(--green); }
+.tf.wrong { border-color: var(--crimson); }
+.tf p { margin: 0 0 10px; font-size: calc(15.5px * var(--fs)); line-height: 1.45; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.seg button { padding: 9px; border-radius: 10px; background: var(--surface-2); font-weight: 500; font-size: 14px; }
+.seg button[aria-pressed="true"] { background: var(--teal-2); color: #fff; }
+.tf.done .seg button[aria-pressed="true"].bad { background: var(--crimson); }
+.tf.done .seg button.key { box-shadow: inset 0 0 0 2px var(--green); }
+.tf .verdict { font-size: 12.5px; margin-top: 8px; color: var(--muted); }
+.explain { margin-top: 20px; background: var(--surface); border-radius: 16px; padding: 16px; border-left: 4px solid var(--green); }
+.explain.bad { border-left-color: var(--crimson); }
+.explain .res { font-weight: 600; margin-bottom: 6px; }
+.explain .res.ok { color: var(--green); }
+.explain .res.no { color: var(--crimson); }
+.explain p { font-family: var(--read); font-size: calc(15.5px * var(--fs)); line-height: 1.65; margin: 0 0 10px; }
+.explain .src { font-size: 12.5px; color: var(--muted); }
+.qtools { display: flex; justify-content: space-between; margin-top: 18px; gap: 8px; }
+.qtools .left { display: flex; gap: 4px; }
+.qtool { display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px; border-radius: 10px; color: var(--muted); font-size: 13px; font-weight: 500; }
+.qtool svg { width: 18px; height: 18px; }
+.qtool.on { color: var(--crimson); }
+.qtool:active { background: var(--surface-2); }
+figure.qimg { margin: 0 0 16px; }
+figure.qimg img { max-width: 100%; border-radius: 12px; display: block; background: #fff; }
+
+/* Action bar (browser mode) and tabs */
+.actionbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--bg);
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line);
+}
+.actionbar .btn { width: 100%; max-width: 608px; margin: 0 auto; display: flex; padding: 14px; font-size: 15.5px; }
+.tg .actionbar { display: none; }
+.tabs {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--surface);
+  border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.tabs-in { max-width: 640px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
+.tab { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0 7px; font-size: 11.5px; color: var(--muted); font-weight: 500; }
+.tab svg { width: 22px; height: 22px; }
+.tab[aria-current="page"] { color: var(--teal-2); }
+
+/* Stats and results */
+.stat-line { font-size: 14px; color: var(--muted); }
+.stat-line b { color: var(--ink); font-weight: 600; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tile { background: var(--surface); border-radius: 16px; padding: 14px; }
+.tile .v { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tile .k { color: var(--muted); font-size: 12.5px; }
+.score { text-align: center; padding: 24px 0 8px; }
+.score .big { font-family: var(--read); font-size: 56px; font-weight: 600; line-height: 1; }
+.score p { color: var(--muted); margin: 8px 0 0; }
+.choice { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 14px; }
+.choice button { padding: 8px 16px; border-radius: 999px; background: var(--surface); border: 1.5px solid var(--line); font-weight: 500; }
+.choice button[aria-pressed="true"] { border-color: var(--teal-2); background: var(--teal-soft); color: var(--teal-2); }
+.note { color: var(--muted); font-size: 13px; }
+.about { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.mark { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; flex: none; font-size: 13px; font-weight: 700; color: #fff; }
+.mark.ok { background: var(--green); } .mark.no { background: var(--crimson); } .mark.skip { background: var(--muted); }
+
+/* Toast + sheet */
+.toast {
+  position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+  background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 12px; font-size: 14px; z-index: 20;
+  max-width: calc(100% - 32px); box-shadow: 0 6px 24px rgba(0,0,0,.2);
+}
+.scrim { position: fixed; inset: 0; background: rgba(6,20,22,.45); z-index: 15; display: flex; align-items: flex-end; justify-content: center; }
+.sheet { background: var(--surface); width: 100%; max-width: 640px; border-radius: 20px 20px 0 0; padding: 18px 16px calc(16px + env(safe-area-inset-bottom, 0px)); }
+.sheet h4 { margin: 0 0 4px; font-size: 17px; }
+.sheet .note { margin: 0 0 12px; }
+.radio { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 4px; text-align: left; border-bottom: 1px solid var(--line); }
+.radio i { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--line); flex: none; }
+.radio[aria-pressed="true"] i { border: 6px solid var(--teal-2); }
+.sheet .btns { display: flex; gap: 10px; margin-top: 16px; }
+.sheet .btns .btn { flex: 1; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+"use strict";
+
+/* ================================================================
+   CONFIG — the only lines you normally change
+   ================================================================ */
+const CONFIG = {
+  APP_NAME: "MedMCQ",
+  BOT_USERNAME: "YOUR_BOT",          // without @, used for share links
+  CONTENT_BASE: null,                 // e.g. "https://content-1.<subdomain>.workers.dev" — null = built-in sample books
+  IDLE_SECONDS: 180,                  // study timer pauses after 3 minutes without interaction
+  MOCK_SECONDS_PER_QUESTION: 60,
+};
+
+/* ================================================================
+   SAMPLE CONTENT — original sample questions for testing the app.
+   Replaced automatically by your published packs when CONTENT_BASE is set.
+   ================================================================ */
+const SAMPLE = {
+  catalog: {
+    schema: 1,
+    fields: [{ id: "medicine", title: "Medicine" }],
+    specialties: [
+      { id: "Anesthesiology", field: "medicine", color: "#16606A" },
+      { id: "General Surgery", field: "medicine", color: "#7A3B52" },
+      { id: "Cardiothoracic & Vascular Surgery", field: "medicine", color: "#A8323E" },
+    ],
+    books: [
+      { id: "SAMPLE-PERIOP", title: "Perioperative Essentials", authors: ["Sample set"], specialty: "Anesthesiology",
+        field: "medicine", collection_type: "textbook", version: 1, color: "#0F4C54", questions: 9,
+        chapters: [{ id: 1, title: "Physiology", questions: 4 }, { id: 2, title: "Pharmacology", questions: 5 }] },
+      { id: "SAMPLE-TRAUMA", title: "Trauma Essentials", authors: ["Sample set"], specialty: "General Surgery",
+        field: "medicine", collection_type: "textbook", version: 1, color: "#6B3450", questions: 5,
+        chapters: [{ id: 1, title: "Shock and trauma", questions: 5 }] },
+      { id: "SAMPLE-CARDIO", title: "Cardiothoracic Essentials", authors: ["Sample set"], specialty: "Cardiothoracic & Vascular Surgery",
+        field: "medicine", collection_type: "textbook", version: 1, color: "#8E2B35", questions: 4,
+        chapters: [{ id: 1, title: "Cardiac surgery basics", questions: 4 }] },
+    ],
+    removed_books: [],
+  },
+  packs: {
+    "SAMPLE-PERIOP:1": { schema: 1, book_id: "SAMPLE-PERIOP", chapter_id: 1, version: 1, questions: [
+      { id: "Q000000001", type: "sba", stem: "What is the approximate resting cardiac output of a healthy 70 kg adult?",
+        options: ["2 L/min", "5 L/min", "8 L/min", "10 L/min", "12 L/min"], answer: "B", no_shuffle: true,
+        explanation: "Cardiac output = heart rate × stroke volume. About 70 beats/min × 70 mL gives roughly 5 L/min at rest.",
+        source: "Sample set, question 1", status: "source_verified" },
+      { id: "Q000000002", type: "sba", stem: "Which segment of the nephron reabsorbs the largest share of filtered sodium?",
+        options: ["Proximal convoluted tubule", "Thick ascending limb of the loop of Henle", "Distal convoluted tubule", "Collecting duct", "Descending limb of the loop of Henle"], answer: "A",
+        explanation: "About two-thirds of filtered sodium is reabsorbed in the proximal convoluted tubule. The thick ascending limb takes roughly a quarter.",
+        source: "Sample set, question 2", status: "source_verified" },
+      { id: "Q000000003", type: "mtf", stem: "The following shift the oxyhaemoglobin dissociation curve to the right:",
+        options: ["A rise in temperature", "A rise in 2,3-DPG", "Alkalosis", "A rise in PaCO₂", "Carbon monoxide"], answer: ["T", "T", "F", "T", "F"],
+        explanation: "A right shift lowers haemoglobin's affinity for oxygen and eases unloading: heat, acidosis, raised CO₂ and raised 2,3-DPG. Alkalosis and carbon monoxide shift the curve to the left.",
+        source: "Sample set, question 3", status: "source_verified" },
+      { id: "Q000000004", type: "sba", stem: "What is the normal intracranial pressure in a supine adult?",
+        options: ["0–2 mmHg", "5–15 mmHg", "20–30 mmHg", "30–40 mmHg", "40–50 mmHg"], answer: "B", no_shuffle: true,
+        explanation: "Normal intracranial pressure is about 5–15 mmHg in a supine adult. Sustained values above about 20–22 mmHg are generally treated as raised.",
+        source: "Sample set, question 4", status: "source_verified" },
+    ]},
+    "SAMPLE-PERIOP:2": { schema: 1, book_id: "SAMPLE-PERIOP", chapter_id: 2, version: 1, questions: [
+      { id: "Q000000005", type: "sba", stem: "Which drug reverses rocuronium by encapsulating it?",
+        options: ["Neostigmine", "Sugammadex", "Atropine", "Naloxone", "Flumazenil"], answer: "B",
+        explanation: "Sugammadex is a modified cyclodextrin that binds rocuronium (and vecuronium) directly. Neostigmine works differently, by inhibiting acetylcholinesterase.",
+        source: "Sample set, question 5", status: "source_verified" },
+      { id: "Q000000006", type: "sba", stem: "Which induction agent best maintains blood pressure in a haemodynamically unstable patient?",
+        options: ["Propofol", "Thiopentone", "Ketamine", "Midazolam", "Methohexitone"], answer: "C",
+        explanation: "Ketamine increases sympathetic outflow, which usually supports heart rate and blood pressure. Propofol and thiopentone commonly cause hypotension.",
+        source: "Sample set, question 6", status: "source_verified" },
+      { id: "Q000000007", type: "multi", stem: "Select two drugs that can trigger malignant hyperthermia.",
+        options: ["Suxamethonium", "Propofol", "Sevoflurane", "Rocuronium", "Fentanyl"], answer: ["A", "C"],
+        explanation: "The triggers are suxamethonium and the volatile anaesthetics, such as sevoflurane. Propofol, non-depolarising relaxants and opioids are safe.",
+        source: "Sample set, question 7", status: "source_verified" },
+      { id: "Q000000008", type: "mtf", stem: "Regarding local anaesthetic systemic toxicity:",
+        options: ["Circumoral numbness can be an early symptom", "Seizures can occur", "Intravenous 20% lipid emulsion is part of treatment", "Bupivacaine is less cardiotoxic than lidocaine"], answer: ["T", "T", "T", "F"],
+        explanation: "Early features include circumoral numbness and tinnitus; seizures and arrhythmias can follow. Treatment includes 20% lipid emulsion. Bupivacaine is more cardiotoxic than lidocaine.",
+        source: "Sample set, question 8", status: "source_verified" },
+      { id: "Q000000009", type: "sba", stem: "Which of the following is a recognised adverse effect of morphine?",
+        options: ["Nausea and vomiting", "Respiratory depression", "Constipation", "Pruritus", "All of the above"], answer: "E", no_shuffle: true,
+        explanation: "All four are well-recognised opioid effects. This question keeps its option order because the last option refers to the others.",
+        source: "Sample set, question 9", status: "source_verified" },
+    ]},
+    "SAMPLE-TRAUMA:1": { schema: 1, book_id: "SAMPLE-TRAUMA", chapter_id: 1, version: 1, questions: [
+      { id: "Q000000010", type: "emq", group_id: "EMQ-1", lead_in: "Shock. For each patient, choose the most likely type of shock. Each option may be used once, more than once, or not at all.",
+        stem: "A 25-year-old man after a motorcycle crash has a heart rate of 130/min, blood pressure 80/50 mmHg, cool peripheries and a distending abdomen.",
+        options: ["Hypovolaemic", "Cardiogenic", "Obstructive", "Septic", "Anaphylactic", "Neurogenic"], answer: "A",
+        explanation: "Tachycardia, hypotension and cool peripheries after trauma, with a distending abdomen, point to haemorrhage: hypovolaemic shock.",
+        source: "Sample set, EMQ 1a", status: "source_verified" },
+      { id: "Q000000011", type: "emq", group_id: "EMQ-1", lead_in: "Shock. For each patient, choose the most likely type of shock. Each option may be used once, more than once, or not at all.",
+        stem: "A 30-year-old man with a stab wound to the left chest has blood pressure 85/60 mmHg, a raised JVP and muffled heart sounds.",
+        options: ["Hypovolaemic", "Cardiogenic", "Obstructive", "Septic", "Anaphylactic", "Neurogenic"], answer: "C",
+        explanation: "Hypotension, a raised JVP and muffled heart sounds (Beck's triad) suggest cardiac tamponade, a cause of obstructive shock.",
+        source: "Sample set, EMQ 1b", status: "source_verified" },
+      { id: "Q000000012", type: "emq", group_id: "EMQ-1", lead_in: "Shock. For each patient, choose the most likely type of shock. Each option may be used once, more than once, or not at all.",
+        stem: "A 40-year-old woman with a cervical spine injury has blood pressure 80/40 mmHg, a heart rate of 50/min and warm peripheries.",
+        options: ["Hypovolaemic", "Cardiogenic", "Obstructive", "Septic", "Anaphylactic", "Neurogenic"], answer: "F",
+        explanation: "Loss of sympathetic tone after a high spinal cord injury causes hypotension with bradycardia and warm peripheries: neurogenic shock.",
+        source: "Sample set, EMQ 1c", status: "source_verified" },
+      { id: "Q000000013", type: "sba", stem: "A patient opens their eyes to pain, makes incomprehensible sounds and withdraws from pain. What is the Glasgow Coma Scale score?",
+        options: ["6", "7", "8", "9", "10"], answer: "C", no_shuffle: true,
+        explanation: "Eyes to pain E2, incomprehensible sounds V2, withdrawal from pain M4: a total of 8.",
+        source: "Sample set, question 13", status: "source_verified" },
+      { id: "Q000000014", type: "sba", stem: "In the ATLS primary survey, what is assessed immediately after airway with cervical spine protection?",
+        options: ["Circulation with haemorrhage control", "Breathing and ventilation", "Disability", "Exposure", "The secondary survey"], answer: "B",
+        explanation: "The primary survey follows ABCDE: airway with cervical spine protection, breathing, circulation, disability, exposure.",
+        source: "Sample set, question 14", status: "source_verified" },
+    ]},
+    "SAMPLE-CARDIO:1": { schema: 1, book_id: "SAMPLE-CARDIO", chapter_id: 1, version: 1, questions: [
+      { id: "Q000000015", type: "sba", stem: "In most people, which artery supplies the sinoatrial node?",
+        options: ["Right coronary artery", "Left anterior descending artery", "Left circumflex artery", "Left main stem", "Obtuse marginal artery"], answer: "A",
+        explanation: "The sinoatrial nodal artery arises from the right coronary artery in roughly 60% of people and from the circumflex in most of the rest.",
+        source: "Sample set, question 15", status: "source_verified" },
+      { id: "Q000000016", type: "sba", stem: "What is the approximate normal mean pulmonary artery pressure at rest?",
+        options: ["5 mmHg", "14 mmHg", "30 mmHg", "45 mmHg", "60 mmHg"], answer: "B", no_shuffle: true,
+        explanation: "Normal mean pulmonary artery pressure is about 14 mmHg. Current guidelines define pulmonary hypertension as a resting mean above 20 mmHg.",
+        source: "Sample set, question 16", status: "source_verified" },
+      { id: "Q000000017", type: "mtf", stem: "Regarding cardiopulmonary bypass:",
+        options: ["Heparin is given before cannulation", "Protamine reverses heparin", "A target ACT below 200 seconds is usual during bypass", "Hypothermia reduces metabolic demand"], answer: ["T", "T", "F", "T"],
+        explanation: "Full heparinisation precedes cannulation, with an ACT target typically above about 400–480 seconds. Protamine reverses heparin after bypass. Hypothermia lowers metabolic demand.",
+        source: "Sample set, question 17", status: "source_verified" },
+      { id: "Q000000018", type: "sba", stem: "Which investigation is usually first-line for suspected acute aortic dissection in a haemodynamically stable patient?",
+        options: ["Chest X-ray", "CT angiography of the aorta", "MRI of the aorta", "Coronary angiography", "Exercise ECG"], answer: "B",
+        explanation: "CT angiography is fast, widely available and highly accurate, so it is the usual first-line test in stable patients. Transoesophageal echo is preferred when the patient is too unstable to move.",
+        source: "Sample set, question 18", status: "source_verified" },
+    ]},
+  },
+};
+
+/* ================================================================
+   Utilities
+   ================================================================ */
+const LET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fmt = (s) => esc(s).replace(/\n/g, "<br>");
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const dayKey = (d = new Date()) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+const kb = (n) => (n < 1024 ? n + " B" : n < 1048576 ? Math.round(n / 1024) + " KB" : (n / 1048576).toFixed(1) + " MB");
+const mins = (sec) => { const m = Math.round(sec / 60); return m < 60 ? m + " min" : Math.floor(m / 60) + " h " + (m % 60) + " min"; };
+const clock = (sec) => Math.floor(sec / 60) + ":" + String(Math.max(0, sec % 60)).padStart(2, "0");
+const shuffle = (a) => { const r = a.slice(); for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; } return r; };
+const L2I = (l) => LET.indexOf(l);
+
+const ICON = {
+  home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
+  lib: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h4v16H4zM10 4h4v16h-4zM16.5 4.5l3.5 1-4 15-3.5-1z"/></svg>',
+  review: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5"/></svg>',
+  me: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>',
+  back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
+  chev: '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>',
+  heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 10c0 5.65-7 10-7 10z"/></svg>',
+  heartOn: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 20s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 10c0 5.65-7 10-7 10z"/></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg>',
+  starOn: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg>',
+  flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>',
+  share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>',
+  prev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
+  next: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>',
+  x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
+  down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+};
+
+/* ================================================================
+   Storage — IndexedDB with an in-memory fallback
+   ================================================================ */
+const DB = {
+  db: null, mem: { packs: new Map(), meta: new Map() },
+  async open() {
+    try {
+      this.db = await new Promise((res, rej) => {
+        const r = indexedDB.open("medmcq", 1);
+        r.onupgradeneeded = () => { r.result.createObjectStore("packs"); r.result.createObjectStore("meta"); };
+        r.onsuccess = () => res(r.result);
+        r.onerror = () => rej(r.error);
+      });
+    } catch (e) { this.db = null; }
+    try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
+  },
+  run(store, mode, fn) {
+    if (!this.db) { return Promise.resolve(fn(null, this.mem[store])); }
+    return new Promise((res, rej) => {
+      try {
+        const t = this.db.transaction(store, mode); const req = fn(t.objectStore(store));
+        t.oncomplete = () => res(req ? req.result : undefined); t.onerror = () => rej(t.error);
+      } catch (e) { rej(e); }
+    });
+  },
+  get(s, k) { return this.run(s, "readonly", (st, m) => st ? st.get(k) : m.get(k)); },
+  put(s, k, v) { return this.run(s, "readwrite", (st, m) => st ? st.put(v, k) : void m.set(k, v)); },
+  del(s, k) { return this.run(s, "readwrite", (st, m) => st ? st.delete(k) : void m.delete(k)); },
+  all(s) {
+    if (!this.db) return Promise.resolve([...this.mem[s].entries()]);
+    return new Promise((res, rej) => {
+      const out = []; const t = this.db.transaction(s, "readonly");
+      const cur = t.objectStore(s).openCursor();
+      cur.onsuccess = () => { const c = cur.result; if (c) { out.push([c.key, c.value]); c.continue(); } };
+      t.oncomplete = () => res(out); t.onerror = () => rej(t.error);
+    });
+  },
+};
+
+/* Personal state (device). Answers stay on the device; favorites + resume also sync via Telegram CloudStorage. */
+let S = {
+  answers: {},        // qid -> { c: last attempt correct, n: attempts, t: timestamp, b: book id }
+  fav: [],            // favorite question ids
+  favBooks: [],       // favorite book ids
+  resume: null,       // { b, ch, q, t }
+  time: {},           // "YYYY-MM-DD" -> active study seconds
+  active: {},         // "YYYY-MM-DD" -> true when questions were answered
+  reports: [],        // queued question reports
+  dl: {},             // "BOOK:ch" -> { v, size, at }
+  settings: { fs: 1 },
+};
+let saveTimer = null;
+function saveState() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => { DB.put("meta", "state", S).catch(() => {}); }, 300);
+}
+
+/* ================================================================
+   Telegram
+   ================================================================ */
+const TG = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+const IN_TG = !!(TG && TG.initData);
+const tgAt = (v) => IN_TG && typeof TG.isVersionAtLeast === "function" && TG.isVersionAtLeast(v);
+const haptic = {
+  tap() { if (tgAt("6.1")) TG.HapticFeedback.selectionChanged(); },
+  ok() { if (tgAt("6.1")) TG.HapticFeedback.notificationOccurred("success"); },
+  no() { if (tgAt("6.1")) TG.HapticFeedback.notificationOccurred("error"); },
+};
+function applyTelegramTheme() {
+  if (!IN_TG) return;
+  const p = TG.themeParams || {}; const r = document.documentElement;
+  r.dataset.theme = TG.colorScheme === "dark" ? "dark" : "light";
+  const map = { bg_color: "--bg", secondary_bg_color: "--surface-2", section_bg_color: "--surface", text_color: "--ink", hint_color: "--muted" };
+  for (const k in map) { if (p[k]) r.style.setProperty(map[k], p[k]); }
+  if (!p.section_bg_color && p.secondary_bg_color && TG.colorScheme !== "dark") r.style.setProperty("--surface", "#FFFFFF");
+  if (tgAt("6.1")) { try { TG.setHeaderColor(p.bg_color || "#F1F5F5"); TG.setBackgroundColor(p.bg_color || "#F1F5F5"); } catch (e) {} }
+}
+const CloudSync = {
+  ok() { return tgAt("6.9") && TG.CloudStorage; },
+  encode(ids) {
+    const nums = [...new Set(ids.map((id) => parseInt(String(id).slice(1), 10)).filter((n) => !isNaN(n)))].sort((a, b) => a - b);
+    let prev = 0; return nums.map((n) => { const d = n - prev; prev = n; return d.toString(36); }).join(".");
+  },
+  decode(s) {
+    if (!s) return []; let acc = 0;
+    return s.split(".").map((p) => { acc += parseInt(p, 36); return "Q" + String(acc).padStart(9, "0"); });
+  },
+  pull() {
+    return new Promise((res) => {
+      if (!this.ok()) return res();
+      try {
+        TG.CloudStorage.getItems(["v1_fav", "v1_favbooks", "v1_resume"], (err, v) => {
+          if (!err && v) {
+            S.fav = [...new Set([...S.fav, ...this.decode(v.v1_fav)])];
+            if (v.v1_favbooks) S.favBooks = [...new Set([...S.favBooks, ...v.v1_favbooks.split(".").filter(Boolean)])];
+            try { const r = v.v1_resume ? JSON.parse(v.v1_resume) : null; if (r && (!S.resume || r.t > S.resume.t)) S.resume = r; } catch (e) {}
+            saveState();
+          }
+          res();
+        });
+      } catch (e) { res(); }
+    });
+  },
+  timer: null,
+  push() {
+    if (!this.ok()) return;
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      try {
+        TG.CloudStorage.setItem("v1_fav", this.encode(S.fav).slice(0, 4096));
+        TG.CloudStorage.setItem("v1_favbooks", S.favBooks.join(".").slice(0, 4096));
+        if (S.resume) TG.CloudStorage.setItem("v1_resume", JSON.stringify(S.resume));
+      } catch (e) {}
+    }, 1500);
+  },
+};
+
+/* ================================================================
+   Content: catalog, packs and the question index
+   ================================================================ */
+let CATALOG = null;
+const PACKS = {};           // "BOOK:ch" -> pack
+const QI = {};              // qid -> { q, b, ch }
+const DOWNLOADING = {};
+const bookById = (id) => CATALOG.books.find((b) => b.id === id);
+const specColor = (id) => (CATALOG.specialties.find((s) => s.id === id) || {}).color || "#16606A";
+
+async function loadCatalog() {
+  if (CONFIG.CONTENT_BASE) {
+    try {
+      const r = await fetch(CONFIG.CONTENT_BASE + "/catalog.json", { cache: "no-cache" });
+      if (r.ok) { const c = await r.json(); await DB.put("meta", "catalog", c); return c; }
+    } catch (e) {}
+    const cached = await DB.get("meta", "catalog");
+    if (cached) return cached;
+  }
+  return SAMPLE.catalog;
+}
+async function fetchPack(bookId, chId) {
+  const book = bookById(bookId); const ch = book.chapters.find((c) => c.id === chId);
+  if (CONFIG.CONTENT_BASE && ch && ch.url) {
+    const r = await fetch(ch.url); if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  }
+  await sleep(450);
+  const p = SAMPLE.packs[bookId + ":" + chId];
+  if (!p) throw new Error("missing pack");
+  return JSON.parse(JSON.stringify(p));
+}
+function indexPack(p) { for (const q of p.questions) QI[q.id] = { q, b: p.book_id, ch: p.chapter_id }; }
+function unindexPack(p) { for (const q of p.questions) delete QI[q.id]; }
+async function downloadChapter(bookId, chId, quiet) {
+  const key = bookId + ":" + chId;
+  if (PACKS[key]) return PACKS[key];
+  if (DOWNLOADING[key]) return DOWNLOADING[key];
+  const job = (async () => {
+    try {
+      const pack = await fetchPack(bookId, chId);
+      await DB.put("packs", key, pack);
+      PACKS[key] = pack; indexPack(pack);
+      S.dl[key] = { v: pack.version, size: JSON.stringify(pack).length, at: Date.now() };
+      saveState();
+      return pack;
+    } catch (e) {
+      if (!quiet) toast("Download failed. Check your connection and try again.");
+      return null;
+    } finally { delete DOWNLOADING[key]; render(); }
+  })();
+  DOWNLOADING[key] = job; render();
+  return job;
+}
+async function deleteChapter(key) {
+  const p = PACKS[key]; if (p) unindexPack(p);
+  delete PACKS[key]; delete S.dl[key];
+  await DB.del("packs", key).catch(() => {});
+  saveState();
+}
+function bookStats(book) {
+  let answered = 0, correct = 0;
+  for (const id in S.answers) { const a = S.answers[id]; if (a.b === book.id) { answered++; if (a.c) correct++; } }
+  return { answered, correct, pct: book.questions ? Math.min(100, Math.round((answered / book.questions) * 100)) : 0 };
+}
+function totals() {
+  const vals = Object.values(S.answers); const answered = vals.length; const correct = vals.filter((a) => a.c).length;
+  return { answered, correct, acc: answered ? Math.round((correct / answered) * 100) : 0 };
+}
+function streak() {
+  let n = 0; const d = new Date();
+  if (!S.active[dayKey(d)]) d.setDate(d.getDate() - 1);
+  while (S.active[dayKey(d)]) { n++; d.setDate(d.getDate() - 1); }
+  return n;
+}
+const mistakes = () => Object.keys(S.answers).filter((id) => !S.answers[id].c && QI[id]);
+const favorites = () => S.fav.filter((id) => QI[id]);
+
+/* ================================================================
+   Navigation
+   ================================================================ */
+let STACK = [{ v: "home" }];
+let SESSION = null;
+let SHEET = null;
+let ACTION = null;
+let MOCK_N = 10;
+const cur = () => STACK[STACK.length - 1];
+function go(v, p) { STACK.push({ v, p: p || {} }); render(true); }
+function back() {
+  if (SHEET) { SHEET = null; render(); return; }
+  if (STACK.length > 1) {
+    const leaving = cur().v;
+    if (leaving === "study" && SESSION && SESSION.mode === "exam" && !SESSION.finished) {
+      confirmBox("Leave the mock exam? Your answers so far will not be scored.", (yes) => { if (yes) { SESSION = null; STACK.pop(); render(true); } });
+      return;
+    }
+    if (leaving === "study" && SESSION && SESSION.parent) SESSION = SESSION.parent;
+    STACK.pop(); render(true);
+  }
+}
+function tab(v) { STACK = [{ v }]; SHEET = null; render(true); }
+function confirmBox(msg, cb) {
+  if (tgAt("6.2")) TG.showConfirm(msg, cb); else cb(window.confirm(msg));
+}
+let toastTimer = null;
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.appendChild(t); }
+  t.textContent = msg; t.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 2600);
+}
+
+/* ================================================================
+   Sessions (study, review, exam)
+   ================================================================ */
+function newResp(q) {
+  return { sel: q.type === "mtf" ? q.options.map(() => null) : q.type === "multi" ? [] : null, done: false, correct: false, score: 0 };
+}
+function startSession(opts) {
+  SESSION = Object.assign({ mode: "study", title: "", qids: [], index: 0, resp: {}, order: {}, startedAt: Date.now(), finished: false }, opts);
+  if (SESSION.mode === "exam") SESSION.deadline = Date.now() + SESSION.qids.length * CONFIG.MOCK_SECONDS_PER_QUESTION * 1000;
+  go("study");
+}
+async function startChapter(bookId, chId, qid) {
+  let pack = PACKS[bookId + ":" + chId];
+  if (!pack) pack = await downloadChapter(bookId, chId);
+  if (!pack) return;
+  const qids = pack.questions.map((q) => q.id);
+  let index = qid ? Math.max(0, qids.indexOf(qid)) : qids.findIndex((id) => !S.answers[id]);
+  if (index < 0) index = 0;
+  const ch = bookById(bookId).chapters.find((c) => c.id === chId);
+  startSession({ mode: "study", title: ch ? ch.title : "Chapter", qids, index, bookId, chId });
+}
+function orderFor(q) {
+  if (!SESSION.order[q.id]) {
+    const idx = q.options.map((_, i) => i);
+    SESSION.order[q.id] = q.no_shuffle || q.type === "emq" ? idx : shuffle(idx);
+  }
+  return SESSION.order[q.id];
+}
+function isComplete(q, r) {
+  if (q.type === "mtf") return r.sel.every((v) => v === "T" || v === "F");
+  if (q.type === "multi") return r.sel.length === q.answer.length;
+  return r.sel !== null;
+}
+function grade(q, r) {
+  if (q.type === "mtf") {
+    let k = 0; q.answer.forEach((v, i) => { if (r.sel[i] === v) k++; });
+    r.score = k / q.answer.length; r.correct = k === q.answer.length;
+  } else if (q.type === "multi") {
+    const key = q.answer.map(L2I).sort().join(","); r.correct = r.sel.slice().sort().join(",") === key; r.score = r.correct ? 1 : 0;
+  } else {
+    r.correct = r.sel === L2I(q.answer); r.score = r.correct ? 1 : 0;
+  }
+}
+function recordAnswer(q, r) {
+  const info = QI[q.id]; const prev = S.answers[q.id];
+  S.answers[q.id] = { c: r.correct, n: (prev ? prev.n : 0) + 1, t: Date.now(), b: info ? info.b : SESSION.bookId };
+  S.active[dayKey()] = true;
+  saveState();
+}
+function submitCurrent() {
+  const qid = SESSION.qids[SESSION.index]; const q = QI[qid].q; const r = SESSION.resp[qid];
+  if (!r || r.done || !isComplete(q, r)) return;
+  grade(q, r); r.done = true; recordAnswer(q, r);
+  if (SESSION.mode === "exam") { haptic.tap(); nextQuestion(); return; }
+  r.correct ? haptic.ok() : haptic.no();
+  render();
+  requestAnimationFrame(() => { const ex = $(".explain"); if (ex) ex.scrollIntoView({ behavior: "smooth", block: "nearest" }); });
+}
+function nextQuestion() {
+  if (SESSION.index < SESSION.qids.length - 1) { SESSION.index++; render(true); return; }
+  if (SESSION.mode === "exam") { finishExam(); return; }
+  toast(SESSION.mode === "study" ? "Chapter finished." : "Review finished.");
+  const parent = SESSION.parent; STACK.pop(); SESSION = parent || null; render(true);
+}
+function finishExam() {
+  if (!SESSION || SESSION.finished) return;
+  SESSION.finished = true; SESSION.endedAt = Date.now();
+  STACK[STACK.length - 1] = { v: "results", p: {} }; render(true);
+}
+
+/* ================================================================
+   Views
+   ================================================================ */
+function greetingName() {
+  const u = IN_TG && TG.initDataUnsafe && TG.initDataUnsafe.user; // display only, never used for auth
+  return u && u.first_name ? u.first_name : "Doctor";
+}
+function partOfDay() { const h = new Date().getHours(); return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"; }
+function coverHTML(book, cls) {
+  return `<div class="cover ${cls || ""}" style="background:${esc(book.color || specColor(book.specialty))}"><div class="ct">${esc(book.title)}</div><div class="ca">${esc((book.authors || []).join(", "))}</div></div>`;
+}
+function rowHTML(action, data, icon, title, sub, right, red) {
+  const attrs = Object.entries(data || {}).map(([k, v]) => `data-${k}="${esc(v)}"`).join(" ");
+  return `<button class="row" data-a="${action}" ${attrs}><span class="ic ${red ? "red" : ""}">${icon}</span><span class="grow"><span class="t">${esc(title)}</span>${sub ? `<br><span class="s">${esc(sub)}</span>` : ""}</span>${right != null ? `<span class="n">${esc(right)}</span>` : ""}${ICON.chev}</button>`;
+}
+
+const VIEWS = {
+  home() {
+    const t = totals(); const st = streak(); const today = S.time[dayKey()] || 0;
+    let resume = "";
+    if (S.resume && bookById(S.resume.b)) {
+      const b = bookById(S.resume.b); const ch = b.chapters.find((c) => c.id === S.resume.ch);
+      resume = `<button class="resume" data-a="continue"><span class="spine" style="background:${esc(b.color)}"></span><span><small>Continue studying</small><strong>${esc(b.title)}${ch ? ": " + esc(ch.title) : ""}</strong><span class="go">Continue</span></span></button>`;
+    } else {
+      resume = `<div class="empty-start"><p>Pick a book and download a chapter. After that it works without internet.</p><button class="btn small" data-a="tab" data-v="library">Open the library</button></div>`;
+    }
+    const line = t.answered
+      ? `<b>${t.answered}</b> answered, <b>${t.acc}%</b> correct${st ? `, <b>${st}</b>-day streak` : ""}. Today: <b>${mins(today)}</b>.`
+      : `Your progress is saved on this device${CloudSync.ok() ? " and synced with Telegram" : ""}.`;
+    const favBooks = S.favBooks.map(bookById).filter(Boolean);
+    const shelf = favBooks.length
+      ? `<div class="shelf">${favBooks.map((b) => `<button data-a="open-book" data-b="${esc(b.id)}" aria-label="${esc(b.title)}">${coverHTML(b)}</button>`).join("")}</div>`
+      : `<p class="note">Tap the heart on a book to keep it here.</p>`;
+    const mk = mistakes().length, fv = favorites().length;
+    return {
+      title: CONFIG.APP_NAME, tabs: "home",
+      html: `<section class="hello"><h2>${partOfDay()}, ${esc(greetingName())}</h2><p class="stat-line">${line}</p></section>
+        ${resume}
+        <h3 class="sec">Review</h3>
+        <div class="list">
+          ${rowHTML("practice", { list: "mistakes" }, ICON.review, "My mistakes", mk ? "Answer them again until they stick" : "Wrong answers collect here", mk, true)}
+          ${rowHTML("practice", { list: "favorites" }, ICON.star, "Starred questions", fv ? "Questions you starred" : "Star a question to save it", fv)}
+          ${rowHTML("tab", { v: "review" }, ICON.clock, "Timed mock exam", "One minute per question, scored at the end")}
+        </div>
+        <h3 class="sec">My books <button data-a="tab" data-v="library">Library</button></h3>
+        ${shelf}`,
+    };
+  },
+
+  library() {
+    const specs = CATALOG.specialties.map((s) => {
+      const n = CATALOG.books.filter((b) => b.specialty === s.id).length;
+      return `<button class="spec" style="--c:${esc(s.color)}" data-a="open-spec" data-s="${esc(s.id)}"><span class="t">${esc(s.id)}</span><span class="s">${n} ${n === 1 ? "book" : "books"}</span></button>`;
+    }).join("");
+    const pastExams = CATALOG.books.filter((b) => b.collection_type === "past_exam");
+    return {
+      title: "Library", tabs: "library",
+      html: `<h3 class="sec" style="margin-top:12px">Medicine</h3><div class="specs">${specs}</div>
+        ${pastExams.length ? `<h3 class="sec">Past exams</h3><div class="books">${pastExams.map(bookCard).join("")}</div>` : ""}`,
+    };
+  },
+
+  spec(p) {
+    const books = CATALOG.books.filter((b) => b.specialty === p.s);
+    return { title: p.s, html: books.length ? `<div class="books" style="margin-top:8px">${books.map(bookCard).join("")}</div>` : `<p class="note">No books here yet.</p>` };
+  },
+
+  book(p) {
+    const b = bookById(p.b); if (!b) return { title: "Book", html: `<p class="note">This book is no longer available.</p>` };
+    const st = bookStats(b); const fav = S.favBooks.includes(b.id);
+    const allDl = b.chapters.every((c) => PACKS[b.id + ":" + c.id]);
+    const rows = b.chapters.map((c, i) => {
+      const key = b.id + ":" + c.id; const have = !!PACKS[key]; const busy = !!DOWNLOADING[key];
+      const answered = have ? PACKS[key].questions.filter((q) => S.answers[q.id]).length : 0;
+      const right = busy ? `<span class="spin" aria-label="Downloading"></span>`
+        : have ? `<button class="btn small" data-a="study-ch" data-b="${esc(b.id)}" data-c="${c.id}">Study</button>`
+        : `<button class="btn small ghost" data-a="dl" data-b="${esc(b.id)}" data-c="${c.id}">${ICON.down} Download</button>`;
+      return `<div class="ch-row"><span class="ch-no">${i + 1}</span><span class="grow"><span class="t">${esc(c.title)}</span><br><span class="s note">${c.questions} questions${have ? `, ${answered} answered` : ""}</span></span>${right}</div>`;
+    }).join("");
+    return {
+      title: "",
+      html: `<div class="book-head">${coverHTML(b)}<div><h2>${esc(b.title)}</h2>
+          <div class="meta">${esc(b.specialty)}<br>${b.questions} questions, ${st.pct}% done</div>
+          <div class="pbar" style="margin-bottom:14px"><i style="width:${st.pct}%"></i></div>
+          <div class="pill-row"><button class="pill ${fav ? "on" : ""}" data-a="fav-book" data-b="${esc(b.id)}" aria-pressed="${fav}">${fav ? ICON.heartOn : ICON.heart} ${fav ? "In my books" : "Add to my books"}</button></div>
+        </div></div>
+        <h3 class="sec">Chapters ${allDl ? "" : `<button data-a="dl-all" data-b="${esc(b.id)}">Download all</button>`}</h3>
+        <div class="list">${rows}</div>`,
+    };
+  },
+
+  study() {
+    if (!SESSION || !SESSION.qids.length) return { title: "", html: `<p class="note">Nothing to study here yet.</p>` };
+    const qid = SESSION.qids[SESSION.index]; const entry = QI[qid];
+    if (!entry) return { title: SESSION.title, html: `<p class="note">This question isn't downloaded on this device.</p>` };
+    const q = entry.q;
+    const r = SESSION.resp[qid] || (SESSION.resp[qid] = newResp(q));
+    const exam = SESSION.mode === "exam"; const showResult = r.done && !exam;
+    if (SESSION.mode === "study") { S.resume = { b: entry.b, ch: entry.ch, q: qid, t: Date.now() }; saveState(); CloudSync.push(); }
+    const order = orderFor(q);
+    const keySet = q.type === "multi" ? q.answer.map(L2I) : q.type === "mtf" ? [] : [L2I(q.answer)];
+    const pos = SESSION.index + 1, total = SESSION.qids.length;
+    const typeName = { sba: "Single best answer", mtf: "True / false", multi: "Select " + (q.type === "multi" ? q.answer.length : ""), emq: "Extended matching" }[q.type];
+
+    let body = "";
+    if (q.type === "mtf") {
+      body = order.map((orig) => {
+        const v = r.sel[orig]; const key = q.answer[orig]; const ok = v === key;
+        const cls = showResult ? (ok ? "correct" : "wrong") : "";
+        const b = (val, label) => `<button data-a="tf" data-i="${orig}" data-v="${val}" aria-pressed="${v === val}" ${r.done ? "disabled" : ""} class="${showResult && v === val && !ok ? "bad" : ""} ${showResult && key === val ? "key" : ""}">${label}</button>`;
+        return `<div class="tf ${cls} ${showResult ? "done" : ""}"><p>${fmt(q.options[orig])}</p><div class="seg">${b("T", "True")}${b("F", "False")}</div>${showResult ? `<div class="verdict">${ok ? "Correct" : "Answer: " + (key === "T" ? "True" : "False")}</div>` : ""}</div>`;
+      }).join("");
+    } else {
+      body = order.map((orig, i) => {
+        const picked = q.type === "multi" ? r.sel.includes(orig) : r.sel === orig;
+        let cls = q.type === "multi" ? "multi" : "";
+        if (showResult) { if (keySet.includes(orig)) cls += " correct"; else if (picked) cls += " wrong"; }
+        return `<button class="opt ${cls}" data-a="pick" data-i="${orig}" aria-pressed="${picked}" ${r.done ? "disabled" : ""}><span class="l">${LET[i]}</span><span>${fmt(q.options[orig])}</span></button>`;
+      }).join("");
+    }
+
+    let explain = "";
+    if (showResult) {
+      const letters = q.type === "mtf" ? "" : keySet.map((o) => LET[order.indexOf(o)]).sort().join(", ");
+      const res = q.type === "mtf" ? `${Math.round(r.score * q.answer.length)} of ${q.answer.length} statements correct` : r.correct ? "Correct" : "Not quite. The answer is " + letters + ".";
+      const book = bookById(entry.b);
+      explain = `<div class="explain ${r.correct ? "" : "bad"}"><div class="res ${r.correct ? "ok" : "no"}">${esc(res)}</div>${q.explanation ? `<p>${fmt(q.explanation)}</p>` : ""}<div class="src">${esc(book ? book.title : "")}${q.source ? ", " + esc(q.source) : ""}</div></div>`;
+    }
+
+    const images = (q.images || []).map((name) => { const p = PACKS[entry.b + ":" + entry.ch]; const src = p && p.img && p.img[name]; return src ? `<figure class="qimg"><img src="${esc(src)}" alt="Question image"></figure>` : ""; }).join("");
+    const stared = S.fav.includes(qid);
+    let head;
+    if (exam) {
+      const left = Math.max(0, Math.round((SESSION.deadline - Date.now()) / 1000));
+      head = `<div class="study-top"><span>${pos} of ${total}</span><div class="pbar"><i style="width:${(pos / total) * 100}%"></i></div><span class="timer ${left < 60 ? "low" : ""}" id="timer">${clock(left)}</span></div>`;
+    } else {
+      head = `<div class="study-top"><span>${pos} of ${total}</span><div class="pbar"><i style="width:${(pos / total) * 100}%"></i></div></div>`;
+    }
+    return {
+      title: SESSION.title,
+      html: `${head}
+        <div class="qmeta"><span class="tag">${esc(typeName)}</span>${q.status === "medical_verified" ? `<span class="tag dr">Doctor-reviewed</span>` : ""}</div>
+        ${q.lead_in ? `<div class="leadin">${fmt(q.lead_in)}</div>` : ""}
+        ${images}
+        <p class="stem">${fmt(q.stem)}</p>
+        ${q.type === "multi" && !r.done ? `<p class="hint">Choose ${q.answer.length} answers.</p>` : ""}
+        <div class="opts">${body}</div>
+        ${explain}
+        <div class="qtools">
+          <div class="left">
+            <button class="qtool ${stared ? "on" : ""}" data-a="fav-q" aria-pressed="${stared}">${stared ? ICON.starOn : ICON.star} ${stared ? "Starred" : "Star"}</button>
+            ${exam ? "" : `<button class="qtool" data-a="report">${ICON.flag} Report</button><button class="qtool" data-a="share">${ICON.share} Share</button>`}
+          </div>
+          <div class="left">
+            <button class="qtool" data-a="prev" aria-label="Previous question" ${SESSION.index === 0 ? "disabled" : ""}>${ICON.prev}</button>
+            <button class="qtool" data-a="skip" aria-label="Next question" ${SESSION.index === total - 1 ? "disabled" : ""}>${ICON.next}</button>
+          </div>
+        </div>`,
+      action: r.done && !exam
+        ? { label: SESSION.index < total - 1 ? "Next question" : "Finish", fn: nextQuestion, enabled: true }
+        : { label: exam ? (SESSION.index < total - 1 ? "Save and next" : "Save and finish") : "Check answer", fn: submitCurrent, enabled: isComplete(q, r) && !r.done },
+    };
+  },
+
+  results() {
+    const s = SESSION; if (!s) return { title: "Results", html: "" };
+    const done = s.qids.filter((id) => s.resp[id] && s.resp[id].done);
+    const correct = done.filter((id) => s.resp[id].correct).length;
+    const pct = s.qids.length ? Math.round((correct / s.qids.length) * 100) : 0;
+    const used = Math.round(((s.endedAt || Date.now()) - s.startedAt) / 1000);
+    const list = s.qids.map((id, i) => {
+      const r = s.resp[id]; const q = QI[id] && QI[id].q;
+      const m = !r || !r.done ? `<span class="mark skip">–</span>` : r.correct ? `<span class="mark ok">✓</span>` : `<span class="mark no">✗</span>`;
+      return `<button class="row" data-a="exam-review" data-i="${i}">${m}<span class="grow"><span class="s">${esc(q ? q.stem.slice(0, 90) : id)}${q && q.stem.length > 90 ? "…" : ""}</span></span>${ICON.chev}</button>`;
+    }).join("");
+    return {
+      title: "Mock exam results",
+      html: `<div class="score"><div class="big">${pct}%</div><p>${correct} of ${s.qids.length} correct in ${mins(used)}</p></div>
+        <h3 class="sec">Questions</h3><div class="list">${list}</div>`,
+      action: { label: "Review answers", fn: () => reviewExam(0), enabled: true },
+    };
+  },
+
+  review() {
+    const avail = Object.keys(QI).length; const mk = mistakes().length, fv = favorites().length;
+    const opts = [10, 20, 0].map((n) => `<button data-a="mock-n" data-n="${n}" aria-pressed="${MOCK_N === n}">${n ? n : "All " + avail}</button>`).join("");
+    return {
+      title: "Review", tabs: "review",
+      html: `<div class="list" style="margin-top:8px">
+          ${rowHTML("practice", { list: "mistakes" }, ICON.review, "My mistakes", mk ? "Questions you last answered wrong" : "Nothing here yet", mk, true)}
+          ${rowHTML("practice", { list: "favorites" }, ICON.star, "Starred questions", fv ? "Questions you starred" : "Nothing here yet", fv)}
+        </div>
+        <h3 class="sec">Timed mock exam</h3>
+        ${avail ? `<p class="note">Random questions from your downloaded chapters, one minute each. You see your score at the end.</p><div class="choice">${opts}</div>`
+          : `<p class="note">Download at least one chapter to build a mock exam.</p>`}`,
+      action: avail ? { label: "Start mock exam", fn: startMock, enabled: true } : null,
+    };
+  },
+
+  me() {
+    const t = totals(); const allTime = Object.values(S.time).reduce((a, b) => a + b, 0);
+    const dls = Object.entries(S.dl).filter(([k]) => PACKS[k]);
+    const used = dls.reduce((a, [, v]) => a + (v.size || 0), 0);
+    const dlRows = dls.length ? dls.map(([k, v]) => {
+      const [bid, cid] = k.split(":"); const b = bookById(bid); const c = b && b.chapters.find((x) => String(x.id) === cid);
+      return `<div class="ch-row"><span class="grow"><span class="t">${esc(b ? b.title : bid)}</span><br><span class="s note">${esc(c ? c.title : "Chapter " + cid)}, ${kb(v.size || 0)}</span></span><button class="btn small ghost" data-a="del-pack" data-k="${esc(k)}">Delete</button></div>`;
+    }).join("") : `<div class="ch-row"><span class="note">No downloaded chapters.</span></div>`;
+    const fsOpts = [[0.9, "Small"], [1, "Normal"], [1.12, "Large"], [1.25, "Larger"]].map(([v, l]) => `<button data-a="fs" data-v="${v}" aria-pressed="${S.settings.fs === v}">${l}</button>`).join("");
+    return {
+      title: "Me", tabs: "me",
+      html: `<div class="grid2" style="margin-top:8px">
+          <div class="tile"><div class="v">${t.answered}</div><div class="k">Questions answered</div></div>
+          <div class="tile"><div class="v">${t.acc}%</div><div class="k">Correct</div></div>
+          <div class="tile"><div class="v">${mins(S.time[dayKey()] || 0)}</div><div class="k">Studied today</div></div>
+          <div class="tile"><div class="v">${streak()}</div><div class="k">Day streak</div></div>
+        </div>
+        <p class="note" style="margin-top:10px">Total study time: ${mins(allTime)}. Only active time counts; the timer pauses after ${Math.round(CONFIG.IDLE_SECONDS / 60)} minutes without a tap.</p>
+        <h3 class="sec">Question text size</h3><div class="choice">${fsOpts}</div>
+        <h3 class="sec">Downloads <span class="note">${kb(used)}</span></h3><div class="list">${dlRows}</div>
+        ${S.reports.length ? `<p class="note" style="margin-top:10px">${S.reports.length} question report${S.reports.length > 1 ? "s" : ""} saved on this device, waiting to be sent.</p>` : ""}
+        <h3 class="sec">Progress</h3>
+        <div class="list">${rowHTML("reset", {}, ICON.x, "Reset my progress", "Clears answers, mistakes and study time on this device", null, true)}</div>
+        <h3 class="sec">About</h3>
+        <p class="about">${esc(CONFIG.APP_NAME)} is free for students. Questions are for education and exam practice only, not for clinical decisions. Your progress stays on this device${CloudSync.ok() ? " and in your Telegram cloud storage" : ""}; we never sell student data.</p>`,
+    };
+  },
+};
+
+function bookCard(b) {
+  const st = bookStats(b);
+  return `<button class="book-card" data-a="open-book" data-b="${esc(b.id)}">${coverHTML(b)}<span class="bt">${esc(b.title)}</span><span class="bs">${b.questions} questions</span><div class="pbar"><i style="width:${st.pct}%"></i></div></button>`;
+}
+
+/* ================================================================
+   Render + chrome (header, tabs, Telegram buttons)
+   ================================================================ */
+function render(scrollTop) {
+  const c = cur(); const view = VIEWS[c.v] ? VIEWS[c.v](c.p || {}) : VIEWS.home();
+  ACTION = view.action || null;
+  const canBack = STACK.length > 1;
+  const header = `<header class="top"><div class="top-in">${canBack ? `<button class="icon-btn back-btn" data-a="back" aria-label="Back">${ICON.back}</button>` : ""}<h1>${esc(view.title || "")}</h1></div></header>`;
+  const tabs = view.tabs ? `<nav class="tabs" aria-label="Main"><div class="tabs-in">${[["home", "Home", ICON.home], ["library", "Library", ICON.lib], ["review", "Review", ICON.review], ["me", "Me", ICON.me]].map(([v, l, ic]) => `<button class="tab" data-a="tab" data-v="${v}" ${view.tabs === v ? 'aria-current="page"' : ""}>${ic}${l}</button>`).join("")}</div></nav>` : "";
+  const actionbar = ACTION && !view.tabs ? `<div class="actionbar"><button class="btn" data-a="action" ${ACTION.enabled ? "" : "disabled"}>${esc(ACTION.label)}</button></div>` : "";
+  const actionInTabs = ACTION && view.tabs ? `<div style="margin-top:18px"><button class="btn" style="width:100%" data-a="action" ${ACTION.enabled ? "" : "disabled"}>${esc(ACTION.label)}</button></div>` : "";
+  const sheet = SHEET ? SHEET() : "";
+  document.documentElement.style.setProperty("--fs", S.settings.fs || 1);
+  document.body.classList.toggle("has-action", !!actionbar);
+  $("#app").innerHTML = header + `<main class="wrap">${view.html}${IN_TG ? "" : actionInTabs}</main>` + tabs + actionbar + sheet;
+  if (scrollTop) window.scrollTo(0, 0);
+  syncTelegramButtons(canBack, view);
+}
+let mainBtnVisible = false;
+function syncTelegramButtons(canBack, view) {
+  if (!IN_TG) return;
+  try {
+    if (tgAt("6.1")) { canBack ? TG.BackButton.show() : TG.BackButton.hide(); }
+    if (ACTION && !SHEET) {
+      TG.MainButton.setParams({ text: ACTION.label, color: ACTION.enabled ? "#16606A" : "#8FA9AC", text_color: "#FFFFFF", is_active: ACTION.enabled, is_visible: true });
+      mainBtnVisible = true;
+    } else if (mainBtnVisible) { TG.MainButton.hide(); mainBtnVisible = false; }
+  } catch (e) {}
+}
+window.addEventListener("scroll", () => { const t = $(".top"); if (t) t.classList.toggle("scrolled", window.scrollY > 4); }, { passive: true });
+
+/* ================================================================
+   Actions
+   ================================================================ */
+function startPractice(list) {
+  const ids = list === "mistakes" ? mistakes() : favorites();
+  if (!ids.length) { toast(list === "mistakes" ? "No mistakes to review. Nice." : "Star questions while you study to collect them here."); return; }
+  startSession({ mode: "review", title: list === "mistakes" ? "My mistakes" : "Starred questions", qids: ids });
+}
+function startMock() {
+  const all = shuffle(Object.keys(QI)); const n = MOCK_N ? Math.min(MOCK_N, all.length) : all.length;
+  startSession({ mode: "exam", title: "Mock exam", qids: all.slice(0, n) });
+}
+function reviewExam(i) {
+  const src = SESSION; const resp = {};
+  for (const id of src.qids) resp[id] = src.resp[id] ? Object.assign({}, src.resp[id]) : Object.assign(newResp(QI[id].q), { done: true, correct: false });
+  SESSION = { mode: "review-exam", title: "Exam review", qids: src.qids, index: i, resp, order: src.order, startedAt: Date.now(), finished: true, parent: src };
+  go("study");
+}
