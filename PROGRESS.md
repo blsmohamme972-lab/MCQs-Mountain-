@@ -1,15 +1,15 @@
 # Kafu — PROGRESS
 
-Last updated: 2026-09-27
+Last updated: 2026-09-28
 
 ## Current milestone
 
 **M3 — Bot upload layer**
 
-Status: **M2 Step 2 DONE; M3 Step 3 merged with CI green; Deploy Kafu retry attempt 2 failed at D1 7403; webhook and phone test pending**
+Status: **M2 Step 2 DONE; M3 Step 3 merged with CI green; Deploy Kafu #8 failed at D1 7403 with an empty account ID secret; webhook and phone test pending**
 
 Current documentation branch:
-`docs/m3-deploy-handoff-20260928`
+`docs/m3-account-secret-empty`
 
 ## Library safety
 
@@ -57,6 +57,8 @@ Report:
 - M2 Step 2 is DONE.
 
 ## Latest deployment check (2026-09-28 Baghdad)
+
+[Deploy Kafu #8](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36353748871), triggered by the merged account-secret workflow change (PR #6), failed at D1 migration with Cloudflare 7403. The Actions environment summary showed `CLOUDFLARE_ACCOUNT_ID` empty. The Worker deploy was skipped. Confirm an Actions **repository secret** with this exact name exists in this repository and is available to the workflow. Do not print its value. `D1_DATABASE_ID` and `CLOUDFLARE_API_TOKEN` were masked as present. Setup Kafu Bot and phone acceptance remain pending.
 
 [Deploy Kafu run #7, attempt 2](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36352381336) failed again at D1 migrations with Cloudflare 7403 (account invalid or unauthorized for the D1 query); Worker deployment was skipped. The owner had reported adding D1 Edit before this retry. Setup Kafu Bot has no run yet. Step 3 phone acceptance remains pending. Detailed report and checklist: `docs/reports/M3_DEPLOY_RETRY.md`. Operational handoff: `HANDOFF.md`.
 

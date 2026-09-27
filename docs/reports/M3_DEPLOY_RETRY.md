@@ -4,7 +4,13 @@ Date: 2026-09-28 (Baghdad). This report supplements [M3_STEP3.md](M3_STEP3.md).
 
 ## Deployment verification
 
-The newest Deploy Kafu run is [#7, attempt 2](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36352381336). The rerun was requested after the owner reported adding D1 Edit. It completed **failure**. The "Apply D1 migrations" step failed while querying D1 with Cloudflare error 7403: "The given account is not valid or is not authorized to access this service." The Worker deployment step was skipped. The previous attempt failed at the same step. Kafu Content Contract CI on the merged commit passed.
+## Latest result after account workflow change
+
+PR #6 changed both the deploy and queue publisher workflows to use the repository secret `CLOUDFLARE_ACCOUNT_ID` instead of a hardcoded account ID. Its CI passed and it was merged. [Deploy Kafu run #8](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36353748871) then failed at the D1 migration with Cloudflare 7403; Worker deployment was skipped. The Actions environment summary for the migration shows `CLOUDFLARE_ACCOUNT_ID` **empty**. GitHub did not supply a value to that step. `CLOUDFLARE_API_TOKEN` and `D1_DATABASE_ID` were masked as present, but their relationship to the intended account is not independently verified.
+
+Confirm that `CLOUDFLARE_ACCOUNT_ID` was saved under this repository's **Settings → Secrets and variables → Actions → Repository secrets**, spelled exactly as shown, rather than only as a repository variable or environment secret. Do not expose its value. Once available, rerun Deploy Kafu. If 7403 remains, verify the D1 database and token belong to the selected account.
+
+The earlier Deploy Kafu run was [#7, attempt 2](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36352381336). The rerun was requested after the owner reported adding D1 Edit. It completed **failure**. The "Apply D1 migrations" step failed while querying D1 with Cloudflare error 7403: "The given account is not valid or is not authorized to access this service." The Worker deployment step was skipped. The previous attempt failed at the same step. Kafu Content Contract CI on the merged commit passed.
 
 Check that the D1 database belongs to the configured Cloudflare account, that the repository's `D1_DATABASE_ID` identifies that database, and that the `CLOUDFLARE_API_TOKEN` repository secret is the intended token with Account → D1 → Edit for that account. Preserve its Worker deployment permissions. Do not print secret values while diagnosing. Once corrected, rerun Deploy Kafu and confirm both migration and deployment steps pass.
 

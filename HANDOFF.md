@@ -12,13 +12,13 @@ Repository: `blsmohamme972-lab/MCQs-Mountain-` (private). Telegram bot: `@KafuMc
 
 - M2 Steps 1–2 are merged and complete. The owner verified all four question types and both image types on a phone and in Airplane Mode. Synthetic fixture books are published; see `docs/reports/M2_STEP2.md`.
 - M3 Step 3 (owner-only `/bot` webhook, D1 ZIP queue, Actions drain, admin commands) was merged in PR #4; Kafu Content Contract CI passed.
-- Latest [Deploy Kafu run #7, attempt 2](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36352381336) **failed** at `wrangler d1 migrations apply` with Cloudflare 7403: account invalid or unauthorized for the D1 query. The Worker deployment step was skipped. The owner had added D1 Edit before this rerun, so permission or account/database alignment still needs verification.
+- Latest [Deploy Kafu run #8](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36353748871) **failed** at `wrangler d1 migrations apply` with Cloudflare 7403. PR #6 replaced hardcoded account IDs in deploy and queue workflows with `secrets.CLOUDFLARE_ACCOUNT_ID`, but run #8's Actions environment summary showed this secret **empty**. The Worker deployment step was skipped. Prior run #7 attempt 2 failed with 7403 using the hardcoded account.
 - **Setup Kafu Bot has not run.** Do not register the webhook until Deploy Kafu is green. Step 3 phone acceptance has not been performed. See `docs/reports/M3_DEPLOY_RETRY.md` for the exact run result and checklist.
 - The bot token was exposed in a previous agent log. The owner intends to rotate it before public launch. Do not print or log credentials.
 
 ## Next actions
 
-1. Check the Cloudflare account used by `.github/workflows/deploy-app.yml`, the D1 database identified by `D1_DATABASE_ID`, and the repository's `CLOUDFLARE_API_TOKEN` permissions for the same account. Preserve Worker deployment access. Inspect only names and status, never values. Rerun Deploy Kafu after correcting the mismatch; require green migration and Worker deployment.
+1. Confirm `CLOUDFLARE_ACCOUNT_ID` is an Actions **repository secret** in this exact repository, with the intended account ID, and is available to the workflow. Run #8 received an empty value. Check that `D1_DATABASE_ID` identifies a database in that account and `CLOUDFLARE_API_TOKEN` has D1 Edit plus Worker deployment access there. Inspect only names and status, never values. Rerun Deploy Kafu; require green migration and Worker deployment.
 2. Run **Setup Kafu Bot** (`.github/workflows/setup-bot.yml`) and confirm its workflow succeeds. It calls `tools/setup_bot.py` to set the secure `/bot` webhook and owner-scoped commands.
 3. Ask the owner to run the Step 3 phone checks in `docs/reports/M3_DEPLOY_RETRY.md`. Record results under `docs/reports/`; do not mark Step 3 done before webhook and phone proof pass.
 4. Before public launch, rotate the exposed bot token, update the corresponding repository secret and deployment, and remove synthetic fixture books through `/remove`. Verify the new webhook state after rotation.
