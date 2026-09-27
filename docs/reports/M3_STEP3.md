@@ -15,7 +15,7 @@ Date: 2026-09-27. Branch: `m3-bot-upload-queue`.
 
 - `python -m unittest tools.tests.test_queue_step3 -v` covers D1 queue order even with equal timestamps, three claims, corrupted header-only WebP, fully decoded fixture images, and continuing after a failed book.
 - `node --test worker/bot.test.mjs` covers malformed package names, webhook token, private-owner restriction, and silent non-owner behavior.
-- Full existing publishing and Mini App contract tests run in Kafu Content Contract CI; see the PR check status.
+- Full existing publishing and Mini App contract tests passed in Kafu Content Contract CI: https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36349245777.
 
 ## Before merge and phone validation
 
