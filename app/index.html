@@ -561,22 +561,27 @@ function normalizeCatalog(catalog) {
   return c;
 }
 async function loadCatalog() {
+  const sample = normalizeCatalog(JSON.parse(JSON.stringify(SAMPLE.catalog)));
   if (CONFIG.CONTENT_BASE) {
     try {
       const r = await fetch(CONFIG.CONTENT_BASE + "/catalog.json", { cache: "no-cache" });
       if (r.ok) {
         const c = normalizeCatalog(await r.json());
-        await DB.put("meta", "catalog", c);
-        await DB.put("meta", "catalog_source", "published");
-        return c;
+        // Never show an empty/broken Library. Until at least one real book is
+        // published, keep the built-in sample catalog visible to students.
+        if (c.books.length) {
+          await DB.put("meta", "catalog", c);
+          await DB.put("meta", "catalog_source", "published");
+          return c;
+        }
       }
     } catch (e) {}
     const cached = await DB.get("meta", "catalog");
-    if (cached) return normalizeCatalog(cached);
+    const cachedCatalog = cached ? normalizeCatalog(cached) : null;
+    if (cachedCatalog && cachedCatalog.books.length) return cachedCatalog;
   }
-  // Built-in samples are a last-resort offline fallback only.
   await DB.put("meta", "catalog_source", "sample").catch(() => {});
-  return normalizeCatalog(JSON.parse(JSON.stringify(SAMPLE.catalog)));
+  return sample;
 }
 async function fetchPack(bookId, chId) {
   const book = bookById(bookId); const ch = book && book.chapters.find((c) => String(c.id) === String(chId));
