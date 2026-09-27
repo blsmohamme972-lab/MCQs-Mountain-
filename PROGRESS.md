@@ -4,12 +4,12 @@ Last updated: 2026-09-27
 
 ## Current milestone
 
-**M2 — Step 2: Fixture proof**
+**M3 — Bot upload layer**
 
-Status: **AUTOMATED PASS; real Telegram/offline phone check pending before merge**
+Status: **M2 Step 2 DONE; M3 Step 3 implemented on branch, CI green; awaiting credentials, deploy and phone test**
 
 Branch:
-`m2-fixture-tests`
+`m3-bot-upload-queue`
 
 ## Library safety
 
@@ -47,21 +47,15 @@ https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36343339056
 Report:
 `docs/reports/M2_STEP2.md`
 
-## Manual proof pending
+## Real phone proof complete
 
-Use Telegram on the phone to:
-- see fixture in Library
-- download chapter
-- verify SBA/MTF/multi/EMQ
-- verify question + explanation images
-- answer a question
-- enable Airplane Mode
-- reopen downloaded chapter
-- verify study + images + progress work with no network
+- PRs #1, #2, and #3 merged.
+- Owner screenshots on 2026-09-27 show the fixture chapter in Telegram.
+- SBA, MTF, multi-select, and EMQ screens render.
+- Question and explanation WebP images render after replacing header-only fixture files.
+- Airplane Mode screenshots show downloaded questions, both image types, an answered question, and a starred question after reopening.
+- M2 Step 2 is DONE.
 
-## Next after phone proof
+## Next
 
-1. Mark M2 Step 2 DONE.
-2. Merge the Step 2 PR.
-3. Start **M3 — bot upload layer** on a new branch.
-4. Do not publish real books before Step 2 is fully signed off.
+Owner-only secret-protected bot webhook, D1 queue, serialized Actions drain, full image decoding, success/failure reports and admin controls are implemented on `m3-bot-upload-queue`. Automated tests cover queue order and a broken WebP. PR #4 CI run 36349245777 passed. Setup and owner phone acceptance remain; see `docs/SETUP_BOT.md` and `docs/reports/M3_STEP3.md`. Remove fixture books with `/remove` before public launch.

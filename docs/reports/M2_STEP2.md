@@ -1,6 +1,6 @@
 # M2 — Step 2 Report: Fixture Proof
 
-Status: **AUTOMATED PROOF PASSED — phone/Telegram offline check pending before merge**
+Status: **DONE — automated proof and owner Telegram/Airplane Mode proof passed**
 
 ## Library safety first
 
@@ -118,34 +118,11 @@ The app already checks `catalog.removed_books` and missing catalog books at boot
 
 Important limitation: an already-offline device cannot learn about a takedown until it next reconnects. This is expected and documented.
 
-## Manual phone proof still required
+## Manual phone proof — PASS
 
-Automation cannot operate the owner's Telegram client, so one real-device check remains before Step 2 is marked fully DONE.
+The owner tested Kafu in Telegram on 2026-09-27. Screenshots show the fixture chapter rendering all four question types, the question and explanation images, and saved answers and a starred question. Airplane Mode screenshots show the downloaded chapter and both images still available after reopening.
 
-On the phone:
-
-1. Open Telegram.
-2. Open **@KafuMcqsbot**.
-3. Tap **Open Kafu**.
-4. Open **Library → Cardiology**.
-5. Open **Kafu Fixture: All Question Types**.
-6. Download **Fixture Chapter**.
-7. Open the chapter and confirm:
-   - SBA renders
-   - MTF renders
-   - multi-select renders
-   - EMQ renders
-   - question image appears on question 1
-   - explanation image appears after checking question 4
-8. Answer at least one question.
-9. Close Kafu completely.
-10. Turn on Airplane Mode.
-11. Reopen Kafu from Telegram.
-12. Open the already-downloaded fixture chapter.
-13. Confirm all four questions and both images still work.
-14. Confirm the answer/progress you made before Airplane Mode is still present.
-
-After this passes, Step 2 can be marked DONE and merged.
+The first image test exposed invalid header-only WebP fixture files. PR #3 replaced them with decodable synthetic images and added a regression test. The owner downloaded the corrected chapter and verified it on the phone.
 
 ## Human setup
 
@@ -153,8 +130,8 @@ No new secret, Cloudflare token, BotFather action, or Telegram token is required
 
 ## Git status
 
-- milestone branch: `m2-fixture-tests`
+- milestone branch: `m2-fixture-tests` (merged)
 - CI: green
 - fixture publishing proof: green
-- production content worker currently contains the final synthetic fixtures for phone testing
+- production content worker contains the final synthetic fixtures with decodable images
 - do not publish a real book yet

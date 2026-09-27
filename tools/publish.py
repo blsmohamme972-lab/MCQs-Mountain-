@@ -330,7 +330,12 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--db", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--base-url", default="")
+    ap.add_argument("--allow-version-reuse", action="store_true", help="Admin rollback/moderation only")
+    ap.add_argument("--decisions", help="JSON permanent-ID map: approved or rejected")
     args = ap.parse_args(argv)
+    decisions = json.loads(Path(args.decisions).read_text()) if args.decisions else {}
+    if not isinstance(decisions, dict) or any(k not in {"approved", "rejected"} for k in decisions.values()):
+        raise ValueError("Invalid moderation decisions")
 
     paths = [Path(x) for x in args.packages]
     book, questions, audits, image_bytes, cover = load_release(paths)
@@ -347,12 +352,12 @@ def main(argv: list[str] | None = None) -> int:
     conn.commit()
 
     current_book = conn.execute("SELECT version FROM books WHERE book_id=?", (book_id,)).fetchone()
-    if current_book and version <= int(current_book[0]):
+    if current_book and version <= int(current_book[0]) and not args.allow_version_reuse:
         raise ValueError(f"{book_id}: incoming version {version} must be greater than published version {current_book[0]}")
 
     old_rows = existing_rows(conn, book_id)
     matched_old_pids: set[str] = set()
-    report = {"kept": [], "edited": [], "new": [], "retired": [], "held": []}
+    report = {"kept": [], "edited": [], "new": [], "retired": [], "held": [], "held_details": []}
     chapter_questions: dict[str, list[dict[str, Any]]] = defaultdict(list)
     chapter_images: dict[str, dict[str, bytes]] = defaultdict(dict)
 
@@ -375,8 +380,11 @@ def main(argv: list[str] | None = None) -> int:
                 report["new"].append(pid)
 
             status = audit_status(q, audits)
+            if pid in decisions:
+                status = "source_verified" if decisions[pid] == "approved" else "held"
             if status == "held":
                 report["held"].append(pid)
+                report["held_details"].append({"qid": pid, "book_id": book_id, "source_page": q.get("source_page")})
 
             q2, img_map = replace_image_names(q, pid)
             q2["id"] = pid
