@@ -4,57 +4,64 @@ Last updated: 2026-09-27
 
 ## Current milestone
 
-**M2 — Step 1: Connect the app to published content**
+**M2 — Step 2: Fixture proof**
 
-Status: **DONE on branch; CI green; waiting for owner merge**
+Status: **AUTOMATED PASS; real Telegram/offline phone check pending before merge**
 
 Branch:
-`m2-connect-published-content`
+`m2-fixture-tests`
 
-Pull request:
-https://github.com/blsmohamme972-lab/MCQs-Mountain-/pull/1
+## Library safety
 
-## Done
+Students must never see an empty or broken Library.
 
-- Kafu app is live on Cloudflare Workers.
-- Kafu content Worker is live.
-- Final two-Worker architecture is saved in `MCQ_PLATFORM_FINAL_PLAN.yaml`.
-- `validate.py`, `audit.py`, `validate_release.py`, and `publish.py` exist.
-- Publishing tools CI is green.
-- App now reads published catalog from `kafu-content-1`.
-- Samples are fallback-only.
-- Publisher output and app input contracts are tested together.
-- Published chapter image ZIPs are unzipped with fflate and stored in IndexedDB.
-- Question and explanation images render from local IndexedDB while offline.
-- Published covers are understood by the app.
-- Deep links resolve permanent question IDs through static route shards.
-- Step 1 PR CI is green.
+Current Step 2 logic:
+- non-empty live published catalog → show published books
+- empty live catalog → built-in sample books
+- live request failure + non-empty cached published catalog → cached books
+- otherwise → built-in sample books
 
-## Next
+CI locks this behavior.
 
-After the owner merges PR #1, start **M2 — Step 2: fixture proof** on a new milestone branch.
+## Automated proof complete
 
-Step 2 must create and publish:
-1. a fixture with SBA + MTF + multi + EMQ + images,
-2. a multipart fixture,
-3. a deliberately broken package.
+- all four question types: PASS
+- question + explanation images: PASS
+- image ZIP contract: PASS
+- multipart release: PASS
+- deliberately broken package: FAIL as expected
+- repair_report.md artifact: PASS
+- exact duplicate detection: PASS
+- v2 stable permanent IDs: PASS
+- simulated student progress survives v2: PASS
+- live v1 publish: PASS
+- live v2 publish: PASS
+- catalog rollback: PASS
+- takedown / removed_books: PASS
+- final fixture state restored for phone testing: PASS
+- Kafu Content Contract CI: PASS
 
-Then prove:
-- fixture appears in Kafu,
-- full offline study with images,
-- v2 keeps permanent IDs/student progress,
-- broken ZIP produces clear repair_report.md,
-- duplicate ZIP is detected,
-- rollback works,
-- /remove/takedown works and local copies are deleted.
+Successful workflow:
+https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36343339056
 
-Do **not** build the bot upload layer until Step 2 is complete and reported.
+Report:
+`docs/reports/M2_STEP2.md`
 
-## Open questions
+## Manual proof pending
 
-None for Step 1.
+Use Telegram on the phone to:
+- see fixture in Library
+- download chapter
+- verify SBA/MTF/multi/EMQ
+- verify question + explanation images
+- answer a question
+- enable Airplane Mode
+- reopen downloaded chapter
+- verify study + images + progress work with no network
 
-## Architecture decisions changed
+## Next after phone proof
 
-- Deep-link lookup uses static route shards (`/routes/Qxxxxxx.json`) rather than embedding every question ID into one global catalog. This keeps deep links static, cheap, and scalable.
-- Chapter metadata still includes `qids` for compatibility/testing, but production deep-link resolution uses route shards.
+1. Mark M2 Step 2 DONE.
+2. Merge the Step 2 PR.
+3. Start **M3 — bot upload layer** on a new branch.
+4. Do not publish real books before Step 2 is fully signed off.

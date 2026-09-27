@@ -84,6 +84,53 @@ class AppContentContractTests(unittest.TestCase):
         self.assertIn("unzipSync", html)
         self.assertIn("resolveQuestionRoute", html)
         self.assertIn("explanation_images", html)
+        self.assertIn("catalogUsable(c)", html)
+        self.assertIn('catalog_source", "sample"', html)
+
+    def test_library_falls_back_for_empty_or_broken_catalogs(self):
+        script = r"""
+const fs = require("fs");
+const vm = require("vm");
+const html = fs.readFileSync(process.argv[1], "utf8");
+const start = html.indexOf("function normalizeCatalog(catalog) {");
+const end = html.indexOf("async function fetchPack(", start);
+if (start < 0 || end < 0) throw new Error("Catalog functions missing");
+const code = html.slice(start, end);
+const sample = { fields: [{id:"medicine"}], specialties:[{id:"Sample"}],
+  books:[{id:"SAMPLE", title:"Sample", specialty:"Sample",
+    chapters:[{id:1,title:"Chapter"}]}], removed_books:[] };
+const published = { fields:[{id:"medicine"}], specialties:[{id:"Cardiology"}],
+  books:[{id:"REAL", title:"Published", specialty:"Cardiology",
+    chapters:[{id:1,title:"Chapter",url:"https://example.test/chapter.json"}]}],
+  removed_books:[] };
+async function check(label, remote, cached, expected, cacheError=false) {
+  const ctx = {
+    CONFIG:{CONTENT_BASE:"https://example.test"},
+    SAMPLE:{catalog:sample},
+    DB:{
+      put:async()=>{},
+      get:async()=>{if(cacheError) throw new Error("bad database"); return cached;}
+    },
+    fetch:async()=>{if(remote === null) throw new Error("offline");
+      return {ok:true,json:async()=>structuredClone(remote)};},
+  };
+  vm.createContext(ctx);
+  vm.runInContext(code + "\nthis.load = loadCatalog;", ctx);
+  const result = await ctx.load();
+  if (result.books[0]?.id !== expected)
+    throw new Error(label + ": expected " + expected + ", got " + result.books[0]?.id);
+}
+(async()=>{
+  await check("empty live", {...published,books:[]}, null, "SAMPLE");
+  await check("broken live", {...published,specialties:[]}, null, "SAMPLE");
+  await check("valid live", published, null, "REAL");
+  await check("cached live", null, published, "REAL");
+  await check("broken cache", null, {...published,books:[null]}, "SAMPLE");
+  await check("cache read failure", null, null, "SAMPLE", true);
+})().catch(e=>{console.error(e);process.exit(1)});
+"""
+        p = subprocess.run(["node", "-e", script, str(APP)], text=True, capture_output=True)
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
 
     def test_publisher_output_matches_app_contract(self):
         with tempfile.TemporaryDirectory() as td:
