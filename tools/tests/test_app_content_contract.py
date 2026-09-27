@@ -84,6 +84,8 @@ class AppContentContractTests(unittest.TestCase):
         self.assertIn("unzipSync", html)
         self.assertIn("resolveQuestionRoute", html)
         self.assertIn("explanation_images", html)
+        self.assertIn("if (c.books.length)", html)
+        self.assertIn('catalog_source", "sample"', html)
 
     def test_publisher_output_matches_app_contract(self):
         with tempfile.TemporaryDirectory() as td:
