@@ -1,6 +1,6 @@
 # MCQ BOOK PACKAGER — MASTER PROMPT (schema 1)
 
-I attached: (1) a medical MCQ book (PDF), (2) `validate.py`.
+I attached: (1) a medical MCQ book (PDF), (2) `validate.py`, and (3) `audit.py`.
 Your job: turn this book into ONE publish-ready ZIP package (or several parts), working entirely with code in your sandbox. Do the whole job yourself. Only stop to ask me if the book cannot be processed at all.
 
 Optional settings (blank = you decide):
@@ -17,7 +17,7 @@ Optional settings (blank = you decide):
 2. **Never correct the medicine.** If a book answer looks wrong, keep the book's answer and write your concern in `flag`.
 3. **Never guess an answer.** Answers come only from the book's answer key or an answer marked in the text. If you cannot find a question's answer, leave that question out and list it in `skipped` with the reason.
 4. **Never drop a question silently.** Every number in the book appears in `questions.jsonl` or in `skipped`.
-5. **Do not edit `validate.py`.** The package is finished only when `python validate.py <zip>` prints `RESULT: PASS`.
+5. **Do not edit `validate.py` or `audit.py`.** After extraction, run `python audit.py SOURCE.pdf PACKAGE.zip --output audit.json`, place `audit.json` in the ZIP, then run `python validate.py --require-audit <zip>`. The package is finished only when the validator prints `RESULT: PASS`.
 
 ## 1. Map the book first
 
@@ -72,7 +72,7 @@ book.json
 questions.jsonl
 cover.webp          (part 1 only)
 images/             (only if the book has figures)
-report.md           (your short summary)
+audit.json          (source-consistency audit; required)\nreport.md           (your short summary)
 ```
 
 **book.json**
