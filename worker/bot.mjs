@@ -46,9 +46,9 @@ async function queueDocument(env, doc) {
       !doc.file_id || !doc.file_unique_id) return "❌ ZIP required, up to 19 MB.";
   const p = parsePackageName(doc.file_name);
   if (!p) return "❌ Filename must be BOOK-ID_vN.zip or BOOK-ID_vN_partXofY.zip.";
-  const existing = await env.DB.prepare("SELECT file_unique_id FROM publish_queue WHERE group_key=? AND part_index=?")
+  const existing = await env.DB.prepare("SELECT telegram_file_unique_id FROM publish_queue WHERE group_key=? AND part_index=?")
     .bind(p.group_key, p.part).first();
-  if (existing) return existing.file_unique_id === doc.file_unique_id ? "📥 already received" :
+  if (existing) return existing.telegram_file_unique_id === doc.file_unique_id ? "📥 already received" :
     "❌ A different ZIP already occupies this part. Use /queue to inspect it.";
   await env.DB.prepare("INSERT OR IGNORE INTO publish_groups(group_key,book_id,version,part_total,status) VALUES(?,?,?,?, 'waiting')")
     .bind(p.group_key, p.book_id, p.version, p.total).run();
