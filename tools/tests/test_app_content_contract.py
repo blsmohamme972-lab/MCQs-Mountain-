@@ -84,7 +84,7 @@ class AppContentContractTests(unittest.TestCase):
         self.assertIn("unzipSync", html)
         self.assertIn("resolveQuestionRoute", html)
         self.assertIn("explanation_images", html)
-        self.assertIn("if (c.books.length)", html)
+        self.assertIn("catalogUsable(c)", html)
         self.assertIn('catalog_source", "sample"', html)
 
     def test_library_falls_back_for_empty_or_broken_catalogs(self):
