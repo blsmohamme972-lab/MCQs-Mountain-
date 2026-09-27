@@ -31,7 +31,7 @@ jobs:
           python-version: "3.11"
 
       - name: Compile publishing tools
-        run: python -m py_compile tools/validate.py tools/validate_release.py tools/audit.py tools/publish.py tools/package_state.py tools/content_admin.py tools/fixtures/generate_fixtures.py
+        run: python -m py_compile tools/validate.py tools/validate_release.py tools/audit.py tools/publish.py tools/package_state.py tools/content_admin.py tools/fixtures/generate_fixtures.py tools/verify_catalog.py
 
       - name: Run publishing and app-content contract tests
         run: python -m unittest discover -s tools/tests -p "test_*.py" -v
