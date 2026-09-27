@@ -17,9 +17,11 @@ Date: 2026-09-27. Branch: `m3-bot-upload-queue`.
 - `node --test worker/bot.test.mjs` covers malformed package names, webhook token, private-owner restriction, and silent non-owner behavior.
 - Full existing publishing and Mini App contract tests passed in Kafu Content Contract CI: https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36349245777.
 
-## Before merge and phone validation
+## Live rollout status (2026-09-28, Baghdad)
 
-The owner must create D1 and the named GitHub and Cloudflare secrets in `docs/SETUP_BOT.md`. The deploy workflow applies migrations, then deploys the Worker; run **Setup Kafu Bot** after that deploy. Actual Telegram delivery, Cloudflare D1, package promotion and rollback need live credentials and owner phone testing. Fixture books must be removed with `/remove` before public launch.
+PR #4 merged as `4e846774f0f690ff8980c422facbf3912a1125e3`; CI passed. GitHub repository secrets `BOT_TOKEN`, `OWNER_TELEGRAM_ID`, `D1_DATABASE_ID`, `WEBHOOK_SECRET`, `QUEUE_API_TOKEN`, `DISPATCH_TOKEN`, and the existing `CLOUDFLARE_API_TOKEN` are present. The dispatch token is scoped to this repository with Actions read/write and expires December 27, 2026.
+
+Deploy Kafu run [#7](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36352381336) failed at `wrangler d1 migrations apply`. Cloudflare returned code 7403, “The given account is not valid or is not authorized to access this service,” when querying D1 under account `7c59c4350999f209f3e868470908b9a4`. The Worker deploy step was skipped. This points to missing D1 Edit permission on the Cloudflare API token, or the database residing in a different Cloudflare account. Verify the database belongs to the Worker account and update `CLOUDFLARE_API_TOKEN` for that account with Account → D1 → Edit while preserving its Worker deployment permissions. Rerun **Deploy Kafu**. Do not run **Setup Kafu Bot** until deployment succeeds; Telegram delivery and phone acceptance remain unverified. Fixture books must be removed with `/remove` before public launch.
 
 ## Operations note
 
