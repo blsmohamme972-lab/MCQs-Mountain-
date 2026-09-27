@@ -94,7 +94,7 @@ jobs:
           mkdir -p content-worker/dist/content
           cp -a build/content/. content-worker/dist/content/
           npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
-          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json" -o /tmp/live-catalog.json
+          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json?publish=${GITHUB_RUN_ID}" -o /tmp/live-catalog.json
           tar -C build -czf state/site-bundle.tar.gz content
           if gh release view kafu-content-state >/dev/null 2>&1; then
             gh release upload kafu-content-state state/content.sqlite state/site-bundle.tar.gz --clobber
@@ -270,7 +270,7 @@ jobs:
           mkdir -p content-worker/dist/content
           cp -a /tmp/proof/v1/content/. content-worker/dist/content/
           npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
-          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json" -o /tmp/live-v1.json
+          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json?proof=${GITHUB_RUN_ID}-v1" -o /tmp/live-v1.json
           python - <<'PY'
           import json
           c=json.load(open("/tmp/live-v1.json"))
@@ -286,7 +286,7 @@ jobs:
           mkdir -p content-worker/dist/content
           cp -a /tmp/proof/final/content/. content-worker/dist/content/
           npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
-          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json" -o /tmp/live-v2.json
+          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json?proof=${GITHUB_RUN_ID}-v2" -o /tmp/live-v2.json
           python - <<'PY'
           import json
           c=json.load(open("/tmp/live-v2.json"))
@@ -303,7 +303,7 @@ jobs:
           mkdir -p content-worker/dist/content
           cp -a /tmp/proof/v1/content/. content-worker/dist/content/
           npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
-          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json" -o /tmp/live-rollback.json
+          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json?proof=${GITHUB_RUN_ID}-rollback" -o /tmp/live-rollback.json
           python - <<'PY'
           import json
           c=json.load(open("/tmp/live-rollback.json"))
@@ -323,7 +323,7 @@ jobs:
           mkdir -p content-worker/dist/content
           cp -a /tmp/proof/removed/. content-worker/dist/content/
           npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
-          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json" -o /tmp/live-removed.json
+          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json?proof=${GITHUB_RUN_ID}-removed" -o /tmp/live-removed.json
           python - <<'PY'
           import json
           c=json.load(open("/tmp/live-removed.json"))
@@ -339,7 +339,7 @@ jobs:
           mkdir -p content-worker/dist/content
           cp -a /tmp/proof/final/content/. content-worker/dist/content/
           npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
-          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json" -o /tmp/live-final.json
+          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json?proof=${GITHUB_RUN_ID}-final" -o /tmp/live-final.json
           python - <<'PY'
           import json
           c=json.load(open("/tmp/live-final.json"))
