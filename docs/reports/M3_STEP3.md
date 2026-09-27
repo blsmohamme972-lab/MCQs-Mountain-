@@ -19,9 +19,13 @@ Date: 2026-09-27. Branch: `m3-bot-upload-queue`.
 
 ## Live rollout status (2026-09-28, Baghdad)
 
-PR #4 merged as `4e846774f0f690ff8980c422facbf3912a1125e3`; CI passed. GitHub repository secrets `BOT_TOKEN`, `OWNER_TELEGRAM_ID`, `D1_DATABASE_ID`, `WEBHOOK_SECRET`, `QUEUE_API_TOKEN`, `DISPATCH_TOKEN`, and the existing `CLOUDFLARE_API_TOKEN` are present. The dispatch token is scoped to this repository with Actions read/write and expires December 27, 2026.
+PR #4 merged as `4e846774f0f690ff8980c422facbf3912a1125e3`; CI passed.
 
-Deploy Kafu run [#7](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36352381336) failed at `wrangler d1 migrations apply`. Cloudflare returned code 7403, “The given account is not valid or is not authorized to access this service,” when querying D1 under account `7c59c4350999f209f3e868470908b9a4`. The Worker deploy step was skipped. This points to missing D1 Edit permission on the Cloudflare API token, or the database residing in a different Cloudflare account. Verify the database belongs to the Worker account and update `CLOUDFLARE_API_TOKEN` for that account with Account → D1 → Edit while preserving its Worker deployment permissions. Rerun **Deploy Kafu**. Do not run **Setup Kafu Bot** until deployment succeeds; Telegram delivery and phone acceptance remain unverified. Fixture books must be removed with `/remove` before public launch.
+[Deploy Kafu #9](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36359745068) completed **successfully** after replacing the fragile `wrangler-action` secret upload path with direct Wrangler commands using the explicit `wrangler.app.jsonc` config. D1 migration, Worker secrets, and Worker deployment all passed.
+
+[Setup Kafu Bot #1](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36359890053) completed **successfully**, registering the secure Telegram webhook and owner commands.
+
+The owner opened Kafu inside Telegram and confirmed the Mini App loads and Continue studying works. Full queue/admin phone acceptance remains pending and is tracked in `docs/reports/M3_DEPLOY_RETRY.md`. Fixture books must be removed with `/remove` before public launch.
 
 ## Operations note
 
