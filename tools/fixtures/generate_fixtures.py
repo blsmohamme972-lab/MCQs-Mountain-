@@ -55,7 +55,12 @@ def audit(raw, questions):
 
 def write_pkg(path, *, book_id, title, version, questions, expected_count, part_index=1, part_total=1, id_range=None, cover=True, broken=False):
     id_range = id_range or [questions[0]["local_id"], questions[-1]["local_id"]]
-    raw = "".join(json.dumps(x, ensure_ascii=False, separators=(",", ":")) + "\n" for x in questions).encode()
+    if broken:
+        broken_questions = [dict(questions[0])]
+        broken_questions[0]["answer"] = "Z"
+        raw = (json.dumps(broken_questions[0], ensure_ascii=False, separators=(",", ":")) + "\n").encode()
+    else:
+        raw = "".join(json.dumps(x, ensure_ascii=False, separators=(",", ":")) + "\n" for x in questions).encode()
     book = {
         "schema": 1,
         "book_id": book_id,
@@ -84,11 +89,7 @@ def write_pkg(path, *, book_id, title, version, questions, expected_count, part_
         if not broken:
             z.writestr("audit.json", json.dumps(audit(raw, questions)))
             z.writestr("report.md", "# Kafu synthetic fixture\nNo external source text.\n")
-        else:
-            # Deliberately fail multiple validator checks, producing a useful repair report.
-            bad = dict(questions[0])
-            bad["answer"] = "Z"
-            z.writestr("questions.jsonl", json.dumps(bad) + "\n")
+        # Broken fixture intentionally omits report.md + audit.json and has answer Z.
         if cover and not broken:
             z.writestr("cover.webp", WEBP)
         for item in questions:
