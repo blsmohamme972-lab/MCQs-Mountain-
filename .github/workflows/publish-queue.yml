@@ -19,7 +19,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: "7c59c4350999f209f3e868470908b9a4"
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       OWNER_TELEGRAM_ID: ${{ secrets.OWNER_TELEGRAM_ID }}
       QUEUE_API_TOKEN: ${{ secrets.QUEUE_API_TOKEN }}
