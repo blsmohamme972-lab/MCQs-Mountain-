@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "updated_at": null,
+  "fields": [
+    {
+      "id": "medicine",
+      "title": {
+        "en": "Medicine",
+        "ar": "الطب"
+      }
+    },
+    {
+      "id": "pharmacy",
+      "title": {
+        "en": "Pharmacy",
+        "ar": "الصيدلة"
+      }
+    },
+    {
+      "id": "dentistry",
+      "title": {
+        "en": "Dentistry",
+        "ar": "طب الأسنان"
+      }
+    }
+  ],
+  "specialties": [],
+  "books": [],
+  "removed_books": []
+}
