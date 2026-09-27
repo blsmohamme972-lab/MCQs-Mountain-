@@ -45,10 +45,10 @@ jobs:
             OWNER_TELEGRAM_ID
             WEBHOOK_SECRET
             QUEUE_API_TOKEN
-            GITHUB_DISPATCH_TOKEN
+            DISPATCH_TOKEN
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           OWNER_TELEGRAM_ID: ${{ secrets.OWNER_TELEGRAM_ID }}
           WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
           QUEUE_API_TOKEN: ${{ secrets.QUEUE_API_TOKEN }}
-          GITHUB_DISPATCH_TOKEN: ${{ secrets.GITHUB_DISPATCH_TOKEN }}
+          DISPATCH_TOKEN: ${{ secrets.DISPATCH_TOKEN }}
