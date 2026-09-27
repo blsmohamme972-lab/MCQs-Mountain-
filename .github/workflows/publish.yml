@@ -270,14 +270,7 @@ jobs:
           mkdir -p content-worker/dist/content
           cp -a /tmp/proof/v1/content/. content-worker/dist/content/
           npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
-          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json?proof=${GITHUB_RUN_ID}-v1" -o /tmp/live-v1.json
-          python - <<'PY'
-          import json
-          c=json.load(open("/tmp/live-v1.json"))
-          b=next(x for x in c["books"] if x["id"]=="KAFU-FIXTURE-ALLTYPES")
-          assert b["version"] == 1
-          print("live v1: PASS")
-          PY
+          python tools/verify_catalog.py --url "$CONTENT_BASE_URL/catalog.json" --book-id KAFU-FIXTURE-ALLTYPES --version 1
 
       - name: Deploy fixture v2 + multipart and verify production
         run: |
@@ -286,15 +279,8 @@ jobs:
           mkdir -p content-worker/dist/content
           cp -a /tmp/proof/final/content/. content-worker/dist/content/
           npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
-          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json?proof=${GITHUB_RUN_ID}-v2" -o /tmp/live-v2.json
-          python - <<'PY'
-          import json
-          c=json.load(open("/tmp/live-v2.json"))
-          books={x["id"]:x for x in c["books"]}
-          assert books["KAFU-FIXTURE-ALLTYPES"]["version"] == 2
-          assert books["KAFU-FIXTURE-MULTIPART"]["questions"] == 4
-          print("live v2 + multipart: PASS")
-          PY
+          python tools/verify_catalog.py --url "$CONTENT_BASE_URL/catalog.json" --book-id KAFU-FIXTURE-ALLTYPES --version 2 --present KAFU-FIXTURE-MULTIPART
+          python tools/verify_catalog.py --url "$CONTENT_BASE_URL/catalog.json" --book-id KAFU-FIXTURE-MULTIPART --questions 4
 
       - name: Prove catalog rollback
         run: |
@@ -303,14 +289,7 @@ jobs:
           mkdir -p content-worker/dist/content
           cp -a /tmp/proof/v1/content/. content-worker/dist/content/
           npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
-          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json?proof=${GITHUB_RUN_ID}-rollback" -o /tmp/live-rollback.json
-          python - <<'PY'
-          import json
-          c=json.load(open("/tmp/live-rollback.json"))
-          b=next(x for x in c["books"] if x["id"]=="KAFU-FIXTURE-ALLTYPES")
-          assert b["version"] == 1
-          print("rollback to v1: PASS")
-          PY
+          python tools/verify_catalog.py --url "$CONTENT_BASE_URL/catalog.json" --book-id KAFU-FIXTURE-ALLTYPES --version 1
 
       - name: Prove takedown catalog semantics
         run: |
@@ -323,14 +302,7 @@ jobs:
           mkdir -p content-worker/dist/content
           cp -a /tmp/proof/removed/. content-worker/dist/content/
           npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
-          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json?proof=${GITHUB_RUN_ID}-removed" -o /tmp/live-removed.json
-          python - <<'PY'
-          import json
-          c=json.load(open("/tmp/live-removed.json"))
-          assert "KAFU-FIXTURE-ALLTYPES" in c["removed_books"]
-          assert "KAFU-FIXTURE-ALLTYPES" not in {x["id"] for x in c["books"]}
-          print("takedown catalog: PASS")
-          PY
+          python tools/verify_catalog.py --url "$CONTENT_BASE_URL/catalog.json" --absent KAFU-FIXTURE-ALLTYPES --removed KAFU-FIXTURE-ALLTYPES
 
       - name: Restore final fixture state for phone testing
         run: |
@@ -339,16 +311,7 @@ jobs:
           mkdir -p content-worker/dist/content
           cp -a /tmp/proof/final/content/. content-worker/dist/content/
           npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
-          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json?proof=${GITHUB_RUN_ID}-final" -o /tmp/live-final.json
-          python - <<'PY'
-          import json
-          c=json.load(open("/tmp/live-final.json"))
-          books={x["id"]:x for x in c["books"]}
-          assert books["KAFU-FIXTURE-ALLTYPES"]["version"] == 2
-          assert "KAFU-FIXTURE-MULTIPART" in books
-          assert "KAFU-FIXTURE-ALLTYPES" not in c.get("removed_books",[])
-          print("final fixture state restored: PASS")
-          PY
+          python tools/verify_catalog.py --url "$CONTENT_BASE_URL/catalog.json" --book-id KAFU-FIXTURE-ALLTYPES --version 2 --present KAFU-FIXTURE-MULTIPART --not-removed KAFU-FIXTURE-ALLTYPES
 
       - name: Save active fixture build state
         run: |
