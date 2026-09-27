@@ -1,0 +1,29 @@
+name: Publishing Tools CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "tools/**"
+      - ".github/workflows/ci-tools.yml"
+  pull_request:
+    paths:
+      - "tools/**"
+      - ".github/workflows/ci-tools.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Compile tools
+        run: python -m py_compile tools/validate.py tools/validate_release.py tools/audit.py tools/publish.py
+      - name: Run publishing tests
+        run: python -m unittest discover -s tools/tests -p "test_*.py" -v
