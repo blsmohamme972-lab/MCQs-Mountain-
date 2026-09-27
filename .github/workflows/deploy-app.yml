@@ -27,3 +27,5 @@ jobs:
           accountId: "7c59c4350999f209f3e868470908b9a4"
           wranglerVersion: "4"
           command: deploy --config wrangler.app.jsonc
+
+# Triggered by ChatGPT for Kafu launch
