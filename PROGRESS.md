@@ -6,7 +6,7 @@ Last updated: 2026-09-28
 
 **M3 — Bot upload layer**
 
-Status: **M2 Step 2 DONE; M3 Step 3 merged with CI green; Deploy Kafu #8 failed at D1 7403 with an empty account ID secret; webhook and phone test pending**
+Status: **M2 Step 2 DONE; M3 Step 3 merged with CI green; Deploy Kafu #9 green; Setup Kafu Bot #1 green; basic Telegram Mini App smoke test passed; queue/admin phone acceptance still pending**
 
 Current documentation branch:
 `docs/m3-account-secret-empty`
@@ -58,10 +58,17 @@ Report:
 
 ## Latest deployment check (2026-09-28 Baghdad)
 
-[Deploy Kafu #8](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36353748871), triggered by the merged account-secret workflow change (PR #6), failed at D1 migration with Cloudflare 7403. The Actions environment summary showed `CLOUDFLARE_ACCOUNT_ID` empty. The Worker deploy was skipped. Confirm an Actions **repository secret** with this exact name exists in this repository and is available to the workflow. Do not print its value. `D1_DATABASE_ID` and `CLOUDFLARE_API_TOKEN` were masked as present. Setup Kafu Bot and phone acceptance remain pending.
+[Deploy Kafu #9](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36359745068) completed **successfully** after the workflow was changed to upload Worker secrets with an explicit `wrangler.app.jsonc` config. D1 migrations, Worker secret upload, and Worker deployment all passed.
 
-[Deploy Kafu run #7, attempt 2](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36352381336) failed again at D1 migrations with Cloudflare 7403 (account invalid or unauthorized for the D1 query); Worker deployment was skipped. The owner had reported adding D1 Edit before this retry. Setup Kafu Bot has no run yet. Step 3 phone acceptance remains pending. Detailed report and checklist: `docs/reports/M3_DEPLOY_RETRY.md`. Operational handoff: `HANDOFF.md`.
+[Setup Kafu Bot #1](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36359890053) completed **successfully**, registering the secure `/bot` webhook and owner commands.
+
+The owner then opened Kafu inside Telegram and confirmed the Mini App loads and Continue studying works. This is a basic live smoke test only; the full Step 3 queue/admin acceptance checklist in `docs/reports/M3_DEPLOY_RETRY.md` is still pending.
+
+Earlier failures:
+- Deploy Kafu #8 failed at D1 with Cloudflare 7403 because `CLOUDFLARE_ACCOUNT_ID` was empty in Actions.
+- A retry fixed D1 but exposed a separate `wrangler-action` secret-upload issue where the custom config was not used and the Worker name was therefore missing.
+- The direct Wrangler workflow now avoids that issue.
 
 ## Next
 
-PR #4 merged on 2026-09-28 with owner-only webhook, D1 queue, serialized Actions drain, image decoding, reports and admin controls. CI passed. Deploy Kafu run 36352381336 failed at D1 migration with Cloudflare 7403 (account unauthorized); Worker deploy skipped. Check D1 account and grant Account → D1 → Edit to the Cloudflare API token in the same account, update `CLOUDFLARE_API_TOKEN`, then rerun Deploy Kafu. Run Setup Kafu Bot only after the deploy succeeds. Phone acceptance remains; see `docs/reports/M3_STEP3.md`. Remove fixture books with `/remove` before public launch.
+Run the remaining Step 3 owner phone acceptance in `docs/reports/M3_DEPLOY_RETRY.md`: owner admin commands, synthetic ZIP queue publish, duplicate handling, invalid package repair report, multipart release, moderation, rollback/remove, and non-owner silence. Remove synthetic fixture books with `/remove` before public launch.
