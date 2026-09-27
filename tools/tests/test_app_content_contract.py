@@ -132,6 +132,25 @@ async function check(label, remote, cached, expected, cacheError=false) {
         p = subprocess.run(["node", "-e", script, str(APP)], text=True, capture_output=True)
         self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
 
+    def test_generated_fixture_images_have_image_frames(self):
+        generator = ROOT / "tools" / "fixtures" / "generate_fixtures.py"
+        with tempfile.TemporaryDirectory() as td:
+            p = subprocess.run([sys.executable, str(generator), "--out", td],
+                               text=True, capture_output=True)
+            self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+            fixture = Path(td) / "KAFU-FIXTURE-ALLTYPES_v2.zip"
+            with zipfile.ZipFile(fixture) as zf:
+                question = zf.read("images/L0001_1.webp")
+                explanation = zf.read("images/L0004_e1.webp")
+                cover = zf.read("cover.webp")
+            for data in (question, explanation, cover):
+                self.assertEqual(data[:4], b"RIFF")
+                self.assertEqual(data[8:12], b"WEBP")
+                self.assertGreater(len(data), 100)
+                self.assertEqual(data[12:16], b"VP8 ")
+                self.assertEqual(int.from_bytes(data[16:20], "little") + 20, len(data))
+            self.assertNotEqual(question, explanation)
+
     def test_publisher_output_matches_app_contract(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
