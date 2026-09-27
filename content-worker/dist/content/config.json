@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "comments_enabled": false,
+  "challenge_enabled": false,
+  "leaderboard_enabled": false,
+  "personal_bot_messages_enabled": false,
+  "notice_banner": "",
+  "maintenance_mode_social_only": false
+}
