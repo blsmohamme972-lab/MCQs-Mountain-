@@ -248,6 +248,7 @@ def check_question(rep, q, ctx, image_files, used_images):
     if not isinstance(lid, int):
         rep.err(where, "local_id must be an integer")
         return
+
     if q["chapter_id"] not in ctx["chapters"]:
         rep.err(where, f"chapter_id {q['chapter_id']} not in book.json chapters")
     if q["type"] not in ALLOWED_TYPES:
@@ -496,7 +497,8 @@ def validate_zip(path, require_audit=False):
     ids, stems, full = [], {}, {}
     no_expl = 0
     types = {}
-    raw = zf.read("questions.jsonl").decode("utf-8", errors="replace")    for ln, line in enumerate(raw.splitlines(), 1):
+    raw = zf.read("questions.jsonl").decode("utf-8", errors="replace")
+    for ln, line in enumerate(raw.splitlines(), 1):
         if not line.strip():
             continue
         try:
