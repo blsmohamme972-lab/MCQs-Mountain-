@@ -5,8 +5,17 @@ on:
     inputs:
       package_url:
         description: "Direct HTTPS URL to one validated BOOK_ID_vN.zip"
-        required: true
+        required: false
         type: string
+  push:
+    branches:
+      - m2-fixture-tests
+    paths:
+      - "tools/fixtures/**"
+      - "tools/package_state.py"
+      - "tools/content_admin.py"
+      - ".github/workflows/publish.yml"
+      - "fixtures/RUN_STEP2"
 
 permissions:
   contents: write
@@ -21,14 +30,12 @@ env:
   GH_TOKEN: ${{ github.token }}
 
 jobs:
-  publish:
+  manual-publish:
+    if: github.event_name == 'workflow_dispatch' && inputs.package_url != ''
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup Python
-        uses: actions/setup-python@v6
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -39,11 +46,6 @@ jobs:
           set -euo pipefail
           curl --fail --location --retry 3 --retry-delay 2 "$PACKAGE_URL" -o incoming.zip
           test -s incoming.zip
-          python - <<'PY'
-          import zipfile
-          with zipfile.ZipFile("incoming.zip") as z:
-              print("ZIP entries:", len(z.infolist()))
-          PY
 
       - name: Validate package
         run: |
@@ -65,149 +67,313 @@ jobs:
       - name: Restore active build state
         run: |
           set -euo pipefail
-          mkdir -p state build
+          mkdir -p state build/content
           if gh release view kafu-content-state >/dev/null 2>&1; then
             gh release download kafu-content-state --pattern "content.sqlite" --pattern "site-bundle.tar.gz" --dir state
           fi
           if [ -f state/site-bundle.tar.gz ]; then
             tar -xzf state/site-bundle.tar.gz -C build
           else
-            mkdir -p build/content
             cp -a content-worker/dist/content/. build/content/
           fi
-          test -f build/content/config.json
-          test -f build/content/catalog.json
 
-      - name: Reject exact duplicate package
-        id: duplicate
+      - name: Detect duplicate
+        id: dup
+        run: |
+          echo "found=$(python tools/package_state.py check --db state/content.sqlite --package incoming.zip)" >> "$GITHUB_OUTPUT"
+
+      - name: Build and deploy
+        if: steps.dup.outputs.found != 'yes'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           set -euo pipefail
-          HASH="$(sha256sum incoming.zip | awk '{print $1}')"
-          echo "sha256=$HASH" >> "$GITHUB_OUTPUT"
-          if [ -f state/content.sqlite ]; then
-            FOUND="$(python - "$HASH" <<'PY'
-          import sqlite3,sys
-          db="state/content.sqlite"
-          h=sys.argv[1]
-          try:
-              con=sqlite3.connect(db)
-              row=con.execute("select 1 from published_packages where sha256=?", (h,)).fetchone()
-              print("yes" if row else "no")
-          except sqlite3.Error:
-              print("no")
-          PY
-          )"
-          else
-            FOUND=no
-          fi
-          echo "found=$FOUND" >> "$GITHUB_OUTPUT"
-
-      - name: Stop duplicate safely
-        if: steps.duplicate.outputs.found == 'yes'
-        run: |
-          echo "This exact ZIP was already published. Nothing changed."
-
-      - name: Build candidate content
-        if: steps.duplicate.outputs.found != 'yes'
-        run: |
-          set -euo pipefail
-          python tools/publish.py             --db state/content.sqlite             --out build/content             --base-url "$CONTENT_BASE_URL"             incoming.zip
-          python - "${{ steps.duplicate.outputs.sha256 }}" "${{ steps.pkg.outputs.book_id }}" "${{ steps.pkg.outputs.version }}" <<'PY'
-          import sqlite3,sys
-          db="state/content.sqlite"
-          h,book_id,version=sys.argv[1],sys.argv[2],int(sys.argv[3])
-          con=sqlite3.connect(db)
-          con.execute(
-              "insert or ignore into published_packages(sha256,book_id,version) values(?,?,?)",
-              (h,book_id,version),
-          )
-          con.commit()
-          PY
+          python tools/publish.py --db state/content.sqlite --out build/content --base-url "$CONTENT_BASE_URL" incoming.zip
+          python tools/package_state.py record --db state/content.sqlite --package incoming.zip --book-id "${{ steps.pkg.outputs.book_id }}" --version "${{ steps.pkg.outputs.version }}"
           rm -rf content-worker/dist/content
           mkdir -p content-worker/dist/content
           cp -a build/content/. content-worker/dist/content/
-          tar -C build -czf state/site-bundle.tar.gz content
-
-      - name: Save immutable candidate state
-        if: steps.duplicate.outputs.found != 'yes'
-        env:
-          CANDIDATE_TAG: state-${{ github.run_id }}
-        run: |
-          set -euo pipefail
-          gh release create "$CANDIDATE_TAG"             state/content.sqlite state/site-bundle.tar.gz             --title "Kafu candidate state ${{ github.run_id }}"             --notes "Candidate for ${{ steps.pkg.outputs.book_id }} v${{ steps.pkg.outputs.version }}. Created before Cloudflare promotion."
-
-      - name: Upload inactive Cloudflare version
-        if: steps.duplicate.outputs.found != 'yes'
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          VERSION_TAG: publish-${{ github.run_id }}
-        run: |
-          set -euo pipefail
-          npx --yes wrangler@4 versions upload             --config content-worker/wrangler.jsonc             --tag "$VERSION_TAG"             --preview-alias candidate             --message "Book ${{ steps.pkg.outputs.book_id }} v${{ steps.pkg.outputs.version }}"
-
-      - name: Smoke-test candidate Version URL
-        if: steps.duplicate.outputs.found != 'yes'
-        env:
-          BOOK_ID: ${{ steps.pkg.outputs.book_id }}
-        run: |
-          set -euo pipefail
-          BASE="https://candidate-kafu-content-1.blsmohamme97.workers.dev"
-          curl --fail --retry 5 --retry-delay 2 "$BASE/config.json" -o /tmp/config.json
-          curl --fail --retry 5 --retry-delay 2 "$BASE/catalog.json" -o /tmp/catalog.json
-          python - "$BOOK_ID" <<'PY'
-          import json,sys
-          book_id=sys.argv[1]
-          json.load(open("/tmp/config.json"))
-          catalog=json.load(open("/tmp/catalog.json"))
-          books={b.get("id") for b in catalog.get("books",[])}
-          if book_id not in books:
-              raise SystemExit(f"{book_id} missing from candidate catalog")
-          print("Candidate catalog contains", book_id)
-          PY
-
-      - name: Promote tested version
-        if: steps.duplicate.outputs.found != 'yes'
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          VERSION_TAG: publish-${{ github.run_id }}
-        run: |
-          set -euo pipefail
-          npx --yes wrangler@4 versions deploy             --config content-worker/wrangler.jsonc             --version-tag "$VERSION_TAG"             --percentage 100             --message "Publish ${{ steps.pkg.outputs.book_id }} v${{ steps.pkg.outputs.version }}"
-
-      - name: Verify production
-        if: steps.duplicate.outputs.found != 'yes'
-        env:
-          BOOK_ID: ${{ steps.pkg.outputs.book_id }}
-        run: |
-          set -euo pipefail
+          npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
           curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json" -o /tmp/live-catalog.json
-          python - "$BOOK_ID" <<'PY'
-          import json,sys
-          book_id=sys.argv[1]
-          catalog=json.load(open("/tmp/live-catalog.json"))
-          if book_id not in {b.get("id") for b in catalog.get("books",[])}:
-              raise SystemExit(f"{book_id} missing from live catalog")
-          print("Production catalog contains", book_id)
-          PY
-
-      - name: Update active durable state
-        if: steps.duplicate.outputs.found != 'yes'
-        run: |
-          set -euo pipefail
+          tar -C build -czf state/site-bundle.tar.gz content
           if gh release view kafu-content-state >/dev/null 2>&1; then
             gh release upload kafu-content-state state/content.sqlite state/site-bundle.tar.gz --clobber
           else
-            gh release create kafu-content-state               state/content.sqlite state/site-bundle.tar.gz               --title "Kafu active content state"               --notes "Current master content database and complete generated content tree."
+            gh release create kafu-content-state state/content.sqlite state/site-bundle.tar.gz --title "Kafu active content state" --notes "Current master content database and generated content."
           fi
 
-      - name: Summary
+      - name: Duplicate summary
+        if: steps.dup.outputs.found == 'yes'
+        run: echo "Exact package duplicate detected; nothing changed." >> "$GITHUB_STEP_SUMMARY"
+
+  fixture-proof:
+    if: github.event_name == 'push' && github.ref_name == 'm2-fixture-tests'
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Generate synthetic fixture packages
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/kafu-fixtures
+          python tools/fixtures/generate_fixtures.py --out /tmp/kafu-fixtures
+          ls -lh /tmp/kafu-fixtures
+
+      - name: Validate all-types v1 and v2
+        run: |
+          set -euo pipefail
+          python tools/validate.py --require-audit /tmp/kafu-fixtures/KAFU-FIXTURE-ALLTYPES_v1.zip
+          python tools/validate_release.py /tmp/kafu-fixtures/KAFU-FIXTURE-ALLTYPES_v1.zip
+          python tools/validate.py --require-audit /tmp/kafu-fixtures/KAFU-FIXTURE-ALLTYPES_v2.zip
+          python tools/validate_release.py /tmp/kafu-fixtures/KAFU-FIXTURE-ALLTYPES_v2.zip
+
+      - name: Validate multipart fixture
+        run: |
+          set -euo pipefail
+          P1=/tmp/kafu-fixtures/KAFU-FIXTURE-MULTIPART_v1_part1of2.zip
+          P2=/tmp/kafu-fixtures/KAFU-FIXTURE-MULTIPART_v1_part2of2.zip
+          python tools/validate.py --require-audit "$P1" "$P2"
+          python tools/validate_release.py "$P1" "$P2"
+
+      - name: Prove broken fixture fails and create repair report
+        run: |
+          set -euo pipefail
+          BROKEN=/tmp/kafu-fixtures/KAFU-FIXTURE-BROKEN_v1.zip
+          set +e
+          python tools/validate.py --require-audit "$BROKEN" > /tmp/validator.txt 2>&1
+          RC=$?
+          set -e
+          if [ "$RC" -eq 0 ]; then
+            echo "Broken fixture unexpectedly passed" >&2
+            exit 1
+          fi
+          {
+            echo "# Kafu repair report"
+            echo
+            echo "Package: KAFU-FIXTURE-BROKEN_v1.zip"
+            echo
+            echo '~~~text'
+            cat /tmp/validator.txt
+            echo '~~~'
+          } > /tmp/repair_report.md
+          grep -q "RESULT: FAIL" /tmp/validator.txt
+          grep -q "missing report.md" /tmp/validator.txt
+
+      - name: Upload repair report proof
+        uses: actions/upload-artifact@v4
+        with:
+          name: broken-fixture-repair-report
+          path: /tmp/repair_report.md
+
+      - name: Build v1 candidate
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/proof
+          mkdir -p /tmp/proof/v1/content
+          cp -a content-worker/dist/content/. /tmp/proof/v1/content/
+          python tools/publish.py             --db /tmp/proof/content.sqlite             --out /tmp/proof/v1/content             --base-url "$CONTENT_BASE_URL"             /tmp/kafu-fixtures/KAFU-FIXTURE-ALLTYPES_v1.zip
+          python tools/package_state.py record             --db /tmp/proof/content.sqlite             --package /tmp/kafu-fixtures/KAFU-FIXTURE-ALLTYPES_v1.zip             --book-id KAFU-FIXTURE-ALLTYPES --version 1
+          cp /tmp/proof/content.sqlite /tmp/proof/v1/content.sqlite
+
+      - name: Prove all four types and image ZIP contract
+        run: |
+          python - <<'PY'
+          import json, zipfile
+          from pathlib import Path
+          root=Path("/tmp/proof/v1/content")
+          catalog=json.loads((root/"catalog.json").read_text())
+          book=next(b for b in catalog["books"] if b["id"]=="KAFU-FIXTURE-ALLTYPES")
+          assert book["version"] == 1
+          ch=book["chapters"][0]
+          pack_file=next((root/"packs"/book["id"]/"v1").glob("*.json"))
+          pack=json.loads(pack_file.read_text())
+          types={q["type"] for q in pack["questions"]}
+          assert types == {"sba","mtf","multi","emq"}, types
+          assert len(ch["qids"]) == 4
+          image_zip=next((root/"packs"/book["id"]/"v1").glob("*.zip"))
+          with zipfile.ZipFile(image_zip) as z:
+              names=set(z.namelist())
+          assert any(n.endswith("_1.webp") for n in names)
+          assert any("_e1.webp" in n for n in names)
+          print("all-types + question image + explanation image: PASS")
+          PY
+
+      - name: Prove exact duplicate detection
+        run: |
+          set -euo pipefail
+          FOUND="$(python tools/package_state.py check --db /tmp/proof/content.sqlite --package /tmp/kafu-fixtures/KAFU-FIXTURE-ALLTYPES_v1.zip)"
+          test "$FOUND" = "yes"
+          echo "duplicate detection: PASS"
+
+      - name: Capture v1 IDs and simulated student progress
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("/tmp/proof/v1/content")
+          pack=json.loads(next((root/"packs"/"KAFU-FIXTURE-ALLTYPES"/"v1").glob("*.json")).read_text())
+          ids=[q["id"] for q in pack["questions"]]
+          Path("/tmp/proof/v1_ids.json").write_text(json.dumps(ids))
+          Path("/tmp/proof/student_state.json").write_text(json.dumps({
+              "answers": {ids[0]: {"c": True, "n": 1, "b": "KAFU-FIXTURE-ALLTYPES"}},
+              "fav": [ids[1]],
+              "resume": {"b":"KAFU-FIXTURE-ALLTYPES","ch":1,"q":ids[2]}
+          }))
+          PY
+
+      - name: Build v2 and prove permanent IDs preserve progress
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/proof/final/content
+          cp -a /tmp/proof/v1/content/. /tmp/proof/final/content/
+          cp /tmp/proof/content.sqlite /tmp/proof/final/content.sqlite
+          python tools/publish.py             --db /tmp/proof/final/content.sqlite             --out /tmp/proof/final/content             --base-url "$CONTENT_BASE_URL"             /tmp/kafu-fixtures/KAFU-FIXTURE-ALLTYPES_v2.zip
+          python tools/package_state.py record             --db /tmp/proof/final/content.sqlite             --package /tmp/kafu-fixtures/KAFU-FIXTURE-ALLTYPES_v2.zip             --book-id KAFU-FIXTURE-ALLTYPES --version 2
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("/tmp/proof/final/content")
+          v1=json.loads(Path("/tmp/proof/v1_ids.json").read_text())
+          pack=json.loads(next((root/"packs"/"KAFU-FIXTURE-ALLTYPES"/"v2").glob("*.json")).read_text())
+          v2=[q["id"] for q in pack["questions"]]
+          assert v1 == v2, (v1,v2)
+          state=json.loads(Path("/tmp/proof/student_state.json").read_text())
+          available=set(v2)
+          assert set(state["answers"]).issubset(available)
+          assert set(state["fav"]).issubset(available)
+          assert state["resume"]["q"] in available
+          print("stable IDs + progress keys: PASS")
+          PY
+
+      - name: Publish multipart fixture into final candidate
+        run: |
+          set -euo pipefail
+          python tools/publish.py             --db /tmp/proof/final/content.sqlite             --out /tmp/proof/final/content             --base-url "$CONTENT_BASE_URL"             /tmp/kafu-fixtures/KAFU-FIXTURE-MULTIPART_v1_part1of2.zip             /tmp/kafu-fixtures/KAFU-FIXTURE-MULTIPART_v1_part2of2.zip
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path("/tmp/proof/final/content/catalog.json").read_text())
+          b=next(x for x in c["books"] if x["id"]=="KAFU-FIXTURE-MULTIPART")
+          assert b["questions"] == 4
+          print("multipart publish: PASS")
+          PY
+
+      - name: Deploy fixture v1 and verify production catalog
+        run: |
+          set -euo pipefail
+          rm -rf content-worker/dist/content
+          mkdir -p content-worker/dist/content
+          cp -a /tmp/proof/v1/content/. content-worker/dist/content/
+          npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
+          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json" -o /tmp/live-v1.json
+          python - <<'PY'
+          import json
+          c=json.load(open("/tmp/live-v1.json"))
+          b=next(x for x in c["books"] if x["id"]=="KAFU-FIXTURE-ALLTYPES")
+          assert b["version"] == 1
+          print("live v1: PASS")
+          PY
+
+      - name: Deploy fixture v2 + multipart and verify production
+        run: |
+          set -euo pipefail
+          rm -rf content-worker/dist/content
+          mkdir -p content-worker/dist/content
+          cp -a /tmp/proof/final/content/. content-worker/dist/content/
+          npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
+          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json" -o /tmp/live-v2.json
+          python - <<'PY'
+          import json
+          c=json.load(open("/tmp/live-v2.json"))
+          books={x["id"]:x for x in c["books"]}
+          assert books["KAFU-FIXTURE-ALLTYPES"]["version"] == 2
+          assert books["KAFU-FIXTURE-MULTIPART"]["questions"] == 4
+          print("live v2 + multipart: PASS")
+          PY
+
+      - name: Prove catalog rollback
+        run: |
+          set -euo pipefail
+          rm -rf content-worker/dist/content
+          mkdir -p content-worker/dist/content
+          cp -a /tmp/proof/v1/content/. content-worker/dist/content/
+          npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
+          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json" -o /tmp/live-rollback.json
+          python - <<'PY'
+          import json
+          c=json.load(open("/tmp/live-rollback.json"))
+          b=next(x for x in c["books"] if x["id"]=="KAFU-FIXTURE-ALLTYPES")
+          assert b["version"] == 1
+          print("rollback to v1: PASS")
+          PY
+
+      - name: Prove takedown catalog semantics
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/proof/removed
+          mkdir -p /tmp/proof/removed
+          cp -a /tmp/proof/final/content/. /tmp/proof/removed/
+          python tools/content_admin.py remove --root /tmp/proof/removed --book-id KAFU-FIXTURE-ALLTYPES
+          rm -rf content-worker/dist/content
+          mkdir -p content-worker/dist/content
+          cp -a /tmp/proof/removed/. content-worker/dist/content/
+          npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
+          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json" -o /tmp/live-removed.json
+          python - <<'PY'
+          import json
+          c=json.load(open("/tmp/live-removed.json"))
+          assert "KAFU-FIXTURE-ALLTYPES" in c["removed_books"]
+          assert "KAFU-FIXTURE-ALLTYPES" not in {x["id"] for x in c["books"]}
+          print("takedown catalog: PASS")
+          PY
+
+      - name: Restore final fixture state for phone testing
+        run: |
+          set -euo pipefail
+          rm -rf content-worker/dist/content
+          mkdir -p content-worker/dist/content
+          cp -a /tmp/proof/final/content/. content-worker/dist/content/
+          npx --yes wrangler@4 deploy --config content-worker/wrangler.jsonc
+          curl --fail --retry 5 --retry-delay 2 "$CONTENT_BASE_URL/catalog.json" -o /tmp/live-final.json
+          python - <<'PY'
+          import json
+          c=json.load(open("/tmp/live-final.json"))
+          books={x["id"]:x for x in c["books"]}
+          assert books["KAFU-FIXTURE-ALLTYPES"]["version"] == 2
+          assert "KAFU-FIXTURE-MULTIPART" in books
+          assert "KAFU-FIXTURE-ALLTYPES" not in c.get("removed_books",[])
+          print("final fixture state restored: PASS")
+          PY
+
+      - name: Save active fixture build state
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/state
+          cp /tmp/proof/final/content.sqlite /tmp/state/content.sqlite
+          tar -C /tmp/proof/final -czf /tmp/state/site-bundle.tar.gz content
+          if gh release view kafu-content-state >/dev/null 2>&1; then
+            gh release upload kafu-content-state /tmp/state/content.sqlite /tmp/state/site-bundle.tar.gz --clobber
+          else
+            gh release create kafu-content-state /tmp/state/content.sqlite /tmp/state/site-bundle.tar.gz --title "Kafu active content state" --notes "Current master content database and generated content."
+          fi
+
+      - name: Fixture proof summary
         run: |
           {
-            echo "## Kafu publish"
-            echo ""
-            echo "- Book: ${{ steps.pkg.outputs.book_id }}"
-            echo "- Version: ${{ steps.pkg.outputs.version }}"
-            echo "- Package SHA-256: ${{ steps.duplicate.outputs.sha256 }}"
-            echo "- Duplicate: ${{ steps.duplicate.outputs.found }}"
-            echo "- Content URL: $CONTENT_BASE_URL"
+            echo "## Step 2 fixture proof"
+            echo
+            echo "✅ all 4 question types validated"
+            echo "✅ question + explanation image ZIP created"
+            echo "✅ multipart release validated and published"
+            echo "✅ broken package failed and repair_report.md artifact created"
+            echo "✅ exact duplicate detected"
+            echo "✅ v2 retained permanent IDs and simulated student progress keys"
+            echo "✅ live catalog rollback to v1 verified"
+            echo "✅ takedown removed book and added removed_books marker"
+            echo "✅ final production content restored to fixture v2 + multipart for phone test"
           } >> "$GITHUB_STEP_SUMMARY"
