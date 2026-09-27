@@ -1,0 +1,1412 @@
+# MCQ_PLATFORM_FINAL_PLAN_V4.yaml
+# FINAL AGREED SOURCE OF TRUTH
+# Updated after architecture review on 2026-09-27.
+# This file is intentionally explicit so an AI coding agent can implement the system
+# without having to infer missing architecture decisions.
+
+meta:
+  plan_version: 4
+  schema_version: 2
+  status: "FINAL V1 ARCHITECTURE"
+  updated_at: "2026-09-27"
+  instruction_to_ai: >
+    Treat this YAML as the project source of truth. Do not silently change architecture,
+    storage roles, publishing flow, identity model, question-ID rules, or free-tier guardrails.
+    If a change is necessary, explain the reason and migration impact before implementing it.
+
+project:
+  name: "Telegram Medical MCQ Platform"
+  product_type: "Telegram Mini App"
+  audience:
+    - "medical students"
+    - "pharmacy students"
+    - "dentistry students"
+  student_price: "Free"
+  target_initial_daily_users: 1000
+  future_question_capacity: "1,000,000+ MCQs"
+  cost_goal: "Near $0/month in V1"
+  maintenance_goal: "Very low"
+  main_success_rule: >
+    A student can study for hours from downloaded content even if the Worker or D1 is unavailable.
+    The owner can publish many books by giving PDF + prompt + validator to AI, receiving a validated
+    ZIP, forwarding it to a private admin bot, and intervening only when a report needs review.
+
+core_principles:
+  - "Offline-first"
+  - "Static-first"
+  - "Telegram-first"
+  - "Local-first"
+  - "Minimal backend requests"
+  - "Core study is independent of D1 availability"
+  - "AI prepares content; normal studying never depends on AI"
+  - "No one-server-request-per-answer design"
+  - "One owner can operate the system without a large admin dashboard"
+  - "Students remain free"
+  - "Revenue must not damage the student study experience"
+  - "Content fidelity and auditability are more important than raw question count"
+  - "Every published question has a stable permanent ID"
+
+# -------------------------------------------------------------------
+# 1. FINAL STACK
+# -------------------------------------------------------------------
+
+stack:
+  telegram:
+    responsibilities:
+      - "Launch Mini App"
+      - "Student identity"
+      - "Main Mini App deep links"
+      - "Telegram CloudStorage personal backup"
+      - "Personal bot messages after opt-in"
+      - "Announcement channel"
+      - "Admin publishing bot"
+      - "Admin moderation"
+    never_use_as:
+      - "main MCQ database"
+      - "comment history database"
+      - "leaderboard database"
+      - "mass direct-message broadcast engine"
+
+  cloudflare:
+    static_assets:
+      use_for:
+        - "Mini App frontend"
+        - "config.json"
+        - "catalog.json"
+        - "book indexes"
+        - "chapter JSON packs"
+        - "chapter image ZIPs"
+        - "book covers"
+    worker:
+      count: 1
+      use_for:
+        - "Telegram initData verification"
+        - "comments/replies/votes/reports API"
+        - "weekly challenge API"
+        - "Telegram bot webhook"
+        - "admin publish-queue webhook"
+        - "moderation callbacks"
+    d1:
+      use_for:
+        - "minimal users"
+        - "comments"
+        - "comment votes"
+        - "reports"
+        - "weekly challenges"
+        - "challenge submissions"
+        - "leaderboard cache"
+        - "notification preferences"
+        - "publish queue metadata"
+        - "active publishing state pointer"
+      never_use_for:
+        - "full MCQ library"
+        - "every normal answer"
+        - "full personal progress history"
+        - "official images"
+        - "large book ZIP bytes"
+    r2:
+      enabled_in_v1: false
+      add_only_if: "Measured static-asset constraints make it necessary"
+
+  github:
+    repository:
+      visibility: "Private"
+      stores_in_git:
+        - "frontend/backend source code"
+        - "mcq pipeline code"
+        - "schemas"
+        - "MASTER_PROMPT.md"
+        - "validate.py"
+        - "validate_release.py"
+        - "publish.py"
+        - "config templates"
+        - "migrations"
+      do_not_store_as_normal_git_history:
+        - "large content.sqlite snapshots"
+        - "PDF library"
+        - "large image collections"
+        - "full production site bundle"
+    actions:
+      role: "Build/publish runner"
+    releases:
+      role: "Durable build state and generated artifact storage"
+
+  admin_computer:
+    role:
+      - "Owner workspace"
+      - "Optional local copy of content.sqlite"
+      - "Original PDFs"
+      - "Large backups"
+    important_change: >
+      The admin computer is NOT the only place holding build state.
+      GitHub Actions must be able to rebuild without access to the admin computer.
+
+# -------------------------------------------------------------------
+# 2. CURRENT FREE-TIER GUARDRAILS
+# -------------------------------------------------------------------
+
+free_tier_guardrails:
+  as_of: "2026-09-27"
+  cloudflare_workers_free:
+    dynamic_requests_per_day: 100000
+    cpu_ms_per_request: 10
+    external_subrequests_per_request: 50
+    static_asset_files_per_worker_version: 20000
+    static_asset_max_file_size_mib: 25
+  d1_free:
+    rows_read_per_day: 5000000
+    rows_written_per_day: 100000
+    storage_total_gb: 5
+    max_database_size_mb: 500
+    reset_time: "00:00 UTC"
+    failure_behavior: "Queries fail after daily read/write allowance is exhausted until reset"
+  architecture_rules:
+    - "Every frequent D1 lookup/filter must use a primary key or appropriate index"
+    - "No full-table scans in student hot paths"
+    - "Normal study must still work if D1 limits are exhausted"
+    - "Stay far below limits before adding new dynamic features"
+
+# -------------------------------------------------------------------
+# 3. STORAGE ROLES
+# -------------------------------------------------------------------
+
+storage_roles:
+  master_content:
+    format: "SQLite"
+    filename: "content.sqlite"
+    canonical_build_copy: "GitHub Release asset"
+    local_backup_copy: "Admin computer"
+    rule: "Students never download master SQLite"
+
+  ai_exchange:
+    format: "JSONL"
+
+  published_student_content:
+    questions: "JSON chapter packs"
+    images: "ZIP per chapter"
+    covers: "WebP"
+
+  student_device:
+    storage: "IndexedDB"
+    browser_sqlite_wasm: false
+
+  personal_cross_device_backup:
+    storage: "Telegram CloudStorage"
+
+  shared_online_data:
+    storage: "Cloudflare D1"
+
+# -------------------------------------------------------------------
+# 4. DURABLE BUILD STATE: GITHUB RELEASES
+# -------------------------------------------------------------------
+
+build_state:
+  problem_solved: >
+    GitHub Actions cannot depend on content.sqlite or previous generated packs existing only
+    on the admin computer.
+
+  github_release_assets:
+    global_state_release:
+      tag_pattern: "state-vNNNNNN"
+      assets:
+        - "state_manifest.json"
+        - "content.sqlite.zst"
+        - "site_bundle.partNN.tar.zst"
+      purpose: >
+        Gives a fresh GitHub Action the latest successful master database and complete current
+        static site tree without depending on the admin computer.
+      asset_rule: "Split an asset if it approaches GitHub's per-release-asset file-size limit."
+
+    per_book_release:
+      tag_pattern: "book-{BOOK_ID}-v{VERSION}"
+      assets:
+        - "{BOOK_ID}_v{VERSION}.packs.tar.zst"
+        - "{BOOK_ID}_v{VERSION}.manifest.json"
+      purpose:
+        - "Book-specific rollback"
+        - "Historical generated packs"
+        - "Rebuild one book without rolling back unrelated books"
+
+  active_state_pointer:
+    location: "D1 system_state table"
+    field: "active_release_tag"
+    rule: >
+      Candidate state releases may exist. Only the release tag stored as active_release_tag
+      is considered the production build state.
+
+  backups:
+    secondary:
+      - "Google Drive or equivalent"
+      - "External disk"
+    source_pdfs: "Backup outside normal Git history"
+
+# -------------------------------------------------------------------
+# 5. CONTENT MODEL
+# -------------------------------------------------------------------
+
+content_model:
+  top_level_field:
+    allowed:
+      - "medicine"      - "pharmacy"
+      - "dentistry"
+
+  hierarchy:
+    - "field"
+    - "specialty"
+    - "branch optional"
+    - "collection_type"
+    - "book"
+    - "chapter"
+    - "topic"
+    - "question"
+
+  collection_type:
+    allowed:
+      - "textbook"
+      - "past_exam"
+
+  question_types:
+    - "sba"
+    - "mtf"
+    - "multi"
+    - "emq"
+
+  question_fields:
+    - "id"
+    - "local_id"
+    - "book_id"
+    - "field"
+    - "specialty"
+    - "collection_type"
+    - "chapter_id"
+    - "topic"
+    - "type"
+    - "source_number"
+    - "lead_in"
+    - "stem"
+    - "options"
+    - "answer"
+    - "answer_source"
+    - "explanation"
+    - "images"
+    - "explanation_images"
+    - "group_id"
+    - "no_shuffle"
+    - "source_page"
+    - "flag"
+    - "status"
+    - "version"
+    - "reviewed_at"
+    - "reviewed_by"
+
+# -------------------------------------------------------------------
+# 6. QUESTION IDS AND UPDATE STABILITY
+# -------------------------------------------------------------------
+
+question_ids:
+  ai_local_id:
+    format: "1, 2, 3..."
+    assigned_by: "AI"
+    permanent: false
+
+  permanent_id:
+    format: "Q + 9 digits"
+    example: "Q000000827"
+    assigned_by: "publish.py"
+    rules:
+      - "Never let AI assign permanent IDs"
+      - "Never reuse an ID"
+      - "Never change a published ID"
+
+  id_map:
+    storage: "content.sqlite"
+    unique_key_primary: ["book_id", "local_id"]
+    extra_identity_fields:
+      - "chapter_id"
+      - "source_number"
+      - "question_fingerprint"
+    maps_to: "permanent question ID"
+    rules:
+      - "Publishing a corrected version of the same book reuses existing permanent IDs"
+      - "New questions receive new permanent IDs"
+      - "Removed questions become retired; their IDs are never reused"
+      - "Same book_id must preserve local_id identity across versions"
+      - "If local numbering shifts or reconciliation is ambiguous, publishing stops for manual review"
+      - "A new edition that substantially changes numbering should use a new book_id unless explicitly reconciled"
+
+  reason: >
+    Favorites, progress, FSRS state, comments and reports attach to permanent IDs.
+    Re-publishing must not silently create new IDs for existing questions.
+
+# -------------------------------------------------------------------
+# 7. QUESTION VISIBILITY AND REVIEW STATES
+# -------------------------------------------------------------------
+
+question_status:
+  allowed:
+    draft:
+      student_visible: false
+    held:
+      student_visible: false
+      meaning: "Flagged or audit/review concern waiting for admin/reviewer decision"
+    source_verified:
+      student_visible: true
+      badge: "Source verified"
+      meaning: "Extraction faithfully matches the source"
+    medical_verified:
+      student_visible: true
+      badge: "Medical reviewer verified"
+      meaning: "Qualified human independently checked medical correctness"
+    rejected:
+      student_visible: false
+    retired:
+      student_visible: false
+
+  publish_visibility_rule: >
+    Only source_verified and medical_verified questions are included in student packs.
+
+  ai_flag_rule: >
+    A question carrying a non-empty extraction flag enters held state by default.
+    It is not student-visible until reviewed.
+
+  flagged_review:
+    interface: "Telegram admin/reviewer bot"
+    command: "/flags"
+    actions:
+      - "Approve as source_verified"
+      - "Mark medical_verified if reviewer is authorized"
+      - "Keep held"
+      - "Reject"
+      - "Edit metadata/text only through controlled review flow"
+
+# -------------------------------------------------------------------
+# 8. AI BOOK PACKAGE SCHEMA V2
+# -------------------------------------------------------------------
+
+ai_package:
+  schema: 2
+  filename:
+    single: "BOOK_ID_v1.zip"
+    multipart: "BOOK_ID_v1_part1ofN.zip"
+
+  required_files:
+    all_parts:
+      - "book.json"
+      - "questions.jsonl"
+      - "audit.json"
+      - "report.md"
+    part_1:
+      - "cover.webp"
+    optional_directory:
+      - "images/"
+
+  ignored_os_junk:
+    - "__MACOSX/"
+    - ".DS_Store"
+
+  unexpected_files:
+    behavior: "ERROR after ignored OS junk is removed"
+
+  zip_safety:
+    max_compressed_mb: 19
+    max_total_uncompressed_mb: 200
+    max_file_count: 5000
+    reject:
+      - "path traversal such as ../"
+      - "absolute paths"
+      - "symlinks"
+      - "encrypted ZIP members"
+      - "decompression bombs"
+
+  images:
+    format: "WebP"
+    target_max_width_px: 1200
+    warning_above_px: 1200
+    hard_error_above_px: 1600
+    max_question_image_bytes: 1500000
+    cover_target_width_px: 600
+    cover_max_bytes: 400000
+    naming:
+      question: "L0041_1.webp"
+      second_question_image: "L0041_2.webp"
+      explanation: "L0041_e1.webp"
+
+# -------------------------------------------------------------------
+# 9. MASTER PROMPT / AI EXTRACTION FLOW
+# -------------------------------------------------------------------
+
+ai_extraction:
+  inputs:
+    - "Book PDF"
+    - "MASTER_PROMPT.md schema 2"
+    - "validate.py v2"
+
+  golden_rules:
+    - "Copy from source; do not paraphrase"
+    - "Never silently correct the medicine"
+    - "Never guess an answer"
+    - "Every question number is extracted or explicitly skipped"
+    - "Use local_id only"
+    - "Preserve source_page"
+    - "Flag uncertainty"
+    - "Extract only relevant figures"
+    - "Run validator until PASS"
+
+  output:
+    - "One ZIP or multipart ZIPs"
+    - "RESULT: PASS"
+    - "audit.json with complete coverage"
+
+  package_validation:
+    tool: "validate.py v2"
+    same_file_used_by:
+      - "AI"
+      - "publishing Action"
+
+# -------------------------------------------------------------------
+# 10. SOURCE AUDIT
+# -------------------------------------------------------------------
+
+source_audit:
+  important_change: >
+    audit.py runs where the PDF exists: inside the AI/code-execution session or trusted local
+    extraction environment. GitHub Actions does not need the PDF.
+
+  audit_output:
+    filename: "audit.json"
+    include:
+      - "schema"
+      - "source_pdf_sha256 if available"
+      - "auditor_version"
+      - "one result per extracted question local_id"
+      - "source_page"
+      - "stem_check"
+      - "options_check"
+      - "answer_evidence_check"
+      - "result"
+      - "notes"
+      - "mismatch_count"
+
+  server_checks_without_pdf:
+    - "audit.json is present"
+    - "audit schema is valid"
+    - "every question local_id appears exactly once"
+    - "no unknown local_id appears"
+    - "mismatch_count is zero"
+    - "no audit result is mismatch"
+    - "audit source page matches question source_page"
+    - "warnings/held items are routed to review"
+  limitation: >
+    Server-side audit.json validation proves the audit record is complete and internally consistent;
+    it cannot independently re-compare the PDF because the PDF is intentionally not sent to GitHub Actions.
+
+# -------------------------------------------------------------------
+# 11. VALIDATORS
+# -------------------------------------------------------------------
+
+validation:
+  validate_py_v2:
+    role: "Single-package structural gate"
+    requirements:
+      - "Require book.json"
+      - "Require questions.jsonl"
+      - "Require audit.json"
+      - "Require report.md"
+      - "Require cover.webp in part 1"
+      - "Ignore __MACOSX and .DS_Store"
+      - "Reject unexpected files"
+      - "Perform ZIP safety checks"
+      - "Validate question schemas"
+      - "Validate answer types"
+      - "Validate local-id coverage"
+      - "Validate image references and formats"
+      - "Warning above 1200 px; error above 1600 px"
+      - "Missing explanation is warning, not error"
+    success: "RESULT: PASS"
+
+  validate_release_py:
+    role: "Whole-book multipart gate"
+    checks:
+      - "same book_id"
+      - "same version"
+      - "same metadata identity"
+      - "all parts present"
+      - "part indexes 1..N exactly once"
+      - "no overlapping id_range"
+      - "no duplicate local_ids across parts"
+      - "no missing local-id ranges"
+      - "questions + skipped equals expected_count when known"
+      - "cover exists only/at least in part 1 according to schema"
+      - "combined audit coverage is complete"
+
+# -------------------------------------------------------------------
+# 12. ADMIN PUBLISH QUEUE
+# -------------------------------------------------------------------
+
+publish_queue:
+  storage: "D1"
+  reason:
+    - "Multipart files may arrive as separate Telegram messages"
+    - "Publishing needs durable job state"
+    - "Uploads should not disappear if multiple books arrive quickly"
+    - "Worker must do almost no CPU-heavy processing"
+
+  worker_on_upload:
+    do:
+      - "Verify sender Telegram ID == OWNER_TELEGRAM_ID"
+      - "Verify private chat"
+      - "Read Telegram-reported file_size"
+      - "Reject files above 19 MB"
+      - "Check filename is plausible ZIP naming pattern"
+      - "Store Telegram file_id, file_unique_id, filename, file_size and arrival metadata in D1"
+      - "Group multipart files by filename book/version prefix"
+      - "Mark book ready only when all expected parts are present"
+      - "Trigger/ensure queue-drain GitHub Action"
+    do_not:
+      - "Download the whole ZIP"
+      - "Compute SHA-256"
+      - "Unzip"
+      - "Run validator"
+      - "Build content"
+
+  d1_table_outline:
+    publish_queue:
+      fields:
+        - "job_id PK"
+        - "group_key"
+        - "telegram_file_id"
+        - "telegram_file_unique_id"
+        - "filename"
+        - "file_size"
+        - "part_index"
+        - "part_total"
+        - "status"
+        - "created_at"
+        - "claimed_at"
+        - "finished_at"
+        - "error_summary"
+      indexes:
+        - "INDEX(status, created_at)"
+        - "INDEX(group_key, part_index)"
+
+# -------------------------------------------------------------------
+# 13. GITHUB ACTION QUEUE BEHAVIOR
+# -------------------------------------------------------------------
+
+github_action_queue:
+  primary_source_of_truth: "D1 publish_queue"
+
+  important_current_github_note: >
+    GitHub Actions concurrency now supports queue=max, which can keep up to 100 pending runs.
+    Therefore the old 'one pending run is always silently replaced' behavior is only the default
+    queue=single behavior. We still keep D1 publish_queue because it solves multipart assembly,
+    durable job status, retries and queue draining.
+
+  strategy:
+    - "Use one queue-drain publishing workflow"
+    - "Only one publisher modifies global state at a time"
+    - "Workflow repeatedly claims the next ready book from D1 until queue is empty"
+    - "Incomplete multipart groups remain waiting"
+    - "Failed jobs remain visible for retry"
+    - "Use GitHub concurrency as a secondary safety lock, not as the only queue"
+
+# -------------------------------------------------------------------
+# 14. HASHING / DUPLICATE DETECTION
+# -------------------------------------------------------------------
+
+duplicate_detection:
+  hash_algorithm: "SHA-256"
+  compute_where: "GitHub Action after downloading Telegram file"
+  worker_hashing: false
+  reason: >
+    Keep the free Worker path tiny and within its CPU budget. The Worker only queues metadata.
+
+  checks:
+    - "Exact same archive hash already published -> no-op reply"
+    - "Same book/version but different hash -> treat as corrected/replacement candidate and validate"
+    - "Store package hash in publication history"
+
+# -------------------------------------------------------------------
+# 15. PUBLISH ACTION
+# -------------------------------------------------------------------
+
+publish_action:
+  download_inputs:
+    - "Latest active global state release from GitHub Releases"
+    - "Ready Telegram ZIP part(s)"
+    - "Needed historical per-book release assets for rollback/update"
+
+  sequence:
+    - "Claim one ready queue group"
+    - "Download ZIP part(s) from Telegram using bot token secret"
+    - "Compute SHA-256"
+    - "Run validate.py v2 on every part"
+    - "Run validate_release.py for multipart release"
+    - "Validate audit.json coverage"
+    - "Resolve/reuse IDs through id_map"
+    - "Put flagged questions into held state"
+    - "Run publish.py"
+    - "Update content.sqlite"
+    - "Build book chapter JSON packs"
+    - "Build chapter image ZIPs"
+    - "Build book index"
+    - "Update catalog.json"
+    - "Update config-aware static tree"
+    - "Build candidate site bundle"
+    - "Upload Cloudflare Worker version without activating it"
+    - "Smoke-test Version URL"
+    - "If tests fail: do not promote; mark queue failed and return repair report"
+    - "If tests pass: create candidate GitHub state/book release assets"
+    - "Deploy/promote tested Cloudflare version to production"
+    - "Update D1 system_state.active_release_tag"
+    - "Mark queue job published"
+    - "Send admin success message"
+
+# -------------------------------------------------------------------
+# 16. STAGED CLOUDFLARE PUBLISHING
+# -------------------------------------------------------------------
+
+staged_deployment:
+  correct_order:
+    - "npx wrangler versions upload"
+    - "Obtain Version URL"
+    - "Run smoke tests against that exact version"
+    - "Only after PASS: npx wrangler versions deploy"
+
+  never_do:
+    - "wrangler deploy before smoke testing candidate"
+
+  smoke_tests:
+    - "Mini App root loads"
+    - "config.json parses"
+    - "catalog.json parses"
+    - "book index parses"
+    - "new chapter JSON parses"
+    - "new image ZIP downloads and opens"
+    - "cover loads"
+    - "random new questions validate in frontend parser"
+    - "unchanged existing book still loads"
+
+  failure_behavior:
+    - "Current production version stays live"
+    - "Candidate is not promoted"
+    - "Admin gets repair_report.md"
+
+# -------------------------------------------------------------------
+# 17. BOOK-LEVEL ADMIN COMMANDS
+# -------------------------------------------------------------------
+
+admin_bot:
+  access:
+    owner_only: true
+    private_chat_only: true
+
+  commands:
+    /status: "Show queue, active state, current deployment, book counts and last errors"
+    /queue: "Show waiting/ready/running/failed publish jobs"
+    /flags: "Review held/flagged questions"
+    /remove: "Unpublish one book quickly; preserve history and IDs"
+    /rollback: "Roll back ONE BOOK to a previous book version by building a new global candidate"
+    /retry: "Retry a failed publish job"
+    /help: "Show commands"
+
+  rollback_rule: >
+    Never roll back the whole Cloudflare deployment to roll back one book.
+    A book rollback creates a new site state using the previous release of that book while keeping
+    every other currently published book and current Worker code unchanged.
+
+  takedown_rule: >
+    /remove BOOK_ID must be fast enough to respond to rights-holder/publisher requests.
+    It removes the book from catalog and rebuilds/publishes a new candidate state.
+
+# -------------------------------------------------------------------
+# 18. STATIC STUDENT PACKS
+# -------------------------------------------------------------------
+
+student_packs:
+  unit: "Chapter"
+  text_file: "chapter JSON"
+  image_file: "chapter image ZIP"
+  why_separate:
+    - "Text correction does not force image redownload"
+    - "Text-only chapters remain small"
+    - "Offline image use is possible after download"
+
+  filenames:
+    immutable: true
+    include:
+      - "version"
+      - "content hash"
+
+  active_static_tree:
+    goal: "Only currently active files plus unavoidable frontend assets"
+    historical_pack_storage: "GitHub per-book Release assets, not unlimited old files in active Worker version"
+
+# -------------------------------------------------------------------
+# 19. STUDENT DEVICE
+# -------------------------------------------------------------------
+student_device:
+  storage: "IndexedDB"
+  request_persistent_storage: true
+  note: "Persistence request can be denied; never treat local browser data as the only backup"
+
+  stores:
+    - "downloaded question packs"
+    - "unzipped WebP images"
+    - "full normal answer history"
+    - "mistakes"
+    - "favorites"
+    - "resume position"
+    - "FSRS state"
+    - "active study time"
+    - "local statistics"
+    - "cached catalog/config"
+
+  zero_backend_per_question: true
+
+  backend_down_still_works:
+    - "Downloaded study"
+    - "Answers and explanations"
+    - "Downloaded images"
+    - "Favorites"
+    - "Mistakes"
+    - "FSRS"
+    - "Resume"
+    - "Custom practice"
+    - "Timed mock exams"
+
+# -------------------------------------------------------------------
+# 20. TELEGRAM CLOUDSTORAGE
+# -------------------------------------------------------------------
+
+personal_sync:
+  provider: "Telegram CloudStorage"
+  official_limits:
+    max_keys_per_user_per_bot: 1024
+    max_value_characters: 4096
+    key_length: "1-128 characters"
+    allowed_key_characters: "A-Z a-z 0-9 _ -"
+
+  example_keys:
+    - "v1_meta"
+    - "v1_resume"
+    - "v1_fav_CARDIO01"
+    - "v1_prog_CARDIO01_001"
+    - "v1_fsrs_001"
+    - "v1_stats"
+
+  sync:
+    use_for:
+      - "favorites"
+      - "resume"
+      - "compact progress"
+      - "reviewed FSRS state"
+      - "summary stats"
+      - "settings"
+    do_not_use_for:
+      - "full answer-by-answer history"
+
+  failure_behavior: "If CloudStorage is unavailable, study continues local-only"
+
+  longevity_rule: "Never replace the production Telegram bot because CloudStorage is scoped to the bot"
+
+# -------------------------------------------------------------------
+# 21. STUDENT UX
+# -------------------------------------------------------------------
+
+student_ui:
+  languages:
+    - "Arabic"
+    - "English"
+  rtl: true
+
+  first_open:
+    - "Detect Telegram language"
+    - "Allow manual language change"
+    - "Pick field/exam/specialty"
+    - "Reach useful study content quickly"
+    - "Do not ask for unnecessary permissions before student receives value"
+
+  home:
+    - "Continue Studying"
+    - "Review Due"
+    - "My Books"
+    - "Library"
+    - "Past Exams"
+    - "Weekly Challenge"
+    - "New badge/filter for newly published books"
+
+  library:
+    cards_show:
+      - "Cover"
+      - "Title"
+      - "Question count"
+      - "Chapter count"
+      - "Progress"
+      - "Favorite"
+      - "Download"
+      - "Study"
+    never_show:
+      - "price"
+      - "cart"
+      - "student paywall"
+
+  downloads:
+    - "Show download size"
+    - "Download one chapter"
+    - "Download whole book"
+    - "Pre-download next chapter near end of current chapter"
+    - "Storage management screen"
+    - "Delete downloaded chapter/book"
+    - "Show total local storage used"
+
+# -------------------------------------------------------------------
+# 22. STUDY SCREEN BY QUESTION TYPE
+# -------------------------------------------------------------------
+
+study_screen:
+  common:
+    - "Stem"
+    - "Images with zoom"
+    - "Submit"
+    - "Result"
+    - "Official explanation"
+    - "Source"
+    - "Favorite"
+    - "Report"
+    - "Comments"
+    - "Share"
+    - "Next"
+    - "Shuffle options unless no_shuffle=true"
+
+  sba:
+    control: "Single-select radio-style options"
+
+  mtf:
+    control: "One True/False toggle per statement"
+    submission: "All statements submitted together"
+
+  multi:
+    control: "Checkboxes"
+    submission: "2+ selections when schema requires it"
+
+  emq:
+    layout:
+      - "Show shared theme/lead_in"
+      - "Show shared option list clearly"
+      - "Show current item scenario/stem"
+    grouping: "Questions with same group_id use the shared EMQ context"
+
+# -------------------------------------------------------------------
+# 23. LEARNING FEATURES
+# -------------------------------------------------------------------
+
+learning:
+  favorites: true
+  mistakes_review: true
+  custom_practice: true
+  timed_mock: true
+
+  fsrs:
+    enabled: true
+    runs_on_device: true
+    server_required: false
+
+  active_study_time:
+    count_only_active_use: true
+    pause_after_idle_minutes: 3
+    competitive_score: false
+
+# -------------------------------------------------------------------
+# 24. COMMENTS
+# -------------------------------------------------------------------
+
+comments:
+  storage: "D1"
+  load_only_when_opened: true
+  page_size: 20
+  max_comment_characters: 1000
+  max_comments_per_user_per_day: 20
+
+  features:
+    - "Text comment"
+    - "One-level reply"
+    - "Helpful vote"
+    - "Report"
+    - "Delete own comment"
+    - "Pinned comment"
+    - "Verified-instructor comment"
+
+  ordering:
+    - "Pinned first"
+    - "Verified instructor"
+    - "Helpful"
+    - "Newest"
+
+  moderation:
+    dashboard_required: false
+    telegram_report_actions:
+      - "Keep"
+      - "Hide"
+      - "Mute user 7 days"
+    optional_auto_hide: "Auto-hide comment after configured report threshold pending review"
+
+  later:
+    - "Photo comments"
+    - "Video comments"
+    - "Voice comments"
+
+# -------------------------------------------------------------------
+# 25. D1 SCHEMA / INDEX RULES
+# -------------------------------------------------------------------
+
+d1:
+  rule: "Every student-facing query must use a primary key or appropriate index"
+
+  tables:
+    users:
+      key: "telegram_id PK"
+
+    comments:
+      indexes:
+        - "INDEX(question_id, status, created_at)"
+        - "INDEX(user_id, created_at)"
+
+    votes:
+      key: "PK(comment_id, user_id)"
+
+    reports:
+      indexes:
+        - "INDEX(handled, created_at)"
+        - "INDEX(target_type, target_id)"
+
+    challenges:
+      key: "id PK"
+
+    submissions:
+      key: "PK(challenge_id, user_id)"
+      indexes:
+        - "INDEX(challenge_id, score, time_ms)"
+
+    leaderboard_cache:
+      key: "cache_key PK"
+
+    publish_queue:
+      indexes:
+        - "INDEX(status, created_at)"
+        - "INDEX(group_key, part_index)"
+    system_state:
+      key: "key PK"
+
+# -------------------------------------------------------------------
+# 26. WEEKLY CHALLENGE
+# -------------------------------------------------------------------
+
+weekly_challenge:
+  question_source: "Challenge-only questions not in public packs before close"
+  answer_key: "Server-side until submission"
+
+  flow:
+    - "Start challenge"
+    - "Server returns questions without answers"
+    - "Student answers"
+    - "One final submit request"
+    - "Server grades"
+    - "One submission row stored"
+
+  anti_cheat_v1:
+    - "One attempt per user"
+    - "Server controls answer key"
+    - "Reject impossible timing patterns"
+    - "Keep prizes/competition low-stakes"
+
+  leaderboard:
+    source: "Server-verified challenge submissions"
+    normal_offline_answers_used_for_rank: false
+    offline_study_hours_used_for_rank: false
+
+# -------------------------------------------------------------------
+# 27. TELEGRAM NOTIFICATIONS / RETENTION
+# -------------------------------------------------------------------
+
+retention:
+  rule: "Never secretly subscribe students"
+
+  request_bot_write_access:
+    timing: "After student receives value, e.g. after 10-20 MCQs"
+    example_copy: "Get new books, comment replies and weekly challenges in Telegram."
+    choices:
+      - "Enable updates"
+      - "Not now"
+
+  announcement_channel:
+    use_for:
+      - "New books"
+      - "Weekly challenge start"
+      - "Challenge results"
+      - "Daily quiz poll"
+      - "Important corrections"
+    reason: "One channel post instead of mass bot DMs"
+
+  personal_bot_messages:
+    use_for:
+      - "Reply to your comment"
+      - "Opt-in review reminder"
+      - "Opt-in streak reminder"
+    never_mass_broadcast_directly: true
+    if_batch_personal_messages_needed:
+      strategy: "Queue and send in small scheduled batches, e.g. <=40 outgoing Telegram requests per run"
+
+  deep_links:
+    requires: "Configure the bot's Main Mini App in BotFather"
+    question_example: "https://t.me/YOUR_BOT?startapp=Q000000827"
+
+# -------------------------------------------------------------------
+# 28. SECURITY
+# -------------------------------------------------------------------
+
+security:
+  telegram_init_data:
+    verify_raw_init_data: true
+    verify_on_every_protected_api_call: true
+    check_auth_date: true
+    max_age_policy_seconds: 86400
+    note: "24 hours is project policy, not a Telegram-mandated universal value"
+    never_trust:
+      - "initDataUnsafe as authentication proof"
+      - "frontend-supplied telegram_id"
+      - "frontend-supplied username"
+
+  telegram_webhook:
+    secret_token_header_required: true
+
+  secrets_server_only:
+    - "Telegram bot token"
+    - "Cloudflare API token"
+    - "GitHub credentials/token"
+    - "OWNER_TELEGRAM_ID"
+    - "reviewer/admin IDs"
+
+  rate_limits:
+    apply_to:
+      - "comments"
+      - "votes"
+      - "reports"
+      - "challenge starts"
+      - "challenge submissions"
+      - "admin webhook abuse"
+
+  account_security:
+    - "Enable 2FA on Telegram"
+    - "Enable 2FA on Cloudflare"
+    - "Enable 2FA on GitHub"
+    - "Store recovery codes offline"
+    - "Add a trusted second admin/recovery operator"
+
+# -------------------------------------------------------------------
+# 29. LONGEVITY
+# -------------------------------------------------------------------
+
+longevity:
+  workers_dev_address:
+    rule: "Choose final production workers.dev name once and keep it"
+    reason: "Browser/IndexedDB storage is origin-bound; URL changes force content redownload"
+
+  telegram_bot:
+    rule: "Never replace production bot unless absolutely necessary"
+    reason: "CloudStorage belongs to that bot"
+
+  portability:
+    - "Published content remains plain JSON/ZIP/WebP files"
+    - "Master content remains SQLite"
+    - "Avoid unnecessary vendor-specific data formats"
+
+# -------------------------------------------------------------------
+# 30. CONFIG SWITCHES / GRACEFUL DEGRADATION
+# -------------------------------------------------------------------
+
+config_json:
+  file: "config.json"
+  switches:
+    comments_enabled: true
+    challenge_enabled: true
+    leaderboard_enabled: true
+    personal_bot_messages_enabled: true
+    notice_banner: ""
+    maintenance_mode_social_only: false
+
+graceful_degradation:
+  d1_limit_hit:
+    - "Disable/hide comments"
+    - "Disable/hide leaderboard/challenge APIs if necessary"
+    - "Show small notice"
+    - "Do not block normal study"
+
+  worker_unavailable:
+    - "Downloaded study still works"
+
+  catalog_unavailable:
+    - "Use cached catalog"
+
+# -------------------------------------------------------------------
+# 31. PRIVACY / EDUCATIONAL NOTICE
+# -------------------------------------------------------------------
+
+legal_and_trust:
+  privacy_page:
+    required: true
+    explain:
+      - "What Telegram identity data is stored"
+      - "What is stored locally"
+      - "What is stored in Telegram CloudStorage"
+      - "What comments are public/shared"
+      - "How to contact the operator"
+
+  educational_notice:
+    required: true
+    text_intent: "Educational use only; not a substitute for professional medical advice or official examination guidance"
+
+  content_rights:
+    rule: >
+      Publish only content you created, licensed, have permission to redistribute,
+      or that is otherwise legally reusable.
+    metadata_field: "license_note"
+    emergency_command: "/remove"
+
+# -------------------------------------------------------------------
+# 32. MONETIZATION
+# -------------------------------------------------------------------
+
+monetization:
+  student_core: "Free"
+
+  never_paywall:
+    - "Normal MCQ studying"
+    - "Offline access"
+    - "Explanations"
+    - "Favorites"
+    - "Mistakes review"
+    - "FSRS"
+    - "Basic progress"
+    - "Basic comments"
+
+  preferred_revenue:
+    institutions:
+      - "Private classrooms"
+      - "Private exams"
+      - "Teacher dashboard"
+      - "Assignments"
+      - "Cohort analytics"
+      - "Reports"
+
+    publishers_and_authors:
+      - "Book conversion service"
+      - "Formatting"
+      - "Validation"
+      - "Publishing assistance"
+
+    white_label:
+      - "University branding"
+      - "Training-center private library"
+      - "Private exams"
+      - "Analytics"
+
+    optional:
+      - "Clean sponsorship outside question flow"
+      - "Medical recruitment listings"
+      - "Grants"
+      - "Donations/support"
+      - "Licensed API/content access"
+
+  telegram_in_app_money:
+    rule: "Digital in-app purchases/support inside Telegram use Telegram Stars"
+
+  avoid:
+    - "Banner ads inside MCQs"
+    - "Forced video ads"
+    - "Selling student data"
+    - "Hidden channel subscriptions"
+    - "Aggressive popups"
+    - "Core-learning subscriptions"
+
+# -------------------------------------------------------------------
+# 33. V1 SCOPE
+# -------------------------------------------------------------------
+
+v1:
+  include:
+    - "Telegram authentication"
+    - "Arabic + English"
+    - "Full RTL"
+    - "Onboarding"
+    - "Library"
+    - "Specialties"
+    - "Books"
+    - "Book covers"
+    - "Textbook / past_exam filters"    - "Chapter downloads"
+    - "Offline MCQs"
+    - "All supported question-type UIs"
+    - "Images"
+    - "Answers"
+    - "Explanations"
+    - "Sources"
+    - "Favorites"
+    - "Resume"
+    - "Mistakes"
+    - "FSRS"
+    - "Local progress"
+    - "Storage management"
+    - "Telegram CloudStorage compact backup"
+    - "Question reporting"
+    - "Text comments"
+    - "Replies"
+    - "Helpful votes"
+    - "Pinned/instructor comments"
+    - "Telegram moderation"
+    - "Weekly challenge"
+    - "Leaderboard"
+    - "Deep links"
+    - "Announcement channel"
+    - "Opt-in personal bot messages"
+    - "AI package workflow"
+    - "validate.py v2"
+    - "validate_release.py"
+    - "audit.json"
+    - "Private admin publishing bot"
+    - "D1 publish queue"
+    - "GitHub Release build state"
+    - "GitHub Actions publisher"
+    - "Cloudflare Version URL smoke test before promotion"
+    - "Book-level rollback/remove/status/flags commands"
+    - "Privacy page"
+    - "Educational-use notice"
+
+  postpone:
+    - "Real-time chat"
+    - "Photo comments"
+    - "Video comments"
+    - "Voice comments"
+    - "Native Android app"
+    - "Native iOS app"
+    - "Student AI chatbot"
+    - "Advanced anti-cheat"
+    - "University competition"
+    - "Live multiplayer quizzes"
+    - "Large web admin dashboard"
+    - "Student subscription/paywall"
+
+# -------------------------------------------------------------------
+# 34. BUILD ORDER
+# -------------------------------------------------------------------
+
+build_order:
+  phase_1:
+    name: "Package schema v2"
+    tasks:
+      - "Update MASTER_PROMPT.md"
+      - "Upgrade validate.py to v2"
+      - "Require audit.json and report.md"
+      - "Add ZIP safety checks"
+      - "Add validate_release.py"
+      - "Define id_map schema"
+
+  phase_2:
+    name: "Publisher state"
+    tasks:
+      - "Build publish.py"
+      - "Create content.sqlite schema"
+      - "Create id_map"
+      - "Create GitHub Release state snapshot format"
+      - "Create per-book release artifact format"
+
+  phase_3:
+    name: "Admin automation"
+    tasks:
+      - "Private admin bot"
+      - "D1 publish_queue"
+      - "Multipart grouping"
+      - "GitHub queue-drain Action"
+      - "Action-side SHA-256"
+      - "Staged Cloudflare versions upload"
+      - "Version URL smoke tests"
+      - "Production promotion"
+      - "repair_report.md"
+      - "/status /queue /flags /remove /rollback /retry"
+
+  phase_4:
+    name: "One real book end-to-end"
+    tasks:
+      - "PDF -> AI -> validated ZIP"
+      - "audit.json"
+      - "admin bot"
+      - "Action publish"
+      - "stable permanent IDs"
+      - "chapter packs"
+      - "book appears in app"
+      - "corrected v2 reuses IDs"
+      - "book rollback test"
+
+  phase_5:
+    name: "Offline student app"
+    tasks:
+      - "Arabic/English/RTL"
+      - "Library"
+      - "Book/chapter UI"
+      - "IndexedDB"
+      - "Downloads"
+      - "All question-type study UIs"
+      - "Favorites/mistakes/resume"
+      - "Storage management"
+
+  phase_6:
+    name: "Personal learning"
+    tasks:
+      - "CloudStorage backup"
+      - "FSRS"
+      - "Review Due"
+      - "Custom practice"
+      - "Timed mock"
+
+  phase_7:
+    name: "Shared API"
+    tasks:
+      - "initData validation"
+      - "D1 indexes"
+      - "Comments"
+      - "Pinned/instructor roles"
+      - "Reports/moderation"
+      - "Rate limits"
+
+  phase_8:
+    name: "Competition"
+    tasks:
+      - "Challenge-only questions"
+      - "Server grading"
+      - "Leaderboard cache"
+
+  phase_9:
+    name: "Retention/growth"
+    tasks:
+      - "Main Mini App deep links"
+      - "Announcement channel"
+      - "Bot write-access request after value"
+      - "Personal opt-in reminders"
+      - "Daily quiz polls"
+
+# -------------------------------------------------------------------
+# 35. FINAL ARCHITECTURE SUMMARY
+# -------------------------------------------------------------------
+
+final_architecture_summary: >
+  Telegram is the doorway, identity, compact personal-sync, retention, announcement,
+  moderation and admin-control layer. Cloudflare serves the Mini App and static chapter
+  packs and runs one small Worker with D1 only for shared/social/challenge/publishing metadata.
+  Students study from IndexedDB and do not generate a server request per answer.
+  AI turns source books into schema-v2 ingestion ZIPs and audits them where the PDF is available.
+  The private admin bot stores upload metadata in a D1 publish queue. A serialized GitHub Actions
+  queue-drain job downloads the files from Telegram, hashes and validates them, reuses stable IDs
+  through id_map, builds from the latest GitHub Release state, uploads an inactive Cloudflare
+  Worker version, smoke-tests its Version URL, and only then promotes it. GitHub Release assets
+  preserve the build state and per-book versions so Actions can build independently of the admin
+  computer and a single book can be rolled back without reverting unrelated books. Students remain
+  free; monetization targets institutions, publishers and optional support rather than core studying.
