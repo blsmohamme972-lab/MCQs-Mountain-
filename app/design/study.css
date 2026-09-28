@@ -105,6 +105,28 @@ body[data-study-screen]{
   --mcq-coral-tint:#4A1A2E;
   --mcq-sun:#FFC940;
 }
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme='light']) body[data-study-screen]{
+    --mcq-paper:#131229;
+    --mcq-card:#1E1C3D;
+    --mcq-card-2:#25234A;
+    --mcq-text:#F4F2FF;
+    --mcq-muted:#A7A3CE;
+    --mcq-edge:#4A4684;
+    --mcq-edge-soft:#2E2B57;
+    --mcq-drop:#06051A;
+    --mcq-indigo:#6A5CFF;
+    --mcq-indigo-deep:#3B2FC4;
+    --mcq-indigo-tint:#2B2670;
+    --mcq-mint:#22C7AF;
+    --mcq-mint-deep:#11927F;
+    --mcq-mint-tint:#133F3B;
+    --mcq-coral:#FF6682;
+    --mcq-coral-deep:#C23357;
+    --mcq-coral-tint:#4A1A2E;
+    --mcq-sun:#FFC940;
+  }
+}
 body[data-study-screen] .top{background:var(--mcq-paper);border:0}
 body[data-study-screen] .top-in.k-study-topbar{
   max-width:720px;
