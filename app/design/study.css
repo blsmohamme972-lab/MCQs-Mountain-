@@ -83,6 +83,7 @@ body[data-study-screen]{
   --mcq-coral-deep:#B4203F;
   --mcq-coral-tint:#FFE5EB;
   --mcq-sun:#FFC43D;
+  --color-danger:var(--mcq-coral);
   background:var(--mcq-paper);
 }
 :root[data-theme='dark'] body[data-study-screen]{
