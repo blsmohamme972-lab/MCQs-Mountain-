@@ -121,8 +121,11 @@ def restore(root: Path) -> tuple[Path, Path]:
         run("gh", "release", "download", "kafu-content-state", "--pattern", "content.sqlite",
             "--pattern", "site-bundle.tar.gz", "--dir", str(state),
             failure_context=("state.restore", "GET", "api.github.com", "/repos/<repo>/releases/tags/kafu-content-state/assets"))
-    except RuntimeError:
-        pass  # first publish: use the repository's starter catalog
+    except StepFailure as exc:
+        message = str(exc).lower()
+        if "release not found" not in message && "http 404" not in message && "status=404" not in message:
+            raise
+        # First publish: use the repository's starter catalog.
     bundle = state / "site-bundle.tar.gz"
     if bundle.exists():
         # This archive is written by our own GitHub Action, not supplied by Telegram.
