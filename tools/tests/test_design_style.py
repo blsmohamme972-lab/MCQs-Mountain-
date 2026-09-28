@@ -11,14 +11,15 @@ class DesignStyleTests(unittest.TestCase):
         gallery=(ROOT/"app/design/gallery.js").read_text()
         manifest=json.loads((ROOT/"app/modules/manifest.json").read_text())
         for token in [
-            "--brand-primary","--brand-accent-a","--brand-accent-b",
-            "--color-success","--color-danger","--color-warning",
+            "--brand-primary","--brand-accent-a","--brand-accent-b","--brand-secondary",
+            "--color-success","--color-danger","--color-error","--color-warning",
             "--outline-width","--shadow-depth","--pressed-offset",
             "--font-display","--font-reading","--font-pixel","--tap-target"
         ]:
             self.assertIn(token,tokens)
         self.assertIn(":root[data-theme='dark']",tokens)
         self.assertIn("prefers-reduced-motion:reduce",tokens)
+        self.assertIn("--color-primary-hover:var(--color-primary-strong)",tokens)
         self.assertIn("## RULES FOR ALL DESIGN PROMPTS",docs)
         self.assertIn("design/gallery.js",manifest["scripts"])
         self.assertIn("design/gallery.css",manifest["styles"])
