@@ -44,25 +44,75 @@ globalThis.KafuEnhancements.installers.push({name:'study-polish',install(){
     if(SESSION&&QI[SESSION.qids[SESSION.index]]){view.title=`Chapter · Q ${SESSION.index+1}/${SESSION.qids.length}`;view.html=`<section class="k-study">${view.html}</section>`;}
     return view;
   };
+  function sessionCombo(session){
+    let n=0;
+    for(let i=session.index;i>=0;i--){
+      const r=session.resp[session.qids[i]];
+      if(!r?.done||!r.correct)break;
+      n++;
+    }
+    return n;
+  }
+  function decorateStudy(section){
+    const session=SESSION,qid=session?.qids[session.index],entry=qid&&QI[qid],q=entry?.q,r=qid&&session.resp[qid];
+    if(!session||!entry||!q)return;
+    const pos=session.index+1,total=session.qids.length,book=bookById(entry.b),starred=S.fav.includes(qid);
+    const header=document.querySelector('.top-in');
+    if(header){
+      header.classList.add('k-study-topbar');
+      header.innerHTML=`<button class="icon-btn back-btn k-study-icon" data-a="back" aria-label="Back to chapter">${ICON.back}</button>
+        <div class="k-study-where"><div class="k-study-book">${C.e(book?.title||'Study')}</div><div class="k-study-sub"><span>${C.e(session.title||'Chapter')}</span><h1>Chapter · Q ${pos}/${total}</h1></div></div>
+        <button class="icon-btn k-study-icon k-study-star ${starred?'on':''}" data-a="fav-q" aria-pressed="${starred}" aria-label="${starred?'Remove star':'Star this question'}">${starred?ICON.starOn:ICON.star}</button>
+        <button class="icon-btn k-study-icon" data-a="report" aria-label="Report a problem">${ICON.flag}</button>`;
+    }
+    const studyTop=section.querySelector('.study-top');
+    if(studyTop){
+      const timer=studyTop.querySelector('.timer')?.outerHTML||'';
+      const pips=session.qids.map((id,i)=>{
+        const rr=session.resp[id];
+        const state=i===session.index?' current':rr?.done?(rr.correct?' correct':' wrong'):'';
+        return `<i class="k-pip${state}" aria-hidden="true"></i>`;
+      }).join('');
+      studyTop.className='study-top k-study-progress';
+      studyTop.innerHTML=`<div class="k-pips" aria-hidden="true">${pips}</div><span class="k-study-count" aria-label="Question ${pos} of ${total}"><strong>${pos}</strong><span>/${total}</span></span>${timer}`;
+      studyTop.setAttribute('role','progressbar');studyTop.setAttribute('aria-label','Question progress');studyTop.setAttribute('aria-valuemin','0');studyTop.setAttribute('aria-valuemax',String(total));studyTop.setAttribute('aria-valuenow',String(pos));
+    }
+    const opts=section.querySelector('.opts');
+    if(opts&&!section.querySelector('.k-question-card')){
+      const children=[...section.children],before=[];
+      for(const child of children){
+        if(child===opts)break;
+        if(!child.classList.contains('study-top'))before.push(child);
+      }
+      const head=document.createElement('div');head.className='k-question-head';
+      const combo=sessionCombo(session),xp=Object.values(session.resp).filter(x=>x?.done&&x.correct).length*10;
+      head.innerHTML=`<div class="k-question-tab"><strong>${pos}</strong><span>of ${total}</span></div><div class="k-question-hud"><span class="k-hud-streak" aria-label="${combo} correct in a row"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.2 2.5c.9 3.3 4.9 5.2 4.9 10.6A5.1 5.1 0 0 1 12 18.4a5.1 5.1 0 0 1-5.1-5.3c0-2.6 1.4-4.2 2.6-5.3.2 1.6 1 2.8 2.1 3.1-.6-2.6-.4-5.3.6-8.4z"/></svg><b>${combo}</b></span><span class="k-hud-xp k-pixel">${xp} XP</span></div>`;
+      const card=document.createElement('article');card.className='k-question-card';
+      section.insertBefore(head,opts);section.insertBefore(card,opts);
+      before.forEach(el=>card.appendChild(el));
+    }
+    for(const button of section.querySelectorAll('.opt.correct,.opt.wrong')){
+      if(button.querySelector('.k-answer-state'))continue;
+      const state=document.createElement('span');state.className='k-answer-state';
+      state.textContent=button.classList.contains('correct')?'Correct answer':'Your answer';button.appendChild(state);
+    }
+    const explanation=section.querySelector('.explain');
+    if(explanation){
+      explanation.classList.add('k-feedback-panel');
+      explanation.setAttribute('role','status');explanation.setAttribute('aria-live','polite');
+      const scroll=explanation.scrollIntoView.bind(explanation),reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      explanation.scrollIntoView=options=>scroll(reduced?{...options,behavior:'auto'}:options);
+    }
+  }
   const originalRender=render;
   render=function(...args){
     const result=originalRender.apply(this,args),section=document.querySelector('.k-study');
     const qid=section&&SESSION?.qids[SESSION.index];
+    document.body.toggleAttribute('data-study-screen',!!section);
     if(section){
       const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
       if(qid!==lastQuestion&&!reduced)section.classList.add('k-question-enter');
-      const progress=section.querySelector('.pbar');
-      if(progress){progress.setAttribute('role','progressbar');progress.setAttribute('aria-label','Question progress');progress.setAttribute('aria-valuemin','0');progress.setAttribute('aria-valuemax',String(SESSION.qids.length));progress.setAttribute('aria-valuenow',String(SESSION.index+1));}
-      for(const button of section.querySelectorAll('.opt.correct,.opt.wrong')){
-        const state=document.createElement('span');state.className='k-answer-state';
-        state.textContent=button.classList.contains('correct')?'Correct answer':'Your answer';button.appendChild(state);
-      }
-      const explanation=section.querySelector('.explain');
-      if(explanation){
-        explanation.setAttribute('role','status');explanation.setAttribute('aria-live','polite');
-        const scroll=explanation.scrollIntoView.bind(explanation);
-        explanation.scrollIntoView=options=>scroll(reduced?{...options,behavior:'auto'}:options);
-      }
+      decorateStudy(section);
     }
     lastQuestion=qid||null;return result;
   };
