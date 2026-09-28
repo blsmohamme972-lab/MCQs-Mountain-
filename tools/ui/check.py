@@ -151,7 +151,7 @@ def study_answer(page,correct=True):
     assert page.evaluate('SESSION.resp[SESSION.qids[SESSION.index]].correct') is correct
 
 
-def snapshots(browser,origin,pack,destination):
+def snapshots(browser,origin,pack,destination,include_gallery=True):
     destination.mkdir(parents=True,exist_ok=True);hashes={}
     for device in DEVICES:
         for theme in ['light','dark']:
@@ -169,10 +169,11 @@ def snapshots(browser,origin,pack,destination):
                 page.goto(origin+'/styleguide/?theme='+theme);page.evaluate('document.fonts.ready')
                 page.locator('#show-sheet').click();page.locator('#demo-sheet button').click()
                 name=f'{device}-{theme}-styleguide';hashes[name]=capture(page,destination/(name+'.png'))
-            page.goto(origin+'/#gallery',wait_until='load');page.wait_for_selector('#gallery');page.evaluate('document.fonts.ready')
-            page.locator(f'[data-gallery-theme="{theme}"]').click()
-            name=f'{device}-{theme}-gallery';hashes[name]=capture(page,destination/(name+'.png'))
-            assert not page.evaluate('document.documentElement.scrollWidth>innerWidth+1'),f'Overflow: {name}'
+            if include_gallery:
+                page.goto(origin+'/#gallery',wait_until='load');page.wait_for_selector('#gallery');page.evaluate('document.fonts.ready')
+                page.locator(f'[data-gallery-theme="{theme}"]').click()
+                name=f'{device}-{theme}-gallery';hashes[name]=capture(page,destination/(name+'.png'))
+                assert not page.evaluate('document.documentElement.scrollWidth>innerWidth+1'),f'Overflow: {name}'
             ctx.close()
     return hashes
 
@@ -256,7 +257,7 @@ def main():
                     hashes.update(extra.get('hashes',{}))
             checks['javascript']=budget(temp/'after')
             if args.before:
-                with site(args.before,temp/'before',8766,cert,key,args.source/'app/vendor') as (prior,priorpack):snapshots(browser,prior,priorpack,args.out/'before')
+                with site(args.before,temp/'before',8766,cert,key,args.source/'app/vendor') as (prior,priorpack):snapshots(browser,prior,priorpack,args.out/'before',False)
             browser.close()
     (args.out/'candidate-baselines.json').write_text(json.dumps(hashes,indent=2)+'\n')
     if args.approve:
