@@ -2,17 +2,21 @@
 """Poll the live static catalog until an expected publishing state is visible."""
 
 from __future__ import annotations
-import argparse, json, time, urllib.parse, urllib.request
+import argparse, json, time
+
+try:
+    from tools.http_client import request_json
+except ModuleNotFoundError:
+    from http_client import request_json
 
 def fetch(url: str, attempt: int):
-    sep="&" if "?" in url else "?"
-    req=urllib.request.Request(
+    sep = "&" if "?" in url else "?"
+    return request_json(
         f"{url}{sep}proof={int(time.time()*1000)}-{attempt}",
-        headers={"Cache-Control":"no-cache","User-Agent":"kafu-fixture-proof"},
+        step="verify.catalog",
+        headers={"Cache-Control": "no-cache"},
+        timeout=15,
     )
-    with urllib.request.urlopen(req, timeout=15) as r:
-        return json.load(r)
-
 def matches(c, a):
     books={b.get("id"): b for b in c.get("books", [])}
     removed=set(c.get("removed_books") or [])

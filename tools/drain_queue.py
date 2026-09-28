@@ -15,14 +15,17 @@ import subprocess
 import tarfile
 import tempfile
 import time
-import urllib.error
 import urllib.parse
-import urllib.request
 import zipfile
 from io import BytesIO
 from pathlib import Path
 
 from PIL import Image, UnidentifiedImageError
+
+try:
+    from tools.http_client import HttpStepError, download, request_bytes, request_json
+except ModuleNotFoundError:
+    from http_client import HttpStepError, download, request_bytes, request_json
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTENT_URL = "https://kafu-content-1.blsmohamme97.workers.dev"
@@ -48,27 +51,6 @@ def run(*args: str, cwd: Path = ROOT, capture: bool = True,
     return p.stdout + p.stderr
 
 
-def post(url: str, payload: dict, headers: dict | None = None, step: str = "http.post") -> dict:
-    req = urllib.request.Request(
-        url,
-        data=json.dumps(payload).encode(),
-        headers={"Content-Type": "application/json", "User-Agent": "kafu-drain/1.0", **(headers or {})},
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=30) as response:
-            return json.load(response)
-    except urllib.error.HTTPError as exc:
-        body = exc.read(200).decode("utf-8", errors="replace")
-        server = exc.headers.get("server", "")
-        cf_ray = exc.headers.get("cf-ray", "")
-        parsed = urllib.parse.urlparse(url)
-        print(
-            f"[queue-http] status={exc.code} server={server!r} cf-ray={cf_ray!r} "
-            f"body={body[:200]!r}"
-        )
-        raise StepFailure(step, "POST", parsed.hostname or "", parsed.path or "/", f"HTTP {exc.code}") from None
-
-
 class Queue:
     def __init__(self) -> None:
         self.url = os.environ["QUEUE_API_URL"].rstrip("/")
@@ -81,7 +63,13 @@ class Queue:
         self.headers = {"Authorization": f"Bearer {token}"}
 
     def call(self, path: str, data: dict | None = None) -> dict:
-        return post(self.url + "/internal/" + path, data or {}, self.headers, step=f"queue.{path}")
+        return request_json(
+            self.url + "/internal/" + path,
+            step=f"queue.{path}",
+            method="POST",
+            payload=data or {},
+            headers=self.headers,
+        )
 
     def notify(self, text: str) -> None:
         self.call("notify", {"text": text[:3500]})
@@ -89,27 +77,16 @@ class Queue:
 
 def telegram_file(file_id: str, target: Path) -> None:
     token = os.environ["BOT_TOKEN"]
-    try:
-        data = post(f"https://api.telegram.org/bot{token}/getFile", {"file_id": file_id}, step="telegram.getFile")
-    except urllib.error.HTTPError as exc:
-        raise ValueError(f"Telegram getFile returned HTTP {exc.code}") from None
+    data = request_json(
+        f"https://api.telegram.org/bot{token}/getFile",
+        step="telegram.getFile",
+        method="POST",
+        payload={"file_id": file_id},
+    )
     if not data.get("ok") or not data.get("result", {}).get("file_path"):
         raise ValueError("Telegram getFile failed")
     url = f"https://api.telegram.org/file/bot{token}/{data['result']['file_path']}"
-    try:
-        with urllib.request.urlopen(url, timeout=90) as src, target.open("wb") as out:
-            remaining = MAX_ZIP + 1
-            while remaining:
-                block = src.read(min(65536, remaining))
-                if not block:
-                    break
-                out.write(block)
-                remaining -= len(block)
-    except urllib.error.HTTPError as exc:
-        parsed = urllib.parse.urlparse(url)
-        raise StepFailure("telegram.download", "GET", parsed.hostname or "", "/file/bot<redacted>/" + data["result"]["file_path"], f"HTTP {exc.code}") from None
-    if target.stat().st_size > MAX_ZIP:
-        raise ValueError("ZIP exceeds 19 MB")
+    download(url, target, step="telegram.download", timeout=90, max_bytes=MAX_ZIP)
 
 
 def image_count_and_validate(packages: list[Path]) -> int:
@@ -144,8 +121,11 @@ def restore(root: Path) -> tuple[Path, Path]:
         run("gh", "release", "download", "kafu-content-state", "--pattern", "content.sqlite",
             "--pattern", "site-bundle.tar.gz", "--dir", str(state),
             failure_context=("state.restore", "GET", "api.github.com", "/repos/<repo>/releases/tags/kafu-content-state/assets"))
-    except RuntimeError:
-        pass  # first publish: use the repository's starter catalog
+    except StepFailure as exc:
+        message = str(exc).lower()
+        if "release not found" not in message and "http 404" not in message and "status=404" not in message:
+            raise
+        # First publish: use the repository's starter catalog.
     bundle = state / "site-bundle.tar.gz"
     if bundle.exists():
         # This archive is written by our own GitHub Action, not supplied by Telegram.
@@ -169,28 +149,25 @@ def candidate(root: Path, content: Path, expected_book: str | None = None) -> No
     if not urls:
         raise RuntimeError("Wrangler did not report a Version URL; candidate not promoted")
     preview = urls[-1].rstrip("/")
-    with urllib.request.urlopen(preview + "/catalog.json", timeout=30) as response:
-        live = json.load(response)
+    live = request_json(preview + "/catalog.json", step="candidate.catalog")
     local = json.loads((content / "catalog.json").read_text())
     if live != local:
         raise RuntimeError("Version URL catalog does not match candidate")
-    with urllib.request.urlopen(preview + "/config.json", timeout=30) as response:
-        json.load(response)
+    request_json(preview + "/config.json", step="candidate.config")
     for book in local.get("books", []):
         if expected_book and book["id"] != expected_book:
             continue
         for chapter in book.get("chapters", []):
             path = urllib.parse.urlparse(chapter["url"]).path
-            with urllib.request.urlopen(preview + path, timeout=30) as response:
-                pack = json.load(response)
+            pack = request_json(preview + path, step="candidate.chapter")
             if len(pack.get("questions", [])) != chapter["questions"]:
                 raise RuntimeError(f"Candidate chapter mismatch: {path}")
             if chapter.get("image_url"):
                 path = urllib.parse.urlparse(chapter["image_url"]).path
-                with urllib.request.urlopen(preview + path, timeout=30) as response:
-                    with zipfile.ZipFile(BytesIO(response.read())) as zf:
-                        if zf.testzip():
-                            raise RuntimeError(f"Candidate image ZIP corrupt: {path}")
+                raw = request_bytes(preview + path, step="candidate.images")
+                with zipfile.ZipFile(BytesIO(raw)) as zf:
+                    if zf.testzip():
+                        raise RuntimeError(f"Candidate image ZIP corrupt: {path}")
     run("npx", "--yes", "wrangler@4", "versions", "deploy", "--config",
         "content-worker/wrangler.jsonc", "--version-tag", tag, "--percentage", "100", "--yes",
         failure_context=("candidate.promote", "POST", "api.cloudflare.com", "/client/v4/accounts/<account>/workers/scripts/kafu-content-1/deployments"))
@@ -207,7 +184,10 @@ def save_state(state: Path, content: Path) -> None:
         run("gh", "release", "upload", "kafu-content-state", *assets, "--clobber",
             failure_context=("state.release_upload", "POST", "uploads.github.com", "/repos/<repo>/releases/<id>/assets"))
     except StepFailure as exc:
-        if "state.release_view" not in str(exc):
+        message = str(exc).lower()
+        if "state.release_view" not in message or (
+            "release not found" not in message and "http 404" not in message and "status=404" not in message
+        ):
             raise
         run("gh", "release", "create", "kafu-content-state", *assets,
             "--title", "Kafu active content state", "--notes", "Current active state",
@@ -222,7 +202,10 @@ def save_book_release(book_id: str, version: int, packages: list[Path]) -> None:
         run("gh", "release", "upload", tag, *map(str, packages), "--clobber",
             failure_context=("book_release.upload", "POST", "uploads.github.com", "/repos/<repo>/releases/<id>/assets"))
     except StepFailure as exc:
-        if "book_release.view" not in str(exc):
+        message = str(exc).lower()
+        if "book_release.view" not in message or (
+            "release not found" not in message and "http 404" not in message and "status=404" not in message
+        ):
             raise
         run("gh", "release", "create", tag, *map(str, packages),
             "--title", f"{book_id} v{version}", "--notes", "Validated owner package",
@@ -317,20 +300,27 @@ def send_report(path: Path) -> None:
     data = (f"--{boundary}\r\nContent-Disposition: form-data; name=\"chat_id\"\r\n\r\n{os.environ['OWNER_TELEGRAM_ID']}\r\n"
             f"--{boundary}\r\nContent-Disposition: form-data; name=\"document\"; filename=\"repair_report.md\"\r\n"
             "Content-Type: text/markdown\r\n\r\n").encode() + path.read_bytes() + f"\r\n--{boundary}--\r\n".encode()
-    req = urllib.request.Request(f"https://api.telegram.org/bot{token}/sendDocument", data=data,
-                                 headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
-    with urllib.request.urlopen(req, timeout=30) as response:
-        if not json.load(response).get("ok"):
-            raise RuntimeError("Could not attach repair report")
+    answer = request_json(
+        f"https://api.telegram.org/bot{token}/sendDocument",
+        step="telegram.sendReport",
+        method="POST",
+        data=data,
+        headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
+    )
+    if not answer.get("ok"):
+        raise RuntimeError("Could not attach repair report")
 
 
 def main() -> None:
     queue = Queue()
     processed = 0
+    failed = 0
+    exhausted = False
     while processed < 100:
         item = queue.call("claim")
         if item["kind"] == "empty":
-            return
+            exhausted = True
+            break
         processed += 1
         with tempfile.TemporaryDirectory(prefix="kafu-queue-") as td:
             root = Path(td)
@@ -349,16 +339,20 @@ def main() -> None:
                                           "operation": item["job"]["kind"], **result})
                     queue.notify(f"✅ {item['job']['kind']} {item['job']['book_id']} complete.")
             except Exception as exc:
+                failed += 1
                 title = item["group"]["group_key"] if item["kind"] == "publish" else item["job"]["book_id"]
                 report = root / "repair_report.md"
                 report.write_text(f"# Kafu repair report\n\nJob: {title}\n\n❌ {type(exc).__name__}: {exc}\n")
-                safe_error = str(exc) if isinstance(exc, StepFailure) else f"step=processing method=LOCAL host=- path=- — {type(exc).__name__}: {str(exc)[:240]}"
+                safe_error = str(exc) if isinstance(exc, (StepFailure, HttpStepError)) else f"step=processing method=LOCAL host=- path=- — {type(exc).__name__}: {str(exc)[:240]}"
                 payload = {"kind": item["kind"], "ok": False, "error": safe_error[:400]}
                 payload.update({"group_key": title} if item["kind"] == "publish" else {"id": item["job"]["id"]})
                 queue.call("finish", payload)
                 queue.notify(f"❌ {title} failed. repair_report.md is attached.")
                 send_report(report)
-    raise RuntimeError("Queue drain limit reached; scheduled run will continue")
+    if failed:
+        raise RuntimeError(f"{failed} queue job(s) failed")
+    if not exhausted:
+        raise RuntimeError("Queue drain limit reached; scheduled run will continue")
 
 
 if __name__ == "__main__":
