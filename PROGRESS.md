@@ -11,7 +11,7 @@ Updated: 2026-09-28. Night 1 tracker. Protected book: KAFU-UPLOAD-TEST v1, 4 que
 7. Offline shell merged PR #18; CI 36369148074, Deploy #19 / 36369225189 green including app/build/protected-book guard. Atomic shell/public assets cache, network-first valid catalog, API/auth exclusion, no forced update, graceful unsupported Telegram/iOS fallback.
 8. Privacy/disclaimer merged PR #19; CI and Deploy #20 green. Me → Privacy and About, once-per-device/account acknowledgement, permanent educational-only notice, explicit local-only report limitation and honest deletion/provider-backup scope.
 9. Weekly backup is prepared in open PR #20 with green CI; not merged or run as of this checkpoint because it is infrastructure-sensitive and requires owner activation.
-10. Content-production tooling implemented on night1/10-content-production: deterministic tools/parsers library, package_batch build→audit→validate pipeline, reusable-parser delivery in MASTER_PROMPT, docs/CONTENT_TEAM.md, and confirmed /flags bulk warning approval. Awaiting CI/PR.
-11. Final owner docs/report: pending.
+10. Content-production tooling merged PR #21; CI green and Deploy Kafu green with exact-build/app/protected-book verification. Includes tools/parsers, package_batch PDF→audit→validate flow, reusable parser delivery in MASTER_PROMPT, docs/CONTENT_TEAM.md, and confirmed /flags bulk warning approval.
+11. Owner docs implemented on night1/11-owner-docs: refreshed HANDOFF.md, PROGRESS.md and docs/ADMIN.md. Awaiting CI/PR. Final combined NIGHT_1 report follows as a separate task/PR.
 
 One task per branch/PR; green tested code only without secret/account/infrastructure setting changes. Verify deployment/read-only app/build/book guard after each merge. No temporary production triggers. Push each task. Final morning report: docs/reports/NIGHT_1.md.
