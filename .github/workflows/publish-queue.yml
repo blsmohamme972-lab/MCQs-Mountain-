@@ -43,25 +43,28 @@ jobs:
           python - <<'PY'
           import os
           from pathlib import Path
-          from tools.http_client import request_json
+          from tools.http_client import request_bytes
 
           command = Path(".github/kafu-bot-command.trigger").read_text().strip()
           allowed = {"/retry KAFU-UPLOAD-TEST_v1", "/queue", "/books"}
           if command not in allowed:
               raise SystemExit("Unexpected bot command marker")
           owner = int(os.environ["OWNER_TELEGRAM_ID"])
-          request_json(
+          request_bytes(
               "https://kafu.blsmohamme97.workers.dev/bot",
               step="bot.command",
               method="POST",
-              payload={
+              data=__import__("json").dumps({
                   "message": {
                       "from": {"id": owner},
                       "chat": {"id": owner, "type": "private"},
                       "text": command,
                   }
+              }).encode(),
+              headers={
+                  "Content-Type": "application/json",
+                  "X-Telegram-Bot-Api-Secret-Token": os.environ["WEBHOOK_SECRET"],
               },
-              headers={"X-Telegram-Bot-Api-Secret-Token": os.environ["WEBHOOK_SECRET"]},
           )
           PY
       - name: Install image decoder
