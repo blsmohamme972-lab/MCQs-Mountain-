@@ -35,7 +35,10 @@ jobs:
       - name: Prepare before source
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
-        run: git worktree add --detach /tmp/kafu-before "$BASE_SHA"
+        run: |
+          git worktree add --detach /tmp/kafu-before "$BASE_SHA"
+          mkdir -p evidence/ui
+          git archive --format=zip --output=evidence/ui/source.zip HEAD
       - name: Main journeys, offline persistence, budgets and approved screenshots
         run: python tools/ui/check.py --before /tmp/kafu-before --out evidence/ui
       - name: Keep before and after evidence (no fonts or private data)
