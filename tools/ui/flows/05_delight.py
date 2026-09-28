@@ -23,15 +23,16 @@ def run(browser,origin,pack,out,helpers):
             page.evaluate("ids=>startSession({mode:'study',title:'A focused practice session',bookId:'DESIGN-CARDIO',chId:1,qids:ids})",IDS)
             for _ in IDS:
                 helpers['study_answer'](page,True)
-                assert 'Kafu!' in page.locator('.explain .k-kafu').inner_text()
+                assert 'Correct' in page.locator('.explain .k-feedback-correct').inner_text() and 'Kafu' in page.locator('.explain .k-feedback-correct').inner_text()
                 page.locator('[data-a="action"]').last.click()
             page.wait_for_selector('[data-session-complete]')
             page.evaluate('KafuDelight.settled()')
             assert page.evaluate("!!KafuDelight.achievements.earned.first_chapter&&!!KafuDelight.achievements.earned.first_perfect")
-            assert page.locator('.k-complete-kafu').count()==1
-            page.locator('[data-a="action"]').last.click()
+            assert page.locator('.k-complete-mascot svg').count()==1
+            assert page.locator('.k-victory-stars svg.earned').count()==3
+            page.locator('header [data-a="back"]').click()
             page.evaluate("tab('me')")
-            assert page.locator('[data-badge="first_perfect"].earned').count()==1
+            assert page.locator('.k-badge[data-b="first_perfect"].earned').count()==1
             name=f'{device}-{theme}-badges-earned'
             hashes[name]=helpers['capture'](page,out/(name+'.png'))
             page.evaluate("async()=>{await DB.put('meta','state',S);}")
