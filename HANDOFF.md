@@ -50,7 +50,6 @@ Use `docs/CONTENT_TEAM.md` to prepare the ZIP and parser, then `docs/ADMIN.md` t
 Important rules:
 - never edit `validate.py` or `audit.py` to force a package through;
 - answers come from the source, never medical guessing;
-- every source question is extracted or explicitly skipped;
 - save the parser used for each layout;
 - a failed queue item can be replaced by a corrected ZIP, retried, or cleared;
 - GitHub release operations use the workflow `GITHUB_TOKEN`, not `DISPATCH_TOKEN`;
@@ -80,3 +79,9 @@ See `docs/ADMIN.md` for exact behavior and recovery steps.
 Runtime secrets: `BOT_TOKEN`, `OWNER_TELEGRAM_ID`, `WEBHOOK_SECRET`, `QUEUE_API_TOKEN`, `DISPATCH_TOKEN`. Deployment also uses `D1_DATABASE_ID`, `CLOUDFLARE_ACCOUNT_ID`, and `CLOUDFLARE_API_TOKEN`.
 
 Never print secret values in commands, reports, screenshots, logs or chat.
+
+## Day 1 design continuation
+
+Read docs/DESIGN.md before UI edits. Task 1 merged PR #29; task 2 PR #30 adds one-hand feedback, modal keyboard behavior and cancellable deletion without altering saved formats. Undo uses a 6-second in-memory grace period before destructive writes, not restoration after deletion. Its timer defaults must preserve the global browser receiver. Browser tests and screenshots are required for each UI PR, including phone/iPad light/dark. Expected raw-pixel hashes in tools/ui/visual-baselines.json require deliberate inspection; never automatically approve them in CI.
+
+Continue tasks 3-8 in order, each on a separate branch/PR. A new persistent onboarding or preferences record requires migration tests and an open owner-review PR; continue independent tasks on main rather than merging storage changes. Do not operate the production publish queue during design. Do not change credentials or deployment bindings. End-of-day evidence belongs in docs/reports/DAY_1_DESIGN.md.
