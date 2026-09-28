@@ -1,7 +1,7 @@
 /* Reading and completion presentation. Existing grading, FSRS and saves stay intact. */
 globalThis.KafuEnhancements.installers.push({name:'study-polish',install(){
   'use strict';
-  const C=KafuDesign,Core=KafuStudyCore;let last=null,lastQuestion=null;
+  const C=KafuDesign,Core=KafuStudyCore;let last=null,lastQuestion=null,restoreReportFocus=false;
   const next=nextQuestion;
   nextQuestion=function(...args){
     const session=SESSION;
@@ -107,6 +107,8 @@ globalThis.KafuEnhancements.installers.push({name:'study-polish',install(){
       explanation.scrollIntoView=options=>scroll(reduced?{...options,behavior:'auto'}:options);
     }
   }
+  const reportAction=ACTIONS.report;
+  ACTIONS.report=function(...args){restoreReportFocus=true;return reportAction.apply(this,args);};
   const originalRender=render;
   render=function(...args){
     const result=originalRender.apply(this,args),section=document.querySelector('.k-study');
@@ -116,6 +118,10 @@ globalThis.KafuEnhancements.installers.push({name:'study-polish',install(){
       const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
       if(qid!==lastQuestion&&!reduced)section.classList.add('k-question-enter');
       decorateStudy(section);
+      if(restoreReportFocus&&!SHEET){
+        restoreReportFocus=false;
+        requestAnimationFrame(()=>document.querySelector('.k-study-topbar [data-a="report"]')?.focus({preventScroll:true}));
+      }
     }
     lastQuestion=qid||null;return result;
   };
