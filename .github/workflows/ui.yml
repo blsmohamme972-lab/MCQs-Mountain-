@@ -32,6 +32,15 @@ jobs:
           mkdir -p evidence/transport
           git archive --format=zip --output=evidence/transport/source.zip HEAD
           git archive --format=zip --output=evidence/transport/base.zip "$BASE_SHA"
+          python tools/vendor_frontend.py
+          python - <<'PY'
+          import zipfile
+          from pathlib import Path
+          with zipfile.ZipFile('evidence/transport/javascript-deps.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for p in Path('app/vendor').glob('*'):
+                  if p.suffix in {'.js', '.txt'}:
+                      z.write(p,p.as_posix())
+          PY
       - name: Upload initial evidence
         uses: actions/upload-artifact@v4
         with:
