@@ -23,7 +23,7 @@ globalThis.KafuEnhancements.installers.push({name:'tasteful-delight',install(){
     if(after.longest>=7&&before.longest<7){newly.push('week_streak');if(r.correct&&!record?.shown?.week_streak)toast('Kafu! \ud83d\udc4f Seven steady days of learning.');}
     remember(newly);return result;
   };
-  window.addEventListener('kafu:session-complete',event=>{if(event.detail?.answered>0){remember(Core.IDS.filter(id=>project().earned[id]));haptic.ok();}});
+  window.addEventListener('kafu:session-complete',event=>{if(event.detail?.answered>0){const earned=project().earned;remember(Core.IDS.filter(id=>earned[id]));haptic.ok();}});
   const study=VIEWS.study;VIEWS.study=function(...args){const result=study.apply(this,args),id=SESSION?.qids[SESSION.index],r=SESSION?.resp[id];
     if(r?.done&&r.correct&&SESSION.mode!=='exam')result.html=result.html.replace('<div class="res ok">',`<span class="k-kafu">${C.e(Core.phrase(id,S.answers[id]?.n))}</span><div class="res ok">`);
     return result;

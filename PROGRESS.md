@@ -6,6 +6,8 @@ Updated 2026-09-28. Protected production book: KAFU-UPLOAD-TEST v1 (4 questions,
 
 Night 1 PRs #12-19 and #21-23 merged: secure publishing diagnostics, atomic queue recovery, personal sync, FSRS Review Due, background downloads, offline shell, privacy, content tools and owner report. Weekly backup PR #20 merged with owner approval; initial backup run 36389139180 passed. CI cost reduction PR #28 merged. See HANDOFF.md and docs/reports/ for exact earlier evidence. Previously exposed credentials still require owner rotation, skipped during design.
 
+Content tooling merged PR #21. Owner docs merged PR #22. Combined Night 1 report merged PR #23. These earlier acceptance checkpoints remain unchanged.
+
 ## Day 1 ordered mission
 
 1. Design system: merged #29 (4807941a990e768ac0590f6332623ec7cfd60a81). Content 36394630895 and Visual/Flow 36394630889 green. Tokens/components/styleguide/self-hosted fonts; inspected phone/iPad light/dark screenshots.

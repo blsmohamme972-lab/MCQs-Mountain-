@@ -3,7 +3,6 @@
 No IndexedDB/localStorage/pack/celebration copying and no production account.
 Production sync-core + bridge perform the actual serialized push and pull.
 """
-import json
 
 SDK=r"""(() => {
  const call=(op,args,cb)=>window.__testCloud(op,args).then(v=>cb?.(null,v),()=>cb?.('offline'));
@@ -35,9 +34,11 @@ def run(browser,origin,pack,out,helpers):
         page=ctx.new_page();errors=[];page.on('pageerror',lambda exc:errors.append(str(exc)))
         page.goto(origin+'/seed/')
         assert page.evaluate('indexedDB.databases().then(x=>x.length)')==0
-        page.goto(origin,wait_until='load');page.wait_for_selector('nav')
+        page.goto(origin,wait_until='load');page.wait_for_selector('main')
         page.wait_for_function("typeof KafuPersonal!=='undefined'&&!!KafuPersonal.replica&&CATALOG.books.some(b=>b.id==='DESIGN-CARDIO')")
         page.evaluate('CloudSync.pull()')
+        if page.locator('[data-a=onboard-skip]').count():page.locator('[data-a=onboard-skip]').click()
+        page.wait_for_selector('nav')
         return ctx,page,errors
     a,pa,ea=device()
     # Complete the visible four-question chapter through the normal grading API.
