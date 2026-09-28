@@ -2,18 +2,23 @@
 """Register Kafu's owner-only Telegram webhook after the Worker is deployed."""
 import json
 import os
-import urllib.request
+try:
+    from tools.http_client import request_json
+except ModuleNotFoundError:
+    from http_client import request_json
 
 token = os.environ["BOT_TOKEN"]
 secret = os.environ["WEBHOOK_SECRET"]
 url = os.environ.get("KAFU_APP_URL", "https://kafu.blsmohamme97.workers.dev").rstrip("/")
 
 def call(method, data):
-    req = urllib.request.Request(f"https://api.telegram.org/bot{token}/{method}",
-                                 data=json.dumps(data).encode(),
-                                 headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=20) as response:
-        answer = json.load(response)
+    answer = request_json(
+        f"https://api.telegram.org/bot{token}/{method}",
+        step=f"telegram.setup.{method}",
+        method="POST",
+        payload=data,
+        timeout=20,
+    )
     if not answer.get("ok"):
         raise RuntimeError(f"Telegram {method} failed: {answer.get('description')}")
 
@@ -26,7 +31,9 @@ call("setMyCommands", {"scope": {"type": "chat", "chat_id": int(os.environ["OWNE
                            {"command": "status", "description": "Publisher status"},
                            {"command": "flags", "description": "Review held questions"},
                            {"command": "hold", "description": "Hold a question"},
-                           {"command": "republish", "description": "Retry a release"},
+                           {"command": "retry", "description": "Retry a failed upload"},
+                           {"command": "clear", "description": "Clear a failed upload"},
+                           {"command": "republish", "description": "Republish a release"},
                            {"command": "rollback", "description": "Restore an earlier version"},
                            {"command": "remove", "description": "Remove a book"},
                        ]})
