@@ -22,10 +22,13 @@ def run(browser, origin, pack, out, helpers):
             assert page.locator('.k-complete-mascot svg').count() == 1
             assert page.locator('.k-victory-stars svg.earned').count() == 2
             assert '+40 XP' in page.locator('.k-xp-gained').inner_text()
+            footer=page.locator('.k-complete-footer')
+            assert footer.count()==1
+            assert footer.locator('[data-a="next-chapter"]').count()==1
+            assert footer.locator('[data-a="session-mistakes"]').count()==1
             if device == 'phone':
-                browse=page.locator('[data-a="find-library"]').bounding_box()
-                footer=page.locator('.actionbar').bounding_box()
-                assert browse and footer and browse['y']+browse['height'] <= footer['y']
+                box=footer.bounding_box();viewport=page.viewport_size
+                assert box and viewport and box['y']+box['height'] <= viewport['height']+1
             assert page.evaluate('JSON.stringify([S.fav,S.favBooks])') == favorites
             name = f'{device}-{theme}-chapter-complete-mixed'
             hashes[name] = helpers['capture'](page, out/(name+'.png'))
@@ -36,7 +39,9 @@ def run(browser, origin, pack, out, helpers):
             page.locator('[data-a="action"]').last.click()
             assert page.evaluate('KafuStudy.last.skipped===3&&!KafuStudy.last.perfect')
             assert 'Session complete' in page.locator('header').inner_text()
-            page.locator('[data-a="action"]').last.click();page.wait_for_selector('nav')
+            assert page.locator('.k-complete-footer [data-a="find-library"]').count()==1
+            page.locator('header [data-a="back"]').click();page.wait_for_selector('nav')
+            assert page.locator('nav [aria-current="page"]').inner_text().strip()=='Home'
             page.evaluate("async()=>{await DB.put('meta','state',S);}")
             saved = page.evaluate('JSON.stringify(S.answers)')
             page.wait_for_function('navigator.serviceWorker.controller!==null')
@@ -45,4 +50,4 @@ def run(browser, origin, pack, out, helpers):
             assert page.evaluate('JSON.stringify([S.fav,S.favBooks])') == favorites
             assert not errors, errors
             ctx.close()
-    return {'hashes':hashes,'passed':['phone/iPad light/dark: 4-question victory shows SVG mascot, 2/3 stars and +40 XP; phone Browse chapters clears sticky footer; session-only Review mistakes, resumed/skipped questions never earn perfect, unchanged stars and offline-persistent answers']}
+    return {'hashes':hashes,'passed':['phone/iPad light/dark: 4-question victory shows SVG mascot, 2/3 stars and +40 XP; phone/iPad completion keeps Next chapter + Review/Browse in sticky footer and back arrow returns Home; session-only Review mistakes, resumed/skipped questions never earn perfect, unchanged stars and offline-persistent answers']}
