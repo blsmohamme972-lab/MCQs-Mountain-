@@ -184,7 +184,10 @@ def save_state(state: Path, content: Path) -> None:
         run("gh", "release", "upload", "kafu-content-state", *assets, "--clobber",
             failure_context=("state.release_upload", "POST", "uploads.github.com", "/repos/<repo>/releases/<id>/assets"))
     except StepFailure as exc:
-        if "state.release_view" not in str(exc):
+        message = str(exc).lower()
+        if "state.release_view" not in message or (
+            "release not found" not in message and "http 404" not in message and "status=404" not in message
+        ):
             raise
         run("gh", "release", "create", "kafu-content-state", *assets,
             "--title", "Kafu active content state", "--notes", "Current active state",
@@ -199,7 +202,10 @@ def save_book_release(book_id: str, version: int, packages: list[Path]) -> None:
         run("gh", "release", "upload", tag, *map(str, packages), "--clobber",
             failure_context=("book_release.upload", "POST", "uploads.github.com", "/repos/<repo>/releases/<id>/assets"))
     except StepFailure as exc:
-        if "book_release.view" not in str(exc):
+        message = str(exc).lower()
+        if "book_release.view" not in message or (
+            "release not found" not in message and "http 404" not in message and "status=404" not in message
+        ):
             raise
         run("gh", "release", "create", tag, *map(str, packages),
             "--title", f"{book_id} v{version}", "--notes", "Validated owner package",
