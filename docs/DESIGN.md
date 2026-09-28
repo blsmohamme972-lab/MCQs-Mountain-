@@ -6,7 +6,7 @@ Day 1 design brief, 2026-09-28. Architecture and content rules remain in HANDOFF
 
 Kafu serves busy medical students and doctors, often tired and studying for hours on a phone. The study experience must be calm, confident and clean. Make the next action obvious. Keep medical question text central; never decorate it so heavily that it becomes harder to read. A successful session should feel encouraging, not like a game demanding attention.
 
-Kafu means “well done” in Iraqi Arabic. The interface remains English-only. A short, varied “Kafu! 👏” belongs after a correct answer, a meaningful streak milestone or a completed chapter. Never tease a wrong answer. Never celebrate before an answer is actually scored. No noisy confetti, surprise sounds, shame, lost-streak warnings or childish mascots.
+Kafu means “well done” in Iraqi Arabic. The interface remains English-only. A short, varied “Kafu!” belongs after a correct answer, a meaningful streak milestone or a completed chapter. Icons and celebration art use original SVGs, never emoji. Never tease a wrong answer. Never celebrate before an answer is actually scored. Chapter completion may use one brief confetti burst and an original SVG mascot placeholder, with reduced motion respected. No surprise sounds, shame or lost-streak warnings.
 
 ## Brand and visual language
 
