@@ -19,7 +19,7 @@ Every merged code task had green CI before merge. The latest runtime change, PR 
 
 - **PR #20 — Weekly Kafu D1 Backup:** still open in GitHub. Its CI is green, but it was intentionally not self-merged because it adds a scheduled production D1 export. No production D1 backup run has happened from this PR yet.
 - **Credential rotation:** not performed because it requires owner actions in GitHub, Cloudflare and BotFather. Earlier exposed setup credentials should still be rotated.
-- **New-feature phone results:** today's message contained placeholders rather than concrete pass/fail results, so there was no phone failure to fix first.
+- **New-feature phone results:** after the initial placeholder message, the owner selected **“All passed”** on 2026-09-28. No individual check details or new screenshots were supplied in this update; no specific phone failure was reported to fix first.
 - Prior phone proof did pass the protected upload book path: `/queue` published, `/books` listed it, the book opened in the Mini App, question types/feedback worked, and images rendered.
 
 ## Phone test list
