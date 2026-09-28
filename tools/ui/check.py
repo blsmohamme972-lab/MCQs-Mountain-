@@ -41,6 +41,12 @@ VISUAL_HASH_VARIANTS={
     'ipad-light-library-no-results':{
         '1dcb4217f5caf39e6c833321806f14a7adcb6f1d4d0e387836f893c133e78166',
         'dc7cda13f60a5d1c9a304a4f1ad9529af8cdb6d66d02660e8422f825e8843f7b',
+        'd31098a727e408f0d8a290770359a1d1a7dac1e0344ef35d7ce0ecb0cf87a336',
+        'f599e9031346705977f71b61b959925f94189f0a5997983843a7c3525202212a',
+    },
+    'ipad-dark-library-no-results':{
+        '8821de659817eb951546f4cfc3805220ecae6e17c7be853cb312380a6cfe39eb',
+        '541ee13295736b89e23830d390bee3dd58ebc8d7bc2bb38ec4dc9f309a82061c',
     },
 }
 
