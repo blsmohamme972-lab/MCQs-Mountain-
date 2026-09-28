@@ -1041,7 +1041,7 @@ const VIEWS = {
         <p class="note" style="margin-top:10px">Total study time: ${mins(allTime)}. Only active time counts; the timer pauses after ${Math.round(CONFIG.IDLE_SECONDS / 60)} minutes without a tap.</p>
         <h3 class="sec">Question text size</h3><div class="choice">${fsOpts}</div>
         <h3 class="sec">Downloads <span class="note">${kb(used)}</span></h3><div class="list">${dlRows}</div>
-        ${S.reports.length ? `<p class="note" style="margin-top:10px">${S.reports.length} question report${S.reports.length > 1 ? "s" : ""} saved on this device, waiting to be sent.</p>` : ""}
+        ${S.reports.length ? `<p class="note" style="margin-top:10px">${S.reports.length} question report${S.reports.length > 1 ? "s" : ""} saved on this device.</p>` : ""}
         <h3 class="sec">Progress</h3>
         <div class="list">${rowHTML("reset", {}, ICON.x, "Reset my progress", "Clears answers, mistakes and study time on this device", null, true)}</div>
         <h3 class="sec">About</h3>
@@ -1109,7 +1109,7 @@ function reviewExam(i) {
   SHEET = () => `<div class="scrim" data-a="close-sheet"><div class="sheet" role="dialog" aria-label="Report a problem" data-stop="1">
       <h4>Report a problem</h4><p class="note">Tell us what's wrong with this question.</p>
       ${reasons.map((r) => `<button class="radio" data-a="reason" data-r="${esc(r)}" aria-pressed="${r === chosen}"><i></i>${esc(r)}</button>`).join("")}
-      <div class="btns"><button class="btn ghost" data-a="close-sheet">Cancel</button><button class="btn" data-a="send-report">Send report</button></div>
+      <div class="btns"><button class="btn ghost" data-a="close-sheet">Cancel</button><button class="btn" data-a="send-report">Save report on this device</button></div>
     </div></div>`;
   SHEET.set = (r) => { chosen = r; };
   SHEET.get = () => chosen;
@@ -1135,7 +1135,7 @@ const ACTIONS = {
   "fav-q": () => { const qid = SESSION.qids[SESSION.index]; const i = S.fav.indexOf(qid); i >= 0 ? S.fav.splice(i, 1) : S.fav.push(qid); haptic.tap(); saveState(); CloudSync.push(); render(); toast(i >= 0 ? "Removed from starred." : "Starred."); },
   report: () => reportSheet(),
   reason: (d) => { SHEET.set(d.r); render(); },
-  "send-report": () => { const qid = SESSION.qids[SESSION.index]; S.reports.push({ q: qid, reason: SHEET.get(), t: Date.now() }); saveState(); SHEET = null; render(); toast("Report saved. It will be sent when reporting goes live."); },
+  "send-report": () => { const qid = SESSION.qids[SESSION.index]; S.reports.push({ q: qid, reason: SHEET.get(), t: Date.now() }); saveState(); SHEET = null; render(); toast("Report saved on this device."); },
   "close-sheet": (d, el, ev) => { if (ev && ev.target.closest("[data-stop]") && el.classList.contains("scrim")) return; SHEET = null; render(); },
   share: () => {
     const qid = SESSION.qids[SESSION.index]; const link = `https://t.me/${CONFIG.BOT_USERNAME}?startapp=${qid}`;
