@@ -1,6 +1,6 @@
-# Candidate ideas — pass 001
+# Candidate ideas — pass 002
 
-Only gate-passing, buildable proposals. IDs are stable identifiers, not rank. Sorted by Impact × Confidence × Effort (5 = easiest); ties retain ID order. All are proposed, not implementation authorizations. Each data-format addition still needs owner approval before an app PR. Evidence paths refer to the assessed main commit.
+Only gate-passing, buildable proposals. IDs are stable identifiers, not rank. Sorted by Impact × Confidence × Effort (5 = easiest); ties retain ID order. All are proposed, not implementation authorizations. Each data-format addition still needs owner approval before an app PR. Evidence paths refer to current `main` `123cb8986ac6f04991194b6c735821738fd0e94d`; runtime source is unchanged from the pass-001 app snapshot because intervening merged PRs #36–#37 changed only `DNAgens/`.
 
 ### DNA-001 Truthful report capture
 - Status: 🔒 locked (owner only)
@@ -89,14 +89,14 @@ Only gate-passing, buildable proposals. IDs are stable identifiers, not rank. So
 ### DNA-015 Dark and enlarged text audit
 - Status: proposed
 - Area: Accessibility
-- Problem (with evidence): `docs/DESIGN.md:31-37` sets WCAG/200% and phone/iPad references; local Chromium screenshot run failed.
-- Idea (concrete, buildable on the current stack): Review 390×844 and 820×1180 in light/dark and 200% text on device; record contrast, clipping, focus and safe-area defects as evidence.
+- Problem (with evidence): Exact-head Visual/Flow run 36413005462 and artifact 10966180395 now prove default-size 390×844 and 820×1180 light/dark rendering for Home, Library, Study, completion and Me, with `visual_pass: true`. They do not prove 200% text, screen-reader behavior, safe areas in Telegram, or physical-device clipping.
+- Idea (concrete, buildable on the current stack): Use the reviewed CI screenshots as the default-size baseline, then audit 200% text on one target Android and one iOS/iPad Telegram host; record contrast, clipping, focus and safe-area defects with annotated evidence.
 - Why students will come back for it: Usability on real phones prevents early abandonment.
-- Acceptance test (how we prove it works): Annotated screenshots and keyboard/assistive-tech notes; no horizontal scroll or obstructed answer actions.
+- Acceptance test (how we prove it works): Default-size CI evidence remains clean; at 200% text on target hosts there is no horizontal page scroll, clipped critical copy, hidden answer action or unsafe-area obstruction, with screen-reader notes recorded separately.
 - Gates: $0 ✅ · Constitution ✅ · Progress-safe ✅
 - Scores: Impact 4/5 · Confidence 5/5 · Effort 4/5 (5 = easiest) → Total = 80
-- Devil's advocate: Visual tests already exist. Answer: automated fixtures are not the Telegram host or enlarged real-device text.
-- Revision: v1 (pass-001)
+- Devil's advocate: CI already covers four device/theme combinations. Answer: fixed CSS pixels in Chromium do not establish enlarged host text or assistive-tech behavior.
+- Revision: v2 (pass-002)
 
 ### DNA-016 Scoped recovery wording
 - Status: proposed
@@ -125,14 +125,14 @@ Only gate-passing, buildable proposals. IDs are stable identifiers, not rank. So
 ### DNA-007 Accessible sheet focus cycle
 - Status: proposed
 - Area: Accessibility
-- Problem (with evidence): `app/index.html:1106-1139` creates a dialog but has no evident focus trap/return; `docs/DESIGN.md:31` requires it.
-- Idea (concrete, buildable on the current stack): Add reusable Escape, initial focus, trap and return behavior for sheets, no state-format change.
-- Why students will come back for it: Keyboard and assistive-tech learners can complete/report a question.
-- Acceptance test (how we prove it works): Tab/Shift+Tab stay in sheet, Escape closes, focus returns to Report; VoiceOver/TalkBack smoke in Telegram.
+- Problem (with evidence): Browser behavior now implements modal initial focus, inert outside content, Tab/Shift+Tab cycling, Escape close and opener-focus return (`app/design/usability.js:78-111`), and the real-browser usability flow asserts modal state, Escape and focus return (`tools/ui/flows/02_usability.py:13-19`). No physical Telegram VoiceOver/TalkBack smoke proves the host path.
+- Idea (concrete, buildable on the current stack): Keep the existing reusable focus cycle regression-locked and add a short VoiceOver/TalkBack Telegram-host smoke for report and destructive-confirmation sheets; fix only host-specific defects without saved-state changes.
+- Why students will come back for it: Keyboard and assistive-tech learners can complete/report a question without getting trapped or losing context.
+- Acceptance test (how we prove it works): Existing browser flow stays green; on one Android TalkBack and one iOS VoiceOver run, focus enters the sheet, cycles without escaping, Escape/Back behavior is documented, and close returns to the triggering control.
 - Gates: $0 ✅ · Constitution ✅ · Progress-safe ✅
 - Scores: Impact 5/5 · Confidence 5/5 · Effort 3/5 (5 = easiest) → Total = 75
-- Devil's advocate: Host Back handling might conflict. Answer: test Back and Escape separately and preserve existing navigation.
-- Revision: v1 (pass-001)
+- Devil's advocate: Browser coverage may already be enough. Answer: it proves the DOM behavior, not Telegram-host assistive-tech behavior.
+- Revision: v2 (pass-002)
 
 ### DNA-028 Source audit parser warning repair
 - Status: proposed
@@ -221,14 +221,14 @@ Only gate-passing, buildable proposals. IDs are stable identifiers, not rank. So
 ### DNA-009 Medical errata follow-through
 - Status: proposed
 - Area: Content pipeline
-- Problem (with evidence): Report queue is local (`docs/PRIVACY.md:6`) while bot `/flags` handles separate owner flags (`worker/bot.mjs:98-108`).
-- Idea (concrete, buildable on the current stack): After honest local capture, design a minimal opt-in report handoff to owner moderation with question ID/reason only, rate limits, no student identity; require owner approval before transmission.
+- Problem (with evidence): Current `main` still keeps reports local (`app/modules/privacy.js:15`; `app/index.html:1112`), while the owner has now approved a minimal future send path in `DNAgens/CHANGELOG.md`. The open report PR is not merged and is not completion evidence.
+- Idea (concrete, buildable on the current stack): Implement only the approved contract in a behavior PR: send question ID, book ID + version, reason, and optional note ≤300 characters to D1; use Telegram user ID only for rate limiting and never retain it in the report record; offline queue says exactly “Saved — will send when online”; delete the local queued item after server acknowledgement and delete the server record when resolved; owner reads reports by bot command; update privacy copy.
 - Why students will come back for it: A corrected explanation repairs trust and motivates revisits.
-- Acceptance test (how we prove it works): One report reaches moderation once; offline queue retries with consent; spam bound; no personal progress transmitted.
+- Acceptance test (how we prove it works): Online report creates exactly one minimal D1 record with no retained Telegram ID; offline retry does not duplicate and shows the approved wording; acknowledgement removes the local queue; owner resolve removes the server record; rate-limit, upgrade/rollback, privacy and production-smoke tests pass within free tier.
 - Gates: $0 ✅ · Constitution ✅ · Progress-safe ✅
 - Scores: Impact 5/5 · Confidence 4/5 · Effort 3/5 (5 = easiest) → Total = 60
-- Devil's advocate: Abuse and moderation load may exceed free tier. Answer: cap submissions and keep owner review; stop if quota rises.
-- Revision: v1 (pass-001)
+- Devil's advocate: Abuse, moderation work and historical backups complicate deletion. Answer: keep strict rate limits/minimal fields, disclose backup limits, and stop expansion if free-tier or moderation load rises.
+- Revision: v2 (pass-002)
 
 ### DNA-023 Exam calibration label
 - Status: proposed
@@ -257,14 +257,14 @@ Only gate-passing, buildable proposals. IDs are stable identifiers, not rank. So
 ### DNA-021 Original identity decision prototype
 - Status: proposed
 - Area: Visual theme
-- Problem (with evidence): `docs/DESIGN.md:9` rejects childish mascots; `app/design/tokens.css:2-29` has palette but no distinct original illustration.
-- Idea (concrete, buildable on the current stack): Prototype two original directions in a review artifact: typographic Kafu mark versus a restrained non-character study motif; owner selects before production art.
-- Why students will come back for it: Recognition can reduce friction when reopening Telegram.
-- Acceptance test (how we prove it works): Blind comprehension/recognition check with 5–8 students, original asset provenance, light/dark small-size check.
+- Problem (with evidence): `docs/DESIGN.md:9` rejects childish mascots; `app/design/tokens.css:2-29` has a coherent palette but no distinct original identity. The owner explicitly requested three written original brand directions before any implementation.
+- Idea (concrete, buildable on the current stack): Present three written, rights-safe directions with no production art: **Editorial Kafu** — typographic Kafu mark plus restrained book/chapter editorial hierarchy; **Waypoint Study** — a simple original non-character progress/wayfinding motif paired with the existing clean cards; **Focus Window** — an original abstract frame/tab motif that signals “one focused question at a time.” Each direction specifies typography use, icon/motif rules, light/dark behavior, what is forbidden, and a one-screen Home/Study application sketch description. Owner selects one before any asset work.
+- Why students will come back for it: A consistent recognizable identity can reduce friction when reopening Kafu in Telegram without turning study into a childish game.
+- Acceptance test (how we prove it works): Owner chooses one of the three written directions; before implementation, a 5–8-student blind comprehension/recognition check finds no misleading clinical meaning, all proposed assets have original provenance, and the chosen system remains legible at small light/dark sizes.
 - Gates: $0 ✅ · Constitution ✅ · Progress-safe ✅
 - Scores: Impact 4/5 · Confidence 3/5 · Effort 4/5 (5 = easiest) → Total = 48
-- Devil's advocate: Brand work may be premature. Answer: cap it to a cheap decision and defer art until real content.
-- Revision: v1 (pass-001)
+- Devil's advocate: Brand work may be premature. Answer: this is only a cheap decision artifact; production art waits until real content and student feedback justify it.
+- Revision: v2 (pass-002)
 
 ### DNA-022 Summary of missed concepts
 - Status: proposed
