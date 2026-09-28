@@ -10,7 +10,9 @@ def run(browser,origin,pack,out,helpers):
             before=page.evaluate('JSON.stringify([S.answers,S.fav,S.favBooks,S.dl,S.sync_v2])')
             assert page.locator('.k-streak').count()==1
             assert page.locator('[data-a=continue]').count()==1
-            assert page.locator('[aria-label="Daily study goal"]').get_attribute('aria-valuenow')=='420'
+            assert page.locator('.k-goal-ring').get_attribute('aria-label')=='7 of 10 daily study minutes'
+            assert page.locator('.k-game-hud .k-level-badge').count()==1
+            assert page.locator('.k-game-hud .k-xp-track').count()==1
             assert page.locator('[data-a=review-due]').count()==1
             page.evaluate("tab('library')")
             assert page.locator('#kafu-book-results .book-card').count()==3
@@ -21,10 +23,12 @@ def run(browser,origin,pack,out,helpers):
             assert search.evaluate('(el)=>el===document.activeElement')
             assert '2 of 4 answered' in page.locator('#kafu-book-results').inner_text()
             assert 'Available offline' in page.locator('#kafu-book-results').inner_text()
+            page.evaluate('document.activeElement?.blur()')
             name=f'{device}-{theme}-library-search';hashes[name]=helpers['capture'](page,out/(name+'.png'))
             page.locator('#kafu-specialty-filter').select_option('Surgery')
             assert page.locator('#kafu-book-results .book-card').count()==0
             assert 'No matching books' in page.locator('#kafu-book-results').inner_text()
+            page.evaluate('document.activeElement?.blur()')
             name=f'{device}-{theme}-library-no-results';hashes[name]=helpers['capture'](page,out/(name+'.png'))
             page.locator('[data-a=library-clear]').click()
             assert page.locator('#kafu-book-results .book-card').count()==3
