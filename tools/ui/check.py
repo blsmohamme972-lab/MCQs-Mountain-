@@ -120,6 +120,9 @@ def open_app(ctx,origin,pack,progress=True):
     page.wait_for_selector("nav[aria-label='Main']",timeout=15000)
     page.wait_for_function("typeof CATALOG!=='undefined'&&CATALOG.books.some(b=>b.id==='DESIGN-CARDIO')")
     page.evaluate('document.fonts.ready')
+    # Let the normal 300 ms debounced state projection settle before any isolation test snapshots persistence.
+    # This does not change gallery assertions; it removes an unrelated boot-write race.
+    page.wait_for_timeout(350)
     failures=page.evaluate('KafuEnhancements.failures')
     if failures:raise AssertionError(f'Installer failures: {failures}')
     return page,errors
