@@ -71,7 +71,8 @@ class Step3Tests(unittest.TestCase):
         with patch.object(queue_script, "Queue", return_value=queue), \
              patch.object(queue_script, "process_publish", side_effect=publish), \
              patch.object(queue_script, "send_report"):
-            queue_script.main()
+            with self.assertRaisesRegex(RuntimeError, "1 queue job"):
+                queue_script.main()
         self.assertEqual([x["group_key"] for x in queue.finished], [f"BOOK-{i}_v1" for i in range(3)])
         self.assertEqual([x["ok"] for x in queue.finished], [True, False, True])
 
