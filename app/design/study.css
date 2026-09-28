@@ -28,3 +28,36 @@
 .k-question-enter{animation:kafu-question-enter var(--duration-question) var(--ease-out)}
 @media(min-width:760px){.k-study .stem,.k-study .opt,.k-study .tf p,.k-study .explain p{font-size:var(--text-study-wide)}.k-complete h2{font-size:var(--text-title-wide)}}
 @media(prefers-reduced-motion:reduce){.k-question-enter{animation:none}.k-confetti{display:none}}
+
+
+/* DESIGN 1 Round 3: calm study zone and completion footer. */
+body[data-screen='study'] .top h1{
+  font-family:var(--font-reading);
+  font-size:var(--text-base);
+  font-weight:700;
+  letter-spacing:0;
+}
+.k-study{max-width:var(--study-max)}
+.k-feedback-correct{display:flex;align-items:center;gap:var(--space-2)}
+.k-feedback-correct svg{width:20px;height:20px;flex:none}
+.k-kafu{display:none}
+.k-study .opt.wrong[aria-pressed='true'] .l{background:var(--color-danger);color:var(--color-on-primary)}
+.k-xp-gained span{color:var(--color-on-accent)}
+.k-complete{padding-bottom:calc(var(--nav-height) + var(--space-12) + env(safe-area-inset-bottom,0px))}
+.k-complete-footer{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:7;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:var(--space-3);
+  padding:var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom,0px));
+  background:var(--color-bg);
+  border-top:1px solid var(--color-border);
+}
+.k-complete-footer .btn{width:100%;min-width:0;margin:0}
+@media(min-width:760px){
+  .k-complete-footer{left:50%;right:auto;width:min(100%,var(--study-max));transform:translateX(-50%);border:var(--outline-width) solid var(--color-outline);border-bottom:0;border-radius:var(--radius-lg) var(--radius-lg) 0 0;box-shadow:var(--shadow-hard)}
+}
