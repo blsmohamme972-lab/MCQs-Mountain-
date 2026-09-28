@@ -38,14 +38,16 @@ def check_book(catalog,required_book):
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--required-book",default="KAFU-UPLOAD-TEST")
+    parser.add_argument("--app-url",default=APP_URL,help="Read-only app origin to verify; defaults to production.")
     args=parser.parse_args()
+    app_url=args.app_url if args.app_url.endswith("/") else args.app_url+"/"
     expected=os.environ.get("GITHUB_SHA","")
     if expected and not re.fullmatch(r"[a-f0-9]{40}",expected): raise ValueError("Invalid deployment commit")
     for attempt in range(6):
         try:
-            check_app_html(request_bytes(APP_URL,step="live.app",headers={"Cache-Control":"no-cache"}))
+            check_app_html(request_bytes(app_url,step="live.app",headers={"Cache-Control":"no-cache"}))
             if expected:
-                check_build(request_json(APP_URL+"build-info.json?deploy="+expected,step="live.build",headers={"Cache-Control":"no-cache"}),expected)
+                check_build(request_json(app_url+"build-info.json?deploy="+expected,step="live.build",headers={"Cache-Control":"no-cache"}),expected)
             break
         except Exception:
             if attempt==5: raise
