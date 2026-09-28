@@ -19,3 +19,7 @@ This entry records decisions, not completed app work. No privacy page, app behav
 - Top five by score: DNA-001 truthful report capture (125); DNA-002 same-phone A→B→A and reinstall proof (100); DNA-003 visible sync state (100); DNA-004 meaningful medical image alt (80); DNA-011 offline readiness drill (80). Ties retain stable ID order.
 - Decisions needing owner: approve any additive personal-data schema or sync change; provide rights and medical review authority for the first real book; choose whether any original non-character/character brand work is wanted under adult-tone policy; approve a minimal report transmission/privacy policy before implementation; approve a dated Iraqi exam blueprint and its clinical reviewer. The board can test and propose, not decide these.
 - PR scope check required immediately before opening: `git diff --name-only origin/main`; every output path must begin `DNAgens/`. Docs-only workflows are path-filtered; no new green CI result should be claimed if no checks start.
+
+## 2026-09-28 UTC — pass 002, in progress
+
+- Pass claimed for evidence review; final entry replaces this line before merge.
