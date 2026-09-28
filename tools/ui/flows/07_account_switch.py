@@ -12,7 +12,7 @@ def run(browser,origin,pack,out,helpers):
     ctx=helpers['context'](browser,origin,'phone','light')
     def user(uid):
         page=ctx.new_page();errors=[];page.on('pageerror',lambda exc:errors.append(str(exc)))
-        page.add_init_script(SDK,str(uid))
+        page.add_init_script(f"({SDK})({uid});")
         page.goto(origin,wait_until='load')
         page.wait_for_function("typeof KafuPersonal!=='undefined'&&!!KafuPersonal.replica&&CATALOG.books.some(b=>b.id==='DESIGN-CARDIO')")
         if page.locator('[data-a=onboard-skip]').count():page.locator('[data-a=onboard-skip]').click()
