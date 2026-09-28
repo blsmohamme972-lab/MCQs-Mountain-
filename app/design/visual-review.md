@@ -1,5 +1,7 @@
-# UI evidence review checkpoint
+# Reviewed UI evidence
 
-Task 5 (#33) approved source 003aa88c9ec92e01191d974b829fba100b67fbd0, run 36409326395 artifact 10963463906; both exact-head CIs 36410090318/36410090320 passed before merge.
+Task 5 #33 merged after exact-head Content 36410090318 and Visual/Flow 36410090320 passed; reviewed artifact 10963463906.
 
-Task 6 (#34) source 706f9acabae80415602bd4f0d6bdff126fffcf89: Content CI passed. Browser flow correctly did not label a seeded old pack as Available offline, because it lacks source identity. The fixture now validates it through the real download manager before expecting that label, while explicitly asserting the incomplete legacy pack is not labelled offline. No production logic or saved-data contract was weakened. Before/after review and new baseline approval are still pending. CI never writes expected hashes.
+Task 6 #34: source 048a660c43b218ff28c925bb78c940beaab37c14, Visual/Flow run 36412219180, artifact 10964832631. All functional tests passed; expected visual changes remained. Phone390 and iPad820 light/dark before/after contact sheets reviewed for Home, Library, Study correct/wrong, Completion and Me. Filtered search/no-results and wider onboarding were inspected separately. Single filtered covers now retain their normal width. The candidate raw-pixel hashes in that artifact are deliberately approved here. CI never regenerates its own expected baseline. Final exact-head Content and Visual/Flow checks remain required before merge.
+
+Offline labels use real source-identity validation; stale packs are not labelled complete. Progress fallback also requires the matching book version. These checks do not migrate or delete any saved record.

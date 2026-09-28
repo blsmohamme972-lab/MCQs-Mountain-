@@ -13,7 +13,7 @@
     for(const ch of book.chapters||[]){
       const pack=packs[book.id+':'+ch.id];
       const qids=Array.isArray(ch.qids)&&ch.qids.length===ch.questions?ch.qids:
-        pack?.book_id===book.id&&String(pack.chapter_id)===String(ch.id)?(pack.questions||[]).map(q=>q.id):[];
+        pack?.book_id===book.id&&pack.version===book.version&&String(pack.chapter_id)===String(ch.id)?(pack.questions||[]).map(q=>q.id):[];
       if(!Number.isSafeInteger(ch.questions)||ch.questions<0||qids.length!==ch.questions||qids.some(id=>!/^Q\d{9}$/.test(id)))exact=false;
       for(const id of qids){if(ids.has(id))exact=false;ids.add(id);}
     }
