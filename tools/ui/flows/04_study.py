@@ -11,19 +11,19 @@ def run(browser, origin, pack, out, helpers):
             page.evaluate("ids=>startSession({mode:'study',title:'A focused practice session',bookId:'DESIGN-CARDIO',chId:1,qids:ids})", IDS)
             for i in range(4):
                 assert page.locator('[role="progressbar"][aria-label="Question progress"]').get_attribute('aria-valuenow') == str(i+1)
-                helpers['study_answer'](page, i != 1)
+                helpers['study_answer'](page, i != 0)
                 assert page.locator('.explain').get_attribute('role') == 'status'
                 if i==0:
+                    assert page.evaluate("""() => {const badge=document.querySelector('.opt.wrong .l'),probe=document.createElement('i');probe.style.background='var(--color-danger)';document.body.appendChild(probe);const ok=badge&&getComputedStyle(badge).backgroundColor===getComputedStyle(probe).backgroundColor;probe.remove();return !!ok}""")
+                if i==1:
                     assert page.locator('.k-feedback-correct').count()==1
                     assert 'Correct' in page.locator('.k-feedback-correct').inner_text() and 'Kafu' in page.locator('.k-feedback-correct').inner_text()
-                if i==1:
-                    assert page.evaluate("""() => {const badge=document.querySelector('.opt.wrong .l'),probe=document.createElement('i');probe.style.background='var(--color-danger)';document.body.appendChild(probe);const ok=getComputedStyle(badge).backgroundColor===getComputedStyle(probe).backgroundColor;probe.remove();return ok}""")
                 page.locator('[data-a="action"]').last.click()
             page.wait_for_selector('[data-session-complete]')
             assert page.locator('[data-session-complete]').get_attribute('data-score') == '75'
             result = page.evaluate('KafuStudy.last')
             assert result['answered'] == 4 and result['correct'] == 3 and result['skipped'] == 0
-            assert result['mistakes'] == [IDS[1]] and not result['perfect']
+            assert result['mistakes'] == [IDS[0]] and not result['perfect']
             assert page.locator('.k-complete-mascot svg').count() == 1
             assert page.locator('.k-victory-stars svg.earned').count() == 2
             assert '+40 XP' in page.locator('.k-xp-gained').inner_text()
@@ -41,7 +41,7 @@ def run(browser, origin, pack, out, helpers):
             name = f'{device}-{theme}-chapter-complete-mixed'
             hashes[name] = helpers['capture'](page, out/(name+'.png'))
             page.locator('[data-a="session-mistakes"]').click()
-            assert page.evaluate('SESSION.qids') == [IDS[1]]
+            assert page.evaluate('SESSION.qids') == [IDS[0]]
             page.evaluate("ids=>{tab('home');startSession({mode:'study',title:'Resumed session',qids:ids,index:3});}", IDS)
             assert page.locator('header h1').inner_text().startswith('Chapter · Q 4/4')
             assert float(page.locator('header h1').evaluate("e=>parseFloat(getComputedStyle(e).fontSize)"))<=16.1
