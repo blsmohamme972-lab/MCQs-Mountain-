@@ -47,7 +47,7 @@
     }
     return{earned,answered:qids.length,streak:runs.current,longestStreak:runs.longest};
   }
-  function phrase(qid,attempt){const choices=['Kafu! \ud83d\udc4f','Kafu! Nicely reasoned.','Kafu! One step further.'];let hash=Number(attempt)||0;for(const c of String(qid))hash=(hash+c.charCodeAt(0))%997;return choices[hash%choices.length];}
+  function phrase(qid,attempt){const choices=['Kafu!','Kafu! Nicely reasoned.','Kafu! One step further.'];let hash=Number(attempt)||0;for(const c of String(qid))hash=(hash+c.charCodeAt(0))%997;return choices[hash%choices.length];}
   const api={IDS,key,valid,migrate,markShown,derive,streaks,phrase};root.KafuDelightCore=api;
   if(typeof module==='object'&&module.exports)module.exports=api;
 })(globalThis);
