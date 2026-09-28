@@ -19,7 +19,7 @@ Light theme:
 - Success `#177D4E`; error `#C93E4A`; warning `#9A5800`.
 
 Dark theme:
-- Primary `#8C80FF`; accents `#FFD166` and `#45D7C8`.
+- Primary `#6A4CFF`; accents `#FFD166` and `#45D7C8`.
 - Background `#111522`; surface `#1B2132`; alternate surface `#272E44`.
 - Text `#F8F7FF`; muted text `#BEC5D8`.
 - Success `#65D998`; error `#FF818C`; warning `#FFD166`.
@@ -30,7 +30,7 @@ Colour is never the only signal. Correct, error, warning, sync and offline state
 
 ### Shape and depth
 
-Use the token radius scale only: 8, 12, 16, 22 and 30 CSS px plus pill. Standard outline is 2 px; strong outline is 3 px. Hard shadow depth is 5 px; pressed offset is 3 px. A press moves the control toward its shadow rather than adding blur.
+Use the token radius scale only: 8, 12, 16, 22 and 30 CSS px plus pill. Standard ink outline is 2 px; strong outline is 3 px. Cards use a hard `0 4px 0` ink shadow in both themes. Primary buttons use a darker 5 px bottom edge and press by translating 4 px downward. A press moves the control toward its edge rather than adding blur.
 
 The study core uses less depth than navigation and reward UI. Medical imagery must sit on the neutral `--color-medical-image` background and must never be filtered, tinted, colour-shifted or used as decoration.
 
@@ -38,7 +38,7 @@ The study core uses less depth than navigation and reward UI. Medical imagery mu
 
 All font files are OFL-licensed, self-hosted WOFF2 Latin subsets, integrity-pinned by `tools/vendor-lock.json`, and cached by the existing offline shell.
 
-- **Fredoka 600** — headings, display numerals, short game-like labels.
+- **Fredoka 600** — every screen title, card title, score/streak/goal/XP number and short game-like label. Screen/card titles are 28 px on phone and 34 px on iPad; large display numbers are 44–56 px.
 - **Nunito 400/700** — all questions, answers, explanations, body copy and controls.
 - **Pixelify Sans 500** — tiny rare accents only.
 
@@ -100,9 +100,15 @@ These rules are binding for every later design task:
 - **Design PRs never self-merge:** exact-head CI and screenshots are evidence for owner review; the PR stays open until the owner explicitly approves it.
 
 
-### Visual determinism note
+### Visual determinism and viewport evidence
 
-All visual baselines remain strict single-hash comparisons except three measured Chromium-only states: `ipad-light-library-search`, `ipad-light-library-no-results`, and `ipad-dark-library-search`. Repeated exact-head runs differed by only **7–10 pixels**, all by a maximum of **1 channel level**, at the same rounded focused-search border. CI therefore accepts exactly the two observed SHA-256 variants for those three named screenshots, with identical dimensions. This is not a general pixel-diff threshold; every other screenshot remains exact.
+Visual hashes are strict single hashes. Library search behavior still retains keyboard focus as an accessibility/interaction requirement, but the screenshot harness blurs the focused control only after that behavior is asserted so Chromium focus-ring rasterization cannot create alternate iPad hashes.
+
+Full-page screenshots remain useful for overflow/layout auditing, but fixed navigation is judged from viewport-only captures. Every normal student screen is captured at the top and at a representative scroll position, then assembled into four contact sheets: phone light, phone dark, iPad light and iPad dark.
+
+### Signature test
+
+The final DESIGN 1 review includes a **two-second signature test**: show one representative student viewport without explanation. If a neutral viewer would not immediately describe it as a game-style study app, the design is not ready. The automated proxy requires the visible HUD, pixel level badge, XP bar, filled streak flame, hard outlined/shadowed surfaces, collectible book cover and victory rewards; the viewport contact sheets are the human visual gate.
 
 ## Evidence required for DESIGN 1/10
 
@@ -110,8 +116,7 @@ Before owner approval:
 - Content Contract CI green at exact head.
 - Visual/Flow CI green at exact head.
 - Phone `#gallery` screenshots in light and dark inspected.
-- Normal app screenshots checked to ensure the arcade shell does not harm the reading core.
+- Phone/iPad light/dark viewport contact sheets checked with the two-second signature test while confirming the calm study core remains readable.
 - Font WOFF2 total measured ≤100 KB and JS+CSS gzip measured ≤150 KB.
 - No saved-progress/schema changes.
 
-Baseline review note: the Arcade-Clean baseline refresh is deliberate because the approved foundation changes typography, palette, outlines, shadows and component treatment across the visual suite. A repeat run showed only two iPad-light Library states differing by 7 pixels inside a 3×6 px text-antialiasing patch, with maximum channel delta 1/255; those exact reviewed raster variants were accepted without broadening any visual-diff threshold.
