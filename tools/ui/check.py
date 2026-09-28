@@ -289,7 +289,7 @@ def main():
         temp=Path(td);cert,key=temp/'cert.pem',temp/'key.pem'
         subprocess.run(['openssl','req','-x509','-newkey','rsa:2048','-nodes','-keyout',str(key),'-out',str(cert),'-days','1','-subj','/CN=localhost'],check=True,capture_output=True)
         with site(args.source,temp/'after',8765,cert,key,args.source/'app/vendor') as (origin,pack),sync_playwright() as pw:
-            launch={'args':['--no-sandbox','--ignore-certificate-errors']}
+            launch={'args':['--no-sandbox','--ignore-certificate-errors','--disable-gpu','--force-color-profile=srgb']}
             if args.browser:launch['executable_path']=args.browser
             browser=pw.chromium.launch(**launch)
             hashes=snapshots(browser,origin,pack,args.out/'after')
