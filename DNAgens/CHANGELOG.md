@@ -1,5 +1,16 @@
 # DNAgens pass log
 
+## Owner decisions — 2026-09-28 (Baghdad)
+
+- **Report sending approved for a future implementation PR:** send only question ID, book ID and version, reason, and an optional note of at most 300 characters. Store reports in D1. Telegram user ID is for rate limiting only; do not retain it in the report record. Queue offline on the device with the truthful status “Saved — will send when online”; delete local queued data once the server acknowledges it and delete server data once resolved. Owner reads reports with a bot command. Update `docs/PRIVACY.md` in the behavior PR, with tests and production smoke.
+- **Image descriptions:** describe only what is visible. Never include the diagnosis, correct option, or another answer-revealing clue. Human medical review is required before publication.
+- **Personal-data formats:** approval is case by case. Changes must be additive, compatible with old versions, and prove upgrade and rollback in the implementation PR. This decision does not approve a specific migration.
+- **Brand:** the next DNAgens critique pass proposes three written original brand directions. The owner chooses one before implementation.
+- **Exam blueprint:** the owner reviews MRCS personally. Iraqi Board mapping follows later; no readiness claim is authorized now.
+- **Locked priorities:** DNA-001 truthful report wording, DNA-002 same-phone A→B→A plus reinstall proof, DNA-003 visible sync status. Only the owner changes their scope or locked status. Implementation remains subject to each PR's tests and the constitution.
+
+This entry records decisions, not completed app work. No privacy page, app behavior, progress format or production state changes in this PR.
+
 ## 2026-09-28 UTC — pass 001, founding review
 
 - Reviewed main `22afa6a416c6d8eca91fbf7a8ab5b69eb1b00921`: `HANDOFF.md`, `PROGRESS.md`, `MCQ_PLATFORM_FINAL_PLAN.yaml`, all `docs/` and `docs/reports/`, app, Workers, content tools, tests and GitHub workflows. `BUILD_PROMPT.md` does not exist; reviewed `tools/MASTER_PROMPT.md` as the present parser/packaging instruction. Existing documents disagree about recent PR/backup state; source/tests and dated reports were distinguished from aspirations.
