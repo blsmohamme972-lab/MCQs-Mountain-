@@ -1,125 +1,54 @@
-// Kafu's small control plane. Publishing work is performed by GitHub Actions.
-const MAX_ZIP = 19 * 1024 * 1024;
-const NAME = /^([A-Z0-9][A-Z0-9-]*)_v([1-9]\d*)(?:_part([1-9]\d*)of([1-9]\d*))?\.zip$/i;
+// Kafu control plane. Heavy publishing work stays in GitHub Actions.
+import { parsePackageName, queueDocument, retryGroup, clearGroup } from "./queue-state.mjs";
+export { parsePackageName, retryGroup, clearGroup };
 const ID = /^[A-Z0-9][A-Z0-9-]*$/;
 const QID = /^Q\d{9}$/;
 
-export function parsePackageName(filename) {
-  const m = NAME.exec(filename || "");
-  if (!m) return null;
-  const part = Number(m[3] || 1), total = Number(m[4] || 1);
-  if (total > 100 || part > total || (total === 1 && m[3])) return null;
-  return { book_id: m[1].toUpperCase(), version: Number(m[2]), part, total,
-    group_key: `${m[1].toUpperCase()}_v${Number(m[2])}` };
-}
-
 function reply(body, status = 200) {
   return new Response(typeof body === "string" ? body : JSON.stringify(body), {
-    status, headers: { "content-type": typeof body === "string" ? "text/plain; charset=utf-8" : "application/json",
-      "cache-control": "no-store" },
+    status, headers: { "content-type": typeof body === "string" ? "text/plain; charset=utf-8" : "application/json", "cache-control": "no-store" },
   });
+}
+function safeText(env, value) {
+  let text = String(value || "");
+  for (const key of ["BOT_TOKEN", "QUEUE_API_TOKEN", "WEBHOOK_SECRET", "DISPATCH_TOKEN", "CLOUDFLARE_API_TOKEN"]) {
+    const secret = String(env[key] || "");
+    if (secret.length >= 4) text = text.split(secret).join("<redacted>");
+  }
+  return text.replace(/(\/(?:file\/)?bot)[^/\s]+\//g, "$1<redacted>/")
+    .replace(/(Bearer|Basic)\s+[^\s"'<>]+/gi, "$1 <redacted>")
+    .replace(/(https?:\/\/[^\s?"']+)\?[^\s"']+/g, "$1");
 }
 async function telegram(env, method, body) {
   const res = await fetch(`https://api.telegram.org/bot${env.BOT_TOKEN}/${method}`, {
-    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body),
+    method: "POST", headers: { "content-type": "application/json", "user-agent": "kafu-bot/1.0" }, body: JSON.stringify(body),
   });
   if (!res.ok) throw new Error(`Telegram ${method}: ${res.status}`);
   const data = await res.json();
-  if (!data.ok) throw new Error(`Telegram ${method}: ${data.description || "failed"}`);
+  if (!data.ok) throw new Error(`Telegram ${method}: ${safeText(env, data.description || "failed")}`);
   return data.result;
 }
 async function message(env, text, extra = {}) {
-  return telegram(env, "sendMessage", { chat_id: env.OWNER_TELEGRAM_ID, text, ...extra });
+  return telegram(env, "sendMessage", { chat_id: env.OWNER_TELEGRAM_ID, text: safeText(env, text).slice(0, 4000), ...extra });
 }
 async function dispatch(env) {
   const repo = env.GITHUB_REPOSITORY || "blsmohamme972-lab/MCQs-Mountain-";
   if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) throw new Error("Invalid GitHub repository");
   const res = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/publish-queue.yml/dispatches`, {
-    method: "POST", headers: { authorization: `Bearer ${env.DISPATCH_TOKEN}`,
-      accept: "application/vnd.github+json", "x-github-api-version": "2022-11-28",
-      "user-agent": "kafu-publish-queue" }, body: JSON.stringify({ ref: "main" }),
+    method: "POST", headers: { authorization: `Bearer ${env.DISPATCH_TOKEN}`, accept: "application/vnd.github+json",
+      "x-github-api-version": "2022-11-28", "user-agent": "kafu-publish-queue" }, body: JSON.stringify({ ref: "main" }),
   });
   if (res.status !== 204) throw new Error(`GitHub dispatch: ${res.status}`);
 }
-async function queueDocument(env, doc) {
-  if (!doc || !Number.isInteger(doc.file_size) || doc.file_size < 1 || doc.file_size > MAX_ZIP ||
-      !doc.file_id || !doc.file_unique_id) return "❌ ZIP required, up to 19 MB.";
-  const p = parsePackageName(doc.file_name);
-  if (!p) return "❌ Filename must be BOOK-ID_vN.zip or BOOK-ID_vN_partXofY.zip.";
-
-  let group = await env.DB.prepare("SELECT part_total,status FROM publish_groups WHERE group_key=?")
-    .bind(p.group_key).first();
-  const existing = await env.DB.prepare("SELECT telegram_file_unique_id FROM publish_queue WHERE group_key=? AND part_index=?")
-    .bind(p.group_key, p.part).first();
-
-  if (group?.status === "failed") {
-    if (group.part_total !== p.total) return "❌ Conflicting part count for failed release.";
-    if (existing) {
-      await env.DB.prepare("UPDATE publish_queue SET part_total=?,telegram_file_id=?,telegram_file_unique_id=?,filename=?,file_size=?,created_at=datetime('now') WHERE group_key=? AND part_index=?")
-        .bind(p.total, doc.file_id, doc.file_unique_id, doc.file_name, doc.file_size, p.group_key, p.part).run();
-    } else {
-      await env.DB.prepare("INSERT INTO publish_queue(group_key,part_index,part_total,telegram_file_id,telegram_file_unique_id,filename,file_size) VALUES(?,?,?,?,?,?,?)")
-        .bind(p.group_key, p.part, p.total, doc.file_id, doc.file_unique_id, doc.file_name, doc.file_size).run();
-    }
-    const row = await env.DB.prepare("SELECT COUNT(*) AS n FROM publish_queue WHERE group_key=?").bind(p.group_key).first();
-    const status = row.n === p.total ? "ready" : "waiting";
-    await env.DB.prepare("UPDATE publish_groups SET status=?,error_summary=NULL,claimed_at=NULL,finished_at=NULL,force_republish=0 WHERE group_key=? AND status='failed'")
-      .bind(status, p.group_key).run();
-    return `📥 replaced failed ${p.group_key} part ${p.part} (${row.n}/${p.total})`;
-  }
-
-  if (existing) return existing.telegram_file_unique_id === doc.file_unique_id ? "📥 already received" :
-    "❌ A different ZIP already occupies this part. Use /queue to inspect it.";
-
-  if (!group) {
-    await env.DB.prepare("INSERT INTO publish_groups(group_key,book_id,version,part_total,status) VALUES(?,?,?,?, 'waiting')")
-      .bind(p.group_key, p.book_id, p.version, p.total).run();
-    group = { part_total: p.total, status: "waiting" };
-  }
-  if (group.part_total !== p.total || !["waiting", "ready"].includes(group.status))
-    return "❌ Conflicting part count or this release has already started.";
-  await env.DB.prepare("INSERT INTO publish_queue(group_key,part_index,part_total,telegram_file_id,telegram_file_unique_id,filename,file_size) VALUES(?,?,?,?,?,?,?)")
-    .bind(p.group_key, p.part, p.total, doc.file_id, doc.file_unique_id, doc.file_name, doc.file_size).run();
-  const row = await env.DB.prepare("SELECT COUNT(*) AS n FROM publish_queue WHERE group_key=?").bind(p.group_key).first();
-  if (row.n === p.total) {
-    await env.DB.prepare("UPDATE publish_groups SET status='ready' WHERE group_key=? AND status='waiting'")
-      .bind(p.group_key).run();
-  }
-  return `📥 received ${p.group_key} (${row.n}/${p.total})`;
-}
-
-export async function retryGroup(env, groupKey) {
-  const p = parsePackageName(`${groupKey || ""}.zip`);
-  if (!p || p.total !== 1) return { ok: false, text: "Usage: /retry BOOK-ID_vN" };
-  const group = await env.DB.prepare("SELECT status,part_total FROM publish_groups WHERE group_key=?")
-    .bind(p.group_key).first();
-  if (!group || group.status !== "failed") return { ok: false, text: "❌ No failed upload found for that release." };
-  const row = await env.DB.prepare("SELECT COUNT(*) AS n FROM publish_queue WHERE group_key=?").bind(p.group_key).first();
-  if (row.n !== group.part_total) return { ok: false, text: "❌ Failed upload is incomplete; upload the missing ZIP part(s)." };
-  await env.DB.prepare("UPDATE publish_groups SET status='ready',error_summary=NULL,claimed_at=NULL,finished_at=NULL WHERE group_key=? AND status='failed'")
-    .bind(p.group_key).run();
-  return { ok: true, text: `📥 retry queued: ${p.group_key}`, group_key: p.group_key, book_id: p.book_id };
-}
-
-export async function clearGroup(env, groupKey) {
-  const p = parsePackageName(`${groupKey || ""}.zip`);
-  if (!p || p.total !== 1) return { ok: false, text: "Usage: /clear BOOK-ID_vN" };
-  const group = await env.DB.prepare("SELECT status FROM publish_groups WHERE group_key=?").bind(p.group_key).first();
-  if (!group || group.status !== "failed") return { ok: false, text: "❌ Only failed uploads can be cleared." };
-  await env.DB.prepare("DELETE FROM publish_queue WHERE group_key=?").bind(p.group_key).run();
-  await env.DB.prepare("DELETE FROM publish_groups WHERE group_key=? AND status='failed'").bind(p.group_key).run();
-  return { ok: true, text: `🧹 cleared failed upload: ${p.group_key}`, group_key: p.group_key, book_id: p.book_id };
-}
 async function adminJob(env, kind, bookId, version = null) {
-  if (!ID.test(bookId) || (version !== null && (!Number.isInteger(version) || version < 1)))
+  if (!ID.test(bookId || "") || (version !== null && (!Number.isSafeInteger(version) || version < 1)))
     return "❌ Invalid book ID or version.";
-  await env.DB.prepare("INSERT INTO admin_jobs(kind,book_id,version,status) VALUES(?,?,?,'ready')")
-    .bind(kind, bookId, version).run();
+  await env.DB.prepare("INSERT INTO admin_jobs(kind,book_id,version,status) VALUES(?,?,?,'ready')").bind(kind, bookId, version).run();
   return `📥 ${kind} queued for ${bookId}${version ? ` v${version}` : ""}`;
 }
 async function bookForQuestion(env, qid) {
   const base = env.CONTENT_BASE || "https://kafu-content-1.blsmohamme97.workers.dev";
-  const response = await fetch(`${base}/routes/${qid.slice(0, 7)}.json`, { cache: "no-store" });
+  const response = await fetch(`${base}/routes/${qid.slice(0, 7)}.json`, { cache: "no-store", headers: {"user-agent":"kafu-bot/1.0"} });
   if (!response.ok) return null;
   return (await response.json()).routes?.[qid]?.book_id || null;
 }
@@ -130,12 +59,12 @@ async function command(env, raw) {
     case "/queue": {
       const r = await env.DB.prepare("SELECT group_key,status,part_total,error_summary FROM publish_groups ORDER BY created_at DESC LIMIT 15").all();
       const a = await env.DB.prepare("SELECT kind,book_id,status,error_summary FROM admin_jobs ORDER BY id DESC LIMIT 5").all();
-      return [...(r.results || []).map(x => `${x.group_key}: ${x.status}${x.error_summary ? ` — ${x.error_summary}` : ""}`),
-        ...(a.results || []).map(x => `${x.kind} ${x.book_id}: ${x.status}${x.error_summary ? ` — ${x.error_summary}` : ""}`)].join("\n") || "Queue empty.";
+      return [...(r.results || []).map(x => `${x.group_key}: ${x.status}${x.error_summary ? ` — ${safeText(env, x.error_summary)}` : ""}`),
+        ...(a.results || []).map(x => `${x.kind} ${x.book_id}: ${x.status}${x.error_summary ? ` — ${safeText(env, x.error_summary)}` : ""}`)].join("\n") || "Queue empty.";
     }
     case "/books": {
       try {
-        const response = await fetch((env.CONTENT_BASE || "https://kafu-content-1.blsmohamme97.workers.dev") + "/catalog.json", { cache: "no-store" });
+        const response = await fetch((env.CONTENT_BASE || "https://kafu-content-1.blsmohamme97.workers.dev") + "/catalog.json", { cache: "no-store", headers: {"user-agent":"kafu-bot/1.0"} });
         if (response.ok) {
           const c = await response.json();
           return (c.books || []).map(x => `${x.id} v${x.version} — ${x.questions} questions, ${x.chapters?.length || 0} chapters`).join("\n") || "No active books.";
@@ -151,33 +80,25 @@ async function command(env, raw) {
     case "/flags": {
       const r = await env.DB.prepare("SELECT qid,source_page FROM flags WHERE status='pending' ORDER BY created_at LIMIT 10").all();
       if (!r.results?.length) return "No pending flags.";
-      return (r.results || []).map(x => `${x.qid} — source page ${x.source_page ?? "unknown"}`).join("\n") + "\nUse /flags QID for actions.";
+      return r.results.map(x => `${x.qid} — source page ${x.source_page ?? "unknown"}`).join("\n") + "\nUse /flags QID for actions.";
     }
     case "/hold": {
-      if (!QID.test(arg || "")) return "Usage: /hold Q000000001 PAGE";
+      const page = Number(arg2);
+      if (!QID.test(arg || "") || !Number.isSafeInteger(page) || page < 1) return "Usage: /hold Q000000001 PAGE";
       const bookId = await bookForQuestion(env, arg);
       if (!bookId) return "❌ Question route not found.";
       await env.DB.prepare("INSERT INTO flags(qid,book_id,source_page,status) VALUES(?,?,?,'pending') ON CONFLICT(qid) DO UPDATE SET status='pending',source_page=excluded.source_page")
-        .bind(arg, bookId, Number(arg2) || null).run();
+        .bind(arg, bookId, page).run();
       await adminJob(env, "moderate", bookId);
       return `📥 held ${arg}; moderation publish queued. Use /flags ${arg} to review.`;
     }
-    case "/retry": {
-      const result = await retryGroup(env, arg);
-      return result.text;
-    }
-    case "/clear": {
-      const result = await clearGroup(env, arg);
-      return result.text;
-    }
+    case "/retry": return (await retryGroup(env, arg)).text;
+    case "/clear": return (await clearGroup(env, arg)).text;
     case "/republish": {
       const p = parsePackageName(`${arg || ""}.zip`);
       if (!p || p.total !== 1) return "Usage: /republish BOOK-ID_vN";
-      const found = await env.DB.prepare("SELECT group_key FROM publish_groups WHERE group_key=? AND status IN ('failed','published')").bind(p.group_key).first();
-      if (!found) return "❌ No completed upload found for that release.";
-      await env.DB.prepare("UPDATE publish_groups SET status='ready',force_republish=1,error_summary=NULL WHERE group_key=? AND status IN ('failed','published')")
-        .bind(p.group_key).run();
-      return `📥 republish requested: ${p.group_key}`;
+      const changed = await env.DB.prepare("UPDATE publish_groups SET status='ready',force_republish=1,error_summary=NULL,claimed_at=NULL,finished_at=NULL WHERE group_key=? AND status IN ('failed','published') RETURNING group_key").bind(p.group_key).first();
+      return changed ? `📥 republish requested: ${p.group_key}` : "❌ No completed upload found for that release.";
     }
     case "/rollback": return arg && arg2 ? adminJob(env, "rollback", arg.toUpperCase(), Number(arg2)) : "Usage: /rollback BOOK-ID VERSION";
     case "/remove": return arg ? adminJob(env, "remove", arg.toUpperCase()) : "Usage: /remove BOOK-ID";
@@ -188,56 +109,44 @@ async function callback(env, cb) {
   const m = /^(approve|reject|source):Q\d{9}$/.exec(cb.data || "");
   if (!m) return;
   const qid = cb.data.slice(cb.data.indexOf(":") + 1);
+  const row = await env.DB.prepare("SELECT book_id,source_page FROM flags WHERE qid=?").bind(qid).first();
+  if (!row) return;
   if (m[1] === "source") {
-    const row = await env.DB.prepare("SELECT source_page FROM flags WHERE qid=?").bind(qid).first();
-    await telegram(env, "answerCallbackQuery", { callback_query_id: cb.id, text: `Source page: ${row?.source_page ?? "unknown"}`, show_alert: true });
+    await telegram(env, "answerCallbackQuery", { callback_query_id: cb.id, text: `Source page: ${row.source_page ?? "unknown"}`, show_alert: true });
     return;
   }
-  const row = await env.DB.prepare("SELECT book_id FROM flags WHERE qid=?").bind(qid).first();
-  if (!row) return;
   await env.DB.prepare("UPDATE flags SET status=? WHERE qid=?").bind(m[1] === "approve" ? "approved" : "rejected", qid).run();
   await adminJob(env, "moderate", row.book_id);
   await telegram(env, "answerCallbackQuery", { callback_query_id: cb.id, text: `${qid}: ${m[1]}` });
 }
 async function webhook(request, env, ctx) {
-  if (!env.WEBHOOK_SECRET || request.headers.get("X-Telegram-Bot-Api-Secret-Token") !== env.WEBHOOK_SECRET)
-    return reply("Forbidden", 403);
+  if (!env.WEBHOOK_SECRET || request.headers.get("X-Telegram-Bot-Api-Secret-Token") !== env.WEBHOOK_SECRET) return reply("Forbidden", 403);
   const update = await request.json();
-  const cb = update.callback_query;
-  const m = update.message;
-  const actor = cb?.from || m?.from;
-  const chat = cb?.message?.chat || m?.chat;
-  if (!actor || String(actor.id) !== String(env.OWNER_TELEGRAM_ID) || chat?.type !== "private" ||
-      String(chat.id) !== String(env.OWNER_TELEGRAM_ID)) return reply("OK");
+  const cb = update.callback_query, m = update.message;
+  const actor = cb?.from || m?.from, chat = cb?.message?.chat || m?.chat;
+  if (!actor || String(actor.id) !== String(env.OWNER_TELEGRAM_ID) || chat?.type !== "private" || String(chat.id) !== String(env.OWNER_TELEGRAM_ID)) return reply("OK");
   if (cb) {
     await callback(env, cb);
-    if (!String(cb.data || "").startsWith("source:"))
-      ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${e.message}`)));
+    if (/^(approve|reject):Q\d{9}$/.test(cb.data || "")) ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
     return reply("OK");
   }
   let text;
   if (m.document) text = await queueDocument(env, m.document);
   else if (m.text?.startsWith("/")) {
     const parts = m.text.trim().split(/\s+/);
-    if (parts[0].toLowerCase() === "/flags" && QID.test(parts[1] || "")) {
+    if (parts[0].toLowerCase().split("@")[0] === "/flags" && QID.test(parts[1] || "")) {
       const x = await env.DB.prepare("SELECT qid,source_page,status FROM flags WHERE qid=?").bind(parts[1]).first();
       if (x) {
-        await message(env, `${x.qid}: ${x.status}; source page ${x.source_page ?? "unknown"}`, {
-          reply_markup: { inline_keyboard: [[
-            { text: "Approve", callback_data: `approve:${x.qid}` },
-            { text: "Reject", callback_data: `reject:${x.qid}` },
-            { text: "Show source page", callback_data: `source:${x.qid}` },
-          ]] },
-        });
+        await message(env, `${x.qid}: ${x.status}; source page ${x.source_page ?? "unknown"}`, { reply_markup: { inline_keyboard: [[
+          { text: "Approve", callback_data: `approve:${x.qid}` }, { text: "Reject", callback_data: `reject:${x.qid}` }, { text: "Show source page", callback_data: `source:${x.qid}` },
+        ]] } });
         return reply("OK");
       }
     }
     text = await command(env, m.text);
   } else return reply("OK");
   await message(env, text);
-  if (text.startsWith("📥") && !text.includes("already received")) {
-    ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${e.message}`)));
-  }
+  if (text.startsWith("📥") && !text.includes("already received")) ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
   return reply("OK");
 }
 async function tokenFingerprint(value) {
@@ -245,19 +154,11 @@ async function tokenFingerprint(value) {
   return [...new Uint8Array(digest)].map(x => x.toString(16).padStart(2, "0")).join("").slice(0, 8);
 }
 async function queueAuthorization(request, env) {
-  const expected = String(env.QUEUE_API_TOKEN || "").trim();
-  const header = request.headers.get("Authorization") || "";
-  const prefix = "Bearer ";
-  const presented = header.startsWith(prefix) ? header.slice(prefix.length).trim() : "";
-  const [expectedHash, presentedHash] = await Promise.all([
-    tokenFingerprint(expected), tokenFingerprint(presented),
-  ]);
-  console.log(
-    `[queue-auth] expected_len=${expected.length} expected_sha256_8=${expectedHash} ` +
-    `presented_len=${presented.length} presented_sha256_8=${presentedHash} ` +
-    "header='Authorization' scheme='Bearer'"
-  );
-  return expected.length > 0 && header.startsWith(prefix) && presented === expected;
+  const expected = String(env.QUEUE_API_TOKEN || "").trim(), header = request.headers.get("Authorization") || "";
+  const presented = header.startsWith("Bearer ") ? header.slice(7).trim() : "";
+  const [expectedHash, presentedHash] = await Promise.all([tokenFingerprint(expected), tokenFingerprint(presented)]);
+  console.log(`[queue-auth] expected_len=${expected.length} expected_sha256_8=${expectedHash} presented_len=${presented.length} presented_sha256_8=${presentedHash} header='Authorization' scheme='Bearer'`);
+  return expected.length > 0 && header.startsWith("Bearer ") && presented === expected;
 }
 async function internal(request, env, path) {
   if (!(await queueAuthorization(request, env))) return reply({ error: "bad_queue_token" }, 403);
@@ -273,36 +174,42 @@ async function internal(request, env, path) {
   }
   const body = await request.json();
   if (path === "/internal/recover") {
-    const groupKey = String(body.group_key || "");
-    const result = body.action === "clear" ? await clearGroup(env, groupKey) : await retryGroup(env, groupKey);
-    if (body.clear_failed_admin_book && result.book_id) {
-      await env.DB.prepare("DELETE FROM admin_jobs WHERE book_id=? AND status='failed'").bind(result.book_id).run();
-    }
-    if (result.ok && body.dispatch !== false && body.action !== "clear") await dispatch(env);
+    if (!["retry", "clear"].includes(body.action)) return reply({ error: "invalid_recovery_action" }, 400);
+    const result = body.action === "clear" ? await clearGroup(env, String(body.group_key || "")) : await retryGroup(env, String(body.group_key || ""));
+    if (result.ok && body.clear_failed_admin_book === true) await env.DB.prepare("DELETE FROM admin_jobs WHERE book_id=? AND status='failed'").bind(result.book_id).run();
+    if (result.ok && body.dispatch !== false && body.action === "retry") await dispatch(env);
     return reply(result, result.ok ? 200 : 409);
   }
   if (path === "/internal/finish") {
-    const status = body.ok ? "published" : "failed";
+    const status = body.ok ? "published" : "failed", error = body.ok ? null : safeText(env, body.error).slice(0, 400);
     if (body.kind === "publish") {
-      await env.DB.prepare("UPDATE publish_groups SET status=?,finished_at=datetime('now'),error_summary=? WHERE group_key=? AND status='running'")
-        .bind(status, body.error || null, body.group_key).run();
+      const group = await env.DB.prepare("SELECT book_id,version,status FROM publish_groups WHERE group_key=?").bind(body.group_key).first();
+      if (!group || group.status !== "running") return reply({ error: "job_not_running" }, 409);
+      if (body.ok && (body.book_id !== group.book_id || body.version !== group.version)) return reply({ error: "job_identity_mismatch" }, 400);
+      const writes = [];
       if (body.ok) {
-        await env.DB.prepare("UPDATE published_books SET active=0 WHERE book_id=?").bind(body.book_id).run();
-        await env.DB.prepare("INSERT INTO published_books(book_id,version,questions,chapters,images,skipped,held,active) VALUES(?,?,?,?,?,?,?,1) ON CONFLICT(book_id,version) DO UPDATE SET questions=excluded.questions,chapters=excluded.chapters,images=excluded.images,skipped=excluded.skipped,held=excluded.held,active=1")
-          .bind(body.book_id, body.version, body.questions || 0, body.chapters || 0, body.images || 0, body.skipped || 0, body.held || 0).run();
+        const counts = [body.questions, body.chapters, body.images, body.skipped, body.held].map(x => x || 0);
+        if (!counts.every(x => Number.isSafeInteger(x) && x >= 0)) return reply({ error: "invalid_counts" }, 400);
+        writes.push(env.DB.prepare("UPDATE published_books SET active=0 WHERE book_id=? AND EXISTS(SELECT 1 FROM publish_groups WHERE group_key=? AND status='running')").bind(group.book_id, body.group_key));
+        writes.push(env.DB.prepare("INSERT INTO published_books(book_id,version,questions,chapters,images,skipped,held,active) SELECT ?,?,?,?,?,?,?,1 WHERE EXISTS(SELECT 1 FROM publish_groups WHERE group_key=? AND status='running') ON CONFLICT(book_id,version) DO UPDATE SET questions=excluded.questions,chapters=excluded.chapters,images=excluded.images,skipped=excluded.skipped,held=excluded.held,active=1").bind(group.book_id, group.version, ...counts, body.group_key));
       }
+      writes.push(env.DB.prepare("UPDATE publish_groups SET status=?,finished_at=datetime('now'),error_summary=? WHERE group_key=? AND status='running'").bind(status, error, body.group_key));
+      const results = await env.DB.batch(writes);
+      if (!results.at(-1)?.meta?.changes) return reply({ error: "job_not_running" }, 409);
     } else if (body.kind === "admin") {
-      await env.DB.prepare("UPDATE admin_jobs SET status=?,finished_at=datetime('now'),error_summary=? WHERE id=? AND status='running'")
-        .bind(status, body.error || null, body.id).run();
-      if (body.ok && body.operation === "remove") await env.DB.prepare("UPDATE published_books SET active=0 WHERE book_id=?").bind(body.book_id).run();
-      if (body.ok && body.operation === "rollback") await env.DB.prepare("UPDATE published_books SET active=(version=?) WHERE book_id=?").bind(body.version, body.book_id).run();
+      const job = await env.DB.prepare("SELECT * FROM admin_jobs WHERE id=?").bind(body.id).first();
+      if (!job || job.status !== "running") return reply({ error: "job_not_running" }, 409);
+      if (body.ok && (body.book_id !== job.book_id || body.operation !== job.kind || (job.kind === "rollback" && body.version !== job.version))) return reply({ error: "job_identity_mismatch" }, 400);
+      const writes = [];
+      if (body.ok && job.kind === "remove") writes.push(env.DB.prepare("UPDATE published_books SET active=0 WHERE book_id=? AND EXISTS(SELECT 1 FROM admin_jobs WHERE id=? AND status='running')").bind(job.book_id, job.id));
+      if (body.ok && job.kind === "rollback") writes.push(env.DB.prepare("UPDATE published_books SET active=(version=?) WHERE book_id=? AND EXISTS(SELECT 1 FROM admin_jobs WHERE id=? AND status='running')").bind(job.version, job.book_id, job.id));
+      writes.push(env.DB.prepare("UPDATE admin_jobs SET status=?,finished_at=datetime('now'),error_summary=? WHERE id=? AND status='running'").bind(status, error, job.id));
+      const results = await env.DB.batch(writes);
+      if (!results.at(-1)?.meta?.changes) return reply({ error: "job_not_running" }, 409);
     } else return reply("Invalid kind", 400);
     return reply({ ok: true });
   }
-  if (path === "/internal/notify") {
-    await message(env, String(body.text || "").slice(0, 3500));
-    return reply({ ok: true });
-  }
+  if (path === "/internal/notify") { await message(env, String(body.text || "").slice(0, 3500)); return reply({ ok: true }); }
   if (path === "/internal/decisions") {
     const r = await env.DB.prepare("SELECT qid,status FROM flags WHERE book_id=?").bind(body.book_id).all();
     return reply(Object.fromEntries((r.results || []).map(x => [x.qid, x.status === "approved" ? "approved" : "rejected"])));
@@ -310,8 +217,7 @@ async function internal(request, env, path) {
   if (path === "/internal/flags") {
     for (const x of body.held_details || []) {
       if (!QID.test(x.qid) || !ID.test(x.book_id)) continue;
-      await env.DB.prepare("INSERT OR IGNORE INTO flags(qid,book_id,source_page,status) VALUES(?,?,?,'pending')")
-        .bind(x.qid, x.book_id, x.source_page || null).run();
+      await env.DB.prepare("INSERT OR IGNORE INTO flags(qid,book_id,source_page,status) VALUES(?,?,?,'pending')").bind(x.qid, x.book_id, x.source_page || null).run();
     }
     return reply({ ok: true });
   }
