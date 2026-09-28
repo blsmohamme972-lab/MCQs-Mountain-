@@ -1,139 +1,177 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import bot, { clearGroup, parsePackageName, retryGroup } from "./bot.mjs";
+import { DatabaseSync } from "node:sqlite";
+import { readFileSync } from "node:fs";
+import bot, { parsePackageName, retryGroup, clearGroup } from "./bot.mjs";
 
-function fakeDB() {
-  const groups = new Map(), parts = new Map();
-  return { groups, parts, prepare(sql) {
-    let args = [];
-    return { bind(...v) { args = v; return this; },
-      async first() {
-        if (sql.startsWith("SELECT telegram_file_unique_id")) return parts.get(`${args[0]}:${args[1]}`) || null;
-        if (sql.startsWith("SELECT part_total") || sql.startsWith("SELECT status")) return groups.get(args[0]) || null;
-        if (sql.startsWith("SELECT COUNT(*)")) return { n: [...parts.keys()].filter(x => x.startsWith(args[0] + ":")).length };
-        return null;
-      },
-      async run() {
-        if (sql.startsWith("INSERT OR IGNORE INTO publish_groups") || sql.startsWith("INSERT INTO publish_groups")) {
-          if (!groups.has(args[0])) groups.set(args[0], { part_total: args[3], status: "waiting" });
-        } else if (sql.startsWith("INSERT INTO publish_queue")) {
-          parts.set(`${args[0]}:${args[1]}`, { telegram_file_unique_id: args[4] });
-        } else if (sql.startsWith("UPDATE publish_queue SET")) {
-          parts.set(`${args[5]}:${args[6]}`, { telegram_file_unique_id: args[2] });
-        } else if (sql.startsWith("UPDATE publish_groups SET status=?")) {
-          const group = groups.get(args[1]); if (group) group.status = args[0];
-        } else if (sql.startsWith("UPDATE publish_groups SET status='ready'")) {
-          const group = groups.get(args[0]); if (group) group.status = "ready";
-        } else if (sql.startsWith("DELETE FROM publish_queue")) {
-          for (const key of [...parts.keys()]) if (key.startsWith(args[0] + ":")) parts.delete(key);
-        } else if (sql.startsWith("DELETE FROM publish_groups")) {
-          groups.delete(args[0]);
-        }
-        return {};
-      },
-    };
-  } };
+// Exercise the real SQL/schema, not a mock that silently ignores unknown queries.
+function testDB() {
+  const db = new DatabaseSync(":memory:");
+  db.exec("PRAGMA foreign_keys=ON");
+  db.exec(readFileSync(new URL("../migrations/0001_publish_queue.sql", import.meta.url), "utf8"));
+  return {
+    sql: db,
+    prepare(sql) {
+      const compiled = db.prepare(sql); let args = [];
+      return {
+        bind(...values) { args = values; return this; },
+        async first() { const row = compiled.get(...args); return row ? { ...row } : null; },
+        async all() { return { results: compiled.all(...args).map(x => ({ ...x })) }; },
+        runSync() { const info = compiled.run(...args); return { meta: { changes: Number(info.changes) } }; },
+        async run() { return this.runSync(); },
+      };
+    },
+    async batch(statements) {
+      db.exec("BEGIN IMMEDIATE");
+      try { const results = statements.map(s => s.runSync()); db.exec("COMMIT"); return results; }
+      catch (error) { db.exec("ROLLBACK"); throw error; }
+    },
+  };
 }
-
-test("filename rejects malformed or oversized multipart indices", () => {
-  assert.equal(parsePackageName("book.pdf"), null);
-  assert.equal(parsePackageName("A_v1_part3of2.zip"), null);
-  assert.equal(parsePackageName("A_v1_part1of101.zip"), null);
-  assert.deepEqual(parsePackageName("BOOK-1_v2_part1of2.zip"), {
-    book_id: "BOOK-1", version: 2, part: 1, total: 2, group_key: "BOOK-1_v2",
-  });
-});
-
-test("webhook silently ignores strangers and only accepts owner private ZIPs", async () => {
-  const db = fakeDB();
-  const calls = [];
+async function harness(fn) {
+  const DB = testDB(), messages = [], dispatches = [], pending = [], callbacks = [];
+  const env = { DB, BOT_TOKEN: "unit-bot", WEBHOOK_SECRET: "unit-hook", OWNER_TELEGRAM_ID: "123",
+    DISPATCH_TOKEN: "unit-dispatch", QUEUE_API_TOKEN: "  unit-queue\n", CONTENT_BASE: "https://content.test" };
   const original = globalThis.fetch;
-  globalThis.fetch = async (url, init) => {
-    calls.push({ url, init });
-    if (String(url).includes("api.github.com")) return { status: 204 };
-    return { ok: true, json: async () => ({ ok: true, result: {} }) };
+  globalThis.fetch = async (url, init = {}) => {
+    url = String(url);
+    if (url.startsWith("https://api.telegram.org/")) {
+      const body = JSON.parse(init.body);
+      if (url.endsWith("sendMessage")) messages.push(body);
+      if (url.endsWith("answerCallbackQuery")) callbacks.push(body);
+      return { ok: true, json: async () => ({ ok: true, result: {} }) };
+    }
+    if (url.startsWith("https://api.github.com/")) { dispatches.push(JSON.parse(init.body)); return { status: 204 }; }
+    if (url === "https://content.test/routes/Q000000.json") return { ok: true, json: async () => ({ routes: { Q000000001: { book_id: "TEST", chapter_id: 1 } } }) };
+    if (url === "https://content.test/catalog.json") return { ok: true, json: async () => ({ books: [{ id: "TEST", version: 1, questions: 4, chapters: [{ id: 1 }] }] }) };
+    throw new Error("Unmocked network request refused");
   };
-  const env = { DB: db, BOT_TOKEN: "test", WEBHOOK_SECRET: "secret",
-    OWNER_TELEGRAM_ID: "123", DISPATCH_TOKEN: "dispatch" };
-  const pending = [];
   const ctx = { waitUntil(p) { pending.push(p); } };
-  const send = async (id, chat, name, secret = "secret") => {
-    const update = { message: { from: { id }, chat: { id, type: chat },
-      document: { file_id: `file-${name}`, file_unique_id: `unique-${name}`,
-        file_name: name, file_size: 100 } } };
-    return bot.fetch(new Request("https://kafu.example/bot", { method: "POST",
-      headers: { "X-Telegram-Bot-Api-Secret-Token": secret }, body: JSON.stringify(update) }), env, ctx);
+  const send = async (value, id = 123, type = "private", chatId = id, secret = "unit-hook") => {
+    const message = { from: { id }, chat: { id: chatId, type }, ...(typeof value === "string" ? { text: value } : { document: value }) };
+    const result = await bot.fetch(new Request("https://kafu.test/bot", { method: "POST", headers: { "X-Telegram-Bot-Api-Secret-Token": secret }, body: JSON.stringify({ message }) }), env, ctx);
+    await Promise.all(pending.splice(0));
+    return result;
   };
-  try {
-    assert.equal((await send(123, "private", "A_v1.zip", "bad")).status, 403);
-    assert.equal((await send(999, "private", "A_v1.zip")).status, 200);
-    assert.equal((await send(123, "group", "A_v1.zip")).status, 200);
-    assert.equal(calls.length, 0);
-    for (const name of ["A_v1.zip", "B_v1.zip", "C_v1.zip"])
-      assert.equal((await send(123, "private", name)).status, 200);
-    await Promise.all(pending);
-    assert.deepEqual([...db.groups.keys()], ["A_v1", "B_v1", "C_v1"]);
-    assert.ok([...db.groups.values()].every(x => x.status === "ready"));
-    assert.equal(calls.filter(x => String(x.url).includes("api.github.com")).length, 3);
-    assert.equal(calls.filter(x => String(x.url).includes("sendMessage")).length, 3);
-  } finally { globalThis.fetch = original; }
+  const internal = (path, body = {}, token = "unit-queue", method = "POST") => bot.fetch(new Request("https://kafu.test/internal/" + path, {
+    method, headers: { Authorization: "Bearer " + token }, ...(method === "POST" ? { body: JSON.stringify(body) } : {}),
+  }), env, ctx);
+  const cb = async (data, id = 123, type = "private") => {
+    const response = await bot.fetch(new Request("https://kafu.test/bot", { method: "POST", headers: { "X-Telegram-Bot-Api-Secret-Token": "unit-hook" }, body: JSON.stringify({ callback_query: { id: "callback", data, from: { id }, message: { chat: { id, type } } } }) }), env, ctx);
+    await Promise.all(pending.splice(0)); return response;
+  };
+  try { await fn({ env, DB, messages, dispatches, callbacks, send, internal, cb }); }
+  finally { globalThis.fetch = original; DB.sql.close(); }
+}
+const document = (name, unique = name) => ({ file_name: name, file_id: "file-" + unique, file_unique_id: "unique-" + unique, file_size: 100 });
+const state = (h, key) => h.DB.sql.prepare("SELECT * FROM publish_groups WHERE group_key=?").get(key);
+
+test("package naming rejects malformed, unsafe numeric and oversized multipart names", () => {
+  for (const name of ["book.pdf", "A_v0.zip", "A_v1_part3of2.zip", "A_v1_part1of101.zip", "A_v1 (1).zip", "A_v9999999999999999999999.zip"])
+    assert.equal(parsePackageName(name), null);
+  assert.deepEqual(parsePackageName("BOOK-1_v2_part1of2.zip"), { book_id: "BOOK-1", version: 2, part: 1, total: 2, group_key: "BOOK-1_v2" });
 });
 
-
-test("internal queue auth trims token whitespace and returns a JSON auth error", async () => {
-  const env = { DB: fakeDB(), QUEUE_API_TOKEN: "  queue-secret\n" };
-  const good = await bot.fetch(new Request("https://kafu.example/internal/claim", {
-    method: "POST", headers: { Authorization: "Bearer queue-secret" },
-  }), env, {});
-  assert.equal(good.status, 200);
-  assert.deepEqual(await good.json(), { kind: "empty" });
-
-  const bad = await bot.fetch(new Request("https://kafu.example/internal/claim", {
-    method: "POST", headers: { Authorization: "Bearer wrong-secret" },
-  }), env, {});
-  assert.equal(bad.status, 403);
-  assert.deepEqual(await bad.json(), { error: "bad_queue_token" });
-});
-
-
-test("failed upload can be replaced, retried, and cleared", async () => {
-  const db = fakeDB();
-  db.groups.set("BOOK_v1", { part_total: 1, status: "failed" });
-  db.parts.set("BOOK_v1:1", { telegram_file_unique_id: "old-unique" });
-
-  const calls = [];
-  const original = globalThis.fetch;
-  globalThis.fetch = async (url) => {
-    calls.push(String(url));
-    if (String(url).includes("api.github.com")) return { status: 204 };
-    return { ok: true, json: async () => ({ ok: true, result: {} }) };
-  };
-  const env = { DB: db, BOT_TOKEN: "test", WEBHOOK_SECRET: "secret",
-    OWNER_TELEGRAM_ID: "123", DISPATCH_TOKEN: "dispatch" };
-  const pending = [];
-  const ctx = { waitUntil(p) { pending.push(p); } };
-  try {
-    const update = { message: { from: { id: 123 }, chat: { id: 123, type: "private" },
-      document: { file_id: "new-file", file_unique_id: "new-unique",
-        file_name: "BOOK_v1.zip", file_size: 100 } } };
-    const response = await bot.fetch(new Request("https://kafu.example/bot", { method: "POST",
-      headers: { "X-Telegram-Bot-Api-Secret-Token": "secret" }, body: JSON.stringify(update) }), env, ctx);
-    assert.equal(response.status, 200);
-    await Promise.all(pending);
-    assert.equal(db.groups.get("BOOK_v1").status, "ready");
-    assert.equal(db.parts.get("BOOK_v1:1").telegram_file_unique_id, "new-unique");
-
-    db.groups.get("BOOK_v1").status = "failed";
-    const retried = await retryGroup(env, "BOOK_v1");
-    assert.equal(retried.ok, true);
-    assert.equal(db.groups.get("BOOK_v1").status, "ready");
-
-    db.groups.get("BOOK_v1").status = "failed";
-    const cleared = await clearGroup(env, "BOOK_v1");
-    assert.equal(cleared.ok, true);
-    assert.equal(db.groups.has("BOOK_v1"), false);
-    assert.equal(db.parts.has("BOOK_v1:1"), false);
-  } finally {
-    globalThis.fetch = original;
+test("owner/private/webhook gates ignore stranger and group messages and callbacks", () => harness(async h => {
+  assert.equal((await h.send("/status", 123, "private", 123, "wrong")).status, 403);
+  for (const command of ["/status", "/retry TEST_v1", "/clear TEST_v1", "/remove TEST"]) {
+    await h.send(command, 999); await h.send(command, 123, "group"); await h.send(command, 123, "private", 456);
   }
-});
+  await h.cb("approve:Q000000001", 999); await h.cb("approve:Q000000001", 123, "group");
+  await h.send(document("TEST_v1.zip"), 999);
+  assert.equal(h.messages.length, 0); assert.equal(h.dispatches.length, 0);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM publish_groups").get().n, 0);
+}));
+
+test("plausible ZIP only, duplicate no-op, two-part assembly in reverse order", () => harness(async h => {
+  await h.send(document("bad.pdf")); await h.send({ ...document("HUGE_v1.zip"), file_size: 20 * 1024 * 1024 });
+  assert.ok(h.messages.every(x => x.text.startsWith("❌"))); assert.equal(h.dispatches.length, 0);
+  await h.send(document("TWO_v1_part2of2.zip")); assert.equal(state(h, "TWO_v1").status, "waiting");
+  await h.send(document("TWO_v1_part1of2.zip")); assert.equal(state(h, "TWO_v1").status, "ready");
+  const before = h.dispatches.length;
+  await h.send(document("TWO_v1_part1of2.zip"));
+  assert.match(h.messages.at(-1).text, /already received/); assert.equal(h.dispatches.length, before);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM publish_queue").get().n, 2);
+  await h.send(document("TWO_v1_part1of2.zip", "other")); assert.match(h.messages.at(-1).text, /different ZIP/);
+}));
+
+test("failed part replaced atomically; running/published releases protected", () => harness(async h => {
+  await h.send(document("TEST_v1.zip", "old"));
+  h.DB.sql.exec("UPDATE publish_groups SET status='failed',error_summary='old failure'");
+  await h.send(document("TEST_v1.zip", "replacement"));
+  assert.equal(state(h, "TEST_v1").status, "ready"); assert.equal(state(h, "TEST_v1").error_summary, null);
+  assert.equal(h.DB.sql.prepare("SELECT telegram_file_unique_id id FROM publish_queue").get().id, "unique-replacement");
+  for (const status of ["running", "published"]) {
+    h.DB.sql.prepare("UPDATE publish_groups SET status=?").run(status);
+    await h.send(document("TEST_v1.zip", "blocked")); assert.ok(h.messages.at(-1).text.startsWith("❌"));
+    assert.equal(h.DB.sql.prepare("SELECT telegram_file_unique_id id FROM publish_queue").get().id, "unique-replacement");
+  }
+}));
+
+test("changed failed multipart layout starts a fresh assembly, without stale parts", () => harness(async h => {
+  await h.send(document("TEST_v1_part1of2.zip")); await h.send(document("TEST_v1_part2of2.zip"));
+  h.DB.sql.exec("UPDATE publish_groups SET status='failed'");
+  await h.send(document("TEST_v1.zip", "single"));
+  assert.equal(state(h, "TEST_v1").status, "ready"); assert.equal(state(h, "TEST_v1").part_total, 1);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM publish_queue").get().n, 1);
+}));
+
+test("/retry requires failed complete group; /clear cannot delete running or published work", () => harness(async h => {
+  await h.send(document("TEST_v1_part1of2.zip")); h.DB.sql.exec("UPDATE publish_groups SET status='failed'");
+  await h.send("/retry TEST_v1"); assert.ok(h.messages.at(-1).text.startsWith("❌"));
+  await h.send(document("TEST_v1_part2of2.zip")); h.DB.sql.exec("UPDATE publish_groups SET status='failed'");
+  await h.send("/retry TEST_v1"); assert.equal(state(h, "TEST_v1").status, "ready");
+  assert.deepEqual(h.dispatches.at(-1), { ref: "main" });
+  await h.send("/clear TEST_v1"); assert.ok(state(h, "TEST_v1"));
+  h.DB.sql.exec("UPDATE publish_groups SET status='running'");
+  assert.equal((await clearGroup(h.env, "TEST_v1")).ok, false);
+  h.DB.sql.exec("UPDATE publish_groups SET status='published'");
+  assert.equal((await clearGroup(h.env, "TEST_v1")).ok, false);
+  h.DB.sql.exec("UPDATE publish_groups SET status='failed'");
+  await h.send("/clear TEST_v1"); assert.equal(state(h, "TEST_v1"), undefined);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM publish_queue").get().n, 0);
+  assert.equal((await retryGroup(h.env, "TEST_v1")).ok, false);
+}));
+
+test("/hold + /flags approval/rejection/source produce durable moderation jobs", () => harness(async h => {
+  await h.send("/hold Q000000001 7");
+  let row = h.DB.sql.prepare("SELECT * FROM flags").get(); assert.equal(row.status, "pending"); assert.equal(row.source_page, 7);
+  await h.send("/flags"); assert.match(h.messages.at(-1).text, /Q000000001/);
+  await h.send("/flags Q000000001"); assert.equal(h.messages.at(-1).reply_markup.inline_keyboard[0].length, 3);
+  const count = h.dispatches.length; await h.cb("source:Q000000001"); assert.equal(h.dispatches.length, count);
+  assert.match(h.callbacks.at(-1).text, /7/);
+  await h.cb("approve:Q000000001"); assert.equal(h.DB.sql.prepare("SELECT status FROM flags").get().status, "approved");
+  await h.cb("reject:Q000000001"); assert.equal(h.DB.sql.prepare("SELECT status FROM flags").get().status, "rejected");
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM admin_jobs WHERE kind='moderate'").get().n, 3);
+  const flags = await (await h.internal("decisions", {book_id:"TEST"})).json(); assert.equal(flags.Q000000001, "rejected");
+  await h.send("/hold Q000000001"); assert.match(h.messages.at(-1).text, /Usage/);
+}));
+
+test("claim/finish are identity checked and stale completions cannot alter published records", () => harness(async h => {
+  await h.send(document("TEST_v1.zip"));
+  const item = await (await h.internal("claim")).json(); assert.equal(item.kind, "publish");
+  const bad = await h.internal("finish", {kind:"publish",group_key:"TEST_v1",ok:true,book_id:"OTHER",version:1});
+  assert.equal(bad.status, 400);
+  const payload = {kind:"publish",group_key:"TEST_v1",ok:true,book_id:"TEST",version:1,questions:4,chapters:1,images:2};
+  assert.equal((await h.internal("finish", payload)).status, 200); assert.equal(state(h, "TEST_v1").status, "published");
+  assert.equal((await h.internal("finish", {...payload,questions:0})).status, 409);
+  assert.equal(h.DB.sql.prepare("SELECT questions FROM published_books").get().questions, 4);
+  assert.equal((await h.internal("claim", {}, "wrong")).status, 403);
+  assert.equal((await h.internal("claim", {}, "unit-queue", "GET")).status, 405);
+}));
+
+test("rollback/remove affect only their book, and /queue includes admin failures", () => harness(async h => {
+  h.DB.sql.exec("INSERT INTO published_books(book_id,version,active) VALUES('TEST',1,0),('TEST',2,1),('KEEP',1,1)");
+  await h.send("/rollback TEST 1");
+  let item = await (await h.internal("claim")).json(); assert.equal(item.job.kind, "rollback");
+  await h.internal("finish", {kind:"admin",id:item.job.id,ok:true,operation:"rollback",book_id:"TEST",version:1});
+  assert.equal(h.DB.sql.prepare("SELECT version FROM published_books WHERE book_id='TEST' AND active=1").get().version, 1);
+  await h.send("/remove TEST"); item = await (await h.internal("claim")).json();
+  await h.internal("finish", {kind:"admin",id:item.job.id,ok:true,operation:"remove",book_id:"TEST"});
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM published_books WHERE book_id='TEST' AND active=1").get().n, 0);
+  assert.equal(h.DB.sql.prepare("SELECT active FROM published_books WHERE book_id='KEEP'").get().active, 1);
+  await h.send("/remove TEST"); item = await (await h.internal("claim")).json();
+  await h.internal("finish", {kind:"admin",id:item.job.id,ok:false,error:"step=candidate.catalog method=GET host=preview.test path=/catalog.json status=403 Bearer unit-queue"});
+  await h.send("/queue"); assert.match(h.messages.at(-1).text, /candidate.catalog/); assert.doesNotMatch(h.messages.at(-1).text, /unit-queue/);
+  await h.send("/rollback TEST -1"); assert.ok(h.messages.at(-1).text.startsWith("❌"));
+}));
