@@ -68,3 +68,19 @@ test("webhook silently ignores strangers and only accepts owner private ZIPs", a
     assert.equal(calls.filter(x => String(x.url).includes("sendMessage")).length, 3);
   } finally { globalThis.fetch = original; }
 });
+
+
+test("internal queue auth trims token whitespace and returns a JSON auth error", async () => {
+  const env = { DB: fakeDB(), QUEUE_API_TOKEN: "  queue-secret\n" };
+  const good = await bot.fetch(new Request("https://kafu.example/internal/claim", {
+    method: "POST", headers: { Authorization: "Bearer queue-secret" },
+  }), env, {});
+  assert.equal(good.status, 200);
+  assert.deepEqual(await good.json(), { kind: "empty" });
+
+  const bad = await bot.fetch(new Request("https://kafu.example/internal/claim", {
+    method: "POST", headers: { Authorization: "Bearer wrong-secret" },
+  }), env, {});
+  assert.equal(bad.status, 403);
+  assert.deepEqual(await bad.json(), { error: "bad_queue_token" });
+});
