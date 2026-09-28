@@ -1,6 +1,6 @@
 # Kafu design system
 
-Day 1 design brief, 2026-09-28. This document is the UI source of truth. Architecture and content rules remain in HANDOFF.md and MCQ_PLATFORM_FINAL_PLAN.yaml.
+Day 1 design brief, 2026-09-28. Architecture and content rules remain in HANDOFF.md and MCQ_PLATFORM_FINAL_PLAN.yaml. **For visual values and component styling, `docs/DESIGN_STYLE.md` and `app/design/tokens.css` are the source of truth.**
 
 ## People and promise
 
@@ -10,9 +10,9 @@ Kafu means “well done” in Iraqi Arabic. The interface remains English-only. 
 
 ## Brand and visual language
 
-- Petrol teal #0F4C54 / #16606A is the primary brand. Crimson #A8323E is a restrained accent and error colour, never the only way to identify an error.
-- Poppins is the interface family; Lora is the question/reading family. Serve licensed, pinned font assets from our own app origin at runtime, with system/Georgia fallbacks and font-display: swap. Do not depend on Google Fonts during a study session.
-- Use spacious surfaces, quiet borders, a short type scale, consistent rounded corners and at most one soft elevation level for floating controls. Avoid a card around every sentence.
+- Owner-selected direction is **Arcade-Clean**: premium mobile-game energy around a calm, highly readable study core. Exact colours, fonts, outlines, hard shadows, press offsets and motion are defined only in `app/design/tokens.css` and documented in `docs/DESIGN_STYLE.md`.
+- Fredoka is the display face; Nunito is the reading/control face; Pixelify Sans is limited to tiny rare accents. All are OFL, self-hosted WOFF2 subsets. Study text never uses display/pixel fonts.
+- Use chunky rounded shells, thick outlines, hard offset shadows and pressable controls selectively. The question stem, options, explanations and medical images stay visually calm.
 - Use real book covers when present; otherwise use a consistent typographic cover. Book title, question count, offline availability and progress remain legible outside the cover image.
 - Icons supplement labels. Primary navigation always has English labels. Decorative SVGs are aria-hidden.
 
@@ -20,7 +20,7 @@ Kafu means “well done” in Iraqi Arabic. The interface remains English-only. 
 
 One tokens file owns colour, spacing, radius, shadow, type scale and motion. Use semantic roles (background, surface, text, muted, primary, success, danger, border, focus) rather than component-specific hex values. The app config identifies the brand and feature switches; it references token names rather than maintaining a second palette. Legacy CSS variables may alias semantic tokens during the transition.
 
-The small shared component set includes primary/secondary/quiet/destructive buttons; cards; full-width list rows; chips; accessible bottom sheets; status/undo toasts; actionable empty states; progress bars/rings; and skeleton loaders. Components must document loading, disabled, focus, error and selected states. The hidden /styleguide route demonstrates every component and both themes without writing study data.
+The small shared component set includes primary/secondary/quiet/destructive buttons; cards; full-width list rows; chips; accessible bottom sheets; status/undo toasts; actionable empty states; progress bars/rings; and skeleton loaders. Components must document loading, disabled, focus, error and selected states. The hidden `#gallery` screen demonstrates every token and component state in both themes without writing study data. The older `/styleguide/` fixture may remain for regression compatibility but is not the design source of truth.
 
 Minimum interactive target is 44 by 44 CSS pixels. Provide space between destructive and primary actions. Loading indicators must explain what is happening and must not trap navigation. Empty states contain a helpful next step, not just “nothing here.”
 
