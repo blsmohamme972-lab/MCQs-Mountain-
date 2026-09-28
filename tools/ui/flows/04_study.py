@@ -19,6 +19,13 @@ def run(browser, origin, pack, out, helpers):
             result = page.evaluate('KafuStudy.last')
             assert result['answered'] == 4 and result['correct'] == 3 and result['skipped'] == 0
             assert result['mistakes'] == [IDS[1]] and not result['perfect']
+            assert page.locator('.k-complete-mascot svg').count() == 1
+            assert page.locator('.k-victory-stars svg.earned').count() == 2
+            assert '+40 XP' in page.locator('.k-xp-gained').inner_text()
+            if device == 'phone':
+                browse=page.locator('[data-a="find-library"]').bounding_box()
+                footer=page.locator('.actionbar').bounding_box()
+                assert browse and footer and browse['y']+browse['height'] <= footer['y']
             assert page.evaluate('JSON.stringify([S.fav,S.favBooks])') == favorites
             name = f'{device}-{theme}-chapter-complete-mixed'
             hashes[name] = helpers['capture'](page, out/(name+'.png'))
@@ -38,4 +45,4 @@ def run(browser, origin, pack, out, helpers):
             assert page.evaluate('JSON.stringify([S.fav,S.favBooks])') == favorites
             assert not errors, errors
             ctx.close()
-    return {'hashes':hashes,'passed':['phone/iPad light/dark: 4-question session score 75%, session-only Review mistakes, resumed/skipped questions never earn perfect, unchanged stars and offline-persistent answers']}
+    return {'hashes':hashes,'passed':['phone/iPad light/dark: 4-question victory shows SVG mascot, 2/3 stars and +40 XP; phone Browse chapters clears sticky footer; session-only Review mistakes, resumed/skipped questions never earn perfect, unchanged stars and offline-persistent answers']}
