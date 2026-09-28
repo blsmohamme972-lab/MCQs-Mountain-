@@ -4,34 +4,79 @@ Updated: 2026-09-28 (Asia/Baghdad)
 
 ## Start here
 
-Read in order: this file, `PROGRESS.md`, `MCQ_PLATFORM_FINAL_PLAN.yaml`, `BUILD_PROMPT.md` if present, then `docs/reports/`. `BUILD_PROMPT.md` is absent on main as of this handoff. The plan is the architecture source of truth; explain migration impact before changing storage roles, identity, publishing flow, or free-tier guardrails.
+Read `PROGRESS.md`, `docs/ADMIN.md`, `MCQ_PLATFORM_FINAL_PLAN.yaml`, then the reports under `docs/reports/`.
 
-Repository: `blsmohamme972-lab/MCQs-Mountain-` (private). Telegram bot: `@KafuMcqsbot`. App: `https://kafu.blsmohamme97.workers.dev`. Content: `https://kafu-content-1.blsmohamme97.workers.dev`.
+Repository: `blsmohamme972-lab/MCQs-Mountain-` (private)  
+Telegram bot: `@KafuMcqsbot`  
+App Worker: `https://kafu.blsmohamme97.workers.dev`  
+Content Worker: `https://kafu-content-1.blsmohamme97.workers.dev`
 
-## State
+Protected deployment-check book: `KAFU-UPLOAD-TEST v1` — 4 questions, 1 chapter, 2 images. Do not remove it while the deployment smoke test depends on it.
 
-- M2 Steps 1–2 are merged and complete. The owner verified all four question types and both image types on a phone and in Airplane Mode. Synthetic fixture books are published; see `docs/reports/M2_STEP2.md`.
-- M3 Step 3 (owner-only `/bot` webhook, D1 ZIP queue, Actions drain, admin commands) was merged in PR #4; Kafu Content Contract CI passed.
-- [Deploy Kafu #9](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36359745068) is **green**. D1 migrations, Worker secret upload, and Worker deployment all passed.
-- [Setup Kafu Bot #1](https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/36359890053) is **green**. The secure Telegram webhook and owner commands were registered.
-- The owner opened the Mini App in Telegram and confirmed the app loads and Continue studying works. Full Step 3 queue/admin phone acceptance is still pending; see `docs/reports/M3_DEPLOY_RETRY.md`.
-- The bot token was exposed in a previous agent log. The owner has chosen not to rotate it at this stage. Do not print or log credentials.
+## Current product state
 
-## Next actions
+The main study/publishing path is working end to end:
 
-1. Complete the remaining Step 3 phone acceptance in `docs/reports/M3_DEPLOY_RETRY.md`: `/help`, `/status`, `/queue`, `/books`, a synthetic valid ZIP upload, duplicate handling, invalid ZIP repair report, multipart release, moderation, rollback/remove, and non-owner silence.
-2. Record screenshots and queue workflow links in `docs/reports/`.
-3. Before public launch, remove synthetic fixture books through `/remove`.
-4. If credentials are rotated later, update repository secrets, redeploy Kafu, rerun Setup Kafu Bot, and verify the webhook again.
+- owner uploads a validated ZIP to the private Telegram bot;
+- D1 stores queue/admin metadata;
+- GitHub Actions downloads, validates, audits, builds, smoke-tests and publishes content;
+- `kafu-content-1` serves immutable catalog/book/chapter/image assets;
+- the Mini App studies from downloaded content and remains local/offline-first;
+- Telegram CloudStorage keeps a compact cross-device personal backup.
 
-## Architecture and operations
+Night 1 work merged:
+- PR #12 security scan, safe diagnostics, credential-rotation guide;
+- PR #13 M3 offline/queue/admin acceptance tests and failed-item recovery fixes;
+- PR #14 compact personal sync with deterministic two-device merges;
+- PR #15 pinned `ts-fsrs 5.4.2` Review Due sessions;
+- PR #16 background chapter downloads, next-chapter prefetch and whole-book offline save;
+- PR #17 Me version/source info, offline banner and iPad fullscreen diagnostic;
+- PR #18 safe offline app shell/service-worker fallback;
+- PR #19 privacy/about and educational-use disclaimer;
+- PR #21 reusable PDF parser library, deterministic `package_batch.py`, content-team guide and confirmed bulk audit-warning approval.
 
-The `kafu` Worker serves the Mini App, `/api/*`, and `/bot`; `kafu-content-1` serves immutable JSON/ZIP/WebP content. D1 holds small shared state and queue metadata, never the full MCQ library. GitHub Releases hold durable master/build state. IndexedDB holds downloaded chapters, image blobs, and study history; normal answers do not call D1. Telegram CloudStorage is compact personal backup. Publishing uploads a candidate content version, smoke-tests it, then promotes it; book rollback builds a new global candidate, preserving other books.
+Each merged code task passed CI. The latest code deployment after PR #21 passed the exact-build/app/protected-book read-only verification.
 
-Worker secret names in `worker/bot.mjs`: `BOT_TOKEN`, `OWNER_TELEGRAM_ID`, `WEBHOOK_SECRET`, `QUEUE_API_TOKEN`, `DISPATCH_TOKEN`. `.github/workflows/deploy-app.yml` maps each from the identically named repository secret; `DISPATCH_TOKEN` is correct despite GitHub rejecting a `GITHUB_` prefix. The deployment also uses `D1_DATABASE_ID` and `CLOUDFLARE_API_TOKEN`. `DB` and `ASSETS` are bindings. Never put secret values in files, commands, reports, or output.
+## Still owner-controlled
 
-Admin implementation commands: `/queue`, `/books`, `/status`, `/flags`, `/hold`, `/republish`, `/rollback`, `/remove`, `/help`. The plan's `/retry` label differs from the merged `/republish` command; document or reconcile this deliberately, without an unannounced architecture change.
+PR #20 (weekly D1 backups) is **not assumed active** until GitHub shows it merged and an actual backup workflow run has succeeded. It intentionally stayed outside automatic self-merge because it introduces a scheduled production D1 export.
 
-## Working rules
+Credentials exposed earlier in setup conversations/logs still require owner rotation. Follow `docs/ROTATE_SECRETS.md`; do not rotate ad hoc.
 
-Use branches and pull requests; never commit directly to main. Keep CI green and `PROGRESS.md` current. Save reports under `docs/reports/`. Never change `tools/validate.py` to make a package pass. Never manually alter the `kafu-content-state` release. Explain architecture changes before implementation. Preserve the non-empty Library fallback. Do not publish a real book until Step 3 is fully accepted.
+## Publishing a real book
+
+Use `docs/CONTENT_TEAM.md` to prepare the ZIP and parser, then `docs/ADMIN.md` to publish it.
+
+Important rules:
+- never edit `validate.py` or `audit.py` to force a package through;
+- answers come from the source, never medical guessing;
+- every source question is extracted or explicitly skipped;
+- save the parser used for each layout;
+- a failed queue item can be replaced by a corrected ZIP, retried, or cleared;
+- GitHub release operations use the workflow `GITHUB_TOKEN`, not `DISPATCH_TOKEN`;
+- normal answer/study activity must not depend on D1.
+
+## Bot commands
+
+Current owner commands:
+`/help`, `/status`, `/queue`, `/books`, `/flags`, `/flags QID`,
+`/flags approve-all BOOK-ID CONFIRM`, `/hold QID PAGE`, `/retry BOOK-ID_vN`,
+`/clear BOOK-ID_vN`, `/republish BOOK-ID_vN`, `/rollback BOOK-ID VERSION`, and `/remove BOOK-ID`.
+
+See `docs/ADMIN.md` for exact behavior and recovery steps.
+
+## Before a 20–50 student pilot
+
+1. Rotate all previously exposed credentials and verify Deploy Kafu + Setup Kafu Bot + Drain Kafu.
+2. Decide whether to merge/activate PR #20, then verify the first backup if enabled.
+3. Package the first real book with a committed/tested parser and a clean audit/validator result.
+4. Publish it, check `/queue`, `/books`, the Mini App, images, Review Due, and offline chapter/book save.
+5. Test personal sync on two Telegram devices/accounts as intended.
+6. Run the iPad fullscreen diagnostic documented in `docs/IPAD_FULLSCREEN_TEST.md`.
+7. Keep the pilot small (20–50 students), watch Cloudflare/GitHub free-tier usage, queue failures, and content reports before wider launch.
+
+## Security
+
+Runtime secrets: `BOT_TOKEN`, `OWNER_TELEGRAM_ID`, `WEBHOOK_SECRET`, `QUEUE_API_TOKEN`, `DISPATCH_TOKEN`. Deployment also uses `D1_DATABASE_ID`, `CLOUDFLARE_ACCOUNT_ID`, and `CLOUDFLARE_API_TOKEN`.
+
+Never print secret values in commands, reports, screenshots, logs or chat.
