@@ -29,6 +29,7 @@ env:
   CONTENT_BASE_URL: https://kafu-content-1.blsmohamme97.workers.dev
   CLOUDFLARE_ACCOUNT_ID: "7c59c4350999f209f3e868470908b9a4"
   GH_TOKEN: ${{ github.token }}
+  GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
   manual-publish:
