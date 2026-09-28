@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "files": [
+    {"package":"ts-fsrs","version":"5.4.2","path":"vendor/ts-fsrs-5.4.2.js","url":"https://cdn.jsdelivr.net/npm/ts-fsrs@5.4.2/dist/index.umd.js","sha256":null},
+    {"package":"ts-fsrs","version":"5.4.2","path":"vendor/ts-fsrs-LICENSE.txt","url":"https://cdn.jsdelivr.net/npm/ts-fsrs@5.4.2/LICENSE","sha256":null}
+  ]
+}
