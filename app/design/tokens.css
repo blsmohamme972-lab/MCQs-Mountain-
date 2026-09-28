@@ -65,6 +65,7 @@
   --text-sm:.875rem;
   --text-base:1rem;
   --text-lg:1.125rem;
+  --text-study-wide:1.1875rem;
   --text-xl:1.375rem;
   --text-2xl:1.75rem;
   --text-3xl:2.25rem;
@@ -89,6 +90,8 @@
   --space-10:40px;
   --space-12:48px;
   --tap-target:44px;
+  --nav-height:72px;
+  --content-max:760px;
 
   /* Motion */
   --duration-question:80ms;
