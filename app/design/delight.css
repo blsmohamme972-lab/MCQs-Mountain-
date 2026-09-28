@@ -14,3 +14,35 @@
 .k-badge strong{display:block;font-family:var(--font-display);font-size:var(--text-base);font-weight:600}.k-badge div>span{display:block;color:var(--color-muted);font-size:var(--text-xs);margin-top:var(--space-1);line-height:1.5}
 @media(max-width:520px){.k-game-hud{grid-template-columns:auto minmax(0,1fr)}.k-streak{grid-column:1/-1;grid-template-columns:22px auto auto;grid-template-areas:"icon number label";justify-content:start}.k-badges{grid-template-columns:1fr}.k-xp small{display:none}}
 @media(prefers-reduced-motion:reduce){.k-game-hud,.k-profile-card,.k-badge{animation:none!important}}
+
+
+/* DESIGN 1 Round 3: readable streak and compact pixel badge case. */
+.k-streak{
+  grid-template-columns:32px auto;
+  grid-template-areas:"icon number" "label label";
+  min-width:82px;
+  color:#FF7A00;
+}
+.k-streak svg{width:32px;height:32px}
+.k-streak span{font-weight:700}
+.k-badges{grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-3)}
+.k-badge{
+  min-width:0;
+  padding:var(--space-3);
+  display:grid;
+  justify-items:center;
+  gap:var(--space-2);
+  text-align:center;
+}
+.k-badge-icon{width:52px;height:52px;border:0;background:transparent}
+.k-badge-icon svg{width:44px;height:44px}
+.k-badge.locked{color:var(--color-muted);background:var(--color-surface)}
+.k-badge.locked .k-badge-icon{color:var(--color-muted);filter:grayscale(1);opacity:.55}
+.k-badge.earned .k-badge-icon{background:transparent;color:var(--color-success)}
+.k-badge strong{font-family:var(--font-pixel);font-size:var(--text-sm);line-height:1.1}
+.k-badge-detail{grid-column:1/-1;color:var(--color-muted);font-family:var(--font-reading);font-size:var(--text-xs);line-height:1.4}
+.k-badge[aria-expanded='true']{grid-column:span 2}
+@media(max-width:520px){
+  .k-streak{grid-column:auto;grid-template-columns:32px auto;grid-template-areas:"icon number" "label label"}
+  .k-badges{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
