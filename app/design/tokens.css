@@ -15,7 +15,7 @@
   --font-ui: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-reading: 'Lora', Georgia, serif;
   --text-xs: .75rem; --text-sm: .875rem; --text-base: 1rem; --text-lg: 1.125rem;
-  --text-xl: 1.375rem; --text-2xl: 1.75rem; --text-3xl: 2.125rem;
+  --text-xl: 1.375rem; --text-2xl: 1.75rem; --text-3xl: 2.125rem; --text-display: 3.5rem;
   --leading-ui: 1.5; --leading-reading: 1.7; --measure: 42rem; --layout-wide: 68rem;
   --duration-fast: 120ms; --duration-base: 180ms; --duration-delight: 320ms;
   --ease-out: cubic-bezier(.2,.7,.2,1); --tap-target: 44px;

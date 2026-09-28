@@ -19,6 +19,11 @@ def build(source: Path,out: Path,commit: str="development") -> dict:
     html=(source/"index.html").read_text(encoding="utf-8")
     html=re.sub(re.escape(HEAD_BEGIN)+r"[\s\S]*?"+re.escape(HEAD_END)+r"\n?","",html)
     html=html.replace(INSTALL,"")
+    if "design/tokens.css" in manifest.get("styles",[]):
+        # Retain base markup for contract compatibility, but never ship its old
+        # inline CSS or runtime CDN fonts in a design-system build.
+        html=re.sub(r"<style>[\s\S]*?</style>","",html,count=1,flags=re.I)
+        html=re.sub(r'<link[^>]+href="https://fonts\.[^"]+"[^>]*>\n?',"",html,flags=re.I)
     if html.count("</head>")!=1 or html.count(BOOT)!=1:
         raise ValueError("Frontend assembly markers changed; refusing an ambiguous build")
     for field in ["scripts","styles"]:
