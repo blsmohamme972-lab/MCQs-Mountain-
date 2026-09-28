@@ -169,6 +169,10 @@ def snapshots(browser,origin,pack,destination):
                 page.goto(origin+'/styleguide/?theme='+theme);page.evaluate('document.fonts.ready')
                 page.locator('#show-sheet').click();page.locator('#demo-sheet button').click()
                 name=f'{device}-{theme}-styleguide';hashes[name]=capture(page,destination/(name+'.png'))
+            page.goto(origin+'/#gallery',wait_until='load');page.wait_for_selector('#gallery');page.evaluate('document.fonts.ready')
+            page.locator(f'[data-gallery-theme="{theme}"]').click()
+            name=f'{device}-{theme}-gallery';hashes[name]=capture(page,destination/(name+'.png'))
+            assert not page.evaluate('document.documentElement.scrollWidth>innerWidth+1'),f'Overflow: {name}'
             ctx.close()
     return hashes
 
@@ -208,8 +212,23 @@ def flows(browser,origin,pack):
 def budget(output):
     html=(output/'index.html').read_text()
     scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',html,re.I)
-    total=sum(len(gzip.compress(s.encode(),mtime=0)) for s in scripts if s.strip())
-    return {'app_js_gzip_bytes':total,'limit_bytes':150*1024,'method':'Sum of independently gzipped executable inline scripts in assembled app, including shipped vendor modules once; external Telegram host SDK excluded.','passed':total<=150*1024}
+    styles=re.findall(r'<style(?:\s[^>]*)?>([\s\S]*?)</style>',html,re.I)
+    js=sum(len(gzip.compress(s.encode(),mtime=0)) for s in scripts if s.strip())
+    css=sum(len(gzip.compress(s.encode(),mtime=0)) for s in styles if s.strip())
+    app_total=js+css
+    fonts=list((output/'vendor').glob('*.woff2'))
+    font_total=sum(path.stat().st_size for path in fonts)
+    return {
+        'app_js_gzip_bytes':js,
+        'app_css_gzip_bytes':css,
+        'app_js_css_gzip_bytes':app_total,
+        'app_limit_bytes':150*1024,
+        'font_woff2_bytes':font_total,
+        'font_limit_bytes':100*1024,
+        'font_files':[path.name for path in sorted(fonts)],
+        'method':'Sum of independently gzipped executable inline scripts + inline style blocks in assembled app; Telegram host SDK excluded. Font budget is raw shipped WOFF2 bytes.',
+        'passed':app_total<=150*1024 and font_total<=100*1024
+    }
 
 
 def main():
