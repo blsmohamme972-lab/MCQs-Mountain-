@@ -8,7 +8,7 @@ Every Sunday at 01:17 UTC (04:17 Baghdad), or when manually started, it checks t
 
 Exports are capped at 64 MiB raw SQL, run at most ten minutes, and never print SQL, table rows, credentials or signed download URLs. Temporary files are removed. New assets are downloaded and checksum-verified before the four newest complete backup pairs are retained. Partial/unrelated assets are not deleted automatically. Existing content-state and book releases are untouched.
 
-Cloudflare documents that a running D1 export blocks other database requests. Schedule the first run when nobody is publishing/moderating. The app's normal locally saved study does not depend on D1, but bot/queue requests can wait during export. Do not remove virtual tables or alter schemas just to force an export; if export permissions or compatibility fail, stop and review privately.
+Cloudflare documents that a running D1 export blocks other database requests. Schedule manual runs when nobody is publishing/moderating. The app's normal locally saved study does not depend on D1, but bot/queue requests can wait during export. Do not remove virtual tables or alter schemas just to force an export; if export permissions or compatibility fail, stop and review privately.
 
 ## Verify the scheduled backups
 
