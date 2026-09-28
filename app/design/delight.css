@@ -1,0 +1,14 @@
+.k-streak{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-sm);color:var(--color-primary);margin-bottom:var(--space-5)}
+.k-streak svg{width:24px;height:24px}.k-streak strong{font-size:var(--text-lg)}
+.k-kafu{display:inline-block;font-weight:600;color:var(--color-success)}
+.k-correct-label{display:block;font-size:var(--text-xs);font-weight:500;margin-top:var(--space-1)}
+.k-complete-kafu{margin:0 0 var(--space-3);font-size:var(--text-lg)}
+.k-badge-shelf{margin-bottom:var(--space-8)}
+.k-badges{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)}
+.k-badge{border:1px solid var(--color-border);background:var(--color-surface);border-radius:var(--radius-md);padding:var(--space-4);display:flex;gap:var(--space-3);align-items:flex-start}
+.k-badge-icon{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;color:var(--color-muted);flex-shrink:0}
+.k-badge.earned{background:var(--color-success-soft)}.k-badge.earned .k-badge-icon{color:var(--color-success)}
+.k-badge strong{display:block;font-size:var(--text-sm);font-weight:600}.k-badge div>span{display:block;color:var(--color-muted);font-size:var(--text-xs);margin-top:var(--space-1);line-height:1.5}
+@media(max-width:380px){.k-badges{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:no-preference){.k-complete-kafu{animation:kafu-small-win var(--duration-delight) var(--ease-out)}}
+@keyframes kafu-small-win{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
