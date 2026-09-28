@@ -20,6 +20,8 @@ class NightReportTests(unittest.TestCase):
         self.assertIn("docs/ROTATE_SECRETS.md", text)
         self.assertIn("Weekly Kafu D1 Backup", text)
         self.assertIn("KAFU-UPLOAD-TEST", text)
+        progress = (ROOT / "PROGRESS.md").read_text(encoding="utf-8")
+        self.assertIn("merged PR #23", progress)
 
 if __name__ == "__main__":
     unittest.main()
