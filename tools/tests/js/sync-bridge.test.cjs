@@ -6,7 +6,7 @@ const vm=require('node:vm');
 const {webcrypto}=require('node:crypto');
 const ROOT=path.resolve(__dirname,'../../..');
 function mockCloud(){const values=new Map();return{values,getKeys(cb){queueMicrotask(()=>cb(null,[...values.keys()]));},getItems(keys,cb){queueMicrotask(()=>cb(null,Object.fromEntries(keys.map(k=>[k,values.get(k)||'']))));},setItem(k,v,cb){values.set(k,v);queueMicrotask(()=>cb(null,true));},removeItems(keys,cb){keys.forEach(k=>values.delete(k));queueMicrotask(()=>cb(null,true));}};}
-function browser(owner=123,cloud=mockCloud()){
+function browser(owner=123,cloud=mockCloud(),legacy=false){
   const noop=()=>{},element={innerHTML:'',hidden:false,style:{setProperty:noop},dataset:{},classList:{add:noop,toggle:noop,contains:()=>false},setAttribute:noop,appendChild:noop,scrollIntoView:noop};
   const ctx={console,crypto:webcrypto,TextEncoder,TextDecoder,URL,Blob,setTimeout:()=>1,clearTimeout:noop,setInterval:()=>1,clearInterval:noop,requestAnimationFrame:noop,
     navigator:{onLine:true,storage:{persist:async()=>true}},document:{visibilityState:'visible',querySelector:()=>element,querySelectorAll:()=>[],createElement:()=>({...element}),addEventListener:noop,documentElement:element,body:element,head:element},
@@ -16,7 +16,7 @@ function browser(owner=123,cloud=mockCloud()){
     HapticFeedback:{selectionChanged:noop,notificationOccurred:noop},MainButton:{setParams:noop,hide:noop},BackButton:{show:noop,hide:noop}}};
   vm.createContext(ctx);
   const manifest=JSON.parse(fs.readFileSync(path.join(ROOT,'app/modules/manifest.json'),'utf8'));
-  for(const filename of manifest.scripts)vm.runInContext(fs.readFileSync(path.join(ROOT,'app',filename),'utf8'),ctx,{filename});
+  for(const filename of manifest.scripts){if(legacy&&filename.startsWith('modules/report-'))continue;vm.runInContext(fs.readFileSync(path.join(ROOT,'app',filename),'utf8'),ctx,{filename});}
   const html=fs.readFileSync(path.join(ROOT,'app/index.html'),'utf8');
   const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(x=>x[1]);
   const main=scripts.find(s=>s.includes('(async function boot() {'));
@@ -50,4 +50,28 @@ test('personal state is isolated between Telegram accounts',async()=>{
 test('plain-browser use keeps local progress without Telegram CloudStorage',async()=>{
   const h=browser(null);await h.run('CloudSync.pull()');h.run('QI.Q000000001={b:"BOOK",ch:1}; recordAnswer({id:"Q000000001"},{correct:true});');
   assert.equal(h.run('S.answers.Q000000001.n'),1);assert.equal(h.run('KafuPersonal.status()'),'local-only');
+});
+test('report queue saves offline, sends minimal payload once, and survives old-version rollback',async()=>{
+  const h=browser();h.run('CATALOG.books[0].version=1;QI.Q000000001={b:"BOOK",ch:1,q:{id:"Q000000001"}};SESSION={qids:["Q000000001"],index:0};navigator.onLine=false;');
+  h.ctx.document.getElementById=()=>({value:'A short\nnote'});
+  h.run('ACTIONS.report()');assert.match(h.run('SHEET()'),/maxlength="300"/);
+  h.run('ACTIONS.reason({r:"Typo"})');
+  await h.run('ACTIONS["send-report"]()');
+  assert.equal(h.run('S.reports.length'),1);assert.equal(h.run('S.reports[0].note'),'A short note');assert.equal(h.run('S.reports[0].reason'),'Typo');
+  const stored=await h.run('DB.get("meta","state")');assert.equal(stored.reports.length,1);
+  // An old app can read the additive report fields and append its legacy shape without clearing progress.
+  const old=browser(123,mockCloud(),true);old.ctx.saved=JSON.parse(JSON.stringify(stored));
+  old.run('S=Object.assign(S,saved);S.reports.push({q:"Q000000001",reason:"Typo",t:1});');
+  assert.equal(old.run('S.reports.length'),2);assert.equal(old.run('S.reports[0].note'),'A short note');
+  const payloads=[];h.ctx.fetch=async(url,init)=>{assert.equal(url,'/api/reports');payloads.push(JSON.parse(init.body));return{ok:true,json:async()=>({accepted:true})};};
+  h.run('navigator.onLine=true;');await h.run('KafuReports.flush()');
+  assert.equal(payloads.length,1);assert.deepEqual(Object.keys(payloads[0].report).sort(),['book','id','note','q','reason','version']);
+  assert.equal(h.run('S.reports.length'),0);assert.equal((await h.run('DB.get("meta","state")')).reports.length,0);
+});
+
+test('legacy local reports upgrade only when book metadata is available',async()=>{
+  const h=browser();h.run('CATALOG.books[0].version=1;QI.Q000000001={b:"BOOK",ch:1,q:{id:"Q000000001"}};S.reports=[{q:"Q000000001",reason:"Typo",t:1}];');
+  const payloads=[];h.ctx.fetch=async(url,init)=>{payloads.push(JSON.parse(init.body));return{ok:true,json:async()=>({accepted:true})};};
+  await h.run('KafuReports.flush()');assert.equal(payloads.length,1);assert.equal(payloads[0].report.version,1);
+  assert.equal(h.run('S.reports.length'),0);
 });
