@@ -129,7 +129,7 @@ globalThis.KafuEnhancements.installers.push({name:'study-polish',install(){
       decorateStudy(section);
       if(restoreReportFocus&&!SHEET){
         restoreReportFocus=false;
-        requestAnimationFrame(()=>document.querySelector('.k-study-topbar [data-a="report"]')?.focus({preventScroll:true}));
+        document.querySelector('.k-study-topbar [data-a="report"]')?.focus({preventScroll:true});
       }
     }
     lastQuestion=qid||null;return result;
