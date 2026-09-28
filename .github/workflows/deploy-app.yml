@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+      - name: Assemble tested frontend modules
+        run: python tools/build_frontend.py --in-place
       - name: Install Wrangler
         run: npm install --no-save wrangler@4
       - name: Configure D1 binding

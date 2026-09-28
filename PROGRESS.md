@@ -4,13 +4,13 @@ Updated: 2026-09-28. Night 1 tracker; historical reports remain in docs/reports/
 
 ## Protected baseline
 
-Owner verified KAFU-UPLOAD-TEST v1: 4 questions, 1 chapter, both image types, answer feedback and Library entry. Do not remove or republish it tonight. Preserve non-empty Library fallback, permanent IDs and existing local progress. English-only UI. D1 remains operational metadata, not the question library.
+Owner verified KAFU-UPLOAD-TEST v1: 4 questions, 1 chapter, 2 images. Do not remove or republish it tonight. Preserve non-empty Library fallback, permanent IDs and existing local progress. English-only UI. D1 remains operational metadata, not the question library.
 
 ## Night 1, in order
 
-1. **Security merged: PR #12.** CI 36365428074 green. Deploy Kafu #13 / 36365507996 green, including the read-only app-shell and protected-book check. Current tracked-source/workflow/report scanner passed. Known previous chat/log credential exposure is not erased: owner must use docs/ROTATE_SECRETS.md. No credential values, scopes, account settings or bindings changed. Added a read-only verification step to the existing deploy workflow, not a new production trigger.
-2. **M3 automated tests implemented on night1/02-m3-tests; awaiting CI/review.** Real in-memory SQLite executes the production queue SQL; all network requests are mocked. Covers invalid metadata, duplicate/no-op, reverse two-part assembly, failed replacement, changed multipart layout, /retry, /clear, /hold, /flags, moderation callbacks, /rollback, /remove, non-owner/group silence and stale/identity-mismatched completion. Offline Python integration tests cover broken ZIP + repair report + red result, SHA-256 duplicate detection, multipart validation/publishing and rollback/remove ID preservation. Fixed atomic failed replacement/clear and stale completion bugs. No schema/settings/secrets changes or production commands.
-3. Full personal CloudStorage sync: pending.
+1. **Security merged: PR #12.** CI 36365428074 green. Deploy Kafu #13 / 36365507996 green including app/protected-book GET checks. Tracked-source scanner passed. Earlier chat/log exposure still requires the owner-only docs/ROTATE_SECRETS.md procedure. No credential values, scopes, account settings or bindings changed.
+2. **M3 tests and fixes merged: PR #13.** CI 36365955918 green. Deploy Kafu #14 / 36365997924 green, including live app and protected catalog checks. Real SQLite bot tests plus offline Python package tests cover broken ZIP/report/red result, duplicate, multipart, failed replacement, retry/clear, hold/flags, moderation, rollback/remove and owner/private gates. Queue writes are atomic and stale completions cannot alter active books. No production test commands or triggers.
+3. **M5 personal sync implemented on night1/03-personal-sync, awaiting CI/review.** Per-writer compact counters and deterministic registers; stars/unstar tombstones, FSRS state, time/streak/resume; immutable chunk manifests with checksums and 716-key/4096-char safeguards. Local full answer events and account-isolated personal state; legacy counts preserved without inventing missing historical correct answers. Reset explicitly affects all synced devices and retains stars. Added deterministic frontend assembly that inlines reviewed modules with the original HTML, avoiding partial module loads. Only the existing deploy's code-build step changes; no settings/scopes/bindings. Tests include mocked CloudStorage, actual base-app integration and assembled script syntax.
 4. Pinned FSRS Review Due: pending.
 5. Invisible/offline downloads: pending.
 6. Small UX/full-screen diagnostics: pending.
@@ -22,4 +22,4 @@ Owner verified KAFU-UPLOAD-TEST v1: 4 questions, 1 chapter, both image types, an
 
 ## Execution rules
 
-One task per branch/PR. Merge only covered changes with green CI and no credential/infrastructure setting changes. All acceptance tests run offline; no temporary production triggers. Verify deployment and app/catalog after merges. Tools/docs-only changes may not trigger a new deployment; record the last verified unchanged app deployment. Push progress after every task. Final report: docs/reports/NIGHT_1.md.
+One task per branch/PR. Merge only tested changes with green CI and no credential/infrastructure setting changes. No temporary production triggers. Verify Deploy Kafu's read-only app/catalog guard after merges. Tools/docs-only changes may not trigger a new deployment; record the last verified unchanged app. Push progress after every task. Final report: docs/reports/NIGHT_1.md.

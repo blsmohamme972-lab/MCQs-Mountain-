@@ -1,0 +1,5 @@
+{
+  "version": "night1-sync-v2",
+  "scripts": ["modules/enhancements.js", "modules/sync-core.js", "modules/sync-access.js", "modules/sync-bridge.js"],
+  "styles": []
+}
