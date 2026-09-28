@@ -1,17 +1,17 @@
 # Kafu - PROGRESS
 
-Updated: 2026-09-28. Night 1 tracker. Protected book: KAFU-UPLOAD-TEST v1, 4 questions, 1 chapter, 2 images. No production upload/retry/remove tests. English-only, local-first, unchanged D1 roles and permanent IDs.
+Updated: 2026-09-28. Night 1 tracker. Protected: KAFU-UPLOAD-TEST v1, 4 questions, 1 chapter, 2 images. English-only, local-first. No overnight production upload/retry/remove tests or token/account changes.
 
-1. Security merged PR #12; CI 36365428074, Deploy #13 / 36365507996 green. Source scanning/redaction; owner must rotate earlier chat/log-exposed credentials via docs/ROTATE_SECRETS.md. No tokens changed tonight.
-2. M3 merged PR #13; CI 36365955918, Deploy #14 / 36365997924 green. Real SQLite/offline package acceptance, atomic recovery and protected completion.
-3. Personal sync merged PR #14; CI 36366998955, Deploy #15 / 36367150537 green. Compact complete personal state, device merge/tombstones, safe 716-key snapshots and account isolation.
-4. Review Due merged PR #15; CI 36367815492, Deploy #16 / 36367874408 green. Hash-pinned ts-fsrs 5.4.2, offline rating sessions and real SDK/UI tests.
-5. Invisible downloads merged PR #16; CI 36368466085, Deploy #17 / 36368505401 green. Text-first, background images, next-only prefetch, whole-book save/size, persistent offline marks and bundled safe ZIP decoding.
-6. UX merged PR #17; CI 36368718204, Deploy #18 / 36368782663 green. Me version/commit/source, offline banner, opt-in iPad fullscreen diagnostics; live guard checks exact build commit too.
-7. Offline shell merged PR #18; CI 36369148074, Deploy #19 / 36369225189 green including app/build/protected-book guard. Atomic shell/public assets cache, network-first valid catalog, API/auth exclusion, no forced update, graceful unsupported Telegram/iOS fallback.
-8. Privacy/disclaimer implemented on night1/08-privacy-disclaimer; awaiting CI. Me → Privacy and About, once-per-device/account acknowledgement, permanent educational-only notice, explicit local-only report limitation and honest deletion/provider-backup scope.
-9. Weekly backup: pending; infrastructure-sensitive changes stay open for owner review.
-10. Parser/batch/content-team/bulk moderation: pending.
-11. Final docs/report: pending.
+1. Security merged PR #12; CI and Deploy #13 green. Source scanner, safe diagnostics and docs/ROTATE_SECRETS.md. Earlier chat/log-exposed credentials still require owner rotation.
+2. M3 merged PR #13; CI and Deploy #14 green. Real SQLite/offline package tests, atomic failed replacement/clear and completion guards.
+3. Personal sync merged PR #14; CI and Deploy #15 green. Compact full personal summaries, two-device merge/tombstones, safe 716-key snapshots and account separation.
+4. Review Due merged PR #15; CI and Deploy #16 green. Pinned ts-fsrs 5.4.2, offline review sessions, real SDK/UI tests.
+5. Invisible downloads merged PR #16; CI and Deploy #17 green. Text-first/background images, next-only prefetch, whole-book save/size, honest persistent offline marks and pinned fflate.
+6. UX merged PR #17; CI and Deploy #18 green. Me build/source, offline banner and opt-in iPad fullscreen diagnostic; exact build/app/book postdeploy verification.
+7. Offline shell merged PR #18; CI and Deploy #19 green. Versioned public shell, network-first valid catalog, API/auth exclusions and unsupported-iOS fallback.
+8. Privacy merged PR #19; CI 36369408980 green. Deploy #20 / 36369479431 initially missed the exact-build propagation check; a new deploy job attempt completed green including exact build, app shell and protected book. No code/account/secret changes were needed. The privacy page and once-only educational notice are live.
+9. Weekly backup prepared on night1/09-weekly-backup; awaiting offline CI, then leave PR OPEN. It introduces a weekly production schedule and uses existing D1 access, so owner review/first off-peak run is required. No production export, permission changes or backup uploads performed tonight. See docs/BACKUPS.md.
+10. Parser/batch/content-team/bulk moderation: next.
+11. Final owner docs/morning report: next.
 
-One task per branch/PR; green tested code only without secret/account/infrastructure setting changes. Verify deployment/read-only app/build/book guard after each merge. No temporary production triggers. Push each task. Final morning report: docs/reports/NIGHT_1.md.
+One branch/PR per task; merge only green tested code without secret/account/infrastructure settings changes. Deployment build/GET verification steps preserve existing triggers/bindings. No temporary production triggers. Push progress each task. Final report: docs/reports/NIGHT_1.md.
