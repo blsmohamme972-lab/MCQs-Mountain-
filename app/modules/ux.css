@@ -1,0 +1,4 @@
+.offline-banner{padding:10px 14px;margin:8px 0 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);color:var(--ink);font-size:13px;line-height:1.5}
+.kafu-diagnostic{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;grid-template-columns:minmax(90px,1fr) minmax(0,2fr);gap:8px 14px;font-size:13px}
+.kafu-diagnostic dt{color:var(--muted)}.kafu-diagnostic dd{margin:0;overflow-wrap:anywhere}.kafu-diagnostic code{font-size:12px}
+:root{--kafu-tg-safe-top:0px}body{padding-top:var(--kafu-tg-safe-top)}.top{top:max(env(safe-area-inset-top,0px),var(--kafu-tg-safe-top))}
