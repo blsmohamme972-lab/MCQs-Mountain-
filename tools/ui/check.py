@@ -31,8 +31,8 @@ from playwright.sync_api import sync_playwright
 FIXED_TIME='2026-09-28T09:30:00.000Z'
 QIDS=[f'Q00000100{i}' for i in range(1,5)]
 DEVICES={'phone':{'width':390,'height':844},'ipad':{'width':820,'height':1180}}
-# Chromium occasionally rasterizes seven 1-level pixels differently on the
-# rounded focus ring in these two otherwise-identical iPad-light states.
+# Chromium occasionally rasterizes 7-10 1-level pixels differently on the
+# rounded focus ring in these three otherwise-identical iPad states.
 # Keep the allowance exact and screen-specific; all other screenshots remain
 # strict single-hash comparisons.
 VISUAL_HASH_VARIANTS={
@@ -43,6 +43,10 @@ VISUAL_HASH_VARIANTS={
     'ipad-light-library-no-results':{
         '6ff908d5a1a896edbe70cea5b167bd88836dfe11708f88a430271dcbde99e99e',
         'a71af6ec8c1207a0a5800d164d4b36bd5246aa316353947f149e35dd6d779451',
+    },
+    'ipad-dark-library-search':{
+        'dd58ec43a2535d2f425837998c40819205614dde867d78fb634712f7042094bb',
+        '2fd1530f2044e41bab5abcd76f4ec34cdd72efd71205390cacc2a2de059d5af9',
     },
 }
 
