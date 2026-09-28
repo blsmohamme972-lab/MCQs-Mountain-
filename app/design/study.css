@@ -22,8 +22,8 @@
 .k-complete-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:var(--space-3);margin-bottom:calc(var(--nav-height) + var(--space-6) + env(safe-area-inset-bottom,0px))}
 .k-confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}.k-complete{position:relative;overflow:hidden}.k-confetti i{position:absolute;left:50%;top:72px;width:8px;height:14px;border-radius:2px;background:var(--color-accent-a);opacity:0}
 .k-confetti i:nth-child(3n+2){background:var(--color-accent-b)}.k-confetti i:nth-child(3n){background:var(--color-primary)}
-@media(prefers-reduced-motion:no-preference){.k-confetti i{animation:kafu-confetti var(--duration-delight) var(--ease-out) both;animation-delay:calc(var(--i) * 12ms)}.k-confetti i:nth-child(odd){--dir:-1}.k-confetti i:nth-child(even){--dir:1}}
-@keyframes kafu-confetti{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(calc(var(--dir) * (36px + var(--i) * 5px)),calc(80px + var(--i) * 4px)) rotate(180deg)}}
+@media(prefers-reduced-motion:no-preference){.k-confetti i{animation:kafu-confetti var(--duration-delight) var(--ease-out) both;animation-delay:var(--delay)}}
+@keyframes kafu-confetti{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(180deg)}}
 @keyframes kafu-question-enter{from{opacity:.7;transform:translateY(3px)}to{opacity:1;transform:none}}
 .k-question-enter{animation:kafu-question-enter var(--duration-question) var(--ease-out)}
 @media(min-width:760px){.k-study .stem,.k-study .opt,.k-study .tf p,.k-study .explain p{font-size:var(--text-study-wide)}.k-complete h2{font-size:var(--text-title-wide)}}
