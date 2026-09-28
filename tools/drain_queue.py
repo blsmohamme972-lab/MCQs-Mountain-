@@ -29,14 +29,26 @@ CONTENT_URL = "https://kafu-content-1.blsmohamme97.workers.dev"
 MAX_ZIP = 19 * 1024 * 1024
 
 
-def run(*args: str, cwd: Path = ROOT, capture: bool = True) -> str:
+class StepFailure(RuntimeError):
+    def __init__(self, step: str, method: str, host: str, path: str, detail: str = "") -> None:
+        summary = f"step={step} method={method} host={host} path={path}"
+        if detail:
+            summary += f" — {detail}"
+        super().__init__(summary)
+
+
+def run(*args: str, cwd: Path = ROOT, capture: bool = True,
+        failure_context: tuple[str, str, str, str] | None = None) -> str:
     p = subprocess.run(args, cwd=cwd, text=True, capture_output=capture)
     if p.returncode:
-        raise RuntimeError(f"{' '.join(args[:3])} failed: {(p.stdout + p.stderr)[-5000:]}")
+        detail = (p.stdout + p.stderr)[-1200:].replace("\n", " ").strip()
+        if failure_context:
+            raise StepFailure(*failure_context, detail)
+        raise RuntimeError(f"{' '.join(args[:3])} failed: {detail}")
     return p.stdout + p.stderr
 
 
-def post(url: str, payload: dict, headers: dict | None = None) -> dict:
+def post(url: str, payload: dict, headers: dict | None = None, step: str = "http.post") -> dict:
     req = urllib.request.Request(
         url,
         data=json.dumps(payload).encode(),
@@ -49,11 +61,12 @@ def post(url: str, payload: dict, headers: dict | None = None) -> dict:
         body = exc.read(200).decode("utf-8", errors="replace")
         server = exc.headers.get("server", "")
         cf_ray = exc.headers.get("cf-ray", "")
+        parsed = urllib.parse.urlparse(url)
         print(
             f"[queue-http] status={exc.code} server={server!r} cf-ray={cf_ray!r} "
             f"body={body[:200]!r}"
         )
-        raise
+        raise StepFailure(step, "POST", parsed.hostname or "", parsed.path or "/", f"HTTP {exc.code}") from None
 
 
 class Queue:
@@ -68,7 +81,7 @@ class Queue:
         self.headers = {"Authorization": f"Bearer {token}"}
 
     def call(self, path: str, data: dict | None = None) -> dict:
-        return post(self.url + "/internal/" + path, data or {}, self.headers)
+        return post(self.url + "/internal/" + path, data or {}, self.headers, step=f"queue.{path}")
 
     def notify(self, text: str) -> None:
         self.call("notify", {"text": text[:3500]})
@@ -77,7 +90,7 @@ class Queue:
 def telegram_file(file_id: str, target: Path) -> None:
     token = os.environ["BOT_TOKEN"]
     try:
-        data = post(f"https://api.telegram.org/bot{token}/getFile", {"file_id": file_id})
+        data = post(f"https://api.telegram.org/bot{token}/getFile", {"file_id": file_id}, step="telegram.getFile")
     except urllib.error.HTTPError as exc:
         raise ValueError(f"Telegram getFile returned HTTP {exc.code}") from None
     if not data.get("ok") or not data.get("result", {}).get("file_path"):
@@ -93,7 +106,8 @@ def telegram_file(file_id: str, target: Path) -> None:
                 out.write(block)
                 remaining -= len(block)
     except urllib.error.HTTPError as exc:
-        raise ValueError(f"Telegram file download returned HTTP {exc.code}") from None
+        parsed = urllib.parse.urlparse(url)
+        raise StepFailure("telegram.download", "GET", parsed.hostname or "", "/file/bot<redacted>/" + data["result"]["file_path"], f"HTTP {exc.code}") from None
     if target.stat().st_size > MAX_ZIP:
         raise ValueError("ZIP exceeds 19 MB")
 
@@ -128,7 +142,8 @@ def restore(root: Path) -> tuple[Path, Path]:
     state.mkdir(); (build / "content").mkdir(parents=True)
     try:
         run("gh", "release", "download", "kafu-content-state", "--pattern", "content.sqlite",
-            "--pattern", "site-bundle.tar.gz", "--dir", str(state))
+            "--pattern", "site-bundle.tar.gz", "--dir", str(state),
+            failure_context=("state.restore", "GET", "api.github.com", "/repos/<repo>/releases/tags/kafu-content-state/assets"))
     except RuntimeError:
         pass  # first publish: use the repository's starter catalog
     bundle = state / "site-bundle.tar.gz"
@@ -148,7 +163,8 @@ def candidate(root: Path, content: Path, expected_book: str | None = None) -> No
     # A unique tag identifies exactly the candidate we smoke-test.
     tag = "queue-" + os.environ.get("GITHUB_RUN_ID", "local") + "-" + str(int(time.time()))
     output = run("npx", "--yes", "wrangler@4", "versions", "upload", "--config",
-                 "content-worker/wrangler.jsonc", "--tag", tag)
+                 "content-worker/wrangler.jsonc", "--tag", tag,
+                 failure_context=("candidate.upload", "POST", "api.cloudflare.com", "/client/v4/accounts/<account>/workers/scripts/kafu-content-1/versions"))
     urls = re.findall(r"https://[a-zA-Z0-9.-]+\.workers\.dev", output)
     if not urls:
         raise RuntimeError("Wrangler did not report a Version URL; candidate not promoted")
@@ -176,7 +192,8 @@ def candidate(root: Path, content: Path, expected_book: str | None = None) -> No
                         if zf.testzip():
                             raise RuntimeError(f"Candidate image ZIP corrupt: {path}")
     run("npx", "--yes", "wrangler@4", "versions", "deploy", "--config",
-        "content-worker/wrangler.jsonc", "--version-tag", tag, "--percentage", "100", "--yes")
+        "content-worker/wrangler.jsonc", "--version-tag", tag, "--percentage", "100", "--yes",
+        failure_context=("candidate.promote", "POST", "api.cloudflare.com", "/client/v4/accounts/<account>/workers/scripts/kafu-content-1/deployments"))
 
 
 def save_state(state: Path, content: Path) -> None:
@@ -185,21 +202,31 @@ def save_state(state: Path, content: Path) -> None:
         tf.add(content, arcname="content")
     assets = [str(state / "content.sqlite"), str(bundle)]
     try:
-        run("gh", "release", "view", "kafu-content-state")
-        run("gh", "release", "upload", "kafu-content-state", *assets, "--clobber")
-    except RuntimeError:
+        run("gh", "release", "view", "kafu-content-state",
+            failure_context=("state.release_view", "GET", "api.github.com", "/repos/<repo>/releases/tags/kafu-content-state"))
+        run("gh", "release", "upload", "kafu-content-state", *assets, "--clobber",
+            failure_context=("state.release_upload", "POST", "uploads.github.com", "/repos/<repo>/releases/<id>/assets"))
+    except StepFailure as exc:
+        if "state.release_view" not in str(exc):
+            raise
         run("gh", "release", "create", "kafu-content-state", *assets,
-            "--title", "Kafu active content state", "--notes", "Current active state")
+            "--title", "Kafu active content state", "--notes", "Current active state",
+            failure_context=("state.release_create", "POST", "api.github.com", "/repos/<repo>/releases"))
 
 
 def save_book_release(book_id: str, version: int, packages: list[Path]) -> None:
     tag = f"kafu-book-{book_id}-v{version}"
     try:
-        run("gh", "release", "view", tag)
-        run("gh", "release", "upload", tag, *map(str, packages), "--clobber")
-    except RuntimeError:
+        run("gh", "release", "view", tag,
+            failure_context=("book_release.view", "GET", "api.github.com", f"/repos/<repo>/releases/tags/{tag}"))
+        run("gh", "release", "upload", tag, *map(str, packages), "--clobber",
+            failure_context=("book_release.upload", "POST", "uploads.github.com", "/repos/<repo>/releases/<id>/assets"))
+    except StepFailure as exc:
+        if "book_release.view" not in str(exc):
+            raise
         run("gh", "release", "create", tag, *map(str, packages),
-            "--title", f"{book_id} v{version}", "--notes", "Validated owner package")
+            "--title", f"{book_id} v{version}", "--notes", "Validated owner package",
+            failure_context=("book_release.create", "POST", "api.github.com", "/repos/<repo>/releases"))
 
 
 def decisions_for(queue: Queue, book_id: str, root: Path) -> Path:
@@ -266,7 +293,8 @@ def process_admin(item: dict, root: Path, queue: Queue) -> dict:
             version = book["version"]
         tag = f"kafu-book-{job['book_id']}-v{version}"
         packages_dir = root / "packages"; packages_dir.mkdir()
-        run("gh", "release", "download", tag, "--pattern", "*.zip", "--dir", str(packages_dir))
+        run("gh", "release", "download", tag, "--pattern", "*.zip", "--dir", str(packages_dir),
+            failure_context=("admin.release_download", "GET", "api.github.com", f"/repos/<repo>/releases/tags/{tag}/assets"))
         packages = sorted(packages_dir.glob("*.zip"))
         if not packages:
             raise ValueError(f"No historical ZIPs for {tag}")
@@ -324,7 +352,8 @@ def main() -> None:
                 title = item["group"]["group_key"] if item["kind"] == "publish" else item["job"]["book_id"]
                 report = root / "repair_report.md"
                 report.write_text(f"# Kafu repair report\n\nJob: {title}\n\n❌ {type(exc).__name__}: {exc}\n")
-                payload = {"kind": item["kind"], "ok": False, "error": str(exc)[:400]}
+                safe_error = str(exc) if isinstance(exc, StepFailure) else f"step=processing method=LOCAL host=- path=- — {type(exc).__name__}: {str(exc)[:240]}"
+                payload = {"kind": item["kind"], "ok": False, "error": safe_error[:400]}
                 payload.update({"group_key": title} if item["kind"] == "publish" else {"id": item["job"]["id"]})
                 queue.call("finish", payload)
                 queue.notify(f"❌ {title} failed. repair_report.md is attached.")
