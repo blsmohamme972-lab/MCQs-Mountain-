@@ -3,7 +3,7 @@
 Only gate-passing, buildable proposals. IDs are stable identifiers, not rank. Sorted by Impact × Confidence × Effort (5 = easiest); ties retain ID order. All are proposed, not implementation authorizations. Each data-format addition still needs owner approval before an app PR. Evidence paths refer to the assessed main commit.
 
 ### DNA-001 Truthful report capture
-- Status: proposed
+- Status: 🔒 locked (owner only)
 - Area: Security & privacy
 - Problem (with evidence): `app/index.html:1112,1138` says Send report but queues locally.
 - Idea (concrete, buildable on the current stack): Rename the action Save report on this device and say it is not sent; show export/copy option without extra account data.
@@ -15,7 +15,7 @@ Only gate-passing, buildable proposals. IDs are stable identifiers, not rank. So
 - Revision: v1 (pass-001)
 
 ### DNA-002 Same-phone account isolation and reinstall proof
-- Status: proposed
+- Status: 🔒 locked (owner only)
 - Area: Security & privacy
 - Problem (with evidence): `sync-bridge.js:8-18` scopes state, but `sync-bridge.test.cjs:44-49` only tests A→B; `05_new_device.py:1-82` simulates reinstall.
 - Idea (concrete, buildable on the current stack): Test two actual Telegram accounts sharing one phone: A answers, stars, schedules, resumes, earns badges; B is clean; return A intact. Reinstall Telegram and restore same A from CloudStorage, checking compact state and documenting device-only event history. Fix only verified leaks with additive formats and owner approval.
@@ -27,7 +27,7 @@ Only gate-passing, buildable proposals. IDs are stable identifiers, not rank. So
 - Revision: v1 (pass-001)
 
 ### DNA-003 Visible sync-before-exit state
-- Status: proposed
+- Status: 🔒 locked (owner only)
 - Area: Speed & offline
 - Problem (with evidence): `sync-bridge.js:62-76` coalesces up to 30s and boot pull races after 2s; `docs/PERSONAL_SYNC.md` notes compact backup.
 - Idea (concrete, buildable on the current stack): Put a nonblocking Last synced/pending indicator near Me and an explicit Sync now after a session, using existing status; never imply full event-history backup.
