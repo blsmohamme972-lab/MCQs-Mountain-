@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+      - name: Fetch hash-pinned frontend dependencies
+        run: python tools/vendor_frontend.py
       - name: Assemble tested frontend modules
         run: python tools/build_frontend.py --in-place
       - name: Install Wrangler

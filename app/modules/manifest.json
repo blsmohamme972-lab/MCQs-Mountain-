@@ -1,5 +1,5 @@
 {
-  "version": "night1-sync-v2",
-  "scripts": ["modules/enhancements.js", "modules/sync-core.js", "modules/sync-access.js", "modules/sync-bridge.js"],
+  "version": "night1-review-v1",
+  "scripts": ["modules/enhancements.js", "modules/sync-core.js", "modules/sync-access.js", "modules/sync-bridge.js", "vendor/ts-fsrs-5.4.2.js", "modules/review-core.js", "modules/review-bridge.js"],
   "styles": []
 }
