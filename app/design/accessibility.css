@@ -20,7 +20,7 @@ h3.sec{flex-wrap:wrap;gap:var(--space-2)}
 .kafu-diagnostic dt,.kafu-diagnostic dd{min-width:0;overflow-wrap:anywhere}
 .k-score-ring{width:min(100%,9.5rem);height:auto;aspect-ratio:1}
 .k-ring{width:6rem;height:6rem;max-width:100%}
-.k-badges{grid-template-columns:repeat(auto-fit,minmax(min(100%,12rem),1fr))}
+.k-badges{grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))}
 .k-undo-notice{flex-wrap:wrap;bottom:calc(max(96px,5.75rem) + env(safe-area-inset-bottom,0px))}.k-undo-notice>span{flex:1 1 12rem;min-width:0;overflow-wrap:anywhere}.k-undo{min-height:var(--tap-target)}
 .toast{bottom:calc(max(96px,5.75rem) + env(safe-area-inset-bottom,0px));overflow-wrap:anywhere}
 .pill-row,.sheet .btns,.k-inline{flex-wrap:wrap}

@@ -49,11 +49,18 @@ def run(browser,origin,pack,out,helpers):
             page.wait_for_selector('.sheet[role=dialog]');audit('report-sheet')
             for _ in range(12):
                 page.keyboard.press('Tab');assert page.evaluate("!!document.activeElement.closest('.sheet')")
+                assert page.evaluate("parseFloat(getComputedStyle(document.activeElement).outlineWidth)>=2")
             page.keyboard.press('Escape');assert page.locator('.sheet').count()==0
             assert page.evaluate("document.activeElement.dataset.a==='report'")
+            page.locator('[data-a=action]').last.click();page.wait_for_selector('[data-session-complete]');audit('completion')
+            page.evaluate("tab('review')");audit('review')
+            page.evaluate("go('book',{b:'DESIGN-CARDIO'})");audit('book')
             page.add_style_tag(content='html{font-size:32px!important}')
             for screen in ('home','library','me'):
                 page.evaluate('v=>tab(v)',screen);audit(screen+'-200percent')
+            page.evaluate("go('book',{b:'DESIGN-CARDIO'})");audit('book-200percent')
+            assert page.locator('.book-head').count()==1
+            name=f'{device}-{theme}-large-text-book';hashes[name]=helpers['capture'](page,out/(name+'.png'))
             page.evaluate("async()=>{await startChapter('DESIGN-CARDIO',1,'Q000001002');}")
             page.wait_for_selector('.stem');audit('true-false-200percent')
             helpers['study_answer'](page,False);audit('feedback-200percent')
@@ -62,4 +69,4 @@ def run(browser,origin,pack,out,helpers):
                 page.set_viewport_size({'width':320,'height':844});page.evaluate("tab('library')");audit('library-320px-200percent')
             assert not errors,errors
             ctx.close()
-    return {'hashes':hashes,'passed':['phone/iPad light/dark: computed text/token contrast, named 44px controls, skip link and new-question focus, labelled true/false groups, sheet keyboard trap/Escape, all existing text-size preferences and 200% text-only reflow; saved formats unchanged (manual screen-reader review remains)']}
+    return {'hashes':hashes,'passed':['phone/iPad light/dark: computed text/token contrast, named 44px controls, skip link and new-question focus, labelled true/false groups, sheet keyboard trap/Escape, visible keyboard focus, all existing text-size preferences and 200% text-only reflow including book details; saved formats unchanged (manual screen-reader review remains)']}
