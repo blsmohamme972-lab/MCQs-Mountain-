@@ -1,1 +1,322 @@
-{"phone-light-home":{"sha256":"4a3ed7046333e28acbfb345de9bc98e19c64918439298534ce410f65ea03d9dd","width":390,"height":1622},"phone-light-library":{"sha256":"3e2eaa0bdd9e57cc9dbb93f71451135b53856ab9aae957737702117c22fe3391","width":390,"height":1326},"phone-light-study-correct":{"sha256":"81ba57c1cbe4ad71f1c979f6038bc42b01ca7e25d4fd635247cf7bc03fae0f1b","width":390,"height":963},"phone-light-study-wrong":{"sha256":"b08e9e3bc776b24767068e3415544e23939ccf3d151ef04d0f0578ee5842a07d","width":390,"height":960},"phone-light-chapter-complete":{"sha256":"9ca9dcc32128f6f64b5daf4a0b0cf6aa1865b39f42477ecf52a5417eaae283e8","width":390,"height":964},"phone-light-me":{"sha256":"d4403fe3455ae31266a1bdf0631da7587f1b32fb592fefdb29841ae35d08309c","width":390,"height":2727},"phone-light-styleguide":{"sha256":"b43d0f6f43791774853e90594fb563024b0f92c159aa2071b8e0d73e84c20387","width":390,"height":4007},"phone-dark-home":{"sha256":"26b590702486729082f78f96d784b8b4f6d1cac50fb260414871adc5559e5d00","width":390,"height":1622},"phone-dark-library":{"sha256":"f04d201ecb3043988c35142f947265e073d4c8dbe4500382a9e0c9f7e92d3790","width":390,"height":1326},"phone-dark-study-correct":{"sha256":"906f5e5190054f287a83750b43e72326faa7b3811c5b305c5242723ed870c2ad","width":390,"height":963},"phone-dark-study-wrong":{"sha256":"0a22b0271100523592204f2eb691a0ef6153a372ac7b5cbd6207239c9ab1db56","width":390,"height":960},"phone-dark-chapter-complete":{"sha256":"dfb67cbcefa3068fa58457433b1ff20fb75256b19045f389729a19d3c142f471","width":390,"height":964},"phone-dark-me":{"sha256":"2d0ce3e290416bbb49891f0b290884a6336637c66e1575e32ac2e3479af6d113","width":390,"height":2727},"phone-dark-styleguide":{"sha256":"6f13fc39b5a497e2acab9dc76c95deee115c0749289967ceccb5e02a53a898f1","width":390,"height":4007},"ipad-light-home":{"sha256":"3019b129d5e1ce78b84cc5fdc741a4032dc43ede5ab8e176471ba2bd1e390fc6","width":820,"height":1322},"ipad-light-library":{"sha256":"651b4755000ae5755126aa265172220b15afa182bb597ce939a1f7d3ea59e4a6","width":820,"height":1180},"ipad-light-study-correct":{"sha256":"4cc2552de9c64be1b37c5a37ed9b8b6765095c8e39f4a09e9b4d0d5747660a77","width":820,"height":1180},"ipad-light-study-wrong":{"sha256":"d2f0f3e6ab393764ba8eb3f134cb70377f3dfd90ee8848cec5ea25096fc9ee78","width":820,"height":1180},"ipad-light-chapter-complete":{"sha256":"07449cad33c44ce0fec6ef0930cf93486d7ba569a0f00f765622cf562d506fc9","width":820,"height":1180},"ipad-light-me":{"sha256":"1997b4fd845b5a50f96ecd2cde9de12f7b46a930a08a43ed38dc760c43ed0bfb","width":820,"height":2324},"ipad-light-styleguide":{"sha256":"69902ac159c0cabdf1d79a2bd6f585fb5ea2f9b88b9588511fbd48718f52290d","width":820,"height":2369},"ipad-dark-home":{"sha256":"25edf0efe0de8e0a3c840341b046df82a7928552ac92874ac5971a1e05843439","width":820,"height":1322},"ipad-dark-library":{"sha256":"8c196f7b80de15d2020321daae68e9d1101be46ddbd3be6008729fe7f657f694","width":820,"height":1180},"ipad-dark-study-correct":{"sha256":"1a097a528d4ac85fe3d65d3ea53e9957e2979c4992f7c376b761aab9f12f4103","width":820,"height":1180},"ipad-dark-study-wrong":{"sha256":"d341478d4d4a3c895166ee1971772778bc5a919805eb8da6279fb950be358b2c","width":820,"height":1180},"ipad-dark-chapter-complete":{"sha256":"bf9c2216bac6cc7367a823c211997e692970c92adf15052e52cd5fcea2f9dfc0","width":820,"height":1180},"ipad-dark-me":{"sha256":"c77502fa3d8e183c1068adef07ead5433131154c16816e1132755f941c5dfd51","width":820,"height":2324},"ipad-dark-styleguide":{"sha256":"307163152c814c69bfad8642cd58162b86dbc0232945bc0195e0152b2f393e9d","width":820,"height":2369},"phone-light-download-undo":{"sha256":"4ebf4003767450834881a09112bb5c6cd787f4b66dfd8bf3bcfb4ba95782cbc4","width":390,"height":2726},"phone-dark-download-undo":{"sha256":"34b4bc59595460e6ec8bb376d76a1dd9f01bbaf2f08e4b1478b7dd4f51f0db34","width":390,"height":2726},"ipad-light-download-undo":{"sha256":"b85d429fdbd509f995b707d78680eac9b7fdc0a67ed8267c125bba845aea7406","width":820,"height":2323},"ipad-dark-download-undo":{"sha256":"ff5224a345ed694b3d03434c58850074d52bc87f11f6f547474fc10255f0d94a","width":820,"height":2323},"phone-light-onboarding-1":{"sha256":"13125769b2b7d91e7d84df406779b19b431d174d936e1231441e1035ca1d0342","width":390,"height":844},"phone-light-onboarding-2":{"sha256":"93d09fe45b998334d4c7189a9e513b8e63d127320dbf45ff47deddf0b6dac914","width":390,"height":844},"phone-light-onboarding-3":{"sha256":"58876d7f8b04a5b3f0e765760a61f83e79ac5c5d72f160d970a84db8db3797b7","width":390,"height":926},"phone-dark-onboarding-1":{"sha256":"8f3f4a8545c4392ad0aadb5eb8ab5f313bab297a37acf618e87e369cb321c793","width":390,"height":844},"phone-dark-onboarding-2":{"sha256":"b4c0f01a523ade2d93c0bb1c99c4a7ef2ed7df44017b34cfbe8873257074ce41","width":390,"height":844},"phone-dark-onboarding-3":{"sha256":"ad5e4ef478d54235395621aa2847cafee390cb0a11b4616204a4054a61a33c91","width":390,"height":926},"ipad-light-onboarding-1":{"sha256":"3cd6a320328f09cdb9b6416e994883ac975463927e10675acec2cf9d4cccc7d8","width":820,"height":1180},"ipad-light-onboarding-2":{"sha256":"4e5e3e7cf57079b4b2a011dec825ec784cc2efb39e6edbdc290df9659f695cbd","width":820,"height":1180},"ipad-light-onboarding-3":{"sha256":"77ddd053277e026a356a2c4b1b738d22051d18b207c8dd6415a94114f3f0516c","width":820,"height":1180},"ipad-dark-onboarding-1":{"sha256":"01d75e115c081fd9e4af7e1c9ed4cc86e85e309dd7b8142e5758a4948a53f35b","width":820,"height":1180},"ipad-dark-onboarding-2":{"sha256":"8bdd98821dfa2090371d3053169fc8164acb65b127c95b6ef3320e2dd9aebef1","width":820,"height":1180},"ipad-dark-onboarding-3":{"sha256":"391b13dbd07c6be99d07a7113eb30737256efd51401b002d2e647040017a0a69","width":820,"height":1180},"phone-light-chapter-complete-mixed":{"sha256":"8f69c2e0f5129ad50d8a2f8e44ee952135967ee2fb611ca60137b51f0b350162","width":390,"height":1024},"phone-dark-chapter-complete-mixed":{"sha256":"dcaa5496962ad6314d2c39d500e0cd5e71b77cc52e8e111a31ed02996a7a7d24","width":390,"height":1024},"ipad-light-chapter-complete-mixed":{"sha256":"9cc9235a5656c09017f1a51983a2f943de5ad298fa69bb394aa8eea789605298","width":820,"height":1180},"ipad-dark-chapter-complete-mixed":{"sha256":"672f816c0624f05d33668b637d95a4649bd0d98171b885d6764b0d1403432260","width":820,"height":1180},"phone-light-badges-earned":{"sha256":"bcd58c882c5acfe04b13e71d0067c15384bba3cef211bebfbbb1b9ff2db43e43","width":390,"height":2726},"phone-dark-badges-earned":{"sha256":"5f4e2623bc4030f72f20128a904837d4dbb7687912d27ebcbf84432c17113ebe","width":390,"height":2726},"ipad-light-badges-earned":{"sha256":"c2a0b8ce756ff9b6911a4c5aa9eef155559e341201ff7e60a4135216e158d58e","width":820,"height":2341},"ipad-dark-badges-earned":{"sha256":"8843c961444ab7f6e13b2c00e385e3b388eeb63669e4524548e6e4dfd3af0607","width":820,"height":2341},"phone-light-library-search":{"sha256":"6abb70ad45253dd25b2c69d521e58ddc1d6fff4cadc8896b76a81f011d524c61","width":390,"height":902},"phone-light-library-no-results":{"sha256":"38a232565b50ea3d97eaa87b2dcc6fd3436140af1ee2ad9a5e749fdd47805655","width":390,"height":844},"phone-dark-library-search":{"sha256":"5fc370f369ae630a11f7a71c6f482e954f1ae07e6a7be11ce25558516fedbf54","width":390,"height":902},"phone-dark-library-no-results":{"sha256":"11eff104159f532334cf4150beeba1a3a75bef611907b9e8668a44bcfaa200e5","width":390,"height":844},"ipad-light-library-search":{"sha256":"42a8728bb28aa0e6ddba4e26eb0171a1016b3f778fa3c0f5847b1973c81379ff","width":820,"height":1180},"ipad-light-library-no-results":{"sha256":"c66bfbdb3774af54c020c97f903c94cd3870effbaa1f58ae9451d95e196f8ea8","width":820,"height":1180},"ipad-dark-library-search":{"sha256":"0bda8765a8ba5650758a56bfe4b84c7f86baeb45add1396e3dc07ea3bfc3c8bf","width":820,"height":1180},"ipad-dark-library-no-results":{"sha256":"08120f0446644b4a8b7704f168e84efcbc326a9fadb3cfeef7cbfa4451f29589","width":820,"height":1180}}
+{
+  "ipad-dark-badges-earned": {
+    "sha256": "55b9085bc6e6a47578a33fd5ab87300612a04b4bb241cf671ba72b353361cb4a",
+    "width": 820,
+    "height": 1909
+  },
+  "ipad-dark-chapter-complete": {
+    "height": 1180,
+    "sha256": "74095bec7acaf7cf1ecd92db171ab357c46d880d156069f6efb0b68737f13b3b",
+    "width": 820
+  },
+  "ipad-dark-chapter-complete-mixed": {
+    "height": 1180,
+    "sha256": "6334d35d318f2023956e4d58f7417e78256d914299da99165e79872cf1ec48b8",
+    "width": 820
+  },
+  "ipad-dark-download-undo": {
+    "sha256": "060a430fcd787e7096d86fee2aab50d1ca10b5f96121c545f4c4d28c9cb53ff6",
+    "width": 820,
+    "height": 2333
+  },
+  "ipad-dark-gallery": {
+    "sha256": "b8c5bdffca4fbd4018763ff21e34a01c1866008a96df673d615675cbef0f5a29",
+    "width": 820,
+    "height": 6291
+  },
+  "ipad-dark-home": {
+    "sha256": "7991eb034bf3d25ddbcba2da4bf8834004ccb35c9fbf02888a505cbb89833056",
+    "width": 820,
+    "height": 1434
+  },
+  "ipad-dark-library": {
+    "height": 1180,
+    "sha256": "68c7fd4cb08ec1246146e0c16724fce0e56db8e5ca4636037f9a58e6ed8401c2",
+    "width": 820
+  },
+  "ipad-dark-library-no-results": {
+    "sha256": "8821de659817eb951546f4cfc3805220ecae6e17c7be853cb312380a6cfe39eb",
+    "width": 820,
+    "height": 1180
+  },
+  "ipad-dark-library-search": {
+    "height": 1180,
+    "sha256": "1a1027cf24ac2ccfe4dd2053e43ba4d4f260bcee2e058c84ed849798b8a919d3",
+    "width": 820
+  },
+  "ipad-dark-me": {
+    "sha256": "1b9b512a9359b791ada533f08667e51900afdf45c4ffc474c86acfb15b38b35b",
+    "width": 820,
+    "height": 1909
+  },
+  "ipad-dark-onboarding-1": {
+    "height": 1180,
+    "sha256": "69366278a4cb851e541ff8ceb346ade499411a110c886d62fcffd1e2923a6bde",
+    "width": 820
+  },
+  "ipad-dark-onboarding-2": {
+    "height": 1180,
+    "sha256": "43b58bebd70d0e193363dc079f5cd73f0127cd63a836177a4aeed0e95e1c74f7",
+    "width": 820
+  },
+  "ipad-dark-onboarding-3": {
+    "height": 1180,
+    "sha256": "3d04d48ffec9cdc500ee369357459800397a8dd2fbf675213fa7a018a1a67c6f",
+    "width": 820
+  },
+  "ipad-dark-study-correct": {
+    "height": 1180,
+    "sha256": "8768b8cbe37d4dc78b464d3e169a7e2564d410eeca80711d6e4057cf52840d99",
+    "width": 820
+  },
+  "ipad-dark-study-wrong": {
+    "height": 1180,
+    "sha256": "7a3b71953961e88199e60a13a227715666d1651025dceba77a99972c1cd8dfb8",
+    "width": 820
+  },
+  "ipad-dark-styleguide": {
+    "sha256": "9ae7bb681182844e8e711b8a3dc0f972f3de662ca7604989451db2151b34fc74",
+    "width": 820,
+    "height": 2352
+  },
+  "ipad-light-badges-earned": {
+    "sha256": "3e68ed562d12ea4517a9847d8077822c3ea168dcc1452f67bb803ea002e2ee97",
+    "width": 820,
+    "height": 1909
+  },
+  "ipad-light-chapter-complete": {
+    "height": 1180,
+    "sha256": "307a21d3c648e8c18a0c2dca1dc02b4b335cc44416ad9153f1382bac1cc6af48",
+    "width": 820
+  },
+  "ipad-light-chapter-complete-mixed": {
+    "height": 1180,
+    "sha256": "4f0910f01103d823d40f1b9fc2fa1e45c7f2720319510c61d8f16b7326193c26",
+    "width": 820
+  },
+  "ipad-light-download-undo": {
+    "sha256": "d8f8c0b9c37bc467e079103c6b067f24cb3ffd5f052e1a85b7a080c3a2e70871",
+    "width": 820,
+    "height": 2333
+  },
+  "ipad-light-gallery": {
+    "sha256": "3b2026b69a430ab8427d86933d36cff5728dc129c628b6275e2a240b23facc5e",
+    "width": 820,
+    "height": 6291
+  },
+  "ipad-light-home": {
+    "sha256": "3385bb78ef6a399880863c95a1fc98a6cb508f4ba64ccc603d83a8bed72cd6c9",
+    "width": 820,
+    "height": 1434
+  },
+  "ipad-light-library": {
+    "height": 1180,
+    "sha256": "0d802c302c4bca307e0fa15ee5bed7582781d436b06bf1eca0e046c4f747c4a3",
+    "width": 820
+  },
+  "ipad-light-library-no-results": {
+    "sha256": "d31098a727e408f0d8a290770359a1d1a7dac1e0344ef35d7ce0ecb0cf87a336",
+    "width": 820,
+    "height": 1180
+  },
+  "ipad-light-library-search": {
+    "height": 1180,
+    "sha256": "11633e073c5080204e8c90d34aef4ffe5c8cbc8aa025f93fa5e0d1edaa4c0e04",
+    "width": 820
+  },
+  "ipad-light-me": {
+    "sha256": "b4bd69d5aea51510013f7519f99a36f3dc3dc12b91e602ab289c7374458602be",
+    "width": 820,
+    "height": 1909
+  },
+  "ipad-light-onboarding-1": {
+    "height": 1180,
+    "sha256": "b81dfc842c1aa0ca084864b714cf83012059beb0f743c8d253624f7aa29426b9",
+    "width": 820
+  },
+  "ipad-light-onboarding-2": {
+    "height": 1180,
+    "sha256": "87c5fa918116306f640dd14bae93be66392fd6217799f429cd68d805460ddf15",
+    "width": 820
+  },
+  "ipad-light-onboarding-3": {
+    "height": 1180,
+    "sha256": "710f8d8f5cbc5cf5e85e6c32436a519ffc33c0f02e9b9b837c79815fcb11ce84",
+    "width": 820
+  },
+  "ipad-light-study-correct": {
+    "height": 1180,
+    "sha256": "8ca0b73f16ec403a6c75ea4db810a878f26c4e18fa2cae688ca01e4f1c870410",
+    "width": 820
+  },
+  "ipad-light-study-wrong": {
+    "height": 1180,
+    "sha256": "d665cf0aef931046f888a3548000b9faad926e94fb95ae70961f3da9f8249cc9",
+    "width": 820
+  },
+  "ipad-light-styleguide": {
+    "sha256": "c4eedac6cbf1fd21638f7ea2ef76148716dc5bcc00d839369df6a92da6104dc6",
+    "width": 820,
+    "height": 2352
+  },
+  "phone-dark-badges-earned": {
+    "sha256": "32df8ef6234223c89ffbc9b5ec3a098f9e36c8cd41d6039653ce6fb24838e550",
+    "width": 390,
+    "height": 2104
+  },
+  "phone-dark-chapter-complete": {
+    "height": 1037,
+    "sha256": "dbff66a53c261d89770530244122921d44610cac58b244482e802c801eb61c4f",
+    "width": 390
+  },
+  "phone-dark-chapter-complete-mixed": {
+    "height": 1011,
+    "sha256": "3433232ae83e0436f80f90cecf8a5ba7ed10ba82ee833bce2221c765d4a005c8",
+    "width": 390
+  },
+  "phone-dark-download-undo": {
+    "sha256": "c583496f30f0dae06d5407aa6d050b1748e164cfc0b291a83def8f83e33e2a59",
+    "width": 390,
+    "height": 2567
+  },
+  "phone-dark-gallery": {
+    "sha256": "52436bf92120952f9624f953a2ea18b86bd84d981ac79ff92feeac2b3a840356",
+    "width": 390,
+    "height": 7124
+  },
+  "phone-dark-home": {
+    "sha256": "e43ee2387ede6480152f091c147ffbf9b6a7ce8aa09f2eef6f0fabf132f27fee",
+    "width": 390,
+    "height": 1726
+  },
+  "phone-dark-library": {
+    "height": 1221,
+    "sha256": "ebc85b8b67c199daac50f7ff5a1512dbfdbed9e4b3d638e97de49422d07f2241",
+    "width": 390
+  },
+  "phone-dark-library-no-results": {
+    "sha256": "15d39db65ad182c6057bb937ece0a79107794fdb54402db91c02e55929667092",
+    "width": 390,
+    "height": 844
+  },
+  "phone-dark-library-search": {
+    "height": 859,
+    "sha256": "a2c601a0ba9c80ab081fe9dcc9d4f82bb06bb03ae159bacc30f1960e54fc1e1b",
+    "width": 390
+  },
+  "phone-dark-me": {
+    "sha256": "f0c65822de39cd0a305a0a97a83ba8105684c210ca9d31d849aa403b0d97f7d0",
+    "width": 390,
+    "height": 2104
+  },
+  "phone-dark-onboarding-1": {
+    "height": 844,
+    "sha256": "a9b0db0537bb9aee1e660253da8e2481f4af325f994070651b25e499a855754d",
+    "width": 390
+  },
+  "phone-dark-onboarding-2": {
+    "height": 844,
+    "sha256": "76a09ac426c99bfadd27aa6ec18f46997bd7f43cf4e7a6db351fb94e1fa10502",
+    "width": 390
+  },
+  "phone-dark-onboarding-3": {
+    "height": 906,
+    "sha256": "a9f2c0e04cd039039cb4a0f88b1962e0162ae6ff308d6505f722f12679e01b5e",
+    "width": 390
+  },
+  "phone-dark-study-correct": {
+    "height": 1019,
+    "sha256": "e6581e50f18958c991dc8fec9cac68dee21e467c3b1acf7ef7f17394074a3ab8",
+    "width": 390
+  },
+  "phone-dark-study-wrong": {
+    "height": 1053,
+    "sha256": "ba298169d1383b5a579612502cfd7c46056da57b7b260826a399b2cf51cf486e",
+    "width": 390
+  },
+  "phone-dark-styleguide": {
+    "sha256": "bb591323adaeec024b26a1bc1ea7350b40c68e703a6754f94871da25c59c873c",
+    "width": 390,
+    "height": 3985
+  },
+  "phone-light-badges-earned": {
+    "sha256": "f12879d0447da0b2da0ff1323f9dc8b3a149e420b0189ad44af7b768f5969131",
+    "width": 390,
+    "height": 2104
+  },
+  "phone-light-chapter-complete": {
+    "height": 1037,
+    "sha256": "6162d6dea8c2a3e7aa0e7bb9e71636545c06a71174e6eacee9daae30aeb0058d",
+    "width": 390
+  },
+  "phone-light-chapter-complete-mixed": {
+    "height": 1011,
+    "sha256": "6623db8b22913f95f66902d0a8f9d05544d1bfcb07fd8ae7875fcebfa20e79fa",
+    "width": 390
+  },
+  "phone-light-download-undo": {
+    "sha256": "6b3bb4c48899eaad431c9477a8950dbe5596654699cb2feee48a2bd8cde39621",
+    "width": 390,
+    "height": 2567
+  },
+  "phone-light-gallery": {
+    "sha256": "a36aea2087e6e99907b7eed6e9e9dbc0dcc8f42eade2ed8e0cd33a1b154fe669",
+    "width": 390,
+    "height": 7124
+  },
+  "phone-light-home": {
+    "sha256": "e946d40d39ba4a324afd23a7d40a5686cd8bbc04eef241fa2f5b0e5b91cf5032",
+    "width": 390,
+    "height": 1726
+  },
+  "phone-light-library": {
+    "height": 1221,
+    "sha256": "31c36f2d7996be4a977a1aa197393bbf6c82c4520d1cc56ef6a8a031289a7b38",
+    "width": 390
+  },
+  "phone-light-library-no-results": {
+    "sha256": "80cdbb382b41fcc05203ba5ee57281aeed8a0ac6ed947ab3558298bb6637335e",
+    "width": 390,
+    "height": 844
+  },
+  "phone-light-library-search": {
+    "height": 859,
+    "sha256": "89ec5b6dd3941d9e40d3c9dfdb7a4e14c2f47f7bba651812ca5eba33ec241f62",
+    "width": 390
+  },
+  "phone-light-me": {
+    "sha256": "ef357a01d890c06026cde9eceffd44ba782b1e8bfdd3ac3d168428aa2dc44e17",
+    "width": 390,
+    "height": 2104
+  },
+  "phone-light-onboarding-1": {
+    "height": 844,
+    "sha256": "4f62111eebb8ff7c529bca7d64151f4e9af1bbe67993a03908d24bc0ca32688e",
+    "width": 390
+  },
+  "phone-light-onboarding-2": {
+    "height": 844,
+    "sha256": "a12ccc2397edc45d7992a53f42069776190ea1f185e609bdc0c8a6c0b3f506e7",
+    "width": 390
+  },
+  "phone-light-onboarding-3": {
+    "height": 906,
+    "sha256": "e7058296349faac775464a3ef8f93a7dc52e1b3f38a5002e3be7ca457cb7fd70",
+    "width": 390
+  },
+  "phone-light-study-correct": {
+    "height": 1019,
+    "sha256": "6fb48bfa3ab35d8d125196a3c48bd345c6a15a8daf240e7b7a11cfee0de0549a",
+    "width": 390
+  },
+  "phone-light-study-wrong": {
+    "height": 1053,
+    "sha256": "a45b77d3edfb9b575e162c336a43c917abd02288397f24cc3f34ad61176d7fe9",
+    "width": 390
+  },
+  "phone-light-styleguide": {
+    "sha256": "3d3083f161cbd99c102fbc0fd60b417940a34d9ffe12834e4c46fda82d6f866a",
+    "width": 390,
+    "height": 3985
+  }
+}

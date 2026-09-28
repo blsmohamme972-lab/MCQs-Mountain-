@@ -1,10 +1,4 @@
-/* Pinned Fontsource assets are downloaded at build time, never from a runtime CDN. */
-@font-face{font-family:Poppins;font-style:normal;font-weight:400;font-display:swap;src:url('/vendor/poppins-latin-400.woff2') format('woff2')}
-@font-face{font-family:Poppins;font-style:normal;font-weight:500;font-display:swap;src:url('/vendor/poppins-latin-500.woff2') format('woff2')}
-@font-face{font-family:Poppins;font-style:normal;font-weight:600;font-display:swap;src:url('/vendor/poppins-latin-600.woff2') format('woff2')}
-@font-face{font-family:Lora;font-style:normal;font-weight:400;font-display:swap;src:url('/vendor/lora-latin-400.woff2') format('woff2')}
-@font-face{font-family:Lora;font-style:normal;font-weight:500;font-display:swap;src:url('/vendor/lora-latin-500.woff2') format('woff2')}
-@font-face{font-family:Lora;font-style:normal;font-weight:600;font-display:swap;src:url('/vendor/lora-latin-600.woff2') format('woff2')}
+/* Arcade-Clean component primitives. Font files are declared in tokens.css. */
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 .list{background:var(--surface);border-radius:var(--radius-lg);overflow:hidden}
 .row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:14px 16px;border-bottom:1px solid var(--line)}
@@ -35,5 +29,76 @@ button:disabled{cursor:default}.btn,.pill,.choice button,.radio,.icon-btn,.qtool
 .k-dialog{border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-6);background:var(--color-surface);color:var(--color-text);max-width:calc(100% - var(--space-8))}.k-dialog::backdrop{background:#071D2480}
 .resume{background:var(--brand-primary);color:var(--color-on-primary);box-shadow:var(--shadow-card)}.resume .go{color:var(--brand-primary)}
 .opt.correct .l,.mark.ok{background:var(--color-success);color:var(--color-on-result)}.opt.wrong .l,.mark.no,.tf.done .seg button[aria-pressed=true].bad{background:var(--color-danger);color:var(--color-on-result)}.seg button[aria-pressed=true],.opt[aria-pressed=true] .l{background:var(--brand-secondary);color:var(--color-on-primary)}
-.pbar{background:var(--color-border);height:6px}.pbar i{background:var(--color-primary)}.top{background:var(--color-bg)}.top-in{min-height:64px;padding:var(--space-3) var(--space-4)}.top h1{font-size:var(--text-base);letter-spacing:-.02em}.wrap{padding:var(--space-3) var(--space-5) 120px}.hello{padding:var(--space-4) 0 var(--space-6)}.hello h2{font-size:var(--text-3xl);line-height:1.2}.hello p{line-height:1.6}.tabs-in{padding:var(--space-2);gap:var(--space-1)}.tab{border-radius:var(--radius-md);min-height:56px}.tab[aria-current=page]{background:var(--color-primary-soft);color:var(--color-primary)}.actionbar{box-shadow:0 -4px 16px #102A2E08}
+.pbar{background:var(--color-border);height:6px}.pbar i{background:var(--color-primary)}.top{background:var(--color-bg)}.top-in{min-height:64px;padding:var(--space-3) var(--space-4)}.top h1{font-size:var(--text-base);letter-spacing:-.02em}.wrap{padding:var(--space-3) var(--space-5) calc(var(--nav-height) + var(--space-8) + env(safe-area-inset-bottom,0px))}.hello{padding:var(--space-4) 0 var(--space-6)}.hello h2{font-size:var(--text-3xl);line-height:1.2}.hello p{line-height:1.6}.tabs-in{padding:var(--space-2);gap:var(--space-1)}.tab{border-radius:var(--radius-md);min-height:56px}.tab[aria-current=page]{background:var(--color-primary-soft);color:var(--color-primary)}.actionbar{box-shadow:0 -4px 16px #102A2E08}
+
+/* Arcade-Clean shell: game feel outside the reading core. */
+body{font-family:var(--font-ui);background:var(--color-bg);color:var(--color-text)}
+h1,h2,h3,.tile .v,.score .big{font-family:var(--font-display);font-weight:600}
+.stem,.explain p,.tf p,.opt{font-family:var(--font-reading)}
+.k-pixel{font-family:var(--font-pixel);font-weight:500;letter-spacing:.04em}
+.btn{
+  min-height:var(--tap-target);
+  border:var(--outline-width) solid var(--color-outline);
+  border-radius:var(--radius-md);
+  box-shadow:var(--shadow-button);
+  background:var(--color-primary);
+  color:var(--color-on-primary);
+  transition:transform var(--duration-fast) var(--ease-press);
+}
+.btn:hover:not(:disabled){filter:none;background:var(--color-primary-strong)}
+.btn:active:not(:disabled),.btn.is-pressed{
+  transform:translateY(var(--pressed-offset));
+  box-shadow:0 calc(var(--button-edge-depth) - var(--pressed-offset)) 0 var(--color-primary-strong);
+}
+.btn.quiet,.btn.ghost{background:var(--color-surface);color:var(--color-text)}
+.btn.danger{background:var(--color-danger);color:var(--color-on-result)}
+.btn[disabled]{opacity:.5;box-shadow:none;transform:none}
+.k-card,.empty-start,.list,.tile{
+  border:var(--outline-width) solid var(--color-outline);
+  box-shadow:var(--shadow-hard);
+  background:var(--color-surface);
+}
+.k-chip,.tag,.pill{border:var(--outline-width) solid var(--color-outline)}
+.resume{border:var(--outline-width) solid var(--color-outline);box-shadow:var(--shadow-button)}
+.opt,.tf{
+  border:var(--outline-width) solid var(--color-border);
+  box-shadow:none;
+  background:var(--color-surface);
+}
+.opt:active:not(:disabled){transform:translateY(var(--pressed-offset))}
+.explain{border:var(--outline-width) solid var(--color-outline);border-left-width:var(--outline-width-strong);box-shadow:var(--shadow-card)}
+figure.qimg{background:var(--color-medical-image);border-radius:var(--radius-md);padding:var(--space-2);border:var(--outline-width) solid var(--color-outline)}
+figure.qimg img{background:var(--color-medical-image)!important;filter:none!important}
+.scrim,.k-dialog::backdrop{background:var(--color-scrim)}
+.k-gallery-accent{font-family:var(--font-pixel)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* DESIGN 1 revision: unmistakable Arcade-Clean type hierarchy. */
+.top h1,.k-home>h2,.k-library>h2,.k-card>h2,.k-card>h3,.book-head h2,.k-complete h2{
+  font-family:var(--font-display);font-weight:600;font-size:var(--text-title);line-height:1.08;letter-spacing:-.02em;
+}
+.tile .v,.score .big,.k-goal-number,.k-score-ring strong,.k-profile-level strong{
+  font-family:var(--font-display);font-weight:600;font-size:clamp(var(--text-big),13vw,var(--text-big-max));line-height:.95;
+}
+@media(min-width:760px){
+  .top h1,.k-home>h2,.k-library>h2,.k-card>h2,.k-card>h3,.book-head h2,.k-complete h2{font-size:var(--text-title-wide)}
+}
+
+
+/* DESIGN 1 Round 3: selected-chip contrast and dark arcade edges. */
+.choice button[aria-pressed='true']{
+  border-color:var(--color-primary);
+  background:var(--color-primary);
+  color:var(--color-on-primary);
+}
+:root[data-theme='dark'] .btn,
+:root[data-theme='dark'] .k-card,
+:root[data-theme='dark'] .k-game-hud,
+:root[data-theme='dark'] .k-profile-card,
+:root[data-theme='dark'] .k-badge,
+:root[data-theme='dark'] .k-book-cover,
+:root[data-theme='dark'] .k-goal-ring{
+  border-color:var(--color-outline);
+  box-shadow:var(--shadow-hard);
+}
+:root[data-theme='dark'] .btn{box-shadow:var(--shadow-button)}

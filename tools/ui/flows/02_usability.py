@@ -18,6 +18,19 @@ def run(browser,origin,pack,out,helpers):
             assert page.locator('.sheet').count()==0
             assert page.evaluate("document.activeElement.dataset.a==='report'")
             page.evaluate("tab('me')")
+            assert page.locator('.k-badge').count()==4
+            page.locator('.k-badge').first.click()
+            assert page.locator('.k-badge').first.get_attribute('aria-expanded')=='true'
+            assert page.locator('.k-badge').first.locator('.k-badge-detail').is_visible()
+            if theme=='dark':
+                ratio=page.evaluate("""() => {const e=[...document.querySelectorAll('.choice button')].find(x=>x.textContent.trim()==='Normal');const p=s=>s.match(/[\\d.]+/g).slice(0,3).map(Number),lum=c=>{c=c.map(v=>v/255).map(v=>v<=.03928?v/12.92:((v+.055)/1.055)**2.4);return .2126*c[0]+.7152*c[1]+.0722*c[2]},s=getComputedStyle(e),a=lum(p(s.color)),b=lum(p(s.backgroundColor));return (Math.max(a,b)+.05)/(Math.min(a,b)+.05)}""")
+                assert ratio>=4.5,f'dark selected Normal contrast {ratio}'
+            assert page.locator('.k-developer').count()==0
+            assert page.locator('.kafu-diagnostic').count()==0
+            for _ in range(6):page.locator('[data-a="developer-version"]').click()
+            assert page.locator('.k-developer').count()==0
+            page.locator('[data-a="developer-version"]').click()
+            assert page.locator('.k-developer').count()==1
             saved=page.evaluate('JSON.stringify({answers:S.answers,fav:S.fav,dl:S.dl})')
             page.locator('[data-a="del-pack"]').first.click()
             assert not errors,errors
@@ -50,4 +63,4 @@ def run(browser,origin,pack,out,helpers):
                 assert page.evaluate("async()=>!await DB.get('packs','DESIGN-CARDIO:1')")
             assert not errors,errors
             ctx.close()
-    return {'hashes':hashes,'passed':['phone/iPad light/dark: one-tap Continue; modal focus/Escape; undo download and synced reset before destructive writes; unrelated toast cannot erase Undo','download cancellation on opening chapter and confirmed expiry remove only download; saved answers and stars preserved']}
+    return {'hashes':hashes,'passed':['phone/iPad light/dark: one-tap Continue; modal focus/Escape; undo download and synced reset before destructive writes; unrelated toast cannot erase Undo','download cancellation on opening chapter and confirmed expiry remove only download; saved answers and stars preserved','Me badge grid opens details; dark selected Normal is >=4.5:1; diagnostics stay hidden until the seventh version tap and unlocking does not touch student progress']}

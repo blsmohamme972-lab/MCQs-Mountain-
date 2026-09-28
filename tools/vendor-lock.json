@@ -1,17 +1,82 @@
 {
   "schema": 1,
   "files": [
-    {"package":"ts-fsrs","version":"5.4.2","path":"vendor/ts-fsrs-5.4.2.js","url":"https://cdn.jsdelivr.net/npm/ts-fsrs@5.4.2/dist/index.umd.js","sha256":"59b7444121d0aae5bb969097ed95df38eff4a4f878e459703c63720f6b6a176b"},
-    {"package":"ts-fsrs","version":"5.4.2","path":"vendor/ts-fsrs-LICENSE.txt","url":"https://cdn.jsdelivr.net/npm/ts-fsrs@5.4.2/LICENSE","sha256":"8b83a73dd2894ff553d6de6113064b3ad9dfad3f839837b61f3b183881131d01"},
-    {"package":"fflate","version":"0.8.3","path":"vendor/fflate-0.8.3.js","url":"https://cdn.jsdelivr.net/npm/fflate@0.8.3/umd/index.js","sha256":"462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83"},
-    {"package":"fflate","version":"0.8.3","path":"vendor/fflate-LICENSE.txt","url":"https://cdn.jsdelivr.net/npm/fflate@0.8.3/LICENSE","sha256":"0a1df3a083d0c010560aa342e87959c8c1070e6fd54545741f083f22d0c8b551"},
-    {"package":"@fontsource/poppins","version":"5.2.7","path":"vendor/poppins-latin-400.woff2","url":"https://cdn.jsdelivr.net/npm/@fontsource/poppins@5.2.7/files/poppins-latin-400-normal.woff2","sha256":"7d93459d86585bfcdbb7e0376056226adb25821ee54b96236fe2123e9560929f"},
-    {"package":"@fontsource/poppins","version":"5.2.7","path":"vendor/poppins-latin-500.woff2","url":"https://cdn.jsdelivr.net/npm/@fontsource/poppins@5.2.7/files/poppins-latin-500-normal.woff2","sha256":"cd36de204aca2d5fa263a731f7c20009b5e3d754ba1f1e03c33e93a48f3e7446"},
-    {"package":"@fontsource/poppins","version":"5.2.7","path":"vendor/poppins-latin-600.woff2","url":"https://cdn.jsdelivr.net/npm/@fontsource/poppins@5.2.7/files/poppins-latin-600-normal.woff2","sha256":"f4e80d9dfd374d02989b87a27b5ed4cb78fbb177c27f1478e9a8b0afb7513149"},
-    {"package":"@fontsource/poppins","version":"5.2.7","path":"vendor/poppins-LICENSE.txt","url":"https://cdn.jsdelivr.net/npm/@fontsource/poppins@5.2.7/LICENSE","sha256":"5c4a92c8f8ce0ab211f4c72889d82383c9644546115d9ba39a4f2d5b8f37014b"},
-    {"package":"@fontsource/lora","version":"5.2.6","path":"vendor/lora-latin-400.woff2","url":"https://cdn.jsdelivr.net/npm/@fontsource/lora@5.2.6/files/lora-latin-400-normal.woff2","sha256":"eaf050a20a71fbb341dbaffea96dc4f447fc4f80ce49ce3ee1fa3bf31e1a51e3"},
-    {"package":"@fontsource/lora","version":"5.2.6","path":"vendor/lora-latin-500.woff2","url":"https://cdn.jsdelivr.net/npm/@fontsource/lora@5.2.6/files/lora-latin-500-normal.woff2","sha256":"9e67853509f2d69ef31acf5c0d60472bddf942ca8bc1a6839838b354aac03e74"},
-    {"package":"@fontsource/lora","version":"5.2.6","path":"vendor/lora-latin-600.woff2","url":"https://cdn.jsdelivr.net/npm/@fontsource/lora@5.2.6/files/lora-latin-600-normal.woff2","sha256":"4dbfa8d283fae2de2882c35d3e386e7618224ef6c6055a8dc41740e6ea64287b"},
-    {"package":"@fontsource/lora","version":"5.2.6","path":"vendor/lora-LICENSE.txt","url":"https://cdn.jsdelivr.net/npm/@fontsource/lora@5.2.6/LICENSE","sha256":"18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"}
+    {
+      "package": "ts-fsrs",
+      "version": "5.4.2",
+      "path": "vendor/ts-fsrs-5.4.2.js",
+      "url": "https://cdn.jsdelivr.net/npm/ts-fsrs@5.4.2/dist/index.umd.js",
+      "sha256": "59b7444121d0aae5bb969097ed95df38eff4a4f878e459703c63720f6b6a176b"
+    },
+    {
+      "package": "ts-fsrs",
+      "version": "5.4.2",
+      "path": "vendor/ts-fsrs-LICENSE.txt",
+      "url": "https://cdn.jsdelivr.net/npm/ts-fsrs@5.4.2/LICENSE",
+      "sha256": "8b83a73dd2894ff553d6de6113064b3ad9dfad3f839837b61f3b183881131d01"
+    },
+    {
+      "package": "fflate",
+      "version": "0.8.3",
+      "path": "vendor/fflate-0.8.3.js",
+      "url": "https://cdn.jsdelivr.net/npm/fflate@0.8.3/umd/index.js",
+      "sha256": "462ef8041fc970e3615a20a9dd2b2e3047a073b2da729ef4f02b634bba8b7b83"
+    },
+    {
+      "package": "fflate",
+      "version": "0.8.3",
+      "path": "vendor/fflate-LICENSE.txt",
+      "url": "https://cdn.jsdelivr.net/npm/fflate@0.8.3/LICENSE",
+      "sha256": "0a1df3a083d0c010560aa342e87959c8c1070e6fd54545741f083f22d0c8b551"
+    },
+    {
+      "package": "@fontsource/fredoka",
+      "version": "5.2.7",
+      "path": "vendor/fredoka-latin-600.woff2",
+      "url": "https://cdn.jsdelivr.net/npm/@fontsource/fredoka@5.2.7/files/fredoka-latin-600-normal.woff2",
+      "sha256": "7046069756572f2d090fd5ac943b24d1958f2fbb259cd6b99872758d24dbe369"
+    },
+    {
+      "package": "@fontsource/fredoka",
+      "version": "5.2.7",
+      "path": "vendor/fredoka-LICENSE.txt",
+      "url": "https://cdn.jsdelivr.net/npm/@fontsource/fredoka@5.2.7/LICENSE",
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    {
+      "package": "@fontsource/nunito",
+      "version": "5.2.7",
+      "path": "vendor/nunito-latin-400.woff2",
+      "url": "https://cdn.jsdelivr.net/npm/@fontsource/nunito@5.2.7/files/nunito-latin-400-normal.woff2",
+      "sha256": "a5906e15ceb68f73d3b2c2076b4057c3f6ed401186d56283b45ce12944ca0735"
+    },
+    {
+      "package": "@fontsource/nunito",
+      "version": "5.2.7",
+      "path": "vendor/nunito-latin-700.woff2",
+      "url": "https://cdn.jsdelivr.net/npm/@fontsource/nunito@5.2.7/files/nunito-latin-700-normal.woff2",
+      "sha256": "fa89300b9bbb3bd0f60d6991aa055965d98e2ccca27bf8688fe0c39cdc796846"
+    },
+    {
+      "package": "@fontsource/nunito",
+      "version": "5.2.7",
+      "path": "vendor/nunito-LICENSE.txt",
+      "url": "https://cdn.jsdelivr.net/npm/@fontsource/nunito@5.2.7/LICENSE",
+      "sha256": "40991bfa02ac620aae16dc527f3c47765a25e43f270d4c301ee6ab663a8d9015"
+    },
+    {
+      "package": "@fontsource/pixelify-sans",
+      "version": "5.2.7",
+      "path": "vendor/pixelify-sans-latin-500.woff2",
+      "url": "https://cdn.jsdelivr.net/npm/@fontsource/pixelify-sans@5.2.7/files/pixelify-sans-latin-500-normal.woff2",
+      "sha256": "d17198a8057c1d0354ca39fffd54533734c1c8a6f47a9bde29ee1fb4cdfa06f0"
+    },
+    {
+      "package": "@fontsource/pixelify-sans",
+      "version": "5.2.7",
+      "path": "vendor/pixelify-sans-LICENSE.txt",
+      "url": "https://cdn.jsdelivr.net/npm/@fontsource/pixelify-sans@5.2.7/LICENSE",
+      "sha256": "8ed5cd9e189e30dfdb0df2d5c2771556b50e9d502d899221328c3245caf8423c"
+    }
   ]
 }
