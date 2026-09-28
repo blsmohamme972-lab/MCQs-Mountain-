@@ -2,8 +2,23 @@
 globalThis.KafuEnhancements.installers.push({name:'arcade-clean-gallery',install(){
   'use strict';
   const originalRender=render;
+  let galleryWasActive=false,themeBeforeGallery=null;
   const e=value=>String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const button=(label,classes='btn')=>`<button type="button" class="${classes}">${e(label)}</button>`;
+  const tokenNames=[
+    '--brand-primary','--brand-accent-a','--brand-accent-b','--brand-secondary','--brand-accent',
+    '--color-bg','--color-surface','--color-surface-alt','--color-surface-raised','--color-text','--color-muted','--color-outline','--color-border',
+    '--color-primary','--color-primary-strong','--color-primary-hover','--color-primary-soft','--color-on-primary','--color-accent-a','--color-accent-b',
+    '--color-success','--color-success-soft','--color-danger','--color-error','--color-danger-soft','--color-warning','--color-warning-soft','--color-focus','--color-on-result','--color-medical-image','--color-medical-text','--color-scrim',
+    '--radius-xs','--radius-sm','--radius-md','--radius-lg','--radius-xl','--radius-pill','--outline-width','--outline-width-strong','--shadow-depth','--pressed-offset','--shadow-hard','--shadow-card','--shadow-float',
+    '--font-display','--font-reading','--font-pixel','--font-ui','--text-xs','--text-sm','--text-base','--text-lg','--text-xl','--text-2xl','--text-3xl','--text-display','--leading-ui','--leading-reading','--measure','--layout-wide',
+    '--space-1','--space-2','--space-3','--space-4','--space-5','--space-6','--space-8','--space-10','--space-12','--tap-target',
+    '--duration-question','--duration-fast','--duration-base','--duration-delight','--ease-out','--ease-press'
+  ];
+  const tokenRegistry=()=>{
+    const styles=getComputedStyle(document.documentElement);
+    return tokenNames.map(name=>`<div class="gallery-token"><code>${e(name)}</code><span>${e(styles.getPropertyValue(name).trim())}</span></div>`).join('');
+  };
   const gallery=()=>`<main class="gallery-shell" id="gallery" aria-label="Arcade-Clean design gallery">
     <header class="gallery-head">
       <span class="gallery-kicker">DESIGN 1/10 · ARCADE-CLEAN</span>
@@ -33,6 +48,8 @@ globalThis.KafuEnhancements.installers.push({name:'arcade-clean-gallery',install
       <div class="gallery-shapes"><div class="gallery-shape sm"></div><div class="gallery-shape md"></div><div class="gallery-shape lg"></div></div>
       <div class="gallery-row"><div class="gallery-space s1"><i></i>4</div><div class="gallery-space s2"><i></i>8</div><div class="gallery-space s3"><i></i>12</div><div class="gallery-space s4"><i></i>16</div><div class="gallery-space s6"><i></i>24</div><div class="gallery-space s8"><i></i>32</div><div class="gallery-space s12"><i></i>48</div></div>
     </section>
+
+    <section class="gallery-section"><h2>Token registry</h2><p class="gallery-note">Computed from the single source of truth for the active theme.</p><div class="gallery-token-grid">${tokenRegistry()}</div></section>
 
     <section class="gallery-section"><h2>Buttons & interaction states</h2><div class="gallery-row">
       ${button('Primary action')}${button('Secondary','btn quiet')}${button('Destructive','btn danger')}${button('Pressed','btn is-pressed')}<button class="btn" disabled>Disabled</button>
@@ -64,6 +81,7 @@ globalThis.KafuEnhancements.installers.push({name:'arcade-clean-gallery',install
   </main>`;
 
   function renderGallery(){
+    if(!galleryWasActive){themeBeforeGallery=document.documentElement.getAttribute('data-theme');galleryWasActive=true;}
     document.body.dataset.gallery='true';
     const app=document.getElementById('app');if(!app)return;
     app.innerHTML=gallery();
@@ -80,6 +98,12 @@ globalThis.KafuEnhancements.installers.push({name:'arcade-clean-gallery',install
   }
   render=function(...args){
     if(location.hash==='#gallery'){renderGallery();return;}
+    if(galleryWasActive){
+      if(themeBeforeGallery===null)document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme',themeBeforeGallery);
+      globalThis.KafuGameFeel?.setSoundEnabled(false);
+      galleryWasActive=false;themeBeforeGallery=null;
+    }
     delete document.body.dataset.gallery;
     return originalRender.apply(this,args);
   };
