@@ -55,7 +55,10 @@ def run(browser,origin,pack,out,helpers):
             page.locator('#kafu-specialty-filter').select_option('Surgery')
             assert page.locator('#kafu-book-results .book-card').count()==0
             assert 'No matching books' in page.locator('#kafu-book-results').inner_text()
-            page.evaluate('document.activeElement?.blur()')
+            page.evaluate("""async()=>{document.querySelector('#kafu-book-search')?.blur();document.activeElement?.blur();
+              let style=document.getElementById('kafu-snapshot-stable');if(!style){style=document.createElement('style');style.id='kafu-snapshot-stable';style.textContent='*{animation:none!important;transition:none!important;caret-color:transparent!important}';document.head.appendChild(style);}
+              await document.fonts.ready;await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+            }""")
             name=f'{device}-{theme}-library-no-results';hashes[name]=helpers['capture'](page,out/(name+'.png'))
             page.locator('[data-a=library-clear]').click()
             assert page.locator('#kafu-book-results .book-card').count()==3
