@@ -1,6 +1,8 @@
-# Current app assessment — pass 001
+# Current app assessment — pass 002
 
-**Snapshot:** main `22afa6a416c6d8eca91fbf7a8ab5b69eb1b00921`, 2026-09-28 UTC. **Overall 5.6/10** (unweighted mean 89/16). These are product readiness scores, not code coverage or medical validity. The public catalog is not a representative rights-cleared Iraqi exam bank: `PROGRESS.md` and `docs/reports/NIGHT_1.md` describe test content and first real book as pending. No learner outcome, clinical accuracy, physical reinstall, screen-reader or cold 4G measurement was produced in this pass. The Chromium download failed locally; visual judgments below are source/design-system and prior report assessments, **not a new screenshot review**.
+**Snapshot:** current main `123cb8986ac6f04991194b6c735821738fd0e94d`, 2026-09-28 UTC. **Overall remains 5.6/10** (unweighted mean 89/16). Runtime app/source is unchanged from the pass-001 app snapshot `22afa6a416c6d8eca91fbf7a8ab5b69eb1b00921`; merged PRs #36–#37 only created/updated `DNAgens/`. New evidence this pass is the exact-head #34 Visual/Flow artifact and CI logs plus a local replay from that source artifact. No learner outcome, clinical-accuracy cohort, physical Telegram reinstall, screen-reader or cold-4G measurement was produced, so no area score moves.
+
+**Pass-002 evidence boundary:** Reviewed Visual/Flow run 36413005462 artifact 10966180395 (phone 390×844 and iPad 820×1180, light/dark; `visual_pass: true`) and Content run 36413005498 (44 Python tests green). The artifact's extracted source omits gitignored vendored dependencies and `.git`; a local pure-module replay passed 23/23 tests, while the full local suite cannot be claimed from that extraction because vendor-dependent tests/build and the repository security scan need those omitted inputs. Standing account check: production source namespaces personal state by Telegram user ID; the unit test proves A→fresh-B isolation only, and `05_new_device.py` proves a synthetic same-A CloudStorage restore plus a separate clean account/offline reload. There is still no physical same-phone A→B→A return test and no actual Telegram uninstall/reinstall restore, so DNA-002 is not done.
 
 ## Sixteen areas
 
@@ -42,7 +44,7 @@
 ### 5. Visual theme and brand — 6/10
 
 - The palette and type hierarchy are specified (`app/design/tokens.css:2-29`), but brand expression is mostly generic cards, teal and typographic covers (`app/design/discovery.js:10-16`).
-- Brand review promises a styleguide and both themes (`docs/DESIGN.md:23-37`); this pass lacks actual phone screenshots, so polish is not proven.
+- Exact-head artifact 10966180395 provides reviewed phone 390×844 and iPad 820×1180 light/dark screenshots for Home, Library, Study, completion and Me with `visual_pass: true`; this proves default-size CI rendering, not physical Telegram safe areas or enlarged text.
 - “Kafu” appears as a correct-answer phrase and home text (`app/design/delight.js:28-34`), but its Iraqi cultural meaning is only explained in the design document (`docs/DESIGN.md:9`).
 
 **World-best bar:** Duolingo has recognizable interaction and voice; Kafu needs its own calm, original, adult medical-study identity, not imitation.
@@ -68,8 +70,8 @@
 
 - Tokens, 44px target and reduced-motion rule are present (`app/design/tokens.css:20-21,50-52`); none proves VoiceOver/TalkBack operation on Telegram.
 - Figure alt text is generic (`app/index.html:947-955`), a major loss for image-dependent medical questions.
-- Bottom sheet has dialog label but no demonstrated focus trap/return/Escape in the base implementation (`app/index.html:1106-1139`), despite explicit spec (`docs/DESIGN.md:31`).
-- `PROGRESS.md` still lists the accessibility task as next; the intended WCAG 2.2 AA/200% text target (`docs/DESIGN.md:31-33`) has not been signed off.
+- Sheet accessibility now has implementation and browser proof: initial focus, inert outside content, Tab/Shift+Tab cycle, Escape and opener-focus return (`app/design/usability.js:78-111`; `tools/ui/flows/02_usability.py:13-19`). Physical VoiceOver/TalkBack behavior in Telegram is still unverified.
+- Accessibility PR #35 is still open, so its changes are not current-main evidence. The intended WCAG 2.2 AA/200% text target (`docs/DESIGN.md:31-33`) still lacks merged physical-host signoff.
 
 **World-best bar:** An accessible full question path, named diagrams, keyboard and assistive-technology evidence in both themes.
 
@@ -102,7 +104,7 @@
 
 ### 12. Tests and CI — 7/10
 
-- Local 44 Python and 82 JavaScript tests pass; build passes. These are meaningful contract checks, but full visual/Telegram flows were not runnable here because Playwright Chromium download failed.
+- Exact-head Content run 36413005498 is green with 44 Python tests, and Visual/Flow run 36413005462 is green with reviewed screenshot/flow evidence. This pass also replayed 23/23 pure JS sync/discovery/delight tests locally from the artifact source; a full local replay is not claimed because the artifact intentionally omits gitignored vendor files and `.git` metadata required by some tests/build.
 - Account isolation unit test checks A→fresh B only (`tools/tests/js/sync-bridge.test.cjs:44-49`); it does not return to A with two accounts in one persistent phone database.
 - New-device badge test uses two synthetic browser contexts and a CloudStorage callback adapter (`tools/ui/flows/05_new_device.py:1-82`); it is not a Telegram reinstall.
 - Docs-only PRs skip both path-filtered workflows (`.github/workflows/ci-tools.yml:3-25`; `.github/workflows/ui.yml:2-10`); a green historical run is not this PR's validation.
@@ -113,7 +115,7 @@
 
 - Client-side Telegram user ID is a namespace hint, explicitly not server authorization (`app/modules/sync-access.js:1-6`); no cross-account physical-device adversarial test exists.
 - Compact CloudStorage is provider-backed, but complete answer-event history is device-only (`docs/PRIVACY.md:5`; `tools/tests/js/sync-bridge.test.cjs:30-42`); “restore progress” has this limit.
-- Report UI implies delivery while reports stay local (`app/index.html:1106-1138`; `docs/PRIVACY.md:6`); medical correction requests can disappear on reinstall.
+- Current main still keeps reports local and labels the action “Send report” (`app/index.html:1106-1138`; `app/modules/privacy.js:15`). The owner-approved minimal D1 send/deletion contract is recorded in `DNAgens/CHANGELOG.md`, but the implementation PR remains open and therefore is not current-product evidence.
 - Reset says all synced devices and keeps stars (`app/modules/sync-bridge.js:81-83`); historical cloud checkpoints/provider erasure are explicitly outside that promise (`docs/PRIVACY.md:9`).
 
 **World-best bar:** A truthful, minimal-data privacy contract with tested recovery, account isolation and timely medical errata handling.
