@@ -6,6 +6,7 @@ tests and promotes one book at a time, then continues even after a bad package.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -36,16 +37,35 @@ def run(*args: str, cwd: Path = ROOT, capture: bool = True) -> str:
 
 
 def post(url: str, payload: dict, headers: dict | None = None) -> dict:
-    req = urllib.request.Request(url, data=json.dumps(payload).encode(),
-                                 headers={"Content-Type": "application/json", **(headers or {})})
-    with urllib.request.urlopen(req, timeout=30) as response:
-        return json.load(response)
+    req = urllib.request.Request(
+        url,
+        data=json.dumps(payload).encode(),
+        headers={"Content-Type": "application/json", "User-Agent": "kafu-drain/1.0", **(headers or {})},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=30) as response:
+            return json.load(response)
+    except urllib.error.HTTPError as exc:
+        body = exc.read(200).decode("utf-8", errors="replace")
+        server = exc.headers.get("server", "")
+        cf_ray = exc.headers.get("cf-ray", "")
+        print(
+            f"[queue-http] status={exc.code} server={server!r} cf-ray={cf_ray!r} "
+            f"body={body[:200]!r}"
+        )
+        raise
 
 
 class Queue:
     def __init__(self) -> None:
         self.url = os.environ["QUEUE_API_URL"].rstrip("/")
-        self.headers = {"Authorization": "Bearer " + os.environ["QUEUE_API_TOKEN"]}
+        token = os.environ["QUEUE_API_TOKEN"].strip()
+        token_hash = hashlib.sha256(token.encode()).hexdigest()[:8]
+        print(
+            f"[queue-auth] token_len={len(token)} token_sha256_8={token_hash} "
+            "header='Authorization' scheme='Bearer'"
+        )
+        self.headers = {"Authorization": f"Bearer {token}"}
 
     def call(self, path: str, data: dict | None = None) -> dict:
         return post(self.url + "/internal/" + path, data or {}, self.headers)
