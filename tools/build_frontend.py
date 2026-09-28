@@ -1,9 +1,4 @@
-"""Deterministic frontend assembly; source modules remain reviewable and tested.
-
-Modules are inlined atomically with the HTML shell so an interrupted script
-request cannot strand an upgraded personal-state format behind an old client.
-Only a deployment checkout or a temporary test directory is changed.
-"""
+"""Deterministically assemble versioned frontend modules and an optional SW."""
 from __future__ import annotations
 import argparse
 import json
@@ -28,18 +23,17 @@ def build(source: Path,out: Path,commit: str="development") -> dict:
         raise ValueError("Frontend assembly markers changed; refusing an ambiguous build")
     for field in ["scripts","styles"]:
         names=manifest.get(field,[])
-        if not isinstance(names,list) or len(names)!=len(set(names)): raise ValueError("Duplicate or invalid module list")
+        if not isinstance(names,list) or len(names)!=len(set(names)):raise ValueError("Duplicate or invalid module list")
         for name in names:
             path=Path(name)
-            if not re.fullmatch(r"[A-Za-z0-9_./-]+",name) or path.is_absolute() or ".." in path.parts:
-                raise ValueError("Unsafe frontend module path")
-            if not (source/path).is_file(): raise ValueError("Missing frontend module: "+name)
+            if not re.fullmatch(r"[A-Za-z0-9_./-]+",name) or path.is_absolute() or ".." in path.parts:raise ValueError("Unsafe frontend module path")
+            if not (source/path).is_file():raise ValueError("Missing frontend module: "+name)
     version={"version":str(manifest["version"]),"commit":commit if re.fullmatch(r"[a-f0-9]{7,40}",commit) else "development"}
     encoded=json.dumps(version).replace("<","\\u003c")
-    tags=[HEAD_BEGIN,"<script>globalThis.KAFU_BUILD="+encoded+";</script>"]
+    tags=[HEAD_BEGIN,"<script>globalThis.KAFU_BUILD="+encoded+";</script>",'<link rel="icon" href="/icons/kafu.svg" type="image/svg+xml">']
     for name in manifest.get("styles",[]):
         css=(source/name).read_text(encoding="utf-8")
-        if "</style" in css.lower(): raise ValueError("Unsafe CSS closing tag")
+        if "</style" in css.lower():raise ValueError("Unsafe CSS closing tag")
         tags.append("<style>\n"+css+"\n</style>")
     for name in manifest.get("scripts",[]):
         code=(source/name).read_text(encoding="utf-8")
@@ -48,10 +42,14 @@ def build(source: Path,out: Path,commit: str="development") -> dict:
     tags.append(HEAD_END)
     html=html.replace("</head>","\n".join(tags)+"\n</head>")
     html=html.replace(BOOT,INSTALL+BOOT)
-    if source.resolve()!=out.resolve(): shutil.copytree(source,out,dirs_exist_ok=True)
+    if source.resolve()!=out.resolve():shutil.copytree(source,out,dirs_exist_ok=True)
     out.mkdir(parents=True,exist_ok=True)
     (out/"index.html").write_text(html,encoding="utf-8")
     (out/"build-info.json").write_text(json.dumps(version)+"\n",encoding="utf-8")
+    if (out/"sw.js").exists():
+        sw=(out/"sw.js").read_text(encoding="utf-8")
+        sw=re.sub(r"const VERSION='[^']+'", "const VERSION='"+version["commit"]+"'",sw,count=1)
+        (out/"sw.js").write_text(sw,encoding="utf-8")
     return version
 
 
@@ -61,7 +59,7 @@ def main():
     parser.add_argument("--out",type=Path)
     parser.add_argument("--in-place",action="store_true")
     args=parser.parse_args()
-    if not args.in_place and args.out is None: parser.error("Use --out or --in-place")
+    if not args.in_place and args.out is None:parser.error("Use --out or --in-place")
     result=build(args.source,args.source if args.in_place else args.out,os.environ.get("GITHUB_SHA","development"))
     print("Frontend assembled:",result["version"],result["commit"])
 
