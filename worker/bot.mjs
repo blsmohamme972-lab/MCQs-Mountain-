@@ -53,9 +53,9 @@ async function bookForQuestion(env, qid) {
   return (await response.json()).routes?.[qid]?.book_id || null;
 }
 async function command(env, raw) {
-  const [cmd, arg, arg2] = raw.trim().split(/\s+/);
+  const [cmd, arg, arg2, arg3] = raw.trim().split(/\s+/);
   switch (cmd.toLowerCase().split("@")[0]) {
-    case "/help": return "/queue /books /status /flags /hold QID PAGE /retry BOOK-ID_vN /clear BOOK-ID_vN /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID";
+    case "/help": return "/queue /books /status /flags [/flags approve-all BOOK-ID CONFIRM] /hold QID PAGE /retry BOOK-ID_vN /clear BOOK-ID_vN /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID";
     case "/queue": {
       const r = await env.DB.prepare("SELECT group_key,status,part_total,error_summary FROM publish_groups ORDER BY created_at DESC LIMIT 15").all();
       const a = await env.DB.prepare("SELECT kind,book_id,status,error_summary FROM admin_jobs ORDER BY id DESC LIMIT 5").all();
@@ -78,9 +78,24 @@ async function command(env, raw) {
       return `Kafu queue: ${(r.results || []).map(x => `${x.status} ${x.n}`).join(", ") || "empty"}.`;
     }
     case "/flags": {
+      if ((arg || "").toLowerCase() === "approve-all") {
+        const bookId = String(arg2 || "").toUpperCase();
+        if (!ID.test(bookId)) return "Usage: /flags approve-all BOOK-ID CONFIRM";
+        const pending = await env.DB.prepare("SELECT COUNT(*) AS n FROM flags WHERE book_id=? AND status='pending'").bind(bookId).first();
+        const count = Number(pending?.n || 0);
+        if (!count) return `No pending audit warnings for ${bookId}.`;
+        if (arg3 !== "CONFIRM") {
+          return `⚠️ Approve all ${count} pending audit warnings for ${bookId}? Re-run exactly: /flags approve-all ${bookId} CONFIRM`;
+        }
+        const changed = await env.DB.prepare("UPDATE flags SET status='approved' WHERE book_id=? AND status='pending'").bind(bookId).run();
+        const approved = Number(changed?.meta?.changes || 0);
+        if (!approved) return `No pending audit warnings for ${bookId}.`;
+        await env.DB.prepare("INSERT INTO admin_jobs(kind,book_id,version,status) VALUES('moderate',?,NULL,'ready')").bind(bookId).run();
+        return `📥 approved ${approved} audit warnings for ${bookId}; moderation publish queued.`;
+      }
       const r = await env.DB.prepare("SELECT qid,source_page FROM flags WHERE status='pending' ORDER BY created_at LIMIT 10").all();
       if (!r.results?.length) return "No pending flags.";
-      return r.results.map(x => `${x.qid} — source page ${x.source_page ?? "unknown"}`).join("\n") + "\nUse /flags QID for actions.";
+      return r.results.map(x => `${x.qid} — source page ${x.source_page ?? "unknown"}`).join("\n") + "\nUse /flags QID for actions, or /flags approve-all BOOK-ID to review a bulk approval.";
     }
     case "/hold": {
       const page = Number(arg2);
