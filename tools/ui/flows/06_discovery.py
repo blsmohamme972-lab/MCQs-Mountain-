@@ -58,8 +58,8 @@ def run(browser,origin,pack,out,helpers):
             page.evaluate("""async()=>{document.querySelector('#kafu-book-search')?.blur();document.activeElement?.blur();
               let style=document.getElementById('kafu-snapshot-stable');if(!style){style=document.createElement('style');style.id='kafu-snapshot-stable';style.textContent='*{animation:none!important;transition:none!important;caret-color:transparent!important}';document.head.appendChild(style);}
               await document.fonts.ready;
-              const empty=document.querySelector('#kafu-book-results')?.firstElementChild;
-              if(empty){const r=empty.getBoundingClientRect();empty.style.position='relative';empty.style.left=(Math.round(r.left)-r.left)+'px';empty.style.top=(Math.round(r.top)-r.top)+'px';empty.style.width=Math.round(r.width)+'px';empty.style.boxSizing='border-box';}
+              const snap=el=>{if(!el)return;const r=el.getBoundingClientRect();el.style.position='relative';el.style.left=(Math.round(r.left)-r.left)+'px';el.style.top=(Math.round(r.top)-r.top)+'px';el.style.width=Math.round(r.width)+'px';el.style.height=Math.round(r.height)+'px';el.style.boxSizing='border-box';};
+              snap(document.querySelector('.k-search-input'));snap(document.querySelector('.k-specialty-field select'));snap(document.querySelector('#kafu-book-results')?.firstElementChild);
               await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
             }""")
             name=f'{device}-{theme}-library-no-results';hashes[name]=helpers['capture'](page,out/(name+'.png'))
