@@ -34,49 +34,49 @@
       "version": "5.2.7",
       "path": "vendor/fredoka-latin-600.woff2",
       "url": "https://cdn.jsdelivr.net/npm/@fontsource/fredoka@5.2.7/files/fredoka-latin-600-normal.woff2",
-      "sha256": null
+      "sha256": "7046069756572f2d090fd5ac943b24d1958f2fbb259cd6b99872758d24dbe369"
     },
     {
       "package": "@fontsource/fredoka",
       "version": "5.2.7",
       "path": "vendor/fredoka-LICENSE.txt",
       "url": "https://cdn.jsdelivr.net/npm/@fontsource/fredoka@5.2.7/LICENSE",
-      "sha256": null
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
     },
     {
       "package": "@fontsource/nunito",
       "version": "5.2.7",
       "path": "vendor/nunito-latin-400.woff2",
       "url": "https://cdn.jsdelivr.net/npm/@fontsource/nunito@5.2.7/files/nunito-latin-400-normal.woff2",
-      "sha256": null
+      "sha256": "a5906e15ceb68f73d3b2c2076b4057c3f6ed401186d56283b45ce12944ca0735"
     },
     {
       "package": "@fontsource/nunito",
       "version": "5.2.7",
       "path": "vendor/nunito-latin-700.woff2",
       "url": "https://cdn.jsdelivr.net/npm/@fontsource/nunito@5.2.7/files/nunito-latin-700-normal.woff2",
-      "sha256": null
+      "sha256": "fa89300b9bbb3bd0f60d6991aa055965d98e2ccca27bf8688fe0c39cdc796846"
     },
     {
       "package": "@fontsource/nunito",
       "version": "5.2.7",
       "path": "vendor/nunito-LICENSE.txt",
       "url": "https://cdn.jsdelivr.net/npm/@fontsource/nunito@5.2.7/LICENSE",
-      "sha256": null
+      "sha256": "40991bfa02ac620aae16dc527f3c47765a25e43f270d4c301ee6ab663a8d9015"
     },
     {
       "package": "@fontsource/pixelify-sans",
       "version": "5.2.7",
       "path": "vendor/pixelify-sans-latin-500.woff2",
       "url": "https://cdn.jsdelivr.net/npm/@fontsource/pixelify-sans@5.2.7/files/pixelify-sans-latin-500-normal.woff2",
-      "sha256": null
+      "sha256": "d17198a8057c1d0354ca39fffd54533734c1c8a6f47a9bde29ee1fb4cdfa06f0"
     },
     {
       "package": "@fontsource/pixelify-sans",
       "version": "5.2.7",
       "path": "vendor/pixelify-sans-LICENSE.txt",
       "url": "https://cdn.jsdelivr.net/npm/@fontsource/pixelify-sans@5.2.7/LICENSE",
-      "sha256": null
+      "sha256": "8ed5cd9e189e30dfdb0df2d5c2771556b50e9d502d899221328c3245caf8423c"
     }
   ]
 }
