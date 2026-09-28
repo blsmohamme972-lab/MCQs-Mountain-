@@ -42,13 +42,13 @@ Only gate-passing, buildable proposals. IDs are stable identifiers, not rank. So
 - Status: proposed
 - Area: Accessibility
 - Problem (with evidence): `app/index.html:947-955` outputs generic Question image alt for every medical diagram.
-- Idea (concrete, buildable on the current stack): Add optional rights-cleared figure description metadata in package validation and render it as alt; make image-dependent questions nonpublishable without human-reviewed description.
+- Idea (concrete, buildable on the current stack): Add optional rights-cleared figure description metadata in package validation and render it as alt; make image-dependent questions nonpublishable without a human-reviewed description. Per the recorded owner decision, descriptions state only visible findings and never the diagnosis, correct option, or another answer-revealing clue.
 - Why students will come back for it: Students using assistive tech can answer and revisit visual questions.
-- Acceptance test (how we prove it works): A labeled ECG fixture announces diagnostic features with screen reader; absent required alt fails prepublish validation, existing packs keep working.
+- Acceptance test (how we prove it works): A labeled ECG fixture announces only visible rhythm/morphology features with a screen reader; a deliberate diagnosis/correct-option clue is rejected by review; absent required alt fails prepublish validation; existing packs keep working.
 - Gates: $0 ✅ · Constitution ✅ · Progress-safe ✅
 - Scores: Impact 5/5 · Confidence 4/5 · Effort 4/5 (5 = easiest) → Total = 80
-- Devil's advocate: Descriptions can reveal answers. Answer: medical educator reviews clue leakage and offers an accessible equivalent.
-- Revision: v1 (pass-001)
+- Devil's advocate: Descriptions can reveal answers. Answer: medical educator reviews clue leakage and offers an accessible equivalent under the owner-approved visible-only rule.
+- Revision: v2 (pass-002)
 
 ### DNA-011 Offline readiness drill
 - Status: proposed
@@ -330,13 +330,13 @@ Only gate-passing, buildable proposals. IDs are stable identifiers, not rank. So
 - Status: proposed
 - Area: Medical education
 - Problem (with evidence): Current mock is 10/20/all random downloaded (`app/index.html:1008-1020`); no syllabus mapping verified in `PROGRESS.md`.
-- Idea (concrete, buildable on the current stack): Owner and educator define a versioned topic blueprint; assemble local mocks only from available licensed questions, showing coverage and gaps.
+- Idea (concrete, buildable on the current stack): Stage the work exactly as the owner decided: the owner first reviews an MRCS blueprint personally; only later do the owner and educator define a dated, versioned Iraqi Board/finals topic blueprint. Local mocks then draw only from available licensed questions and show coverage and gaps rather than pretending missing topics are covered.
 - Why students will come back for it: A visible exam path beats generic practice.
-- Acceptance test (how we prove it works): Fixture with known topic weights yields reproducible mix and honest shortfall; clinician signs mapping; no readiness claim on sparse data.
+- Acceptance test (how we prove it works): A fixture with known topic weights yields a reproducible mix and honest shortfall; the MRCS mapping has owner review recorded before any Iraqi mapping; the later Iraqi mapping is date/versioned and clinician-signed; sparse content never produces a readiness claim.
 - Gates: $0 ✅ · Constitution ✅ · Progress-safe ✅
 - Scores: Impact 5/5 · Confidence 4/5 · Effort 2/5 (5 = easiest) → Total = 40
-- Devil's advocate: Blueprint can age. Answer: version/date it and do not overclaim representativeness.
-- Revision: v1 (pass-001)
+- Devil's advocate: Blueprint can age. Answer: version/date it and do not overclaim representativeness; MRCS review is not treated as Iraqi Board evidence.
+- Revision: v2 (pass-002)
 
 ### DNA-013 Medical explanation completeness score
 - Status: proposed
