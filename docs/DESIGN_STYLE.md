@@ -113,3 +113,5 @@ Before owner approval:
 - Normal app screenshots checked to ensure the arcade shell does not harm the reading core.
 - Font WOFF2 total measured ≤100 KB and JS+CSS gzip measured ≤150 KB.
 - No saved-progress/schema changes.
+
+Baseline review note: the Arcade-Clean baseline refresh is deliberate because the approved foundation changes typography, palette, outlines, shadows and component treatment across the visual suite. A repeat run showed only two iPad-light Library states differing by 7 pixels inside a 3×6 px text-antialiasing patch, with maximum channel delta 1/255; those exact reviewed raster variants were accepted without broadening any visual-diff threshold.
