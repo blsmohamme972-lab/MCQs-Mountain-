@@ -1,4 +1,4 @@
-"""Tasteful encouragement and local, additive achievement persistence."""
+"""Derived synced achievements; only celebration suppression stays local."""
 import importlib.util
 import io
 import re
@@ -23,11 +23,11 @@ def run(browser,origin,pack,out,helpers):
             page.evaluate("ids=>startSession({mode:'study',title:'A focused practice session',bookId:'DESIGN-CARDIO',chId:1,qids:ids})",IDS)
             for _ in IDS:
                 helpers['study_answer'](page,True)
-                assert 'Kafu!' in page.locator('.explain h4').inner_text()
+                assert 'Kafu!' in page.locator('.explain .k-kafu').inner_text()
                 page.locator('[data-a="action"]').last.click()
             page.wait_for_selector('[data-session-complete]')
             page.evaluate('KafuDelight.settled()')
-            assert page.evaluate("!!KafuDelight.record.earned.first_chapter&&!!KafuDelight.record.earned.first_perfect")
+            assert page.evaluate("!!KafuDelight.achievements.earned.first_chapter&&!!KafuDelight.achievements.earned.first_perfect")
             assert page.locator('.k-complete-kafu').count()==1
             page.locator('[data-a="action"]').last.click()
             page.evaluate("tab('me')")
@@ -39,7 +39,7 @@ def run(browser,origin,pack,out,helpers):
             page.wait_for_function('navigator.serviceWorker.controller!==null')
             ctx.set_offline(True);page.reload(wait_until='load');page.wait_for_selector('nav')
             assert page.evaluate('JSON.stringify([S.answers,S.fav,S.dl,S.sync_v2])')==saved
-            assert page.evaluate("!!KafuDelight.record.earned.first_perfect")
+            assert page.evaluate("!!KafuDelight.achievements.earned.first_perfect")
             page.evaluate("ids=>startSession({mode:'review',title:'Try again',qids:ids.slice(0,1)})",IDS)
             helpers['study_answer'](page,False)
             assert 'Kafu!' not in page.locator('.explain').inner_text()
@@ -63,7 +63,7 @@ def run(browser,origin,pack,out,helpers):
         old['active']=False;page.reload(wait_until='load');page.wait_for_selector('nav')
         assert page.evaluate('typeof KafuDelight!=="undefined"')
         assert page.evaluate(mod.DUMP)==before,'Loading delight changed preexisting records'
-        page.evaluate("async()=>{const record=KafuDelightCore.earn(KafuDelightCore.migrate(null).record,['first_chapter'],'2026-09-28');await DB.put('meta',KafuDelight.storageKey,record);}")
+        page.evaluate("async()=>{const record=KafuDelightCore.markShown(KafuDelightCore.migrate(null).record,['first_chapter'],'2026-09-28');await DB.put('meta',KafuDelight.storageKey,record);}")
         added=page.evaluate(mod.DUMP)
         for store,rows in before['stores'].items():
             for key,value in rows.items():assert added['stores'][store][key]==value
@@ -73,4 +73,4 @@ def run(browser,origin,pack,out,helpers):
         assert page.evaluate(mod.DUMP)==added,'Old version did not preserve additive badge key'
         page.evaluate("async()=>{await startChapter('DESIGN-CARDIO',1,'Q000001001');}");page.wait_for_selector('.stem')
         ctx.close()
-    return {'hashes':hashes,'passed':['phone/iPad both themes: tasteful correct/complete moments, earned badges persist offline, wrong answers never celebrated, reduced motion obeyed','Actual pre-delight -> new -> pre-delight app preserves every old DB key/value, sync, packs and new additive local badge key; old app still studies downloaded chapter']}
+    return {'hashes':hashes,'passed':['phone/iPad both themes: derived badges from synced answers, tasteful correct/complete moments, earned badges persist offline, wrong answers never celebrated, reduced motion obeyed','Actual pre-delight -> new -> pre-delight app preserves every old DB key/value, sync, packs and new additive local celebration key; old app still studies downloaded chapter']}

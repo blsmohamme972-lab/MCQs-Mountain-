@@ -1,7 +1,11 @@
 # Day 1 task 5 - tasteful delight
 
-Task 4 PR #32 merged at 87eb5e544afe7b39bd952323cd385f06d6df9e74 after Content CI 36405085144 and Visual/Flow CI 36405085192 passed on exact head 278a822ba69027806ef1e4e40de588e8dd948dde.
+PR #33 remains draft until exact-head Content and Visual/Flow CI pass and phone390/iPad820 light/dark before/after evidence is reviewed. No production or student account operations.
 
-Task 5 branch: day1/05-tasteful-delight. Short varied Kafu moments on correctly graded answers; quiet completion encouragement; Home streak flame; four local badges in Me; safe optional haptics. No wrong-answer celebration, sounds or confetti. Reduced motion disables animation and haptics.
+## Owner cross-device refinement
 
-The separate local achievement record must satisfy the same four owner-approved additions/returning-user/rollback/no-loss conditions as PR31. See docs/DELIGHT_MIGRATION.md. Do not merge until real browser upgrade/rollback and all previous flows pass, screenshots are inspected and both exact-head CIs are green.
+Badges are now a read-only projection of already-synced answers and active days, with complete current chapter QID metadata. `ui_delight` only suppresses repeated celebrations. The draft's perfect-session badge is labelled **Chapter mastered** (each question correctly answered at least once), because old compact sync cannot prove a historical same-session perfect result. Session completion scoring remains unchanged.
+
+See `docs/DELIGHT_MIGRATION.md` for exact definitions, reset/catalog limits and all four safeguards. New isolated CloudStorage/new-device tests use the actual sync bridge, not a copy of local saved data. All prior UI flows, old/new/old rollback and byte-for-byte DB comparisons remain required. Local pure core and sync tests passed; full browser CI/evidence review pending.
+
+Haptics and movement are disabled for reduced motion. Wrong answers retain unambiguous corrective feedback without a celebration. No sounds or confetti. JS gzip and question-transition budgets remain checked by the existing UI runner. Physical-phone/4G performance is not certified by these browser tests.
