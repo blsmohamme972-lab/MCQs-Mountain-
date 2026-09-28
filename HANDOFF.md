@@ -37,9 +37,9 @@ Night 1 work merged:
 
 Each merged code task passed CI. The latest code deployment after PR #21 passed the exact-build/app/protected-book read-only verification.
 
-## Still owner-controlled
+## Backup state
 
-PR #20 (weekly D1 backups) is **not assumed active** until GitHub shows it merged and an actual backup workflow run has succeeded. It intentionally stayed outside automatic self-merge because it introduces a scheduled production D1 export.
+PR #20 merged on 2026-09-28 after owner approval and green PR/main CI. Weekly Kafu D1 Backup run #1 (36389139180) passed. The private `d1-backups` release contains matching `kafu-d1-20260928T065829Z-36389139180.sql.gz` and `.json` assets. The weekly Sunday 01:17 UTC schedule is active. See `docs/BACKUPS.md` for verification and restore limits.
 
 Credentials exposed earlier in setup conversations/logs still require owner rotation. Follow `docs/ROTATE_SECRETS.md`; do not rotate ad hoc.
 
@@ -68,7 +68,7 @@ See `docs/ADMIN.md` for exact behavior and recovery steps.
 ## Before a 20–50 student pilot
 
 1. Rotate all previously exposed credentials and verify Deploy Kafu + Setup Kafu Bot + Drain Kafu.
-2. Decide whether to merge/activate PR #20, then verify the first backup if enabled.
+2. Check subsequent weekly backup runs and private release pairs; the first run passed.
 3. Package the first real book with a committed/tested parser and a clean audit/validator result.
 4. Publish it, check `/queue`, `/books`, the Mini App, images, Review Due, and offline chapter/book save.
 5. Test personal sync on two Telegram devices/accounts as intended.
