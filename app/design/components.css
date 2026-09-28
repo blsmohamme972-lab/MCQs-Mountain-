@@ -43,7 +43,7 @@ h1,h2,h3,.tile .v,.score .big{font-family:var(--font-display);font-weight:600}
   box-shadow:var(--shadow-hard);
   background:var(--color-primary);
   color:var(--color-on-primary);
-  transition:transform var(--duration-fast) var(--ease-press),box-shadow var(--duration-fast) var(--ease-press),background var(--duration-fast) var(--ease-out);
+  transition:transform var(--duration-fast) var(--ease-press);
 }
 .btn:hover:not(:disabled){filter:none;background:var(--color-primary-strong)}
 .btn:active:not(:disabled),.btn.is-pressed{
