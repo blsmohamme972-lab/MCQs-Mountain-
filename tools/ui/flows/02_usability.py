@@ -5,9 +5,6 @@ def run(browser,origin,pack,out,helpers):
         for theme in ('light','dark'):
             ctx=helpers['context'](browser,origin,device,theme)
             page,errors=helpers['open_app'](ctx,origin,pack)
-            # Reproducible assembled fixture, never fonts, credentials or student data.
-            if device=='phone' and theme=='light':
-                (out.parent/'runtime.html').write_text(page.content())
             assert page.evaluate("typeof KafuUsability!=='undefined'")
             page.locator('[data-a="continue"]').click()
             page.wait_for_selector('.stem')
@@ -23,9 +20,9 @@ def run(browser,origin,pack,out,helpers):
             page.evaluate("tab('me')")
             saved=page.evaluate('JSON.stringify({answers:S.answers,fav:S.fav,dl:S.dl})')
             page.locator('[data-a="del-pack"]').first.click()
+            assert not errors,errors
             assert page.evaluate("!!KafuUsability.undo.pending&&!!S.dl['DESIGN-CARDIO:1']")
             page.locator('[data-a="undo-change"]').wait_for(state='visible',timeout=2000)
-            # An unrelated toast must never erase the safety action.
             page.evaluate("toast('Saved on this device.')")
             name=f'{device}-{theme}-download-undo'
             hashes[name]=helpers['capture'](page,out/(name+'.png'))

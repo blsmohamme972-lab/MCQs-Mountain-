@@ -2,7 +2,7 @@
 (function(root){
   'use strict';
   class UndoWindow {
-    constructor({delay=6000,setTimer=setTimeout,clearTimer=clearTimeout}={}){this.delay=delay;this.setTimer=setTimer;this.clearTimer=clearTimer;this.pending=null;}
+    constructor({delay=6000,setTimer=(fn,ms)=>globalThis.setTimeout(fn,ms),clearTimer=id=>globalThis.clearTimeout(id)}={}){this.delay=delay;this.setTimer=setTimer;this.clearTimer=clearTimer;this.pending=null;}
     stage(work,meta={}){
       this.cancel();
       const item={work,meta,timer:null};this.pending=item;

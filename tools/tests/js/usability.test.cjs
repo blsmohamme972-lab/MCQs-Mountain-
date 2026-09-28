@@ -12,3 +12,11 @@ test('only the newest staged action can commit once',async()=>{
 test('usability installs with real app and preserves critical entry points',async()=>{
  const {appHarness}=require('./app-harness.cjs');const h=appHarness();assert.equal(h.run('typeof ACTIONS["undo-change"]'),'function');assert.equal(h.run('typeof ACTIONS.continue'),'function');assert.equal(h.run('typeof KafuDownloads.manager.open'),'function');assert.equal(h.run('typeof KafuPersonal.flush'),'function');
 });
+
+test('default timers retain the browser global receiver',()=>{
+ const fs=require('node:fs'),vm=require('node:vm');
+ const sandbox={};vm.createContext(sandbox);
+ vm.runInContext(`globalThis.setTimeout=function(){if(this!==globalThis)throw new TypeError('Illegal invocation');return 5;};globalThis.clearTimeout=function(){if(this!==globalThis)throw new TypeError('Illegal invocation');};`,sandbox);
+ vm.runInContext(fs.readFileSync(require.resolve('../../../app/design/usability-core.js'),'utf8'),sandbox);
+ vm.runInContext(`const w=new KafuUndoWindow();w.stage(()=>{});if(!w.cancel())throw Error('cancel failed');`,sandbox);
+});
