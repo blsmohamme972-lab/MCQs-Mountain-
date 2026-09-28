@@ -11,7 +11,7 @@ test('educational notice appears once until acknowledged and persists with local
 test('privacy and About remain available after acknowledgement with honest storage and disclaimer copy',async()=>{
   const h=await setup();await h.run('ACTIONS["ack-education"]()');
   const privacy=h.run('VIEWS.privacy().html'),about=h.run('VIEWS.about().html');
-  assert.match(privacy,/We never sell student data/);assert.match(privacy,/CloudStorage/);assert.match(privacy,/report button does not yet send/);assert.match(privacy,/older cloud checkpoints/);
+  assert.match(privacy,/We never sell student data/);assert.match(privacy,/CloudStorage/);assert.match(privacy,/saved here first and retried when online/);assert.match(privacy,/pseudonymous key is stored for rate limiting/);assert.match(privacy,/backups may retain an earlier copy/);assert.match(privacy,/older cloud checkpoints/);
   assert.match(about,/Educational use only — not for clinical decisions/);assert.match(about,/ts-fsrs 5.4.2/);assert.match(about,/fflate 0.8.3/);
   h.run('ACTIONS.privacy()');assert.equal(h.run('cur().v'),'privacy');h.run('ACTIONS.about()');assert.equal(h.run('cur().v'),'about');
 });
