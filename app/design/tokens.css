@@ -93,6 +93,11 @@
   --tap-target:44px;
   --nav-height:72px;
   --content-max:760px;
+  --goal-ring-size:112px;
+  --goal-ring-inner:78px;
+  --mascot-size:88px;
+  --victory-star-size:36px;
+  --mastery-star-size:20px;
 
   /* Motion */
   --duration-question:80ms;
