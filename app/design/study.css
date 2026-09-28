@@ -79,11 +79,7 @@ body[data-study-screen]{
   --mcq-mint:#12B8A2;
   --mcq-mint-deep:#07786A;
   --mcq-mint-tint:#DCF7F1;
-  --mcq-coral:#F0506E;
-  --mcq-coral-deep:#B4203F;
-  --mcq-coral-tint:#FFE5EB;
   --mcq-sun:#FFC43D;
-  --color-danger:var(--mcq-coral);
   background:var(--mcq-paper);
 }
 :root[data-theme='dark'] body[data-study-screen]{
@@ -101,9 +97,6 @@ body[data-study-screen]{
   --mcq-mint:#22C7AF;
   --mcq-mint-deep:#11927F;
   --mcq-mint-tint:#133F3B;
-  --mcq-coral:#FF6682;
-  --mcq-coral-deep:#C23357;
-  --mcq-coral-tint:#4A1A2E;
   --mcq-sun:#FFC940;
 }
 @media(prefers-color-scheme:dark){
@@ -122,9 +115,6 @@ body[data-study-screen]{
     --mcq-mint:#22C7AF;
     --mcq-mint-deep:#11927F;
     --mcq-mint-tint:#133F3B;
-    --mcq-coral:#FF6682;
-    --mcq-coral-deep:#C23357;
-    --mcq-coral-tint:#4A1A2E;
     --mcq-sun:#FFC940;
   }
 }
@@ -207,7 +197,7 @@ body[data-study-screen] .k-pip{
 }
 body[data-study-screen] .k-pip.current{height:16px;background:var(--mcq-indigo);border-color:var(--mcq-edge)}
 body[data-study-screen] .k-pip.correct{background:var(--mcq-mint);border-color:var(--mcq-mint-deep)}
-body[data-study-screen] .k-pip.wrong{background:var(--mcq-coral);border-color:var(--mcq-coral-deep)}
+body[data-study-screen] .k-pip.wrong{background:var(--color-danger);border-color:var(--color-danger-strong)}
 body[data-study-screen] .k-study-count{
   flex:none;
   height:44px;
@@ -369,11 +359,11 @@ body[data-study-screen] .k-study .opt.correct{
 }
 body[data-study-screen] .k-study .opt.correct .l{background:var(--mcq-mint);border-color:var(--mcq-mint-deep);color:#1A1733}
 body[data-study-screen] .k-study .opt.wrong{
-  background:var(--mcq-coral-tint);
-  border-color:var(--mcq-coral-deep);
-  box-shadow:0 4px 0 var(--mcq-coral-deep);
+  background:var(--color-danger-soft);
+  border-color:var(--color-danger-strong);
+  box-shadow:0 4px 0 var(--color-danger-strong);
 }
-body[data-study-screen] .k-study .opt.wrong .l{background:var(--mcq-coral);border-color:var(--mcq-coral-deep);color:#1A1733}
+body[data-study-screen] .k-study .opt.wrong .l{background:var(--color-danger);border-color:var(--color-danger-strong);color:#1A1733}
 body[data-study-screen] .k-study .opt:disabled:not(.correct):not(.wrong){opacity:.5;transform:translateY(3px);box-shadow:0 1px 0 var(--mcq-drop)}
 body[data-study-screen] .k-answer-state{
   width:fit-content;
@@ -385,7 +375,7 @@ body[data-study-screen] .k-answer-state{
   font-weight:800;
 }
 body[data-study-screen] .opt.correct .k-answer-state{color:var(--mcq-mint-deep)}
-body[data-study-screen] .opt.wrong .k-answer-state{color:var(--mcq-coral-deep)}
+body[data-study-screen] .opt.wrong .k-answer-state{color:var(--color-danger-strong)}
 body[data-study-screen] .k-study .tf{
   padding:12px;
   background:var(--mcq-card);
@@ -398,7 +388,7 @@ body[data-study-screen] .k-study .tf .seg{border:2px solid var(--mcq-edge);borde
 body[data-study-screen] .k-study .tf .seg button{min-width:84px;min-height:44px;font-family:var(--font-display);font-weight:600}
 body[data-study-screen] .k-study .tf .seg button[aria-pressed='true']{background:var(--mcq-indigo);color:#fff}
 body[data-study-screen] .k-study .tf.correct{background:var(--mcq-mint-tint);border-color:var(--mcq-mint-deep);box-shadow:0 4px 0 var(--mcq-mint-deep)}
-body[data-study-screen] .k-study .tf.wrong{background:var(--mcq-coral-tint);border-color:var(--mcq-coral-deep);box-shadow:0 4px 0 var(--mcq-coral-deep)}
+body[data-study-screen] .k-study .tf.wrong{background:var(--color-danger-soft);border-color:var(--color-danger-strong);box-shadow:0 4px 0 var(--color-danger-strong)}
 body[data-study-screen] .k-feedback-panel{
   margin-top:var(--space-6);
   padding:var(--space-4) 18px var(--space-5);
@@ -408,7 +398,7 @@ body[data-study-screen] .k-feedback-panel{
   border-radius:22px;
   box-shadow:0 5px 0 var(--mcq-mint-deep);
 }
-body[data-study-screen] .k-feedback-panel.bad{border-color:var(--mcq-coral-deep);box-shadow:0 5px 0 var(--mcq-coral-deep)}
+body[data-study-screen] .k-feedback-panel.bad{border-color:var(--color-danger-strong);box-shadow:0 5px 0 var(--color-danger-strong)}
 body[data-study-screen] .k-feedback-panel .res,
 body[data-study-screen] .k-feedback-correct{
   display:flex;
@@ -423,7 +413,7 @@ body[data-study-screen] .k-feedback-correct{
   font-weight:600;
   color:var(--mcq-mint-deep);
 }
-body[data-study-screen] .k-feedback-panel.bad .res{color:var(--mcq-coral-deep)}
+body[data-study-screen] .k-feedback-panel.bad .res{color:var(--color-danger-strong)}
 body[data-study-screen] .k-feedback-panel p{
   margin-top:var(--space-2);
   font-family:var(--font-reading);
