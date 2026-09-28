@@ -1,4 +1,4 @@
-/* Additive, account-scoped UI record. Never rewrite study or sync data. */
+/* Additive, account-scoped UI record. Owner approved subject to upgrade/rollback tests. */
 (function(root){
   'use strict';
   const valid=r=>!!r&&r.schema===1&&typeof r.complete==='boolean'&&(r.specialty===null||typeof r.specialty==='string'&&r.specialty.length<=100);
