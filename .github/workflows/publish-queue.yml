@@ -4,11 +4,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "*/15 * * * *"
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/recover-test-queue.trigger"
 
 permissions:
   contents: write
@@ -30,17 +25,11 @@ jobs:
       OWNER_TELEGRAM_ID: ${{ secrets.OWNER_TELEGRAM_ID }}
       QUEUE_API_TOKEN: ${{ secrets.QUEUE_API_TOKEN }}
       QUEUE_API_URL: https://kafu.blsmohamme97.workers.dev
-      D1_DATABASE_ID: ${{ secrets.D1_DATABASE_ID }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: Recover failed KAFU upload test
-        if: github.event_name == 'push'
-        run: |
-          python tools/configure_d1.py
-          npx --yes wrangler@4 d1 execute kafu-db --remote --config wrangler.app.jsonc --command "UPDATE publish_groups SET status='ready',error_summary=NULL,claimed_at=NULL,finished_at=NULL WHERE group_key='KAFU-UPLOAD-TEST_v1' AND status='failed'; DELETE FROM admin_jobs WHERE book_id='KAFU-UPLOAD-TEST' AND status='failed';"
       - name: Install image decoder
         run: python -m pip install 'Pillow>=11,<13'
       - name: Drain all ready jobs in order
