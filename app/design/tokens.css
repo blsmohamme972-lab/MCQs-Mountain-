@@ -48,10 +48,12 @@
   --radius-pill:999px;
   --outline-width:2px;
   --outline-width-strong:3px;
-  --shadow-depth:5px;
-  --pressed-offset:3px;
+  --shadow-depth:4px;
+  --button-edge-depth:5px;
+  --pressed-offset:4px;
   --shadow-hard:0 var(--shadow-depth) 0 var(--color-outline);
-  --shadow-card:0 var(--space-1) 0 var(--color-outline);
+  --shadow-button:0 var(--button-edge-depth) 0 var(--color-primary-strong);
+  --shadow-card:0 var(--shadow-depth) 0 var(--color-outline);
   --shadow-float:0 var(--space-2) 0 var(--color-outline);
 
   /* Typography */
@@ -67,6 +69,10 @@
   --text-2xl:1.75rem;
   --text-3xl:2.25rem;
   --text-display:3.5rem;
+  --text-title:1.75rem;
+  --text-title-wide:2.125rem;
+  --text-big:3rem;
+  --text-big-max:3.5rem;
   --leading-ui:1.5;
   --leading-reading:1.65;
   --measure:42rem;
@@ -113,7 +119,7 @@
   color-scheme:light;
 }
 :root[data-theme='dark']{
-  --brand-primary:#8C80FF;
+  --brand-primary:#6A4CFF;
   --brand-accent-a:#FFD166;
   --brand-accent-b:#45D7C8;
   --color-bg:#111522;
@@ -125,9 +131,9 @@
   --color-outline:#090C14;
   --color-border:#46506B;
   --color-primary:var(--brand-primary);
-  --color-primary-strong:#A79EFF;
+  --color-primary-strong:#5034D8;
   --color-primary-soft:#302D60;
-  --color-on-primary:#111522;
+  --color-on-primary:#FFFFFF;
   --color-accent-a:var(--brand-accent-a);
   --color-accent-b:var(--brand-accent-b);
   --color-success:#65D998;
@@ -144,7 +150,7 @@
 }
 @media(prefers-color-scheme:dark){
   :root:not([data-theme='light']):not([data-theme='dark']){
-    --brand-primary:#8C80FF;
+    --brand-primary:#6A4CFF;
     --brand-accent-a:#FFD166;
     --brand-accent-b:#45D7C8;
     --color-bg:#111522;
@@ -156,9 +162,9 @@
     --color-outline:#090C14;
     --color-border:#46506B;
     --color-primary:var(--brand-primary);
-    --color-primary-strong:#A79EFF;
+    --color-primary-strong:#5034D8;
     --color-primary-soft:#302D60;
-    --color-on-primary:#111522;
+    --color-on-primary:#FFFFFF;
     --color-accent-a:var(--brand-accent-a);
     --color-accent-b:var(--brand-accent-b);
     --color-success:#65D998;
