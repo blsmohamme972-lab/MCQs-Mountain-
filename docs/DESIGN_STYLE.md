@@ -102,7 +102,7 @@ These rules are binding for every later design task:
 
 ### Visual determinism note
 
-All visual baselines remain strict single-hash comparisons except two measured Chromium-only states: `ipad-light-library-search` and `ipad-light-library-no-results`. Repeated exact-head runs differed only by **7 pixels**, all by a maximum of **1 channel level**, at the same rounded focused-search border. CI therefore accepts exactly the two observed SHA-256 variants for those two named screenshots, with identical dimensions. This is not a general pixel-diff threshold; every other screenshot remains exact.
+All visual baselines remain strict single-hash comparisons except three measured Chromium-only states: `ipad-light-library-search`, `ipad-light-library-no-results`, and `ipad-dark-library-search`. Repeated exact-head runs differed by only **7–10 pixels**, all by a maximum of **1 channel level**, at the same rounded focused-search border. CI therefore accepts exactly the two observed SHA-256 variants for those three named screenshots, with identical dimensions. This is not a general pixel-diff threshold; every other screenshot remains exact.
 
 ## Evidence required for DESIGN 1/10
 
