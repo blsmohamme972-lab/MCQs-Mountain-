@@ -10,6 +10,7 @@ def run(browser,origin,pack,destination,helpers):
     page.wait_for_selector('#gallery')
     assert page.locator('.gallery-swatch').count()>=9
     assert page.locator('.gallery-option').count()>=4
+    assert page.locator('.gallery-token').count()>=70
     assert page.evaluate("KafuGameFeel.soundEnabled") is False
     page.locator('[data-gallery-theme="dark"]').click()
     page.locator('[data-gallery-sound]').click()
@@ -17,6 +18,8 @@ def run(browser,origin,pack,destination,helpers):
     page.locator('[data-gallery-sound]').click()
     page.goto(origin+'/#',wait_until='load')
     page.wait_for_selector("nav[aria-label='Main']")
+    assert page.evaluate("KafuGameFeel.soundEnabled") is False
+    assert page.evaluate("document.documentElement.getAttribute('data-theme')") is None
     after=page.evaluate("""async()=>({
       state:await DB.get('meta','state_user_browser'),
       keys:[...Array(localStorage.length)].map((_,i)=>localStorage.key(i)).sort()
