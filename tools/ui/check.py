@@ -31,7 +31,18 @@ from playwright.sync_api import sync_playwright
 FIXED_TIME='2026-09-28T09:30:00.000Z'
 QIDS=[f'Q00000100{i}' for i in range(1,5)]
 DEVICES={'phone':{'width':390,'height':844},'ipad':{'width':820,'height':1180}}
-VISUAL_HASH_VARIANTS={}
+# Exact renderer variants observed on identical frozen-head runs. Keep this narrow:
+# any unlisted hash still fails visual CI.
+VISUAL_HASH_VARIANTS={
+    'phone-dark-study-wrong':{
+        'ba298169d1383b5a579612502cfd7c46056da57b7b260826a399b2cf51cf486e',
+        '94b5c1ddbefae85c44c32ac77d58cfe93bea29a6993c3d7b493d6221c4504004',
+    },
+    'ipad-light-library-no-results':{
+        '1dcb4217f5caf39e6c833321806f14a7adcb6f1d4d0e387836f893c133e78166',
+        'dc7cda13f60a5d1c9a304a4f1ad9529af8cdb6d66d02660e8422f825e8843f7b',
+    },
+}
 
 
 def fixtures(origin):
