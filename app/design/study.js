@@ -109,6 +109,15 @@ globalThis.KafuEnhancements.installers.push({name:'study-polish',install(){
   }
   const reportAction=ACTIONS.report;
   ACTIONS.report=function(...args){restoreReportFocus=true;return reportAction.apply(this,args);};
+  document.addEventListener('keydown',event=>{
+    if(event.key!=='Escape'||!restoreReportFocus)return;
+    setTimeout(()=>{
+      if(!SHEET&&document.querySelector('.k-study')){
+        restoreReportFocus=false;
+        document.querySelector('.k-study-topbar [data-a="report"]')?.focus({preventScroll:true});
+      }
+    },0);
+  },true);
   const originalRender=render;
   render=function(...args){
     const result=originalRender.apply(this,args),section=document.querySelector('.k-study');
