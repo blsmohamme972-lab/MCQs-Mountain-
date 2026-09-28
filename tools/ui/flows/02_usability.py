@@ -18,6 +18,12 @@ def run(browser,origin,pack,out,helpers):
             assert page.locator('.sheet').count()==0
             assert page.evaluate("document.activeElement.dataset.a==='report'")
             page.evaluate("tab('me')")
+            assert page.locator('.k-developer').count()==0
+            assert page.locator('.kafu-diagnostic').count()==0
+            for _ in range(6):page.locator('[data-a="developer-version"]').click()
+            assert page.locator('.k-developer').count()==0
+            page.locator('[data-a="developer-version"]').click()
+            assert page.locator('.k-developer').count()==1
             saved=page.evaluate('JSON.stringify({answers:S.answers,fav:S.fav,dl:S.dl})')
             page.locator('[data-a="del-pack"]').first.click()
             assert not errors,errors
@@ -50,4 +56,4 @@ def run(browser,origin,pack,out,helpers):
                 assert page.evaluate("async()=>!await DB.get('packs','DESIGN-CARDIO:1')")
             assert not errors,errors
             ctx.close()
-    return {'hashes':hashes,'passed':['phone/iPad light/dark: one-tap Continue; modal focus/Escape; undo download and synced reset before destructive writes; unrelated toast cannot erase Undo','download cancellation on opening chapter and confirmed expiry remove only download; saved answers and stars preserved']}
+    return {'hashes':hashes,'passed':['phone/iPad light/dark: one-tap Continue; modal focus/Escape; undo download and synced reset before destructive writes; unrelated toast cannot erase Undo','download cancellation on opening chapter and confirmed expiry remove only download; saved answers and stars preserved','Me diagnostics stay hidden until the seventh version tap and unlocking does not touch student progress']}
