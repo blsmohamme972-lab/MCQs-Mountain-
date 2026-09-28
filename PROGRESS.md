@@ -9,9 +9,9 @@ Updated: 2026-09-28. Night 1 tracker. Protected book: KAFU-UPLOAD-TEST v1, 4 que
 5. Invisible downloads merged PR #16; CI 36368466085, Deploy #17 / 36368505401 green. Text-first, background images, next-only prefetch, whole-book save/size, persistent offline marks and bundled safe ZIP decoding.
 6. UX merged PR #17; CI 36368718204, Deploy #18 / 36368782663 green. Me version/commit/source, offline banner, opt-in iPad fullscreen diagnostics; live guard checks exact build commit too.
 7. Offline shell merged PR #18; CI 36369148074, Deploy #19 / 36369225189 green including app/build/protected-book guard. Atomic shell/public assets cache, network-first valid catalog, API/auth exclusion, no forced update, graceful unsupported Telegram/iOS fallback.
-8. Privacy/disclaimer implemented on night1/08-privacy-disclaimer; awaiting CI. Me → Privacy and About, once-per-device/account acknowledgement, permanent educational-only notice, explicit local-only report limitation and honest deletion/provider-backup scope.
-9. Weekly backup: pending; infrastructure-sensitive changes stay open for owner review.
-10. Parser/batch/content-team/bulk moderation: pending.
-11. Final docs/report: pending.
+8. Privacy/disclaimer merged PR #19; CI and Deploy #20 green. Me → Privacy and About, once-per-device/account acknowledgement, permanent educational-only notice, explicit local-only report limitation and honest deletion/provider-backup scope.
+9. Weekly backup is prepared in open PR #20 with green CI; not merged or run as of this checkpoint because it is infrastructure-sensitive and requires owner activation.
+10. Content-production tooling implemented on night1/10-content-production: deterministic tools/parsers library, package_batch build→audit→validate pipeline, reusable-parser delivery in MASTER_PROMPT, docs/CONTENT_TEAM.md, and confirmed /flags bulk warning approval. Awaiting CI/PR.
+11. Final owner docs/report: pending.
 
 One task per branch/PR; green tested code only without secret/account/infrastructure setting changes. Verify deployment/read-only app/build/book guard after each merge. No temporary production triggers. Push each task. Final morning report: docs/reports/NIGHT_1.md.
