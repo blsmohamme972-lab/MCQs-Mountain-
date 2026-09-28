@@ -1,10 +1,10 @@
 name: Kafu Visual and Flow CI
 on:
   pull_request:
-    paths: ['app/**']
+    paths: ['app/**', 'tools/ui/**', '.github/workflows/ui.yml']
   push:
     branches: [main]
-    paths: ['app/**']
+    paths: ['app/**', 'tools/ui/**', '.github/workflows/ui.yml']
 permissions:
   contents: read
 concurrency:
@@ -32,6 +32,8 @@ jobs:
         run: python -m playwright install --with-deps chromium
       - name: Fetch integrity-checked frontend dependencies
         run: python tools/vendor_frontend.py
+      - name: Run screenshot tolerance tests
+        run: python -m unittest discover -s tools/ui/tests -p "test_*.py" -v
       - name: Prepare before source
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
