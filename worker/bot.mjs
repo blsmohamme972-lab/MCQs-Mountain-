@@ -186,11 +186,27 @@ async function webhook(request, env, ctx) {
   }
   return reply("OK");
 }
-function authorized(request, env) {
-  return !!env.QUEUE_API_TOKEN && request.headers.get("Authorization") === `Bearer ${env.QUEUE_API_TOKEN}`;
+async function tokenFingerprint(value) {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+  return [...new Uint8Array(digest)].map(x => x.toString(16).padStart(2, "0")).join("").slice(0, 8);
+}
+async function queueAuthorization(request, env) {
+  const expected = String(env.QUEUE_API_TOKEN || "").trim();
+  const header = request.headers.get("Authorization") || "";
+  const prefix = "Bearer ";
+  const presented = header.startsWith(prefix) ? header.slice(prefix.length).trim() : "";
+  const [expectedHash, presentedHash] = await Promise.all([
+    tokenFingerprint(expected), tokenFingerprint(presented),
+  ]);
+  console.log(
+    `[queue-auth] expected_len=${expected.length} expected_sha256_8=${expectedHash} ` +
+    `presented_len=${presented.length} presented_sha256_8=${presentedHash} ` +
+    "header='Authorization' scheme='Bearer'"
+  );
+  return expected.length > 0 && header.startsWith(prefix) && presented === expected;
 }
 async function internal(request, env, path) {
-  if (!authorized(request, env)) return reply("Forbidden", 403);
+  if (!(await queueAuthorization(request, env))) return reply({ error: "bad_queue_token" }, 403);
   if (request.method !== "POST") return reply("Method not allowed", 405);
   if (path === "/internal/claim") {
     const group = await env.DB.prepare("UPDATE publish_groups SET status='running',claimed_at=datetime('now'),attempts=attempts+1 WHERE group_key=(SELECT g.group_key FROM publish_groups g JOIN publish_queue q ON q.group_key=g.group_key WHERE g.status='ready' GROUP BY g.group_key ORDER BY MIN(q.job_id) LIMIT 1) AND status='ready' RETURNING *").first();
