@@ -26,3 +26,49 @@
 .k-goal-ring{position:relative;flex:none;width:var(--goal-ring-size);height:var(--goal-ring-size);border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--color-accent-a) var(--goal),var(--color-surface-alt) 0);border:var(--outline-width) solid var(--color-outline);box-shadow:var(--shadow-hard)}
 .k-goal-ring::before{content:'';position:absolute}.k-goal-ring>div{width:var(--goal-ring-inner);height:var(--goal-ring-inner);display:grid;place-items:center;align-content:center;background:var(--color-surface);border:var(--outline-width) solid var(--color-outline);border-radius:50%}.k-goal-ring strong{font-family:var(--font-display);font-size:var(--text-big-min);font-weight:600;line-height:.9}.k-goal-ring span{font-size:var(--text-xs);color:var(--color-muted)}
 @media(min-width:760px){body[data-screen='home'] .wrap,body[data-screen='library'] .wrap,body[data-screen='spec'] .wrap{max-width:var(--content-max);padding-inline:var(--space-6)}.k-home-dashboard{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}.k-library-controls{align-items:end}.k-home-welcome h2,.k-library h2,.k-today h3,.k-first-step h3,.k-continue>strong,.k-book-cover strong{font-size:var(--text-title-wide)}.k-book-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-6) var(--space-4)}}
+
+
+/* DESIGN 1 Round 3: collectible covers and wide Library. */
+.k-book-cover{
+  container-type:inline-size;
+  background:var(--cover-primary);
+  padding-bottom:calc(var(--space-10) + var(--space-2));
+}
+.k-book-grid>.k-library-book:nth-child(3n+2) .k-book-cover:not(.has-image){background:var(--cover-secondary)}
+.k-book-grid>.k-library-book:nth-child(3n+3) .k-book-cover:not(.has-image){background:var(--cover-accent)}
+.k-book-cover strong{
+  font-size:clamp(1rem,12cqi,var(--text-title));
+  line-height:1.02;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:3;
+  overflow:hidden;
+  overflow-wrap:normal;
+  word-break:normal;
+  hyphens:none;
+}
+.k-book-cover.long-title strong{font-size:clamp(.875rem,10cqi,1.4rem)}
+.k-book-cover.long-title .k-cover-icon{width:54%}
+.k-mastery-stars{
+  position:absolute;
+  right:var(--space-3);
+  bottom:var(--space-3);
+  z-index:2;
+  padding:var(--space-1) var(--space-2);
+  border-radius:var(--radius-pill);
+  background:#182032;
+  color:#FFFFFF;
+  border:1px solid #FFFFFF33;
+}
+.k-mastery-stars svg{stroke:#FFFFFF;flex:none}
+.k-mastery-stars svg.earned{fill:var(--color-accent-a);stroke:#FFFFFF}
+.k-cover-footer{padding-right:6.5rem}
+h3.sec button{color:var(--color-link);font-weight:700}
+@media(min-width:760px){
+  .k-book-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--space-6) var(--space-4)}
+  .k-book-cover strong{font-size:clamp(1rem,8cqi,var(--text-title-wide))}
+  .k-book-cover.long-title strong{font-size:clamp(.95rem,7cqi,1.45rem)}
+}
+@media(min-width:760px) and (max-width:900px){
+  .k-book-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
