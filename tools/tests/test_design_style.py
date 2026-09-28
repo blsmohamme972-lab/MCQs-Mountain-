@@ -13,13 +13,19 @@ class DesignStyleTests(unittest.TestCase):
         for token in [
             "--brand-primary","--brand-accent-a","--brand-accent-b","--brand-secondary",
             "--color-success","--color-danger","--color-error","--color-warning",
-            "--outline-width","--shadow-depth","--pressed-offset",
-            "--font-display","--font-reading","--font-pixel","--tap-target"
+            "--outline-width","--shadow-depth","--button-edge-depth","--pressed-offset",
+            "--font-display","--font-reading","--font-pixel","--text-title","--text-title-wide",
+            "--text-study-wide","--nav-height","--content-max","--tap-target"
         ]:
             self.assertIn(token,tokens)
         self.assertIn(":root[data-theme='dark']",tokens)
         self.assertIn("prefers-reduced-motion:reduce",tokens)
         self.assertIn("--color-primary-hover:var(--color-primary-strong)",tokens)
+        self.assertIn("--shadow-depth:4px",tokens)
+        self.assertIn("--button-edge-depth:5px",tokens)
+        self.assertIn("--pressed-offset:4px",tokens)
+        self.assertIn("--brand-primary:#6A4CFF",tokens)
+        self.assertIn("### Signature test",docs)
         self.assertIn("## RULES FOR ALL DESIGN PROMPTS",docs)
         self.assertIn("design/gallery.js",manifest["scripts"])
         self.assertIn("design/gallery.css",manifest["styles"])
