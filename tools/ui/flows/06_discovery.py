@@ -57,7 +57,10 @@ def run(browser,origin,pack,out,helpers):
             assert 'No matching books' in page.locator('#kafu-book-results').inner_text()
             page.evaluate("""async()=>{document.querySelector('#kafu-book-search')?.blur();document.activeElement?.blur();
               let style=document.getElementById('kafu-snapshot-stable');if(!style){style=document.createElement('style');style.id='kafu-snapshot-stable';style.textContent='*{animation:none!important;transition:none!important;caret-color:transparent!important}';document.head.appendChild(style);}
-              await document.fonts.ready;await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+              await document.fonts.ready;
+              const empty=document.querySelector('#kafu-book-results')?.firstElementChild;
+              if(empty){const r=empty.getBoundingClientRect();empty.style.position='relative';empty.style.left=(Math.round(r.left)-r.left)+'px';empty.style.top=(Math.round(r.top)-r.top)+'px';empty.style.width=Math.round(r.width)+'px';empty.style.boxSizing='border-box';}
+              await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
             }""")
             name=f'{device}-{theme}-library-no-results';hashes[name]=helpers['capture'](page,out/(name+'.png'))
             page.locator('[data-a=library-clear]').click()
