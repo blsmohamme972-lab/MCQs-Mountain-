@@ -33,6 +33,13 @@ class DesignStyleTests(unittest.TestCase):
         self.assertNotIn("localStorage",gallery)
         self.assertNotIn("CloudStorage",gallery)
 
+    def test_student_design_has_no_emoji_icons(self):
+        text="\n".join((ROOT/p).read_text() for p in [
+            "app/design/delight-core.js","app/design/delight.js","app/design/discovery.js","app/design/study.js"
+        ])
+        for emoji in ["👏","🔥","🎉","✅","❌","⭐","🏆"]:
+            self.assertNotIn(emoji,text)
+
     def test_shipped_font_payload_is_bounded(self):
         vendor=ROOT/"app/vendor"
         fonts=sorted(vendor.glob("*.woff2"))
