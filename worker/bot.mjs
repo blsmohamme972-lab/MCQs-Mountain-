@@ -46,13 +46,36 @@ async function queueDocument(env, doc) {
       !doc.file_id || !doc.file_unique_id) return "❌ ZIP required, up to 19 MB.";
   const p = parsePackageName(doc.file_name);
   if (!p) return "❌ Filename must be BOOK-ID_vN.zip or BOOK-ID_vN_partXofY.zip.";
+
+  let group = await env.DB.prepare("SELECT part_total,status FROM publish_groups WHERE group_key=?")
+    .bind(p.group_key).first();
   const existing = await env.DB.prepare("SELECT telegram_file_unique_id FROM publish_queue WHERE group_key=? AND part_index=?")
     .bind(p.group_key, p.part).first();
+
+  if (group?.status === "failed") {
+    if (group.part_total !== p.total) return "❌ Conflicting part count for failed release.";
+    if (existing) {
+      await env.DB.prepare("UPDATE publish_queue SET part_total=?,telegram_file_id=?,telegram_file_unique_id=?,filename=?,file_size=?,created_at=datetime('now') WHERE group_key=? AND part_index=?")
+        .bind(p.total, doc.file_id, doc.file_unique_id, doc.file_name, doc.file_size, p.group_key, p.part).run();
+    } else {
+      await env.DB.prepare("INSERT INTO publish_queue(group_key,part_index,part_total,telegram_file_id,telegram_file_unique_id,filename,file_size) VALUES(?,?,?,?,?,?,?)")
+        .bind(p.group_key, p.part, p.total, doc.file_id, doc.file_unique_id, doc.file_name, doc.file_size).run();
+    }
+    const row = await env.DB.prepare("SELECT COUNT(*) AS n FROM publish_queue WHERE group_key=?").bind(p.group_key).first();
+    const status = row.n === p.total ? "ready" : "waiting";
+    await env.DB.prepare("UPDATE publish_groups SET status=?,error_summary=NULL,claimed_at=NULL,finished_at=NULL,force_republish=0 WHERE group_key=? AND status='failed'")
+      .bind(status, p.group_key).run();
+    return `📥 replaced failed ${p.group_key} part ${p.part} (${row.n}/${p.total})`;
+  }
+
   if (existing) return existing.telegram_file_unique_id === doc.file_unique_id ? "📥 already received" :
     "❌ A different ZIP already occupies this part. Use /queue to inspect it.";
-  await env.DB.prepare("INSERT OR IGNORE INTO publish_groups(group_key,book_id,version,part_total,status) VALUES(?,?,?,?, 'waiting')")
-    .bind(p.group_key, p.book_id, p.version, p.total).run();
-  const group = await env.DB.prepare("SELECT part_total,status FROM publish_groups WHERE group_key=?").bind(p.group_key).first();
+
+  if (!group) {
+    await env.DB.prepare("INSERT INTO publish_groups(group_key,book_id,version,part_total,status) VALUES(?,?,?,?, 'waiting')")
+      .bind(p.group_key, p.book_id, p.version, p.total).run();
+    group = { part_total: p.total, status: "waiting" };
+  }
   if (group.part_total !== p.total || !["waiting", "ready"].includes(group.status))
     return "❌ Conflicting part count or this release has already started.";
   await env.DB.prepare("INSERT INTO publish_queue(group_key,part_index,part_total,telegram_file_id,telegram_file_unique_id,filename,file_size) VALUES(?,?,?,?,?,?,?)")
@@ -63,6 +86,29 @@ async function queueDocument(env, doc) {
       .bind(p.group_key).run();
   }
   return `📥 received ${p.group_key} (${row.n}/${p.total})`;
+}
+
+export async function retryGroup(env, groupKey) {
+  const p = parsePackageName(`${groupKey || ""}.zip`);
+  if (!p || p.total !== 1) return { ok: false, text: "Usage: /retry BOOK-ID_vN" };
+  const group = await env.DB.prepare("SELECT status,part_total FROM publish_groups WHERE group_key=?")
+    .bind(p.group_key).first();
+  if (!group || group.status !== "failed") return { ok: false, text: "❌ No failed upload found for that release." };
+  const row = await env.DB.prepare("SELECT COUNT(*) AS n FROM publish_queue WHERE group_key=?").bind(p.group_key).first();
+  if (row.n !== group.part_total) return { ok: false, text: "❌ Failed upload is incomplete; upload the missing ZIP part(s)." };
+  await env.DB.prepare("UPDATE publish_groups SET status='ready',error_summary=NULL,claimed_at=NULL,finished_at=NULL WHERE group_key=? AND status='failed'")
+    .bind(p.group_key).run();
+  return { ok: true, text: `📥 retry queued: ${p.group_key}`, group_key: p.group_key, book_id: p.book_id };
+}
+
+export async function clearGroup(env, groupKey) {
+  const p = parsePackageName(`${groupKey || ""}.zip`);
+  if (!p || p.total !== 1) return { ok: false, text: "Usage: /clear BOOK-ID_vN" };
+  const group = await env.DB.prepare("SELECT status FROM publish_groups WHERE group_key=?").bind(p.group_key).first();
+  if (!group || group.status !== "failed") return { ok: false, text: "❌ Only failed uploads can be cleared." };
+  await env.DB.prepare("DELETE FROM publish_queue WHERE group_key=?").bind(p.group_key).run();
+  await env.DB.prepare("DELETE FROM publish_groups WHERE group_key=? AND status='failed'").bind(p.group_key).run();
+  return { ok: true, text: `🧹 cleared failed upload: ${p.group_key}`, group_key: p.group_key, book_id: p.book_id };
 }
 async function adminJob(env, kind, bookId, version = null) {
   if (!ID.test(bookId) || (version !== null && (!Number.isInteger(version) || version < 1)))
@@ -80,12 +126,12 @@ async function bookForQuestion(env, qid) {
 async function command(env, raw) {
   const [cmd, arg, arg2] = raw.trim().split(/\s+/);
   switch (cmd.toLowerCase().split("@")[0]) {
-    case "/help": return "/queue /books /status /flags /hold QID PAGE /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID";
+    case "/help": return "/queue /books /status /flags /hold QID PAGE /retry BOOK-ID_vN /clear BOOK-ID_vN /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID";
     case "/queue": {
       const r = await env.DB.prepare("SELECT group_key,status,part_total,error_summary FROM publish_groups ORDER BY created_at DESC LIMIT 15").all();
-      const a = await env.DB.prepare("SELECT kind,book_id,status FROM admin_jobs ORDER BY id DESC LIMIT 5").all();
+      const a = await env.DB.prepare("SELECT kind,book_id,status,error_summary FROM admin_jobs ORDER BY id DESC LIMIT 5").all();
       return [...(r.results || []).map(x => `${x.group_key}: ${x.status}${x.error_summary ? ` — ${x.error_summary}` : ""}`),
-        ...(a.results || []).map(x => `${x.kind} ${x.book_id}: ${x.status}`)].join("\n") || "Queue empty.";
+        ...(a.results || []).map(x => `${x.kind} ${x.book_id}: ${x.status}${x.error_summary ? ` — ${x.error_summary}` : ""}`)].join("\n") || "Queue empty.";
     }
     case "/books": {
       try {
@@ -115,6 +161,14 @@ async function command(env, raw) {
         .bind(arg, bookId, Number(arg2) || null).run();
       await adminJob(env, "moderate", bookId);
       return `📥 held ${arg}; moderation publish queued. Use /flags ${arg} to review.`;
+    }
+    case "/retry": {
+      const result = await retryGroup(env, arg);
+      return result.text;
+    }
+    case "/clear": {
+      const result = await clearGroup(env, arg);
+      return result.text;
     }
     case "/republish": {
       const p = parsePackageName(`${arg || ""}.zip`);
@@ -218,6 +272,15 @@ async function internal(request, env, path) {
     return reply(job ? { kind: "admin", job } : { kind: "empty" });
   }
   const body = await request.json();
+  if (path === "/internal/recover") {
+    const groupKey = String(body.group_key || "");
+    const result = body.action === "clear" ? await clearGroup(env, groupKey) : await retryGroup(env, groupKey);
+    if (body.clear_failed_admin_book && result.book_id) {
+      await env.DB.prepare("DELETE FROM admin_jobs WHERE book_id=? AND status='failed'").bind(result.book_id).run();
+    }
+    if (result.ok && body.dispatch !== false && body.action !== "clear") await dispatch(env);
+    return reply(result, result.ok ? 200 : 409);
+  }
   if (path === "/internal/finish") {
     const status = body.ok ? "published" : "failed";
     if (body.kind === "publish") {
