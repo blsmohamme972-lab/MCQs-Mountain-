@@ -39,9 +39,9 @@ Each merged code task passed CI. The latest code deployment after PR #21 passed 
 
 ## Still owner-controlled
 
-PR #20 (weekly D1 backups) is **not assumed active** until GitHub shows it merged and an actual backup workflow run has succeeded. It intentionally stayed outside automatic self-merge because it introduces a scheduled production D1 export.
+PR #20 (weekly D1 backups) is **open** as checked on 2026-09-28. Its CI is green, but no backup workflow run exists. It intentionally stayed outside automatic self-merge because it introduces a scheduled production D1 export.
 
-Credentials exposed earlier in setup conversations/logs still require owner rotation. Follow `docs/ROTATE_SECRETS.md`; do not rotate ad hoc.
+The owner selected “All passed” for the latest phone tests on 2026-09-28. This is an overall owner report without itemized checks in this update; see `docs/reports/NIGHT_1.md`. Credentials exposed earlier in setup conversations/logs still require owner rotation. Follow `docs/ROTATE_SECRETS.md`; do not rotate ad hoc.
 
 ## Publishing a real book
 
