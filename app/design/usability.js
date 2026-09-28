@@ -15,15 +15,21 @@ globalThis.KafuEnhancements.installers.push({name:'ease-of-use',install(){
     const node=document.querySelector('.toast');
     if(node){node.setAttribute('role','status');node.setAttribute('aria-live','polite');node.setAttribute('aria-atomic','true');}
   };
+  // A safety action must not disappear when an unrelated status toast arrives.
+  function dismissUndo(){document.getElementById('kafu-undo-notice')?.remove();}
   function pendingToast(text){
-    toast(text);clearTimeout(toastTimer);
-    const node=document.querySelector('.toast');
-    if(node)node.innerHTML=`<span>${C.e(text)}</span><button class="k-undo" data-a="undo-change">Undo</button>`;
+    dismissUndo();
+    const node=document.createElement('div');node.id='kafu-undo-notice';
+    node.className='k-undo-notice';node.setAttribute('role','status');node.setAttribute('aria-live','polite');
+    node.innerHTML=`<span>${C.e(text)}</span><button class="k-undo" data-a="undo-change">Undo</button>`;
+    document.body.appendChild(node);
   }
-  ACTIONS['undo-change']=()=>{if(undo.cancel())toast('Undone. Nothing was deleted.');};
+  function cancelPending(){const cancelled=undo.cancel();dismissUndo();return cancelled;}
+  ACTIONS['undo-change']=()=>{if(cancelPending())toast('Undone. Nothing was deleted.');};
   ACTIONS['del-pack']=data=>{
     if(!data.k||!S.dl[data.k])return;
     undo.stage(async()=>{
+      dismissUndo();
       try{await deleteChapter(data.k);render();toast('Download removed. Your answers and stars are kept.');}
       catch(_){toast('Could not remove this download. Open Me and try again.');}
     },{kind:'download',key:data.k});
@@ -33,14 +39,14 @@ globalThis.KafuEnhancements.installers.push({name:'ease-of-use',install(){
     const reset=KafuPersonal.reset.bind(KafuPersonal);
     ACTIONS.reset=()=>confirmBox('Reset study progress on all synced devices? Stars are kept. You will have 6 seconds to undo; after that this cannot be undone.',yes=>{
       if(!yes)return;
-      undo.stage(async()=>{try{await reset();toast('Study progress reset. Your stars are kept.');}catch(_){toast('The reset could not finish. Open Me and check your saved progress.');}},{kind:'reset'});
+      undo.stage(async()=>{dismissUndo();try{await reset();toast('Study progress reset. Your stars are kept.');}catch(_){toast('The reset could not finish. Open Me and check your saved progress.');}},{kind:'reset'});
       pendingToast('Progress reset scheduled in 6 seconds.');
     });
   }
   // Never remove a chapter that the student has opened during the grace period.
   const originalStart=startChapter;
-  startChapter=function(book,ch,...rest){if(undo.pending?.meta.key===book+':'+ch){undo.cancel();toast('Download kept so you can study.');}return originalStart.call(this,book,ch,...rest);};
-  window.addEventListener('pagehide',()=>undo.cancel());
+  startChapter=function(book,ch,...rest){if(undo.pending?.meta.key===book+':'+ch){cancelPending();toast('Download kept so you can study.');}return originalStart.call(this,book,ch,...rest);};
+  window.addEventListener('pagehide',cancelPending);
   for(const action of ['fav-book','fs']){
     const old=ACTIONS[action];ACTIONS[action]=function(data,...args){
       const result=old.call(this,data,...args);
