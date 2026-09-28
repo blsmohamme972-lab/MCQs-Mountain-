@@ -1,0 +1,13 @@
+/* Comfortable one-hand controls; no text or touch target depends on hover. */
+.qtools,.qtools .left{flex-wrap:wrap;row-gap:var(--space-2)}
+.qtool{min-height:var(--tap-target);padding:var(--space-2);white-space:nowrap}
+.qtools .qtool[aria-label]{min-width:var(--tap-target)}
+.book-head .pill{margin-top:var(--space-4);min-height:var(--tap-target)}
+h3.sec button{min-height:var(--tap-target);padding:var(--space-2)}
+.k-empty-compact h4{margin:0 0 var(--space-2);font-size:var(--text-base)}
+.k-empty-compact .note{margin:0 0 var(--space-4)}
+.toast{display:flex;align-items:center;gap:var(--space-4);line-height:1.5;width:max-content;max-width:calc(100% - var(--space-8))}
+.toast[hidden]{display:none}.k-undo{color:inherit;text-decoration:underline;text-underline-offset:4px;font-weight:600;min-height:var(--tap-target);padding:var(--space-2);flex:none}
+.actionbar{padding-top:var(--space-3)}.actionbar .btn{min-height:52px}
+.sheet .radio{min-height:56px}.sheet h4{line-height:1.5}.sheet p{line-height:1.6}
+@media(min-width:768px){.actionbar .btn{max-width:calc(var(--measure) - var(--space-10))}.sheet{margin-bottom:var(--space-6);border-radius:var(--radius-xl)}}
