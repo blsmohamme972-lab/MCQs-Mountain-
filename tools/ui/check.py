@@ -126,8 +126,13 @@ def open_app(ctx,origin,pack,progress=True):
 
 def capture(page,path):
     page.evaluate("() => {for(const t of document.querySelectorAll('.toast'))t.hidden=true;window.scrollTo(0,0);}")
-    page.wait_for_timeout(150)
-    page.screenshot(path=str(path),full_page=True,animations='disabled')
+    # Let every capture settle on the same loaded fonts and static paint state.
+    page.evaluate('document.fonts.ready')
+    page.wait_for_function("document.fonts.status === 'loaded'")
+    page.screenshot(
+        path=str(path),full_page=True,animations='disabled',
+        style='*,*::before,*::after { animation: none !important; transition: none !important; caret-color: transparent !important; }',
+    )
     with Image.open(path) as image:
         raw=image.convert('RGBA')
         return {'sha256':hashlib.sha256(raw.tobytes()).hexdigest(),'width':raw.width,'height':raw.height}
