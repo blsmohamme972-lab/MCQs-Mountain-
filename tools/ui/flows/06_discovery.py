@@ -5,6 +5,10 @@ def run(browser,origin,pack,out,helpers):
         for theme in ('light','dark'):
             ctx=helpers['context'](browser,origin,device,theme)
             page,errors=helpers['open_app'](ctx,origin,pack)
+            # A seeded legacy pack lacks source-identity metadata, so it must NOT
+            # claim complete offline availability until the real download path validates it.
+            assert page.evaluate("KafuDownloads.available('DESIGN-CARDIO',1)") is False
+            page.evaluate("async()=>{await KafuDownloads.manager.finish(KafuDownloads.metadata('DESIGN-CARDIO',1));}")
             before=page.evaluate('JSON.stringify([S.answers,S.fav,S.favBooks,S.dl,S.sync_v2])')
             assert page.locator('.k-streak').count()==1
             assert page.locator('[data-a=continue]').count()==1
