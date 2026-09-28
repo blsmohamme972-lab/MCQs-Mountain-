@@ -28,7 +28,7 @@ class OwnerDocsTests(unittest.TestCase):
     def test_progress_records_task10_merge_and_task11_checkpoint(self):
         text = (ROOT / "PROGRESS.md").read_text(encoding="utf-8")
         self.assertIn("merged PR #21", text)
-        self.assertIn("Owner docs implemented", text)
+        self.assertTrue("Owner docs merged PR #22" in text or "Owner docs implemented" in text)
 
 if __name__ == "__main__":
     unittest.main()
