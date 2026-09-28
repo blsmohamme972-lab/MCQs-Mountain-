@@ -1,0 +1,29 @@
+/* Accessible contrast, visible focus, target sizes and text-only zoom. */
+.k-skip-link{position:fixed;left:var(--space-4);top:var(--space-4);z-index:1000;padding:var(--space-3) var(--space-4);background:var(--color-surface);color:var(--color-text);border:2px solid var(--color-focus);border-radius:var(--radius-sm);transform:translateY(-220%);font-size:var(--text-base)}
+.k-skip-link:focus{transform:none;outline:3px solid var(--color-focus);outline-offset:3px}
+main:focus:not(:focus-visible),.stem:focus:not(:focus-visible){outline:none}
+button,a,input,select,textarea,summary{scroll-margin-block:7rem;overflow-wrap:anywhere}
+button:not(.tab),input,select,textarea,summary{min-height:var(--tap-target)}
+button{min-width:var(--tap-target)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--color-focus);outline-offset:3px}
+.row:focus-visible{outline-offset:-3px}.icon-btn{min-width:var(--tap-target);min-height:var(--tap-target)}
+.top h1{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;line-height:1.4;min-width:0}
+main p,main h2,main h3,main h4,.row .grow,.tile,.k-badge>div{overflow-wrap:anywhere;min-width:0}
+h3.sec{flex-wrap:wrap;gap:var(--space-2)}
+.wrap,.has-action .wrap{padding-bottom:calc(max(140px,8rem) + env(safe-area-inset-bottom,0px))}
+.k-progress>span{background:var(--color-primary)}
+.opt:not(.correct):not(.wrong):not([aria-pressed="true"]),.choice button:not([aria-pressed="true"]),.radio i{border-color:var(--color-muted)}
+.seg button{border:1px solid var(--color-muted);min-width:0}
+.opt .l{min-width:1.625rem;width:auto;min-height:1.625rem;height:auto;padding:0 .25rem}
+.offline-banner,.kafu-diagnostic,.education-notice{font-size:var(--text-sm)}.kafu-diagnostic code{font-size:var(--text-xs)}.education-notice strong{font-size:var(--text-base)}
+.kafu-diagnostic{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}
+.kafu-diagnostic dt,.kafu-diagnostic dd{min-width:0;overflow-wrap:anywhere}
+.k-score-ring{width:min(100%,9.5rem);height:auto;aspect-ratio:1}
+.k-ring{width:6rem;height:6rem;max-width:100%}
+.k-badges{grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))}
+.k-undo-notice{flex-wrap:wrap;bottom:calc(max(96px,5.75rem) + env(safe-area-inset-bottom,0px))}.k-undo-notice>span{flex:1 1 12rem;min-width:0;overflow-wrap:anywhere}.k-undo{min-height:var(--tap-target)}
+.toast{bottom:calc(max(96px,5.75rem) + env(safe-area-inset-bottom,0px));overflow-wrap:anywhere}
+.pill-row,.sheet .btns,.k-inline{flex-wrap:wrap}
+.book-head>div{min-width:0}.book-head .meta{overflow-wrap:anywhere}
+@media(max-width:600px){.book-head{grid-template-columns:minmax(72px,25%) minmax(0,1fr)}.book-head .pill-row{display:grid}.book-head .pill{justify-content:center}.grid2{grid-template-columns:repeat(auto-fit,minmax(min(100%,8rem),1fr))}}
+@media(forced-colors:active){.opt,.seg button,.k-card,.list,.k-continue,.btn,.tab[aria-current=page]{border:1px solid CanvasText}.k-progress>span{background:Highlight}.k-progress{border:1px solid CanvasText}.opt.correct,.opt.wrong{border-width:3px}}
