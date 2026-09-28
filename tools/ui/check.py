@@ -11,6 +11,7 @@ import gzip
 import hashlib
 import http.server
 import json
+import importlib.util
 import os
 from pathlib import Path
 import re
@@ -124,7 +125,7 @@ def open_app(ctx,origin,pack,progress=True):
 
 
 def capture(page,path):
-    page.evaluate("() => {const t=document.querySelector('#toast');if(t)t.hidden=true;window.scrollTo(0,0);}")
+    page.evaluate("() => {for(const t of document.querySelectorAll('.toast'))t.hidden=true;window.scrollTo(0,0);}")
     page.wait_for_timeout(150)
     page.screenshot(path=str(path),full_page=True,animations='disabled')
     with Image.open(path) as image:
@@ -226,6 +227,14 @@ def main():
             browser=pw.chromium.launch(**launch)
             hashes=snapshots(browser,origin,pack,args.out/'after')
             checks={} if args.capture_only else flows(browser,origin,pack)
+            if not args.capture_only:
+                helpers={'context':context,'open_app':open_app,'capture':capture,'study_answer':study_answer}
+                for path in sorted((ROOT/'tools/ui/flows').glob('*.py')):
+                    spec=importlib.util.spec_from_file_location('extra_'+path.stem,path)
+                    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+                    extra=module.run(browser,origin,pack,args.out/'after',helpers)
+                    checks.setdefault('passed',[]).extend(extra.get('passed',[]))
+                    hashes.update(extra.get('hashes',{}))
             checks['javascript']=budget(temp/'after')
             if args.before:
                 with site(args.before,temp/'before',8766,cert,key,args.source/'app/vendor') as (prior,priorpack):snapshots(browser,prior,priorpack,args.out/'before')
