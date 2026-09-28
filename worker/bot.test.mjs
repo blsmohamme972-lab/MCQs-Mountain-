@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { DatabaseSync } from "node:sqlite";
 import { readFileSync } from "node:fs";
+import { createHmac } from "node:crypto";
 import bot, { parsePackageName, retryGroup, clearGroup } from "./bot.mjs";
 
 // Exercise the real SQL/schema, not a mock that silently ignores unknown queries.
@@ -9,6 +10,7 @@ function testDB() {
   const db = new DatabaseSync(":memory:");
   db.exec("PRAGMA foreign_keys=ON");
   db.exec(readFileSync(new URL("../migrations/0001_publish_queue.sql", import.meta.url), "utf8"));
+  db.exec(readFileSync(new URL("../migrations/0002_question_reports.sql", import.meta.url), "utf8"));
   return {
     sql: db,
     prepare(sql) {
@@ -65,6 +67,54 @@ async function harness(fn) {
 }
 const document = (name, unique = name) => ({ file_name: name, file_id: "file-" + unique, file_unique_id: "unique-" + unique, file_size: 100 });
 const state = (h, key) => h.DB.sql.prepare("SELECT * FROM publish_groups WHERE group_key=?").get(key);
+const initData = (user = 456, age = 0) => {
+  const fields = { auth_date: String(Math.floor(Date.now() / 1000) - age), user: JSON.stringify({ id: user, first_name: "Test" }) };
+  const check = Object.entries(fields).sort(([a], [b]) => a.localeCompare(b)).map(([k, v]) => `${k}=${v}`).join("\n");
+  const secret = createHmac("sha256", "WebAppData").update("unit-bot").digest();
+  const hash = createHmac("sha256", secret).update(check).digest("hex");
+  return new URLSearchParams({ ...fields, hash }).toString();
+};
+const report = id => ({ id, q: "Q000000001", book: "TEST", version: 1, reason: "Wrong answer", note: "Key appears inconsistent" });
+const postReport = (h, body) => bot.fetch(new Request("https://kafu.test/api/reports", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) }), h.env, { waitUntil() {} });
+
+test("signed report queue is idempotent, minimal, owner-only, and resolvable", () => harness(async h => {
+  const id = "ab763bc1-2153-4eb6-9863-dfbb07a6a521";
+  const payload = { initData: initData(), report: report(id) };
+  assert.equal((await postReport(h, { ...payload, initData: initData(456, 90000) })).status, 401);
+  assert.equal((await postReport(h, { ...payload, report: { ...report(id), note: "x".repeat(301) } })).status, 400);
+  assert.equal((await postReport(h, payload)).status, 200);
+  assert.equal((await postReport(h, payload)).status, 200);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM question_reports").get().n, 1);
+  assert.equal(h.DB.sql.prepare("SELECT attempts FROM report_rate_limits").get().attempts, 1);
+  assert.deepEqual(Object.keys(h.DB.sql.prepare("SELECT * FROM question_reports").get()).sort(),
+    ["book_id", "book_version", "created_at", "id", "note", "qid", "reason"]);
+  await h.send("/reports", 999); assert.equal(h.messages.length, 0);
+  await h.send("/reports"); assert.match(h.messages.at(-1).text, /Q000000001 TEST v1/);
+  await h.send(`/reports resolve ${id}`);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM question_reports").get().n, 0);
+  await h.send("/reports"); assert.match(h.messages.at(-1).text, /No pending/);
+}));
+
+test("report auth, input and quota reject abuse without leaking content", () => harness(async h => {
+  const base = "ab763bc1-2153-4eb6-9863-dfbb07a6a52";
+  for (const [i, mutation, status] of [
+    [0, { initData: "" }, 401], [1, { initData: initData().replace(/hash=[^&]+/, "hash=" + "0".repeat(64)) }, 401],
+    [2, { report: { ...report(base + "2"), book: "../TEST" } }, 400],
+  ]) assert.equal((await postReport(h, { initData: initData(), report: report(base + i), ...mutation })).status, status);
+  for (let i = 3; i < 9; i++) {
+    const response = await postReport(h, { initData: initData(), report: report(base + i.toString(16)) });
+    assert.equal(response.status, i < 8 ? 200 : 429);
+  }
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM question_reports").get().n, 5);
+}));
+
+test("additive report migration leaves old queue schema and old command behavior intact", () => harness(async h => {
+  h.DB.sql.exec("INSERT INTO publish_groups(group_key,book_id,version,part_total,status) VALUES('TEST_v1','TEST',1,1,'waiting')");
+  h.DB.sql.exec(readFileSync(new URL("../migrations/0002_question_reports.sql", import.meta.url), "utf8"));
+  assert.equal(h.DB.sql.prepare("SELECT status FROM publish_groups WHERE group_key='TEST_v1'").get().status, "waiting");
+  await h.send("/status");assert.match(h.messages.at(-1).text, /waiting 1/);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM question_reports").get().n, 0);
+}));
 
 test("package naming rejects malformed, unsafe numeric and oversized multipart names", () => {
   for (const name of ["book.pdf", "A_v0.zip", "A_v1_part3of2.zip", "A_v1_part1of101.zip", "A_v1 (1).zip", "A_v9999999999999999999999.zip"])

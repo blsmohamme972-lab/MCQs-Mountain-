@@ -1,5 +1,6 @@
 // Kafu control plane. Heavy publishing work stays in GitHub Actions.
 import { parsePackageName, queueDocument, retryGroup, clearGroup } from "./queue-state.mjs";
+import { submitReport, reportCommand } from "./reports.mjs";
 export { parsePackageName, retryGroup, clearGroup };
 const ID = /^[A-Z0-9][A-Z0-9-]*$/;
 const QID = /^Q\d{9}$/;
@@ -55,7 +56,8 @@ async function bookForQuestion(env, qid) {
 async function command(env, raw) {
   const [cmd, arg, arg2, arg3] = raw.trim().split(/\s+/);
   switch (cmd.toLowerCase().split("@")[0]) {
-    case "/help": return "/queue /books /status /flags [/flags approve-all BOOK-ID CONFIRM] /hold QID PAGE /retry BOOK-ID_vN /clear BOOK-ID_vN /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID";
+    case "/help": return "/queue /books /status /flags [/flags approve-all BOOK-ID CONFIRM] /reports [/reports resolve REPORT-ID] /hold QID PAGE /retry BOOK-ID_vN /clear BOOK-ID_vN /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID";
+    case "/reports": return reportCommand(env, arg, arg2);
     case "/queue": {
       const r = await env.DB.prepare("SELECT group_key,status,part_total,error_summary FROM publish_groups ORDER BY created_at DESC LIMIT 15").all();
       const a = await env.DB.prepare("SELECT kind,book_id,status,error_summary FROM admin_jobs ORDER BY id DESC LIMIT 5").all();
@@ -164,15 +166,9 @@ async function webhook(request, env, ctx) {
   if (text.startsWith("📥") && !text.includes("already received")) ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
   return reply("OK");
 }
-async function tokenFingerprint(value) {
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
-  return [...new Uint8Array(digest)].map(x => x.toString(16).padStart(2, "0")).join("").slice(0, 8);
-}
 async function queueAuthorization(request, env) {
   const expected = String(env.QUEUE_API_TOKEN || "").trim(), header = request.headers.get("Authorization") || "";
   const presented = header.startsWith("Bearer ") ? header.slice(7).trim() : "";
-  const [expectedHash, presentedHash] = await Promise.all([tokenFingerprint(expected), tokenFingerprint(presented)]);
-  console.log(`[queue-auth] expected_len=${expected.length} expected_sha256_8=${expectedHash} presented_len=${presented.length} presented_sha256_8=${presentedHash} header='Authorization' scheme='Bearer'`);
   return expected.length > 0 && header.startsWith("Bearer ") && presented === expected;
 }
 async function internal(request, env, path) {
@@ -241,6 +237,7 @@ async function internal(request, env, path) {
 export default {
   async fetch(request, env, ctx) {
     const path = new URL(request.url).pathname;
+    if (path === "/api/reports") return submitReport(request, env);
     if (path === "/bot" && request.method === "POST") return webhook(request, env, ctx);
     if (path.startsWith("/internal/")) return internal(request, env, path);
     return env.ASSETS.fetch(request);

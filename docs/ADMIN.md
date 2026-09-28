@@ -38,6 +38,8 @@ Do not upload PDFs to the bot. The bot accepts prepared ZIP packages only.
 - `/queue` — show recent publish/admin jobs and safe failure details.
 - `/books` — show active published books.
 - `/flags` — list pending held/audit-warning questions.
+- `/reports` — list up to ten pending student question reports (question ID, book/version, reason, optional note). Do not paste patient information into replies.
+- `/reports resolve REPORT-ID` — permanently delete a report after you have checked the cited book/question and resolved or recorded the correction. This does not change the published content by itself.
 - `/flags Q000000001` — open one flagged question's review actions: approve, reject, or show source page.
 - `/flags approve-all BOOK-ID` — preview a bulk approval count only; makes no changes.
 - `/flags approve-all BOOK-ID CONFIRM` — approve all currently pending warnings for that book and queue one moderation publish. Use only after checking the preview count.
