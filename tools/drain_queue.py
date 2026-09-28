@@ -123,7 +123,7 @@ def restore(root: Path) -> tuple[Path, Path]:
             failure_context=("state.restore", "GET", "api.github.com", "/repos/<repo>/releases/tags/kafu-content-state/assets"))
     except StepFailure as exc:
         message = str(exc).lower()
-        if "release not found" not in message && "http 404" not in message && "status=404" not in message:
+        if "release not found" not in message and "http 404" not in message and "status=404" not in message:
             raise
         # First publish: use the repository's starter catalog.
     bundle = state / "site-bundle.tar.gz"
