@@ -49,7 +49,9 @@ globalThis.KafuEnhancements.installers.push({name:'home-library',install(){
   VIEWS.library=function(...args){
     const view=library.apply(this,args);
     if(!initialized){const first=globalThis.KafuOnboarding?.specialty;specialty=Core.specialties(CATALOG).includes(first)?first:'';initialized=true;}
-    view.html=notices(view)+`<section class="k-library"><h2>Find your next chapter.</h2><p class="note">A little focus, one book at a time.</p>${controls()}<div id="kafu-book-results">${results()}</div></section>`;return view;
+    // The base Library view owns branch navigation; keep its card section when enhancing search.
+    const selector=view.html.match(/<section class="branch-picker"[\s\S]*?<\/section>/)?.[0]||'';
+    view.html=notices(view)+selector+`<section class="k-library"><h2>Find your next chapter.</h2><p class="note">A little focus, one book at a time.</p>${controls()}<div id="kafu-book-results">${results()}</div></section>`;return view;
   };
   const home=VIEWS.home;
   VIEWS.home=function(...args){
