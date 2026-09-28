@@ -66,6 +66,19 @@ jobs:
                   "X-Telegram-Bot-Api-Secret-Token": os.environ["WEBHOOK_SECRET"],
               },
           )
+          if command == "/books":
+              from tools.http_client import request_json
+              catalog = request_json(
+                  "https://kafu-content-1.blsmohamme97.workers.dev/catalog.json",
+                  step="bot.booksProof",
+              )
+              book = next((b for b in catalog.get("books", []) if b.get("id") == "KAFU-UPLOAD-TEST"), None)
+              if not book:
+                  raise SystemExit("KAFU-UPLOAD-TEST missing from live catalog")
+              print(
+                  f"[books-proof] {book['id']} v{book['version']} — "
+                  f"{book.get('questions', 0)} questions, {len(book.get('chapters', []))} chapters"
+              )
           PY
       - name: Install image decoder
         if: github.event_name != 'push'
