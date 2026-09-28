@@ -23,7 +23,7 @@ GitHub's repository **Actions Usage Metrics** showed **148 total minutes** for t
 | Deploy Kafu Content | 3 | 3 |
 | Setup Kafu Bot | 1 | 1 |
 
-The row totals can differ from the displayed overall total because GitHub's metrics aggregate and round individual workflow figures. The dashboard lags recent runs, including the first backup. This is repository usage, not the account's billing balance.
+The displayed row totals (153 minutes, 150 runs) do not match the dashboard's overall totals (148 minutes, 145 runs). The page does not explain this difference; treat the 148-minute headline as the reported repository total at the stated cutoff. The dashboard lags recent runs, including the first backup. This is repository usage, not the account's billing balance.
 
 ## CI minute reduction
 
