@@ -99,6 +99,11 @@ These rules are binding for every later design task:
 - **Original work only:** inspiration is fine; do not copy assets, characters, logos, illustrations or distinctive proprietary UI artwork.
 - **Design PRs never self-merge:** exact-head CI and screenshots are evidence for owner review; the PR stays open until the owner explicitly approves it.
 
+
+### Visual determinism note
+
+All visual baselines remain strict single-hash comparisons except two measured Chromium-only states: `ipad-light-library-search` and `ipad-light-library-no-results`. Repeated exact-head runs differed only by **7 pixels**, all by a maximum of **1 channel level**, at the same rounded focused-search border. CI therefore accepts exactly the two observed SHA-256 variants for those two named screenshots, with identical dimensions. This is not a general pixel-diff threshold; every other screenshot remains exact.
+
 ## Evidence required for DESIGN 1/10
 
 Before owner approval:
