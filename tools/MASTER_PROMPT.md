@@ -30,7 +30,16 @@ Before extracting, open the PDF with code and write a short book map in your rep
 
 ## 2. Extract with a parser, not by hand
 
-Write a parser for THIS book's layout and run it over the whole PDF. Clean the text:
+Write a parser for THIS book's layout and run it over the whole PDF. The parser is part of the deliverable, not disposable scratch code.
+
+Parser delivery rules:
+- Save it as a standalone Python module named for the layout/book, compatible with the contract in `tools/parsers/README.md`.
+- It must export `parse_pdf(pdf_path)` and deterministically return `questions`, `chapters`, `skipped`, and optional `notes`.
+- Do not hide extraction logic in notebook state or one-off shell commands.
+- Include layout assumptions in the parser docstring so a helper can rebuild the same book later without an AI chat.
+- If the PDF is scanned or requires visual/OCR work that cannot be deterministic, say so explicitly; do not pretend the parser can reproduce it.
+
+Then run it over the whole PDF. Clean the text:
 - remove running headers, footers, page numbers, publisher lines
 - replace ligatures (ﬁ ﬂ ﬀ ﬃ ﬄ) with normal letters
 - join words broken across lines ("hypo- thermia" → "hypothermia"), but keep real hyphens ("beta-blocker")
@@ -127,4 +136,8 @@ If the ZIP would exceed 19 MB, split by chapters into parts: `BOOK_ID_v1_part1of
 
 Give me only:
 - the ZIP file(s): `BOOK_ID_v1.zip` (or the parts)
+- the parser source file you used, ready to save under `tools/parsers/`
+- a short parser note: layout assumptions and the exact `tools/package_batch.py` command that can rebuild the package
 - a 5-line summary: title, questions per type, skipped (with reasons), flagged count, images count, and the final `RESULT: PASS` line.
+
+The work is not complete if the ZIP passes but the parser that produced it is missing.
