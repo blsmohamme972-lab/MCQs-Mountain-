@@ -14,7 +14,7 @@ function fakeDB() {
         return null;
       },
       async run() {
-        if (sql.startsWith("INSERT OR IGNORE INTO publish_groups")) {
+        if (sql.startsWith("INSERT OR IGNORE INTO publish_groups") || sql.startsWith("INSERT INTO publish_groups")) {
           if (!groups.has(args[0])) groups.set(args[0], { part_total: args[3], status: "waiting" });
         } else if (sql.startsWith("INSERT INTO publish_queue")) {
           parts.set(`${args[0]}:${args[1]}`, { telegram_file_unique_id: args[4] });
