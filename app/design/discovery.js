@@ -19,7 +19,7 @@ globalThis.KafuEnhancements.installers.push({name:'home-library',install(){
   }
   function cover(book,p){
     let url=null;try{const parsed=new URL(book.cover_url,CONFIG.CONTENT_BASE||location.origin);if(book.cover_url&&parsed.protocol==='https:'&&!parsed.username&&!parsed.password&&[location.origin,new URL(CONFIG.CONTENT_BASE||location.origin).origin].includes(parsed.origin))url=parsed.href;}catch(_){}
-    const long=String(book.title||'').length>22?' long-title':'';
+    const long=String(book.title||'').length>18?' long-title':'';
     return url?`<span class="k-book-cover has-image${long}" aria-hidden="true"><img src="${C.e(url)}" alt="" loading="lazy" decoding="async">${stars(p.percent)}</span>`:
       `<span class="k-book-cover${long}" aria-hidden="true"><span class="k-cover-pattern"></span><span class="k-cover-specialty">${C.e(book.specialty||'Practice')}</span><span class="k-cover-icon">${specialtyIcon(book)}</span><strong>${C.e(book.title)}</strong>${stars(p.percent)}<span class="k-cover-footer">Kafu collectible</span></span>`;
   }
