@@ -83,3 +83,22 @@ figure.qimg img{background:var(--color-medical-image)!important;filter:none!impo
 @media(min-width:760px){
   .top h1,.k-home>h2,.k-library>h2,.k-card>h2,.k-card>h3,.book-head h2,.k-complete h2{font-size:var(--text-title-wide)}
 }
+
+
+/* DESIGN 1 Round 3: selected-chip contrast and dark arcade edges. */
+.choice button[aria-pressed='true']{
+  border-color:var(--color-primary);
+  background:var(--color-primary);
+  color:var(--color-on-primary);
+}
+:root[data-theme='dark'] .btn,
+:root[data-theme='dark'] .k-card,
+:root[data-theme='dark'] .k-game-hud,
+:root[data-theme='dark'] .k-profile-card,
+:root[data-theme='dark'] .k-badge,
+:root[data-theme='dark'] .k-book-cover,
+:root[data-theme='dark'] .k-goal-ring{
+  border-color:var(--color-outline);
+  box-shadow:var(--shadow-hard);
+}
+:root[data-theme='dark'] .btn{box-shadow:var(--shadow-button)}
