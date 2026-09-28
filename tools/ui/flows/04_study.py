@@ -17,7 +17,7 @@ def run(browser, origin, pack, out, helpers):
                     assert page.locator('.k-feedback-correct').count()==1
                     assert 'Correct' in page.locator('.k-feedback-correct').inner_text() and 'Kafu' in page.locator('.k-feedback-correct').inner_text()
                 if i==1:
-                    assert page.evaluate("getComputedStyle(document.querySelector('.opt.wrong .l')).backgroundColor===getComputedStyle(document.documentElement).getPropertyValue('--color-danger').trim()")
+                    assert page.evaluate("""() => {const badge=document.querySelector('.opt.wrong .l'),probe=document.createElement('i');probe.style.background='var(--color-danger)';document.body.appendChild(probe);const ok=getComputedStyle(badge).backgroundColor===getComputedStyle(probe).backgroundColor;probe.remove();return ok}""")
                 page.locator('[data-a="action"]').last.click()
             page.wait_for_selector('[data-session-complete]')
             assert page.locator('[data-session-complete]').get_attribute('data-score') == '75'
