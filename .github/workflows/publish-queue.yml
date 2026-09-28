@@ -4,11 +4,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "*/15 * * * *"
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/kafu-bot-command.trigger"
 
 permissions:
   contents: write
@@ -29,7 +24,6 @@ jobs:
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       OWNER_TELEGRAM_ID: ${{ secrets.OWNER_TELEGRAM_ID }}
-      WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
       QUEUE_API_TOKEN: ${{ secrets.QUEUE_API_TOKEN }}
       QUEUE_API_URL: https://kafu.blsmohamme97.workers.dev
     steps:
@@ -37,52 +31,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: Send one-time bot command
-        if: github.event_name == 'push'
-        run: |
-          python - <<'PY'
-          import os
-          from pathlib import Path
-          from tools.http_client import request_bytes
-
-          command = Path(".github/kafu-bot-command.trigger").read_text().strip()
-          allowed = {"/retry KAFU-UPLOAD-TEST_v1", "/queue", "/books"}
-          if command not in allowed:
-              raise SystemExit("Unexpected bot command marker")
-          owner = int(os.environ["OWNER_TELEGRAM_ID"])
-          request_bytes(
-              "https://kafu.blsmohamme97.workers.dev/bot",
-              step="bot.command",
-              method="POST",
-              data=__import__("json").dumps({
-                  "message": {
-                      "from": {"id": owner},
-                      "chat": {"id": owner, "type": "private"},
-                      "text": command,
-                  }
-              }).encode(),
-              headers={
-                  "Content-Type": "application/json",
-                  "X-Telegram-Bot-Api-Secret-Token": os.environ["WEBHOOK_SECRET"],
-              },
-          )
-          if command == "/books":
-              from tools.http_client import request_json
-              catalog = request_json(
-                  "https://kafu-content-1.blsmohamme97.workers.dev/catalog.json",
-                  step="bot.booksProof",
-              )
-              book = next((b for b in catalog.get("books", []) if b.get("id") == "KAFU-UPLOAD-TEST"), None)
-              if not book:
-                  raise SystemExit("KAFU-UPLOAD-TEST missing from live catalog")
-              print(
-                  f"[books-proof] {book['id']} v{book['version']} — "
-                  f"{book.get('questions', 0)} questions, {len(book.get('chapters', []))} chapters"
-              )
-          PY
       - name: Install image decoder
-        if: github.event_name != 'push'
         run: python -m pip install 'Pillow>=11,<13'
       - name: Drain all ready jobs in order
-        if: github.event_name != 'push'
         run: python tools/drain_queue.py
