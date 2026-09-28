@@ -40,7 +40,7 @@ h1,h2,h3,.tile .v,.score .big{font-family:var(--font-display);font-weight:600}
   min-height:var(--tap-target);
   border:var(--outline-width) solid var(--color-outline);
   border-radius:var(--radius-md);
-  box-shadow:var(--shadow-hard);
+  box-shadow:var(--shadow-button);
   background:var(--color-primary);
   color:var(--color-on-primary);
   transition:transform var(--duration-fast) var(--ease-press);
@@ -48,18 +48,18 @@ h1,h2,h3,.tile .v,.score .big{font-family:var(--font-display);font-weight:600}
 .btn:hover:not(:disabled){filter:none;background:var(--color-primary-strong)}
 .btn:active:not(:disabled),.btn.is-pressed{
   transform:translateY(var(--pressed-offset));
-  box-shadow:0 calc(var(--shadow-depth) - var(--pressed-offset)) 0 var(--color-outline);
+  box-shadow:0 calc(var(--button-edge-depth) - var(--pressed-offset)) 0 var(--color-primary-strong);
 }
 .btn.quiet,.btn.ghost{background:var(--color-surface);color:var(--color-text)}
 .btn.danger{background:var(--color-danger);color:var(--color-on-result)}
 .btn[disabled]{opacity:.5;box-shadow:none;transform:none}
 .k-card,.empty-start,.list,.tile{
   border:var(--outline-width) solid var(--color-outline);
-  box-shadow:var(--shadow-card);
+  box-shadow:var(--shadow-hard);
   background:var(--color-surface);
 }
 .k-chip,.tag,.pill{border:var(--outline-width) solid var(--color-outline)}
-.resume{border:var(--outline-width) solid var(--color-outline);box-shadow:var(--shadow-hard)}
+.resume{border:var(--outline-width) solid var(--color-outline);box-shadow:var(--shadow-button)}
 .opt,.tf{
   border:var(--outline-width) solid var(--color-border);
   box-shadow:none;
@@ -72,3 +72,14 @@ figure.qimg img{background:var(--color-medical-image)!important;filter:none!impo
 .scrim,.k-dialog::backdrop{background:var(--color-scrim)}
 .k-gallery-accent{font-family:var(--font-pixel)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* DESIGN 1 revision: unmistakable Arcade-Clean type hierarchy. */
+.top h1,.k-home>h2,.k-library>h2,.k-card>h2,.k-card>h3,.book-head h2,.k-complete h2{
+  font-family:var(--font-display);font-weight:600;font-size:var(--text-title);line-height:1.08;letter-spacing:-.02em;
+}
+.tile .v,.score .big,.k-goal-number,.k-score-ring strong,.k-profile-level strong{
+  font-family:var(--font-display);font-weight:600;font-size:clamp(var(--text-big),13vw,var(--text-big-max));line-height:.95;
+}
+@media(min-width:760px){
+  .top h1,.k-home>h2,.k-library>h2,.k-card>h2,.k-card>h3,.book-head h2,.k-complete h2{font-size:var(--text-title-wide)}
+}
