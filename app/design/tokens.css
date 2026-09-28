@@ -1,0 +1,52 @@
+/* Kafu's only palette, spacing, type, radius, shadow and motion source. */
+:root {
+  --brand-primary: #0F4C54; --brand-secondary: #16606A; --brand-accent: #A8323E;
+  --color-bg: #F4F7F7; --color-surface: #FFFFFF; --color-surface-alt: #E9F0EF;
+  --color-text: #172E32; --color-muted: #53696D; --color-border: #CCDAD9;
+  --color-primary: var(--brand-primary); --color-primary-hover: var(--brand-secondary);
+  --color-on-primary: #FFFFFF; --color-primary-soft: #E0EEEC;
+  --color-success: #226544; --color-success-soft: #E7F3EA;
+  --color-danger: var(--brand-accent); --color-danger-soft: #FBECEF;
+  --color-focus: #1B6A76; --color-on-result: #FFFFFF;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px; --space-12: 48px;
+  --radius-sm: 8px; --radius-md: 14px; --radius-lg: 20px; --radius-xl: 28px; --radius-pill: 999px;
+  --shadow-card: 0 3px 16px #0F4C5409; --shadow-float: 0 8px 32px #0F4C541A;
+  --font-ui: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-reading: 'Lora', Georgia, serif;
+  --text-xs: .75rem; --text-sm: .875rem; --text-base: 1rem; --text-lg: 1.125rem;
+  --text-xl: 1.375rem; --text-2xl: 1.75rem; --text-3xl: 2.125rem;
+  --leading-ui: 1.5; --leading-reading: 1.7; --measure: 42rem; --layout-wide: 68rem;
+  --duration-fast: 120ms; --duration-base: 180ms; --duration-delight: 320ms;
+  --ease-out: cubic-bezier(.2,.7,.2,1); --tap-target: 44px;
+  --bg: var(--color-bg); --surface: var(--color-surface); --surface-2: var(--color-surface-alt);
+  --ink: var(--color-text); --muted: var(--color-muted); --line: var(--color-border);
+  --teal: var(--color-primary); --teal-2: var(--color-primary-hover); --teal-soft: var(--color-primary-soft);
+  --crimson: var(--color-danger); --crimson-soft: var(--color-danger-soft);
+  --green: var(--color-success); --green-soft: var(--color-success-soft);
+  --btn: var(--brand-secondary); --on-btn: var(--color-on-primary);
+  --ui: var(--font-ui); --read: var(--font-reading); color-scheme: light;
+}
+:root[data-theme='dark'] {
+  --color-bg: #11272C; --color-surface: #19343A; --color-surface-alt: #223F45;
+  --color-text: #F0F7F6; --color-muted: #B5C7C9; --color-border: #4E6D73;
+  --color-primary: #A0DAD5; --color-primary-hover: #B7E6E1; --color-primary-soft: #214743;
+  --color-success: #A0DFB6; --color-success-soft: #1E4332;
+  --color-danger: #FFB6BE; --color-danger-soft: #492F35;
+  --color-focus: #A0DAD5; --color-on-result: #14292D;
+  --shadow-card: 0 3px 16px #0000000D; --shadow-float: 0 8px 32px #00000030;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']):not([data-theme='dark']) {
+    --color-bg: #11272C; --color-surface: #19343A; --color-surface-alt: #223F45;
+    --color-text: #F0F7F6; --color-muted: #B5C7C9; --color-border: #4E6D73;
+    --color-primary: #A0DAD5; --color-primary-hover: #B7E6E1; --color-primary-soft: #214743;
+    --color-success: #A0DFB6; --color-success-soft: #1E4332;
+    --color-danger: #FFB6BE; --color-danger-soft: #492F35;
+    --color-focus: #A0DAD5; --color-on-result: #14292D; color-scheme: dark;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --duration-fast: 0ms; --duration-base: 0ms; --duration-delight: 0ms; }
+}
