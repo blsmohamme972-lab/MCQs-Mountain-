@@ -1,8 +1,8 @@
 {
   "ipad-dark-badges-earned": {
-    "height": 1909,
-    "sha256": "99ee81f41d2326addf972860ebf0dcfa46081fd5d21e01285ab88562bc027468",
-    "width": 820
+    "sha256": "55b9085bc6e6a47578a33fd5ab87300612a04b4bb241cf671ba72b353361cb4a",
+    "width": 820,
+    "height": 1909
   },
   "ipad-dark-chapter-complete": {
     "height": 1180,
@@ -15,19 +15,19 @@
     "width": 820
   },
   "ipad-dark-download-undo": {
-    "height": 2333,
-    "sha256": "a0dd87d1cf259bc79fd4d4cf08263cbbf2d0670c8335288a63d44170ffab7943",
-    "width": 820
+    "sha256": "060a430fcd787e7096d86fee2aab50d1ca10b5f96121c545f4c4d28c9cb53ff6",
+    "width": 820,
+    "height": 2333
   },
   "ipad-dark-gallery": {
-    "height": 6291,
-    "sha256": "d0da3847715467c3b11261c7f5382880665a157f9b9202dfb6f2a4f5eaf6817d",
-    "width": 820
+    "sha256": "b8c5bdffca4fbd4018763ff21e34a01c1866008a96df673d615675cbef0f5a29",
+    "width": 820,
+    "height": 6291
   },
   "ipad-dark-home": {
-    "height": 1434,
-    "sha256": "5c31a1ca317f1d229644a28ffc98fb44a54ac4f0c567cc2786ef6dd00a1d90b9",
-    "width": 820
+    "sha256": "7991eb034bf3d25ddbcba2da4bf8834004ccb35c9fbf02888a505cbb89833056",
+    "width": 820,
+    "height": 1434
   },
   "ipad-dark-library": {
     "height": 1180,
@@ -35,9 +35,9 @@
     "width": 820
   },
   "ipad-dark-library-no-results": {
-    "height": 1180,
-    "sha256": "b30af51a2a2977a9f848e3691d97b1be68fdc47a081c43676e0acc0000ba614a",
-    "width": 820
+    "sha256": "8821de659817eb951546f4cfc3805220ecae6e17c7be853cb312380a6cfe39eb",
+    "width": 820,
+    "height": 1180
   },
   "ipad-dark-library-search": {
     "height": 1180,
@@ -45,9 +45,9 @@
     "width": 820
   },
   "ipad-dark-me": {
-    "height": 1909,
-    "sha256": "be56c057ff2081278af29bbee7685f8b00eb0e464541610b7cb43e9b4b29e5c9",
-    "width": 820
+    "sha256": "1b9b512a9359b791ada533f08667e51900afdf45c4ffc474c86acfb15b38b35b",
+    "width": 820,
+    "height": 1909
   },
   "ipad-dark-onboarding-1": {
     "height": 1180,
@@ -75,14 +75,14 @@
     "width": 820
   },
   "ipad-dark-styleguide": {
-    "height": 2352,
-    "sha256": "480cbe4fc6a945a79f910a935bd2ce2740fd7e16cb96675e8659329f7435517b",
-    "width": 820
+    "sha256": "9ae7bb681182844e8e711b8a3dc0f972f3de662ca7604989451db2151b34fc74",
+    "width": 820,
+    "height": 2352
   },
   "ipad-light-badges-earned": {
-    "height": 1909,
-    "sha256": "42c66bf4dc8af36cb63188bb36f7344f5ca0f3ce264078a8cd51ed894437a444",
-    "width": 820
+    "sha256": "3e68ed562d12ea4517a9847d8077822c3ea168dcc1452f67bb803ea002e2ee97",
+    "width": 820,
+    "height": 1909
   },
   "ipad-light-chapter-complete": {
     "height": 1180,
@@ -95,19 +95,19 @@
     "width": 820
   },
   "ipad-light-download-undo": {
-    "height": 2333,
-    "sha256": "dd50b1d0e224035741ca7aaad305d8f12353c44312cf6b19d00b7895498e86c2",
-    "width": 820
+    "sha256": "d8f8c0b9c37bc467e079103c6b067f24cb3ffd5f052e1a85b7a080c3a2e70871",
+    "width": 820,
+    "height": 2333
   },
   "ipad-light-gallery": {
-    "height": 6291,
-    "sha256": "ccdf6b6b702e5f7e7d69082aa1f56cf02e9782b6f0915748f289899561d58dba",
-    "width": 820
+    "sha256": "3b2026b69a430ab8427d86933d36cff5728dc129c628b6275e2a240b23facc5e",
+    "width": 820,
+    "height": 6291
   },
   "ipad-light-home": {
-    "height": 1434,
-    "sha256": "93b2c1d53500a6c5d313116f6d07ca795a13f362b536abca0cc874ea8ddea83f",
-    "width": 820
+    "sha256": "3385bb78ef6a399880863c95a1fc98a6cb508f4ba64ccc603d83a8bed72cd6c9",
+    "width": 820,
+    "height": 1434
   },
   "ipad-light-library": {
     "height": 1180,
@@ -115,9 +115,9 @@
     "width": 820
   },
   "ipad-light-library-no-results": {
-    "height": 1180,
-    "sha256": "1dcb4217f5caf39e6c833321806f14a7adcb6f1d4d0e387836f893c133e78166",
-    "width": 820
+    "sha256": "d31098a727e408f0d8a290770359a1d1a7dac1e0344ef35d7ce0ecb0cf87a336",
+    "width": 820,
+    "height": 1180
   },
   "ipad-light-library-search": {
     "height": 1180,
@@ -125,9 +125,9 @@
     "width": 820
   },
   "ipad-light-me": {
-    "height": 1909,
-    "sha256": "9f72e02915612e3f00e95eea92324eeb33112b49acf665ce0eff7559ea0d7ade",
-    "width": 820
+    "sha256": "b4bd69d5aea51510013f7519f99a36f3dc3dc12b91e602ab289c7374458602be",
+    "width": 820,
+    "height": 1909
   },
   "ipad-light-onboarding-1": {
     "height": 1180,
@@ -155,14 +155,14 @@
     "width": 820
   },
   "ipad-light-styleguide": {
-    "height": 2352,
-    "sha256": "50199be67b40c344c20f3ba95901db25be4d9bad19b686980ca8b33eafd430e3",
-    "width": 820
+    "sha256": "c4eedac6cbf1fd21638f7ea2ef76148716dc5bcc00d839369df6a92da6104dc6",
+    "width": 820,
+    "height": 2352
   },
   "phone-dark-badges-earned": {
-    "height": 2104,
-    "sha256": "3b67187f9071acdc842ef6cb47b940e51a6b816467d87c8095f85e7393360c3a",
-    "width": 390
+    "sha256": "32df8ef6234223c89ffbc9b5ec3a098f9e36c8cd41d6039653ce6fb24838e550",
+    "width": 390,
+    "height": 2104
   },
   "phone-dark-chapter-complete": {
     "height": 1037,
@@ -175,19 +175,19 @@
     "width": 390
   },
   "phone-dark-download-undo": {
-    "height": 2567,
-    "sha256": "82bd95f1eece5e67d6a291e5bc346dff51448a5decea36fea5fae32d01b14e9f",
-    "width": 390
+    "sha256": "c583496f30f0dae06d5407aa6d050b1748e164cfc0b291a83def8f83e33e2a59",
+    "width": 390,
+    "height": 2567
   },
   "phone-dark-gallery": {
-    "height": 7124,
-    "sha256": "a5499de22948023c6a30bff5147877d1c338401c4962b42f484c98be53c5600d",
-    "width": 390
+    "sha256": "52436bf92120952f9624f953a2ea18b86bd84d981ac79ff92feeac2b3a840356",
+    "width": 390,
+    "height": 7124
   },
   "phone-dark-home": {
-    "height": 1726,
-    "sha256": "684c6daaa9c03eff5b7ee2a48373518930e6bdfb8afaca42571f8d276b62bc86",
-    "width": 390
+    "sha256": "e43ee2387ede6480152f091c147ffbf9b6a7ce8aa09f2eef6f0fabf132f27fee",
+    "width": 390,
+    "height": 1726
   },
   "phone-dark-library": {
     "height": 1221,
@@ -195,9 +195,9 @@
     "width": 390
   },
   "phone-dark-library-no-results": {
-    "height": 844,
-    "sha256": "595c6b6a09941be44f7bd216034bd1d1a5dc545eb344cece4c98817cd370ef87",
-    "width": 390
+    "sha256": "15d39db65ad182c6057bb937ece0a79107794fdb54402db91c02e55929667092",
+    "width": 390,
+    "height": 844
   },
   "phone-dark-library-search": {
     "height": 859,
@@ -205,9 +205,9 @@
     "width": 390
   },
   "phone-dark-me": {
-    "height": 2104,
-    "sha256": "3c36251f289633599b2e256b251aed1272b552d6558aaac2f31ce925b205448c",
-    "width": 390
+    "sha256": "f0c65822de39cd0a305a0a97a83ba8105684c210ca9d31d849aa403b0d97f7d0",
+    "width": 390,
+    "height": 2104
   },
   "phone-dark-onboarding-1": {
     "height": 844,
@@ -235,14 +235,14 @@
     "width": 390
   },
   "phone-dark-styleguide": {
-    "height": 3985,
-    "sha256": "f6b66609dd5171b8b51884b5baa85b086c982b8df36e1fec8955a6c680caf1d4",
-    "width": 390
+    "sha256": "bb591323adaeec024b26a1bc1ea7350b40c68e703a6754f94871da25c59c873c",
+    "width": 390,
+    "height": 3985
   },
   "phone-light-badges-earned": {
-    "height": 2104,
-    "sha256": "1fb4882463bb0176a0619d0f233548b52c97df0e04a26f0e44925c853072c5b9",
-    "width": 390
+    "sha256": "f12879d0447da0b2da0ff1323f9dc8b3a149e420b0189ad44af7b768f5969131",
+    "width": 390,
+    "height": 2104
   },
   "phone-light-chapter-complete": {
     "height": 1037,
@@ -255,19 +255,19 @@
     "width": 390
   },
   "phone-light-download-undo": {
-    "height": 2567,
-    "sha256": "90feed55e45f74bbc3f7ed6a9ce9c2607bef312e1217b51231888c28509b9f6b",
-    "width": 390
+    "sha256": "6b3bb4c48899eaad431c9477a8950dbe5596654699cb2feee48a2bd8cde39621",
+    "width": 390,
+    "height": 2567
   },
   "phone-light-gallery": {
-    "height": 7124,
-    "sha256": "2ac968e771c016ad4599b8de7e01daa75ff3ba5fc5599f8c3e2b5d8b122cc9bd",
-    "width": 390
+    "sha256": "a36aea2087e6e99907b7eed6e9e9dbc0dcc8f42eade2ed8e0cd33a1b154fe669",
+    "width": 390,
+    "height": 7124
   },
   "phone-light-home": {
-    "height": 1726,
-    "sha256": "80b9d129fb831985d806f6ccd2a027dfe7aa361e8b40723003fee5bfefc2935b",
-    "width": 390
+    "sha256": "e946d40d39ba4a324afd23a7d40a5686cd8bbc04eef241fa2f5b0e5b91cf5032",
+    "width": 390,
+    "height": 1726
   },
   "phone-light-library": {
     "height": 1221,
@@ -275,9 +275,9 @@
     "width": 390
   },
   "phone-light-library-no-results": {
-    "height": 844,
-    "sha256": "7b3a673c8a4a9b11cdcad836b6c706a421f0b9b787fedc738e819e6376c6e6bd",
-    "width": 390
+    "sha256": "80cdbb382b41fcc05203ba5ee57281aeed8a0ac6ed947ab3558298bb6637335e",
+    "width": 390,
+    "height": 844
   },
   "phone-light-library-search": {
     "height": 859,
@@ -285,9 +285,9 @@
     "width": 390
   },
   "phone-light-me": {
-    "height": 2104,
-    "sha256": "77738f9b321258f32e830ce7ec729ec449ada1e5289340789c6fa220bec3f9bd",
-    "width": 390
+    "sha256": "ef357a01d890c06026cde9eceffd44ba782b1e8bfdd3ac3d168428aa2dc44e17",
+    "width": 390,
+    "height": 2104
   },
   "phone-light-onboarding-1": {
     "height": 844,
@@ -315,8 +315,8 @@
     "width": 390
   },
   "phone-light-styleguide": {
-    "height": 3985,
-    "sha256": "7b0f4957038d89e40f62bb748d67adb2a00934f5711cb9125fd4e61b6526c962",
-    "width": 390
+    "sha256": "3d3083f161cbd99c102fbc0fd60b417940a34d9ffe12834e4c46fda82d6f866a",
+    "width": 390,
+    "height": 3985
   }
 }
