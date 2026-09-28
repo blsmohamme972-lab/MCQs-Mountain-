@@ -18,9 +18,11 @@ test('actual chapter tap opens text before image download and protects image-dep
   assert.equal(h.run('SESSION.qids.length'),1);assert.equal(h.run('PACKS["BOOK:1"]._offline_complete'),false);
   assert.equal(h.run('VIEWS.study().action.enabled'),false);
   release();await h.run('KafuDownloads.manager.finish(KafuDownloads.metadata("BOOK",1))');
-  assert.equal(h.run('PACKS["BOOK:1"]._offline_complete'),true);assert.equal(h.run('!!PACKS["BOOK:1"].img.Q000000001_1.webp'),true);
+  assert.equal(h.run('PACKS["BOOK:1"]._offline_complete'),true);assert.equal(h.run('!!PACKS["BOOK:1"].img["Q000000001_1.webp"]'),true);
   h.run('SESSION.resp.Q000000001.sel=0;submitCurrent();');assert.equal(h.run('S.answers.Q000000001.n'),1);
   assert.equal(h.run('KafuDownloads.available("BOOK",1)'),false,'Memory-only DB must not claim persistence');
+  h.run('DB.mem.images.clear();');await h.run('hydratePackImages("BOOK:1",PACKS["BOOK:1"])');
+  assert.equal(h.run('PACKS["BOOK:1"]._offline_complete'),false,'Missing persisted image must invalidate the offline mark');
 });
 test('only the next chapter is prefetched, with no recursive full-book download',async()=>{
   const requested=[];const h=appHarness({online:true,fetcher:async url=>{requested.push(String(url));const ch=Number(String(url).match(/chapter(\d)/)[1]);return response(JSON.stringify(payload(ch,false)));}});
