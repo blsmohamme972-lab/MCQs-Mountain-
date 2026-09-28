@@ -1,4 +1,6 @@
-/* Session summaries are derived in memory; no student record is rewritten. */
+/* Session summaries are derived in memory; no student record is rewritten.
+ * Reviewed phone/iPad light/dark evidence: Visual/Flow run 36404432889.
+ */
 (function(root){
   'use strict';
   function summarize(ids,responses){
