@@ -10,7 +10,7 @@ globalThis.KafuEnhancements.installers.push({name:'home-library',install(){
     const key=String(book.specialty||'').toLowerCase();
     if(key.includes('cardio'))return '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 53S10 40 10 23c0-8 5-13 12-13 5 0 8 3 10 7 2-4 5-7 10-7 7 0 12 5 12 13 0 17-22 30-22 30Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><path d="M16 31h10l4-9 6 18 4-9h8" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     if(key.includes('pharma'))return '<svg viewBox="0 0 64 64" aria-hidden="true"><g transform="rotate(-35 32 32)"><rect x="10" y="22" width="44" height="20" rx="10" fill="none" stroke="currentColor" stroke-width="5"/><path d="M32 22v20" stroke="currentColor" stroke-width="5"/></g></svg>';
-    if(key.includes('surg'))return '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M18 12v40M46 12v40M12 18h40M12 46h40" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M24 24h16v16H24z" fill="none" stroke="currentColor" stroke-width="4"/></svg>';
+    if(key.includes('surg'))return '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 48 43 17l4 4-31 31-7 3 3-7Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><path d="m42 18 5-5 8 8-5 5" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M20 45c8 5 18 5 28 0" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>';
     return '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M18 10h28v44H18z" fill="none" stroke="currentColor" stroke-width="5"/><path d="M26 22h12M26 32h12M26 42h8" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>';
   }
   function stars(percent){
@@ -19,8 +19,9 @@ globalThis.KafuEnhancements.installers.push({name:'home-library',install(){
   }
   function cover(book,p){
     let url=null;try{const parsed=new URL(book.cover_url,CONFIG.CONTENT_BASE||location.origin);if(book.cover_url&&parsed.protocol==='https:'&&!parsed.username&&!parsed.password&&[location.origin,new URL(CONFIG.CONTENT_BASE||location.origin).origin].includes(parsed.origin))url=parsed.href;}catch(_){}
-    return url?`<span class="k-book-cover has-image" aria-hidden="true"><img src="${C.e(url)}" alt="" loading="lazy" decoding="async">${stars(p.percent)}</span>`:
-      `<span class="k-book-cover" aria-hidden="true"><span class="k-cover-pattern"></span><span class="k-cover-specialty">${C.e(book.specialty||'Practice')}</span><span class="k-cover-icon">${specialtyIcon(book)}</span><strong>${C.e(book.title)}</strong>${stars(p.percent)}<span class="k-cover-footer">Kafu collectible</span></span>`;
+    const long=String(book.title||'').length>22?' long-title':'';
+    return url?`<span class="k-book-cover has-image${long}" aria-hidden="true"><img src="${C.e(url)}" alt="" loading="lazy" decoding="async">${stars(p.percent)}</span>`:
+      `<span class="k-book-cover${long}" aria-hidden="true"><span class="k-cover-pattern"></span><span class="k-cover-specialty">${C.e(book.specialty||'Practice')}</span><span class="k-cover-icon">${specialtyIcon(book)}</span><strong>${C.e(book.title)}</strong>${stars(p.percent)}<span class="k-cover-footer">Kafu collectible</span></span>`;
   }
   bookCard=function(book){
     const p=Core.progress(book,S.answers,PACKS),note=p.exact?`${p.answered} of ${p.total} answered`:`${p.answered} saved answers`,availability=offline(book);
