@@ -5,8 +5,6 @@ def run(browser,origin,pack,out,helpers):
         for theme in ('light','dark'):
             ctx=helpers['context'](browser,origin,device,theme)
             page,errors=helpers['open_app'](ctx,origin,pack)
-            # A seeded legacy pack lacks source-identity metadata, so it must NOT
-            # claim complete offline availability until the real download path validates it.
             assert page.evaluate("KafuDownloads.available('DESIGN-CARDIO',1)") is False
             page.evaluate("async()=>{await KafuDownloads.manager.finish(KafuDownloads.metadata('DESIGN-CARDIO',1));}")
             before=page.evaluate('JSON.stringify([S.answers,S.fav,S.favBooks,S.dl,S.sync_v2])')
@@ -16,8 +14,10 @@ def run(browser,origin,pack,out,helpers):
             assert page.locator('[data-a=review-due]').count()==1
             page.evaluate("tab('library')")
             assert page.locator('#kafu-book-results .book-card').count()==3
+            width=page.locator('#kafu-book-results .book-card').first.bounding_box()['width']
             search=page.locator('#kafu-book-search');search.fill('clinical')
             assert page.locator('#kafu-book-results .book-card').count()==1
+            assert abs(page.locator('#kafu-book-results .book-card').first.bounding_box()['width']-width)<1
             assert search.evaluate('(el)=>el===document.activeElement')
             assert '2 of 4 answered' in page.locator('#kafu-book-results').inner_text()
             assert 'Available offline' in page.locator('#kafu-book-results').inner_text()
@@ -44,4 +44,4 @@ def run(browser,origin,pack,out,helpers):
             assert page.locator('#kafu-book-results .book-card').count()==1
             assert not errors,errors
             ctx.close()
-    return {'hashes':hashes,'passed':['phone/iPad light/dark: one-tap resume, derived daily goal and Review Due, title search + specialty filtering, focus retained, clear/no-results feedback, saved fields unchanged, offline discovery and notices preserved']}
+    return {'hashes':hashes,'passed':['phone/iPad light/dark: one-tap resume, derived daily goal and Review Due, stable cover sizes during title search + specialty filtering, focus retained, clear/no-results feedback, saved fields unchanged, offline discovery and notices preserved']}
