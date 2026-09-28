@@ -147,6 +147,25 @@ test("/hold + /flags approval/rejection/source produce durable moderation jobs",
   await h.send("/hold Q000000001"); assert.match(h.messages.at(-1).text, /Usage/);
 }));
 
+test("/flags approve-all requires explicit confirmation and queues one moderation publish", () => harness(async h => {
+  h.DB.sql.exec("INSERT INTO flags(qid,book_id,source_page,status) VALUES('Q000000001','TEST',1,'pending'),('Q000000002','TEST',2,'pending'),('Q000000003','OTHER',3,'pending')");
+  await h.send("/flags approve-all TEST");
+  assert.match(h.messages.at(-1).text, /Approve all 2 pending audit warnings/);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM flags WHERE book_id='TEST' AND status='pending'").get().n, 2);
+  assert.equal(h.dispatches.length, 0);
+
+  await h.send("/flags approve-all TEST CONFIRM");
+  assert.match(h.messages.at(-1).text, /approved 2 audit warnings/);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM flags WHERE book_id='TEST' AND status='approved'").get().n, 2);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM flags WHERE book_id='OTHER' AND status='pending'").get().n, 1);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM admin_jobs WHERE kind='moderate' AND book_id='TEST'").get().n, 1);
+  assert.deepEqual(h.dispatches.at(-1), { ref: "main" });
+
+  await h.send("/flags approve-all TEST CONFIRM");
+  assert.match(h.messages.at(-1).text, /No pending audit warnings/);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM admin_jobs WHERE kind='moderate' AND book_id='TEST'").get().n, 1);
+}));
+
 test("claim/finish are identity checked and stale completions cannot alter published records", () => harness(async h => {
   await h.send(document("TEST_v1.zip"));
   const item = await (await h.internal("claim")).json(); assert.equal(item.kind, "publish");
