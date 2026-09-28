@@ -30,7 +30,10 @@ try:
 except Exception:
     Image = None
 
-from tools.parsers import load_parser
+try:
+    from tools.parsers import load_parser
+except ModuleNotFoundError:
+    from parsers import load_parser
 
 ROOT = Path(__file__).resolve().parents[1]
 MAX_PACKAGE = 19 * 1024 * 1024
