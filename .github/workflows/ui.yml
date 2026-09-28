@@ -1,0 +1,51 @@
+name: Kafu Visual and Flow CI
+on:
+  pull_request:
+    paths: ['app/**']
+  push:
+    branches: [main]
+    paths: ['app/**']
+permissions:
+  contents: read
+concurrency:
+  group: kafu-ui-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  visual-flow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Install pinned browser test runner
+        run: python -m pip install 'playwright==1.57.0' 'Pillow>=11,<13'
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: kafu-playwright-1.57.0-chromium-ubuntu24
+      - name: Install Chromium with required OS libraries
+        run: python -m playwright install --with-deps chromium
+      - name: Fetch integrity-checked frontend dependencies
+        run: python tools/vendor_frontend.py
+      - name: Prepare before source
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          git worktree add --detach /tmp/kafu-before "$BASE_SHA"
+          mkdir -p evidence/ui
+          git archive --format=zip --output=evidence/ui/source.zip HEAD
+      - name: Main journeys, offline persistence, budgets and approved screenshots
+        run: python tools/ui/check.py --before /tmp/kafu-before --out evidence/ui
+      - name: Keep before and after evidence (no fonts or private data)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kafu-ui-evidence
+          path: evidence/ui/
+          retention-days: 7
+          if-no-files-found: warn
