@@ -280,73 +280,63 @@ test("leaderboard computes first-attempt score server-side and rejects fake scor
   }finally{globalThis.fetch=original}
 }));
 
-test("leaderboard privacy hides public row but preserves private own score; rate limit and speed flag apply", () => harness(async h => {
-  const initData=signedInitData();
-  h.DB.sql.prepare("INSERT INTO leaderboard_users(user_key,first_name,photo_url) VALUES('u','Ada','https://example.com/a.jpg')").run();
-  for(let i=1;i<=20;i++)h.DB.sql.prepare("INSERT INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES('u',?,?,?)").run("Q"+String(i).padStart(9,"0"),i<=15?1:0,baghdadWeekKey());
-  // Use a verified request to discover the real hashed key/profile and insert enough eligible rows there.
+test("leaderboard privacy hides public row but preserves own rank and score", () => harness(async h => {
+  const initData=signedInitData({id:321,first_name:"Ada",last_name:"Lovelace",photo_url:"https://example.com/a.jpg"});
   let res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
   assert.equal(res.status,200);
-  const real=h.DB.sql.prepare("SELECT user_key FROM leaderboard_users WHERE first_name='Ada' ORDER BY updated_at DESC").all().find(x=>x.user_key!=="u")?.user_key;
-  assert.ok(real);
-  for(let i=101;i<=120;i++)h.DB.sql.prepare("INSERT OR IGNORE INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,?,?)").run(real,"Q"+String(i).padStart(9,"0"),1,baghdadWeekKey());
+  const real=h.DB.sql.prepare("SELECT user_key,display_name,photo_url FROM leaderboard_users WHERE display_name='Ada Lovelace'").get();
+  assert.ok(real);assert.equal(real.photo_url,"https://example.com/a.jpg");
+  for(let i=101;i<=120;i++)h.DB.sql.prepare("INSERT OR IGNORE INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,?,?)").run(real.user_key,"Q"+String(i).padStart(9,"0"),1,baghdadWeekKey());
+
   res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
-  let board=await res.json();assert.equal(board.own.score,20);assert.ok(board.own.rank);assert.ok(board.top.some(x=>x.name==="Ada"));
+  let board=await res.json();assert.equal(board.own.score,20);assert.ok(board.own.rank);assert.ok(board.top.some(x=>x.name==="Ada Lovelace"));
 
   res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/privacy",{method:"POST",body:JSON.stringify({initData,hidden:true})}),h.env,{waitUntil(){}});
   assert.equal(res.status,200);
   res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
-  board=await res.json();assert.equal(board.own.hidden,true);assert.equal(board.own.score,20);assert.ok(!board.top.some(x=>x.name==="Ada"&&x.score===20));
+  board=await res.json();assert.equal(board.own.hidden,true);assert.equal(board.own.score,20);assert.ok(board.own.rank);assert.ok(!board.top.some(x=>x.name==="Ada Lovelace"));
 }));
 
-
-test("leaderboard flags impossible client speed and rate-limits submit requests", () => harness(async h => {
-  const initData=signedInitData({id:777,first_name:"Speed"});
-  const original=globalThis.fetch;
-  const qids=[11,12,13,14,15].map(i=>"Q"+String(i).padStart(9,"0"));
-  globalThis.fetch=async (url,init={})=>{
-    url=String(url);
-    if(url==="https://content.test/routes/Q000000.json")return{ok:true,json:async()=>({routes:Object.fromEntries(qids.map(q=>[q,{book_id:"TEST",chapter_id:1}]))})};
-    if(url==="https://content.test/catalog.json")return{ok:true,json:async()=>({books:[{id:"TEST",chapters:[{id:1,url:"https://content.test/packs/speed.json"}]}]})};
-    if(url==="https://content.test/packs/speed.json")return{ok:true,json:async()=>({questions:qids.map(q=>({id:q,type:"sba",options:["A","B"],answer:"A"}))})};
-    return original(url,init);
-  };
-  try{
-    let res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/submit",{method:"POST",body:JSON.stringify({
-      initData,answers:qids.map((qid,i)=>({qid,selection:0,answered_at_ms:10000+i*200}))
-    })}),h.env,{waitUntil(){}});
-    assert.equal(res.status,200);const first=await res.json();assert.equal(first.accepted,5);assert.equal(first.flagged,true);
-    assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM leaderboard_flags WHERE kind='impossible_speed'").get().n,1);
-    for(let i=0;i<9;i++){
-      res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/submit",{method:"POST",body:JSON.stringify({
-        initData,answers:[{qid:qids[0],selection:1,answered_at_ms:30000+i*3000}]
-      })}),h.env,{waitUntil(){}});
-      assert.equal(res.status,200);
-    }
-    res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/submit",{method:"POST",body:JSON.stringify({
-      initData,answers:[{qid:qids[0],selection:0,answered_at_ms:99999}]
-    })}),h.env,{waitUntil(){}});
-    assert.equal(res.status,429);assert.equal((await res.json()).error,"rate_limited");
-    assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM leaderboard_answers").get().n,5);
-  }finally{globalThis.fetch=original}
-}));
-
-test("leaderboard returns own rank outside top 100 and never exposes stored identifiers", () => harness(async h => {
-  const initData=signedInitData({id:888,first_name:"Private Student",username:"must-not-leak",phone_number:"+000"});
+test("leaderboard returns top 30 only plus own rank outside top 30", () => harness(async h => {
+  const initData=signedInitData({id:888,first_name:"Private",last_name:"Student",username:"must-not-leak",phone_number:"+000"});
   let res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
   assert.equal(res.status,200);
-  const ownKey=h.DB.sql.prepare("SELECT user_key FROM leaderboard_users WHERE first_name='Private Student'").get().user_key;
+  const ownKey=h.DB.sql.prepare("SELECT user_key FROM leaderboard_users WHERE display_name='Private Student'").get().user_key;
   const week=baghdadWeekKey();
-  for(let i=1;i<=20;i++)h.DB.sql.prepare("INSERT INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,0,?)").run(ownKey,"Q"+String(5000+i).padStart(9,"0"),week);
-  for(let u=1;u<=105;u++){
+  h.DB.sql.prepare("INSERT INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,0,?)").run(ownKey,"Q000005001",week);
+  for(let u=1;u<=35;u++){
     const key="rival-"+String(u).padStart(3,"0");
-    h.DB.sql.prepare("INSERT INTO leaderboard_users(user_key,first_name,photo_url) VALUES(?,?,NULL)").run(key,"Rival "+u);
-    for(let i=1;i<=20;i++)h.DB.sql.prepare("INSERT INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,1,?)").run(key,"Q"+String(u*1000+i).padStart(9,"0"),week);
+    h.DB.sql.prepare("INSERT INTO leaderboard_users(user_key,display_name,photo_url) VALUES(?,?,?)").run(key,"Rival "+u,"https://example.com/"+u+".jpg");
+    h.DB.sql.prepare("INSERT INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,1,?)").run(key,"Q"+String(6000+u).padStart(9,"0"),week);
   }
   res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
   const body=await res.json();
-  assert.equal(body.top.length,100);assert.equal(body.own.rank,106);assert.equal(body.own.score,0);assert.equal(body.own.answered,20);
+  assert.equal(body.top.length,30);assert.equal(body.own.rank,36);assert.equal(body.own.score,0);
   const serialized=JSON.stringify(body);
   assert.doesNotMatch(serialized,/must-not-leak|phone_number|username|user_key|\+000/);
-  assert.deepEqual(Object.keys(body.top[0]).sort(),["answered","name","photo_url","rank","score"].sort());
+  assert.deepEqual(Object.keys(body.top[0]).sort(),["name","photo_url","rank","score"].sort());
+}));
+
+test("leaderboard has no rate or speed anti-cheat tables and repeated submits only preserve first attempt", () => harness(async h => {
+  const initData=signedInitData({id:777,first_name:"Fast"});
+  const original=globalThis.fetch;
+  globalThis.fetch=async (url,init={})=>{
+    url=String(url);
+    if(url==="https://content.test/routes/Q000000.json")return{ok:true,json:async()=>({routes:{Q000000011:{book_id:"TEST",chapter_id:1}}})};
+    if(url==="https://content.test/catalog.json")return{ok:true,json:async()=>({books:[{id:"TEST",chapters:[{id:1,url:"https://content.test/packs/fast.json"}]}]})};
+    if(url==="https://content.test/packs/fast.json")return{ok:true,json:async()=>({questions:[{id:"Q000000011",type:"sba",options:["A","B"],answer:"A"}]})};
+    return original(url,init);
+  };
+  try{
+    for(let i=0;i<20;i++){
+      const res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/submit",{method:"POST",body:JSON.stringify({
+        initData,answers:[{qid:"Q000000011",selection:i===0?0:1}]
+      })}),h.env,{waitUntil(){}});
+      assert.equal(res.status,200);
+    }
+    const rows=h.DB.sql.prepare("SELECT qid,correct FROM leaderboard_answers").all();
+    assert.deepEqual(rows.map(x=>[x.qid,x.correct]),[["Q000000011",1]]);
+    const tables=h.DB.sql.prepare("SELECT name FROM sqlite_master WHERE type='table'").all().map(x=>x.name);
+    assert.ok(!tables.includes("leaderboard_flags"));assert.ok(!tables.includes("leaderboard_rate"));
+  }finally{globalThis.fetch=original}
 }));
