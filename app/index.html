@@ -1152,6 +1152,7 @@ function render(scrollTop) {
   const sheet = SHEET ? SHEET() : "";
   document.documentElement.style.setProperty("--fs", S.settings.fs || 1);
   document.body.classList.toggle("has-action", !!actionbar);
+  document.body.classList.toggle("has-tabs", !!tabs);
   $("#app").innerHTML = header + `<main class="wrap">${view.html}${IN_TG ? "" : actionInTabs}</main>` + tabs + actionbar + sheet;
   if (scrollTop) window.scrollTo(0, 0);
   syncTelegramButtons(canBack, view);

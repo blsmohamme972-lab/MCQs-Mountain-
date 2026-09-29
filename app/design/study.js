@@ -68,14 +68,25 @@ globalThis.KafuEnhancements.installers.push({name:'study-polish',install(){
     const studyTop=section.querySelector('.study-top');
     if(studyTop){
       const timer=studyTop.querySelector('.timer')?.outerHTML||'';
-      const pips=session.qids.map((id,i)=>{
-        const rr=session.resp[id];
-        const state=i===session.index?' current':rr?.done?(rr.correct?' correct':' wrong'):'';
-        return `<i class="k-pip${state}" aria-hidden="true"></i>`;
-      }).join('');
+      let progress;
+      if(total>40){
+        progress=`<div class="k-long-progress" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,(pos/total)*100))}%"></i></div>`;
+      }else{
+        const pips=session.qids.map((id,i)=>{
+          const rr=session.resp[id];
+          const state=i===session.index?' current':rr?.done?(rr.correct?' correct':' wrong'):'';
+          return `<i class="k-pip${state}"${i===session.index?' data-current=""':''} aria-hidden="true"></i>`;
+        }).join('');
+        progress=`<div class="k-pips-viewport" aria-hidden="true"><div class="k-pips">${pips}</div></div>`;
+      }
       studyTop.className='study-top k-study-progress';
-      studyTop.innerHTML=`<div class="k-pips" aria-hidden="true">${pips}</div><span class="k-study-count" aria-label="Question ${pos} of ${total}"><strong>${pos}</strong><span>/${total}</span></span>${timer}`;
+      studyTop.innerHTML=`${progress}<span class="k-study-count" aria-label="Question ${pos} of ${total}"><strong>${pos}</strong><span>/${total}</span></span>${timer}`;
       studyTop.setAttribute('role','progressbar');studyTop.setAttribute('aria-label','Question progress');studyTop.setAttribute('aria-valuemin','0');studyTop.setAttribute('aria-valuemax',String(total));studyTop.setAttribute('aria-valuenow',String(pos));
+      const viewport=studyTop.querySelector('.k-pips-viewport'),current=viewport?.querySelector('[data-current]');
+      if(viewport&&current){
+        const left=current.offsetLeft-(viewport.clientWidth-current.offsetWidth)/2;
+        viewport.scrollLeft=Math.max(0,left);
+      }
     }
     const tools=section.querySelector('.qtools');
     tools?.querySelector('[data-a="fav-q"]')?.remove();

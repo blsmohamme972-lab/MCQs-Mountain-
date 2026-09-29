@@ -2,8 +2,9 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-padding-top: env(safe-area-inset-top, 0px); -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 var(--text-base)/var(--leading-ui) var(--ui); -webkit-font-smoothing: antialiased; }
-.wrap { max-width: var(--measure); margin: 0 auto; padding: var(--space-2) var(--space-4) calc(var(--nav-height) + var(--space-8) + env(safe-area-inset-bottom, 0px)); }
-.has-action .wrap { padding-bottom: calc(var(--nav-height) + var(--space-12) + env(safe-area-inset-bottom, 0px)); }
+.wrap { max-width: var(--measure); margin: 0 auto; padding: var(--space-2) var(--space-4) calc(var(--space-5) + env(safe-area-inset-bottom, 0px)); }
+.has-tabs .wrap { padding-bottom: calc(var(--nav-height) + var(--space-8) + env(safe-area-inset-bottom, 0px)); }
+.has-action .wrap { padding-bottom: calc(var(--nav-height) + var(--space-5) + env(safe-area-inset-bottom, 0px)); }
 .top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid transparent; }
 .top.scrolled { border-bottom-color: var(--line); }
 .top-in { max-width: var(--content-max); margin: 0 auto; display: flex; align-items: center; gap: 8px; padding: 10px 12px; min-height: 52px; }

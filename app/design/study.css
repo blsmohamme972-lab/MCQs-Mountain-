@@ -175,10 +175,17 @@ body[data-study-screen] .k-study-sub h1{
 }
 body[data-study-screen] .wrap{
   max-width:720px;
-  padding:var(--space-2) var(--space-4) calc(112px + env(safe-area-inset-bottom,0px));
+  padding-top:var(--space-2);
+  padding-inline:var(--space-4);
 }
-body[data-study-screen] .k-study{max-width:680px;color:var(--mcq-text)}
+body.tg[data-study-screen] .wrap{
+  padding-bottom:calc(var(--space-5) + env(safe-area-inset-bottom,0px));
+}
+body[data-study-screen] .k-study{max-width:680px;min-width:0;color:var(--mcq-text)}
 body[data-study-screen] .k-study-progress{
+  width:100%;
+  max-width:100%;
+  min-width:0;
   display:flex;
   align-items:center;
   gap:var(--space-3);
@@ -186,14 +193,47 @@ body[data-study-screen] .k-study-progress{
   margin-bottom:var(--space-4);
 }
 body[data-study-screen] .k-study-progress>span:first-child{display:none}
-body[data-study-screen] .k-pips{display:flex;align-items:center;gap:6px;flex:1;min-width:0}
+body[data-study-screen] .k-pips-viewport{
+  flex:1 1 0;
+  min-width:0;
+  max-width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
+  overscroll-behavior-inline:contain;
+  scrollbar-width:none;
+}
+body[data-study-screen] .k-pips-viewport::-webkit-scrollbar{display:none}
+body[data-study-screen] .k-pips{
+  width:100%;
+  min-width:100%;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
 body[data-study-screen] .k-pip{
-  flex:1;
+  flex:1 0 5px;
   min-width:5px;
   height:12px;
   border-radius:999px;
   background:var(--mcq-edge-soft);
   border:2px solid var(--mcq-edge-soft);
+}
+body[data-study-screen] .k-long-progress{
+  flex:1 1 0;
+  min-width:0;
+  max-width:100%;
+  height:10px;
+  overflow:hidden;
+  border:2px solid var(--mcq-edge-soft);
+  border-radius:999px;
+  background:var(--mcq-card);
+}
+body[data-study-screen] .k-long-progress>i{
+  display:block;
+  height:100%;
+  min-width:4px;
+  border-radius:inherit;
+  background:var(--mcq-indigo);
 }
 body[data-study-screen] .k-pip.current{height:16px;background:var(--mcq-indigo);border-color:var(--mcq-edge)}
 body[data-study-screen] .k-pip.correct{background:var(--mcq-mint);border-color:var(--mcq-mint-deep)}
