@@ -41,7 +41,7 @@ globalThis.KafuEnhancements.installers.push({name:'question-comments',install(){
       state.error&&!state.items.length?'<div class="k-comment-empty"><p>Discussion is unavailable right now. Studying still works normally.</p><button data-a="comment-retry">Try again</button></div>':
       state.items.length?state.items.map(x=>card(x)).join(''):'<div class="k-comment-empty"><p>No discussion yet. Start a useful thread for this question.</p></div>';
     const offline=state.offline?'<p class="k-comment-offline">Offline — showing saved discussion</p>':'';
-    const reply=state.replyTo?'<div class="k-comment-replying">Replying to '+C.e(state.replyTo.name)+' <button data-a="comment-cancel-reply">Cancel</button></div>:'';
+    const reply=state.replyTo?'<div class="k-comment-replying">Replying to '+C.e(state.replyTo.name)+' <button data-a="comment-cancel-reply">Cancel</button></div>':'';
     const report=state.reportTarget?'<div class="k-comment-reportbox"><strong>Report comment</strong><button data-a="comment-report-send" data-v="answer_wrong">I think the answer is wrong</button><button data-a="comment-report-send" data-v="spam">Spam</button><button data-a="comment-report-send" data-v="abuse">Abusive</button><button data-a="comment-report-send" data-v="other">Other</button><button data-a="comment-report-cancel">Cancel</button></div>':'';
     return '<div class="scrim" data-a="close-sheet"><div class="sheet k-comments-sheet" role="dialog" aria-label="Discussion" data-stop="1">'+
       '<div class="k-comments-title"><div><h4>Discussion</h4><p>Student discussion — not verified</p></div><button data-a="close-sheet" aria-label="Close">×</button></div>'+
