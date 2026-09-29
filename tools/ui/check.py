@@ -343,7 +343,16 @@ def main():
                     hashes.update(extra.get('hashes',{}))
             checks['javascript']=budget(temp/'after')
             if args.before:
-                with site(args.before,temp/'before',8766,cert,key,args.source/'app/vendor') as (prior,priorpack):snapshots(browser,prior,priorpack,args.out/'before',False)
+                with site(args.before,temp/'before',8766,cert,key,args.source/'app/vendor') as (prior,priorpack):
+                    snapshots(browser,prior,priorpack,args.out/'before',False)
+                    geometry_path=ROOT/'tools/ui/flows/09_phone_geometry.py'
+                    spec=importlib.util.spec_from_file_location('before_phone_geometry',geometry_path)
+                    geometry=importlib.util.module_from_spec(spec);spec.loader.exec_module(geometry)
+                    geometry.regression_evidence(
+                        browser,prior,priorpack,args.out/'before',
+                        {'phone_context':phone_context,'open_app':open_app,'long_pack':long_pack_fixture()},
+                        False
+                    )
             browser.close()
     (args.out/'candidate-baselines.json').write_text(json.dumps(hashes,indent=2)+'\n')
     print('CANDIDATE_BASELINES='+json.dumps(hashes,sort_keys=True))
