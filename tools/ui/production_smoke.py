@@ -12,7 +12,6 @@ import urllib.request
 from playwright.sync_api import sync_playwright
 
 DEFAULT_URL="https://kafu.blsmohamme97.workers.dev"
-REQUIRED_BOOK="KAFU-UPLOAD-TEST"
 
 
 def json_get(url: str) -> dict:
@@ -75,7 +74,7 @@ def main() -> int:
         errors=[]
         page=ctx.new_page();page.on("pageerror",lambda exc:errors.append(str(exc)))
         page.goto(f"{origin}/?prod-ui={args.commit}",wait_until="load")
-        page.wait_for_function("typeof CATALOG!=='undefined'&&Array.isArray(CATALOG.books)&&CATALOG.books.length>0",timeout=30000)
+        page.wait_for_function("typeof CATALOG!=='undefined'&&CATALOG!==null&&Array.isArray(CATALOG.books)&&CATALOG.books.length>0",timeout=30000)
         page.evaluate("document.fonts.ready")
         if page.locator('[data-a="onboard-skip"]').count():
             page.locator('[data-a="onboard-skip"]').click()
@@ -100,16 +99,19 @@ def main() -> int:
         }""")
         geometry(page,"specialty")
 
-        page.evaluate("""id => {
-          const b=bookById(id);if(!b)throw new Error('Protected book absent');
-          go('book',{b:id});
-        }""",REQUIRED_BOOK)
+        page.evaluate("""() => {
+          const b=CATALOG.books.find(x=>Array.isArray(x.chapters)&&x.chapters.length);
+          if(!b)throw new Error('No studyable production book');
+          window.__kafuSmokeBook=b.id;
+          go('book',{b:b.id});
+        }""")
         geometry(page,"book")
 
-        page.evaluate("""async id => {
-          const b=bookById(id),ch=b?.chapters?.[0];if(!ch)throw new Error('Protected chapter absent');
+        page.evaluate("""async () => {
+          const id=window.__kafuSmokeBook,b=bookById(id),ch=b?.chapters?.[0];
+          if(!id||!ch)throw new Error('No studyable production chapter');
           await startChapter(id,ch.id);
-        }""",REQUIRED_BOOK)
+        }""")
         page.wait_for_selector(".k-study",timeout=30000)
         geometry(page,"study")
 

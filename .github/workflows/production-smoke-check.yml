@@ -1,0 +1,25 @@
+name: Kafu Production UI Smoke Checker
+on:
+  pull_request:
+    paths:
+      - 'tools/ui/production_smoke.py'
+      - '.github/workflows/production-smoke-check.yml'
+permissions:
+  contents: read
+jobs:
+  smoke-current-production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Install pinned browser test runner
+        run: python -m pip install 'playwright==1.57.0'
+      - name: Install Chromium with required OS libraries
+        run: python -m playwright install --with-deps chromium
+      - name: Verify current production base with candidate checker
+        run: python tools/ui/production_smoke.py --commit "${{ github.event.pull_request.base.sha }}"
