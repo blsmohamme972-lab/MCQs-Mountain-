@@ -133,9 +133,9 @@ async function board(request,env){
     GROUP BY u.user_key
   ), eligible AS (
     SELECT *,ROW_NUMBER() OVER(ORDER BY score DESC,answered DESC,user_key ASC) rank
-    FROM scores WHERE answered>=?
+    FROM scores WHERE answered>=? AND hidden=0
   )
-  SELECT first_name,photo_url,score,answered,rank FROM eligible WHERE hidden=0 ORDER BY rank LIMIT 100`;
+  SELECT first_name,photo_url,score,answered,rank FROM eligible ORDER BY rank LIMIT 100`;
   const top=await env.DB.prepare(sql).bind(...binds,MIN_BOARD_ANSWERS).all();
   const ownSql=`WITH scores AS (
     SELECT u.user_key,u.hidden,COUNT(a.qid) answered,SUM(a.correct) score
@@ -144,10 +144,10 @@ async function board(request,env){
     GROUP BY u.user_key
   ), eligible AS (
     SELECT *,ROW_NUMBER() OVER(ORDER BY score DESC,answered DESC,user_key ASC) rank
-    FROM scores WHERE answered>=?
+    FROM scores WHERE answered>=? AND (hidden=0 OR user_key=?)
   )
   SELECT s.score,s.answered,s.hidden,e.rank FROM scores s LEFT JOIN eligible e ON e.user_key=s.user_key WHERE s.user_key=?`;
-  const own=await env.DB.prepare(ownSql).bind(...binds,MIN_BOARD_ANSWERS,a.key).first();
+  const own=await env.DB.prepare(ownSql).bind(...binds,MIN_BOARD_ANSWERS,a.key,a.key).first();
   return reply({period,week_key:week,min_answered:MIN_BOARD_ANSWERS,top:(top.results||[]).map(x=>({name:x.first_name,photo_url:x.photo_url||null,score:Number(x.score),answered:Number(x.answered),rank:Number(x.rank)})),own:own?{score:Number(own.score),answered:Number(own.answered),rank:own.rank==null?null:Number(own.rank),hidden:!!own.hidden}:{score:0,answered:0,rank:null,hidden:false}});
 }
 async function privacy(request,env){
