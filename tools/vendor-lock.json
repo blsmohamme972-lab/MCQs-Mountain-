@@ -83,14 +83,14 @@
       "version": "5.2.7",
       "path": "vendor/ibm-plex-sans-arabic-arabic-400.woff2",
       "url": "https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-sans-arabic@5.2.7/files/ibm-plex-sans-arabic-arabic-400-normal.woff2",
-      "sha256": null
+      "sha256": "5f3d512de45926bd49e8ef9da369c9b952b73fc237f8439d7c446cd8a75e575b"
     },
     {
       "package": "@fontsource/ibm-plex-sans-arabic",
       "version": "5.2.7",
       "path": "vendor/ibm-plex-sans-arabic-LICENSE.txt",
       "url": "https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-sans-arabic@5.2.7/LICENSE",
-      "sha256": null
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
     }
   ]
 }
