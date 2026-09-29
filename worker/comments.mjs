@@ -24,12 +24,17 @@ async function auth(request,env){
   return {body,user,key,isOwner:String(user.id)===String(env.OWNER_TELEGRAM_ID||"")};
 }
 async function upsertUser(env,a){
-  await env.DB.prepare(`INSERT INTO comment_users(user_key,display_name,photo_url,updated_at)
-    VALUES(?,?,?,datetime('now'))
-    ON CONFLICT(user_key) DO UPDATE SET display_name=excluded.display_name,photo_url=excluded.photo_url,updated_at=datetime('now')`)
-    .bind(a.key,a.user.display_name,a.user.photo_url).run();
-  const row=await env.DB.prepare("SELECT banned FROM comment_users WHERE user_key=?").bind(a.key).first();
-  return !!row?.banned;
+  const row=await env.DB.prepare("SELECT banned,display_name,photo_url FROM comment_users WHERE user_key=?").bind(a.key).first();
+  if(!row){
+    await env.DB.prepare("INSERT INTO comment_users(user_key,display_name,photo_url) VALUES(?,?,?)")
+      .bind(a.key,a.user.display_name,a.user.photo_url).run();
+    return false;
+  }
+  if(row.display_name!==a.user.display_name||(row.photo_url||null)!==(a.user.photo_url||null)){
+    await env.DB.prepare("UPDATE comment_users SET display_name=?,photo_url=?,updated_at=datetime('now') WHERE user_key=?")
+      .bind(a.user.display_name,a.user.photo_url,a.key).run();
+  }
+  return !!row.banned;
 }
 async function activeQuestion(env,qid){
   const base=env.CONTENT_BASE||"https://kafu-content-1.blsmohamme97.workers.dev";
