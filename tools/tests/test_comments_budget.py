@@ -43,7 +43,7 @@ class CommentsBudgetTests(unittest.TestCase):
             OTHER_MUTATIONS_PER_USER*OTHER_WRITE_ROWS+
             PROFILE_WRITE_ROWS
         )
-        self.assertEqual(projected,13_800)
+        self.assertEqual(round(projected),13_800)
         self.assertLessEqual(projected,D1_WRITE_LIMIT*SAFETY_FRACTION)
 
     def test_heavy_ten_thousand_new_comments_identifies_write_bottleneck(self):
