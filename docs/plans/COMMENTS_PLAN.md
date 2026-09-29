@@ -145,9 +145,27 @@ Community uses a self-hosted IBM Plex Sans Arabic subset from `@fontsource/ibm-p
 
 ## Rollback
 
-Community is isolated behind its frontend module/API routes. If production verification finds a serious issue:
-1. remove/disable the Community frontend registration;
-2. keep the additive D1 tables intact;
-3. preserve normal study behavior;
+Community is isolated behind its frontend module/API routes and an authoritative D1 rollout gate. Migration 0004 seeds `enabled=0`, so normal students cannot use Community immediately after the database migration. The owner can exercise authenticated staged/production smoke while the gate is off. Only after the promoted production Worker passes the normal production smoke does the deployment run the authenticated Community lifecycle smoke and set `enabled=1`. If that final verification fails after enabling, the smoke script attempts to set the gate back to OFF before failing the deployment.
+
+If production verification finds a serious issue:
+1. set the Community D1 rollout gate to disabled immediately;
+2. keep the additive D1 tables intact and leave study paths untouched;
+3. if needed, also remove/disable only the Community frontend registration in the follow-up fix;
 4. deploy the previous safe Worker version through the existing staged workflow;
 5. fix on branch and redeploy only after green CI.
+
+
+## Deployment verification
+
+The existing staged deployment model remains intact. Community adds two focused authenticated smoke steps without bypassing it:
+
+1. apply the additive migration with Community OFF for students;
+2. upload the staged Worker version;
+3. run the existing exact-Version-URL smoke;
+4. run an authenticated Community staged smoke using short-lived signed fixture initData, verifying the student gate and owner-only test path;
+5. promote that exact staged version to 100%;
+6. run the existing production smoke;
+7. run the authenticated production Community lifecycle: enable, student read, Arabic/mixed comment, one-level reply, Helpful, answer-wrong report, unauthorized moderation rejection, owner verification, privacy-field checks and cleanup;
+8. leave Community enabled only when that lifecycle succeeds. On failure after enable, the smoke script fails closed by attempting to disable Community.
+
+The deploy smoke never prints BOT_TOKEN, initData, Telegram numeric IDs or derived keys.
