@@ -4,8 +4,8 @@ const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const {webcrypto}=require('node:crypto');
 const ROOT=path.resolve(__dirname,'../../..');
 
-function browser(id=123,{online=true}={}){
-  const noop=()=>{},elements=[],events={},meta=new Map(),requests=[];
+function browser(id=123,{online=true,sharedMeta=null}={}){
+  const noop=()=>{},elements=[],events={},meta=sharedMeta||new Map(),requests=[];
   const element={innerHTML:'',hidden:false,value:'',style:{setProperty:noop},dataset:{},classList:{add:noop,remove:noop,toggle:noop,contains:()=>false},setAttribute:noop,appendChild:noop,scrollIntoView:noop,focus:noop,matches:()=>false,closest:()=>null};
   const ctx={console,crypto:webcrypto,TextEncoder,TextDecoder,URL,Blob,Response,Request,Headers,
     setTimeout:()=>1,clearTimeout:noop,setInterval:()=>1,clearInterval:noop,requestAnimationFrame:fn=>{fn();return 1},
@@ -46,16 +46,22 @@ test('locked Discussion produces zero comments requests and unlocks only after l
   assert.match(h.requests[0].url,/\/api\/comments\/thread$/);
 });
 
-test('comment local cache and draft keys are account scoped A -> B -> A',async()=>{
-  const a=browser(101),b=browser(202);
-  assert.equal(a.run('KafuComments.account'),'101');assert.equal(b.run('KafuComments.account'),'202');
-  a.run('S.answers.Q000000001={n:1};KafuComments.state.draft="مرحبا A"');
+test('comment local cache and draft keys are isolated on the same phone A -> B -> A',async()=>{
+  const phone=new Map();
+  const a=browser(101,{sharedMeta:phone});
+  assert.equal(a.run('KafuComments.account'),'101');
   await a.run('DB.put("meta","comments_v1_101_draft_Q000000001","مرحبا A")');
-  b.run('S.answers.Q000000001={n:1}');
+  await a.run('DB.put("meta","comments_v1_101_cache_Q000000001_helpful",{items:[{id:1}],next:null,at:1})');
+  const b=browser(202,{sharedMeta:phone});
+  assert.equal(b.run('KafuComments.account'),'202');
   assert.equal(await b.run('DB.get("meta","comments_v1_202_draft_Q000000001")'),undefined);
+  assert.equal(await b.run('DB.get("meta","comments_v1_202_cache_Q000000001_helpful")'),undefined);
   await b.run('DB.put("meta","comments_v1_202_draft_Q000000001","Hello B")');
-  assert.equal(await a.run('DB.get("meta","comments_v1_101_draft_Q000000001")'),'مرحبا A');
+  const aAgain=browser(101,{sharedMeta:phone});
+  assert.equal(await aAgain.run('DB.get("meta","comments_v1_101_draft_Q000000001")'),'مرحبا A');
+  assert.equal((await aAgain.run('DB.get("meta","comments_v1_101_cache_Q000000001_helpful")')).items[0].id,1);
   assert.equal(await b.run('DB.get("meta","comments_v1_202_draft_Q000000001")'),'Hello B');
+  assert.equal(a.requests.length+b.requests.length+aAgain.requests.length,0,'draft/cache isolation must never auto-submit across accounts');
 });
 
 test('comment rendering escapes HTML and preserves per-body dir auto',()=>{
