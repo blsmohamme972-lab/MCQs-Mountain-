@@ -363,6 +363,20 @@ test("comments identity is verified, client author fields ignored, unsafe photo 
   assert.equal(h.DB.sql.prepare("SELECT COUNT(DISTINCT author_key) n FROM comments").get().n,1);
 }));
 
+test("verified Telegram profile refreshes only when presentation fields change",()=>harness(async h=>{
+  const same=signedInitData({id:705,first_name:"Old",photo_url:"https://example.com/old.png"});
+  await postComment(h,same,"profile seed",null,"nonce_profile_1");
+  const key=h.DB.sql.prepare("SELECT user_key FROM comment_users WHERE display_name='Old'").get().user_key;
+  h.DB.sql.prepare("UPDATE comment_users SET updated_at='2000-01-01 00:00:00' WHERE user_key=?").run(key);
+  assert.equal((await commentApi(h,"thread",same,{qid:"Q000000001"})).status,200);
+  assert.equal(h.DB.sql.prepare("SELECT updated_at FROM comment_users WHERE user_key=?").get(key).updated_at,"2000-01-01 00:00:00");
+  const changed=signedInitData({id:705,first_name:"New",last_name:"Name",photo_url:"https://example.com/new.png"});
+  assert.equal((await commentApi(h,"thread",changed,{qid:"Q000000001"})).status,200);
+  const row=h.DB.sql.prepare("SELECT display_name,photo_url,updated_at FROM comment_users WHERE user_key=?").get(key);
+  assert.equal(row.display_name,"New Name");assert.equal(row.photo_url,"https://example.com/new.png");
+  assert.notEqual(row.updated_at,"2000-01-01 00:00:00");
+}));
+
 test("comments auth rejects forged, altered and malformed Telegram user",()=>harness(async h=>{
   const good=signedInitData({id:701,first_name:"Good"});
   const forged=new URLSearchParams(good);forged.set("user",JSON.stringify({id:999,first_name:"Mallory"}));
