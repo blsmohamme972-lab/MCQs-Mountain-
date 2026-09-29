@@ -69,15 +69,30 @@ async function thread(request,env){
   const a=await auth(request,env);if(a.error)return a.error;await upsertUser(env,a);
   const qid=String(a.body.qid||"");if(!QID.test(qid))return reply({error:"invalid_question_id"},400);
   if(!await activeQuestion(env,qid))return reply({error:"question_inactive"},404);
-  const sort=a.body.sort==="newest"?"newest":"helpful",cursor=intId(a.body.cursor);
+  const sort=a.body.sort==="newest"?"newest":"helpful";
+  let cursor=null;
+  if(a.body.cursor){try{cursor=JSON.parse(atob(String(a.body.cursor)).replace(/-/g,"+").replace(/_/g,"/"))}catch{return reply({error:"invalid_cursor"},400)}}
   const order=sort==="newest"?"c.created_at DESC,c.id DESC":"c.verified DESC,c.pinned DESC,c.helpful_count DESC,c.created_at DESC,c.id DESC";
-  const cursorSql=cursor?"AND c.id < ?":"";
-  const binds=cursor?[qid,a.key,cursor]:[qid,a.key];
+  let cursorSql="",cursorBinds=[];
+  if(cursor&&sort==="newest"){
+    if(typeof cursor.t!=="string"||!intId(cursor.id))return reply({error:"invalid_cursor"},400);
+    cursorSql="AND (c.created_at < ? OR (c.created_at = ? AND c.id < ?))";cursorBinds=[cursor.t,cursor.t,Number(cursor.id)];
+  }else if(cursor){
+    if(![0,1].includes(cursor.v)||![0,1].includes(cursor.p)||!Number.isSafeInteger(cursor.h)||typeof cursor.t!=="string"||!intId(cursor.id))return reply({error:"invalid_cursor"},400);
+    cursorSql=`AND (
+      c.verified < ? OR
+      (c.verified = ? AND c.pinned < ?) OR
+      (c.verified = ? AND c.pinned = ? AND c.helpful_count < ?) OR
+      (c.verified = ? AND c.pinned = ? AND c.helpful_count = ? AND c.created_at < ?) OR
+      (c.verified = ? AND c.pinned = ? AND c.helpful_count = ? AND c.created_at = ? AND c.id < ?)
+    )`;
+    cursorBinds=[cursor.v,cursor.v,cursor.p,cursor.v,cursor.p,cursor.h,cursor.v,cursor.p,cursor.h,cursor.t,cursor.v,cursor.p,cursor.h,cursor.t,cursor.id];
+  }
   const rows=await env.DB.prepare(`SELECT c.*,u.display_name,u.photo_url,
     EXISTS(SELECT 1 FROM comment_votes v WHERE v.comment_id=c.id AND v.user_key=?) helpful_by_me
     FROM comments c JOIN comment_users u ON u.user_key=c.author_key
     WHERE c.qid=? AND c.parent_id IS NULL AND c.status='visible' ${cursorSql}
-    ORDER BY ${order} LIMIT ${PAGE}`).bind(a.key,qid,...(cursor?[cursor]:[])).all();
+    ORDER BY ${order} LIMIT ${PAGE}`).bind(a.key,qid,...cursorBinds).all();
   const top=rows.results||[],ids=top.map(x=>Number(x.id));
   let replies=[];
   if(ids.length){
@@ -90,7 +105,8 @@ async function thread(request,env){
   }
   const grouped=new Map(ids.map(id=>[id,[]]));for(const r of replies)grouped.get(Number(r.parent_id))?.push(publicComment(r));
   const items=top.map(r=>({...publicComment(r),replies:grouped.get(Number(r.id))||[]}));
-  return reply({qid,sort,items,next_cursor:top.length===PAGE?Number(top.at(-1).id):null,notice:"Student discussion — not verified"});
+  let next=null;if(top.length===PAGE){const z=top.at(-1),obj=sort==="newest"?{t:z.created_at,id:Number(z.id)}:{v:Number(z.verified),p:Number(z.pinned),h:Number(z.helpful_count),t:z.created_at,id:Number(z.id)};next=btoa(JSON.stringify(obj)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+  return reply({qid,sort,items,next_cursor:next,notice:"Student discussion — not verified"});
 }
 async function create(request,env){
   const a=await auth(request,env);if(a.error)return a.error;
