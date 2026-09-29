@@ -56,7 +56,7 @@ function selectionCorrect(q,sel){
   const idx=String(q.answer||"").charCodeAt(0)-65;
   return Number(sel)===idx;
 }
-const questionCache=new Map(), catalogCache={at:0,value:null};
+const questionCache=new Map(),routeCache=new Map(),chapterCache=new Map(),catalogCache={at:0,value:null};
 async function catalog(env){
   if(catalogCache.value&&Date.now()-catalogCache.at<60_000)return catalogCache.value;
   const base=env.CONTENT_BASE||"https://kafu-content-1.blsmohamme97.workers.dev";
@@ -64,16 +64,24 @@ async function catalog(env){
   if(!r.ok)throw new Error("catalog_unavailable");
   catalogCache.value=await r.json();catalogCache.at=Date.now();return catalogCache.value;
 }
+async function routes(env,shard){
+  const hit=routeCache.get(shard);if(hit&&Date.now()-hit.at<300_000)return hit.routes;
+  const base=env.CONTENT_BASE||"https://kafu-content-1.blsmohamme97.workers.dev";
+  const rr=await fetch(`${base}/routes/${shard}.json`,{headers:{"user-agent":"kafu-leaderboard/1.0"}});
+  if(!rr.ok)throw new Error("question_route_missing");
+  const value=(await rr.json()).routes||{};routeCache.set(shard,{at:Date.now(),routes:value});return value;
+}
+async function chapter(url){
+  const hit=chapterCache.get(url);if(hit&&Date.now()-hit.at<300_000)return hit.pack;
+  const pr=await fetch(url,{headers:{"user-agent":"kafu-leaderboard/1.0"}});if(!pr.ok)throw new Error("question_chapter_unavailable");
+  const pack=await pr.json();chapterCache.set(url,{at:Date.now(),pack});return pack;
+}
 async function question(env,qid){
   const hit=questionCache.get(qid);if(hit&&Date.now()-hit.at<300_000)return hit.q;
-  const base=env.CONTENT_BASE||"https://kafu-content-1.blsmohamme97.workers.dev";
-  const rr=await fetch(`${base}/routes/${qid.slice(0,7)}.json`,{headers:{"user-agent":"kafu-leaderboard/1.0"}});
-  if(!rr.ok)throw new Error("question_route_missing");
-  const route=(await rr.json()).routes?.[qid];if(!route)throw new Error("question_route_missing");
+  const route=(await routes(env,qid.slice(0,7)))[qid];if(!route)throw new Error("question_route_missing");
   const cat=await catalog(env),book=(cat.books||[]).find(b=>b.id===route.book_id);
   const ch=book?.chapters?.find(x=>String(x.id)===String(route.chapter_id));if(!ch?.url)throw new Error("question_chapter_missing");
-  const pr=await fetch(ch.url,{headers:{"user-agent":"kafu-leaderboard/1.0"}});if(!pr.ok)throw new Error("question_chapter_unavailable");
-  const q=(await pr.json()).questions?.find(x=>x.id===qid);if(!q)throw new Error("question_missing");
+  const q=(await chapter(ch.url)).questions?.find(x=>x.id===qid);if(!q)throw new Error("question_missing");
   questionCache.set(qid,{at:Date.now(),q});return q;
 }
 async function auth(request,env){
