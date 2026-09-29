@@ -66,4 +66,4 @@ CREATE TABLE IF NOT EXISTS comment_settings (
   value TEXT NOT NULL,
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
-INSERT OR IGNORE INTO comment_settings(key,value) VALUES('enabled','1');
+INSERT OR IGNORE INTO comment_settings(key,value) VALUES('enabled','0');
