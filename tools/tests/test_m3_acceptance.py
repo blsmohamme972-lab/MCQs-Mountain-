@@ -1,5 +1,6 @@
 """Synthetic M3 acceptance, entirely offline; no production calls or triggers."""
 import importlib.util
+import hashlib
 import json
 import shutil
 import sqlite3
@@ -46,6 +47,53 @@ class M3Acceptance(unittest.TestCase):
         self.assertTrue(any("❌" in x for x in messages))
         self.assertIn("Kafu repair report", reports[0])
         self.assertIn("BROKEN_v1", reports[0])
+
+    def test_server_mismatch_sanitizer_skips_only_bad_question(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            package = root / "mixed.zip"
+            make_package(package, 1, "First source question")
+            with zipfile.ZipFile(package) as zf:
+                members = {name: zf.read(name) for name in zf.namelist()}
+            q1 = json.loads(members["questions.jsonl"].decode().strip())
+            q2 = dict(q1)
+            q2.update({"local_id": 2, "source_number": "2", "stem": "Second source question", "source_page": 2})
+            raw = (
+                json.dumps(q1, separators=(",", ":")) + "\n" +
+                json.dumps(q2, separators=(",", ":")) + "\n"
+            ).encode()
+            book = json.loads(members["book.json"])
+            book["expected_count"] = 2
+            book["id_range"] = [1, 2]
+            audit = json.loads(members["audit.json"])
+            audit["questions_sha256"] = hashlib.sha256(raw).hexdigest()
+            audit["mismatch_count"] = 1
+            audit["results"] = [
+                {"local_id": 1, "source_page": 1, "level": "mismatch", "score": 0.1, "detail": "bad source match"},
+                {"local_id": 2, "source_page": 2, "level": "match", "score": 1.0, "detail": "ok"},
+            ]
+            members["questions.jsonl"] = raw
+            members["book.json"] = json.dumps(book).encode()
+            members["audit.json"] = json.dumps(audit).encode()
+            with zipfile.ZipFile(package, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+                for name, data in members.items():
+                    zf.writestr(name, data)
+
+            skipped = drain.sanitize_audit_mismatches(package)
+            self.assertEqual([x["local_id"] for x in skipped], [1])
+            self.cmd("tools/validate.py", "--require-audit", package)
+            self.cmd("tools/validate_release.py", package)
+            with zipfile.ZipFile(package) as zf:
+                questions = [json.loads(x) for x in zf.read("questions.jsonl").decode().splitlines() if x.strip()]
+                sanitized_book = json.loads(zf.read("book.json"))
+            self.assertEqual([q["local_id"] for q in questions], [2])
+            self.assertEqual([x["local_id"] for x in sanitized_book["skipped"]], [1])
+
+            out = root / "content"
+            db = root / "content.sqlite"
+            result = self.cmd("tools/publish.py", "--db", db, "--out", out, package)
+            summary = json.loads(result.stdout[result.stdout.find("{"):])
+            self.assertEqual(summary["visible_questions"], 1)
 
     def test_exact_zip_duplicate_and_distinct_zip(self):
         with tempfile.TemporaryDirectory() as td:
