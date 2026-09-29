@@ -43,7 +43,7 @@ async function activeQuestion(env,qid){
 }
 async function ensureThread(env,qid){
   const active=await activeQuestion(env,qid);if(!active)return null;
-  await env.DB.prepare("INSERT OR IGNORE INTO comment_threads(qid,book_id) VALUES(?,?)").bind(qid,active.book_id).run();
+  await env.DB.prepare("INSERT INTO comment_threads(qid,book_id,updated_at) VALUES(?,?,datetime('now')) ON CONFLICT(qid) DO UPDATE SET book_id=excluded.book_id,updated_at=datetime('now')").bind(qid,active.book_id).run();
   return active;
 }
 async function limited(env,key,kind){
