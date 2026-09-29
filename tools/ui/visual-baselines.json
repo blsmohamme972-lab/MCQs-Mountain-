@@ -65,14 +65,14 @@
     "width": 820
   },
   "ipad-dark-study-correct": {
-    "height": 1180,
-    "sha256": "8768b8cbe37d4dc78b464d3e169a7e2564d410eeca80711d6e4057cf52840d99",
-    "width": 820
+    "sha256": "cbe36283b2c441e7e70540ba4753bef025edf8a5140b37c131114bde8caa9f14",
+    "width": 820,
+    "height": 1180
   },
   "ipad-dark-study-wrong": {
-    "height": 1180,
-    "sha256": "7a3b71953961e88199e60a13a227715666d1651025dceba77a99972c1cd8dfb8",
-    "width": 820
+    "sha256": "320c18d1f455853c61b8e7f5a7441eb0bdb256ecf2722f86d41f72e5a4bf7f19",
+    "width": 820,
+    "height": 1180
   },
   "ipad-dark-styleguide": {
     "sha256": "9ae7bb681182844e8e711b8a3dc0f972f3de662ca7604989451db2151b34fc74",
@@ -145,14 +145,14 @@
     "width": 820
   },
   "ipad-light-study-correct": {
-    "height": 1180,
-    "sha256": "8ca0b73f16ec403a6c75ea4db810a878f26c4e18fa2cae688ca01e4f1c870410",
-    "width": 820
+    "sha256": "684c939398eed76a22e4a6bee1166c5c4ee0fff42dd5327110d74fc3afca4d2d",
+    "width": 820,
+    "height": 1180
   },
   "ipad-light-study-wrong": {
-    "height": 1180,
-    "sha256": "d665cf0aef931046f888a3548000b9faad926e94fb95ae70961f3da9f8249cc9",
-    "width": 820
+    "sha256": "fce564a619db8310e2855d58813b6ea7bd1a1cd10cb750e225f7059348ad0c0a",
+    "width": 820,
+    "height": 1180
   },
   "ipad-light-styleguide": {
     "sha256": "c4eedac6cbf1fd21638f7ea2ef76148716dc5bcc00d839369df6a92da6104dc6",
@@ -165,14 +165,14 @@
     "height": 2104
   },
   "phone-dark-chapter-complete": {
-    "height": 1037,
-    "sha256": "dbff66a53c261d89770530244122921d44610cac58b244482e802c801eb61c4f",
-    "width": 390
+    "sha256": "cdb3bdf902661f24d3a842a0a14d7f7b8c659625298b88649c048963201a08be",
+    "width": 390,
+    "height": 953
   },
   "phone-dark-chapter-complete-mixed": {
-    "height": 1011,
-    "sha256": "3433232ae83e0436f80f90cecf8a5ba7ed10ba82ee833bce2221c765d4a005c8",
-    "width": 390
+    "sha256": "2cd029449d8c119e3d9d6ce7496d5c741c07f48bc8d9a4197d1b75a937c30802",
+    "width": 390,
+    "height": 927
   },
   "phone-dark-download-undo": {
     "sha256": "c583496f30f0dae06d5407aa6d050b1748e164cfc0b291a83def8f83e33e2a59",
@@ -220,19 +220,19 @@
     "width": 390
   },
   "phone-dark-onboarding-3": {
-    "height": 906,
-    "sha256": "a9f2c0e04cd039039cb4a0f88b1962e0162ae6ff308d6505f722f12679e01b5e",
-    "width": 390
+    "sha256": "c24d8c12ed4502f178f3e47f97b9e4ee3064d728aeb8cc646852fe4e6da0c3c6",
+    "width": 390,
+    "height": 878
   },
   "phone-dark-study-correct": {
-    "height": 1019,
-    "sha256": "e6581e50f18958c991dc8fec9cac68dee21e467c3b1acf7ef7f17394074a3ab8",
-    "width": 390
+    "sha256": "0ba69b405de604594ddc2767cba65a6104c352a6f85d7f404ff23ff4701575f7",
+    "width": 390,
+    "height": 999
   },
   "phone-dark-study-wrong": {
-    "height": 1053,
-    "sha256": "ba298169d1383b5a579612502cfd7c46056da57b7b260826a399b2cf51cf486e",
-    "width": 390
+    "sha256": "344e4ce5a36f9d6abede83a8a6a807cc1f3d1cea7be43f6b5e441e38768c3803",
+    "width": 390,
+    "height": 1033
   },
   "phone-dark-styleguide": {
     "sha256": "bb591323adaeec024b26a1bc1ea7350b40c68e703a6754f94871da25c59c873c",
@@ -245,14 +245,14 @@
     "height": 2104
   },
   "phone-light-chapter-complete": {
-    "height": 1037,
-    "sha256": "6162d6dea8c2a3e7aa0e7bb9e71636545c06a71174e6eacee9daae30aeb0058d",
-    "width": 390
+    "sha256": "02a911ff280fbba7c2f515abe4ff455714331d55b98bb37d4921e0314dec0178",
+    "width": 390,
+    "height": 953
   },
   "phone-light-chapter-complete-mixed": {
-    "height": 1011,
-    "sha256": "6623db8b22913f95f66902d0a8f9d05544d1bfcb07fd8ae7875fcebfa20e79fa",
-    "width": 390
+    "sha256": "a12183d6a970205c8b6bd024aeb79dc31a4cea02ca9619f5edd7d634041104a8",
+    "width": 390,
+    "height": 927
   },
   "phone-light-download-undo": {
     "sha256": "6b3bb4c48899eaad431c9477a8950dbe5596654699cb2feee48a2bd8cde39621",
@@ -300,19 +300,19 @@
     "width": 390
   },
   "phone-light-onboarding-3": {
-    "height": 906,
-    "sha256": "e7058296349faac775464a3ef8f93a7dc52e1b3f38a5002e3be7ca457cb7fd70",
-    "width": 390
+    "sha256": "8ffd8faa88c9d1eb32d1f5a0563881aa38a0db6a232a07ebdeb65b3f02dc0dba",
+    "width": 390,
+    "height": 878
   },
   "phone-light-study-correct": {
-    "height": 1019,
-    "sha256": "6fb48bfa3ab35d8d125196a3c48bd345c6a15a8daf240e7b7a11cfee0de0549a",
-    "width": 390
+    "sha256": "c209fd7ca096de520dd3f8ff139e551d7e8e4a42d70eefdd0defc634643d92c3",
+    "width": 390,
+    "height": 999
   },
   "phone-light-study-wrong": {
-    "height": 1053,
-    "sha256": "a45b77d3edfb9b575e162c336a43c917abd02288397f24cc3f34ad61176d7fe9",
-    "width": 390
+    "sha256": "680f706cb2599b9df31d1082ae91d4a9262088f14c7fa813c9886f6b230e73f0",
+    "width": 390,
+    "height": 1033
   },
   "phone-light-styleguide": {
     "sha256": "3d3083f161cbd99c102fbc0fd60b417940a34d9ffe12834e4c46fda82d6f866a",
