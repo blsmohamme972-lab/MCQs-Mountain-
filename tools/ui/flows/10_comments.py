@@ -7,16 +7,16 @@ def run(browser,origin,pack,out,helpers):
         for label,width,height in sizes:
             ctx=browser.new_context(viewport={'width':width,'height':height},device_scale_factor=1,color_scheme=theme,
                 reduced_motion='reduce',ignore_https_errors=True,locale='en-GB',timezone_id='UTC')
-            ctx.add_init_script("""(() => {
+            ctx.add_init_script(("""(() => {
               const OriginalDate=Date,fixed=+new OriginalDate('2026-09-28T09:30:00.000Z');
               class TestDate extends OriginalDate{constructor(...args){super(...(args.length?args:[fixed]));}static now(){return fixed;}}
               window.Date=TestDate;Math.random=()=>0.42;
               window.Telegram={WebApp:{initData:'signed-fixture',initDataUnsafe:{user:{id:123,first_name:'Ali',last_name:'Hassan'}},
-                colorScheme:'dark',themeParams:{},ready(){},expand(){},isVersionAtLeast(){return true},
+                colorScheme:'__THEME__',themeParams:{},ready(){},expand(){},isVersionAtLeast(){return true},
                 onEvent(){},setHeaderColor(){},setBackgroundColor(){},
                 BackButton:{show(){},hide(){},onClick(){}},MainButton:{setParams(){},hide(){},onClick(){}},
                 HapticFeedback:{selectionChanged(){},notificationOccurred(){}},CloudStorage:null}};
-            })();""")
+            })();""").replace('__THEME__',theme))
             requests=[]
             def route_api(route):
                 requests.append(route.request.url)
