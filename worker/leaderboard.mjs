@@ -1,5 +1,5 @@
 const QID=/^Q\d{9}$/;
-const MAX_BATCH=50, MAX_SUBMIT_REQUESTS_DAY=10, MIN_BOARD_ANSWERS=20, AUTH_MAX_AGE_SECONDS=86400;
+const MAX_BATCH=50;
 const enc=new TextEncoder();
 const hex=bytes=>[...new Uint8Array(bytes)].map(x=>x.toString(16).padStart(2,"0")).join("");
 const safeName=value=>String(value||"Student").replace(/[\u0000-\u001f\u007f]/g,"").trim().slice(0,64)||"Student";
@@ -23,12 +23,10 @@ export async function verifyTelegramInitData(initData,botToken,now=new Date()){
   const secret=await hmac(enc.encode("WebAppData"),String(botToken),true);
   const expected=hex(await hmac(secret,check,true));
   if(!constantEqual(expected,hash.toLowerCase()))return null;
-  const auth=Number(params.get("auth_date"));
-  const nowSec=Math.floor(now.getTime()/1000);
-  if(!Number.isSafeInteger(auth)||auth>nowSec+30||nowSec-auth>AUTH_MAX_AGE_SECONDS)return null;
   let user;try{user=JSON.parse(params.get("user")||"null")}catch{return null}
   if(!user||!Number.isSafeInteger(Number(user.id)))return null;
-  return {id:String(user.id),first_name:safeName(user.first_name),photo_url:safePhoto(user.photo_url)};
+  const displayName=safeName([user.first_name,user.last_name].filter(Boolean).join(" "));
+  return {id:String(user.id),display_name:displayName,photo_url:safePhoto(user.photo_url)};
 }
 async function userKey(botToken,id){return hex(await hmac(String(botToken),`leaderboard:${id}`));}
 function reply(body,status=200){return new Response(JSON.stringify(body),{status,headers:{"content-type":"application/json","cache-control":"no-store"}})}
@@ -91,22 +89,9 @@ async function auth(request,env){
   return {body,user:verified,key:await userKey(env.BOT_TOKEN,verified.id)};
 }
 async function upsertUser(env,key,user){
-  await env.DB.prepare(`INSERT INTO leaderboard_users(user_key,first_name,photo_url,updated_at) VALUES(?,?,?,datetime('now'))
-    ON CONFLICT(user_key) DO UPDATE SET first_name=excluded.first_name,photo_url=excluded.photo_url,updated_at=datetime('now')`)
-    .bind(key,user.first_name,user.photo_url).run();
-}
-async function rateLimit(env,key,now=new Date()){
-  const bucket=baghdadDayKey(now);
-  await env.DB.prepare(`INSERT INTO leaderboard_rate(user_key,bucket,count) VALUES(?,?,1)
-    ON CONFLICT(user_key,bucket) DO UPDATE SET count=count+1`).bind(key,bucket).run();
-  const row=await env.DB.prepare("SELECT count FROM leaderboard_rate WHERE user_key=? AND bucket=?").bind(key,bucket).first();
-  return Number(row?.count||0)<=MAX_SUBMIT_REQUESTS_DAY;
-}
-function suspiciousSpeed(items){
-  const times=items.map(x=>Number(x.answered_at_ms)).filter(Number.isFinite).sort((a,b)=>a-b);
-  if(times.length<5)return false;
-  let fast=0;for(let i=1;i<times.length;i++)if(times[i]-times[i-1]<800)fast++;
-  return fast>=4;
+  await env.DB.prepare(`INSERT INTO leaderboard_users(user_key,display_name,photo_url,updated_at) VALUES(?,?,?,datetime('now'))
+    ON CONFLICT(user_key) DO UPDATE SET display_name=excluded.display_name,photo_url=excluded.photo_url,updated_at=datetime('now')`)
+    .bind(key,user.display_name,user.photo_url).run();
 }
 async function submit(request,env){
   const a=await auth(request,env);if(a.error)return a.error;
@@ -115,8 +100,6 @@ async function submit(request,env){
   if(!items.length||items.length>MAX_BATCH)return reply({error:"invalid_answer_batch"},400);
   if(items.some(x=>!x||!QID.test(String(x.qid||""))))return reply({error:"invalid_question_id"},400);
   await upsertUser(env,a.key,a.user);
-  if(!(await rateLimit(env,a.key)))return reply({error:"rate_limited"},429);
-  if(suspiciousSpeed(items))await env.DB.prepare("INSERT INTO leaderboard_flags(user_key,kind,detail) VALUES(?,'impossible_speed',?)").bind(a.key,`${items.length} client events contain repeated sub-800ms intervals`).run();
   const week=baghdadWeekKey(), seen=new Set(), rows=[];
   for(const item of items){
     const qid=String(item.qid);if(seen.has(qid))continue;seen.add(qid);
@@ -126,7 +109,7 @@ async function submit(request,env){
   const statements=rows.map(x=>env.DB.prepare("INSERT OR IGNORE INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,?,?)").bind(a.key,x.qid,x.correct,week));
   const result=statements.length?await env.DB.batch(statements):[];
   const accepted=result.reduce((n,x)=>n+Number(x?.meta?.changes||0),0);
-  return reply({ok:true,accepted,duplicates:rows.length-accepted,flagged:suspiciousSpeed(items)});
+  return reply({ok:true,accepted,duplicates:rows.length-accepted});
 }
 function periodWhere(period){return period==="weekly"?"AND a.week_key=?":""}
 async function board(request,env){
@@ -172,4 +155,4 @@ export async function handleLeaderboard(request,env,path){
   if(path==="/api/leaderboard/privacy")return privacy(request,env);
   return null;
 }
-export const LEADERBOARD_LIMITS={MAX_BATCH,MAX_SUBMIT_REQUESTS_DAY,MIN_BOARD_ANSWERS};
+export const LEADERBOARD_LIMITS={MAX_BATCH,TOP:30};
