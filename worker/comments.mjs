@@ -173,8 +173,17 @@ async function moderate(request,env){
   return reply({ok:true});
 }
 
+async function featureEnabled(env){const row=await env.DB.prepare("SELECT value FROM comment_settings WHERE key='enabled'").first();return row?.value==="1"}
+async function setting(request,env){
+  const a=await auth(request,env);if(a.error)return a.error;if(!a.isOwner)return reply({error:"forbidden"},403);
+  if(typeof a.body.enabled!=="boolean")return reply({error:"invalid_enabled"},400);
+  await env.DB.prepare("INSERT INTO comment_settings(key,value,updated_at) VALUES('enabled',?,datetime('now')) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=datetime('now')").bind(a.body.enabled?"1":"0").run();
+  return reply({ok:true,enabled:a.body.enabled});
+}
 export async function handleComments(request,env,path){
   if(request.method!=="POST")return reply({error:"method_not_allowed"},405);
+  if(path==="/api/comments/admin-setting")return setting(request,env);
+  if(!await featureEnabled(env))return reply({error:"comments_disabled"},503);
   if(path==="/api/comments/thread")return thread(request,env);
   if(path==="/api/comments/create")return create(request,env);
   if(path==="/api/comments/helpful")return helpful(request,env);
