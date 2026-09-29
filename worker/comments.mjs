@@ -31,17 +31,15 @@ async function upsertUser(env,a){
   const row=await env.DB.prepare("SELECT banned FROM comment_users WHERE user_key=?").bind(a.key).first();
   return !!row?.banned;
 }
-const activeCache=new Map();
 async function activeQuestion(env,qid){
-  const hit=activeCache.get(qid);if(hit&&Date.now()-hit.at<60_000)return hit.value;
   const base=env.CONTENT_BASE||"https://kafu-content-1.blsmohamme97.workers.dev";
   const routeRes=await fetch(`${base}/routes/${qid.slice(0,7)}.json`,{headers:{"user-agent":"kafu-comments/1.0"}});
   if(!routeRes.ok)return null;
   const route=(await routeRes.json()).routes?.[qid];if(!route?.book_id)return null;
-  const catRes=await fetch(base+"/catalog.json",{headers:{"user-agent":"kafu-comments/1.0"}});
+  const catRes=await fetch(base+"/catalog.json",{cache:"no-store",headers:{"user-agent":"kafu-comments/1.0"}});
   if(!catRes.ok)return null;
   const active=(await catRes.json()).books?.some(b=>String(b.id)===String(route.book_id));
-  const value=active?{book_id:String(route.book_id)}:null;activeCache.set(qid,{at:Date.now(),value});return value;
+  return active?{book_id:String(route.book_id)}:null;
 }
 async function ensureThread(env,qid){
   const active=await activeQuestion(env,qid);if(!active)return null;
