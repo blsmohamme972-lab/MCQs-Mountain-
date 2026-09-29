@@ -9,6 +9,7 @@ function testDB() {
   const db = new DatabaseSync(":memory:");
   db.exec("PRAGMA foreign_keys=ON");
   db.exec(readFileSync(new URL("../migrations/0001_publish_queue.sql", import.meta.url), "utf8"));
+  db.exec(readFileSync(new URL("../migrations/0002_publish_warnings.sql", import.meta.url), "utf8"));
   return {
     sql: db,
     prepare(sql) {
@@ -131,6 +132,31 @@ test("/retry requires failed complete group; /clear cannot delete running or pub
   await h.send("/clear TEST_v1"); assert.equal(state(h, "TEST_v1"), undefined);
   assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM publish_queue").get().n, 0);
   assert.equal((await retryGroup(h.env, "TEST_v1")).ok, false);
+}));
+
+test("/warnings lists future publish warnings without creating held flags", () => harness(async h => {
+  const payload = {
+    book_id: "TEST",
+    version: 2,
+    warnings: [
+      { qid: "Q000000001", local_id: 1, source_page: 12, reasons: ["audit warning: partial source match", "parser flag: doubtful book answer"] },
+      { qid: "Q000000002", local_id: 2, source_page: 13, reasons: ["audit unverifiable: scan"] },
+    ],
+  };
+  const response = await h.internal("warnings", payload);
+  assert.equal(response.status, 200);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM publish_warnings").get().n, 3);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM flags").get().n, 0);
+  await h.send("/warnings TEST");
+  assert.match(h.messages.at(-1).text, /Q000000001/);
+  assert.match(h.messages.at(-1).text, /audit warning/);
+  assert.match(h.messages.at(-1).text, /Q000000002/);
+  await h.send("/warnings OTHER");
+  assert.match(h.messages.at(-1).text, /No recorded publish warnings/);
+
+  await h.internal("warnings", { ...payload, warnings: [payload.warnings[0]] });
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM publish_warnings").get().n, 2);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM flags").get().n, 0);
 }));
 
 test("/hold + /flags approval/rejection/source produce durable moderation jobs", () => harness(async h => {

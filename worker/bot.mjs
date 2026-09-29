@@ -55,7 +55,7 @@ async function bookForQuestion(env, qid) {
 async function command(env, raw) {
   const [cmd, arg, arg2, arg3] = raw.trim().split(/\s+/);
   switch (cmd.toLowerCase().split("@")[0]) {
-    case "/help": return "/queue /books /status /flags [/flags approve-all BOOK-ID CONFIRM] /hold QID PAGE /retry BOOK-ID_vN /clear BOOK-ID_vN /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID";
+    case "/help": return "/queue /books /status /warnings BOOK-ID /flags [/flags approve-all BOOK-ID CONFIRM] /hold QID PAGE /retry BOOK-ID_vN /clear BOOK-ID_vN /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID";
     case "/queue": {
       const r = await env.DB.prepare("SELECT group_key,status,part_total,error_summary FROM publish_groups ORDER BY created_at DESC LIMIT 15").all();
       const a = await env.DB.prepare("SELECT kind,book_id,status,error_summary FROM admin_jobs ORDER BY id DESC LIMIT 5").all();
@@ -76,6 +76,17 @@ async function command(env, raw) {
     case "/status": {
       const r = await env.DB.prepare("SELECT status,COUNT(*) AS n FROM publish_groups GROUP BY status").all();
       return `Kafu queue: ${(r.results || []).map(x => `${x.status} ${x.n}`).join(", ") || "empty"}.`;
+    }
+    case "/warnings": {
+      const bookId = String(arg || "").toUpperCase();
+      if (!ID.test(bookId)) return "Usage: /warnings BOOK-ID";
+      const r = await env.DB.prepare(
+        "SELECT qid,version,local_id,source_page,reason FROM publish_warnings WHERE book_id=? ORDER BY version DESC,local_id LIMIT 100"
+      ).bind(bookId).all();
+      if (!r.results?.length) return `No recorded publish warnings for ${bookId}.`;
+      return r.results.map(x =>
+        `${x.qid} — v${x.version}, local ${x.local_id}, page ${x.source_page ?? "unknown"} — ${x.reason}`
+      ).join("\n");
     }
     case "/flags": {
       if ((arg || "").toLowerCase() === "approve-all") {
@@ -233,6 +244,24 @@ async function internal(request, env, path) {
     for (const x of body.held_details || []) {
       if (!QID.test(x.qid) || !ID.test(x.book_id)) continue;
       await env.DB.prepare("INSERT OR IGNORE INTO flags(qid,book_id,source_page,status) VALUES(?,?,?,'pending')").bind(x.qid, x.book_id, x.source_page || null).run();
+    }
+    return reply({ ok: true });
+  }
+  if (path === "/internal/warnings") {
+    const bookId = String(body.book_id || "").toUpperCase();
+    const version = Number(body.version);
+    if (!ID.test(bookId) || !Number.isSafeInteger(version) || version < 1) return reply({ error: "invalid_warning_identity" }, 400);
+    await env.DB.prepare("DELETE FROM publish_warnings WHERE book_id=? AND version=?").bind(bookId, version).run();
+    for (const x of body.warnings || []) {
+      if (!QID.test(x.qid) || !Number.isSafeInteger(Number(x.local_id))) continue;
+      const reasons = Array.isArray(x.reasons) ? x.reasons : [];
+      for (const reason of reasons) {
+        const text = String(reason || "").slice(0, 500);
+        if (!text) continue;
+        await env.DB.prepare(
+          "INSERT OR IGNORE INTO publish_warnings(book_id,version,qid,local_id,source_page,reason) VALUES(?,?,?,?,?,?)"
+        ).bind(bookId, version, x.qid, Number(x.local_id), x.source_page || null, text).run();
+      }
     }
     return reply({ ok: true });
   }

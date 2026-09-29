@@ -74,7 +74,8 @@ If the package is over Telegram's 19 MB safe limit, stop and split the layout de
 
 Check:
 - question count plus skipped count equals the source count when known;
-- warnings in `audit.json` are understood;
+- audit mismatch count is zero; fix the parser and re-run until it is;
+- remaining warnings in `audit.json` are understood, minimized where safely possible, and listed in `report.md`;
 - 15 spot checks match the PDF exactly;
 - answers come from the book, not a helper's medical knowledge;
 - figures belong to the correct question;
@@ -93,11 +94,10 @@ Do not upload directly to production unless you are the owner.
 
 ## Audit warnings
 
-Warnings are not silently approved. The owner reviews `/flags`.
+For future publishes, audit warnings and parser flags are published normally after the packaging pass has reduced warnings as far as safely possible. The book's printed answer is kept exactly; warnings never authorize guessing or correction.
 
-For a book with many already-reviewed pending warnings:
-1. send `/flags approve-all BOOK-ID`;
-2. Kafu shows the number that would be approved and the exact confirmation command;
-3. only after checking the count, send `/flags approve-all BOOK-ID CONFIRM`.
+Use `/warnings BOOK-ID` at any time for optional review of warnings recorded at publish time. Review is informational and is never required for publication.
 
-The confirmation approves the currently pending warnings for that book and queues one moderation publish. It does not bypass structural validation or source mismatches.
+Existing questions that were already held before this change remain under the legacy `/flags` moderation flow. Do not bulk-change or release those statuses as part of normal future publishing.
+
+Audit mismatches are different: packaging must fix every mismatch before delivery. If one nevertheless reaches the server, only that question is skipped and reported; the rest of the book can publish.

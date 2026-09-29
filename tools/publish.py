@@ -222,20 +222,24 @@ def choose_existing(q: dict[str, Any], rows: list[dict[str, Any]]) -> tuple[dict
 
 
 def audit_status(q: dict[str, Any], audit_by_id: dict[int, dict[str, Any]]) -> str:
+    """Future audit warnings and parser flags stay visible; only explicit moderation can hold."""
     if q.get("status") == "medical_verified":
         return "medical_verified"
-    if q.get("flag"):
-        return "held"
     audit = audit_by_id.get(int(q["local_id"]))
-    if audit:
-        level = audit.get("level")
-        if level == "match":
-            return "source_verified"
-        if level in {"warning", "unverifiable"}:
-            return "held"
-        if level == "mismatch":
-            raise ValueError(f"local_id {q['local_id']}: audit mismatch cannot publish")
+    if audit and audit.get("level") == "mismatch":
+        raise ValueError(f"local_id {q['local_id']}: audit mismatch must be removed before publish")
     return "source_verified"
+
+
+def warning_reasons(q: dict[str, Any], audit_by_id: dict[int, dict[str, Any]]) -> list[str]:
+    reasons: list[str] = []
+    audit = audit_by_id.get(int(q["local_id"]))
+    if audit and audit.get("level") in {"warning", "unverifiable"}:
+        detail = str(audit.get("detail") or audit.get("level"))
+        reasons.append(f"audit {audit.get('level')}: {detail}")
+    if str(q.get("flag") or "").strip():
+        reasons.append(f"parser flag: {str(q['flag']).strip()}")
+    return reasons
 
 
 def replace_image_names(q: dict[str, Any], permanent_id: str) -> tuple[dict[str, Any], dict[str, str]]:
@@ -357,13 +361,23 @@ def main(argv: list[str] | None = None) -> int:
 
     old_rows = existing_rows(conn, book_id)
     matched_old_pids: set[str] = set()
-    report = {"kept": [], "edited": [], "new": [], "retired": [], "held": [], "held_details": []}
+    report = {"kept": [], "edited": [], "new": [], "retired": [], "held": [], "held_details": [],
+              "warnings": [], "skipped": []}
     chapter_questions: dict[str, list[dict[str, Any]]] = defaultdict(list)
     chapter_images: dict[str, dict[str, bytes]] = defaultdict(dict)
 
     try:
         conn.execute("BEGIN IMMEDIATE")
         for q in questions:
+            audit = audits.get(int(q["local_id"]))
+            if audit and audit.get("level") == "mismatch":
+                report["skipped"].append({
+                    "local_id": int(q["local_id"]),
+                    "source_number": str(q.get("source_number", "")),
+                    "source_page": q.get("source_page"),
+                    "reason": "audit mismatch reached publisher",
+                })
+                continue
             selected, reason = choose_existing(q, old_rows)
             fp = fingerprint(q)
             if selected:
@@ -385,6 +399,16 @@ def main(argv: list[str] | None = None) -> int:
             if status == "held":
                 report["held"].append(pid)
                 report["held_details"].append({"qid": pid, "book_id": book_id, "source_page": q.get("source_page")})
+
+            reasons = warning_reasons(q, audits)
+            if reasons:
+                report["warnings"].append({
+                    "qid": pid,
+                    "local_id": int(q["local_id"]),
+                    "source_number": str(q.get("source_number", "")),
+                    "source_page": q.get("source_page"),
+                    "reasons": reasons,
+                })
 
             q2, img_map = replace_image_names(q, pid)
             q2["id"] = pid
@@ -562,6 +586,8 @@ def main(argv: list[str] | None = None) -> int:
         "version": version,
         "visible_questions": sum(len(x) for x in chapter_questions.values()),
         "held": len(report["held"]),
+        "warnings": len(report["warnings"]),
+        "skipped": len(report["skipped"]),
         "kept": len(report["kept"]),
         "edited": len(report["edited"]),
         "new": len(report["new"]),

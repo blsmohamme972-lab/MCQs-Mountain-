@@ -37,7 +37,8 @@ Do not upload PDFs to the bot. The bot accepts prepared ZIP packages only.
 - `/status` — show queue counts by state.
 - `/queue` — show recent publish/admin jobs and safe failure details.
 - `/books` — show active published books.
-- `/flags` — list pending held/audit-warning questions.
+- `/warnings BOOK-ID` — list warnings recorded for future publishes; optional review only.
+- `/flags` — list legacy pending held questions.
 - `/flags Q000000001` — open one flagged question's review actions: approve, reject, or show source page.
 - `/flags approve-all BOOK-ID` — preview a bulk approval count only; makes no changes.
 - `/flags approve-all BOOK-ID CONFIRM` — approve all currently pending warnings for that book and queue one moderation publish. Use only after checking the preview count.
@@ -64,9 +65,11 @@ The bot ignores non-owner users and group-chat commands.
 
 ## Moderation
 
-A non-empty extraction flag or audit concern can hold a question out of student packs. Review it with `/flags`.
+Future publishes do not create new held questions from audit warnings or parser flags. Those questions publish with the book's original answer and are recorded for optional inspection with `/warnings BOOK-ID`.
 
-Bulk approval is deliberately two-step. The first command only tells you how many pending warnings would be approved. The second requires the literal `CONFIRM` word. Structural validation errors and audit mismatches cannot be bypassed by this command.
+The legacy `/flags` and `/hold` controls remain for questions that were already held or that the owner explicitly holds. This change does not alter any existing held status.
+
+Audit mismatches are never student-visible: packaging must fix them before delivery; if one reaches the server anyway, only that question is skipped and the bot lists it in the publish reply.
 
 ## Credentials and backups
 
