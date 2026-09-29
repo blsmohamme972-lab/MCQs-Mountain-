@@ -128,9 +128,12 @@ If the ZIP would exceed 19 MB, split by chapters into parts: `BOOK_ID_v1_part1of
 
 ## 8. Self-check before delivering
 
-1. Run `python validate.py <each zip>`. Fix every ERROR and re-run until `RESULT: PASS`. Review WARNINGS and fix the real ones.
-2. Spot-check 15 random questions: print the source page text next to your extracted JSON and confirm stem, options and answer match exactly. Fix any mismatch and re-run step 1.
-3. Confirm the counts: questions + skipped = `expected_count` (when known).
+1. Run `audit.py` against the current parser output. **Every audit mismatch must be fixed in the parser/output before delivery; never ship a mismatch.** Re-run the parser and audit until mismatch count is zero.
+2. For audit warnings, investigate each one and improve the parser/source-page mapping where deterministic source evidence allows it. Re-run `audit.py` after each parser fix until warnings are as low as reasonably possible without changing, guessing, or medically correcting source content.
+3. Record every remaining audit warning in `report.md` with local ID/source number, page, and audit reason. A remaining warning does not change the book answer and does not require owner approval.
+4. Run `python validate.py --require-audit <each zip>`. Fix every ERROR and re-run until `RESULT: PASS`. `validate.py` is unchanged and is the same gate used by the server.
+5. Spot-check 15 random questions: print the source page text next to your extracted JSON and confirm stem, options and answer match exactly. Fix any mismatch and re-run the audit and validator.
+6. Confirm the counts: questions + skipped = `expected_count` (when known).
 
 ## 9. Deliver
 
