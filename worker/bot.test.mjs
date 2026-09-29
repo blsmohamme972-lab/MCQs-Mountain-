@@ -317,26 +317,16 @@ test("leaderboard returns top 30 only plus own rank outside top 30", () => harne
   assert.deepEqual(Object.keys(body.top[0]).sort(),["name","photo_url","rank","score"].sort());
 }));
 
-test("leaderboard has no rate or speed anti-cheat tables and repeated submits only preserve first attempt", () => harness(async h => {
+test("leaderboard repeated submits only preserve first attempt", () => harness(async h => {
   const initData=signedInitData({id:777,first_name:"Fast"});
-  const original=globalThis.fetch;
-  globalThis.fetch=async (url,init={})=>{
-    url=String(url);
-    if(url==="https://content.test/routes/Q000001.json")return{ok:true,json:async()=>({routes:{Q000001011:{book_id:"TEST",chapter_id:1}}})};
-    if(url==="https://content.test/catalog.json")return{ok:true,json:async()=>({books:[{id:"TEST",chapters:[{id:1,url:"https://content.test/packs/fast.json"}]}]})};
-    if(url==="https://content.test/packs/fast.json")return{ok:true,json:async()=>({questions:[{id:"Q000001011",type:"sba",options:["A","B"],answer:"A"}]})};
-    return original(url,init);
-  };
-  try{
-    for(let i=0;i<20;i++){
-      const res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/submit",{method:"POST",body:JSON.stringify({
-        initData,answers:[{qid:"Q000001011",selection:i===0?0:1}]
-      })}),h.env,{waitUntil(){}});
-      assert.equal(res.status,200);
-    }
-    const rows=h.DB.sql.prepare("SELECT qid,correct FROM leaderboard_answers").all();
-    assert.deepEqual(rows.map(x=>[x.qid,x.correct]),[["Q000001011",1]]);
-    const tables=h.DB.sql.prepare("SELECT name FROM sqlite_master WHERE type='table'").all().map(x=>x.name);
-    assert.ok(!tables.includes("leaderboard_flags"));assert.ok(!tables.includes("leaderboard_rate"));
-  }finally{globalThis.fetch=original}
+  for(let i=0;i<20;i++){
+    const res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/submit",{method:"POST",body:JSON.stringify({
+      initData,answers:[{qid:"Q000000001",selection:i===0?0:1}]
+    })}),h.env,{waitUntil(){}});
+    assert.equal(res.status,200);
+  }
+  const rows=h.DB.sql.prepare("SELECT qid,correct FROM leaderboard_answers").all();
+  assert.deepEqual(rows.map(x=>[x.qid,x.correct]),[["Q000000001",1]]);
+  const tables=h.DB.sql.prepare("SELECT name FROM sqlite_master WHERE type='table'").all().map(x=>x.name);
+  assert.ok(!tables.includes("leaderboard_flags"));assert.ok(!tables.includes("leaderboard_rate"));
 }));
