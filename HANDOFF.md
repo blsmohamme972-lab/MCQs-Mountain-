@@ -58,7 +58,7 @@ Important rules:
 ## Bot commands
 
 Current owner commands:
-`/help`, `/status`, `/queue`, `/books`, `/flags`, `/flags QID`,
+`/help`, `/status`, `/queue`, `/books`, `/warnings BOOK-ID`, `/flags`, `/flags QID`,
 `/flags approve-all BOOK-ID CONFIRM`, `/hold QID PAGE`, `/retry BOOK-ID_vN`,
 `/clear BOOK-ID_vN`, `/republish BOOK-ID_vN`, `/rollback BOOK-ID VERSION`, and `/remove BOOK-ID`.
 
