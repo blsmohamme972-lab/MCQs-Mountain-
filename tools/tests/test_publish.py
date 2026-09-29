@@ -14,7 +14,8 @@ PUBLISH = ROOT / "tools" / "publish.py"
 RELEASE = ROOT / "tools" / "validate_release.py"
 
 
-def make_package(path: Path, version: int, stem: str, source_number: str = "1"):
+def make_package(path: Path, version: int, stem: str, source_number: str = "1",
+                 audit_level: str = "match", flag: str = ""):
     q = {
         "local_id": 1,
         "chapter_id": 1,
@@ -32,7 +33,7 @@ def make_package(path: Path, version: int, stem: str, source_number: str = "1"):
         "group_id": None,
         "no_shuffle": False,
         "source_page": 1,
-        "flag": "",
+        "flag": flag,
     }
     raw = (json.dumps(q, separators=(",", ":")) + "\n").encode()
     audit = {
@@ -40,8 +41,8 @@ def make_package(path: Path, version: int, stem: str, source_number: str = "1"):
         "questions_sha256": hashlib.sha256(raw).hexdigest(),
         "pdf_sha256": "0" * 64,
         "scanned": False,
-        "mismatch_count": 0,
-        "results": [{"local_id": 1, "source_page": 1, "level": "match", "score": 1.0, "detail": "ok"}],
+        "mismatch_count": 1 if audit_level == "mismatch" else 0,
+        "results": [{"local_id": 1, "source_page": 1, "level": audit_level, "score": 1.0, "detail": "fixture audit"}],
     }
     book = {
         "schema": 1,
@@ -102,6 +103,68 @@ class PublishingTests(unittest.TestCase):
             make_package(p, 1, "Test")
             result = self.run_cmd(RELEASE, p)
             self.assertIn("RESULT: PASS", result.stdout)
+
+
+    def test_audit_warning_and_parser_flag_publish_without_hold(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            db = root / "content.sqlite"
+            out = root / "content"
+            package = root / "warning.zip"
+            make_package(package, 1, "Warning fixture question", audit_level="warning", flag="book answer looks doubtful")
+            result = self.run_cmd(PUBLISH, "--db", db, "--out", out, package)
+            summary = json.loads(result.stdout[result.stdout.find("{"):])
+            self.assertEqual(summary["visible_questions"], 1)
+            self.assertEqual(summary["held"], 0)
+            self.assertEqual(summary["warnings"], 1)
+            report = json.loads(Path(summary["report"]).read_text())
+            self.assertEqual(len(report["warnings"]), 1)
+            self.assertIn("audit warning", report["warnings"][0]["reasons"][0])
+            self.assertTrue(any("parser flag:" in x for x in report["warnings"][0]["reasons"]))
+            with sqlite3.connect(db) as conn:
+                status = conn.execute("SELECT status FROM questions WHERE permanent_id='Q000000001'").fetchone()[0]
+            self.assertEqual(status, "source_verified")
+
+    def test_existing_held_decision_stays_held_on_future_publish(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            db = root / "content.sqlite"
+            out = root / "content"
+            p1 = root / "v1.zip"
+            p2 = root / "v2.zip"
+            decisions = root / "decisions.json"
+            make_package(p1, 1, "Held fixture")
+            make_package(p2, 2, "Held fixture", audit_level="warning", flag="future warning")
+            self.run_cmd(PUBLISH, "--db", db, "--out", out, p1)
+            decisions.write_text(json.dumps({"Q000000001": "rejected"}))
+            result = self.run_cmd(PUBLISH, "--db", db, "--out", out, "--decisions", decisions, p2)
+            summary = json.loads(result.stdout[result.stdout.find("{"):])
+            self.assertEqual(summary["held"], 1)
+            self.assertEqual(summary["visible_questions"], 0)
+            with sqlite3.connect(db) as conn:
+                row = conn.execute("SELECT permanent_id,status FROM questions WHERE permanent_id='Q000000001'").fetchone()
+            self.assertEqual(row, ("Q000000001", "held"))
+
+    def test_warning_publish_preserves_permanent_id_for_saved_progress_keys(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            db = root / "content.sqlite"
+            out = root / "content"
+            p1 = root / "v1.zip"
+            p2 = root / "v2.zip"
+            make_package(p1, 1, "Stable progress fixture")
+            make_package(p2, 2, "Stable progress fixture", audit_level="warning")
+            self.run_cmd(PUBLISH, "--db", db, "--out", out, p1)
+            with sqlite3.connect(db) as conn:
+                before = conn.execute("SELECT permanent_id FROM id_map WHERE local_id=1").fetchone()[0]
+            saved_progress = {"answers": {before: {"c": True}}, "fav": [before], "resume": {"q": before}}
+            self.run_cmd(PUBLISH, "--db", db, "--out", out, p2)
+            with sqlite3.connect(db) as conn:
+                after = conn.execute("SELECT permanent_id FROM id_map WHERE local_id=1").fetchone()[0]
+            self.assertEqual(after, before)
+            self.assertIn(saved_progress["resume"]["q"], {after})
+            self.assertTrue(set(saved_progress["answers"]).issubset({after}))
+            self.assertTrue(set(saved_progress["fav"]).issubset({after}))
 
 
 if __name__ == "__main__":
