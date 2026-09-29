@@ -1,0 +1,18 @@
+.k-leaderboard{display:grid;gap:var(--space-4);max-width:var(--measure);margin:0 auto}
+.k-leader-tabs{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2);padding:var(--space-1);background:var(--color-surface-alt);border:var(--outline-width) solid var(--color-outline);border-radius:var(--radius-md)}
+.k-leader-tabs button{min-height:44px;border-radius:var(--radius-sm);font-weight:700}
+.k-leader-tabs button[aria-selected=true]{background:var(--color-surface);box-shadow:var(--shadow-hard)}
+.k-leader-own h2{font-size:var(--text-lg);margin-bottom:var(--space-3)}
+.k-leader-list{display:grid;gap:var(--space-2)}
+.k-leader-row{display:grid;grid-template-columns:32px 42px minmax(0,1fr) auto;grid-template-areas:"rank avatar name score" "rank avatar meta meta";gap:2px var(--space-3);align-items:center;min-width:0;padding:var(--space-3);background:var(--color-surface);border:var(--outline-width) solid var(--color-outline);border-radius:var(--radius-md)}
+.k-leader-row.own{grid-template-columns:42px minmax(0,1fr) auto;grid-template-areas:"avatar name score" "avatar meta meta";border-color:var(--color-primary)}
+.k-leader-rank{grid-area:rank;text-align:center;font-family:var(--font-display);font-weight:600}
+.k-leader-you{display:none}
+.k-leader-row img,.k-leader-avatar{grid-area:avatar;width:42px;height:42px;border-radius:50%;object-fit:cover;display:grid;place-items:center;background:var(--color-primary-soft);font-weight:700}
+.k-leader-name{grid-area:name;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+.k-leader-row strong{grid-area:score;font-family:var(--font-display);font-size:var(--text-xl)}
+.k-leader-row small{grid-area:meta;color:var(--color-muted)}
+.k-leader-hide{display:flex;align-items:center;gap:var(--space-2);margin-top:var(--space-4);font-size:var(--text-sm)}
+.k-leader-hide input{width:20px;height:20px}
+.k-leader-entry{border:var(--outline-width) solid var(--color-outline);border-radius:var(--radius-lg);box-shadow:var(--shadow-hard);background:var(--color-surface)}
+@media(max-width:370px){.k-leader-row{grid-template-columns:28px 38px minmax(0,1fr) auto;column-gap:8px;padding:10px}.k-leader-row img,.k-leader-avatar{width:38px;height:38px}}

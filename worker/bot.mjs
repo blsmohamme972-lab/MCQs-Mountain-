@@ -1,5 +1,6 @@
 // Kafu control plane. Heavy publishing work stays in GitHub Actions.
 import { parsePackageName, queueDocument, retryGroup, clearGroup } from "./queue-state.mjs";
+import { handleLeaderboard } from "./leaderboard.mjs";
 export { parsePackageName, retryGroup, clearGroup };
 const ID = /^[A-Z0-9][A-Z0-9-]*$/;
 const QID = /^Q\d{9}$/;
@@ -271,6 +272,10 @@ export default {
   async fetch(request, env, ctx) {
     const path = new URL(request.url).pathname;
     if (path === "/bot" && request.method === "POST") return webhook(request, env, ctx);
+    if (path.startsWith("/api/leaderboard/")) {
+      const response = await handleLeaderboard(request, env, path);
+      if (response) return response;
+    }
     if (path.startsWith("/internal/")) return internal(request, env, path);
     return env.ASSETS.fetch(request);
   },
