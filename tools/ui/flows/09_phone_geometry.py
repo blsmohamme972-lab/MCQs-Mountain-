@@ -43,7 +43,14 @@ def tail_metrics(page):
         const s=getComputedStyle(el),r=el.getBoundingClientRect();return s.display!=='none'&&s.visibility!=='hidden'&&r.height>0;
       });
       const fixedHeight=fixed.reduce((m,el)=>Math.max(m,el.getBoundingClientRect().height),0);
-      return {scrollHeight:root.scrollHeight,viewportHeight:innerHeight,flowBottom,fixedHeight,tail:root.scrollHeight-flowBottom};
+      const mainBox=main?.getBoundingClientRect(),last=flow.at(-1),lastBox=last?.getBoundingClientRect();
+      return {
+        scrollHeight:root.scrollHeight,viewportHeight:innerHeight,flowBottom,fixedHeight,tail:root.scrollHeight-flowBottom,
+        bodyClass:document.body.className,screen:document.body.dataset.screen||'',
+        mainPaddingBottom:main?getComputedStyle(main).paddingBottom:null,
+        mainBottom:mainBox?mainBox.bottom+scrollY:null,
+        lastTag:last?.tagName||null,lastClass:last?.className||null,lastBottom:lastBox?lastBox.bottom+scrollY:null
+      };
     }""")
 
 def assert_geometry(page,label):
