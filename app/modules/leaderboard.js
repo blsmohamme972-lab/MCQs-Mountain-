@@ -76,8 +76,8 @@ globalThis.KafuEnhancements.installers.push({name:'leaderboard',install(){
   ACTIONS['open-leaderboard']=()=>{go('leaderboard');if(available())loadBoard(period).catch(()=>{})};
   ACTIONS['leaderboard-retry']=()=>loadBoard(period);
   ACTIONS['leader-period']=d=>loadBoard(d.v==='all_time'?'all_time':'weekly');
-  ACTIONS['leader-hide']=async d=>{
-    const input=d.el||document.querySelector('[data-a="leader-hide"]'),hidden=!!input?.checked;
+  ACTIONS['leader-hide']=async (d,el)=>{
+    const input=el||document.querySelector('[data-a="leader-hide"]'),hidden=!!input?.checked;
     try{await api('privacy',{hidden});if(board?.own)board.own.hidden=hidden;render()}catch(_){toast('Could not update leaderboard privacy.');render()}
   };
   const me=VIEWS.me;
