@@ -350,7 +350,8 @@ def main():
                     geometry=importlib.util.module_from_spec(spec);spec.loader.exec_module(geometry)
                     geometry.regression_evidence(
                         browser,prior,priorpack,args.out/'before',
-                        {'phone_context':phone_context,'open_app':open_app,'long_pack':long_pack_fixture()},
+                        {'phone_context':phone_context,'open_app':open_app,'long_pack':long_pack_fixture(),
+                         'capture':capture,'study_answer':study_answer},
                         False
                     )
             browser.close()
