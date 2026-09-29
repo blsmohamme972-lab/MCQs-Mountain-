@@ -5,7 +5,7 @@ globalThis.KafuEnhancements.installers.push({name:'leaderboard',install(){
   const owner=IN_TG&&Number.isSafeInteger(TG.initDataUnsafe?.user?.id)?String(TG.initDataUnsafe.user.id):'browser';
   const key='leaderboard_pending_user_'+owner;
   let pending=[],timer=null,loading=false,period='weekly',board=null,error='';
-  const clone=v=>JSON.parse(JSON.stringify(v));
+  const clone=v=>v===undefined?null:JSON.parse(JSON.stringify(v));
   function available(){return !!(IN_TG&&TG?.initData)}
   async function loadPending(){
     try{const saved=await DB.get('meta',key);pending=Array.isArray(saved)?saved.filter(x=>x&&/^Q\\d{9}$/.test(x.qid)).slice(-500):[];}catch(_){pending=[]}
