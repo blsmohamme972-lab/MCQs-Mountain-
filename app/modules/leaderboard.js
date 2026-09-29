@@ -10,7 +10,7 @@ globalThis.KafuEnhancements.installers.push({name:'leaderboard',install(){
   async function loadPending(){
     try{
       const saved=await DB.get('meta',key),hidden=await DB.get('meta',privacyKey);
-      pending=Array.isArray(saved)?saved.filter(x=>x&&/^Q\\d{9}$/.test(x.qid)).slice(-500):[];
+      pending=Array.isArray(saved)?saved.filter(x=>x&&/^Q\d{9}$/.test(x.qid)).slice(-500):[];
       hiddenPref=hidden===true;
     }catch(_){pending=[];hiddenPref=false}
   }
