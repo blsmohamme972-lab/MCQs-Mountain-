@@ -40,7 +40,9 @@ jobs:
           mkdir -p evidence/ui
           git archive --format=zip --output=evidence/ui/source.zip HEAD
       - name: Main journeys, offline persistence, budgets and approved screenshots
-        run: python tools/ui/check.py --before /tmp/kafu-before --out evidence/ui
+        run: |
+          python -m py_compile tools/ui/check.py tools/ui/production_smoke.py tools/ui/flows/09_phone_geometry.py
+          python tools/ui/check.py --before /tmp/kafu-before --out evidence/ui
       - name: Verify every main screen on production exact build
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: python tools/ui/production_smoke.py --commit "$GITHUB_SHA"
