@@ -1,0 +1,55 @@
+================================================================
+Package : ABSITE-DE-VIRGILIO_v2.zip
+Book    : ABSITE-DE-VIRGILIO — Review of Surgery for ABSITE and Boards (part 1/1)
+Counts  : 955 questions {'sba': 955}, 1 skipped, 2 images, 0 without explanation
+Audit   : {'match': 858, 'warning': 97, 'mismatch': 0, 'unverifiable': 0}
+
+WARNINGS (46):
+  - Q1: AI flag: PDF p16: printed key B is retained; explanation says 1 month but cites option (C), whereas 1 month is option B.
+  - Q5: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q74 option D: option has a line-break hyphen like 'hypo- thermia'
+  - Q74: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q103: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q156: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q163: stem has a line-break hyphen like 'hypo- thermia'
+  - Q176 option C: option has a line-break hyphen like 'hypo- thermia'
+  - Q211: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q221: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q237: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q326: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q334: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q374: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q390: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q391: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q393 option E: option has a line-break hyphen like 'hypo- thermia'
+  - Q393: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q394: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q399: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q440: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q462 option C: option has a line-break hyphen like 'hypo- thermia'
+  - Q477: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q485: stem has a line-break hyphen like 'hypo- thermia'
+  - Q533: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q534: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q538: AI flag: PDF p274: options occur in an image table. Rows visually transcribed and original table retained; text-only audit cannot
+  - Q540: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q576: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q655: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q687: AI flag: PDF p352: the printed reference URL stops at ImplantsandProsth. Kept exactly; the missing continuation is not reconstruc
+  - Q689: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q793: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q798: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q823: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q829 option B: duplicate option text
+  - Q829 option C: duplicate option text
+  - Q829 option D: duplicate option text
+  - Q829 option E: duplicate option text
+  - Q892: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q893: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q900: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q927: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q942: explanation has a line-break hyphen like 'hypo- thermia'
+  - Q954: AI flag: PDF p489: option E contains the literal source marker [?]. Retained exactly; book key C is unchanged.
+  - audit: 97 audit warnings + 0 unverifiable → these questions will be HELD for review
+
+RESULT: PASS (46 warnings)
