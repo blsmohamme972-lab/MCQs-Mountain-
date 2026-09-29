@@ -105,6 +105,9 @@ def run(browser,origin,pack,out,helpers):
             ('book',"go('book',{b:'DESIGN-CARDIO'})"),
             ('review',"tab('review')"),
             ('me',"tab('me')"),
+            ('privacy',"go('privacy')"),
+            ('about',"go('about')"),
+            ('onboarding',"ACTIONS['quick-tour']()"),
         ]
         for label,script in screens:
             page.evaluate(script);page.wait_for_timeout(20);assert_geometry(page,f'{width} {label}')
@@ -121,6 +124,9 @@ def run(browser,origin,pack,out,helpers):
         assert_geometry(page,f'{width} long-study-205')
         assert page.locator('.k-long-progress').count()==1
         assert page.locator('.k-study-count').inner_text().replace('\n','')=='172/205'
+        page.evaluate("ACTIONS.report()");page.wait_for_selector('[role=dialog]')
+        assert_geometry(page,f'{width} report-sheet')
+        page.evaluate("SHEET=null;render()")
 
         page.evaluate("""() => {
           window.__progressScrollIntoView=0;
@@ -144,5 +150,5 @@ def run(browser,origin,pack,out,helpers):
 
         assert not errors,errors
         ctx.close()
-        passed.append(f'{width}px: home/library/specialty/book/review/me/results/study/completion have no document overflow or excess scroll tail; 205-question compact progress and 40-dot contained scroller pass')
+        passed.append(f'{width}px: home/library/specialty/book/review/me/privacy/about/onboarding/results/study/report-sheet/completion have no document overflow or excess scroll tail; 205-question compact progress and 40-dot contained scroller pass')
     return {'passed':passed+[f"Regression evidence: {evidence}"]}
