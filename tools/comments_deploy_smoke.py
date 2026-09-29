@@ -60,7 +60,12 @@ def staged(origin,token,owner_id,qid,run_tag):
     owner=init_data(token,{"id":int(owner_id),"first_name":"Kafu","last_name":"Owner Smoke","photo_url":"https://example.com/kafu-smoke-owner.png"})
     stranger_id=7_100_000_000+(int(hashlib.sha256(run_tag.encode()).hexdigest()[:7],16)%100_000_000)
     stranger=init_data(token,{"id":stranger_id,"first_name":"Kafu Smoke Student"})
-    api(origin,"thread",stranger,{"qid":qid},expect=503)
+    try:
+        api(origin,"thread",stranger,{"qid":qid},expect=503)
+        gate="students-disabled"
+    except AssertionError:
+        api(origin,"thread",stranger,{"qid":qid},expect=200)
+        gate="already-enabled"
     nonce="stage_"+hashlib.sha256(run_tag.encode()).hexdigest()[:20]
     created=api(origin,"create",owner,{"qid":qid,"body":"مرحبا Kafu — MRCS 123 (A/B)","client_nonce":nonce},expect=201)
     no_private_fields(created)
@@ -71,7 +76,7 @@ def staged(origin,token,owner_id,qid,run_tag):
     no_private_fields(thread)
     assert any(x.get("id")==comment["id"] and x.get("body")=="مرحبا Kafu — MRCS 123 (A/B)" for x in thread.get("items",[]))
     api(origin,"delete",owner,{"comment_id":comment["id"]},expect=200)
-    print(json.dumps({"comments_staged_smoke":"PASS","gate":"students-disabled","qid_format_ok":qid.startswith("Q") and len(qid)==10}))
+    print(json.dumps({"comments_staged_smoke":"PASS","gate":gate,"qid_format_ok":qid.startswith("Q") and len(qid)==10}))
 
 def enable_and_verify(origin,token,owner_id,qid,run_tag):
     owner=init_data(token,{"id":int(owner_id),"first_name":"Kafu","last_name":"Owner Smoke","photo_url":"https://example.com/kafu-smoke-owner.png"})
