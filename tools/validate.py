@@ -59,7 +59,7 @@ LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 BOOK_ID_RE = re.compile(r"^[A-Z0-9][A-Z0-9-]{2,40}$")
 IMAGE_NAME_RE = re.compile(r"^images/L(\d{4,6})_(e?\d{1,2})\.webp$")
-LABEL_PREFIX_RE = re.compile(r"^\s*\(?[A-Za-z]\s*[\).:]\s+")
+LABEL_PREFIX_RE = re.compile(r"^\s*\(?{letter}\s*[\).:]\s+", re.I)
 EMBEDDED_OPTIONS_RE = re.compile(r"(^|\n)\s*\(?A[\).]\s.+\n\s*\(?B[\).]\s", re.S)
 ORDER_SENSITIVE_RE = re.compile(
     r"\b(all|none|both|neither) of the (above|following)\b|\b(a|b|c|d) (and|&) (b|c|d|e)\b"
@@ -286,7 +286,8 @@ def check_question(rep, q, ctx, image_files, used_images):
             rep.err(ow, "empty option")
             continue
         check_text(rep, ow, o, "option")
-        if LABEL_PREFIX_RE.match(o):
+        label_re = re.compile(LABEL_PREFIX_RE.pattern.format(letter=re.escape(LETTERS[i])), LABEL_PREFIX_RE.flags)
+        if label_re.match(o):
             rep.err(ow, "option still starts with its label like 'A.' or '(b)'")
         key = norm(o)
         if key in seen:
