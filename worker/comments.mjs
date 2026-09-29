@@ -180,6 +180,7 @@ async function moderate(request,env){
   else if(action==="ban"){
     await env.DB.prepare("UPDATE comment_users SET banned=1,updated_at=datetime('now') WHERE user_key=(SELECT author_key FROM comments WHERE id=?)").bind(id).run();
   } else return reply({error:"invalid_action"},400);
+  await env.DB.prepare("UPDATE comment_reports SET status='resolved' WHERE comment_id=? AND status='pending'").bind(id).run();
   return reply({ok:true});
 }
 
