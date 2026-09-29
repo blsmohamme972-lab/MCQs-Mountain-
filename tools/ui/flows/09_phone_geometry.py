@@ -6,7 +6,7 @@ WIDTHS=(360,390,430)
 
 TG_SDK=r"""(() => {
  const noop=()=>{};
- window.Telegram={WebApp:{initData:'layout-user',initDataUnsafe:{user:{id:909,first_name:'Layout'}},colorScheme:'light',themeParams:{},isVersionAtLeast:()=>true,
+ window.Telegram={WebApp:{initData:'layout-user',initDataUnsafe:{user:{id:'browser',first_name:'Layout'}},colorScheme:'light',themeParams:{},isVersionAtLeast:()=>true,
  ready:noop,expand:noop,onEvent:noop,setHeaderColor:noop,setBackgroundColor:noop,
  HapticFeedback:{selectionChanged:noop,notificationOccurred:noop,impactOccurred:noop},
  BackButton:{show:noop,hide:noop,onClick:noop},MainButton:{setParams:noop,hide:noop,onClick:noop},showConfirm:(message,cb)=>cb(false)}};
