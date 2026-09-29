@@ -195,6 +195,9 @@ def run(browser,origin,pack,out,helpers):
         lctx.route("**/api/leaderboard/board",lambda route:route.fulfill(status=200,content_type="application/json",body=json.dumps(leaderboard)))
         lctx.route("**/api/leaderboard/privacy",lambda route:route.fulfill(status=200,content_type="application/json",body=json.dumps({"ok":True,"hidden":False})))
         lpage,lerrors=helpers['open_app'](lctx,origin,pack)
+        lpage.evaluate("tab('me')")
+        lpage.wait_for_selector('[data-a="leader-hide"]')
+        assert_geometry(lpage,f'{width} me-leaderboard-toggle')
         lpage.evaluate("ACTIONS['open-leaderboard']()")
         lpage.wait_for_selector('.k-leader-row')
         assert lpage.locator('.k-leader-list .k-leader-row').count()==30
