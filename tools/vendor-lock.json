@@ -79,17 +79,17 @@
       "sha256": "8ed5cd9e189e30dfdb0df2d5c2771556b50e9d502d899221328c3245caf8423c"
     },
     {
-      "package": "@fontsource/noto-sans-arabic",
+      "package": "@fontsource/ibm-plex-sans-arabic",
       "version": "5.2.7",
-      "path": "vendor/noto-sans-arabic-arabic-400.woff2",
-      "url": "https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-arabic@5.2.7/files/noto-sans-arabic-arabic-400-normal.woff2",
+      "path": "vendor/ibm-plex-sans-arabic-arabic-400.woff2",
+      "url": "https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-sans-arabic@5.2.7/files/ibm-plex-sans-arabic-arabic-400-normal.woff2",
       "sha256": null
     },
     {
-      "package": "@fontsource/noto-sans-arabic",
+      "package": "@fontsource/ibm-plex-sans-arabic",
       "version": "5.2.7",
-      "path": "vendor/noto-sans-arabic-LICENSE.txt",
-      "url": "https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-arabic@5.2.7/LICENSE",
+      "path": "vendor/ibm-plex-sans-arabic-LICENSE.txt",
+      "url": "https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-sans-arabic@5.2.7/LICENSE",
       "sha256": null
     }
   ]
