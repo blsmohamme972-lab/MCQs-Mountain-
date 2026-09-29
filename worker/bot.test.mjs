@@ -68,6 +68,14 @@ async function harness(fn) {
   finally { globalThis.fetch = original; DB.sql.close(); }
 }
 const document = (name, unique = name) => ({ file_name: name, file_id: "file-" + unique, file_unique_id: "unique-" + unique, file_size: 100 });
+
+function signedInitData(user={id:321,first_name:"Ada",photo_url:"https://example.com/a.jpg"},authDate=Math.floor(Date.now()/1000),token="unit-bot"){
+  const params=new URLSearchParams({auth_date:String(authDate),query_id:"AAE",user:JSON.stringify(user)});
+  const check=[...params.entries()].sort(([a],[b])=>a.localeCompare(b)).map(([k,v])=>`${k}=${v}`).join("\n");
+  const secret=createHmac("sha256","WebAppData").update(token).digest();
+  const hash=createHmac("sha256",secret).update(check).digest("hex");
+  params.set("hash",hash);return params.toString();
+}
 const state = (h, key) => h.DB.sql.prepare("SELECT * FROM publish_groups WHERE group_key=?").get(key);
 
 test("package naming rejects malformed, unsafe numeric and oversized multipart names", () => {
@@ -222,4 +230,71 @@ test("rollback/remove affect only their book, and /queue includes admin failures
   await h.internal("finish", {kind:"admin",id:item.job.id,ok:false,error:"step=candidate.catalog method=GET host=preview.test path=/catalog.json status=403 Bearer unit-queue"});
   await h.send("/queue"); assert.match(h.messages.at(-1).text, /candidate.catalog/); assert.doesNotMatch(h.messages.at(-1).text, /unit-queue/);
   await h.send("/rollback TEST -1"); assert.ok(h.messages.at(-1).text.startsWith("❌"));
+}));
+
+test("leaderboard initData rejects forged signatures and respects Baghdad Monday reset", async () => {
+  const good=signedInitData();
+  assert.ok(await verifyTelegramInitData(good,"unit-bot"));
+  const forged=new URLSearchParams(good);forged.set("user",JSON.stringify({id:999,first_name:"Mallory"}));
+  assert.equal(await verifyTelegramInitData(forged.toString(),"unit-bot"),null);
+  assert.equal(baghdadWeekKey(new Date("2026-09-27T20:59:59Z")),"2026-09-21");
+  assert.equal(baghdadWeekKey(new Date("2026-09-27T21:00:00Z")),"2026-09-28");
+});
+
+test("leaderboard computes first-attempt score server-side and rejects fake score totals", () => harness(async h => {
+  const original=globalThis.fetch;
+  globalThis.fetch=async (url,init={})=>{
+    url=String(url);
+    if(url==="https://content.test/routes/Q000000.json")return{ok:true,json:async()=>({routes:{
+      Q000000001:{book_id:"TEST",chapter_id:1},Q000000002:{book_id:"TEST",chapter_id:1}
+    }})};
+    if(url==="https://content.test/catalog.json")return{ok:true,json:async()=>({books:[{id:"TEST",chapters:[{id:1,url:"https://content.test/packs/test.json"}]}]})};
+    if(url==="https://content.test/packs/test.json")return{ok:true,json:async()=>({questions:[
+      {id:"Q000000001",type:"sba",options:["A","B"],answer:"A"},
+      {id:"Q000000002",type:"multi",options:["A","B","C"],answer:["A","C"]}
+    ]})};
+    return original(url,init);
+  };
+  try{
+    const initData=signedInitData();
+    let res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/submit",{method:"POST",body:JSON.stringify({
+      initData,score:999,answers:[{qid:"Q000000001",selection:0}]
+    })}),h.env,{waitUntil(){}});
+    assert.equal(res.status,400);assert.equal((await res.json()).error,"score_not_accepted");
+
+    res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/submit",{method:"POST",body:JSON.stringify({
+      initData,answers:[
+        {qid:"Q000000001",selection:0,answered_at_ms:10000},
+        {qid:"Q000000002",selection:[0,2],answered_at_ms:13000}
+      ]
+    })}),h.env,{waitUntil(){}});
+    assert.equal(res.status,200);let body=await res.json();assert.equal(body.accepted,2);
+
+    res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/submit",{method:"POST",body:JSON.stringify({
+      initData,answers:[{qid:"Q000000001",selection:1,answered_at_ms:20000}]
+    })}),h.env,{waitUntil(){}});
+    body=await res.json();assert.equal(body.accepted,0);assert.equal(body.duplicates,1);
+    const rows=h.DB.sql.prepare("SELECT qid,correct FROM leaderboard_answers ORDER BY qid").all();
+    assert.deepEqual(rows.map(x=>[x.qid,x.correct]),[["Q000000001",1],["Q000000002",1]]);
+    assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM leaderboard_users").get().n,1);
+  }finally{globalThis.fetch=original}
+}));
+
+test("leaderboard privacy hides public row but preserves private own score; rate limit and speed flag apply", () => harness(async h => {
+  const initData=signedInitData();
+  h.DB.sql.prepare("INSERT INTO leaderboard_users(user_key,first_name,photo_url) VALUES('u','Ada','https://example.com/a.jpg')").run();
+  for(let i=1;i<=20;i++)h.DB.sql.prepare("INSERT INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES('u',?,?,?)").run("Q"+String(i).padStart(9,"0"),i<=15?1:0,baghdadWeekKey());
+  // Use a verified request to discover the real hashed key/profile and insert enough eligible rows there.
+  let res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
+  assert.equal(res.status,200);
+  const real=h.DB.sql.prepare("SELECT user_key FROM leaderboard_users WHERE first_name='Ada' ORDER BY updated_at DESC").all().find(x=>x.user_key!=="u")?.user_key;
+  assert.ok(real);
+  for(let i=101;i<=120;i++)h.DB.sql.prepare("INSERT OR IGNORE INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,?,?)").run(real,"Q"+String(i).padStart(9,"0"),1,baghdadWeekKey());
+  res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
+  let board=await res.json();assert.equal(board.own.score,20);assert.ok(board.own.rank);assert.ok(board.top.some(x=>x.name==="Ada"));
+
+  res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/privacy",{method:"POST",body:JSON.stringify({initData,hidden:true})}),h.env,{waitUntil(){}});
+  assert.equal(res.status,200);
+  res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
+  board=await res.json();assert.equal(board.own.hidden,true);assert.equal(board.own.score,20);assert.ok(!board.top.some(x=>x.name==="Ada"&&x.score===20));
 }));
