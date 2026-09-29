@@ -194,7 +194,10 @@ async function setting(request,env){
 export async function handleComments(request,env,path){
   if(request.method!=="POST")return reply({error:"method_not_allowed"},405);
   if(path==="/api/comments/admin-setting")return setting(request,env);
-  if(!await featureEnabled(env))return reply({error:"comments_disabled"},503);
+  if(!await featureEnabled(env)){
+    const probe=await auth(request.clone(),env);
+    if(probe.error||!probe.isOwner)return reply({error:"comments_disabled"},503);
+  }
   if(path==="/api/comments/thread")return thread(request,env);
   if(path==="/api/comments/create")return create(request,env);
   if(path==="/api/comments/helpful")return helpful(request,env);
