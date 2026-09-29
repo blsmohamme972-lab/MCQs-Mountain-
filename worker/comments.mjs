@@ -100,7 +100,7 @@ async function thread(request,env){
     const rr=await env.DB.prepare(`SELECT c.*,u.display_name,u.photo_url,
       EXISTS(SELECT 1 FROM comment_votes v WHERE v.comment_id=c.id AND v.user_key=?) helpful_by_me
       FROM comments c JOIN comment_users u ON u.user_key=c.author_key
-      WHERE c.parent_id IN (${marks}) AND c.status='visible' ORDER BY c.created_at ASC,c.id ASC`).bind(a.key,...ids).all();
+      WHERE c.parent_id IN (${marks}) AND c.status='visible' ORDER BY c.created_at ASC,c.id ASC LIMIT 60`).bind(a.key,...ids).all();
     replies=rr.results||[];
   }
   const grouped=new Map(ids.map(id=>[id,[]]));for(const r of replies)grouped.get(Number(r.parent_id))?.push(publicComment(r));
