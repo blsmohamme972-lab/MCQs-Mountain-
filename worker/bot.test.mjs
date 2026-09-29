@@ -407,7 +407,7 @@ test("comment thread read is lazy data-only, escaped rendering responsibility is
   assert.doesNotMatch(JSON.stringify(data),/user_key|telegram_id|username|phone_number/);
 }));
 
-test("inactive or removed content hides discussions without deleting history",()=>harness(async h=>{
+test("removed content immediately hides its existing discussion without deleting history",()=>harness(async h=>{
   const a=signedInitData({id:750,first_name:"Archive"});
   await postComment(h,a,"persistent",null,"nonce_archive_1");
   const original=globalThis.fetch;
@@ -418,11 +418,18 @@ test("inactive or removed content hides discussions without deleting history",()
     return original(url,init);
   };
   try{
-    await new Promise(r=>setTimeout(r,1));
-    // use a different QID to avoid active cache and prove inactive reads fail
-    const r=await commentApi(h,"thread",a,{qid:"Q000000002"});assert.equal(r.status,404);
+    const r=await commentApi(h,"thread",a,{qid:"Q000000001"});assert.equal(r.status,404);
     assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM comments").get().n,1);
   }finally{globalThis.fetch=original}
+}));
+
+test("stable QID re-upload preserves the same thread and comments",()=>harness(async h=>{
+  const a=signedInitData({id:751,first_name:"Stable"});
+  const first=await postComment(h,a,"survives re-upload",null,"nonce_stable_1");assert.equal(first.response.status,201);
+  await h.DB.prepare("INSERT OR IGNORE INTO comment_threads(qid,book_id) VALUES(?,?)").bind("Q000000001","TEST").run();
+  const r=await commentApi(h,"thread",a,{qid:"Q000000001",sort:"newest"});assert.equal(r.status,200);
+  const data=await r.json();assert.equal(data.items.length,1);assert.equal(data.items[0].body,"survives re-upload");
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM comment_threads WHERE qid='Q000000001'").get().n,1);
 }));
 
 test("comments hot-path query plans use declared indexes",()=>harness(async h=>{
