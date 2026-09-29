@@ -179,8 +179,16 @@ def open_app(ctx,origin,pack,progress=True):
 
 
 def capture(page,path):
-    page.evaluate("() => {for(const t of document.querySelectorAll('.toast'))t.hidden=true;window.scrollTo(0,0);}")
-    page.wait_for_timeout(150)
+    # Answer feedback schedules a requestAnimationFrame scroll after render. Let it run,
+    # then pin the snapshot to the top on a later frame so fixed controls cannot race it.
+    page.evaluate("""() => new Promise(resolve => {
+      for(const t of document.querySelectorAll('.toast'))t.hidden=true;
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        window.scrollTo(0,0);
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{window.scrollTo(0,0);resolve();}));
+      }));
+    })""")
+    page.wait_for_timeout(50)
     page.screenshot(path=str(path),full_page=True,animations='disabled')
     with Image.open(path) as image:
         raw=image.convert('RGBA')
