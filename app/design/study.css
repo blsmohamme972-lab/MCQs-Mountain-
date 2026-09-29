@@ -175,15 +175,11 @@ body[data-study-screen] .k-study-sub h1{
 }
 body[data-study-screen] .wrap{
   max-width:720px;
-  padding:var(--space-2) var(--space-4) calc(112px + env(safe-area-inset-bottom,0px));
+  padding-top:var(--space-2);
+  padding-inline:var(--space-4);
 }
 body.tg[data-study-screen] .wrap{
   padding-bottom:calc(var(--space-5) + env(safe-area-inset-bottom,0px));
-}
-@media(max-width:430px){
-  body:not(.tg)[data-study-screen] .wrap{
-    padding-bottom:calc(92px + env(safe-area-inset-bottom,0px));
-  }
 }
 body[data-study-screen] .k-study{max-width:680px;min-width:0;color:var(--mcq-text)}
 body[data-study-screen] .k-study-progress{
