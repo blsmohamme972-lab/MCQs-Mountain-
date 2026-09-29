@@ -14,6 +14,7 @@ function testDB() {
   db.exec(readFileSync(new URL("../migrations/0002_publish_warnings.sql", import.meta.url), "utf8"));
   db.exec(readFileSync(new URL("../migrations/0003_leaderboard.sql", import.meta.url), "utf8"));
   db.exec(readFileSync(new URL("../migrations/0004_question_comments.sql", import.meta.url), "utf8"));
+  db.exec("UPDATE comment_settings SET value='1' WHERE key='enabled'");
   return {
     sql: db,
     prepare(sql) {
@@ -340,6 +341,15 @@ async function postComment(h,initData,body,parent_id=null,nonce="nonce_12345678"
   const r=await commentApi(h,"create",initData,{qid:"Q000000001",body,parent_id,client_nonce:nonce});
   return {response:r,data:await r.json()};
 }
+
+test("comments rollout gate defaults off, permits owner verification, then enables students",()=>harness(async h=>{
+  const student=signedInitData({id:699,first_name:"Student"}),owner=signedInitData({id:123,first_name:"Owner"});
+  h.DB.sql.prepare("UPDATE comment_settings SET value='0' WHERE key='enabled'").run();
+  assert.equal((await commentApi(h,"thread",student,{qid:"Q000000001"})).status,503);
+  assert.equal((await commentApi(h,"thread",owner,{qid:"Q000000001"})).status,200);
+  const enabled=await commentApi(h,"admin-setting",owner,{enabled:true});assert.equal(enabled.status,200);
+  assert.equal((await commentApi(h,"thread",student,{qid:"Q000000001"})).status,200);
+}));
 
 test("comments identity is verified, client author fields ignored, unsafe photo rejected",()=>harness(async h=>{
   const init=signedInitData({id:700,first_name:"Ali",last_name:"Hassan",username:"secret",phone_number:"+964",photo_url:"javascript:alert(1)"});
