@@ -81,7 +81,11 @@ globalThis.KafuEnhancements.installers.push({name:'leaderboard',install(){
     try{await api('privacy',{hidden});if(board?.own)board.own.hidden=hidden;render()}catch(_){toast('Could not update leaderboard privacy.');render()}
   };
   const me=VIEWS.me;
-  VIEWS.me=function(...args){const view=me.apply(this,args);view.html+='<h3 class="sec">Community</h3><button class="row k-leader-entry" data-a="open-leaderboard"><span class="ic" aria-hidden="true">★</span><span class="grow"><span class="t">Leaderboard</span><span class="s">First attempts · weekly and all-time</span></span><span class="chev" aria-hidden="true">›</span></button>';return view};
+  VIEWS.me=function(...args){
+    const view=me.apply(this,args);
+    if(available())view.html+='<h3 class="sec">Community</h3><button class="row k-leader-entry" data-a="open-leaderboard"><span class="ic" aria-hidden="true">★</span><span class="grow"><span class="t">Leaderboard</span><span class="s">First attempts · weekly and all-time</span></span><span class="chev" aria-hidden="true">›</span></button>';
+    return view;
+  };
   addEventListener('online',()=>flush().catch(()=>{}));
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flush().catch(()=>{})});
   globalThis.KafuLeaderboard={loadBoard,flush,get pending(){return pending.slice()},get board(){return board},get period(){return period}};
