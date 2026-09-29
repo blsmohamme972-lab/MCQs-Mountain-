@@ -87,7 +87,7 @@ Current source-of-truth limits:
 - Worker dynamic requests: 100,000/day shared by all Kafu dynamic traffic;
 - D1 reads: 5,000,000 rows/day;
 - D1 writes: 100,000 rows/day;
-- D1 storage: 5 GB total.
+- D1 storage: 5 GB account total, with the current free-tier **500 MB per-database** ceiling applying to Kafu's shared database.
 
 Launch model for **1,000 active commenting students/day**:
 
@@ -111,24 +111,24 @@ Community D1 read model:
 - mutation/auth/rate-limit allowance: **~80,000 rows/day**;
 - Community total planning envelope: **~612,000 rows/day**, about 12.2% of the 5M D1 read allowance.
 
-Community D1 write model at the 1,000-user launch envelope:
-- 600 comments/replies: user/profile refresh + thread/comment writes, conservatively ~1,800 writes;
-- 1,000 Helpful actions: vote + counter, conservatively ~2,000 writes;
-- 100 report/delete actions: <=300 writes;
-- profile refresh/moderation reserve: ~1,000 writes;
-- total: **~5,100 writes/day**, about 5.1% of the 100k D1 write allowance.
+Community D1 write model at the 1,000-user launch envelope counts index maintenance conservatively, not just logical rows:
+- 600 comments/replies × ~7 D1 rows written including indexes = ~4,200;
+- 1,000 Helpful actions × ~7 rows including vote/counter index maintenance = ~7,000;
+- 100 report/delete actions × ~6 rows = ~600;
+- profile refresh allowance = ~2,000;
+- total planning envelope: **~13,800 D1 rows written/day**, about 13.8% of the 100k allowance.
 
 Storage planning:
 - no media and bodies capped at 600 Unicode characters;
 - conservative effective comment+index footprint ~2 KB/comment before vote/report growth;
-- 10,000 new comments/day therefore adds roughly 20 MB/day of comment/index data before votes/reports, so storage—not Worker requests—becomes the long-term retention constraint and must be measured before very large sustained scale.
+- 10,000 new comments/day therefore adds roughly 20 MB/day of comment/index data before votes/reports. Because Kafu's current shared free D1 database has a 500 MB database ceiling, sustained heavy-comment retention would become a storage constraint quickly and must be measured well before that workload.
 
 Heavy scenario: **10,000 new comments/day**
-- comment/profile/thread writes: ~30,000;
-- if average 2 Helpful actions/comment: ~40,000 more writes;
-- reports/moderation/profile reserve: ~8,000;
-- total planning envelope ~78,000 writes/day.
-This crosses the 70% safety gate even though it remains under the absolute 100k D1 write cap. Before that level, Kafu must reduce counter writes / reaction frequency or otherwise optimize; it must not silently move to a paid service.
+- comment rows plus index maintenance: ~70,000 D1 rows written;
+- if average 2 Helpful actions/comment: ~140,000 more rows written;
+- reports/profile/moderation reserve: ~12,000;
+- total planning envelope: **~222,000 D1 rows written/day**.
+That exceeds the current free write allowance. It identifies D1 write amplification—especially Helpful counter/index maintenance—as the next bottleneck. Kafu must optimize reaction/counter storage before approaching this workload; it must not silently move to a paid service.
 
 ## Performance and offline behavior
 
