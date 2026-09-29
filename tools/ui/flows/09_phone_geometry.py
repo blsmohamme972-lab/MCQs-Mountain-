@@ -185,11 +185,11 @@ def run(browser,origin,pack,out,helpers):
         lctx=helpers['phone_context'](browser,origin,width,'light')
         lctx.add_init_script(TG_SDK)
         leaderboard={
-            "period":"weekly","week_key":"2026-09-28","min_answered":20,
-            "own":{"score":88,"answered":104,"rank":7,"hidden":False},
+            "period":"weekly","week_key":"2026-09-28",
+            "own":{"score":88,"rank":37,"hidden":False},
             "top":[
-                {"name":"Student "+str(i),"photo_url":None,"score":120-i,"answered":150-i,"rank":i}
-                for i in range(1,35)
+                {"name":"Student "+str(i),"photo_url":origin+"/icons/kafu.svg","score":120-i,"rank":i}
+                for i in range(1,31)
             ]
         }
         lctx.route("**/api/leaderboard/board",lambda route:route.fulfill(status=200,content_type="application/json",body=json.dumps(leaderboard)))
@@ -197,7 +197,9 @@ def run(browser,origin,pack,out,helpers):
         lpage,lerrors=helpers['open_app'](lctx,origin,pack)
         lpage.evaluate("ACTIONS['open-leaderboard']()")
         lpage.wait_for_selector('.k-leader-row')
-        assert lpage.locator('.k-leader-row').count()>=30
+        assert lpage.locator('.k-leader-list .k-leader-row').count()==30
+        assert lpage.locator('.k-leader-list .k-leader-row img').count()==30
+        assert lpage.locator('nav[aria-label="Main"] .tab').count()==4
         assert_geometry(lpage,f'{width} leaderboard')
         assert not lerrors,lerrors
         lctx.close()
