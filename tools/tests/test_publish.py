@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import hashlib
+import io
 import json
 import sqlite3
 import subprocess
@@ -8,6 +9,7 @@ import tempfile
 import unittest
 import zipfile
 from pathlib import Path
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
 PUBLISH = ROOT / "tools" / "publish.py"
@@ -62,8 +64,11 @@ def make_package(path: Path, version: int, stem: str, source_number: str = "1",
         "skipped": [],
         "license_note": "test fixture",
     }
+    cover = io.BytesIO()
+    Image.new("RGB", (300, 400), "white").save(cover, "WEBP", quality=60)
     with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
         zf.writestr("book.json", json.dumps(book))
+        zf.writestr("cover.webp", cover.getvalue())
         zf.writestr("questions.jsonl", raw)
         zf.writestr("audit.json", json.dumps(audit))
         zf.writestr("report.md", "fixture\n")
