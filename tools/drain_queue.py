@@ -434,7 +434,7 @@ def main() -> None:
                                 skipped_lines += f" +{len(result['mismatch_skips']) - len(shown)} more"
                         queue.notify(
                             "✅ " + item["group"]["group_key"] +
-                            f" published: {result['questions']} questions, {result['warnings']} with warnings, "
+                            f" published: {result['questions']} questions, {result.get('warnings', 0)} with warnings, "
                             f"{result['skipped']} skipped." + skipped_lines
                         )
                 else:
