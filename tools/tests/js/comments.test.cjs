@@ -14,7 +14,7 @@ function browser(id=123,{online=true}={}){
       addEventListener:(k,fn)=>{events[k]=fn},documentElement:element,body:element,head:element},
     addEventListener:(k,fn)=>{events[k]=fn},scrollTo:noop,confirm:()=>false,
     fetch:async(url,init={})=>{requests.push({url:String(url),body:init.body});return new Response(JSON.stringify({qid:'Q000000001',items:[],next_cursor:null,notice:'Student discussion — not verified'}),{status:200,headers:{'content-type':'application/json'}})}};
-  ctx.window=ctx;ctx.Telegram={WebApp:{initData:'signed-session-'+id,initDataUnsafe:{user:{id,first_name:'Student'+id}},isVersionAtLeast:()=>true,
+  ctx.window=ctx;ctx.__meta=meta;ctx.Telegram={WebApp:{initData:'signed-session-'+id,initDataUnsafe:{user:{id,first_name:'Student'+id}},isVersionAtLeast:()=>true,
     HapticFeedback:{selectionChanged:noop,notificationOccurred:noop},MainButton:{setParams:noop,hide:noop},BackButton:{show:noop,hide:noop}}};
   vm.createContext(ctx);
   const manifest=JSON.parse(fs.readFileSync(path.join(ROOT,'app/modules/manifest.json'),'utf8'));
