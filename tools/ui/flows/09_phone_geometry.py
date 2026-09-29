@@ -71,6 +71,28 @@ def capture_viewport(page,path,scroll_x=0,bottom=False):
     page.wait_for_timeout(100)
     page.screenshot(path=str(path),full_page=False,animations='disabled')
 
+def changed_baseline_evidence(browser,origin,pack,out,helpers):
+    out.mkdir(parents=True,exist_ok=True)
+    for theme in ('light','dark'):
+        ctx=helpers['phone_context'](browser,origin,390,theme);page,errors=helpers['open_app'](ctx,origin,pack)
+        page.evaluate("ACTIONS['quick-tour']()");page.wait_for_selector('[data-onboarding-step="0"]')
+        page.locator('.actionbar [data-a="action"]').click()
+        page.locator('.actionbar [data-a="action"]').click()
+        page.wait_for_selector('[data-onboarding-step="2"]')
+        helpers['capture'](page,out/f'evidence-phone-{theme}-onboarding-3.png')
+        assert not errors,errors;ctx.close()
+
+        ctx=helpers['phone_context'](browser,origin,390,theme);page,errors=helpers['open_app'](ctx,origin,pack)
+        ids=['Q000001001','Q000001002','Q000001003','Q000001004']
+        page.evaluate("ids=>startSession({mode:'study',title:'A focused practice session',bookId:'DESIGN-CARDIO',chId:1,qids:ids})",ids)
+        for i in range(4):
+            helpers['study_answer'](page,i!=0)
+            page.locator('[data-a="action"]').last.click()
+        page.wait_for_selector('[data-session-complete]')
+        helpers['capture'](page,out/f'evidence-phone-{theme}-chapter-complete-mixed.png')
+        assert not errors,errors;ctx.close()
+
+
 def regression_evidence(browser,origin,pack,out,helpers,assert_fixed):
     out.mkdir(parents=True,exist_ok=True)
     report={}
@@ -97,6 +119,7 @@ def regression_evidence(browser,origin,pack,out,helpers,assert_fixed):
     if assert_fixed:assert_geometry(page,'390 telegram long study')
     assert not errors,errors
     ctx.close()
+    changed_baseline_evidence(browser,origin,pack,out,helpers)
     (out/'phone-layout-metrics.json').write_text(json.dumps(report,indent=2)+'\n')
     return report
 
