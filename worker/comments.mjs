@@ -63,7 +63,7 @@ async function limited(env,key,kind){
 }
 function publicComment(r){
   return {id:Number(r.id),qid:r.qid,parent_id:r.parent_id==null?null:Number(r.parent_id),body:r.body||"",name:r.display_name,photo_url:r.photo_url||null,
-    helpful:Number(r.helpful_count||0),helpful_by_me:!!r.helpful_by_me,verified:!!r.verified,pinned:!!r.pinned,created_at:r.created_at};
+    helpful:Number(r.helpful_count||0),helpful_by_me:!!r.helpful_by_me,mine:!!r.mine,verified:!!r.verified,pinned:!!r.pinned,created_at:r.created_at};
 }
 async function thread(request,env){
   const a=await auth(request,env);if(a.error)return a.error;await upsertUser(env,a);
@@ -89,18 +89,20 @@ async function thread(request,env){
     cursorBinds=[cursor.v,cursor.v,cursor.p,cursor.v,cursor.p,cursor.h,cursor.v,cursor.p,cursor.h,cursor.t,cursor.v,cursor.p,cursor.h,cursor.t,cursor.id];
   }
   const rows=await env.DB.prepare(`SELECT c.*,u.display_name,u.photo_url,
-    EXISTS(SELECT 1 FROM comment_votes v WHERE v.comment_id=c.id AND v.user_key=?) helpful_by_me
+    EXISTS(SELECT 1 FROM comment_votes v WHERE v.comment_id=c.id AND v.user_key=?) helpful_by_me,
+    (c.author_key=?) mine
     FROM comments c JOIN comment_users u ON u.user_key=c.author_key
     WHERE c.qid=? AND c.parent_id IS NULL AND c.status='visible' ${cursorSql}
-    ORDER BY ${order} LIMIT ${PAGE}`).bind(a.key,qid,...cursorBinds).all();
+    ORDER BY ${order} LIMIT ${PAGE}`).bind(a.key,a.key,qid,...cursorBinds).all();
   const top=rows.results||[],ids=top.map(x=>Number(x.id));
   let replies=[];
   if(ids.length){
     const marks=ids.map(()=>"?").join(",");
     const rr=await env.DB.prepare(`SELECT c.*,u.display_name,u.photo_url,
-      EXISTS(SELECT 1 FROM comment_votes v WHERE v.comment_id=c.id AND v.user_key=?) helpful_by_me
+      EXISTS(SELECT 1 FROM comment_votes v WHERE v.comment_id=c.id AND v.user_key=?) helpful_by_me,
+      (c.author_key=?) mine
       FROM comments c JOIN comment_users u ON u.user_key=c.author_key
-      WHERE c.parent_id IN (${marks}) AND c.status='visible' ORDER BY c.created_at ASC,c.id ASC LIMIT 60`).bind(a.key,...ids).all();
+      WHERE c.parent_id IN (${marks}) AND c.status='visible' ORDER BY c.verified DESC,c.pinned DESC,c.created_at ASC,c.id ASC LIMIT 60`).bind(a.key,a.key,...ids).all();
     replies=rr.results||[];
   }
   const grouped=new Map(ids.map(id=>[id,[]]));for(const r of replies)grouped.get(Number(r.parent_id))?.push(publicComment(r));
@@ -121,7 +123,7 @@ async function create(request,env){
     if(!p||p.parent_id!=null||p.qid!==qid||p.status!=="visible")return reply({error:"invalid_parent"},400);
   }
   await env.DB.prepare("INSERT OR IGNORE INTO comments(qid,author_key,parent_id,body,client_nonce) VALUES(?,?,?,?,?)").bind(qid,a.key,parent,body,nonce).run();
-  const row=await env.DB.prepare("SELECT c.*,u.display_name,u.photo_url,0 helpful_by_me FROM comments c JOIN comment_users u ON u.user_key=c.author_key WHERE c.author_key=? AND c.client_nonce=?").bind(a.key,nonce).first();
+  const row=await env.DB.prepare("SELECT c.*,u.display_name,u.photo_url,0 helpful_by_me,1 mine FROM comments c JOIN comment_users u ON u.user_key=c.author_key WHERE c.author_key=? AND c.client_nonce=?").bind(a.key,nonce).first();
   return reply({ok:true,comment:publicComment(row)},201);
 }
 async function helpful(request,env){
