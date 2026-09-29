@@ -13,6 +13,7 @@ function testDB() {
   db.exec(readFileSync(new URL("../migrations/0001_publish_queue.sql", import.meta.url), "utf8"));
   db.exec(readFileSync(new URL("../migrations/0002_publish_warnings.sql", import.meta.url), "utf8"));
   db.exec(readFileSync(new URL("../migrations/0003_leaderboard.sql", import.meta.url), "utf8"));
+  db.exec(readFileSync(new URL("../migrations/0004_question_comments.sql", import.meta.url), "utf8"));
   return {
     sql: db,
     prepare(sql) {
@@ -329,4 +330,107 @@ test("leaderboard repeated submits only preserve first attempt", () => harness(a
   assert.deepEqual(rows.map(x=>[x.qid,x.correct]),[["Q000000001",1]]);
   const tables=h.DB.sql.prepare("SELECT name FROM sqlite_master WHERE type='table'").all().map(x=>x.name);
   assert.ok(!tables.includes("leaderboard_flags"));assert.ok(!tables.includes("leaderboard_rate"));
+}));
+
+
+async function commentApi(h,path,initData,body={}){
+  return bot.fetch(new Request("https://kafu.test/api/comments/"+path,{method:"POST",body:JSON.stringify({initData,...body})}),h.env,{waitUntil(){}});
+}
+async function postComment(h,initData,body,parent_id=null,nonce="nonce_12345678"){
+  const r=await commentApi(h,"create",initData,{qid:"Q000000001",body,parent_id,client_nonce:nonce});
+  return {response:r,data:await r.json()};
+}
+
+test("comments identity is verified, client author fields ignored, unsafe photo rejected",()=>harness(async h=>{
+  const init=signedInitData({id:700,first_name:"Ali",last_name:"Hassan",username:"secret",phone_number:"+964",photo_url:"javascript:alert(1)"});
+  const {response,data}=await postComment(h,init,"مرحبا Kafu 123");
+  assert.equal(response.status,201);assert.equal(data.comment.name,"Ali Hassan");assert.equal(data.comment.photo_url,null);
+  const stored=h.DB.sql.prepare("SELECT display_name,photo_url,user_key FROM comment_users").get();
+  assert.equal(stored.display_name,"Ali Hassan");assert.equal(stored.photo_url,null);assert.ok(stored.user_key&&!/700/.test(stored.user_key));
+  assert.doesNotMatch(JSON.stringify(data),/username|phone_number|secret|\+964|user_key/);
+  const fake=await commentApi(h,"create",init,{qid:"Q000000001",body:"second",client_nonce:"nonce_87654321",author_id:"mallory",moderator:true,verified:true});
+  assert.equal(fake.status,201);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(DISTINCT author_key) n FROM comments").get().n,1);
+}));
+
+test("comments auth rejects forged, altered and malformed Telegram user",()=>harness(async h=>{
+  const good=signedInitData({id:701,first_name:"Good"});
+  const forged=new URLSearchParams(good);forged.set("user",JSON.stringify({id:999,first_name:"Mallory"}));
+  assert.equal((await commentApi(h,"thread",forged.toString(),{qid:"Q000000001"})).status,401);
+  const malformed=signedInitData({id:"not-a-number",first_name:"Bad"});
+  assert.equal((await commentApi(h,"thread",malformed,{qid:"Q000000001"})).status,401);
+}));
+
+test("comments enforce one reply level, ownership and Helpful identity",()=>harness(async h=>{
+  const a=signedInitData({id:710,first_name:"A"}),b=signedInitData({id:711,first_name:"B"});
+  const top=(await postComment(h,a,"top",null,"nonce_top_123")).data.comment;
+  const reply=(await postComment(h,b,"reply",top.id,"nonce_reply_123")).data.comment;
+  const nested=await postComment(h,a,"nested",reply.id,"nonce_nested_1");
+  assert.equal(nested.response.status,400);
+  assert.equal((await commentApi(h,"helpful",a,{comment_id:top.id})).status,400);
+  assert.equal((await commentApi(h,"helpful",b,{comment_id:top.id})).status,200);
+  assert.equal(h.DB.sql.prepare("SELECT helpful_count FROM comments WHERE id=?").get(top.id).helpful_count,1);
+  assert.equal((await commentApi(h,"delete",b,{comment_id:top.id})).status,403);
+  assert.equal((await commentApi(h,"delete",a,{comment_id:top.id})).status,200);
+}));
+
+test("reports deduplicate and three unique reports auto-hide",()=>harness(async h=>{
+  const author=signedInitData({id:720,first_name:"Author"});
+  const top=(await postComment(h,author,"review me",null,"nonce_report_1")).data.comment;
+  for(const id of [721,722,723]){
+    const u=signedInitData({id,first_name:"R"+id});
+    assert.equal((await commentApi(h,"report",u,{comment_id:top.id,reason:"answer_wrong"})).status,200);
+    if(id===721)assert.equal((await commentApi(h,"report",u,{comment_id:top.id,reason:"answer_wrong"})).status,200);
+  }
+  const row=h.DB.sql.prepare("SELECT report_count,status FROM comments WHERE id=?").get(top.id);
+  assert.equal(row.report_count,3);assert.equal(row.status,"hidden_pending");
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM comment_reports WHERE comment_id=?").get(top.id).n,3);
+}));
+
+test("Verified by Kafu is owner-only and only applies to a reply",()=>harness(async h=>{
+  const author=signedInitData({id:730,first_name:"Student"}),other=signedInitData({id:731,first_name:"Other"}),owner=signedInitData({id:123,first_name:"Owner"});
+  const top=(await postComment(h,author,"question",null,"nonce_verify_t")).data.comment;
+  const reply=(await postComment(h,other,"valuable reply",top.id,"nonce_verify_r")).data.comment;
+  assert.equal((await commentApi(h,"moderate",other,{comment_id:reply.id,action:"verify",moderator:true})).status,403);
+  assert.equal((await commentApi(h,"moderate",owner,{comment_id:top.id,action:"verify"})).status,400);
+  assert.equal((await commentApi(h,"moderate",owner,{comment_id:reply.id,action:"verify"})).status,200);
+  const row=h.DB.sql.prepare("SELECT verified,pinned FROM comments WHERE id=?").get(reply.id);
+  assert.deepEqual([row.verified,row.pinned],[1,1]);
+}));
+
+test("comment thread read is lazy data-only, escaped rendering responsibility is preserved",()=>harness(async h=>{
+  const a=signedInitData({id:740,first_name:"XSS"});
+  const raw='<img src=x onerror=alert(1)> مرحبا (MRCS) 123';
+  await postComment(h,a,raw,null,"nonce_xss_123");
+  const r=await commentApi(h,"thread",a,{qid:"Q000000001",sort:"newest"});assert.equal(r.status,200);
+  const data=await r.json();assert.equal(data.items[0].body,raw);assert.equal(data.notice,"Student discussion — not verified");
+  assert.doesNotMatch(JSON.stringify(data),/user_key|telegram_id|username|phone_number/);
+}));
+
+test("inactive or removed content hides discussions without deleting history",()=>harness(async h=>{
+  const a=signedInitData({id:750,first_name:"Archive"});
+  await postComment(h,a,"persistent",null,"nonce_archive_1");
+  const original=globalThis.fetch;
+  globalThis.fetch=async(url,init={})=>{
+    url=String(url);
+    if(url==="https://content.test/routes/Q000000.json")return{ok:true,json:async()=>({routes:{Q000000001:{book_id:"TEST",chapter_id:1}}})};
+    if(url==="https://content.test/catalog.json")return{ok:true,json:async()=>({books:[]})};
+    return original(url,init);
+  };
+  try{
+    await new Promise(r=>setTimeout(r,1));
+    // use a different QID to avoid active cache and prove inactive reads fail
+    const r=await commentApi(h,"thread",a,{qid:"Q000000002"});assert.equal(r.status,404);
+    assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM comments").get().n,1);
+  }finally{globalThis.fetch=original}
+}));
+
+test("comments hot-path query plans use declared indexes",()=>harness(async h=>{
+  const plans=[
+    ["comments_author_rate","SELECT COUNT(*) FROM comments WHERE author_key='a' AND created_at>=datetime('now','-10 minutes')"],
+    ["comment_votes_user_rate","SELECT COUNT(*) FROM comment_votes WHERE user_key='a' AND created_at>=datetime('now','-1 day')"],
+    ["comment_reports_reporter_rate","SELECT COUNT(*) FROM comment_reports WHERE reporter_key='a' AND created_at>=datetime('now','-1 day')"],
+    ["comments_thread_top_newest","SELECT id FROM comments WHERE qid='Q000000001' AND parent_id IS NULL AND status='visible' ORDER BY created_at DESC,id DESC LIMIT 20"],
+  ];
+  for(const [index,sql] of plans){const detail=h.DB.sql.prepare("EXPLAIN QUERY PLAN "+sql).all().map(x=>x.detail).join(" ");assert.match(detail,new RegExp(index));assert.doesNotMatch(detail,/SCAN comments(?:\s|$)/)}
 }));
