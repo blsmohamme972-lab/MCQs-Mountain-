@@ -1,0 +1,1 @@
+{"schema":1,"step":2,"fixes":[{"local_id":272,"chapter_id":10,"source_number":"20","source_page":146,"field":"options[3]","original":"preperation","corrected":"preparation"}],"candidate_count":242,"engine":"CMU general-English lexicon + book-domain medical whitelist heuristics; no external dictionary install available"}
