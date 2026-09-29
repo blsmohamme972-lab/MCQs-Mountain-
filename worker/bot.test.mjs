@@ -298,3 +298,55 @@ test("leaderboard privacy hides public row but preserves private own score; rate
   res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
   board=await res.json();assert.equal(board.own.hidden,true);assert.equal(board.own.score,20);assert.ok(!board.top.some(x=>x.name==="Ada"&&x.score===20));
 }));
+
+
+test("leaderboard flags impossible client speed and rate-limits submit requests", () => harness(async h => {
+  const initData=signedInitData({id:777,first_name:"Speed"});
+  const original=globalThis.fetch;
+  const qids=[11,12,13,14,15].map(i=>"Q"+String(i).padStart(9,"0"));
+  globalThis.fetch=async (url,init={})=>{
+    url=String(url);
+    if(url==="https://content.test/routes/Q000000.json")return{ok:true,json:async()=>({routes:Object.fromEntries(qids.map(q=>[q,{book_id:"TEST",chapter_id:1}]))})};
+    if(url==="https://content.test/catalog.json")return{ok:true,json:async()=>({books:[{id:"TEST",chapters:[{id:1,url:"https://content.test/packs/speed.json"}]}]})};
+    if(url==="https://content.test/packs/speed.json")return{ok:true,json:async()=>({questions:qids.map(q=>({id:q,type:"sba",options:["A","B"],answer:"A"}))})};
+    return original(url,init);
+  };
+  try{
+    let res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/submit",{method:"POST",body:JSON.stringify({
+      initData,answers:qids.map((qid,i)=>({qid,selection:0,answered_at_ms:10000+i*200}))
+    })}),h.env,{waitUntil(){}});
+    assert.equal(res.status,200);const first=await res.json();assert.equal(first.accepted,5);assert.equal(first.flagged,true);
+    assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM leaderboard_flags WHERE kind='impossible_speed'").get().n,1);
+    for(let i=0;i<9;i++){
+      res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/submit",{method:"POST",body:JSON.stringify({
+        initData,answers:[{qid:qids[0],selection:1,answered_at_ms:30000+i*3000}]
+      })}),h.env,{waitUntil(){}});
+      assert.equal(res.status,200);
+    }
+    res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/submit",{method:"POST",body:JSON.stringify({
+      initData,answers:[{qid:qids[0],selection:0,answered_at_ms:99999}]
+    })}),h.env,{waitUntil(){}});
+    assert.equal(res.status,429);assert.equal((await res.json()).error,"rate_limited");
+    assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM leaderboard_answers").get().n,5);
+  }finally{globalThis.fetch=original}
+}));
+
+test("leaderboard returns own rank outside top 100 and never exposes stored identifiers", () => harness(async h => {
+  const initData=signedInitData({id:888,first_name:"Private Student",username:"must-not-leak",phone_number:"+000"});
+  let res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
+  assert.equal(res.status,200);
+  const ownKey=h.DB.sql.prepare("SELECT user_key FROM leaderboard_users WHERE first_name='Private Student'").get().user_key;
+  const week=baghdadWeekKey();
+  for(let i=1;i<=20;i++)h.DB.sql.prepare("INSERT INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,0,?)").run(ownKey,"Q"+String(5000+i).padStart(9,"0"),week);
+  for(let u=1;u<=105;u++){
+    const key="rival-"+String(u).padStart(3,"0");
+    h.DB.sql.prepare("INSERT INTO leaderboard_users(user_key,first_name,photo_url) VALUES(?,?,NULL)").run(key,"Rival "+u);
+    for(let i=1;i<=20;i++)h.DB.sql.prepare("INSERT INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,1,?)").run(key,"Q"+String(u*1000+i).padStart(9,"0"),week);
+  }
+  res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
+  const body=await res.json();
+  assert.equal(body.top.length,100);assert.equal(body.own.rank,106);assert.equal(body.own.score,0);assert.equal(body.own.answered,20);
+  const serialized=JSON.stringify(body);
+  assert.doesNotMatch(serialized,/must-not-leak|phone_number|username|user_key|\+000/);
+  assert.deepEqual(Object.keys(body.top[0]).sort(),["answered","name","photo_url","rank","score"].sort());
+}));
