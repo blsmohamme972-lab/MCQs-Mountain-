@@ -12,7 +12,7 @@ def run(browser,origin,pack,out,helpers):
               class TestDate extends OriginalDate{constructor(...args){super(...(args.length?args:[fixed]));}static now(){return fixed;}}
               window.Date=TestDate;Math.random=()=>0.42;
               window.Telegram={WebApp:{initData:'signed-fixture',initDataUnsafe:{user:{id:123,first_name:'Ali',last_name:'Hassan'}},
-                colorScheme:'__THEME__',themeParams:{},ready(){},expand(){},isVersionAtLeast(){return true},
+                colorScheme:'__THEME__',themeParams:{},ready(){},expand(){},isVersionAtLeast(){return false},
                 onEvent(){},setHeaderColor(){},setBackgroundColor(){},
                 BackButton:{show(){},hide(){},onClick(){}},MainButton:{setParams(){},hide(){},onClick(){}},
                 HapticFeedback:{selectionChanged(){},notificationOccurred(){}},CloudStorage:null}};
