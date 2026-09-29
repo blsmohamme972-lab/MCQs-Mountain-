@@ -387,6 +387,19 @@ test("reports deduplicate and three unique reports auto-hide",()=>harness(async 
   assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM comment_reports WHERE comment_id=?").get(top.id).n,3);
 }));
 
+test("owner moderation queue is private and resolves reviewed reports",()=>harness(async h=>{
+  const author=signedInitData({id:724,first_name:"Author"}),reporter=signedInitData({id:725,first_name:"Reporter"});
+  const owner=signedInitData({id:123,first_name:"Owner"}),other=signedInitData({id:726,first_name:"Other"});
+  const top=(await postComment(h,author,"possible answer issue",null,"nonce_modqueue_1")).data.comment;
+  await commentApi(h,"report",reporter,{comment_id:top.id,reason:"answer_wrong"});
+  assert.equal((await commentApi(h,"mod-queue",other,{})).status,403);
+  const q=await commentApi(h,"mod-queue",owner,{});assert.equal(q.status,200);
+  const data=await q.json();assert.equal(data.items.length,1);assert.equal(data.items[0].qid,"Q000000001");assert.equal(data.items[0].reason,"answer_wrong");
+  assert.doesNotMatch(JSON.stringify(data),/user_key|telegram_id|username|phone_number/);
+  assert.equal((await commentApi(h,"moderate",owner,{comment_id:top.id,action:"hide"})).status,200);
+  const q2=await commentApi(h,"mod-queue",owner,{});assert.equal((await q2.json()).items.length,0);
+}));
+
 test("Verified by Kafu is owner-only and only applies to a reply",()=>harness(async h=>{
   const author=signedInitData({id:730,first_name:"Student"}),other=signedInitData({id:731,first_name:"Other"}),owner=signedInitData({id:123,first_name:"Owner"});
   const top=(await postComment(h,author,"question",null,"nonce_verify_t")).data.comment;
