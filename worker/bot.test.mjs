@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import { DatabaseSync } from "node:sqlite";
 import { readFileSync } from "node:fs";
 import bot, { parsePackageName, retryGroup, clearGroup } from "./bot.mjs";
+import { verifyTelegramInitData, baghdadWeekKey } from "./leaderboard.mjs";
+import { createHmac } from "node:crypto";
 
 // Exercise the real SQL/schema, not a mock that silently ignores unknown queries.
 function testDB() {
@@ -10,6 +12,7 @@ function testDB() {
   db.exec("PRAGMA foreign_keys=ON");
   db.exec(readFileSync(new URL("../migrations/0001_publish_queue.sql", import.meta.url), "utf8"));
   db.exec(readFileSync(new URL("../migrations/0002_publish_warnings.sql", import.meta.url), "utf8"));
+  db.exec(readFileSync(new URL("../migrations/0003_leaderboard.sql", import.meta.url), "utf8"));
   return {
     sql: db,
     prepare(sql) {
