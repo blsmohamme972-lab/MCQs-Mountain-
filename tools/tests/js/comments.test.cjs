@@ -38,7 +38,7 @@ test('locked Discussion produces zero comments requests and unlocks only after l
   assert.match(h.run('VIEWS.study().html'),/Answer this question to unlock student discussion/);
   await h.run('ACTIONS["open-comments"]()');
   assert.equal(h.requests.length,0);
-  h.run('S.answers.Q000000001={n:1,c:true,t:1,b:"BOOK"}');
+  h.run('S.answers.Q000000001={n:1,c:true,t:1,b:"BOOK"};SESSION.resp.Q000000001.done=true');
   assert.match(h.run('VIEWS.study().html'),/Student discussion — not verified/);
   await h.run('ACTIONS["open-comments"]()');
   await Promise.resolve();await Promise.resolve();
