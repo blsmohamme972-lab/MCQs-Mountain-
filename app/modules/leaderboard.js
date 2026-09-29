@@ -73,7 +73,7 @@ globalThis.KafuEnhancements.installers.push({name:'leaderboard',install(){
         ((board.top||[]).length?(board.top||[]).map(x=>row(x)).join(''):'<div class="k-empty"><p>No leaderboard scores yet.</p></div>')+
         '</section>';
     }
-    return{title:'Leaderboard',html:'<section class="k-leaderboard">'+body+'</section>',action:null};
+    return{title:'Leaderboard',html:'<section class="k-leaderboard">'+body+'</section>',action:null,tabs:'me'};
   };
   ACTIONS['open-leaderboard']=()=>{go('leaderboard');if(available())loadBoard(period).catch(()=>{})};
   ACTIONS['leaderboard-retry']=()=>loadBoard(period);
