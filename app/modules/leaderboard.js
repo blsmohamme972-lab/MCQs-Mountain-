@@ -64,7 +64,8 @@ globalThis.KafuEnhancements.installers.push({name:'leaderboard',install(){
     else if(error)body='<div class="k-card"><p class="note">Leaderboard unavailable right now. Your study progress is still saved.</p>'+C.button('Try again',{action:'leaderboard-retry',variant:'ghost'})+'</div>';
     else if(!board)body='<div class="k-card"><p class="note">Weekly competition resets Monday 00:00 Baghdad time. Only first attempts score.</p>'+C.button('Load leaderboard',{action:'leaderboard-retry'})+'</div>';
     else{
-      const own={...board.own,name:greetingName(),photo_url:TG.initDataUnsafe?.user?.photo_url||null};
+      const tgUser=TG.initDataUnsafe?.user||{},ownName=[tgUser.first_name,tgUser.last_name].filter(Boolean).join(' ')||greetingName();
+      const own={...board.own,name:ownName,photo_url:tgUser.photo_url||null};
       body='<div class="k-leader-tabs" role="tablist" aria-label="Leaderboard period">'+
         '<button role="tab" aria-selected="'+(period==='weekly')+'" data-a="leader-period" data-v="weekly">Weekly</button>'+
         '<button role="tab" aria-selected="'+(period==='all_time')+'" data-a="leader-period" data-v="all_time">All-time</button></div>'+
