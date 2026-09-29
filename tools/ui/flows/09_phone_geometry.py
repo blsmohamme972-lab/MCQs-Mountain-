@@ -81,9 +81,10 @@ def regression_evidence(browser,origin,pack,out,helpers,assert_fixed):
     assert not errors,errors
     ctx.close()
 
-    ctx=helpers['phone_context'](browser,origin,390,'light');ctx.add_init_script(TG_SDK)
+    ctx=helpers['phone_context'](browser,origin,390,'light')
     page,errors=helpers['open_app'](ctx,origin,pack)
     inject_long(page,helpers['long_pack'])
+    page.evaluate("() => document.body.classList.add('tg')")
     capture_viewport(page,out/'phone-390-telegram-study-bottom.png',bottom=True)
     report['telegram_bottom']=tail_metrics(page)
     if assert_fixed:assert_geometry(page,'390 telegram long study')
