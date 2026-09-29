@@ -118,23 +118,23 @@ async function board(request,env){
   const period=a.body.period==="all_time"?"all_time":"weekly", week=baghdadWeekKey();
   const filter=periodWhere(period), binds=period==="weekly"?[week]:[];
   const sql=`WITH scores AS (
-    SELECT u.user_key,u.display_name,u.photo_url,u.hidden,COUNT(a.qid) answered,SUM(a.correct) score
+    SELECT u.user_key,u.display_name,u.photo_url,u.hidden,SUM(a.correct) score
     FROM leaderboard_users u JOIN leaderboard_answers a ON a.user_key=u.user_key
     WHERE 1=1 ${filter}
     GROUP BY u.user_key
   ), ranked AS (
-    SELECT *,ROW_NUMBER() OVER(ORDER BY score DESC,answered DESC,user_key ASC) rank
+    SELECT *,ROW_NUMBER() OVER(ORDER BY score DESC,user_key ASC) rank
     FROM scores WHERE hidden=0
   )
   SELECT display_name,photo_url,score,rank FROM ranked ORDER BY rank LIMIT 30`;
   const top=await env.DB.prepare(sql).bind(...binds).all();
   const ownSql=`WITH scores AS (
-    SELECT u.user_key,u.hidden,COUNT(a.qid) answered,SUM(a.correct) score
+    SELECT u.user_key,u.hidden,SUM(a.correct) score
     FROM leaderboard_users u JOIN leaderboard_answers a ON a.user_key=u.user_key
     WHERE 1=1 ${filter}
     GROUP BY u.user_key
   ), ranked AS (
-    SELECT *,ROW_NUMBER() OVER(ORDER BY score DESC,answered DESC,user_key ASC) rank
+    SELECT *,ROW_NUMBER() OVER(ORDER BY score DESC,user_key ASC) rank
     FROM scores WHERE hidden=0 OR user_key=?
   )
   SELECT s.score,s.hidden,r.rank FROM scores s LEFT JOIN ranked r ON r.user_key=s.user_key WHERE s.user_key=?`;
