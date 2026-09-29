@@ -60,3 +60,10 @@ CREATE INDEX IF NOT EXISTS comment_reports_comment ON comment_reports(comment_id
 CREATE INDEX IF NOT EXISTS comment_reports_reporter_rate ON comment_reports(reporter_key,created_at DESC);
 CREATE INDEX IF NOT EXISTS comment_reports_queue ON comment_reports(status,created_at,id);
 CREATE INDEX IF NOT EXISTS comment_reports_qid ON comment_reports(qid,status,created_at);
+
+CREATE TABLE IF NOT EXISTS comment_settings (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL,
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+INSERT OR IGNORE INTO comment_settings(key,value) VALUES('enabled','1');
