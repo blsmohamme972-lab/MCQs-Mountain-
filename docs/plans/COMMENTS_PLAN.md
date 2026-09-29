@@ -141,7 +141,7 @@ That exceeds the current free write allowance. It identifies D1 write amplificat
 
 ## Arabic font
 
-Community uses a self-hosted Noto Sans Arabic Arabic subset from `@fontsource/noto-sans-arabic` under SIL OFL 1.1. PR CI measures its exact WOFF2 bytes and total font budget. Production pinning requires the exact SHA-256 and the existing <=100 KB total shipped WOFF2 budget to stay green.
+Community uses a self-hosted IBM Plex Sans Arabic subset from `@fontsource/ibm-plex-sans-arabic` under SIL OFL 1.1. PR CI measures its exact WOFF2 bytes and total font budget. Production pinning requires the exact SHA-256 and the existing <=100 KB total shipped WOFF2 budget to stay green.
 
 ## Rollback
 
