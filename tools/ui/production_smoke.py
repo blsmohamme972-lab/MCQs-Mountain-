@@ -75,7 +75,7 @@ def main() -> int:
         errors=[]
         page=ctx.new_page();page.on("pageerror",lambda exc:errors.append(str(exc)))
         page.goto(f"{origin}/?prod-ui={args.commit}",wait_until="load")
-        page.wait_for_function("typeof CATALOG!=='undefined'&&Array.isArray(CATALOG.books)&&CATALOG.books.length>0",timeout=30000)
+        page.wait_for_function("typeof CATALOG!=='undefined'&&CATALOG!==null&&Array.isArray(CATALOG.books)&&CATALOG.books.length>0",timeout=30000)
         page.evaluate("document.fonts.ready")
         if page.locator('[data-a="onboard-skip"]').count():
             page.locator('[data-a="onboard-skip"]').click()
