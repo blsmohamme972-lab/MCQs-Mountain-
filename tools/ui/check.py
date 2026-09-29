@@ -30,6 +30,8 @@ from playwright.sync_api import sync_playwright
 
 FIXED_TIME='2026-09-28T09:30:00.000Z'
 QIDS=[f'Q00000100{i}' for i in range(1,5)]
+LONG_QIDS=[f'Q{2000+i:09d}' for i in range(205)]
+PHONE_WIDTHS=(360,390,430)
 DEVICES={'phone':{'width':390,'height':844},'ipad':{'width':820,'height':1180}}
 # Exact renderer variants observed on identical frozen-head runs. Keep this narrow:
 # any unlisted hash still fails visual CI.
@@ -49,6 +51,27 @@ VISUAL_HASH_VARIANTS={
         '541ee13295736b89e23830d390bee3dd58ebc8d7bc2bb38ec4dc9f309a82061c',
     },
 }
+
+
+def long_pack_fixture():
+    questions=[]
+    for i,qid in enumerate(LONG_QIDS,1):
+        questions.append({
+            'id':qid,'book_id':'DESIGN-LONG','chapter_id':1,'version':1,'type':'sba',
+            'stem':('A deliberately long phone-layout fixture question with enough text to exercise wrapping, '
+                    'fixed actions, and bottom spacing without relying on production content.'),
+            'options':[
+                'A compact answer that should wrap safely on narrow phones',
+                'Another answer choice used only for deterministic layout testing',
+                'A third answer choice to make the study screen taller than one viewport',
+                'A fourth answer choice that must never widen the document',
+                'A fifth answer choice that keeps the final controls in normal document flow',
+            ],
+            'answer':'A','explanation':'Synthetic layout fixture only.','source_page':i,
+            'no_shuffle':True,'status':'source_verified','images':[],'explanation_images':[],
+            'lead_in':'','group_id':'','topic':''
+        })
+    return {'schema':1,'book_id':'DESIGN-LONG','chapter_id':1,'version':1,'questions':questions}
 
 
 def fixtures(origin):
@@ -121,6 +144,16 @@ SEED="""async ({pack,withProgress})=>{
 
 def context(browser,origin,device='phone',theme='light'):
     ctx=browser.new_context(viewport=DEVICES[device],device_scale_factor=1,color_scheme=theme,reduced_motion='reduce',ignore_https_errors=True,locale='en-GB',timezone_id='UTC')
+    ctx.add_init_script(INIT)
+    ctx.route('https://telegram.org/**',lambda route:route.fulfill(status=200,content_type='application/javascript',body='/* No Telegram connection in fixtures */'))
+    ctx.route('https://fonts.googleapis.com/**',lambda route:route.abort())
+    ctx.route('https://fonts.gstatic.com/**',lambda route:route.abort())
+    ctx.route('https://kafu*.workers.dev/**',lambda route:route.abort())
+    return ctx
+
+
+def phone_context(browser,origin,width,theme='light'):
+    ctx=browser.new_context(viewport={'width':width,'height':844},device_scale_factor=1,color_scheme=theme,reduced_motion='reduce',ignore_https_errors=True,locale='en-GB',timezone_id='UTC')
     ctx.add_init_script(INIT)
     ctx.route('https://telegram.org/**',lambda route:route.fulfill(status=200,content_type='application/javascript',body='/* No Telegram connection in fixtures */'))
     ctx.route('https://fonts.googleapis.com/**',lambda route:route.abort())
@@ -301,7 +334,7 @@ def main():
             hashes=snapshots(browser,origin,pack,args.out/'after')
             checks={} if args.capture_only else flows(browser,origin,pack)
             if not args.capture_only:
-                helpers={'context':context,'open_app':open_app,'capture':capture,'study_answer':study_answer}
+                helpers={'context':context,'phone_context':phone_context,'open_app':open_app,'capture':capture,'study_answer':study_answer,'long_pack':long_pack_fixture()}
                 for path in sorted((ROOT/'tools/ui/flows').glob('*.py')):
                     spec=importlib.util.spec_from_file_location('extra_'+path.stem,path)
                     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
