@@ -68,10 +68,10 @@ globalThis.KafuEnhancements.installers.push({name:'question-comments',install(){
     }catch(e){state.error=String(e.message||e)}
     state.loading=false;if(SHEET)render();
   }
-  function open(){
+  async function open(){
     const qid=SESSION?.qids?.[SESSION.index];if(!qid)return;
     state={...state,qid,sort:'helpful',items:[],next:null,loading:false,error:'',offline:!navigator.onLine,replyTo:null,reportTarget:null,cacheAt:0};
-    SHEET=sheet;render();if(answered(qid))load(qid).catch(()=>{});
+    SHEET=sheet;render();if(answered(qid))await load(qid);
   }
   async function send(){
     const ta=document.querySelector('[data-comment-draft]'),raw=ta?ta.value:state.draft,body=String(raw||'').trim();
