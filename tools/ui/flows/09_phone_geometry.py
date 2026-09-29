@@ -180,5 +180,27 @@ def run(browser,origin,pack,out,helpers):
 
         assert not errors,errors
         ctx.close()
-        passed.append(f'{width}px: home/library/specialty/book/review/me/privacy/about/onboarding/results/study/report-sheet/completion have no document overflow or excess scroll tail; 205-question compact progress and 40-dot contained scroller pass')
+
+        # Exercise the actual populated leaderboard UI at every phone width.
+        lctx=helpers['phone_context'](browser,origin,width,'light')
+        lctx.add_init_script(TG_SDK)
+        leaderboard={
+            "period":"weekly","week_key":"2026-09-28","min_answered":20,
+            "own":{"score":88,"answered":104,"rank":7,"hidden":False},
+            "top":[
+                {"name":"Student "+str(i),"photo_url":None,"score":120-i,"answered":150-i,"rank":i}
+                for i in range(1,35)
+            ]
+        }
+        lctx.route("**/api/leaderboard/board",lambda route:route.fulfill(status=200,content_type="application/json",body=json.dumps(leaderboard)))
+        lctx.route("**/api/leaderboard/privacy",lambda route:route.fulfill(status=200,content_type="application/json",body=json.dumps({"ok":True,"hidden":False})))
+        lpage,lerrors=helpers['open_app'](lctx,origin,pack)
+        lpage.evaluate("ACTIONS['open-leaderboard']()")
+        lpage.wait_for_selector('.k-leader-row')
+        assert lpage.locator('.k-leader-row').count()>=30
+        assert_geometry(lpage,f'{width} leaderboard')
+        assert not lerrors,lerrors
+        lctx.close()
+
+        passed.append(f'{width}px: home/library/specialty/book/review/me/leaderboard/privacy/about/onboarding/results/study/report-sheet/completion have no document overflow or excess scroll tail; 205-question compact progress and 40-dot contained scroller pass')
     return {'passed':passed+[f"Regression evidence: {evidence}"]}
