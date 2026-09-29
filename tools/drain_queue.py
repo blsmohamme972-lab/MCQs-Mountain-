@@ -113,6 +113,92 @@ def image_count_and_validate(packages: list[Path]) -> int:
     return count
 
 
+def sanitize_audit_mismatches(path: Path) -> list[dict]:
+    """Skip only audit-mismatch questions while keeping validate.py unchanged."""
+    with zipfile.ZipFile(path) as zf:
+        names = zf.namelist()
+        if "audit.json" not in names or "questions.jsonl" not in names or "book.json" not in names:
+            return []
+        audit = json.loads(zf.read("audit.json").decode("utf-8"))
+        mismatches = {
+            int(row["local_id"]): row
+            for row in (audit.get("results") or [])
+            if isinstance(row, dict) and isinstance(row.get("local_id"), int) and row.get("level") == "mismatch"
+        }
+        if not mismatches:
+            return []
+        rows = [json.loads(line) for line in zf.read("questions.jsonl").decode("utf-8").splitlines() if line.strip()]
+        removed = [q for q in rows if int(q.get("local_id", -1)) in mismatches]
+        if not removed:
+            return []
+        kept = [q for q in rows if int(q.get("local_id", -1)) not in mismatches]
+        removed_images = set()
+        for q in removed:
+            for field in ("images", "explanation_images"):
+                for name in q.get(field) or []:
+                    removed_images.add(name if str(name).startswith("images/") else f"images/{name}")
+        book = json.loads(zf.read("book.json").decode("utf-8"))
+        skipped = list(book.get("skipped") or [])
+        present_skipped = {int(x["local_id"]) for x in skipped if isinstance(x, dict) and isinstance(x.get("local_id"), int)}
+        details = []
+        for q in removed:
+            lid = int(q["local_id"])
+            row = mismatches[lid]
+            detail = str(row.get("detail") or "audit mismatch")
+            if lid not in present_skipped:
+                skipped.append({"local_id": lid, "reason": f"server skipped: audit mismatch — {detail}"})
+            details.append({
+                "local_id": lid,
+                "source_number": str(q.get("source_number", "")),
+                "source_page": q.get("source_page"),
+                "reason": detail,
+            })
+        skipped.sort(key=lambda x: int(x.get("local_id", 0)))
+        book["skipped"] = skipped
+        q_raw = "".join(json.dumps(q, ensure_ascii=False, separators=(",", ":")) + "\n" for q in kept).encode("utf-8")
+        audit["results"] = [
+            row for row in (audit.get("results") or [])
+            if not (isinstance(row, dict) and row.get("local_id") in mismatches)
+        ]
+        audit["questions_sha256"] = hashlib.sha256(q_raw).hexdigest()
+        audit["mismatch_count"] = sum(1 for row in audit["results"] if isinstance(row, dict) and row.get("level") == "mismatch")
+        report = zf.read("report.md").decode("utf-8") if "report.md" in names else ""
+        report += "\n\n## Server mismatch skips\n" + "".join(
+            f"- local_id {x['local_id']} (source {x['source_number'] or '?'}, page {x['source_page'] or '?'}): {x['reason']}\n"
+            for x in details
+        )
+        replacements = {
+            "book.json": (json.dumps(book, ensure_ascii=False, indent=2) + "\n").encode("utf-8"),
+            "questions.jsonl": q_raw,
+            "audit.json": (json.dumps(audit, ensure_ascii=False, indent=2) + "\n").encode("utf-8"),
+            "report.md": report.encode("utf-8"),
+        }
+        copied = {
+            info.filename: zf.read(info.filename)
+            for info in zf.infolist()
+            if not info.is_dir() and info.filename not in replacements and info.filename not in removed_images
+        }
+    temp = path.with_suffix(path.suffix + ".sanitized")
+    with zipfile.ZipFile(temp, "w", compression=zipfile.ZIP_DEFLATED) as out:
+        for name, data in {**copied, **replacements}.items():
+            out.writestr(name, data)
+    temp.replace(path)
+    return details
+
+
+def declared_skipped_count(packages: list[Path]) -> int:
+    ids: set[int] = set()
+    for path in packages:
+        with zipfile.ZipFile(path) as zf:
+            book = json.loads(zf.read("book.json").decode("utf-8"))
+            ids.update(
+                int(item["local_id"])
+                for item in (book.get("skipped") or [])
+                if isinstance(item, dict) and isinstance(item.get("local_id"), int)
+            )
+    return len(ids)
+
+
 def restore(root: Path) -> tuple[Path, Path]:
     state = root / "state"
     build = root / "build"
@@ -229,6 +315,9 @@ def process_publish(item: dict, root: Path, queue: Queue) -> dict:
         if target.stat().st_size != part["file_size"]:
             raise ValueError(f"Telegram file size changed: {part['filename']}")
         packages.append(target)
+    mismatch_skips = []
+    for path in packages:
+        mismatch_skips.extend(sanitize_audit_mismatches(path))
     images = image_count_and_validate(packages)
     for path in packages:
         run("python", "tools/validate.py", "--require-audit", str(path))
@@ -239,7 +328,8 @@ def process_publish(item: dict, root: Path, queue: Queue) -> dict:
                       "--package", str(path)).strip() == "yes" for path in packages]
     if all(duplicates) and not group.get("force_republish"):
         return {"duplicate": True, "book_id": group["book_id"], "version": group["version"],
-                "questions": 0, "chapters": 0, "images": images, "skipped": 0, "held": 0}
+                "questions": 0, "chapters": 0, "images": images, "skipped": 0, "held": 0,
+                "warnings": 0, "mismatch_skips": []}
     options = ["--decisions", str(decisions_for(queue, group["book_id"], root))]
     if group.get("force_republish"):
         options.append("--allow-version-reuse")
@@ -255,10 +345,12 @@ def process_publish(item: dict, root: Path, queue: Queue) -> dict:
     candidate(root, content, group["book_id"])
     save_state(state, content)
     save_book_release(group["book_id"], group["version"], packages)
-    queue.call("flags", {"held_details": report.get("held_details", [])})
+    queue.call("warnings", {"book_id": group["book_id"], "version": group["version"],
+                             "warnings": report.get("warnings", [])})
     return {"book_id": group["book_id"], "version": group["version"],
             "questions": summary["visible_questions"], "chapters": len(book["chapters"]),
-            "images": images, "skipped": len(report.get("skipped", [])), "held": summary["held"]}
+            "images": images, "skipped": declared_skipped_count(packages), "held": summary["held"],
+            "warnings": len(report.get("warnings", [])), "mismatch_skips": mismatch_skips}
 
 
 def process_admin(item: dict, root: Path, queue: Queue) -> dict:
@@ -329,10 +421,22 @@ def main() -> None:
                     result = process_publish(item, root, queue)
                     queue.call("finish", {"kind": "publish", "group_key": item["group"]["group_key"],
                                           "ok": True, **result})
-                    queue.notify("✅ " + item["group"]["group_key"] +
-                                 (" already published (same ZIP)." if result.get("duplicate") else
-                                  f" published: {result['questions']} questions, {result['chapters']} chapters, "
-                                  f"{result['images']} images, {result['skipped']} skipped, {result['held']} held."))
+                    if result.get("duplicate"):
+                        queue.notify("✅ " + item["group"]["group_key"] + " already published (same ZIP).")
+                    else:
+                        skipped_lines = ""
+                        if result.get("mismatch_skips"):
+                            shown = result["mismatch_skips"][:20]
+                            skipped_lines = "\nSkipped audit mismatches: " + ", ".join(
+                                f"L{x['local_id']} (page {x['source_page'] or '?'})" for x in shown
+                            )
+                            if len(result["mismatch_skips"]) > len(shown):
+                                skipped_lines += f" +{len(result['mismatch_skips']) - len(shown)} more"
+                        queue.notify(
+                            "✅ " + item["group"]["group_key"] +
+                            f" published: {result['questions']} questions, {result['warnings']} with warnings, "
+                            f"{result['skipped']} skipped." + skipped_lines
+                        )
                 else:
                     result = process_admin(item, root, queue)
                     queue.call("finish", {"kind": "admin", "id": item["job"]["id"], "ok": True,
