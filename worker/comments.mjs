@@ -155,6 +155,16 @@ async function removeOwn(request,env){
   await env.DB.prepare("UPDATE comments SET status='deleted',body=NULL,verified=0,pinned=0,updated_at=datetime('now') WHERE id=?").bind(id).run();
   return reply({ok:true});
 }
+async function moderationQueue(request,env){
+  const a=await auth(request,env);if(a.error)return a.error;await upsertUser(env,a);if(!a.isOwner)return reply({error:"forbidden"},403);
+  const rows=await env.DB.prepare(`SELECT r.id report_id,r.comment_id,r.qid,r.reason,r.created_at,
+    c.body,c.status,c.report_count,c.verified,c.pinned,u.display_name,u.photo_url
+    FROM comment_reports r JOIN comments c ON c.id=r.comment_id JOIN comment_users u ON u.user_key=c.author_key
+    WHERE r.status='pending' ORDER BY r.created_at ASC,r.id ASC LIMIT 50`).all();
+  return reply({items:(rows.results||[]).map(x=>({report_id:Number(x.report_id),comment_id:Number(x.comment_id),qid:x.qid,reason:x.reason,
+    created_at:x.created_at,body:x.body||"",status:x.status,report_count:Number(x.report_count||0),verified:!!x.verified,pinned:!!x.pinned,
+    name:x.display_name,photo_url:x.photo_url||null}))});
+}
 async function moderate(request,env){
   const a=await auth(request,env);if(a.error)return a.error;await upsertUser(env,a);if(!a.isOwner)return reply({error:"forbidden"},403);
   const id=intId(a.body.comment_id),action=String(a.body.action||"");if(!id)return reply({error:"invalid_comment_id"},400);
@@ -189,6 +199,7 @@ export async function handleComments(request,env,path){
   if(path==="/api/comments/helpful")return helpful(request,env);
   if(path==="/api/comments/report")return reportComment(request,env);
   if(path==="/api/comments/delete")return removeOwn(request,env);
+  if(path==="/api/comments/mod-queue")return moderationQueue(request,env);
   if(path==="/api/comments/moderate")return moderate(request,env);
   return null;
 }
