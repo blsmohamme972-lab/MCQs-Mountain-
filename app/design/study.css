@@ -527,3 +527,46 @@ body[data-study-screen] .actionbar .btn:disabled{
   body[data-study-screen] .k-study-icon,
   body[data-study-screen] .actionbar .btn{transition:none}
 }
+
+/* Only rich question content owns these table and containment rules. */
+body[data-study-screen] .k-question-rich{min-width:0;max-width:100%;}
+body[data-study-screen] .opt>.k-question-rich{flex:1 1 0;}
+body[data-study-screen] .tf>.k-question-rich{font-family:var(--font-reading);font-size:16px;font-weight:600;line-height:1.45;}
+body[data-study-screen] .k-question-rich>p{margin:0 0 10px;}
+body[data-study-screen] .k-question-rich .k-table-box{
+  max-width:100%;
+  min-width:0;
+  overflow-x:auto;
+  overscroll-behavior-inline:contain;
+  margin:10px 0;
+  border:2px solid var(--mcq-edge);
+  border-radius:14px;
+  background:var(--mcq-card);
+  scrollbar-color:var(--mcq-muted) var(--mcq-card-2);
+}
+body[data-study-screen] .k-question-rich .k-question-table{
+  width:100%;
+  border-collapse:collapse;
+  font-family:var(--font-reading);
+  font-size:calc(15px * var(--fs,1));
+  line-height:1.5;
+  color:var(--mcq-text);
+  text-align:left;
+  font-weight:400;
+}
+body[data-study-screen] .k-question-table th,
+body[data-study-screen] .k-question-table td{
+  min-width:7ch;
+  padding:9px 12px;
+  border-bottom:1px solid var(--mcq-edge-soft);
+  vertical-align:top;
+}
+body[data-study-screen] .k-question-table thead th{
+  background:var(--mcq-indigo-tint);
+  font-weight:700;
+}
+body[data-study-screen] .k-question-table .k-table-section th{
+  background:var(--mcq-card-2);
+  font-weight:700;
+}
+body[data-study-screen] .k-question-table tbody tr:last-child>*{border-bottom:0;}
