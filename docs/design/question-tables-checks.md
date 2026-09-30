@@ -23,9 +23,12 @@ Run **36747127200**, artifact **11113116832**, confirms two further iPad
 no-results variants: 13 light-theme pixels and 39 dark-theme pixels compared
 with main, limited to border rasterization. Both retain the same dimensions
 and layout. All table, phone overflow and functional checks passed in both runs.
+Run **36748799847**, artifact **11114300774**, records one further dark-theme
+variant differing from main in 21 pixels at the search field's left border,
+with the same dimensions. It is included by exact hash as well.
 
 The 12 refreshed reference hashes come from the earlier **main** artifact,
-not from accepting a changed Library in this PR. The three observed iPad
+not from accepting a changed Library in this PR. The four observed iPad
 no-results variants are added by exact hash. All other reference entries,
 pixel comparison rules, dimensions, budgets, and functional assertions remain
 unchanged. No Library application code is changed by this PR.
