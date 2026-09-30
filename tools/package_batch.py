@@ -136,11 +136,22 @@ def build(pdf_path: Path, parser_name: str, metadata_path: Path, out_dir: Path) 
 
     out_dir.mkdir(parents=True, exist_ok=True)
     package = out_dir / f"{book['book_id']}_v{book['version']}.zip"
+    for key in ("source_map", "image_map", "resources"):
+        if key in parsed:
+            (out_dir / (book["book_id"] + "-" + key + ".json")).write_text(
+                json.dumps(parsed[key], ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     with tempfile.TemporaryDirectory(prefix="kafu-batch-") as td:
         work = Path(td)
         (work / "book.json").write_text(json.dumps(book, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         write_jsonl(work / "questions.jsonl", parsed["questions"])
         (work / "cover.webp").write_bytes(render_cover(pdf_path))
+        images = parsed.get("images") or {}
+        if images:
+            (work / "images").mkdir()
+            for name, data in sorted(images.items()):
+                if Path(name).name != name:
+                    raise ValueError("Parser returned unsafe image filename")
+                (work / "images" / name).write_bytes(data)
         notes = parsed.get("notes") or []
         (work / "report.md").write_text(
             "# Kafu package batch report\n\n"
@@ -159,6 +170,8 @@ def build(pdf_path: Path, parser_name: str, metadata_path: Path, out_dir: Path) 
         with zipfile.ZipFile(package, "w", compression=zipfile.ZIP_DEFLATED) as zf:
             for name in ("book.json", "questions.jsonl", "cover.webp", "audit.json", "report.md"):
                 zf.write(work / name, arcname=name)
+            for name in sorted(images):
+                zf.write(work / "images" / name, arcname="images/" + name)
 
     if package.stat().st_size > MAX_PACKAGE:
         package.unlink(missing_ok=True)
@@ -187,3 +200,4 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
