@@ -1,6 +1,6 @@
 # Kafu - PROGRESS
 
-Updated 2026-09-28. Protected production book: KAFU-UPLOAD-TEST v1 (4 questions, 1 chapter, 2 images). No production queue tests during design. English-only/offline-first; no credential/account/infrastructure changes.
+Updated 2026-09-30. Protected production book: KAFU-UPLOAD-TEST v1 (4 questions, 1 chapter, 2 images). No production queue tests during design. English-only/offline-first; no credential/account/infrastructure changes.
 
 ## Earlier work
 
@@ -24,3 +24,25 @@ Four owner safeguards apply to every later saved-data addition. Before/after pho
 - Staged deployment workflow correction merged directly to `main` as `492f71bdbaadc94c528c8068dcefc096b81499ac` so app deployment follows the documented order: Worker version upload -> exact Version URL smoke -> 100% promotion -> production smoke.
 - Deploy run 36469423661 uploaded Worker version `61399cd9-5046-4d0d-b4be-1c2f069d861b`, smoke-tested `https://61399cd9-kafu.blsmohamme97.workers.dev`, promoted it to 100%, then passed production smoke on `https://kafu.blsmohamme97.workers.dev` with protected `KAFU-UPLOAD-TEST v1` (4 questions).
 - Next owner-gated design task: **DESIGN 1b — question screen parity**. Do not begin it until the owner gives that explicit go-ahead.
+
+## Oxford MCQ book conversion — 2026-09-30
+
+- Source: uploaded `OXFORD.pdf`, *SBA MCQs for the MRCS Part A*, Oxford University Press, 2013.
+- Prepared `OXFORD-MRCS-A_v1.zip` for owner upload to the Telegram bot. Specialty/card: General Surgery. Edition is not stated in the source and was not inferred.
+- Extracted 350 SBA questions: 50 questions in each of Chapters 1–7. All 350 printed answers matched by chapter and source question number. No questions skipped.
+- Preserved stems, option text/order and printed answer keys. Copied explanation excerpts; Chapters 5 Q43 and 7 Q30 have empty explanation fields because the source supplies lists rather than enough complete prose. Their original source text is retained in `source_explanation`.
+- Included seven linked explanation images: two diagram figures (Ch5 Q21 cardiac action potential; Ch6 Q15 facial nerve) and five tables (Ch1 Q38; Ch3 Q19; Ch5 Q33, Q34; Ch7 Q24). The owner was shown both diagram-linked questions, options, printed answers and extracted figures for review.
+- Source audit: 350 matches, 0 mismatches. Rendered question pages were OCR-checked for numeric values; 18 OCR discrepancies were reviewed against page-image crops. Copied explanation words were checked against source word order.
+- Ran the unchanged repository `tools/validate.py --require-audit` against the completed ZIP: PASS, 0 errors, 11 warnings. Package size: 400,169 bytes.
+- Eight source/conversion flags were explained to the owner:
+  - Ch1 Q3: printed key E; option C also conflicts with the book explanation.
+  - Ch1 Q9: unusual printed creatinine unit, 89 mmol/L.
+  - Ch5 Q2: unusual WCC threshold/unit combination in option E.
+  - Ch5 Q6: source explanation states 10 mmol chloride in normal saline.
+  - Ch5 Q19: source explanation does not explicitly justify keyed FNAC option D against radionuclide scanning.
+  - Ch5 Q43: insufficient complete explanatory prose; original source list retained.
+  - Ch6 Q32: duplicate printed D option labels; original text/order and source labels retained.
+  - Ch7 Q30: TNM explanation is a classification list; original source text retained.
+- Three additional validator warnings concern preserved line-break hyphens: Ch2 Q27, Ch2 Q30 and Ch3 Q7.
+- Status: package delivered; owner intends to upload it personally. Bot upload, publication and live-app verification have not been confirmed.
+- Repository access during conversion was read-only. This follow-up records progress only; application/import code and book content in the repository are unchanged.
