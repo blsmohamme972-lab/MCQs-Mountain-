@@ -20,6 +20,7 @@ test('offline study saves answers/images/books with no dependency on leaderboard
   h.ctx.navigator.onLine=true;await h.ctx.KafuLeaderboard.flush();
   assert.equal(h.ctx.KafuLeaderboard.pending.length,701,'failed network preserves pending');
   assert.equal(h.meta.get('leaderboard_pending_user_1').length,701);
+  assert.ok([...h.timers.values()].some(x=>x.delay>=60000),'paused leaderboard backs off instead of retrying every second');
 });
 test('submit batching is bounded, single flight, durable, and keeps answers added during a request',async()=>{
   const h=harness(Array.from({length:100},(_,i)=>({qid:'Q'+String(i+1).padStart(9,'0'),selection:0})));

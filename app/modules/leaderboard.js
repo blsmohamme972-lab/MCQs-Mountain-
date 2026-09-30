@@ -5,7 +5,7 @@ globalThis.KafuEnhancements.installers.push({name:'leaderboard',install(){
   const owner=IN_TG&&Number.isSafeInteger(TG.initDataUnsafe?.user?.id)?String(TG.initDataUnsafe.user.id):'browser';
   const key='leaderboard_pending_user_'+owner,privacyKey='leaderboard_hidden_user_'+owner;
   const BATCH=100,FLUSH_MS=60*60*1000;
-  let flushing=null,persisting=Promise.resolve();
+  let flushing=null,persisting=Promise.resolve(),retryDelay=0;
   let pending=[],timer=null,loading=false,period='weekly',board=null,error='',hiddenPref=false;
   const clone=v=>v===undefined?null:JSON.parse(JSON.stringify(v));
   function available(){return !!(IN_TG&&TG?.initData)}
@@ -32,10 +32,11 @@ globalThis.KafuEnhancements.installers.push({name:'leaderboard',install(){
     try{
       await savePending();
       const result=await api('submit',{answers:batch});
+      retryDelay=0;
       pending=pending.filter(x=>!batch.some(y=>y.qid===x.qid));
       await savePending();
       return result;
-    }catch(_){return;}
+    }catch(_){retryDelay=Math.min(FLUSH_MS,Math.max(60000,retryDelay*2));return;}
     finally{schedule()}
   }
   function flush(){
@@ -45,7 +46,7 @@ globalThis.KafuEnhancements.installers.push({name:'leaderboard',install(){
   }
   function schedule(){
     if(timer||!pending.length)return;
-    timer=setTimeout(()=>{flush().catch(()=>{})},pending.length>=BATCH?1000:FLUSH_MS);
+    timer=setTimeout(()=>{flush().catch(()=>{})},Math.max(retryDelay,pending.length>=BATCH?1000:FLUSH_MS));
   }
   const originalOpen=DB.open.bind(DB);
   DB.open=async function(...args){const result=await originalOpen(...args);await loadPending();schedule();return result};
