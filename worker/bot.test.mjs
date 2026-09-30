@@ -504,6 +504,7 @@ test('admin usage and books reject strangers, forged/expired sessions and GET; n
     assert.equal((await post(path,signedInitData({id:123},1))).status,403);
     assert.equal((await bot.fetch(new Request('https://kafu.test/admin/'+path),h.env,{})).status,405);
   }
+  assert.equal((await bot.fetch(new Request('https://kafu.test/admin/capabilities',{method:'POST',body:'null'}),h.env,{})).status,403);
   const initData=signedInitData({id:123,first_name:'Owner'}),before=h.DB.sql.prepare('SELECT total_changes() n').get().n;
   const cap=await post('capabilities',initData);assert.equal(cap.status,200);assert.equal(cap.headers.get('cache-control'),'private, no-store');
   assert.deepEqual(await cap.json(),{books:true,d1_usage:true});

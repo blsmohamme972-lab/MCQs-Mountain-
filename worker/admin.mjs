@@ -3,6 +3,7 @@ const LIMITS={rows_read:5_000_000,rows_written:100_000};
 function reply(body,status=200){return new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json','cache-control':'private, no-store','vary':'Authorization'}})}
 export async function verifyAdmin(request,env){
   let body;try{body=await request.json()}catch{return null}
+  if(!body||typeof body!=='object'||Array.isArray(body))return null;
   const user=await verifyTelegramInitData(body.initData,env.BOT_TOKEN);
   if(!user)return null;
   const date=Number(new URLSearchParams(body.initData).get('auth_date')),age=Date.now()/1000-date;
