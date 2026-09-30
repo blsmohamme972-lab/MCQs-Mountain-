@@ -42,7 +42,7 @@ Parser delivery rules:
 Then run it over the whole PDF. Clean the text:
 - remove running headers, footers, page numbers, publisher lines
 - replace ligatures (ﬁ ﬂ ﬀ ﬃ ﬄ) with normal letters
-- join words broken across lines ("hypo- thermia" → "hypothermia"), but keep real hyphens ("beta-blocker")
+- **HYPHENS:** For a word split with a hyphen at a line end (e.g. "fol-" followed by "lowing"), join it with no space and remove the hyphen only if the same word appears elsewhere in the book without it ("following"). Keep real hyphens like "two-thirds". If the unhyphenated word cannot be confirmed elsewhere in the book, join with no space, keep the printed hyphen, and flag the uncertainty.
 - keep symbols and units exactly; use Unicode (PaO₂, Na⁺, µg, ≥, ±), never LaTeX
 - keep tables as simple Markdown tables; keep line breaks inside stems where the book has them
 - strip option labels from option text ("A. Ketamine" → "Ketamine")
@@ -69,7 +69,7 @@ If any option depends on position ("All of the above", "None of the above", "Bot
 
 ## 5. Images
 
-- Extract figures that belong to questions (ECGs, X-rays, CT, photos, diagrams, graphs). Skip logos, icons, decorative chapter art.
+- **FIGURES:** Attach an image to a question only if the question cites its figure number (e.g. "Fig. 29-4") and that number matches the figure’s caption in the book. Never attach an image just because it is on the same page. If unsure, attach nothing and flag it. This matching rule also applies to explanation images: require the explanation’s cited figure number to match the caption. Skip logos, icons, decorative chapter art.
 - Crop to the figure only. Convert to WebP: max width 1200 px, quality 80, under 1.5 MB.
 - Name by `local_id`: question images `L0041_1.webp`, `L0041_2.webp`; explanation images `L0041_e1.webp`. Put them in `images/`.
 - Cover: the book's front cover (or page 1) as `cover.webp`, about 600 px wide, under 400 KB.
@@ -142,7 +142,7 @@ The "19 MB" wording in DELIVER means the code's 19 MiB budget above, not permiss
 
 **Size preflight, step 2 (measurement):** Build and measure the complete final single ZIP first, including all questions, figures, table crops, cover, `book.json`, `audit.json` and `report.md`. Record its exact compressed bytes, counted uncompressed bytes, entry count and maximum member ratio. Recheck the actual final archive after every content, compression, audit or report change. An earlier estimate or intermediate archive is not a reason to retain a split when the final single ZIP fits.
 
-**Size preflight, step 3 (split only if required):** If the complete final ZIP fits every applicable limit, deliver that ONE ZIP. Otherwise split only when doing so resolves a measured limit violation, making each part as large as allowed and using the fewest parts. Prefer chapter boundaries only when they do not cause extra parts; a chapter may span parts while keeping its chapter ID and full-book local IDs. Do not split merely because the book has many chapters/questions/images, because it was processed in batches, or to target an arbitrary smaller ZIP size. Each part must pass every limit and the unchanged validator. Name parts `BOOK-ID_v1_part1ofN.zip`, etc.; keep the same `book_id`, version and chapter definitions, each part's own `part` and contiguous `id_range`, only its own questions/images/skipped entries, and `cover.webp` in part 1. Rebuild the audit for each final `questions.jsonl` and run `validate_release.py` on the complete release.
+**SIZE:** Deliver ONE ZIP if it is under 19 MB. Split into parts only if it is bigger. Use the exact byte budget defined above; do not split an otherwise small ZIP because of chapter, question or image counts.\n\n**Size preflight, step 3 (split only if required):** If the complete final ZIP is below the compressed-size ceiling, deliver that ONE ZIP after it passes all other applicable limits. Split only when its compressed size exceeds that ceiling, making each part as large as allowed and using the fewest parts. If a ZIP is exactly at the ceiling, reduce its compressed size below the boundary before delivery. An under-ceiling ZIP that fails another limit must be repaired or reported as blocked, not split merely for that reason. Prefer chapter boundaries only when they do not cause extra parts; a chapter may span parts while keeping its chapter ID and full-book local IDs. Do not split merely because the book has many chapters/questions/images, because it was processed in batches, or to target an arbitrary smaller ZIP size. Each part must pass every limit and the unchanged validator. Name parts `BOOK-ID_v1_part1ofN.zip`, etc.; keep the same `book_id`, version and chapter definitions, each part's own `part` and contiguous `id_range`, only its own questions/images/skipped entries, and `cover.webp` in part 1. Rebuild the audit for each final `questions.jsonl` and run `validate_release.py` on the complete release.
 
 For any split, `report.md` must name the specific violated limit and its source line, the measured attempted single-ZIP value versus the allowed value, the exact size/entry/expanded-byte values for every part, and why fewer parts cannot fit. Splitting cannot repair an oversized individual image, excess images attached to one question, invalid source content, or another per-item validation error; resolve the actual issue without dropping source material or weakening validation.
 
@@ -160,7 +160,7 @@ Downstream limits are not smaller incoming-pack budgets: `tools/http_client.py:1
 ## 9. Deliver
 
 Give me only:
-- Deliver ONE ZIP (BOOK-ID_v1.zip) if it fits ALL the bot's real limits (compressed size under 19 MB, plus any other limit found in step 1). Split into parts only if it doesn't fit, making each part as large as allowed (fewest parts). State in the report why a split was needed.
+- **SIZE:** Deliver ONE ZIP (BOOK-ID_v1.zip) if it is under 19 MB. Split into parts only if it is bigger, making each part as large as allowed (fewest parts). Every delivered ZIP must still pass the bot’s other real limits and the unchanged validator. State in the report why a split was needed.
 - the parser source file you used, ready to save under `tools/parsers/`
 - a short parser note: layout assumptions and the exact `tools/package_batch.py` command that can rebuild the package
 - a 5-line summary: title, questions per type, skipped (with reasons), flagged count, images count, and the final `RESULT: PASS` line.
