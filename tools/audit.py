@@ -27,8 +27,16 @@ except Exception:
     fitz = None
 
 
+# Normalize only equivalent numeric/charge typography, not arbitrary Unicode
+# compatibility characters or chemical values.
+_SCRIPT_SYMBOLS = str.maketrans(
+    "₀₁₂₃₄₅₆₇₈₉⁰¹²³⁴⁵⁶⁷⁸⁹₊₋⁺⁻",
+    "01234567890123456789+-+-",
+)
+
+
 def norm(text: str) -> str:
-    text = str(text or "").lower()
+    text = str(text or "").translate(_SCRIPT_SYMBOLS).lower()
     text = text.replace("ﬁ", "fi").replace("ﬂ", "fl").replace("ﬀ", "ff").replace("ﬃ", "ffi").replace("ﬄ", "ffl")
     text = re.sub(r"\s+", " ", text)
     text = re.sub(r"[^\w%+±≥≤µμ°./ -]+", " ", text, flags=re.UNICODE)
@@ -74,6 +82,23 @@ def contains_fragment(page_norm: str, value: str) -> bool:
     return False
 
 
+def declared_pages(q: dict, page_count: int) -> list[int]:
+    """Validate every declared page; only absent source_pages uses legacy fallback."""
+    page_no = q.get("source_page")
+    if type(page_no) is not int or not 1 <= page_no <= page_count:
+        raise ValueError("source_page is outside the PDF page range")
+    pages = q.get("source_pages", [page_no])
+    if not isinstance(pages, list) or not pages:
+        raise ValueError("source_pages must be a nonempty list of PDF page numbers")
+    if any(type(p) is not int or not 1 <= p <= page_count for p in pages):
+        raise ValueError("source_pages contains a page outside the PDF page range")
+    if page_no not in pages:
+        raise ValueError("source_pages must include source_page")
+    # PDF reading order, with duplicate declarations read only once. Never fill
+    # gaps or search undeclared pages.
+    return sorted(set(pages))
+
+
 def main(argv: list[str]) -> int:
     if len(argv) < 3:
         print("Usage: python audit.py SOURCE.pdf PACKAGE.zip [--output audit.json]")
@@ -106,35 +131,39 @@ def main(argv: list[str]) -> int:
     for q in questions:
         lid = q.get("local_id")
         page_no = q.get("source_page")
-        if not isinstance(page_no, int) or page_no < 1 or page_no > len(doc):
+        try:
+            pages = declared_pages(q, len(doc))
+        except ValueError as exc:
             results.append({
                 "local_id": lid,
                 "source_page": page_no,
+                "source_pages": q.get("source_pages", [page_no]),
                 "level": "mismatch",
                 "score": 0.0,
                 "stem_check": False,
                 "options_check": False,
                 "answer_evidence_check": None,
-                "detail": "source_page is outside the PDF page range",
+                "detail": str(exc),
             })
             mismatch_count += 1
             continue
 
-        text = doc[page_no - 1].get_text("text")
-        page_norm = norm(text)
-        if not page_norm:
+        page_texts = [norm(doc[p - 1].get_text("text")) for p in pages]
+        if not all(page_texts):
             results.append({
                 "local_id": lid,
                 "source_page": page_no,
+                "source_pages": pages,
                 "level": "unverifiable",
                 "score": 0.0,
                 "stem_check": None,
                 "options_check": None,
                 "answer_evidence_check": None,
-                "detail": "PDF page has no extractable text; visual/OCR review required",
+                "detail": "A declared PDF page has no extractable text; visual/OCR review required",
             })
             continue
 
+        page_norm = " ".join(page_texts)
         stem_ok = contains_fragment(page_norm, q.get("stem", ""))
         options = q.get("options") or []
         option_hits = [contains_fragment(page_norm, x) for x in options]
@@ -144,18 +173,19 @@ def main(argv: list[str]) -> int:
         score = (1.0 if stem_ok else 0.0) * 0.65 + option_ratio * 0.35
         if stem_ok and options_ok:
             level = "match"
-            detail = "Stem and at least 80% of options found on declared PDF page."
+            detail = "Stem and at least 80% of options found on declared PDF pages."
         elif stem_ok or option_ratio >= 0.5:
             level = "warning"
             detail = "Partial source match; manual review recommended."
         else:
             level = "mismatch"
-            detail = "Stem/options do not sufficiently match declared PDF page."
+            detail = "Stem/options do not sufficiently match declared PDF pages."
             mismatch_count += 1
 
         results.append({
             "local_id": lid,
             "source_page": page_no,
+            "source_pages": pages,
             "level": level,
             "score": round(score, 3),
             "stem_check": stem_ok,
@@ -167,7 +197,7 @@ def main(argv: list[str]) -> int:
     payload = {
         "schema": 1,
         "audit_tool": "kafu-audit",
-        "audit_tool_version": 1,
+        "audit_tool_version": 2,
         "questions_sha256": sha256_bytes(q_raw),
         "pdf_sha256": sha256_bytes(pdf_raw),
         "scanned": all(r["level"] == "unverifiable" for r in results) if results else False,
