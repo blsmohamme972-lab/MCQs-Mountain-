@@ -3,9 +3,10 @@
   'use strict';
   const norm=value=>String(value??'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
   const attempted=a=>a&&Number.isSafeInteger(a.n)&&a.n>0;
+  const testBooks=new Set(['KAFU-FIXTURE-ALLTYPES','KAFU-FIXTURE-MULTIPART','KAFU-UPLOAD-TEST']);
   function books(catalog={},query='',specialty=''){
     const removed=new Set(catalog.removed_books||[]),terms=norm(query).split(/\s+/).filter(Boolean);
-    return(catalog.books||[]).filter(b=>!removed.has(b.id)&&(!specialty||b.specialty===specialty)&&terms.every(t=>norm(b.title).includes(t)));
+    return(catalog.books||[]).filter(b=>!removed.has(b.id)&&!testBooks.has(b.id)&&(!specialty||b.specialty===specialty)&&terms.every(t=>norm(b.title).includes(t)));
   }
   function specialties(catalog){return[...new Set(books(catalog).map(b=>b.specialty).filter(s=>typeof s==='string'&&s))].sort((a,b)=>a.localeCompare(b,'en'));}
   function progress(book,answers={},packs={}){

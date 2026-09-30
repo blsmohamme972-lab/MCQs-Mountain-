@@ -78,6 +78,8 @@ h3.sec button{color:var(--color-link);font-weight:700}
 .branch-picker h2{margin:0 6px 4px;text-align:center;font:700 clamp(20px,5vw,28px)/1.15 var(--ui)}
 .branch-picker>p{margin:0 6px 17px;text-align:center;color:#bbc8ed;font-size:13px}
 .branch-picker .kb-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,3.4vw,20px);max-width:820px;margin:auto}
+.branch-picker .kb-grid:has(>.kb-cell:only-child){grid-template-columns:minmax(0,min(100%,260px));justify-content:center}
+.branch-picker .kb-art.kb-generic-art{padding:5%;background:radial-gradient(circle at 50% 40%,var(--c1),var(--deep));object-fit:contain}
 .branch-picker .kb-cell{container-type:inline-size;min-width:0;content-visibility:auto;contain-intrinsic-size:auto 235px}
 @media(min-width:600px){.branch-picker .kb-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(min-width:1000px){.branch-picker .kb-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
