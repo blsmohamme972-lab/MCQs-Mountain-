@@ -42,9 +42,9 @@ Parser delivery rules:
 Then run it over the whole PDF. Clean the text:
 - remove running headers, footers, page numbers, publisher lines
 - replace ligatures (ﬁ ﬂ ﬀ ﬃ ﬄ) with normal letters
-- **HYPHENS:** For a word split with a hyphen at a line end (e.g. "fol-" followed by "lowing"), join it with no space and remove the hyphen only if the same word appears elsewhere in the book without it ("following"). Keep real hyphens like "two-thirds". If the unhyphenated word cannot be confirmed elsewhere in the book, join with no space, keep the printed hyphen, and flag the uncertainty.
+- **HYPHENS:** For a word split with a hyphen at a line end (e.g. "fol-" followed by "lowing"), join it with no space and remove the hyphen only if the same word appears elsewhere in the book without it ("following"). Keep real hyphens like "two-thirds". If the unhyphenated word cannot be confirmed elsewhere in the book, join with no space, keep the printed hyphen, and do not flag it.
 - keep symbols and units exactly; use Unicode (PaO₂, Na⁺, µg, ≥, ±), never LaTeX
-- keep tables as simple Markdown tables; keep line breaks inside stems where the book has them
+- keep tables as simple Markdown tables; remove PDF line breaks inside a paragraph; keep only real paragraph breaks, lists, and tables
 - strip option labels from option text ("A. Ketamine" → "Ketamine")
 
 **Scanned PDF:** read pages visually in batches of about 20 pages, transcribe exactly, and append each batch to the JSONL file with code before moving on. If the book is too long for one session, save the working files and the exact resume page; processing batches are not delivery ZIP parts. Apply Section 7 to the complete book before choosing one ZIP or parts.
@@ -119,6 +119,8 @@ audit.json          (source-consistency audit; required)\nreport.md           (y
 {"local_id": 41, "chapter_id": 3, "topic": "Diuretics", "type": "sba", "source_number": "41", "lead_in": "", "stem": "…", "options": ["…", "…", "…", "…", "…"], "answer": "C", "answer_source": "book_key", "explanation": "…", "images": ["L0041_1.webp"], "explanation_images": [], "group_id": "", "no_shuffle": false, "source_page": 112, "flag": ""}
 ```
 - `explanation`: `""` if the book has none. `topic`: `""` if unclear.
+- explanation: 2–4 complete sentences copied from the book's explanation. If shorter, copy it whole. Do not flag short explanations.
+- source_label: "Book Name || Edition" on every question.
 - `source_page`: the PDF page where the question starts.
 - `flag`: `""`, or a short reason if anything is uncertain (unclear scan, doubtful answer, figure not found).
 
