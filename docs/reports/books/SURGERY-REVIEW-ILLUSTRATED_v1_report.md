@@ -81,7 +81,7 @@ Page-image checks: OCR of 707 unique pages covering question text and copied exp
 - Running page headers, footers, figure captions, bibliography entries, and graphic labels were identified as page layout, separately from question fields. No header-contaminated question was silently repaired.
 - The cover and title page identify the second edition; every question carries `Surgery Review Illustrated || 2nd Edition`.
 - Explanations are excerpts, rather than the full explanation chapters; bibliography material was excluded. Printed shared explanations are reused only for their stated question numbers.
-- During ZIP conversion, no repo files were changed; no commit, push, branch, PR, bot upload or publication was performed. This report was subsequently archived in GitHub at the owner's request.
+- During ZIP conversion, no repo files were changed; no commit, push, branch, PR, bot upload or publication was performed. This report was subsequently archived and updated in GitHub at the owner's request.
 - 762 linked image files include duplicated figure crops for questions sharing a source illustration and table crops.
 - 20 additional illustrations have no unambiguous explicit reference in the packaged question/explanation text and were omitted rather than assigned by guess: 1-1, 1-14, 4-7, 4-8, 4-9, 5-2, 10-1, 11-18, 15-5, 16-6, 17-1, 21-7, 21-9, 21-11, 24-3, 27-1, 28-30, 28-31, 28-32, 37-25.
 
@@ -166,16 +166,15 @@ other are always correlated.
 ```
 
 
-## Delivery files
+## Delivery file
 
-The book is split at the chapter 20/21 boundary to meet the bot’s 19 MiB ZIP limit. Upload both parts. Local IDs retain the full-book numbering.
+SURGERY-REVIEW-ILLUSTRATED_v1.zip — one complete ZIP containing 1,257 questions across all 40 chapters. Local IDs retain the original full-book numbering (1–1262, including five skipped items).
 
-- SURGERY-REVIEW-ILLUSTRATED_v1_part1of2.zip: 613 questions; local IDs 1–616.
-- SURGERY-REVIEW-ILLUSTRATED_v1_part2of2.zip: 644 questions; local IDs 617–1262.
+Repackaging: both original parts were combined. All question records, stems, options, answers, explanation excerpts, flags and whitespace-proof hashes are unchanged. All 762 linked image files are retained at their original pixel dimensions; WebP compression was optimized to fit the bot’s 19 MiB limit. The cover is unchanged.
 
 ## Validator result
 
-PASS — 0 errors in every delivered ZIP. 84 warnings, including the source flags above. Additional heuristic warnings are retained for review:
+PASS — 0 errors in the single delivered ZIP. 84 warnings, including the source flags above. Additional heuristic warnings are retained for review:
 
 - Q106: explanation has a line-break hyphen like 'hypo- thermia'
 - Q1159 option D: duplicate option text
