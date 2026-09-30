@@ -389,6 +389,12 @@ const LET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const fmt = (s) => esc(s).replace(/\n/g, "<br>");
+const questionText = (s, tag, cls = "") => {
+  const content = KafuQuestionText.render(s);
+  const block = content.hasTables ? "div" : tag;
+  const classes = [cls, content.hasTables ? "k-question-rich" : ""].filter(Boolean).join(" ");
+  return `<${block}${classes ? ` class="${classes}"` : ""}>${content.html}</${block}>`;
+};
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const dayKey = (d = new Date()) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
 const kb = (n) => (n < 1024 ? n + " B" : n < 1048576 ? Math.round(n / 1024) + " KB" : (n / 1048576).toFixed(1) + " MB");
@@ -1031,14 +1037,14 @@ const VIEWS = {
         const v = r.sel[orig]; const key = q.answer[orig]; const ok = v === key;
         const cls = showResult ? (ok ? "correct" : "wrong") : "";
         const b = (val, label) => `<button data-a="tf" data-i="${orig}" data-v="${val}" aria-pressed="${v === val}" ${r.done ? "disabled" : ""} class="${showResult && v === val && !ok ? "bad" : ""} ${showResult && key === val ? "key" : ""}">${label}</button>`;
-        return `<div class="tf ${cls} ${showResult ? "done" : ""}"><p>${fmt(q.options[orig])}</p><div class="seg">${b("T", "True")}${b("F", "False")}</div>${showResult ? `<div class="verdict">${ok ? "Correct" : "Answer: " + (key === "T" ? "True" : "False")}</div>` : ""}</div>`;
+        return `<div class="tf ${cls} ${showResult ? "done" : ""}">${questionText(q.options[orig], "p")}<div class="seg">${b("T", "True")}${b("F", "False")}</div>${showResult ? `<div class="verdict">${ok ? "Correct" : "Answer: " + (key === "T" ? "True" : "False")}</div>` : ""}</div>`;
       }).join("");
     } else {
       body = order.map((orig, i) => {
         const picked = q.type === "multi" ? r.sel.includes(orig) : r.sel === orig;
         let cls = q.type === "multi" ? "multi" : "";
         if (showResult) { if (keySet.includes(orig)) cls += " correct"; else if (picked) cls += " wrong"; }
-        return `<button class="opt ${cls}" data-a="pick" data-i="${orig}" aria-pressed="${picked}" ${r.done ? "disabled" : ""}><span class="l">${LET[i]}</span><span>${fmt(q.options[orig])}</span></button>`;
+        return `<button class="opt ${cls}" data-a="pick" data-i="${orig}" aria-pressed="${picked}" ${r.done ? "disabled" : ""}><span class="l">${LET[i]}</span>${questionText(q.options[orig], "span")}</button>`;
       }).join("");
     }
 
@@ -1052,7 +1058,7 @@ const VIEWS = {
         const src = p && p.img && p.img[name];
         return src ? `<figure class="qimg"><img src="${esc(src)}" alt="Explanation image"></figure>` : "";
       }).join("");
-      explain = `<div class="explain ${r.correct ? "" : "bad"}"><div class="res ${r.correct ? "ok" : "no"}">${esc(res)}</div>${q.explanation ? `<p>${fmt(q.explanation)}</p>` : ""}${explanationImages}<div class="src">${esc(book ? book.title : "")}${q.source ? ", " + esc(q.source) : q.source_page ? ", PDF page " + esc(q.source_page) : ""}</div></div>`;
+      explain = `<div class="explain ${r.correct ? "" : "bad"}"><div class="res ${r.correct ? "ok" : "no"}">${esc(res)}</div>${q.explanation ? questionText(q.explanation, "p") : ""}${explanationImages}<div class="src">${esc(book ? book.title : "")}${q.source ? ", " + esc(q.source) : q.source_page ? ", PDF page " + esc(q.source_page) : ""}</div></div>`;
     }
 
     const images = (q.images || []).map((name) => { const p = PACKS[entry.b + ":" + entry.ch]; const src = p && p.img && p.img[name]; return src ? `<figure class="qimg"><img src="${esc(src)}" alt="Question image"></figure>` : ""; }).join("");
@@ -1070,7 +1076,7 @@ const VIEWS = {
         <div class="qmeta"><span class="tag">${esc(typeName)}</span>${q.status === "medical_verified" ? `<span class="tag dr">Doctor-reviewed</span>` : ""}</div>
         ${q.lead_in ? `<div class="leadin">${fmt(q.lead_in)}</div>` : ""}
         ${images}
-        <p class="stem">${fmt(q.stem)}</p>
+        ${questionText(q.stem, "p", "stem")}
         ${q.type === "multi" && !r.done ? `<p class="hint">Choose ${q.answer.length} answers.</p>` : ""}
         <div class="opts">${body}</div>
         ${explain}
