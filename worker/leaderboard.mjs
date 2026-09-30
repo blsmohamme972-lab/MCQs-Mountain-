@@ -1,5 +1,5 @@
 const QID=/^Q\d{9}$/;
-const MAX_BATCH=50;
+const MAX_BATCH=100;
 const enc=new TextEncoder();
 const hex=bytes=>[...new Uint8Array(bytes)].map(x=>x.toString(16).padStart(2,"0")).join("");
 const safeName=value=>String(value||"Student").replace(/[\u0000-\u001f\u007f]/g,"").trim().slice(0,64)||"Student";
@@ -54,13 +54,13 @@ function selectionCorrect(q,sel){
   const idx=String(q.answer||"").charCodeAt(0)-65;
   return Number(sel)===idx;
 }
-const questionCache=new Map(),routeCache=new Map(),chapterCache=new Map(),catalogCache={at:0,value:null};
+const questionCache=new Map(),routeCache=new Map(),chapterCache=new Map(),catalogCache=new Map();
 async function catalog(env){
-  if(catalogCache.value&&Date.now()-catalogCache.at<60_000)return catalogCache.value;
   const base=env.CONTENT_BASE||"https://kafu-content-1.blsmohamme97.workers.dev";
+  const hit=catalogCache.get(base);if(hit&&Date.now()-hit.at<60_000)return hit.value;
   const r=await fetch(base+"/catalog.json",{headers:{"user-agent":"kafu-leaderboard/1.0"}});
   if(!r.ok)throw new Error("catalog_unavailable");
-  catalogCache.value=await r.json();catalogCache.at=Date.now();return catalogCache.value;
+  const value=await r.json();catalogCache.set(base,{at:Date.now(),value});return value;
 }
 async function routes(env,shard){
   const hit=routeCache.get(shard);if(hit&&Date.now()-hit.at<300_000)return hit.routes;
@@ -90,7 +90,8 @@ async function auth(request,env){
 }
 async function upsertUser(env,key,user){
   await env.DB.prepare(`INSERT INTO leaderboard_users(user_key,display_name,photo_url,updated_at) VALUES(?,?,?,datetime('now'))
-    ON CONFLICT(user_key) DO UPDATE SET display_name=excluded.display_name,photo_url=excluded.photo_url,updated_at=datetime('now')`)
+    ON CONFLICT(user_key) DO UPDATE SET display_name=excluded.display_name,photo_url=excluded.photo_url,updated_at=datetime('now')
+    WHERE display_name IS NOT excluded.display_name OR photo_url IS NOT excluded.photo_url`)
     .bind(key,user.display_name,user.photo_url).run();
 }
 async function submit(request,env){
@@ -106,44 +107,77 @@ async function submit(request,env){
     let q;try{q=await question(env,qid)}catch(e){return reply({error:String(e.message||e),qid},422)}
     rows.push({qid,correct:selectionCorrect(q,item.selection)?1:0});
   }
-  const statements=rows.map(x=>env.DB.prepare("INSERT OR IGNORE INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,?,?)").bind(a.key,x.qid,x.correct,week));
-  const result=statements.length?await env.DB.batch(statements):[];
-  const accepted=result.reduce((n,x)=>n+Number(x?.meta?.changes||0),0);
+  // One atomic SQL statement per 4096-question bucket. Filtering happens inside
+  // the write, so concurrent/retried submissions cannot award points twice.
+  const buckets=new Map();
+  for(const row of rows){
+    const id=Number(row.qid.slice(1)),bucket=Math.floor(id/4096);
+    if(!buckets.has(bucket))buckets.set(bucket,[]);
+    buckets.get(bucket).push({id:id%4096,correct:row.correct});
+  }
+  let accepted=0;
+  for(const [bucket,items] of buckets){
+    const result=await env.DB.prepare(`
+      INSERT INTO leaderboard_attempt_buckets(user_key,bucket,attempted,score_delta,accepted_count,week_key)
+      SELECT ?,?,json_group_array(json_extract(value,'$.id')),
+        SUM(json_extract(value,'$.correct')),COUNT(*),?
+      FROM json_each(?) incoming
+      WHERE NOT EXISTS (
+        SELECT 1 FROM json_each(COALESCE((SELECT attempted FROM leaderboard_attempt_buckets
+          WHERE user_key=? AND bucket=?),'[]')) old
+        WHERE old.value=json_extract(incoming.value,'$.id')
+      ) HAVING COUNT(*)>0
+      ON CONFLICT(user_key,bucket) DO UPDATE SET
+        attempted=(SELECT json_group_array(value) FROM (
+          SELECT value FROM json_each(leaderboard_attempt_buckets.attempted)
+          UNION SELECT value FROM json_each(excluded.attempted))),
+        score_delta=excluded.score_delta,accepted_count=excluded.accepted_count,week_key=excluded.week_key
+      RETURNING accepted_count
+    `).bind(a.key,bucket,week,JSON.stringify(items),a.key,bucket).all();
+    accepted+=Number(result.results?.[0]?.accepted_count||0);
+  }
   return reply({ok:true,accepted,duplicates:rows.length-accepted});
 }
-function periodWhere(period){return period==="weekly"?"AND a.week_key=?":""}
+export const TOP_CACHE_MS=600_000;
 async function board(request,env){
   const a=await auth(request,env);if(a.error)return a.error;
-  await upsertUser(env,a.key,a.user);
-  const period=a.body.period==="all_time"?"all_time":"weekly", week=baghdadWeekKey();
-  const filter=periodWhere(period), binds=period==="weekly"?[week]:[];
-  const sql=`WITH scores AS (
-    SELECT u.user_key,u.display_name,u.photo_url,u.hidden,SUM(a.correct) score
-    FROM leaderboard_users u JOIN leaderboard_answers a ON a.user_key=u.user_key
-    WHERE 1=1 ${filter}
-    GROUP BY u.user_key
-  ), ranked AS (
-    SELECT *,ROW_NUMBER() OVER(ORDER BY score DESC,user_key ASC) rank
-    FROM scores WHERE hidden=0
-  )
-  SELECT display_name,photo_url,score,rank FROM ranked ORDER BY rank LIMIT 30`;
-  const top=await env.DB.prepare(sql).bind(...binds).all();
-  const ownSql=`WITH scores AS (
-    SELECT u.user_key,u.hidden,SUM(a.correct) score
-    FROM leaderboard_users u JOIN leaderboard_answers a ON a.user_key=u.user_key
-    WHERE 1=1 ${filter}
-    GROUP BY u.user_key
-  ), ranked AS (
-    SELECT *,ROW_NUMBER() OVER(ORDER BY score DESC,user_key ASC) rank
-    FROM scores WHERE hidden=0 OR user_key=?
-  )
-  SELECT s.score,s.hidden,r.rank FROM scores s LEFT JOIN ranked r ON r.user_key=s.user_key WHERE s.user_key=?`;
-  const own=await env.DB.prepare(ownSql).bind(...binds,a.key,a.key).first();
-  return reply({
-    period,week_key:week,
-    top:(top.results||[]).map(x=>({name:x.display_name,photo_url:x.photo_url||null,score:Number(x.score),rank:Number(x.rank)})),
-    own:own?{score:Number(own.score),rank:own.rank==null?null:Number(own.rank),hidden:!!own.hidden}:{score:0,rank:null,hidden:false}
-  });
+  const period=a.body.period==='all_time'?'all_time':'weekly',week=baghdadWeekKey();
+  const weekly=period==='weekly',periodKey=weekly?week:'all_time';
+  const score=weekly?'weekly_score':'total_score';
+  const filter=weekly?'s.week_key=? AND ':'';
+  const binds=weekly?[week]:[];
+  const now=Date.now();
+  // Shared D1 snapshot survives Worker restarts and is reused across isolates.
+  let snapshot=await env.DB.prepare('SELECT payload,refreshed_at FROM leaderboard_snapshots WHERE period_key=?').bind(periodKey).first();
+  if(!snapshot||now-Number(snapshot.refreshed_at)>=TOP_CACHE_MS){
+    // Conditional refresh is atomic. Only the first request in a ten-minute
+    // interval scans the rank index; competing requests reuse that snapshot.
+    await env.DB.prepare(`INSERT INTO leaderboard_snapshots(period_key,payload,refreshed_at)
+      SELECT ?,COALESCE((SELECT json_group_array(json(row)) FROM (
+        SELECT json_object('name',u.display_name,'photo_url',u.photo_url,'score',s.${score},
+          'rank',ROW_NUMBER() OVER(ORDER BY s.${score} DESC,s.user_key ASC)) row
+        FROM leaderboard_summary s JOIN leaderboard_users u USING(user_key)
+        WHERE ${filter}s.hidden=0 ORDER BY s.${score} DESC,s.user_key ASC LIMIT 30
+      )),'[]'),?
+      WHERE NOT EXISTS(SELECT 1 FROM leaderboard_snapshots WHERE period_key=? AND refreshed_at>?)
+      ON CONFLICT(period_key) DO UPDATE SET payload=excluded.payload,refreshed_at=excluded.refreshed_at
+    `).bind(periodKey,...binds,now,periodKey,now-TOP_CACHE_MS).run();
+    snapshot=await env.DB.prepare('SELECT payload,refreshed_at FROM leaderboard_snapshots WHERE period_key=?').bind(periodKey).first();
+  }
+  // Own rank reads summaries only. Hidden students retain their hypothetical
+  // position among visible students, including the established tie order.
+  const own=await env.DB.prepare(`SELECT u.hidden,
+    COALESCE(CASE WHEN ?=0 OR s.week_key=? THEN s.${score} ELSE 0 END,0) score,
+    CASE WHEN s.user_key IS NULL OR (?=1 AND s.week_key!=?) THEN NULL ELSE 1+(
+      SELECT COUNT(*) FROM leaderboard_summary r WHERE r.hidden=0
+      ${weekly?'AND r.week_key=?':''}
+      AND (r.${score}>s.${score} OR (r.${score}=s.${score} AND r.user_key<s.user_key))
+    ) END rank
+    FROM leaderboard_users u LEFT JOIN leaderboard_summary s USING(user_key) WHERE u.user_key=?
+  `).bind(weekly?1:0,week,weekly?1:0,week,...binds,a.key).first();
+  return reply({period,week_key:week,refreshed_at:Number(snapshot.refreshed_at),
+    top:JSON.parse(snapshot.payload),
+    own:own?{score:Number(own.score),rank:own.rank==null?null:Number(own.rank),hidden:!!own.hidden}:{score:0,rank:null,hidden:false}});
 }
 async function privacy(request,env){
   const a=await auth(request,env);if(a.error)return a.error;
@@ -160,3 +194,4 @@ export async function handleLeaderboard(request,env,path){
   return null;
 }
 export const LEADERBOARD_LIMITS={MAX_BATCH,TOP:30};
+

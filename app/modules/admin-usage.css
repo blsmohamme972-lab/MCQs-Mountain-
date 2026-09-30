@@ -1,0 +1,10 @@
+.kafu-admin { min-width:0; padding-bottom:calc(90px + env(safe-area-inset-bottom)); }
+.kafu-admin .k-card { margin-block:12px; }
+.kafu-admin progress { width:100%; accent-color:var(--color-primary); }
+.kafu-admin .kafu-admin-warning { border:2px solid currentColor; padding:12px; border-radius:12px; font-weight:700; }
+.kafu-admin .kafu-admin-scroll { max-width:100%; overflow-x:auto; margin-block:16px; }
+.kafu-admin table { width:100%; min-width:640px; border-collapse:collapse; font-size:14px; }
+.kafu-admin th,.kafu-admin td { text-align:left; padding:10px; border-bottom:1px solid var(--color-border); white-space:nowrap; }
+.kafu-admin caption { text-align:left; font-weight:700; margin-bottom:10px; }
+.kafu-admin th:first-child { position:sticky; left:0; background:var(--color-surface); min-width:180px; max-width:220px; white-space:normal; overflow-wrap:anywhere; }
+.kafu-admin .note { overflow-wrap:anywhere; }

@@ -47,6 +47,8 @@ jobs:
           WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
           QUEUE_API_TOKEN: ${{ secrets.QUEUE_API_TOKEN }}
           DISPATCH_TOKEN: ${{ secrets.DISPATCH_TOKEN }}
+          ADMIN_IDS: ${{ secrets.ADMIN_IDS || secrets.OWNER_TELEGRAM_ID }}
+          D1_ANALYTICS_TOKEN: ${{ secrets.D1_ANALYTICS_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           jq -n \
             --arg BOT_TOKEN "$BOT_TOKEN" \
@@ -54,7 +56,10 @@ jobs:
             --arg WEBHOOK_SECRET "$WEBHOOK_SECRET" \
             --arg QUEUE_API_TOKEN "$QUEUE_API_TOKEN" \
             --arg DISPATCH_TOKEN "$DISPATCH_TOKEN" \
-            '{BOT_TOKEN:$BOT_TOKEN,OWNER_TELEGRAM_ID:$OWNER_TELEGRAM_ID,WEBHOOK_SECRET:$WEBHOOK_SECRET,QUEUE_API_TOKEN:$QUEUE_API_TOKEN,DISPATCH_TOKEN:$DISPATCH_TOKEN}' \
+            --arg ADMIN_IDS "$ADMIN_IDS" \
+            --arg D1_ANALYTICS_TOKEN "$D1_ANALYTICS_TOKEN" \
+            --arg CLOUDFLARE_ACCOUNT_ID "$CLOUDFLARE_ACCOUNT_ID" \
+            '{BOT_TOKEN:$BOT_TOKEN,OWNER_TELEGRAM_ID:$OWNER_TELEGRAM_ID,WEBHOOK_SECRET:$WEBHOOK_SECRET,QUEUE_API_TOKEN:$QUEUE_API_TOKEN,DISPATCH_TOKEN:$DISPATCH_TOKEN,ADMIN_IDS:$ADMIN_IDS,D1_ANALYTICS_TOKEN:$D1_ANALYTICS_TOKEN,CLOUDFLARE_ACCOUNT_ID:$CLOUDFLARE_ACCOUNT_ID}' \
             > /tmp/kafu-secrets.json
           npx wrangler secret bulk /tmp/kafu-secrets.json --config wrangler.app.jsonc
           rm -f /tmp/kafu-secrets.json
@@ -80,3 +85,4 @@ jobs:
         run: npx wrangler versions deploy --version-tag "${{ steps.staged.outputs.tag }}@100%" --yes --config wrangler.app.jsonc
       - name: Verify production after promotion
         run: python tools/smoke_live.py --required-book KAFU-UPLOAD-TEST
+

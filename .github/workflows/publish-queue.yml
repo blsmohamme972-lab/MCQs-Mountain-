@@ -3,7 +3,8 @@ name: Drain Kafu Publish Queue
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/15 * * * *"
+    # Uploads dispatch immediately; recover missed dispatches once daily.
+    - cron: "0 3 * * *"
 
 permissions:
   contents: write

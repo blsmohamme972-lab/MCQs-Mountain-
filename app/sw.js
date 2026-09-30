@@ -10,7 +10,7 @@
     if(request.method!=='GET'||request.headers?.has('authorization')||request.headers?.has('x-telegram-bot-api-secret-token')||request.headers?.has('range'))return null;
     let url,path;
     try{url=new URL(request.url,origin);path=decodeURIComponent(url.pathname);}catch(_){return null;}
-    if(url.protocol!=='https:'||url.username||url.password||/^\/(api|internal|bot)(\/|$)/i.test(path))return null;
+    if(url.protocol!=='https:'||url.username||url.password||/^\/(api|internal|bot|admin)(\/|$)/i.test(path))return null;
     for(const key of url.searchParams.keys())if(/token|secret|password|signature|authorization|initdata|^hash$|^key$/i.test(key))return null;
     if(path==='/catalog.json'&&(url.origin===origin||url.origin===CONTENT))return{kind:'catalog',key:url.origin+path};
     if(url.origin===origin){
@@ -108,3 +108,4 @@
     event.waitUntil(app.warm(event.data.urls));
   });
 })(typeof self==='undefined'?null:self);
+
