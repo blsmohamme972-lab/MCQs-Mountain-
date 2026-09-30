@@ -13,6 +13,7 @@ function testDB() {
   db.exec(readFileSync(new URL("../migrations/0001_publish_queue.sql", import.meta.url), "utf8"));
   db.exec(readFileSync(new URL("../migrations/0002_publish_warnings.sql", import.meta.url), "utf8"));
   db.exec(readFileSync(new URL("../migrations/0003_leaderboard.sql", import.meta.url), "utf8"));
+  db.exec(readFileSync(new URL("../migrations/0004_leaderboard_compact.sql", import.meta.url), "utf8"));
   return {
     sql: db,
     prepare(sql) {
@@ -359,8 +360,9 @@ test("leaderboard computes first-attempt score server-side and rejects fake scor
       initData,answers:[{qid:"Q000000001",selection:1,answered_at_ms:20000}]
     })}),h.env,{waitUntil(){}});
     body=await res.json();assert.equal(body.accepted,0);assert.equal(body.duplicates,1);
-    const rows=h.DB.sql.prepare("SELECT qid,correct FROM leaderboard_answers ORDER BY qid").all();
-    assert.deepEqual(rows.map(x=>[x.qid,x.correct]),[["Q000000001",1],["Q000000002",1]]);
+    const ledger=h.DB.sql.prepare("SELECT attempted FROM leaderboard_attempt_buckets").get();
+    assert.deepEqual(JSON.parse(ledger.attempted),[1,2]);
+    assert.equal(h.DB.sql.prepare("SELECT total_score FROM leaderboard_summary").get().total_score,2);
     assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM leaderboard_users").get().n,1);
   }finally{globalThis.fetch=original}
 }));
@@ -369,9 +371,11 @@ test("leaderboard privacy hides public row but preserves own rank and score", ()
   const initData=signedInitData({id:321,first_name:"Ada",last_name:"Lovelace",photo_url:"https://example.com/a.jpg"});
   let res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
   assert.equal(res.status,200);
+  await bot.fetch(new Request("https://kafu.test/api/leaderboard/privacy",{method:"POST",body:JSON.stringify({initData,hidden:false})}),h.env,{});
   const real=h.DB.sql.prepare("SELECT user_key,display_name,photo_url FROM leaderboard_users WHERE display_name='Ada Lovelace'").get();
   assert.ok(real);assert.equal(real.photo_url,"https://example.com/a.jpg");
-  for(let i=101;i<=120;i++)h.DB.sql.prepare("INSERT OR IGNORE INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,?,?)").run(real.user_key,"Q"+String(i).padStart(9,"0"),1,baghdadWeekKey());
+  h.DB.sql.prepare("INSERT INTO leaderboard_summary(user_key,total_score,week_key,weekly_score) VALUES(?,20,?,20)").run(real.user_key,baghdadWeekKey());
+  h.DB.sql.exec("DELETE FROM leaderboard_snapshots");
 
   res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
   let board=await res.json();assert.equal(board.own.score,20);assert.ok(board.own.rank);assert.ok(board.top.some(x=>x.name==="Ada Lovelace"));
@@ -386,15 +390,18 @@ test("leaderboard returns top 30 only plus own rank outside top 30", () => harne
   const initData=signedInitData({id:888,first_name:"Private",last_name:"Student",username:"must-not-leak",phone_number:"+000"});
   let res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
   assert.equal(res.status,200);
+  await bot.fetch(new Request("https://kafu.test/api/leaderboard/privacy",{method:"POST",body:JSON.stringify({initData,hidden:false})}),h.env,{});
   const ownKey=h.DB.sql.prepare("SELECT user_key FROM leaderboard_users WHERE display_name='Private Student'").get().user_key;
   const week=baghdadWeekKey();
-  h.DB.sql.prepare("INSERT INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,0,?)").run(ownKey,"Q000005001",week);
+  h.DB.sql.prepare("INSERT INTO leaderboard_summary(user_key,total_score,week_key,weekly_score) VALUES(?,0,?,0)").run(ownKey,week);
   for(let u=1;u<=35;u++){
     const key="rival-"+String(u).padStart(3,"0");
     h.DB.sql.prepare("INSERT INTO leaderboard_users(user_key,display_name,photo_url) VALUES(?,?,?)").run(key,"Rival "+u,"https://example.com/"+u+".jpg");
-    h.DB.sql.prepare("INSERT INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,1,?)").run(key,"Q"+String(6000+u).padStart(9,"0"),week);
+    h.DB.sql.prepare("INSERT INTO leaderboard_summary(user_key,total_score,week_key,weekly_score) VALUES(?,1,?,1)").run(key,week);
   }
   res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
+  h.DB.sql.exec("DELETE FROM leaderboard_snapshots");
+  res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{});
   const body=await res.json();
   assert.equal(body.top.length,30);assert.equal(body.own.rank,36);assert.equal(body.own.score,0);
   const serialized=JSON.stringify(body);
@@ -410,8 +417,122 @@ test("leaderboard repeated submits only preserve first attempt", () => harness(a
     })}),h.env,{waitUntil(){}});
     assert.equal(res.status,200);
   }
-  const rows=h.DB.sql.prepare("SELECT qid,correct FROM leaderboard_answers").all();
-  assert.deepEqual(rows.map(x=>[x.qid,x.correct]),[["Q000000001",1]]);
+  const ledger=h.DB.sql.prepare("SELECT attempted FROM leaderboard_attempt_buckets").get();
+  assert.deepEqual(JSON.parse(ledger.attempted),[1]);
+  assert.equal(h.DB.sql.prepare("SELECT total_score FROM leaderboard_summary").get().total_score,1);
   const tables=h.DB.sql.prepare("SELECT name FROM sqlite_master WHERE type='table'").all().map(x=>x.name);
   assert.ok(!tables.includes("leaderboard_flags"));assert.ok(!tables.includes("leaderboard_rate"));
 }));
+
+
+test('compact migration preserves wrong attempts, scores and old Worker overlap',()=>{
+  const db=new DatabaseSync(':memory:');
+  db.exec(readFileSync(new URL('../migrations/0003_leaderboard.sql',import.meta.url),'utf8'));
+  db.exec("INSERT INTO leaderboard_users(user_key,display_name,hidden) VALUES('old','Old',1)");
+  const put=db.prepare('INSERT INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,?,?)');
+  put.run('old','Q000000001',0,'2026-09-21');put.run('old','Q000000002',1,'2026-09-21');put.run('old','Q000000003',1,'2026-09-28');
+  db.exec(readFileSync(new URL('../migrations/0004_leaderboard_compact.sql',import.meta.url),'utf8'));
+  let summary=db.prepare('SELECT * FROM leaderboard_summary').get();
+  assert.equal(summary.total_score,2);assert.equal(summary.weekly_score,1);assert.equal(summary.hidden,1);
+  assert.deepEqual(JSON.parse(db.prepare('SELECT attempted FROM leaderboard_attempt_buckets').get().attempted),[1,2,3]);
+  assert.equal(put.run('old','Q000000001',1,'2026-09-28').changes,0);
+  put.run('old','Q000000004',1,'2026-10-05');
+  summary=db.prepare('SELECT * FROM leaderboard_summary').get();
+  assert.equal(summary.total_score,3);assert.equal(summary.weekly_score,1);assert.equal(summary.week_key,'2026-10-05');
+  db.close();
+});
+
+test('top snapshot stays cached, own rank is live, expiry refreshes without answer scan',()=>harness(async h=>{
+  const initData=signedInitData({id:321,first_name:'Cache'});
+  await bot.fetch(new Request('https://kafu.test/api/leaderboard/privacy',{method:'POST',body:JSON.stringify({initData,hidden:false})}),h.env,{});
+  const key=h.DB.sql.prepare('SELECT user_key FROM leaderboard_users').get().user_key,week=baghdadWeekKey();
+  h.DB.sql.prepare('INSERT INTO leaderboard_summary(user_key,total_score,week_key,weekly_score) VALUES(?,1,?,1)').run(key,week);
+  const get=async(period='weekly')=>(await bot.fetch(new Request('https://kafu.test/api/leaderboard/board',{method:'POST',body:JSON.stringify({initData,period})}),h.env,{})).json();
+  let board=await get();assert.equal(board.top[0].score,1);
+  const refreshed=board.refreshed_at;
+  h.DB.sql.exec('UPDATE leaderboard_summary SET total_score=9,weekly_score=9');
+  const before=h.DB.sql.prepare('SELECT total_changes() n').get().n;
+  board=await get();assert.equal(board.top[0].score,1);assert.equal(board.own.score,9);assert.equal(board.refreshed_at,refreshed);
+  assert.equal(h.DB.sql.prepare('SELECT total_changes() n').get().n,before,'cached board does not write');
+  h.DB.sql.exec('UPDATE leaderboard_snapshots SET refreshed_at=0');
+  board=await get();assert.equal(board.top[0].score,9);
+  board=await get('all_time');assert.equal(board.top[0].score,9);
+  h.DB.sql.prepare('UPDATE leaderboard_summary SET week_key=?').run('2026-09-21');
+  board=await get();assert.equal(board.own.score,0);assert.equal(board.own.rank,null);
+  const plans=h.DB.sql.prepare('EXPLAIN QUERY PLAN SELECT user_key FROM leaderboard_summary WHERE week_key=? AND hidden=0 ORDER BY weekly_score DESC,user_key ASC LIMIT 30').all(week);
+  assert.ok(plans.some(x=>x.detail.includes('leaderboard_week_rank')));
+}));
+
+test('500 answers in five batches use five compact rows updates and no per-answer writes',()=>harness(async h=>{
+  const orig=globalThis.fetch;
+  h.env.CONTENT_BASE='https://batch.test';
+  const questions=Array.from({length:500},(_,i)=>({id:'Q'+String(61000+i).padStart(9,'0'),type:'sba',options:['A','B'],answer:'A'}));
+  globalThis.fetch=async url=>{
+    url=String(url);
+    if(url.includes('/routes/'))return {ok:true,json:async()=>({routes:Object.fromEntries(questions.map(q=>[q.id,{book_id:'BATCH',chapter_id:1}]))})};
+    if(url.endsWith('/catalog.json'))return {ok:true,json:async()=>({books:[{id:'BATCH',chapters:[{id:1,url:'https://content.test/batch.json'}]}]})};
+    if(url.endsWith('/batch.json'))return {ok:true,json:async()=>({questions})};
+    throw Error('Unmocked fetch');
+  };
+  try{
+    const initData=signedInitData({id:997,first_name:'Batch'});
+    const send=async qs=>{
+      const res=await bot.fetch(new Request('https://kafu.test/api/leaderboard/submit',{method:'POST',body:JSON.stringify({initData,answers:qs.map(q=>({qid:q.id,selection:0}))})}),h.env,{});
+      assert.equal(res.status,200);return res.json();
+    };
+    await bot.fetch(new Request('https://kafu.test/api/leaderboard/privacy',{method:'POST',body:JSON.stringify({initData,hidden:false})}),h.env,{});
+    const before=h.DB.sql.prepare('SELECT total_changes() n').get().n;
+    for(let i=0;i<5;i++)assert.equal((await send(questions.slice(i*100,(i+1)*100))).accepted,100);
+    assert.equal(h.DB.sql.prepare('SELECT total_score FROM leaderboard_summary').get().total_score,500);
+    assert.equal(h.DB.sql.prepare('SELECT COUNT(*) n FROM leaderboard_attempt_buckets').get().n,2);
+    assert.equal(h.DB.sql.prepare('SELECT COUNT(*) n FROM leaderboard_answers').get().n,0);
+    // Five batches cross one bucket boundary: 6 ledger + 6 summary changes.
+    // With two ranking indexes this models 24 billed writes for an existing student.
+    // Production rows_written from Cloudflare, not this model, is authoritative.
+    assert.equal(h.DB.sql.prepare('SELECT total_changes() n').get().n-before,12);
+    const changes=h.DB.sql.prepare('SELECT total_changes() n').get().n;
+    const [one,two]=await Promise.all([send(questions.slice(0,100)),send(questions.slice(0,100))]);
+    assert.equal(one.accepted+two.accepted,0);assert.equal(h.DB.sql.prepare('SELECT total_changes() n').get().n,changes);
+  }finally{globalThis.fetch=orig}
+}));
+
+test('admin usage and books reject strangers, forged/expired sessions and GET; never write data',()=>harness(async h=>{
+  const post=(path,initData)=>bot.fetch(new Request('https://kafu.test/admin/'+path,{method:'POST',body:JSON.stringify({initData})}),h.env,{});
+  for(const path of ['books','usage','capabilities']){
+    assert.equal((await post(path,signedInitData({id:999,first_name:'Stranger'}))).status,403);
+    assert.equal((await post(path,'forged')).status,403);
+    assert.equal((await post(path,signedInitData({id:123},1))).status,403);
+    assert.equal((await bot.fetch(new Request('https://kafu.test/admin/'+path),h.env,{})).status,405);
+  }
+  const initData=signedInitData({id:123,first_name:'Owner'}),before=h.DB.sql.prepare('SELECT total_changes() n').get().n;
+  const cap=await post('capabilities',initData);assert.equal(cap.status,200);assert.equal(cap.headers.get('cache-control'),'private, no-store');
+  assert.deepEqual(await cap.json(),{books:true,d1_usage:true});
+  const books=await post('books',initData);assert.deepEqual(await books.json(),{books:[]});
+  const unavailable=await post('usage',initData);assert.equal(unavailable.status,503);assert.equal((await unavailable.json()).error,'analytics_not_configured');
+  assert.equal(h.DB.sql.prepare('SELECT total_changes() n').get().n,before);
+  h.env.ADMIN_IDS='999';assert.equal((await post('capabilities',initData)).status,403);
+}));
+
+test('D1 panel uses real account-wide Cloudflare row totals, UTC days and 70 percent threshold',async()=>{
+  const {d1Usage}=await import('./admin.mjs'),original=globalThis.fetch;let calls=0;
+  const env={D1_ANALYTICS_TOKEN:'test-only',CLOUDFLARE_ACCOUNT_ID:'test-account'};
+  globalThis.fetch=async(url,init)=>{
+    assert.equal(url,'https://api.cloudflare.com/client/v4/graphql');
+    const body=JSON.parse(init.body);assert.deepEqual(body.variables,{accountTag:'test-account',start:'2026-09-24',end:'2026-09-30'});
+    assert.doesNotMatch(body.query,/databaseId/);assert.match(body.query,/rowsRead rowsWritten/);calls++;
+    return Response.json({data:{viewer:{accounts:[{d1AnalyticsAdaptiveGroups:[
+      {dimensions:{date:'2026-09-30'},sum:{rowsRead:3500000,rowsWritten:69999}},
+      {dimensions:{date:'2026-09-29'},sum:{rowsRead:100,rowsWritten:70000}}
+    ]}]}}});
+  };
+  try{
+    const data=await d1Usage(env,new Date('2026-09-30T20:00:00Z'));
+    assert.equal(data.today.read_percent,70);assert.equal(data.today.warning,true);assert.equal(data.days[1].write_percent,70);
+    assert.equal(data.scope,'account');assert.equal(data.timezone,'UTC');
+    await d1Usage(env,new Date('2026-09-30T20:04:00Z'));assert.equal(calls,1);
+    globalThis.fetch=async()=>Response.json({errors:[{message:'private token permission detail'}]});
+    await assert.rejects(d1Usage({...env,CLOUDFLARE_ACCOUNT_ID:'other'},new Date('2026-09-30T20:06:00Z')),/analytics_access_unavailable/);
+    globalThis.fetch=async()=>Response.json({data:{viewer:{accounts:[{d1AnalyticsAdaptiveGroups:[]}]}}});
+    const missing=await d1Usage({...env,CLOUDFLARE_ACCOUNT_ID:'empty'},new Date('2026-09-30T20:06:00Z'));assert.equal(missing.today,null);
+  }finally{globalThis.fetch=original}
+});
