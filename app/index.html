@@ -871,7 +871,7 @@ const BRANCH_ART = [
 ];
 const branchKey = x => String(x).toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]/g,"");
 // System fixtures remain in the catalog for deployment checks, not student browsing.
-const LIBRARY_TEST_BOOKS = new Set(["KAFU-FIXTURE-ALLTYPES", "KAFU-FIXTURE-MULTIPART", "KAFU-UPLOAD-TEST"]);
+const LIBRARY_TEST_BOOKS = new Set(["KAFU-FIXTURE-ALLTYPES", "KAFU-FIXTURE-MULTIPART", "KAFU-UPLOAD-TEST", "SAMPLE-PERIOP", "SAMPLE-CARDIO"]);
 function availableBranches() {
   const removed = new Set(CATALOG.removed_books || []), counts = new Map();
   for (const book of CATALOG.books) {
