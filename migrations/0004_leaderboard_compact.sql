@@ -8,10 +8,14 @@ CREATE TABLE leaderboard_summary (
 ) WITHOUT ROWID;
 CREATE INDEX leaderboard_total_rank ON leaderboard_summary(hidden,total_score DESC,user_key);
 CREATE INDEX leaderboard_week_rank ON leaderboard_summary(week_key,hidden,weekly_score DESC,user_key);
+WITH latest AS (
+  SELECT user_key,MAX(week_key) week_key FROM leaderboard_answers GROUP BY user_key
+)
 INSERT INTO leaderboard_summary
-SELECT u.user_key, SUM(a.correct), MAX(a.week_key),
-  SUM(CASE WHEN a.week_key=(SELECT MAX(b.week_key) FROM leaderboard_answers b WHERE b.user_key=u.user_key) THEN a.correct ELSE 0 END),u.hidden
-FROM leaderboard_users u JOIN leaderboard_answers a USING(user_key) GROUP BY u.user_key;
+SELECT u.user_key,SUM(a.correct),l.week_key,
+  SUM(CASE WHEN a.week_key=l.week_key THEN a.correct ELSE 0 END),u.hidden
+FROM leaderboard_users u JOIN leaderboard_answers a USING(user_key)
+JOIN latest l ON l.user_key=u.user_key GROUP BY u.user_key;
 
 CREATE TABLE leaderboard_attempt_buckets (
   user_key TEXT NOT NULL REFERENCES leaderboard_users(user_key) ON DELETE CASCADE,
