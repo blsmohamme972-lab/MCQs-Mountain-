@@ -28,9 +28,12 @@ def assert_tables(page,label,answered=False):
     metrics=page.evaluate("""() => {
       const boxes=[...document.querySelectorAll('.k-table-box')];
       const wide=boxes.filter(el=>el.scrollWidth>el.clientWidth+1);
+      const fixtures=boxes.filter(el=>el.querySelectorAll('thead th').length===8);
       const section=[...document.querySelectorAll('.k-table-section th')];
       return {viewport:innerWidth,document:document.documentElement.scrollWidth,body:document.body.scrollWidth,
-        boxes:boxes.length,wide:wide.length,localScroll:wide.map(el=>{el.scrollLeft=100;return el.scrollLeft;}),
+        boxes:boxes.length,wide:wide.length,wideFixtures:fixtures.length,
+        fixtureOverflow:fixtures.every(el=>el.scrollWidth>el.clientWidth+1),
+        localScroll:wide.map(el=>{el.scrollLeft=100;return el.scrollLeft;}),
         bold:section.every(el=>Number(getComputedStyle(el).fontWeight)>=700),
         labels:section.map(el=>el.textContent),raw:boxes.some(el=>el.textContent.includes('| --- |')),
         injected:!!window.tableInjected,htmlElements:document.querySelectorAll('.k-question-table img,.k-question-table script').length,
@@ -38,7 +41,7 @@ def assert_tables(page,label,answered=False):
     }""")
     assert metrics['document']<=metrics['viewport'] and metrics['body']<=metrics['viewport'],f'{label}: page overflow {metrics}'
     assert metrics['boxes']==(6 if answered else 4),f'{label}: missing table context {metrics}'
-    assert metrics['wide']==(3 if answered else 2),f'{label}: wide tables must scroll locally {metrics}'
+    assert metrics['wideFixtures']==(3 if answered else 2) and metrics['fixtureOverflow'],f'{label}: wide tables must scroll locally {metrics}'
     assert all(x>0 for x in metrics['localScroll']),f'{label}: cannot scroll tables {metrics}'
     assert metrics['bold'] and all(x=='Motor' for x in metrics['labels']),metrics
     assert not metrics['raw'] and not metrics['injected'] and not metrics['htmlElements'] and not metrics['invalidParents'],metrics

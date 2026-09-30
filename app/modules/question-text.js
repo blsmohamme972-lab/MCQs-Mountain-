@@ -17,7 +17,7 @@
     cells.push(cell.trim());
     if(line.trimStart().startsWith('|'))cells.shift();
     if(!line.slice(lastPipe+1).trim())cells.pop();
-    return cells.length>=2?cells:null;
+    return cells.length>=1?cells:null;
   }
   function render(value){
     const text=String(value??''),lines=text.replace(/\r\n?/g,'\n').split('\n');
@@ -32,7 +32,7 @@
       const rows=[];
       while(i<lines.length){const cells=row(lines[i]);if(!cells||cells.length!==headers.length)break;rows.push(cells);i++;}
       const heading=headers.map(c=>`<th scope="col">${escape(c)}</th>`).join('');
-      const body=rows.map(cells=>cells[0]&&cells.slice(1).every(c=>!c)
+      const body=rows.map(cells=>cells.length>1&&cells[0]&&cells.slice(1).every(c=>!c)
         ?`<tr class="k-table-section"><th scope="row" colspan="${headers.length}">${escape(cells[0])}</th></tr>`
         :`<tr>${cells.map(c=>`<td>${escape(c)}</td>`).join('')}</tr>`).join('');
       blocks.push({html:`<div class="k-table-box"><table class="k-question-table"><thead><tr>${heading}</tr></thead><tbody>${body}</tbody></table></div>`});

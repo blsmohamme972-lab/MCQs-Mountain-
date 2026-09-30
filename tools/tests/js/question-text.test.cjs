@@ -16,6 +16,10 @@ test('plain text and non-table pipes preserve the existing escaped line-break re
   }
   assert.equal(render('<b>&"\'</b>').html,'&lt;b&gt;&amp;&quot;&#39;&lt;/b&gt;');
 });
+test('valid one-column tables render without inventing empty-score sections',()=>{
+  const r=render('| Label |\n| --- |\n| Value |');assert.equal(r.hasTables,true);
+  assert.match(r.html,/<td>Value<\/td>/);assert.doesNotMatch(r.html,/k-table-section/);
+});
 test('all source HTML, attributes, entities and scripts stay escaped in every cell',()=>{
   const r=render('| <img src=x onerror="alert(1)"> | <script>alert(2)</script> |\n| --- | --- |\n| <b>Motor</b> | |\n| &lt;svg onload=alert(3)&gt; | \'"& |');
   assert.doesNotMatch(r.html,/<(?:img|script|svg|b)[ >]/i);
