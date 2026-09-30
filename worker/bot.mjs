@@ -32,6 +32,25 @@ async function telegram(env, method, body) {
 async function message(env, text, extra = {}) {
   return telegram(env, "sendMessage", { chat_id: env.OWNER_TELEGRAM_ID, text: safeText(env, text).slice(0, 4000), ...extra });
 }
+function bookTables(env, books) {
+  if (!books.length) return { book_pages: ["📚 لا توجد كتب متاحة حاليًا."] };
+  const escape = value => safeText(env, value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const header = `📚 <b>الكتب المتاحة: ${books.length}</b>\nVer. الإصدار • MCQs الأسئلة • Ch. الفصول\n\n`;
+  const pages = []; let page = header;
+  books.forEach((book, index) => {
+    const id = String(book.id || book.book_id || "").slice(0, 255);
+    const title = String(book.title || id).slice(0, 400);
+    const chapters = Array.isArray(book.chapters) ? book.chapters.length : book.chapters || 0;
+    const row = `v${book.version}`.padEnd(5) + "│ " + String(book.questions || 0).padStart(6) + " │ " + String(chapters).padStart(3);
+    const block = `📖 <b>${index + 1}. ${escape(title)}</b>\n` +
+      (title !== id ? `<code>${escape(id)}</code>\n` : "") +
+      `<pre>Ver. │   MCQs │ Ch.\n─────┼────────┼────\n${escape(row)}</pre>\n\n`;
+    if (page.length + block.length > 3500) { pages.push(page.trimEnd()); page = header; }
+    page += block;
+  });
+  pages.push(page.trimEnd());
+  return { book_pages: pages };
+}
 async function dispatch(env) {
   const repo = env.GITHUB_REPOSITORY || "blsmohamme972-lab/MCQs-Mountain-";
   if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) throw new Error("Invalid GitHub repository");
@@ -68,11 +87,11 @@ async function command(env, raw) {
         const response = await fetch((env.CONTENT_BASE || "https://kafu-content-1.blsmohamme97.workers.dev") + "/catalog.json", { cache: "no-store", headers: {"user-agent":"kafu-bot/1.0"} });
         if (response.ok) {
           const c = await response.json();
-          return (c.books || []).map(x => `${x.id} v${x.version} — ${x.questions} questions, ${x.chapters?.length || 0} chapters`).join("\n") || "No active books.";
+          return bookTables(env, c.books || []);
         }
       } catch (e) {}
       const r = await env.DB.prepare("SELECT book_id,version,questions,chapters FROM published_books WHERE active=1 ORDER BY book_id LIMIT 50").all();
-      return (r.results || []).map(x => `${x.book_id} v${x.version} — ${x.questions} questions, ${x.chapters} chapters`).join("\n") || "No published books recorded yet.";
+      return bookTables(env, r.results || []);
     }
     case "/status": {
       const r = await env.DB.prepare("SELECT status,COUNT(*) AS n FROM publish_groups GROUP BY status").all();
@@ -172,6 +191,10 @@ async function webhook(request, env, ctx) {
     }
     text = await command(env, m.text);
   } else return reply("OK");
+  if (text.book_pages) {
+    for (const page of text.book_pages) await message(env, page, { parse_mode: "HTML" });
+    return reply("OK");
+  }
   await message(env, text);
   if (text.startsWith("📥") && !text.includes("already received")) ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
   return reply("OK");

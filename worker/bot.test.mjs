@@ -145,6 +145,45 @@ test("/retry requires failed complete group; /clear cannot delete running or pub
   assert.equal((await retryGroup(h.env, "TEST_v1")).ok, false);
 }));
 
+test("/books shows readable HTML tables and escapes book titles", () => harness(async h => {
+  const original = globalThis.fetch;
+  globalThis.fetch = async (url, init) => String(url) === "https://content.test/catalog.json" ?
+    { ok: true, json: async () => ({ books: [{ id: "ANATOMY", title: "Anatomy <Review> & Notes", version: 2, questions: 643, chapters: [{}, {}, {}, {}, {}, {}, {}] }] }) } : original(url, init);
+  await h.send("/books");
+  const message = h.messages.at(-1);
+  assert.equal(message.parse_mode, "HTML");
+  assert.match(message.text, /Anatomy &lt;Review&gt; &amp; Notes/);
+  assert.match(message.text, /<code>ANATOMY<\/code>/);
+  assert.match(message.text, /<pre>Ver\./);
+  assert.match(message.text, /v2\s*│\s*643\s*│\s*7/);
+  assert.equal(h.dispatches.length, 0);
+}));
+
+test("/books tables use D1 fallback and handle empty lists", () => harness(async h => {
+  const original = globalThis.fetch;
+  globalThis.fetch = async (url, init) => String(url) === "https://content.test/catalog.json" ? { ok: false } : original(url, init);
+  await h.send("/books");
+  assert.match(h.messages.at(-1).text, /لا توجد كتب/);
+  h.DB.sql.exec("INSERT INTO published_books(book_id,version,questions,chapters,active) VALUES('TEST',3,956,37,1),('HIDDEN',1,1,1,0)");
+  await h.send("/books");
+  assert.match(h.messages.at(-1).text, /v3\s*│\s*956\s*│\s*37/);
+  assert.doesNotMatch(h.messages.at(-1).text, /HIDDEN/);
+}));
+
+test("/books splits large catalogs at complete book tables", () => harness(async h => {
+  const original = globalThis.fetch;
+  const books = Array.from({ length: 50 }, (_, i) => ({ id: `BOOK-${i}`, title: `Book ${i} ` + "Long title ".repeat(8), version: 1, questions: 10, chapters: [{}] }));
+  globalThis.fetch = async (url, init) => String(url) === "https://content.test/catalog.json" ? { ok: true, json: async () => ({ books }) } : original(url, init);
+  await h.send("/books");
+  assert.ok(h.messages.length > 1);
+  for (const message of h.messages) {
+    assert.ok(message.text.length <= 3500);
+    assert.equal(message.parse_mode, "HTML");
+    assert.equal((message.text.match(/<pre>/g) || []).length, (message.text.match(/<\/pre>/g) || []).length);
+  }
+  assert.equal((h.messages.map(m => m.text).join("\n").match(/<pre>/g) || []).length, 50);
+}));
+
 test("/warnings lists future publish warnings without creating held flags", () => harness(async h => {
   const payload = {
     book_id: "TEST",
