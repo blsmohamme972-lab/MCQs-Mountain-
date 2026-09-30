@@ -531,7 +531,11 @@ body[data-study-screen] .actionbar .btn:disabled{
 /* Only rich question content owns these table and containment rules. */
 body[data-study-screen] .k-question-rich{min-width:0;max-width:100%;}
 body[data-study-screen] .k-study>.opts:has(.k-table-box){grid-template-columns:minmax(0,1fr);min-width:0;max-width:100%;}
-body[data-study-screen] .opt:has(.k-table-box){min-width:0;max-width:100%;}
+body[data-study-screen] .opt:has(.k-table-box){
+  min-width:0;max-width:100%;display:grid;
+  grid-template-columns:36px minmax(0,1fr);align-items:start;gap:8px 14px;
+}
+body[data-study-screen] .opt:has(.k-table-box) .k-answer-state{grid-column:2;justify-self:start;margin-left:0;}
 body[data-study-screen] .opt>.k-question-rich{flex:1 1 0;}
 body[data-study-screen] .tf>.k-question-rich{font-family:var(--font-reading);font-size:16px;font-weight:600;line-height:1.45;}
 body[data-study-screen] .k-question-rich>p{margin:0 0 10px;}

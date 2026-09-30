@@ -74,6 +74,7 @@ def run(browser,origin,pack,out,helpers):
                 assert page.locator('.opt.correct,.tf.correct').count()>0
                 assert page.locator('.explain .k-question-table').count()==2
                 if kind=='sba':
+                    page.locator('.k-table-box').evaluate_all('boxes=>boxes.forEach(el=>el.scrollLeft=0)')
                     helpers['capture'](page,out/f'question-tables-{width}-{theme}.png')
                 assert not errors,errors
             passed.append(f'{width}px {theme}: tables render safely in stem, SBA/multi/EMQ/MTF options and explanation; Motor section bold; wide tables scroll locally; no page overflow')
