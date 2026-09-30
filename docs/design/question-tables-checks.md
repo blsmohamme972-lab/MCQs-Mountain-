@@ -19,10 +19,14 @@ overflow journey but failed those stale references. Eleven affected images
 are pixel-identical to the earlier main artifact. The iPad light no-results
 image differs in only 33 rasterized pixels, with identical dimensions and
 layout; that snapshot already has documented exact-hash renderer variants.
+Run **36747127200**, artifact **11113116832**, confirms two further iPad
+no-results variants: 13 light-theme pixels and 39 dark-theme pixels compared
+with main, limited to border rasterization. Both retain the same dimensions
+and layout. All table, phone overflow and functional checks passed in both runs.
 
 The 12 refreshed reference hashes come from the earlier **main** artifact,
-not from accepting a changed Library in this PR. One observed iPad light
-no-results variant is added by exact hash. All other reference entries,
+not from accepting a changed Library in this PR. The three observed iPad
+no-results variants are added by exact hash. All other reference entries,
 pixel comparison rules, dimensions, budgets, and functional assertions remain
 unchanged. No Library application code is changed by this PR.
 
