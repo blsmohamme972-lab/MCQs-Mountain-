@@ -11,6 +11,7 @@ on:
       - "migrations/**"
       - "tools/configure_d1.py"
       - "tools/smoke_live.py"
+      - "tools/comments_deploy_smoke.py"
       - "wrangler.app.jsonc"
       - ".github/workflows/deploy-app.yml"
 
@@ -73,6 +74,11 @@ jobs:
           echo "version_url=$VERSION_URL" >> "$GITHUB_OUTPUT"
       - name: Smoke exact staged Version URL
         run: python tools/smoke_live.py --app-url "${{ steps.staged.outputs.version_url }}" --required-book KAFU-UPLOAD-TEST
+      - name: Smoke staged Community while rollout is gated
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          OWNER_TELEGRAM_ID: ${{ secrets.OWNER_TELEGRAM_ID }}
+        run: python tools/comments_deploy_smoke.py --mode staged --app-url "${{ steps.staged.outputs.version_url }}" --required-book KAFU-UPLOAD-TEST
       - name: Promote staged version to 100%
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -80,3 +86,8 @@ jobs:
         run: npx wrangler versions deploy --version-tag "${{ steps.staged.outputs.tag }}@100%" --yes --config wrangler.app.jsonc
       - name: Verify production after promotion
         run: python tools/smoke_live.py --required-book KAFU-UPLOAD-TEST
+      - name: Enable and verify Community in production
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          OWNER_TELEGRAM_ID: ${{ secrets.OWNER_TELEGRAM_ID }}
+        run: python tools/comments_deploy_smoke.py --mode enable-and-verify --required-book KAFU-UPLOAD-TEST

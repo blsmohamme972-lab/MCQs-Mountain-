@@ -49,6 +49,7 @@ class DesignStyleTests(unittest.TestCase):
             "nunito-latin-400.woff2",
             "nunito-latin-700.woff2",
             "pixelify-sans-latin-500.woff2",
+            "ibm-plex-sans-arabic-arabic-400.woff2",
         }
         self.assertEqual(names,expected)
         self.assertLessEqual(sum(p.stat().st_size for p in fonts),100*1024)
