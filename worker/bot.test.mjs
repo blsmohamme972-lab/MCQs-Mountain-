@@ -170,6 +170,52 @@ test("/warnings lists future publish warnings without creating held flags", () =
   assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM flags").get().n, 0);
 }));
 
+test("warnings stores hundreds of reasons with one atomic D1 batch and supports retries", () => harness(async h => {
+  const warnings = Array.from({ length: 404 }, (_, i) => ({
+    qid: `Q${String(i + 1).padStart(9, "0")}`, local_id: i + 1, source_page: i + 8,
+    reasons: ["Source has one sentence", "Original text preserved"],
+  }));
+  const payload = { book_id: "ANATOMY", version: 2, warnings };
+  const originalBatch = h.DB.batch.bind(h.DB), originalPrepare = h.DB.prepare.bind(h.DB);
+  let batches = 0, statements = 0, individualRuns = 0;
+  h.DB.prepare = sql => {
+    const statement = originalPrepare(sql);
+    statement.run = async () => { individualRuns++; return statement.runSync(); };
+    return statement;
+  };
+  h.DB.batch = async writes => { batches++; statements += writes.length; return originalBatch(writes); };
+  for (let attempt = 0; attempt < 2; attempt++) {
+    assert.equal((await h.internal("warnings", payload)).status, 200);
+    assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM publish_warnings").get().n, 808);
+  }
+  assert.equal(batches, 2);
+  assert.equal(statements, 4);
+  assert.equal(individualRuns, 0);
+  assert.equal(h.DB.sql.prepare("SELECT source_page FROM publish_warnings WHERE local_id=404").get().source_page, 411);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM flags").get().n, 0);
+}));
+
+test("warnings replacement rolls back on insert failure", () => harness(async h => {
+  const old = { book_id: "TEST", version: 1, warnings: [{ qid: "Q000000001", local_id: 1, reasons: ["old"] }] };
+  assert.equal((await h.internal("warnings", old)).status, 200);
+  h.DB.sql.exec("CREATE TRIGGER warning_failure BEFORE INSERT ON publish_warnings WHEN NEW.reason='fail' BEGIN SELECT RAISE(ABORT,'insert failed'); END");
+  await assert.rejects(h.internal("warnings", { ...old, warnings: [{ ...old.warnings[0], reasons: ["new", "fail"] }] }), /insert failed/);
+  assert.deepEqual(h.DB.sql.prepare("SELECT reason FROM publish_warnings").all().map(x => x.reason), ["old"]);
+}));
+
+test("warnings validates before replacing and isolates book versions", () => harness(async h => {
+  const warning = { qid: "Q000000001", local_id: 1, reasons: ["keep", "keep", "", "x".repeat(600)] };
+  for (const [book_id, version] of [["TEST", 1], ["TEST", 2], ["OTHER", 1]]) {
+    assert.equal((await h.internal("warnings", { book_id, version, warnings: [null, warning, { qid: "bad", local_id: 2, reasons: ["bad"] }] })).status, 200);
+  }
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM publish_warnings").get().n, 6);
+  assert.equal(h.DB.sql.prepare("SELECT MAX(length(reason)) n FROM publish_warnings").get().n, 500);
+  assert.equal((await h.internal("warnings", { book_id: "TEST", version: 1, warnings: {} })).status, 400);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM publish_warnings").get().n, 6);
+  assert.equal((await h.internal("warnings", { book_id: "TEST", version: 1, warnings: [] })).status, 200);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM publish_warnings").get().n, 4);
+}));
+
 test("/hold + /flags approval/rejection/source produce durable moderation jobs", () => harness(async h => {
   await h.send("/hold Q000000001 7");
   let row = h.DB.sql.prepare("SELECT * FROM flags").get(); assert.equal(row.status, "pending"); assert.equal(row.source_page, 7);

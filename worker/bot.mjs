@@ -252,18 +252,26 @@ async function internal(request, env, path) {
     const bookId = String(body.book_id || "").toUpperCase();
     const version = Number(body.version);
     if (!ID.test(bookId) || !Number.isSafeInteger(version) || version < 1) return reply({ error: "invalid_warning_identity" }, 400);
-    await env.DB.prepare("DELETE FROM publish_warnings WHERE book_id=? AND version=?").bind(bookId, version).run();
+    if (body.warnings != null && !Array.isArray(body.warnings)) return reply({ error: "invalid_warnings" }, 400);
+    const rows = [];
     for (const x of body.warnings || []) {
-      if (!QID.test(x.qid) || !Number.isSafeInteger(Number(x.local_id))) continue;
+      if (!x || !QID.test(x.qid) || !Number.isSafeInteger(Number(x.local_id))) continue;
       const reasons = Array.isArray(x.reasons) ? x.reasons : [];
       for (const reason of reasons) {
         const text = String(reason || "").slice(0, 500);
         if (!text) continue;
-        await env.DB.prepare(
-          "INSERT OR IGNORE INTO publish_warnings(book_id,version,qid,local_id,source_page,reason) VALUES(?,?,?,?,?,?)"
-        ).bind(bookId, version, x.qid, Number(x.local_id), x.source_page || null, text).run();
+        rows.push([x.qid, Number(x.local_id), x.source_page || null, text]);
       }
     }
+    // One bound JSON array avoids a D1 round-trip per reason. Replace atomically
+    // so a failed write leaves the previous warnings intact and retries are safe.
+    await env.DB.batch([
+      env.DB.prepare("DELETE FROM publish_warnings WHERE book_id=? AND version=?").bind(bookId, version),
+      env.DB.prepare(
+        "INSERT OR IGNORE INTO publish_warnings(book_id,version,qid,local_id,source_page,reason) " +
+        "SELECT ?,?,json_extract(value,'$[0]'),json_extract(value,'$[1]'),json_extract(value,'$[2]'),json_extract(value,'$[3]') FROM json_each(?)"
+      ).bind(bookId, version, JSON.stringify(rows)),
+    ]);
     return reply({ ok: true });
   }
   return reply("Not found", 404);
