@@ -14,7 +14,7 @@ The dashboard feature branch was inspected and contains only planning documents 
 
 The D1 panel reads Cloudflare's `d1AnalyticsAdaptiveGroups` rowsRead/rowsWritten, not query counts or estimated student counts. It shows account-wide daily totals over seven UTC dates against 5,000,000 rows read and 100,000 rows written. A warning appears at 70% of either free limit. Daily allowances reset at 00:00 UTC / 03:00 Baghdad. Cloudflare reporting can lag; an absent day's metrics stay unavailable rather than being shown as zero. Analytics responses are reused for five minutes per Worker isolate.
 
-Deployment passes the existing Cloudflare account ID and a server-only analytics token. `D1_ANALYTICS_TOKEN` is preferred; if absent, the existing deployment `CLOUDFLARE_API_TOKEN` is used. The token must have account analytics read access. If permission is missing, the panel explicitly shows analytics unavailable; it never invents counts. No token, administrator ID or account analytics payload is public or committed.
+Deployment passes the existing Cloudflare account ID and a server-only analytics token. `D1_ANALYTICS_TOKEN` is preferred; if absent, the existing deployment `CLOUDFLARE_API_TOKEN` is used. The token must have account analytics read access. CI checks the exact server query against the configured account before merge, without logging IDs, credentials or metrics. If permission is missing, the panel explicitly shows analytics unavailable; it never invents counts. No token, administrator ID or account analytics payload is public or committed.
 
 Sources: https://developers.cloudflare.com/d1/observability/metrics-analytics/ and https://developers.cloudflare.com/d1/platform/pricing/.
 
