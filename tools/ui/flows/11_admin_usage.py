@@ -33,6 +33,8 @@ def run(browser,origin,pack,out,helpers):
         assert '70.0%' in page.locator('.kafu-admin').inner_text()
         assert '72.0%' in page.locator('.kafu-admin').inner_text()
         assert page.locator('.kafu-admin table').count()==2
+        assert page.evaluate("[...document.querySelectorAll('.kafu-admin tbody th')].every(x=>x.getBoundingClientRect().width>=120)"), 'First columns must remain readable, not collapse to character-wide lines'
+        assert page.evaluate("[...document.querySelectorAll('.kafu-admin tbody tr')].every(x=>x.getBoundingClientRect().height<240)"), 'Long book IDs must wrap within a usable row height'
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
         assert page.evaluate("[...document.querySelectorAll('.kafu-admin progress')].every(x=>x.getAttribute('aria-label'))")
         page.evaluate('document.fonts.ready');page.screenshot(path=str(out/f'admin-usage-{width}-{theme}.png'),full_page=True)
