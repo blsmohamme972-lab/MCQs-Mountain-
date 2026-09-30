@@ -41,6 +41,7 @@ VISUAL_HASH_VARIANTS={
         '94b5c1ddbefae85c44c32ac77d58cfe93bea29a6993c3d7b493d6221c4504004',
     },
     'ipad-light-library-no-results':{
+        '6f0705aa9ef3f3da41e1d3d2c18629d32442d8f71b805c6478eda8ebec8f6b50',
         # Current main's three-branch Library: 33-pixel renderer variation,
         # independently compared with main-run evidence (see table checks doc).
         '7b091e255c15aa722971d5099ffc7928dd5db6f875348f0c4f6af00d0d5567b8',
@@ -51,6 +52,7 @@ VISUAL_HASH_VARIANTS={
         'f599e9031346705977f71b61b959925f94189f0a5997983843a7c3525202212a',
     },
     'ipad-dark-library-no-results':{
+        '020007d6068d13aef15d645cab39969ba2fbb7f4a917047d1bf52e02731a0e64',
         'a878750755d17c80fef4b8b60bdc0544c2fd0a7700b84fc61a50e79c6b24107c',
         '8821de659817eb951546f4cfc3805220ecae6e17c7be853cb312380a6cfe39eb',
         '541ee13295736b89e23830d390bee3dd58ebc8d7bc2bb38ec4dc9f309a82061c',
