@@ -1,7 +1,7 @@
 # MCQ BOOK PACKAGER — MASTER PROMPT (schema 1)
 
 I attached: (1) a medical MCQ book (PDF), (2) `validate.py`, and (3) `audit.py`.
-Your job: turn this book into ONE publish-ready ZIP package (or several parts), working entirely with code in your sandbox. Do the whole job yourself. Only stop to ask me if the book cannot be processed at all.
+Your job: turn this book into ONE publish-ready ZIP package (split only when the measured limits in Section 7 require it), working entirely with code in your sandbox. Do the whole job yourself. Only stop to ask me if the book cannot be processed at all.
 
 Optional settings (blank = you decide):
 - SPECIALTY:
@@ -47,7 +47,7 @@ Then run it over the whole PDF. Clean the text:
 - keep tables as simple Markdown tables; keep line breaks inside stems where the book has them
 - strip option labels from option text ("A. Ketamine" → "Ketamine")
 
-**Scanned PDF:** read pages visually in batches of about 20 pages, transcribe exactly, and append each batch to the JSONL file with code before moving on. If the book is too long for one session, finish a clean part, deliver it, and tell me the page where the next part starts.
+**Scanned PDF:** read pages visually in batches of about 20 pages, transcribe exactly, and append each batch to the JSONL file with code before moving on. If the book is too long for one session, save the working files and the exact resume page; processing batches are not delivery ZIP parts. Apply Section 7 to the complete book before choosing one ZIP or parts.
 
 ## 3. Numbering and answers
 
@@ -124,7 +124,29 @@ audit.json          (source-consistency audit; required)\nreport.md           (y
 
 ## 7. Size and parts
 
-If the ZIP would exceed 19 MB, split by chapters into parts: `BOOK_ID_v1_part1of3.zip`, … Each part has its own `book.json` (same `book_id`, its own `part` and `id_range`) and only its own questions and images. `cover.webp` goes in part 1.
+**Size preflight, step 1 (limit discovery):** Read the current bot import code and `validate.py` without editing them. Record every real size/count limit with its file and line in `report.md`; do not invent a smaller ZIP, question-count, image-count or JSON budget. The currently enforced incoming-package limits are:
+
+| Limit | Actual code rule | Source |
+|---|---|---|
+| Compressed ZIP | At most 19,922,944 bytes (19 * 1024 * 1024 = 19 MiB); deliver strictly below this ceiling. | `worker/queue-state.mjs:2,21`; `tools/drain_queue.py:32,89`; `tools/validate.py:46,434-436`; `migrations/0001_publish_queue.sql:24` |
+| Uncompressed ZIP contents | At most 209,715,200 bytes (200 MiB) of counted file contents. | `tools/validate.py:47,371,376-377` |
+| ZIP entries | At most 5,000 entries, including directory and junk entries. | `tools/validate.py:48,340-343` |
+| Compression ratio | At most 100:1 for each member with a nonzero compressed size, not an archive-wide ratio. | `tools/validate.py:49,372-374` |
+| Each question/explanation image | At most 1,500,000 bytes and 1600 px wide; keep the Section 5 target of 1200 px. | `tools/validate.py:50,52-53,487-494` |
+| Images per question | At most 6 in `images` and separately 6 in `explanation_images`; no separate whole-pack image-count ceiling beyond the entry/byte limits. | `tools/validate.py:311-317,340-343` |
+| Cover | At most 400,000 bytes; required in part 1. | `tools/validate.py:51,465-473` |
+| Parts and filename | At most 100 parts per release; filename at most 255 characters. | `worker/queue-state.mjs:6,10`; `migrations/0001_publish_queue.sql:5` |
+| Questions and JSON per incoming pack | No independent question-count or JSON/JSONL byte ceiling; the archive byte, entry and ratio limits still apply. | `tools/validate.py:390-404,448-449,497-530`; `tools/validate_release.py:21-45`; `tools/publish.py:51-112` |
+
+The "19 MB" wording in DELIVER means the code's 19 MiB budget above, not permission to upload 20 MB. Use exact byte measurements, not rounded file-card sizes or estimates. The code accepts equality at 19,922,944 bytes; this prompt deliberately requests a file below that boundary. Image/cover byte limits use decimal bytes, as shown.
+
+**Size preflight, step 2 (measurement):** Build and measure the complete final single ZIP first, including all questions, figures, table crops, cover, `book.json`, `audit.json` and `report.md`. Record its exact compressed bytes, counted uncompressed bytes, entry count and maximum member ratio. Recheck the actual final archive after every content, compression, audit or report change. An earlier estimate or intermediate archive is not a reason to retain a split when the final single ZIP fits.
+
+**Size preflight, step 3 (split only if required):** If the complete final ZIP fits every applicable limit, deliver that ONE ZIP. Otherwise split only when doing so resolves a measured limit violation, making each part as large as allowed and using the fewest parts. Prefer chapter boundaries only when they do not cause extra parts; a chapter may span parts while keeping its chapter ID and full-book local IDs. Do not split merely because the book has many chapters/questions/images, because it was processed in batches, or to target an arbitrary smaller ZIP size. Each part must pass every limit and the unchanged validator. Name parts `BOOK-ID_v1_part1ofN.zip`, etc.; keep the same `book_id`, version and chapter definitions, each part's own `part` and contiguous `id_range`, only its own questions/images/skipped entries, and `cover.webp` in part 1. Rebuild the audit for each final `questions.jsonl` and run `validate_release.py` on the complete release.
+
+For any split, `report.md` must name the specific violated limit and its source line, the measured attempted single-ZIP value versus the allowed value, the exact size/entry/expanded-byte values for every part, and why fewer parts cannot fit. Splitting cannot repair an oversized individual image, excess images attached to one question, invalid source content, or another per-item validation error; resolve the actual issue without dropping source material or weakening validation.
+
+Downstream limits are not smaller incoming-pack budgets: `tools/http_client.py:14,77-95,116-125` caps each default HTTP response at 64 MiB, and `tools/publish.py:175-180` stops global permanent-ID allocation above 999,999,999. The publisher reassembles input parts and builds chapter assets; splitting an upload cannot bypass a downstream chapter-response limit or global ID exhaustion. Report such a blocker separately instead of manufacturing more ZIP parts.
 
 ## 8. Self-check before delivering
 
@@ -138,7 +160,7 @@ If the ZIP would exceed 19 MB, split by chapters into parts: `BOOK_ID_v1_part1of
 ## 9. Deliver
 
 Give me only:
-- the ZIP file(s): `BOOK_ID_v1.zip` (or the parts)
+- Deliver ONE ZIP (BOOK-ID_v1.zip) if it fits ALL the bot's real limits (compressed size under 19 MB, plus any other limit found in step 1). Split into parts only if it doesn't fit, making each part as large as allowed (fewest parts). State in the report why a split was needed.
 - the parser source file you used, ready to save under `tools/parsers/`
 - a short parser note: layout assumptions and the exact `tools/package_batch.py` command that can rebuild the package
 - a 5-line summary: title, questions per type, skipped (with reasons), flagged count, images count, and the final `RESULT: PASS` line.
