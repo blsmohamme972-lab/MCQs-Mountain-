@@ -8,6 +8,7 @@ SDK=mod.SDK
 USAGE={'scope':'account','timezone':'UTC','reset':'00:00 UTC (03:00 Baghdad)',
  'fetched_at':'2026-09-30T12:00:00Z','limits':{'rows_read':5000000,'rows_written':100000},
  'today':{'date':'2026-09-30','rows_read':3500000,'rows_written':72000,'read_percent':70,'write_percent':72,'warning':True},
+ 'database_size_bytes':94208,'submission_usage':{'today':{'reads_per_submission':7.5,'measured_submissions':20,'max_rows_read':9}},
  'days':[{'date':'2026-09-30','rows_read':3500000,'rows_written':72000,'read_percent':70,'write_percent':72,'warning':True}]}
 BOOKS=[{'book_id':'PRIVATE-BOOK-'+'LONG-'*30,'version':2,'questions':500,'chapters':15,'images':31,'active':1}]
 
@@ -31,6 +32,9 @@ def run(browser,origin,pack,out,helpers):
         page.evaluate("go('me')");page.wait_for_selector('[data-a=admin-books-open]')
         page.locator('[data-a=admin-books-open]').click();page.wait_for_selector('.kafu-admin-warning')
         assert '70.0%' in page.locator('.kafu-admin').inner_text()
+        assert 'Reads per submission today' in page.locator('.kafu-admin').inner_text()
+        assert '7.5' in page.locator('.kafu-admin').inner_text()
+        assert '94,208 bytes' in page.locator('.kafu-admin').inner_text()
         assert '72.0%' in page.locator('.kafu-admin').inner_text()
         assert page.locator('.kafu-admin table').count()==2
         assert page.evaluate("[...document.querySelectorAll('.kafu-admin tbody th')].every(x=>x.getBoundingClientRect().width>=120)"), 'First columns must remain readable, not collapse to character-wide lines'

@@ -84,6 +84,7 @@ async function question(env,qid){
 }
 async function auth(request,env){
   let body;try{body=await request.json()}catch{return {error:reply({error:"invalid_json"},400)}}
+  if(!body||typeof body!=="object"||Array.isArray(body))return {error:reply({error:"invalid_json"},400)};
   const verified=await verifyTelegramInitData(body.initData,env.BOT_TOKEN);
   if(!verified)return {error:reply({error:"invalid_init_data"},401)};
   return {body,user:verified,key:await userKey(env.BOT_TOKEN,verified.id)};
@@ -107,8 +108,8 @@ async function submit(request,env){
     let q;try{q=await question(env,qid)}catch(e){return reply({error:String(e.message||e),qid},422)}
     rows.push({qid,correct:selectionCorrect(q,item.selection)?1:0});
   }
-  // One atomic SQL statement per 4096-question bucket. Filtering happens inside
-  // the write, so concurrent/retried submissions cannot award points twice.
+  // Read each touched bucket once. Lifetime history is a Set in Worker
+  // memory; SQL only does indexed lookups and revision-guarded replacement.
   const buckets=new Map();
   for(const row of rows){
     const id=Number(row.qid.slice(1)),bucket=Math.floor(id/4096);
@@ -117,26 +118,32 @@ async function submit(request,env){
   }
   let accepted=0;
   for(const [bucket,items] of buckets){
-    const result=await env.DB.prepare(`
-      INSERT INTO leaderboard_attempt_buckets(user_key,bucket,attempted,score_delta,accepted_count,week_key)
-      SELECT ?,?,json_group_array(json_extract(value,'$.id')),
-        SUM(json_extract(value,'$.correct')),COUNT(*),?
-      FROM json_each(?) incoming
-      WHERE NOT EXISTS (
-        SELECT 1 FROM json_each(COALESCE((SELECT attempted FROM leaderboard_attempt_buckets
-          WHERE user_key=? AND bucket=?),'[]')) old
-        WHERE old.value=json_extract(incoming.value,'$.id')
-      ) HAVING COUNT(*)>0
-      ON CONFLICT(user_key,bucket) DO UPDATE SET
-        attempted=(SELECT json_group_array(value) FROM (
-          SELECT value FROM json_each(leaderboard_attempt_buckets.attempted)
-          UNION SELECT value FROM json_each(excluded.attempted))),
-        score_delta=excluded.score_delta,accepted_count=excluded.accepted_count,week_key=excluded.week_key
-      RETURNING accepted_count
-    `).bind(a.key,bucket,week,JSON.stringify(items),a.key,bucket).all();
-    accepted+=Number(result.results?.[0]?.accepted_count||0);
+    const read=await env.DB.prepare('SELECT attempted,revision FROM leaderboard_attempt_buckets WHERE user_key=? AND bucket=?').bind(a.key,bucket).all();
+    const old=read.results?.[0],attempted=new Set(old?JSON.parse(old.attempted):[]);
+    let count=0,delta=0;
+    for(const item of items){
+      if(attempted.has(item.id))continue;
+      attempted.add(item.id);count++;delta+=item.correct;
+    }
+    if(!count)continue;
+    const payload=JSON.stringify([...attempted]);
+    const write=old
+      ?env.DB.prepare(`UPDATE leaderboard_attempt_buckets SET attempted=?,score_delta=?,accepted_count=?,week_key=?,revision=revision+1
+        WHERE user_key=? AND bucket=? AND revision=? RETURNING accepted_count`)
+        .bind(payload,delta,count,week,a.key,bucket,old.revision)
+      :env.DB.prepare(`INSERT INTO leaderboard_attempt_buckets(user_key,bucket,attempted,score_delta,accepted_count,week_key)
+        VALUES(?,?,?,?,?,?) ON CONFLICT(user_key,bucket) DO NOTHING RETURNING accepted_count`)
+        .bind(a.key,bucket,payload,delta,count,week);
+    const result=await write.all();
+    // Never re-read a bucket in this request. The durable client queue retries
+    // a conflict; any buckets already committed then become duplicates.
+    if(!result.results?.length)return reply({error:'submission_conflict'},409);
+    accepted+=count;
   }
-  return reply({ok:true,accepted,duplicates:rows.length-accepted});
+  // One indexed summary read per submission supplies a verified score for the
+  // device. Opening Top 30 never reads a personal score or rank from D1.
+  const summary=(await env.DB.prepare('SELECT total_score,weekly_score,week_key FROM leaderboard_summary WHERE user_key=?').bind(a.key).all()).results?.[0];
+  return reply({ok:true,accepted,duplicates:rows.length-accepted,score:{total:Number(summary?.total_score||0),weekly:summary?.week_key===week?Number(summary.weekly_score):0,week_key:week}});
 }
 export const TOP_CACHE_MS=600_000;
 async function board(request,env){
@@ -164,20 +171,9 @@ async function board(request,env){
     `).bind(periodKey,...binds,now,periodKey,now-TOP_CACHE_MS).run();
     snapshot=await env.DB.prepare('SELECT payload,refreshed_at FROM leaderboard_snapshots WHERE period_key=?').bind(periodKey).first();
   }
-  // Own rank reads summaries only. Hidden students retain their hypothetical
-  // position among visible students, including the established tie order.
-  const own=await env.DB.prepare(`SELECT u.hidden,
-    COALESCE(CASE WHEN ?=0 OR s.week_key=? THEN s.${score} ELSE 0 END,0) score,
-    CASE WHEN s.user_key IS NULL OR (?=1 AND s.week_key!=?) THEN NULL ELSE 1+(
-      SELECT COUNT(*) FROM leaderboard_summary r WHERE r.hidden=0
-      ${weekly?'AND r.week_key=?':''}
-      AND (r.${score}>s.${score} OR (r.${score}=s.${score} AND r.user_key<s.user_key))
-    ) END rank
-    FROM leaderboard_users u LEFT JOIN leaderboard_summary s USING(user_key) WHERE u.user_key=?
-  `).bind(weekly?1:0,week,weekly?1:0,week,...binds,a.key).first();
-  return reply({period,week_key:week,refreshed_at:Number(snapshot.refreshed_at),
-    top:JSON.parse(snapshot.payload),
-    own:own?{score:Number(own.score),rank:own.rank==null?null:Number(own.rank),hidden:!!own.hidden}:{score:0,rank:null,hidden:false}});
+  const top=JSON.parse(snapshot.payload);
+  return reply({period,week_key:week,refreshed_at:Number(snapshot.refreshed_at),top,
+    cutoff:top.length===30?Number(top[29].score):null});
 }
 async function privacy(request,env){
   const a=await auth(request,env);if(a.error)return a.error;

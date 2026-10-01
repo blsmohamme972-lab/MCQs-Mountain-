@@ -37,6 +37,12 @@ globalThis.KafuEnhancements.installers.push({name:'admin-usage',install(){
     if(today?.warning)panel='<p class="kafu-admin-warning" role="alert">Warning: D1 usage has reached 70% of a free daily limit.</p>'+panel;
     if(usage)panel+='<p class="note">Account-wide D1 rows · resets '+C.e(usage.reset)+'. Cloudflare reporting may lag. Last fetched '+C.e(usage.fetched_at)+'.</p>'+
       '<div class="kafu-admin-scroll"><table><caption>Daily D1 usage (UTC)</caption><thead><tr><th>Date</th><th>Rows read</th><th>Read %</th><th>Rows written</th><th>Write %</th></tr></thead><tbody>'+usage.days.map(d=>'<tr><th>'+C.e(d.date)+'</th><td>'+Number(d.rows_read).toLocaleString()+'</td><td>'+Number(d.read_percent).toFixed(1)+'%</td><td>'+Number(d.rows_written).toLocaleString()+'</td><td>'+Number(d.write_percent).toFixed(1)+'%</td></tr>').join('')+'</tbody></table></div>';
+    if(usage){
+      const sample=usage.submission_usage?.today;
+      panel+='<article class="k-card"><h3>Reads per submission today</h3><strong>'+(sample?.reads_per_submission!=null?Number(sample.reads_per_submission).toFixed(1):'Not available yet')+'</strong>'+
+        '<p>'+Number(sample?.measured_submissions||0).toLocaleString()+' measured submissions · peak '+Number(sample?.max_rows_read||0).toLocaleString()+' rows read</p><p class="note">Actual D1 metadata across Worker instances. Includes retries. Excludes the one counter update per submission; its cost is logged separately.</p></article>'+
+        '<p class="note">Current database size: '+(usage.database_size_bytes==null?'Unavailable':Number(usage.database_size_bytes).toLocaleString()+' bytes ('+(usage.database_size_bytes/1048576).toFixed(2)+' MiB)')+'.</p>';
+    }
     const inventory='<div class="kafu-admin-scroll"><table><caption>Books recorded in D1</caption><thead><tr><th>Book</th><th>Version</th><th>Questions</th><th>Chapters</th><th>Images</th><th>Active</th></tr></thead><tbody>'+books.map(b=>'<tr><th>'+C.e(b.book_id)+'</th><td>'+Number(b.version)+'</td><td>'+Number(b.questions)+'</td><td>'+Number(b.chapters)+'</td><td>'+Number(b.images)+'</td><td>'+(b.active?'Yes':'No')+'</td></tr>').join('')+'</tbody></table></div>';
     return {title:'Books dashboard',tabs:'me',action:null,html:'<section class="kafu-admin"><h2>D1 usage</h2>'+C.button('Refresh',{action:'admin-usage-refresh',variant:'ghost'})+(loading?'<p role="status">Loading…</p>':'')+(error?'<p role="status">'+C.e(error)+'</p>':'')+panel+'<h2>Books</h2>'+inventory+'</section>'};
   };

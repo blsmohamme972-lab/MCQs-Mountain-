@@ -3,15 +3,16 @@ globalThis.KafuEnhancements.installers.push({name:'leaderboard',install(){
   'use strict';
   const C=KafuDesign;
   const owner=IN_TG&&Number.isSafeInteger(TG.initDataUnsafe?.user?.id)?String(TG.initDataUnsafe.user.id):'browser';
-  const key='leaderboard_pending_user_'+owner,privacyKey='leaderboard_hidden_user_'+owner;
+  const key='leaderboard_pending_user_'+owner,privacyKey='leaderboard_hidden_user_'+owner,scoreKey='leaderboard_score_user_'+owner;
   const BATCH=100,FLUSH_MS=60*60*1000;
   let flushing=null,persisting=Promise.resolve(),retryDelay=0;
-  let pending=[],timer=null,loading=false,period='weekly',board=null,error='',hiddenPref=false;
+  let pending=[],timer=null,loading=false,period='weekly',board=null,error='',hiddenPref=false,verifiedScore=null;
   const clone=v=>v===undefined?null:JSON.parse(JSON.stringify(v));
-  function available(){return !!(IN_TG&&TG?.initData)}
+  function available(){return !!(IN_TG&&TG?.initData&&String(TG.initDataUnsafe?.user?.id)===owner)}
   async function loadPending(){
     try{
       const saved=await DB.get('meta',key),hidden=await DB.get('meta',privacyKey);
+      verifiedScore=await DB.get('meta',scoreKey)||null;
       pending=Array.isArray(saved)?saved.filter(x=>x&&/^Q\d{9}$/.test(x.qid)):[];
       hiddenPref=hidden===true;
     }catch(_){pending=[];hiddenPref=false}
@@ -33,6 +34,7 @@ globalThis.KafuEnhancements.installers.push({name:'leaderboard',install(){
       await savePending();
       const result=await api('submit',{answers:batch});
       retryDelay=0;
+      if(result.score){verifiedScore=result.score;await DB.put('meta',scoreKey,verifiedScore)}
       pending=pending.filter(x=>!batch.some(y=>y.qid===x.qid));
       await savePending();
       return result;
@@ -64,7 +66,6 @@ globalThis.KafuEnhancements.installers.push({name:'leaderboard',install(){
     period=next;loading=true;error='';render();
     try{
       board=await api('board',{period});
-      if(board?.own){hiddenPref=!!board.own.hidden;DB.put('meta',privacyKey,hiddenPref).catch(()=>{})}
     }catch(e){error=String(e.message||e);board=null}
     loading=false;render();
   }
@@ -80,11 +81,16 @@ globalThis.KafuEnhancements.installers.push({name:'leaderboard',install(){
     else if(!board)body='<div class="k-card"><p class="note">Weekly competition resets Monday 00:00 Baghdad time. Only first attempts score.</p>'+C.button('Load leaderboard',{action:'leaderboard-retry'})+'</div>';
     else{
       const tgUser=TG.initDataUnsafe?.user||{},ownName=[tgUser.first_name,tgUser.last_name].filter(Boolean).join(' ')||greetingName();
-      const own={...board.own,name:ownName,photo_url:tgUser.photo_url||null};
+      const score=verifiedScore?(period==='all_time'?verifiedScore.total:verifiedScore.week_key===board.week_key?verifiedScore.weekly:0):null;
+      const own={score:score??0,name:ownName,photo_url:tgUser.photo_url||null};
+      // Beat the cutoff by one point: snapshot ties do not promise a place.
+      const gap=board.cutoff==null?'The Top 30 is still filling up.':score==null?'Sync an answer batch to see your points gap.':
+        'You need '+Math.max(0,board.cutoff+1-score)+' points to reach #30.';
       body='<div class="k-leader-tabs" role="tablist" aria-label="Leaderboard period">'+
         '<button role="tab" aria-selected="'+(period==='weekly')+'" data-a="leader-period" data-v="weekly">Weekly</button>'+
         '<button role="tab" aria-selected="'+(period==='all_time')+'" data-a="leader-period" data-v="all_time">All-time</button></div>'+
-        '<section class="k-card k-leader-own"><h2>Your score</h2>'+row(own,true)+'</section>'+
+        '<section class="k-card k-leader-own"><h2>Your synced score</h2>'+(score==null?'<p>Score not synced on this device yet.</p>':row(own,true))+'<p>'+C.e(gap)+'</p><p class="note">Based on your last submission and the cached Top 30. Pending offline answers appear after syncing.</p></section>'+
+        '<h2>Top 30</h2>'+
         '<section class="k-leader-list" aria-label="'+(period==='weekly'?'Weekly':'All-time')+' leaderboard">'+
         ((board.top||[]).length?(board.top||[]).map(x=>row(x)).join(''):'<div class="k-empty"><p>No leaderboard scores yet.</p></div>')+
         '</section>';
