@@ -65,10 +65,63 @@ ORDER_SENSITIVE_RE = re.compile(
     r"\b(all|none|both|neither) of the (above|following)\b|\b(a|b|c|d) (and|&) (b|c|d|e)\b"
     r"|\bonly [a-e]\b", re.I)
 JUNK_RE = re.compile(r"copyright|all rights reserved|\bisbn\b|www\.|\.com\b", re.I)
-BROKEN_HYPHEN_RE = re.compile(r"[a-z]- [a-z]")
+BROKEN_HYPHEN_RE = re.compile(r"[a-z]- (?!or\b|and\b)[a-z]", re.I)
 
 
 # ---------------------------------------------------------------- helpers
+def option_key(text):
+    """Keep numeric signs meaningful without changing ordinary text matching."""
+    signs = re.findall(r"(?<!\w)([+\-−–])(?=\s*\d)", str(text))
+    return norm(text) + "|signs:" + "".join("+" if s == "+" else "-" for s in signs)
+
+
+def source_declarations(rep, book, field, target_field):
+    declarations = {}
+    entries = book.get(field, [])
+    if not isinstance(entries, list):
+        rep.err("book.json", f"{field} must be a list")
+        return declarations
+    for entry in entries:
+        if not (isinstance(entry, dict)
+                and type(entry.get("local_id")) is int
+                and type(entry.get(target_field)) is int
+                and 1 <= entry[target_field] < entry["local_id"]
+                and isinstance(entry.get("reason"), str) and entry["reason"].strip()):
+            rep.err("book.json", f"invalid {field} declaration")
+            continue
+        lid = entry["local_id"]
+        if lid in declarations:
+            rep.err("book.json", f"duplicate {field} declaration for Q{lid}")
+        declarations[lid] = entry[target_field]
+    return declarations
+
+
+def check_source_repeat(rep, q, earlier, declared, exact):
+    """Validate two-way provenance; declarations never exempt altered content."""
+    lid = q["local_id"]
+    field = "source_duplicate_of" if exact else "source_variant_of"
+    target = q.get(field)
+    prior = earlier.get(target) if type(target) is int else None
+    compact = lambda text: re.sub(r"\s+", "", text)
+    valid = (prior is not None and declared.get(lid) == target
+             and target < lid and q["type"] == prior["type"]
+             and q["answer_source"] == prior["answer_source"] == "book_key"
+             and type(q.get("source_page")) is int and q["source_page"] > 0
+             and type(prior.get("source_page")) is int and prior["source_page"] > 0
+             and str(q.get("source_number", "")).strip()
+             and str(prior.get("source_number", "")).strip()
+             and (q["chapter_id"], q["source_number"], q["source_page"])
+                 != (prior["chapter_id"], prior["source_number"], prior["source_page"])
+             and compact(q["stem"]) == compact(prior["stem"]))
+    if valid:
+        same_options = [compact(o) for o in q["options"]] == [compact(o) for o in prior["options"]]
+        valid = (same_options and q["answer"] == prior["answer"]
+                 and q["source_page"] != prior["source_page"]) if exact else not same_options
+    if not valid:
+        rep.err(f"Q{lid}", f"invalid {field} provenance")
+    return bool(valid)
+
+
 class Report:
     def __init__(self, name):
         self.name = name
@@ -289,7 +342,7 @@ def check_question(rep, q, ctx, image_files, used_images):
         label_re = re.compile(LABEL_PREFIX_RE.pattern.format(letter=re.escape(LETTERS[i])), LABEL_PREFIX_RE.flags)
         if label_re.match(o):
             rep.err(ow, "option still starts with its label like 'A.' or '(b)'")
-        key = norm(o)
+        key = option_key(o)
         if key in seen:
             rep.warn(ow, "duplicate option text")
         seen.add(key)
@@ -496,6 +549,10 @@ def validate_zip(path, require_audit=False):
     # questions
     used_images = set()
     ids, stems, full = [], {}, {}
+    earlier = {}
+    duplicates = source_declarations(rep, book, "source_duplicates", "duplicate_of")
+    variants = source_declarations(rep, book, "source_variants", "variant_of")
+    checked_duplicates, checked_variants = set(), set()
     no_expl = 0
     types = {}
     raw = zf.read("questions.jsonl").decode("utf-8", errors="replace")
@@ -521,13 +578,30 @@ def validate_zip(path, require_audit=False):
             if not q["explanation"].strip():
                 no_expl += 1
             s = norm(q["stem"])
-            f = s + "|" + "|".join(norm(o) for o in q["options"])
+            f = s + "|" + "|".join(option_key(o) for o in q["options"])
+            declared_duplicate = lid in duplicates or "source_duplicate_of" in q
+            declared_variant = lid in variants or "source_variant_of" in q
+            duplicate_ok = variant_ok = False
+            if declared_duplicate:
+                checked_duplicates.add(lid)
+                duplicate_ok = check_source_repeat(rep, q, earlier, duplicates, exact=True)
+            if declared_variant:
+                checked_variants.add(lid)
+                variant_ok = check_source_repeat(rep, q, earlier, variants, exact=False)
             if f in full:
-                rep.err(f"Q{lid}", f"exact duplicate of Q{full[f]}")
+                if not (duplicate_ok and q["source_duplicate_of"] == full[f]):
+                    rep.err(f"Q{lid}", f"exact duplicate of Q{full[f]}")
             elif s in stems and q["type"] != "emq" and len(s) > 40:
-                rep.warn(f"Q{lid}", f"same stem as Q{stems[s]} (different options)")
+                if not variant_ok:
+                    rep.warn(f"Q{lid}", f"same stem as Q{stems[s]} (different options)")
             full.setdefault(f, lid)
             stems.setdefault(s, lid)
+            earlier[lid] = q
+
+    for field, declarations, checked in (("source_duplicates", duplicates, checked_duplicates),
+                                         ("source_variants", variants, checked_variants)):
+        for lid in declarations.keys() - checked:
+            rep.err("book.json", f"{field} declaration Q{lid} has no validated question")
 
     # numbering: every id in range present or declared skipped
     dup_ids = sorted({i for i in ids if ids.count(i) > 1})
