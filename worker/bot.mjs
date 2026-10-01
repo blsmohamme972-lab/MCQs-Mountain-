@@ -1,3 +1,4 @@
+import { meterDatabase, logD1Request } from './d1-metrics.mjs';
 // Kafu control plane. Heavy publishing work stays in GitHub Actions.
 import { parsePackageName, queueDocument, retryGroup, clearGroup } from "./queue-state.mjs";
 import { handleLeaderboard } from "./leaderboard.mjs";
@@ -300,7 +301,7 @@ async function internal(request, env, path) {
   }
   return reply("Not found", 404);
 }
-export default {
+const application = {
   async fetch(request, env, ctx) {
     const path = new URL(request.url).pathname;
     if (path === "/bot" && request.method === "POST") return webhook(request, env, ctx);
@@ -314,3 +315,13 @@ export default {
   },
 };
 
+
+export default {
+  async fetch(request,env,ctx){
+    const path=new URL(request.url).pathname;
+    if(!env.DB||!/^\/(api|admin|internal|bot)(\/|$)/.test(path))return application.fetch(request,env,ctx);
+    const meter=meterDatabase(env.DB);let status=500;
+    try{const response=await application.fetch(request,{...env,DB:meter.db},ctx);status=response.status;return response}
+    finally{await logD1Request(env.DB,path,meter.totals,status)}
+  }
+};

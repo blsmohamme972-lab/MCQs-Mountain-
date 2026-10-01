@@ -14,6 +14,7 @@ function testDB() {
   db.exec(readFileSync(new URL("../migrations/0002_publish_warnings.sql", import.meta.url), "utf8"));
   db.exec(readFileSync(new URL("../migrations/0003_leaderboard.sql", import.meta.url), "utf8"));
   db.exec(readFileSync(new URL("../migrations/0004_leaderboard_compact.sql", import.meta.url), "utf8"));
+  db.exec(readFileSync(new URL("../migrations/0005_leaderboard_read_bounds.sql", import.meta.url), "utf8"));
   return {
     sql: db,
     prepare(sql) {
@@ -367,7 +368,7 @@ test("leaderboard computes first-attempt score server-side and rejects fake scor
   }finally{globalThis.fetch=original}
 }));
 
-test("leaderboard privacy hides public row but preserves own rank and score", () => harness(async h => {
+test("leaderboard privacy hides public row and preserves the stored score", () => harness(async h => {
   const initData=signedInitData({id:321,first_name:"Ada",last_name:"Lovelace",photo_url:"https://example.com/a.jpg"});
   let res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
   assert.equal(res.status,200);
@@ -378,15 +379,15 @@ test("leaderboard privacy hides public row but preserves own rank and score", ()
   h.DB.sql.exec("DELETE FROM leaderboard_snapshots");
 
   res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
-  let board=await res.json();assert.equal(board.own.score,20);assert.ok(board.own.rank);assert.ok(board.top.some(x=>x.name==="Ada Lovelace"));
+  let board=await res.json();assert.equal(board.own,undefined);assert.ok(board.top.some(x=>x.name==="Ada Lovelace"));
 
   res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/privacy",{method:"POST",body:JSON.stringify({initData,hidden:true})}),h.env,{waitUntil(){}});
   assert.equal(res.status,200);
   res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
-  board=await res.json();assert.equal(board.own.hidden,true);assert.equal(board.own.score,20);assert.ok(board.own.rank);assert.ok(!board.top.some(x=>x.name==="Ada Lovelace"));
+  board=await res.json();assert.equal(board.own,undefined);assert.equal(h.DB.sql.prepare("SELECT total_score FROM leaderboard_summary").get().total_score,20);assert.ok(!board.top.some(x=>x.name==="Ada Lovelace"));
 }));
 
-test("leaderboard returns top 30 only plus own rank outside top 30", () => harness(async h => {
+test("leaderboard returns cached top 30 and cutoff without personal rank", () => harness(async h => {
   const initData=signedInitData({id:888,first_name:"Private",last_name:"Student",username:"must-not-leak",phone_number:"+000"});
   let res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{waitUntil(){}});
   assert.equal(res.status,200);
@@ -403,7 +404,7 @@ test("leaderboard returns top 30 only plus own rank outside top 30", () => harne
   h.DB.sql.exec("DELETE FROM leaderboard_snapshots");
   res=await bot.fetch(new Request("https://kafu.test/api/leaderboard/board",{method:"POST",body:JSON.stringify({initData,period:"weekly"})}),h.env,{});
   const body=await res.json();
-  assert.equal(body.top.length,30);assert.equal(body.own.rank,36);assert.equal(body.own.score,0);
+  assert.equal(body.top.length,30);assert.equal(body.own,undefined);assert.equal(body.cutoff,1);
   const serialized=JSON.stringify(body);
   assert.doesNotMatch(serialized,/must-not-leak|phone_number|username|user_key|\+000/);
   assert.deepEqual(Object.keys(body.top[0]).sort(),["name","photo_url","rank","score"].sort());
@@ -442,7 +443,7 @@ test('compact migration preserves wrong attempts, scores and old Worker overlap'
   db.close();
 });
 
-test('top snapshot stays cached, own rank is live, expiry refreshes without answer scan',()=>harness(async h=>{
+test('top snapshot stays cached; opening never reads personal rank or history',()=>harness(async h=>{
   const initData=signedInitData({id:321,first_name:'Cache'});
   await bot.fetch(new Request('https://kafu.test/api/leaderboard/privacy',{method:'POST',body:JSON.stringify({initData,hidden:false})}),h.env,{});
   const key=h.DB.sql.prepare('SELECT user_key FROM leaderboard_users').get().user_key,week=baghdadWeekKey();
@@ -452,13 +453,13 @@ test('top snapshot stays cached, own rank is live, expiry refreshes without answ
   const refreshed=board.refreshed_at;
   h.DB.sql.exec('UPDATE leaderboard_summary SET total_score=9,weekly_score=9');
   const before=h.DB.sql.prepare('SELECT total_changes() n').get().n;
-  board=await get();assert.equal(board.top[0].score,1);assert.equal(board.own.score,9);assert.equal(board.refreshed_at,refreshed);
+  board=await get();assert.equal(board.top[0].score,1);assert.equal(board.own,undefined);assert.equal(board.refreshed_at,refreshed);
   assert.equal(h.DB.sql.prepare('SELECT total_changes() n').get().n,before,'cached board does not write');
   h.DB.sql.exec('UPDATE leaderboard_snapshots SET refreshed_at=0');
   board=await get();assert.equal(board.top[0].score,9);
   board=await get('all_time');assert.equal(board.top[0].score,9);
   h.DB.sql.prepare('UPDATE leaderboard_summary SET week_key=?').run('2026-09-21');
-  board=await get();assert.equal(board.own.score,0);assert.equal(board.own.rank,null);
+  board=await get();assert.equal(board.own,undefined);h.DB.sql.exec("UPDATE leaderboard_snapshots SET refreshed_at=0");board=await get();assert.equal(board.top.length,0);
   const plans=h.DB.sql.prepare('EXPLAIN QUERY PLAN SELECT user_key FROM leaderboard_summary WHERE week_key=? AND hidden=0 ORDER BY weekly_score DESC,user_key ASC LIMIT 30').all(week);
   assert.ok(plans.some(x=>x.detail.includes('leaderboard_week_rank')));
 }));
@@ -489,10 +490,10 @@ test('500 answers in five batches use five compact rows updates and no per-answe
     // Five batches cross one bucket boundary: 6 ledger + 6 summary changes.
     // With two ranking indexes this models 24 billed writes for an existing student.
     // Production rows_written from Cloudflare, not this model, is authoritative.
-    assert.equal(h.DB.sql.prepare('SELECT total_changes() n').get().n-before,12);
+    assert.equal(h.DB.sql.prepare('SELECT total_changes() n').get().n-before,17); // +5 daily telemetry counter writes
     const changes=h.DB.sql.prepare('SELECT total_changes() n').get().n;
     const [one,two]=await Promise.all([send(questions.slice(0,100)),send(questions.slice(0,100))]);
-    assert.equal(one.accepted+two.accepted,0);assert.equal(h.DB.sql.prepare('SELECT total_changes() n').get().n,changes);
+    assert.equal(one.accepted+two.accepted,0);assert.equal(h.DB.sql.prepare('SELECT total_changes() n').get().n,changes+2); // only telemetry counters
   }finally{globalThis.fetch=orig}
 }));
 
@@ -536,4 +537,42 @@ test('D1 panel uses real account-wide Cloudflare row totals, UTC days and 70 per
     globalThis.fetch=async()=>Response.json({data:{viewer:{accounts:[{d1AnalyticsAdaptiveGroups:[]}]}}});
     const missing=await d1Usage({...env,CLOUDFLARE_ACCOUNT_ID:'empty'},new Date('2026-09-30T20:06:00Z'));assert.equal(missing.today,null);
   }finally{globalThis.fetch=original}
+});
+
+
+test('additive revision migration supports historical ledgers and old Worker updates without double scores',()=>{
+  const db=new DatabaseSync(':memory:');
+  for(const file of ['0003_leaderboard.sql','0004_leaderboard_compact.sql'])db.exec(readFileSync(new URL('../migrations/'+file,import.meta.url),'utf8'));
+  db.exec("INSERT INTO leaderboard_users(user_key,display_name) VALUES('old','Old')");
+  const put=db.prepare('INSERT INTO leaderboard_answers(user_key,qid,correct,week_key) VALUES(?,?,?,?)');
+  put.run('old','Q000000001',0,'2026-09-28');put.run('old','Q000000002',1,'2026-09-28');
+  db.exec(readFileSync(new URL('../migrations/0005_leaderboard_read_bounds.sql',import.meta.url),'utf8'));
+  put.run('old','Q000000003',1,'2026-09-28');
+  const ledger=db.prepare('SELECT * FROM leaderboard_attempt_buckets').get();
+  assert.deepEqual(JSON.parse(ledger.attempted),[1,2,3]);assert.equal(ledger.revision,1);
+  assert.equal(db.prepare('SELECT total_score FROM leaderboard_summary').get().total_score,2);
+  assert.equal(put.run('old','Q000000001',1,'2026-09-28').changes,0);
+  assert.equal(db.prepare('SELECT COUNT(*) n FROM leaderboard_answers').get().n,3);
+  db.close();
+});
+
+test('simultaneous fresh submissions use revision guard; loser retries without double award',()=>harness(async h=>{
+  const initData=signedInitData({id:543,first_name:'Race'});
+  const send=async()=>bot.fetch(new Request('https://kafu.test/api/leaderboard/submit',{method:'POST',body:JSON.stringify({initData,answers:[{qid:'Q000000001',selection:0}]})}),h.env,{});
+  const responses=await Promise.all([send(),send()]);
+  assert.ok(responses.every(x=>[200,409].includes(x.status)));
+  assert.equal((await (await send()).json()).accepted,0);
+  assert.equal(h.DB.sql.prepare('SELECT total_score FROM leaderboard_summary').get().total_score,1);
+  assert.equal(h.DB.sql.prepare('SELECT COUNT(*) n FROM leaderboard_answers').get().n,0);
+}));
+
+test('meter preserves D1 metadata, avoids fabricated zero and logs no identity',async()=>{
+  const {meterDatabase,logD1Request}=await import('./d1-metrics.mjs');
+  const totalsDB={prepare(){return {bind(){return this},all:async()=>({results:[{value:4}],meta:{rows_read:3,rows_written:0,size_after:40960}})}}};
+  const meter=meterDatabase(totalsDB);assert.deepEqual(await meter.db.prepare('unused').first(),{value:4});
+  assert.equal(meter.totals.rows_read,3);assert.equal(meter.totals.available,true);
+  const logs=[],orig=console.log;console.log=x=>logs.push(JSON.parse(x));
+  try{await logD1Request(totalsDB,'/admin/books',meter.totals,200)}finally{console.log=orig}
+  assert.equal(logs[0].rows_read,3);assert.equal(logs[0].endpoint,'/admin/books');
+  assert.doesNotMatch(JSON.stringify(logs),/user_key|initData|sql|token/);
 });

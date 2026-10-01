@@ -62,10 +62,16 @@ jobs:
           Path("/tmp/kafu-app.js").write_text(inline[-1], encoding="utf-8")
           PY
           node --check /tmp/kafu-app.js
+      - name: Measure D1 reads with local workerd as history grows
+        run: |
+          npm install --no-save --package-lock=false miniflare@4.20260730.0
+          node tools/tests/d1-read-bounds.mjs
       - name: Verify real D1 analytics access without logging private metrics
         env:
           D1_ANALYTICS_TOKEN: ${{ secrets.D1_ANALYTICS_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          D1_DATABASE_ID: ${{ secrets.D1_DATABASE_ID }}
         run: node tools/check_d1_analytics.mjs
       - name: Validate static content JSON
         run: |

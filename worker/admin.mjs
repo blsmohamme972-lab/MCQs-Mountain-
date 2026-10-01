@@ -47,7 +47,15 @@ export async function handleAdmin(request,env,path){
   if(!await verifyAdmin(request,env))return reply({error:'forbidden'},403);
   if(path==='/admin/capabilities')return reply({books:true,d1_usage:true});
   if(path==='/admin/usage'){
-    try{return reply(await d1Usage(env))}catch(e){return reply({error:e.message},503)}
+    try{
+      const usage=await d1Usage(env);
+      const day=new Date().toISOString().slice(0,10);
+      const result=await env.DB.prepare('SELECT day,submissions,measured_submissions,rows_read,rows_written,max_rows_read FROM leaderboard_submission_usage WHERE day>=? ORDER BY day DESC LIMIT 7')
+        .bind(new Date(Date.now()-6*86400_000).toISOString().slice(0,10)).all();
+      const days=(result.results||[]).map(x=>({...x,reads_per_submission:x.measured_submissions?x.rows_read/x.measured_submissions:null}));
+      return reply({...usage,database_size_bytes:result.meta?.size_after??null,
+        submission_usage:{source:'D1 result metadata',excludes:'Telemetry counter update (logged separately)',today:days.find(x=>x.day===day)||null,days}});
+    }catch(e){return reply({error:e.message},503)}
   }
   if(path==='/admin/books'){
     const rows=await env.DB.prepare('SELECT book_id,version,questions,chapters,images,active FROM published_books ORDER BY book_id,version DESC').all();
