@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Medical Motion reusable parts catalog",
+  "type": "object",
+  "required": [
+    "version",
+    "libraryType",
+    "engine",
+    "parts"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "libraryType": {
+      "const": "medical-illustration-parts"
+    },
+    "engine": {
+      "const": "parts/medical-parts.js"
+    },
+    "schema": {
+      "type": "string"
+    },
+    "searchFields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contract": {
+      "type": "object"
+    },
+    "parts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "file",
+          "category",
+          "anatomyLevel",
+          "role",
+          "title",
+          "description",
+          "keywords",
+          "aliases",
+          "source",
+          "limitations",
+          "composition"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]+$"
+          },
+          "file": {
+            "const": "parts/medical-parts.js"
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1
+          },
+          "anatomyLevel": {
+            "enum": [
+              "molecular",
+              "cellular",
+              "tissue",
+              "organ",
+              "instrument"
+            ]
+          },
+          "role": {
+            "enum": [
+              "cell",
+              "organelle",
+              "organism",
+              "boundary",
+              "structure",
+              "mechanism",
+              "instrument"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 220
+          },
+          "keywords": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "limitations": {
+            "type": "string",
+            "minLength": 1
+          },
+          "composition": {
+            "type": "object",
+            "required": [
+              "viewBox",
+              "anchor",
+              "options"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "viewBox": {
+                "const": "0 0 640 440"
+              },
+              "anchor": {
+                "const": "center"
+              },
+              "options": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "x",
+                    "y",
+                    "scale",
+                    "rotation",
+                    "opacity",
+                    "accent"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
