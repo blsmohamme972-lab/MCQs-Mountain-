@@ -51,3 +51,11 @@ Run `node tests/verify.mjs`, then `node scripts/build.mjs`; optionally run `pyth
 ## Telegram Mini App boundary
 
 This directory is a reusable asset library, not the Telegram host application. Keep templates offline-capable and free of `window.Telegram` calls, runtime network requests and server credentials. When a host Mini App embeds a standalone export, load Telegram's official bridge in the host page, call `Telegram.WebApp.ready()` after the first usable frame, use `expand()` only when the product flow needs it, map `themeParams` to CSS variables, and pad content with `safeAreaInset` and `contentSafeAreaInset`. Treat `initDataUnsafe` as untrusted; validate `initData` on the bot server before accepting identity or authorization. Respect reduced motion and Android performance class. See `docs/TELEGRAM_MINI_APP.md` for the maintained integration checklist.
+
+## Reusable parts contract
+
+The `parts/` directory is the small-piece library for future scene composition. Complete explanatory scenes remain in `templates/`. Read `parts/README.md`, `parts/catalog.json` and `docs/ADDING_PARTS.md` before adding a part.
+
+Every part must register a unique ID in `parts/medical-parts.js`, use the 640 x 440 coordinate system with a center anchor, expose only x/y/scale/rotation/opacity/accent options, and remain deterministic, offline-capable and free of DOM access, network requests, timers, randomness, external images and external fonts. Add English metadata, keywords, aliases, sources and limitations to `parts/catalog.json`, then validate the catalog with `parts/schema.json`.
+
+When a future request asks for more parts, search the catalog for duplicates first. Honor an explicit count exactly. Without a count, add the smallest coherent set of essential gaps, normally 5–10 items, and record the reason for the chosen count in `docs/CHANGELOG.md`. Update the gallery, tests and build output only when their contracts require it. Run `node tests/parts_verify.mjs`, `node tests/verify.mjs` and `node scripts/build.mjs` before reporting completion.
