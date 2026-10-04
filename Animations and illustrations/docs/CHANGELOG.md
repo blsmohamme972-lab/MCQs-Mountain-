@@ -1,3 +1,13 @@
+# Medical Motion library changelog
+
+## 2026-10-04 — Final validation and handoff
+
+- Re-read the live GitHub tree before validation and kept all changes inside `Animations and illustrations/`.
+- Parts validation passed: 25 registered parts, deterministic output, transform handling, searchable metadata, exact-count batches and 9 invalid-option cases rejected.
+- Core validation passed: 20 templates, 1,036 frame cases, 138 invalid configurations rejected, deterministic output and closure isolation.
+- `node scripts/build.mjs` generated the offline studio, 20 independent scene files and the searchable parts gallery.
+- XML parsing accepted all 25 generated part SVG documents. JavaScript/MJS syntax checks passed for the engine, templates, tests and build script.
+- Browser smoke remains environment-dependent because Python Playwright is not installed in this workspace; rerun it where Playwright and Chromium are available.
 
 ## 2026-10-04 — Gross anatomy set and exact-count client API
 
@@ -6,7 +16,6 @@
 - Updated the catalog, README and parts verification to keep renderer metadata, searchability, source links and the exact-count rule synchronized.
 - Sources: NCBI Bookshelf and OpenStax/NHLBI references recorded per catalog entry. Simplifications remain stated in each part's `limitations` field; clinician review is still required before clinical teaching deployment.
 - Verification target: `node tests/parts_verify.mjs`, `node tests/verify.mjs` and `node scripts/build.mjs`.
-# Medical Motion library changelog
 
 ## 2026-10-04 — Parts-library foundation
 
