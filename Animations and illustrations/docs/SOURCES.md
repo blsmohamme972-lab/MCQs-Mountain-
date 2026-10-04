@@ -5,7 +5,7 @@ The medical content is deliberately foundational and qualitative. References sup
 | Template | Reference | Important boundary |
 | --- | --- | --- |
 | Vessel flow | [NHLBI: Atherosclerosis](https://www.nhlbi.nih.gov/health/atherosclerosis) | Lumen geometry only; no hemodynamic calculation. |
-| Alveolar exchange | [NHLBI: The respiratory system](https://www.nhlbi.nih.gov/health/lungs/respiratory-system) | O2 air-to-blood; CO2 blood-to-air. Thickness and transit are illustrative. |
+| Alveolar exchange | [NHLBI: The respiratory system](https://www.nhlbi.nih.gov/health/lungs/respiratory-system) | O2 air-to-blood; CO2 blood-to-air. Ten enlarged air spaces, capillary mesh and barrier thickness are illustrative. |
 | Cardiac circulation | [NHLBI: How blood flows through the heart](https://www.nhlbi.nih.gov/health/heart/blood-flow) | Correct compartment order; schematic placement, valves omitted, blue is only a convention. |
 | ECG | [OpenStax A&P 2e 19.2](https://openstax.org/books/anatomy-and-physiology-2e/pages/19-2-cardiac-muscle-and-electrical-activity) | Electrical sequence only; no calibrated lead, diagnostic inference or paper speed. |
 | Saltatory conduction | [OpenStax A&P 12.4](https://openstax.org/books/anatomy-and-physiology/pages/12-4-the-action-potential) | Nodal regeneration highlighted; internodal currents and velocity omitted. |

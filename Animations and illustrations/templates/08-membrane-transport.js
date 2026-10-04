@@ -9,17 +9,19 @@ MedicalMotion.register({
   params:{mode:'passive',speed:1},parameterSchema:{mode:{type:'enum',values:['passive','active'],description:'Passive: higher to lower concentration. Active: lower to higher with ATP coupling.'},speed:{type:'number',min:0.25,max:2,step:0.25,description:'Illustrative transport multiplier.'}},
   labels:{left:'Side A',right:'Side B'},
   render:function(c,p,t,S){
-    const {C,rect,line,circle,arrow,text,wrap,flow}=S,active=c.params.mode==='active';
-    let out=rect(35,65,245,327,C.soft,24)+rect(360,65,245,327,C.soft,24);
-    for(let y=72;y<=390;y+=19){if(y>188&&y<248)continue;out+=circle(293,y,6,C.teal)+circle(347,y,6,C.teal)+line(300,y,317,y+7,C.gold,2)+line(340,y,323,y-7,C.gold,2);}
-    out+=rect(281,189,78,62,C.blue,18)+rect(277,210,86,20,C.paper,8);
-    const points=(count,left)=>Array.from({length:count},(_,i)=>{const x=(left?62:388)+(i%5)*40,y=115+Math.floor(i/5)*55;return circle(x,y,7,C.teal,{opacity:.7});}).join('');
+    const {C,rect,line,circle,path,arrow,text,wrap,flow}=S,active=c.params.mode==='active';
+    let out=rect(28,58,244,334,C.soft,24)+rect(368,58,244,334,C.soft,24);
+    out+=wrap(150,38,c.labels.left,C.ink,23,220,1,'middle')+wrap(490,38,c.labels.right,C.ink,23,220,1,'middle');
+    // Two ordered phospholipid leaflets leave a visible aqueous core between them.
+    for(let y=78;y<=373;y+=20){if(y>184&&y<264)continue;out+=circle(298,y,7,C.teal)+circle(342,y,7,C.teal)+line(304,y,318,y+7,C.gold,2)+line(336,y,322,y-7,C.gold,2);}
+    out+=path('M 298 184 C 306 169 334 169 342 184 V 264 C 334 279 306 279 298 264 Z',C.blue,5,C.paper);
+    out+=path('M 320 184 V 264 M 298 199 H 342 M 298 249 H 342',C.gold,3,'none',{opacity:.75});
+    const points=(count,left)=>Array.from({length:count},(_,i)=>{const x=(left?58:398)+(i%5)*42,y=112+Math.floor(i/5)*54;return circle(x,y,7,C.teal,{opacity:.72});}).join('');
     out+=points(active?6:20,true)+points(active?20:6,false);
-    out+=arrow(175,220,469,220,C.gold,3)+flow([[170,220],[470,220]],p*c.params.speed,C.gold,4,6);
-    out+=wrap(156,39,c.labels.left,C.ink,24,235,1,'middle')+wrap(481,39,c.labels.right,C.ink,24,235,1,'middle');
-    out+=text(155,370,active?'LOWER':'HIGHER',C.ink,21)+text(483,370,active?'HIGHER':'LOWER',C.ink,21);
-    out+=text(320,429,active?'PRIMARY ACTIVE TRANSPORT':'FACILITATED DIFFUSION',C.teal,21);
-    out+=rect(217,278,206,44,C.paper,14,{stroke:active?C.gold:C.line})+text(320,307,active?'ATP -> ADP + Pi':'No direct ATP use',active?C.gold:C.muted,18);
+    out+=arrow(active?170:175,225,active?470:469,225,C.gold,3)+flow([[170,225],[470,225]],p*c.params.speed,C.gold,4,6);
+    out+=text(150,370,active?'LOWER':'HIGHER',C.ink,20)+text(490,370,active?'HIGHER':'LOWER',C.ink,20);
+    out+=text(320,314,active?'PRIMARY ACTIVE TRANSPORT':'FACILITATED DIFFUSION',C.teal,18,'middle',750);
+    out+=rect(216,342,208,45,C.paper,14,{stroke:active?C.gold:C.line,'stroke-width':2})+text(320,371,active?'ATP → ADP + Pi':'No direct ATP use',active?C.gold:C.muted,17);
     return out;
   }
 });

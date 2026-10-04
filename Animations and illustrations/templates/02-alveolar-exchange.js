@@ -4,42 +4,47 @@ MedicalMotion.register({
   caption:'Oxygen moves from alveolar air into blood; carbon dioxide moves from blood into alveolar air.',
   keywords:['lung','alveolus','gas exchange','oxygen','carbon dioxide'],
   stages:['Find air and blood','Follow both gases','Remember the directions'],
-  limitations:'Flattened interface with an exaggerated but clearly separated alveolar sac and capillary. No diffusion-rate, partial-pressure or ventilation-perfusion calculation.',
+  limitations:'Ten enlarged alveolar air spaces and their capillary bed are an original teaching schematic. Cell layers, diffusion rates, partial pressures and ventilation-perfusion relationships are not calculated.',
   sources:['https://www.nhlbi.nih.gov/health/lungs/respiratory-system'],
   params:{speed:1},parameterSchema:{speed:{type:'number',min:0.25,max:2,step:0.25,description:'Visual gas-motion multiplier.'}},
   labels:{air:'Alveolar air',blood:'Capillary blood',barrier:'Thin exchange interface'},
   render:function(c,p,t,S){
     const {C,path,rect,text,circle,arrow,flow,wrap}=S; let out='';
+    // Ten individually shaped air spaces form an alveolar cluster rather than one icon-like bubble.
+    const sac='M 0 -47 C -18 -66 -49 -58 -54 -31 C -79 -30 -94 -8 -80 13 C -92 35 -72 59 -47 54 C -34 76 -5 78 12 58 C 37 77 66 62 61 39 C 87 33 89 5 68 -10 C 79 -35 53 -58 30 -48 C 21 -69 7 -67 0 -47 Z';
+    const highlight='M -34 -10 C -18 -31 15 -37 35 -19';
+    const cells=[[218,82,.55,-8],[320,65,.62,2],[422,82,.55,8],[177,140,.5,-14],[266,126,.6,-5],[374,126,.6,5],[463,140,.5,14],[224,191,.53,-8],[320,181,.62,0],[416,191,.53,8]];
+    out+=path('M 320 27 V 47 M 320 47 C 292 57 266 74 245 98 M 320 47 C 348 57 374 74 395 98',C.blue,12,'none',{opacity:.9});
+    cells.forEach(([x,y,k,r])=>{
+      const tr='translate('+x+' '+y+') rotate('+r+') scale('+k+' '+k+')';
+      out+=path(sac,C.blue,4,C.soft,{transform:tr,'data-structure':'alveolar-space'});
+      out+=path(highlight,C.paper,3,'none',{transform:tr,opacity:.48});
+    });
+    out+=wrap(320,24,c.labels.air,C.ink,18,250,1,'middle');
 
-    // A lobulated alveolar sac: a clearer reusable shape than a perfect circle.
-    const sac='M 320 36 C 291 17 252 25 232 50 C 197 36 164 62 170 96 C 139 116 151 157 181 168 C 193 199 234 211 264 194 C 294 214 335 216 360 196 C 391 212 433 194 439 163 C 475 151 482 111 452 91 C 463 59 427 31 394 44 C 371 20 341 19 320 36 Z';
-    out+=path(sac,C.blue,6,C.soft);
-    out+=path('M 210 150 C 245 171 286 178 320 178 C 355 178 397 171 430 150',C.blue,3,'none',{opacity:.28});
-    out+=wrap(320,94,c.labels.air,C.ink,24,210,2,'middle');
-    out+=text(320,127,'thin-walled air space',C.muted,15,'middle',600);
+    // A delicate capillary mesh hugs the septa; the enlarged barrier stays visibly thin.
+    out+=path('M 116 247 C 160 220 202 226 241 247 S 319 267 357 247 S 437 220 524 249',C.red,13,'none',{opacity:.3});
+    out+=path('M 116 247 C 160 220 202 226 241 247 S 319 267 357 247 S 437 220 524 249',C.teal,3,'none',{opacity:.9});
+    out+=path('M 142 258 C 181 233 214 237 249 257 S 318 279 350 257 S 420 232 499 258',C.red,3,'none',{opacity:.75});
+    out+=path('M 166 244 C 185 273 208 273 228 246 M 274 247 C 292 274 314 274 332 247 M 382 247 C 400 273 422 273 443 246',C.red,3,'none',{opacity:.72});
+    out+=wrap(320,289,c.labels.barrier,C.teal,16,360,1,'middle');
 
-    // The exchange surface is isolated between air and blood.
-    out+=path('M 112 225 C 220 208 420 208 528 225',C.teal,6);
-    out+=path('M 112 232 C 220 215 420 215 528 232',C.teal,2,'none',{opacity:.24});
-    out+=wrap(320,255,c.labels.barrier,C.teal,16,360,1,'middle');
-
-    // Capillary is separated from the air sac so labels remain readable.
-    out+=rect(72,302,496,105,C.tissue,36,{stroke:C.red,'stroke-width':5});
-    out+=wrap(320,338,c.labels.blood,C.ink,22,360,1,'middle');
-    for(let i=0;i<7;i++){
-      const x=112+72*i;
-      out+=S.el('ellipse',{cx:x,cy:378,rx:17,ry:9,fill:C.red,opacity:.82});
+    out+=rect(72,322,496,82,C.tissue,38,{stroke:C.red,'stroke-width':4});
+    out+=path('M 90 337 C 205 317 435 317 550 337',C.paper,2,'none',{opacity:.55});
+    out+=wrap(320,353,c.labels.blood,C.ink,21,360,1,'middle');
+    for(let i=0;i<8;i++){
+      const x=111+62*i, y=376+(i%2?6:-4);
+      out+=S.el('ellipse',{cx:x,cy:y,rx:17,ry:9,fill:C.red,opacity:.86,transform:'rotate('+(i%2?8:-7)+' '+x+' '+y+')'});
+      out+=S.el('ellipse',{cx:x,cy:y,rx:8,ry:3,fill:C.paper,opacity:.34,transform:'rotate('+(i%2?8:-7)+' '+x+' '+y+')'});
     }
 
-    // Direction labels sit beside the arrows, never on top of the capillary label.
-    out+=text(236,276,'O₂',C.teal,22,'middle',750);
-    out+=text(404,276,'CO₂',C.gold,22,'middle',750);
-    out+=arrow(236,286,236,316,C.teal,4);
-    out+=arrow(404,316,404,286,C.gold,4);
-    out+=flow([[236,286],[236,316]],(p*c.params.speed)%1,C.teal,4,5);
-    out+=flow([[404,316],[404,286]],(p*c.params.speed)%1,C.gold,4,5);
-
-    out+=text(320,430,'O₂: alveolus → blood   |   CO₂: blood → alveolus',C.muted,15,'middle',650);
+    out+=text(232,310,'O₂',C.teal,21,'middle',750);
+    out+=text(408,310,'CO₂',C.gold,21,'middle',750);
+    out+=arrow(232,317,232,341,C.teal,4);
+    out+=arrow(408,341,408,317,C.gold,4);
+    out+=flow([[232,317],[232,341]],(p*c.params.speed)%1,C.teal,4,5);
+    out+=flow([[408,341],[408,317]],(p*c.params.speed)%1,C.gold,4,5);
+    out+=text(320,430,'O₂: alveolar air → blood   |   CO₂: blood → alveolar air',C.muted,14,'middle',650);
     return out;
   }
 });

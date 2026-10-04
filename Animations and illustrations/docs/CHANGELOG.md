@@ -1,5 +1,12 @@
 # Medical Motion library changelog
 
+## 2026-10-04 — Ten-template visual refinement and alveolar cluster rebuild
+
+- Reworked templates `01`–`10` with original deterministic SVG geometry: layered vessel narrowing, a ten-space alveolar cluster with a capillary mesh, a chambered heart circuit, a clearer ECG grid, segmented myelin, a synapse with receptor gates, a glomerulus and nephron loop, a phospholipid membrane, a lobed leukocyte and layered wound repair.
+- Rebuilt the reusable `alveolus` part as a cluster of exactly ten individually shaped air spaces, with septal highlights, capillary loops and red-cell detail. Added `data-structure="alveolar-space"` markers and verification assertions so the requested count cannot silently drift.
+- Preserved the source-backed directions: oxygen travels from alveolar air to capillary blood and carbon dioxide travels back to the air space. The ten shapes are enlarged teaching geometry, not histology or a scale model.
+- Verification passed: `node tests/parts_verify.mjs`, `node tests/verify.mjs`, `node scripts/build.mjs`; all ten diagram-only SVGs were rasterized locally with Inkscape and parsed as XML. Browser smoke was not run because Chromium/Playwright is unavailable in this workspace.
+
 ## 2026-10-04 — Final validation and handoff
 
 - Re-read the live GitHub tree before validation and kept all changes inside `Animations and illustrations/`.

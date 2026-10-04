@@ -10,16 +10,16 @@ MedicalMotion.register({
   labels:{soma:'Cell body',myelin:'Myelin sheath',nodes:'Nodes of Ranvier',direction:'Direction along the axon'},
   render:function(c,p,t,S){
     const {C,path,circle,rect,line,text,arrow,wrap}=S; let out='';
-    out+=path('M 73 173 L 35 100 M 53 140 L 17 144 M 45 121 L 55 81 M 56 255 L 24 330 M 40 292 L 12 276',C.blue,6);
-    out+=circle(78,218,52,C.soft,{stroke:C.blue,'stroke-width':4})+circle(78,218,19,C.blue,{opacity:.6});
-    out+=line(125,218,605,218,C.blue,4);
-    for(let i=0;i<4;i++){const x=148+i*106;out+=rect(x,175,78,86,C.teal,29,{opacity:c.params.myelinOpacity});}
-    const nodes=[238,344,450,556],active=Math.min(3,Math.floor(p*4));
-    nodes.forEach((x,i)=>{out+=circle(x,218,i===active?22:8,i===active?C.gold:C.blue,{opacity:i===active?.95:.55});if(i<3)out+=arrow(x+16,142,nodes[i+1]-16,142,i===active?C.gold:C.line,3);});
+    out+=path('M 75 169 C 50 142 36 117 31 87 M 54 133 L 16 112 M 49 117 L 68 77 M 58 266 C 43 299 27 324 10 344 M 38 306 L 4 295',C.blue,6);
+    out+=circle(78,218,54,C.soft,{stroke:C.blue,'stroke-width':5})+circle(92,208,21,C.blue,{opacity:.65})+circle(61,235,13,C.teal,{opacity:.6});
+    out+=path('M 127 218 C 210 216 264 220 321 218 S 435 220 606 218',C.blue,5);
+    for(let i=0;i<4;i++){const x=145+i*106;out+=rect(x,174,82,88,C.teal,30,{opacity:c.params.myelinOpacity,stroke:C.blue,'stroke-width':3});out+=path('M '+(x+14)+' 184 V 252 M '+(x+68)+' 184 V 252',C.paper,2,'none',{opacity:.35});}
+    const nodes=[228,334,440,546],active=Math.min(3,Math.floor(p*4));
+    nodes.forEach((x,i)=>{out+=circle(x,218,i===active?20:9,i===active?C.gold:C.paper,{stroke:i===active?C.gold:C.blue,'stroke-width':3,opacity:i===active?.98:.85});if(i<3)out+=arrow(x+20,145,nodes[i+1]-20,145,i===active?C.gold:C.line,3);});
     out+=wrap(78,320,c.labels.soma,C.ink,19,150,1,'middle');
-    out+=text(320,48,c.labels.myelin,C.ink,20,'middle',750)+line(320,58,320,168,C.muted,2,{'stroke-dasharray':'4 7'});
-    out+=wrap(400,320,c.labels.nodes,C.ink,20,310,1,'middle');
-    out+=arrow(174,365,573,365,C.teal,4)+wrap(365,408,c.labels.direction,C.ink,19,470,1,'middle');
+    out+=text(320,42,c.labels.myelin,C.ink,20,'middle',750)+line(320,53,320,170,C.muted,2,{'stroke-dasharray':'4 7'});
+    out+=wrap(420,320,c.labels.nodes,C.ink,20,310,1,'middle');
+    out+=arrow(174,372,573,372,C.teal,4)+wrap(365,414,c.labels.direction,C.ink,18,470,1,'middle');
     return out;
   }
 });

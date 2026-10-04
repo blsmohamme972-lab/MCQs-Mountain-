@@ -30,6 +30,8 @@ for(const d of M.list()){
 }
 assert.deepEqual(JSON.parse(fs.readFileSync(path.join(root,'catalog.json'),'utf8')).templates.map(d=>d.id),M.list().map(d=>d.id));
 const c=M.defaultConfig('vessel-flow');
+const alveolarFrame=M.renderSVG(M.defaultConfig('alveolar-exchange'),3,{diagramOnly:true});
+assert.equal((alveolarFrame.match(/data-structure="alveolar-space"/g)||[]).length,10);
 for(const bad of [{...c,duration:0},{...c,duration:'6'},{...c,version:2},{...c,theme:'__proto__'},{...c,params:{foo:1}},{...c,labels:{foo:'X'}},{...c,title:''},{...c,title:'A'.repeat(73)},{...c,format:'bad'},JSON.parse('{"templateId":"vessel-flow","__proto__":{}}'),null,[]]){assert.throws(()=>M.validate(bad));invalid++;}
 const hostile={...c,title:'<script>alert(1)</script>',caption:'</script><img src=x onerror=alert(1)>'};
 assert.ok(!M.renderSVG(hostile).includes('<script>'));assert.ok(!M.standalone(hostile).includes('<img src=x'));

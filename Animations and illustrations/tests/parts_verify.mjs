@@ -27,6 +27,8 @@ for(const bad of [{scale:0},{scale:9},{opacity:-.1},{opacity:1.1},{x:NaN},{accen
 assert.equal(M.render('red-blood-cell',{x:100,y:90}).includes('translate(-220 -130)'),true);
 assert.equal(M.search('pituitary gland')[0].id,'pituitary-gland');
 assert.equal(M.search('',{category:'Endocrinology'}).length,2);
+const alveolarPart=M.renderSVG('alveolus');
+assert.equal((alveolarPart.match(/data-structure="alveolar-space"/g)||[]).length,10);
 const batch=[{id:'pituitary-gland',options:{x:180,y:220,scale:.5}},{id:'clavicle',options:{x:320,y:220,scale:.45}},{id:'trachea',options:{x:480,y:220,scale:.45}}];
 assert.ok(M.renderBatch(batch,3).startsWith('<g '));
 assert.ok(M.renderBatchSVG(batch,3).startsWith('<svg '));
