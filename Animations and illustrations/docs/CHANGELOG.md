@@ -1,3 +1,11 @@
+
+## 2026-10-04 — Gross anatomy set and exact-count client API
+
+- Added five essential gross-anatomy parts: `pituitary-gland`, `clavicle`, `trachea`, `thyroid-gland` and `brainstem`. They close the requested endocrine, shoulder, airway and neuroanatomy gaps without adding decorative variants.
+- Added `MedicalMotionParts.search(query, filters)` for metadata-only lookup and `renderBatch(specs, expectedCount)` / `renderBatchSVG(...)` for deterministic HTML composition with an explicit count check.
+- Updated the catalog, README and parts verification to keep renderer metadata, searchability, source links and the exact-count rule synchronized.
+- Sources: NCBI Bookshelf and OpenStax/NHLBI references recorded per catalog entry. Simplifications remain stated in each part's `limitations` field; clinician review is still required before clinical teaching deployment.
+- Verification target: `node tests/parts_verify.mjs`, `node tests/verify.mjs` and `node scripts/build.mjs`.
 # Medical Motion library changelog
 
 ## 2026-10-04 — Parts-library foundation
