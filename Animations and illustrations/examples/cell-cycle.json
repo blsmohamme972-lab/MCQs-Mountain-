@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "templateId": "cell-cycle",
+  "title": "A cell moves through a cycle",
+  "subtitle": "Follow the major phases G1, S, G2 and M in order.",
+  "caption": "The cycle is a teaching map: DNA replication occurs in S phase, while mitosis separates replicated chromosomes.",
+  "params": {
+    "speed": 1
+  },
+  "labels": {
+    "g1": "G1 growth",
+    "s": "S: DNA synthesis",
+    "g2": "G2 preparation",
+    "m": "M: mitosis",
+    "direction": "Cycle order"
+  },
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait"
+}
