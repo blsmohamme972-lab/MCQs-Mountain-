@@ -13,7 +13,7 @@
 </style>
 </head>
 <body>
-<header><div class="brand" aria-hidden="true">M</div><div><h1>Medical Motion</h1><p>Reusable medical visuals. Built entirely with code.</p></div><span class="badge">10 TEMPLATES / NO DEPENDENCIES</span></header>
+<header><div class="brand" aria-hidden="true">M</div><div><h1>Medical Motion</h1><p>Reusable medical visuals. Built entirely with code.</p></div><span class="badge">20 TEMPLATE MODULES / NO DEPENDENCIES</span></header>
 <div class="shell">
 <aside><p class="eyebrow">CHOOSE A STARTING POINT</p><nav id="library" class="library" aria-label="Medical templates"></nav><p class="side-note">Choose a mechanism, customize its parameters, then export a reusable scene. Nothing is sent to a server.</p></aside>
 <main class="workspace">
@@ -33,6 +33,16 @@
 <script src="templates/08-membrane-transport.js"></script>
 <script src="templates/09-leukocyte-recruitment.js"></script>
 <script src="templates/10-wound-healing.js"></script>
+<script src="templates/11-bacterial-morphology.js"></script>
+<script src="templates/12-cell-cycle.js"></script>
+<script src="templates/13-epithelial-barrier.js"></script>
+<script src="templates/14-sarcomere-sliding-filament.js"></script>
+<script src="templates/15-action-potential.js"></script>
+<script src="templates/16-endocrine-negative-feedback.js"></script>
+<script src="templates/17-coagulation-fibrin.js"></script>
+<script src="templates/18-acid-base-buffer.js"></script>
+<script src="templates/19-antibody-neutralization.js"></script>
+<script src="templates/20-apoptosis.js"></script>
 <script>
 (function(){
 'use strict';
@@ -43,7 +53,7 @@ function select(id,next){
  const valid=M.validate(next||M.defaultConfig(id));
  if(player)player.destroy();config=valid;
  const def=M.get(config.templateId);
- $('scene-name').textContent=def.category;$('template-code').textContent=String(meta.findIndex(d=>d.id===def.id)+1).padStart(2,'0')+' / 10';
+ $('scene-name').textContent=def.category;$('template-code').textContent=String(meta.findIndex(d=>d.id===def.id)+1).padStart(2,'0')+' / 20';
  $('format').value=config.format;$('theme').value=config.theme;$('duration').value=config.duration;$('seek').max=config.duration;
  $('limitations').textContent=def.limitations;$('sources').replaceChildren();
  def.sources.forEach((url,i)=>{const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Reference '+(i+1);$('sources').append(a,document.createTextNode('  '));});
