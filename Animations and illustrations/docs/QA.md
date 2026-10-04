@@ -31,3 +31,10 @@ python tests/browser_smoke.py
 ```
 
 Python browser QA requires Playwright and an available Chromium executable. Set `CHROMIUM_PATH` to its location. Runtime use of the studio itself requires no Python, Node, Playwright or build step when the source directory or generated HTML is already available.
+
+
+## 2026-10-04 — Alveolus visual QA
+
+- Updated alveolar exchange template and reusable alveolus part to use the same lobulated air-sac visual language.
+- Rendered a diagram-only SVG (640 × 440 viewBox) and a full portrait SVG (720 × 1280 viewBox), then rasterized both to PNG for visual inspection.
+- Confirmed readable separation of the sac, exchange interface, capillary blood, O₂/CO₂ arrows and explanatory labels. No visible label/path overlap remained in the reviewed frames.
