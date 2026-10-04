@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 1,
   "engine": "core/medical-motion.js",
   "agentGuide": "AGENTS.md",
   "schema": "scene.schema.json",
