@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "sarcomere-sliding-filament",
+  "title": "Thin filaments slide past thick filaments",
+  "subtitle": "Visualize a simplified sarcomere with actin, myosin and Z discs.",
+  "caption": "Contraction is represented as increased overlap; the filaments themselves do not shorten in this schematic.",
+  "params": {
+    "overlap": 0.55
+  },
+  "labels": {
+    "zdisc": "Z disc",
+    "actin": "Thin filament / actin",
+    "myosin": "Thick filament / myosin",
+    "direction": "Sliding toward the center"
+  },
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait"
+}
