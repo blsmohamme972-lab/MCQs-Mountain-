@@ -18,7 +18,7 @@ with sync_playwright() as pw:
     page.on('request', lambda req: requests.append(req.url) if req.url.startswith(('https:', 'http:')) else None)
     page.context.set_offline(True)
     page.set_content((ROOT / 'dist' / 'medical-template-studio.html').read_text())
-    assert page.locator('[data-template]').count() == 10
+    assert page.locator('[data-template]').count() == 20
     ids = page.evaluate('MedicalMotion.list().map(d=>d.id)')
     page.screenshot(path=str(OUT / 'studio-desktop.png'), full_page=True)
     for tid in ids:
@@ -94,4 +94,4 @@ with sync_playwright() as pw:
     assert not requests, requests
     assert not errors, errors
     browser.close()
-print(json.dumps({'templates':10,'svgDocumentsParsed':parsed,'exports':['SVG','PNG','HTML','JSON'],'viewportChecks':['1440px','390px'],'reducedMotion':True,'externalNetworkRequests':len(requests),'standaloneOffline':True,'individualStandaloneScenes':10,'browserErrors':errors},indent=2))
+print(json.dumps({'templates':20,'svgDocumentsParsed':parsed,'exports':['SVG','PNG','HTML','JSON'],'viewportChecks':['1440px','390px'],'reducedMotion':True,'externalNetworkRequests':len(requests),'standaloneOffline':True,'individualStandaloneScenes':20,'browserErrors':errors},indent=2))
