@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "bacterial-morphology",
+  "title": "Three bacterial shapes",
+  "subtitle": "Compare cocci, bacilli and spirilla with clean, original schematic geometry.",
+  "caption": "Shape is a descriptive clue. Identification also depends on staining, physiology, genetics and clinical context.",
+  "params": {
+    "mode": "all"
+  },
+  "labels": {
+    "cocci": "Cocci",
+    "bacilli": "Bacilli",
+    "spirilla": "Spirilla",
+    "active": "Selected morphology"
+  },
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait"
+}
