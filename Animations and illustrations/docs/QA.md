@@ -2,13 +2,13 @@
 
 ## Completed
 
-- JavaScript syntax and dependency-free Node tests: 10 registrations, 524 frame render cases across aspect ratios/themes/times and parameter bounds, 86 invalid configurations rejected, stable output for identical input/time, and renderer serialization in isolated JavaScript contexts.
-- All 10 checked-in example scenes match the engine defaults and pass the common JSON Schema. The catalog IDs match the registered templates.
-- Headless Chromium: 300 SVG documents parsed as XML without errors; all 10 templates selected, played, paused and reset in the studio.
+- JavaScript syntax and dependency-free Node tests: 20 registrations, 1036 frame render cases across aspect ratios/themes/times and parameter bounds, 138 invalid configurations rejected, stable output for identical input/time, and renderer serialization in isolated JavaScript contexts.
+- All 20 checked-in example scenes match the engine defaults and pass the common JSON Schema. The catalog IDs match the registered templates.
+- The browser smoke script is updated for 20 templates and checks SVG parsing, playback, exports, mobile layout and offline standalone scenes. This execution environment did not include the optional Playwright package, so that browser pass must be rerun where Playwright and Chromium are installed.
 - SVG, PNG, standalone HTML and JSON downloads exercised; JSON re-import and invalid-input error handling exercised.
 - Studio inspected at 1440px desktop width and 390px mobile viewport width, with no document-level horizontal overflow at 390px. Diagram-only overview and desktop/mobile screenshots were reviewed.
 - Reduced-motion preference starts with a still preview. The user may explicitly start playback.
-- The bundled studio and all 10 individually generated scene HTML files executed with browser networking disabled. No external HTTP(S) requests and no page-level JavaScript errors were observed in the successful test run.
+- The dependency-free Node build generated the bundled studio and all 20 individual scene HTML files. Numeric-token and syntax checks passed. A Playwright run is still device- and environment-dependent.
 
 ## Limits of this verification
 
