@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Medical Motion v2 scene envelope",
+  "title": "Medical Motion v1 scene envelope",
   "$comment": "Common structural validation only. MedicalMotion.validate(scene) MUST also run to enforce per-template parameter keys, numeric bounds, enums, label keys and trimmed nonempty text. Missing fields are defaulted by the engine, not by this schema.",
   "type": "object",
   "required": [
