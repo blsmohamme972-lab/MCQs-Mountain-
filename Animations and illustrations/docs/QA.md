@@ -10,6 +10,8 @@
 - Studio inspected at 1440px desktop width and 390px mobile viewport width, with no document-level horizontal overflow at 390px. Diagram-only overview and desktop/mobile screenshots were reviewed.
 - Reduced-motion preference starts with a still preview. The user may explicitly start playback.
 - The dependency-free Node build generated the bundled studio and all 20 individual scene HTML files. Numeric-token and syntax checks passed. A Playwright run is still device- and environment-dependent.
+- Parts-library verification passed: 25 registered parts matched the catalog; every part rendered deterministically at default and transformed options; searchable metadata and exact-count batches passed; 9 invalid option cases were rejected.
+- Python XML parsing accepted all 25 generated reusable-part SVG documents. The built parts gallery contains the inlined engine and no external runtime dependency.
 
 ## Limits of this verification
 
@@ -23,6 +25,7 @@ These are qualitative educational mechanisms, not anatomically complete models, 
 
 ```sh
 node tests/verify.mjs
+node tests/parts_verify.mjs
 node scripts/build.mjs
 python tests/browser_smoke.py
 ```
