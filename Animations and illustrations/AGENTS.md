@@ -35,7 +35,7 @@ Helpers: `S.el(tag,attributes,children)`, `S.text(x,y,text,color,size,anchor,wei
 
 Parameter descriptors use either `{type:'number',min,max,step,description}` or `{type:'enum',values:[...],description}`. `step` is a UI increment, not an enforced quantization. Release particle count is rounded by that renderer. Do not label presentation units as millimeters, micrometers, mV, GFR or blood velocity.
 
-When adding template 11+, update the catalog, schema ID enum, example, index script list, visible template-count labels, and tests' expected counts together. `scripts/build.mjs` discovers template JS files automatically, but the studio's classic script list is deliberately explicit for offline loading.
+When adding template 11+, update the catalog, schema ID enum, example, index script list, visible template-count labels, and tests' expected counts together. Keep the explicit script list in numeric order and keep every template's metadata, example and renderer synchronized. `scripts/build.mjs` discovers template JS files automatically, but the studio's classic script list is deliberately explicit for offline loading.
 
 ## Medical safeguards
 
@@ -46,3 +46,8 @@ Source links are references, not permission to copy their diagrams. Draw origina
 ## Acceptance checks
 
 Run `node tests/verify.mjs`, then `node scripts/build.mjs`; optionally run `python tests/browser_smoke.py`. Review source and standalone output. Exercise parameter bounds, both themes, three aspect ratios, keyboard controls, JSON import/export, pause/seek/reset, invalid-input handling, and hostile text escaping. Verify exported standalone HTML with networking disabled. Do not add generated `dist/` or screenshot output to application imports or commit them unless explicitly requested.
+
+
+## Telegram Mini App boundary
+
+This directory is a reusable asset library, not the Telegram host application. Keep templates offline-capable and free of `window.Telegram` calls, runtime network requests and server credentials. When a host Mini App embeds a standalone export, load Telegram's official bridge in the host page, call `Telegram.WebApp.ready()` after the first usable frame, use `expand()` only when the product flow needs it, map `themeParams` to CSS variables, and pad content with `safeAreaInset` and `contentSafeAreaInset`. Treat `initDataUnsafe` as untrusted; validate `initData` on the bot server before accepting identity or authorization. Respect reduced motion and Android performance class. See `docs/TELEGRAM_MINI_APP.md` for the maintained integration checklist.
