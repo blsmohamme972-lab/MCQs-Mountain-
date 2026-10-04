@@ -42,7 +42,7 @@ All controls except the ECG cursor's cycles-per-minute setting are presentation 
 - `AGENTS.md`: required workflow, renderer contract, clinical safeguards and extension rules.
 - `catalog.json`: stable IDs, file paths, keywords and example paths for agent selection.
 - `core/medical-motion.js`: validation, geometry helpers, frame layout, playback and standalone export.
-- `templates/`: ten independently loadable renderers, each with defaults, parameter descriptors and references.
+- `templates/`: twenty independently loadable renderers, each with defaults, parameter descriptors and references.
 - `examples/`: one complete, importable scene JSON per template.
 - `scene.schema.json`: common scene-envelope schema; template-specific validation is enforced by the engine.
 - `docs/`: medical-source notes, Telegram Mini App integration rules and the test report.
