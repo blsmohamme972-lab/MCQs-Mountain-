@@ -17,7 +17,7 @@ MedicalMotion.register({
       const y=i%2===0?110:330, hi=i===active;
       out+=rect(x-76,y-38,152,76,hi?C.soft:C.paper,20,{stroke:hi?col:C.line,'stroke-width':hi?4:2});
       out+=wrap(x,y-4,label,C.ink,18,138,2,'middle');
-      if(i<3) out+=arrow(x+78,y,xs=phases[i+1][1]-78,phases[i+1][1]%2?330:110,col,3);
+      if(i<3) out+=arrow(x+78,y,phases[i+1][1]-78,phases[i+1][1]%2?330:110,col,3);
     });
     out+=arrow(520,330,120,110,C.teal,3);
     out+=text(320,220,c.labels.direction,C.muted,17,'middle',650);
