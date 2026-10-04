@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "epithelial-barrier",
+  "title": "An epithelial barrier controls passage",
+  "subtitle": "Show cells, tight junctions and the difference between transcellular and paracellular routes.",
+  "caption": "A continuous epithelial sheet limits paracellular movement; selective transport across cells is a separate mechanism.",
+  "params": {
+    "junctionIntegrity": 0.8
+  },
+  "labels": {
+    "lumen": "Lumen",
+    "cells": "Epithelial cells",
+    "junction": "Tight junctions",
+    "route": "Selective routes"
+  },
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait"
+}
