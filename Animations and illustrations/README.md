@@ -1,0 +1,80 @@
+# Medical Motion - reusable medical animation templates
+
+A code-only library for future AI agents and authors. Ten original, parameterized SVG mechanisms share one deterministic JavaScript engine. This directory is a **standalone asset library**, not part of the MCQs application runtime. Nothing outside this directory is required or modified.
+
+## Start here
+
+Download this directory with its relative paths intact and open `index.html` in a modern browser. No server, package installation, API key, CDN or internet connection is needed by the runtime. GitHub displays HTML source; it does not execute this studio from the repository page.
+
+Choose a template, change its parameters, scrub the timeline, and export an SVG illustration, PNG image, JSON scene or **single-file animated HTML**. Playback starts only on an explicit click. The studio supports 9:16, 1:1 and 16:9, light/dark palettes and 2-60 second scenes. The default is a 6-second portrait scene.
+
+For one portable studio file, optionally run `node scripts/build.mjs`. It creates `dist/medical-template-studio.html`, ten independent scene HTML files and full metadata. Node is only an optional development/export tool, not a browser requirement. Generated files remain under this directory and are ignored by Git.
+
+## The ten templates
+
+| ID | Reusable mechanism | Main controls |
+| --- | --- | --- |
+| `vessel-flow` | Blood movement through a narrowed vessel lumen | narrowing, speed |
+| `alveolar-exchange` | Oxygen and carbon dioxide cross in opposite directions | speed |
+| `cardiac-circulation` | Body -> right heart -> lungs -> left heart -> body | speed |
+| `ecg-cycle` | Synthetic P-QRS-T electrical sequence | bpm, visual gain |
+| `saltatory-conduction` | Successive nodal activation along a myelinated axon | myelin opacity |
+| `chemical-synapse` | Vesicle release, cleft transit and receptor binding | particle count |
+| `nephron-exchange` | Filtration, reabsorption and secretion directions | speed |
+| `membrane-transport` | Facilitated diffusion or generic primary active transport | passive/active, speed |
+| `leukocyte-recruitment` | Rolling, adhesion, exit and tissue-directed movement | cell size |
+| `wound-healing` | Overlapping repair phases and tissue remodeling | initial visual wound width |
+
+All controls except the ECG cursor's cycles-per-minute setting are presentation parameters, not measured physiology. Even that ECG is uncalibrated and is not a patient rhythm. Read each template's `limitations` and `sources` before reusing it medically. The illustrations are conceptual; they have not been clinically validated.
+
+## Organization
+
+- `AGENTS.md`: required workflow, renderer contract, clinical safeguards and extension rules.
+- `catalog.json`: stable IDs, file paths, keywords and example paths for agent selection.
+- `core/medical-motion.js`: validation, geometry helpers, frame layout, playback and standalone export.
+- `templates/`: ten independently loadable renderers, each with defaults, parameter descriptors and references.
+- `examples/`: one complete, importable scene JSON per template.
+- `scene.schema.json`: common scene-envelope schema; template-specific validation is enforced by the engine.
+- `docs/`: medical-source notes and the test report.
+- `scripts/` and `tests/`: optional build and verification commands.
+
+## Minimal reuse
+
+Load the core and only the required template as ordinary scripts. There are no ES modules or runtime `fetch()` calls, so relative script loading does not require a local server.
+
+```html
+<div id="scene"></div>
+<script src="core/medical-motion.js"></script>
+<script src="templates/02-alveolar-exchange.js"></script>
+<script>
+  const config = MedicalMotion.defaultConfig('alveolar-exchange');
+  config.title = 'Gas exchange at the alveolus';
+  const player = MedicalMotion.create(document.getElementById('scene'), config);
+  player.seek(3); // a deterministic static frame, in seconds
+  // Connect player.play() to your own explicit user action.
+</script>
+```
+
+`MedicalMotion.validate(config)` returns a fully defaulted configuration or throws before rendering. `params` and `labels` may be partial; unknown keys are rejected. The JSON schema validates the common envelope only: **passing the schema alone is not enough**. Run the engine validator after schema validation.
+
+API: `list()`, `get(id)`, `defaultConfig(id)`, `validate(config)`, `renderSVG(config, seconds, {diagramOnly:true})`, `create(element, config, {onframe})`, and `standalone(config)`.
+
+Player API: `play()`, `pause()`, `seek(seconds)`, `update(config)`, `exportSVG()`, `exportJSON()`, `state` and `destroy()`. Destroy a player before removing its host element. Each instance owns its clock; two instances do not share animation state. Playback pauses when its document is hidden and stops at the end instead of looping indefinitely.
+
+`renderSVG` includes the frame by default. `diagramOnly:true` exports just the 640 x 440 medical artwork. Time is clamped to the scene bounds. `standalone(config)` returns an HTML string containing only the core and the selected renderer, with controls and no external assets. Exported SVG/PNG represent the selected frame; exported HTML is interactive animation, **not an MP4/video file**.
+
+## Authoring notes
+
+Titles, subtitles, captions and the declared labels are editable through the JSON editor. Keep anatomical labels short. Wrapping is bounded; overly long text can be ellipsized. Review every customized scene at its intended mobile width and aspect ratio. English defaults are provided; automatic translation and right-to-left layout are not implemented.
+
+Artwork and animation are generated by JavaScript and SVG geometry. Source sites are references for physiology, not image assets. This addition does not grant a separate license or change the repository's licensing. No third-party artwork or font files are included.
+
+## Verify
+
+```sh
+node tests/verify.mjs
+node scripts/build.mjs
+python tests/browser_smoke.py
+```
+
+The last command is optional and requires Python Playwright plus Chromium. Set `CHROMIUM_PATH` when necessary. See `docs/QA.md` for what was actually tested and what remains device-dependent.

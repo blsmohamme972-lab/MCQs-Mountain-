@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "templateId": "nephron-exchange",
+  "title": "Filter. Reclaim. Secrete.",
+  "subtitle": "Separate glomerular filtration from two-way tubular exchange.",
+  "caption": "Filtration enters the tubule. Reabsorption returns material to blood. Secretion moves material from blood into the tubule.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "speed": 1
+  },
+  "labels": {
+    "filter": "Filtration",
+    "tubule": "Tubule / filtrate",
+    "blood": "Peritubular blood",
+    "reabsorb": "Reabsorption",
+    "secrete": "Secretion"
+  }
+}

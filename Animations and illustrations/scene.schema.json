@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Medical Motion v1 scene envelope",
+  "$comment": "Common structural validation only. MedicalMotion.validate(scene) MUST also run to enforce per-template parameter keys, numeric bounds, enums, label keys and trimmed nonempty text. Missing fields are defaulted by the engine, not by this schema.",
+  "type": "object",
+  "required": ["templateId"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {"const": 1},
+    "templateId": {"enum": ["vessel-flow", "alveolar-exchange", "cardiac-circulation", "ecg-cycle", "saltatory-conduction", "chemical-synapse", "nephron-exchange", "membrane-transport", "leukocyte-recruitment", "wound-healing"]},
+    "title": {"type": "string", "minLength": 1, "maxLength": 72},
+    "subtitle": {"type": "string", "minLength": 1, "maxLength": 160},
+    "caption": {"type": "string", "minLength": 1, "maxLength": 180},
+    "duration": {"type": "number", "minimum": 2, "maximum": 60},
+    "format": {"enum": ["portrait", "square", "landscape"]},
+    "theme": {"enum": ["clinical", "night"]},
+    "params": {"type": "object", "additionalProperties": {"type": ["number", "string"]}},
+    "labels": {"type": "object", "additionalProperties": {"type": "string", "minLength": 1, "maxLength": 48}}
+  }
+}

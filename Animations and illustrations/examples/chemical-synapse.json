@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "chemical-synapse",
+  "title": "From electrical to chemical",
+  "subtitle": "Follow vesicle release, movement through the cleft and receptor binding.",
+  "caption": "Released neurotransmitter crosses the synaptic cleft and binds receptors. The postsynaptic effect depends on the transmitter and receptor.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "releaseCount": 6
+  },
+  "labels": {
+    "pre": "Presynaptic terminal",
+    "cleft": "Synaptic cleft",
+    "post": "Postsynaptic membrane",
+    "receptor": "Receptor"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "templateId": "cardiac-circulation",
+  "title": "One circuit. Two pumps.",
+  "subtitle": "Trace the order of chambers, lungs and systemic tissues.",
+  "caption": "Body to right heart to lungs; lungs to left heart to body. Artery and vein names describe direction, not oxygen content.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "speed": 1
+  },
+  "labels": {
+    "ra": "Right atrium",
+    "rv": "Right ventricle",
+    "la": "Left atrium",
+    "lv": "Left ventricle",
+    "lungs": "Lungs",
+    "body": "Body tissues"
+  }
+}

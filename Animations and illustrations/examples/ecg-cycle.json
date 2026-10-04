@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "ecg-cycle",
+  "title": "Read the electrical sequence",
+  "subtitle": "A synthetic P-QRS-T waveform links labels to electrical events.",
+  "caption": "P: atrial depolarization. QRS: ventricular depolarization. T: ventricular repolarization. Electrical activity is not contraction itself.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "bpm": 75,
+    "gain": 1
+  },
+  "labels": {
+    "p": "Atrial depolarization",
+    "qrs": "Ventricular depolarization",
+    "t": "Ventricular repolarization"
+  }
+}

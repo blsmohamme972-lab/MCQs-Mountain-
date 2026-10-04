@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "templateId": "alveolar-exchange",
+  "title": "Two gases. Opposite directions.",
+  "subtitle": "See oxygen and carbon dioxide cross the alveolar-capillary interface.",
+  "caption": "Oxygen moves from alveolar air into blood; carbon dioxide moves from blood into alveolar air.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "speed": 1
+  },
+  "labels": {
+    "air": "Alveolar air",
+    "blood": "Capillary blood",
+    "barrier": "Thin exchange interface"
+  }
+}

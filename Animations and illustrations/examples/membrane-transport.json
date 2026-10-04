@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "templateId": "membrane-transport",
+  "title": "Across the cell membrane",
+  "subtitle": "Compare facilitated diffusion with a generic ATP-coupled pump.",
+  "caption": "Passive transport follows the relevant gradient. A primary active pump couples energy use to transport against a gradient.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "mode": "passive",
+    "speed": 1
+  },
+  "labels": {
+    "left": "Side A",
+    "right": "Side B"
+  }
+}

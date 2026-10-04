@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Medical Motion | Reusable code template studio</title>
+<style>
+:root{--ink:#152c47;--muted:#536982;--blue:#246bdd;--teal:#087f8c;--border:#dce5ef;--bg:#f3f6fb}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}button,input,select,textarea{font:inherit}button,a,input,select,textarea{touch-action:manipulation}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #246bdd;outline-offset:3px}header{padding:24px 32px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px}.brand{width:48px;height:48px;background:var(--blue);color:#fff;border-radius:14px;display:grid;place-items:center;font-size:25px;font-weight:800}h1{font-size:23px;letter-spacing:-.7px;line-height:1.2;margin:0}header p{margin:5px 0 0;color:var(--muted);font-size:13px}.badge{margin-left:auto;color:var(--teal);background:#e8f5f3;border:1px solid #c9e9e5;border-radius:30px;padding:8px 14px;font-size:12px;font-weight:750}.shell{max-width:1700px;margin:auto;padding:24px;display:grid;grid-template-columns:260px minmax(0,1fr);gap:24px}.eyebrow{font-size:11px;letter-spacing:1.7px;font-weight:800;color:var(--teal);margin:0 0 14px}.library{display:grid;gap:8px}.item{border:1px solid transparent;background:transparent;border-radius:15px;display:flex;align-items:center;gap:12px;text-align:left;padding:11px;width:100%;color:var(--ink);min-height:72px}.item:hover{background:#fff;border-color:var(--border)}.item[aria-pressed=true]{background:#fff;border-color:var(--blue);box-shadow:0 4px 15px #244a7910}.thumb{width:68px;height:47px;flex-shrink:0;background:#fff;overflow:hidden;border-radius:9px;border:1px solid var(--border)}.thumb svg{width:100%;height:100%}.item b{display:block;font-size:13px;line-height:1.3}.item small{color:var(--muted);display:block;font-size:11px;margin-top:4px}.side-note{font-size:12px;color:var(--muted);padding:14px 8px}.workspace{display:grid;grid-template-columns:minmax(280px,1fr) 310px;gap:20px;align-items:start}.panel{background:#fff;border:1px solid var(--border);border-radius:22px;overflow:hidden}.preview-head{padding:18px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);font-size:12px;color:var(--muted)}.live-dot{display:inline-block;width:7px;height:7px;background:var(--teal);border-radius:50%;margin-right:6px}.stage{padding:18px;background:radial-gradient(ellipse at top,#e1eaf5,#f6f8fc);min-height:380px;display:grid;place-items:center}.stage svg{width:100%;max-height:68vh;min-height:280px;height:auto;display:block;filter:drop-shadow(0 10px 20px #152c4715)}.transport{padding:17px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}.btn{min-height:44px;padding:10px 15px;border:1px solid var(--border);border-radius:11px;color:var(--ink);background:#fff;font-weight:650;font-size:13px}.btn:hover{background:#edf3fc}.primary{background:var(--blue);border-color:var(--blue);color:#fff}.primary:hover{background:#1759c6}.transport input{flex:1;min-width:100px;accent-color:var(--blue)}output{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted)}.settings{padding:20px}.settings h2{margin:0 0 14px;font-size:18px;letter-spacing:-.4px}.settings h3{font-size:13px;margin:22px 0 10px}label{display:block;font-size:12px;font-weight:650;color:var(--muted);margin-bottom:13px}label>input:not([type=range]),label>select,textarea{width:100%;display:block;border:1px solid var(--border);border-radius:10px;background:#fff;padding:10px;color:var(--ink);margin-top:5px;min-height:44px}label>input[type=range]{width:100%;display:block;margin-top:8px;accent-color:var(--blue)}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.help{font-size:11px;color:var(--muted);margin-top:5px;font-weight:400;line-height:1.45}.exports{display:grid;grid-template-columns:1fr 1fr;gap:8px}.exports .wide{grid-column:1/-1}details{margin-top:18px;border-top:1px solid var(--border);padding-top:15px}summary{font-weight:700;font-size:13px;cursor:pointer;min-height:32px}textarea{font:12px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;min-height:260px;resize:vertical}#status{font-size:12px;min-height:22px;color:var(--teal);margin:10px 0 0;overflow-wrap:anywhere}.error{color:#b31a35!important}.notes{padding:18px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)}.notes p{margin:6px 0}.notes a{color:var(--blue)}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}footer{max-width:1500px;margin:0 auto;padding:0 24px 25px;color:var(--muted);font-size:12px}
+@media(max-width:1150px){.shell{grid-template-columns:210px minmax(0,1fr);padding:18px;gap:16px}.workspace{grid-template-columns:1fr}.settings{display:block}.stage svg{max-height:72vh}.library .thumb{width:50px;height:40px}}
+@media(max-width:720px){header{padding:18px 16px;gap:12px}.badge{display:none}h1{font-size:21px}header p{font-size:11px}.shell{display:block;padding:14px}.library{display:flex;overflow-x:auto;scroll-snap-type:x proximity;gap:8px;padding-bottom:10px}.item{min-width:216px;width:216px;scroll-snap-align:start;background:#fff;border-color:var(--border)}.library .thumb{width:58px;height:44px}.side-note{display:none}.workspace{margin-top:12px;gap:14px}.stage{padding:10px}.stage svg{max-height:75vh}.transport{padding:14px;gap:9px}.eyebrow{margin-bottom:8px}.settings{padding:18px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header><div class="brand" aria-hidden="true">M</div><div><h1>Medical Motion</h1><p>Reusable medical visuals. Built entirely with code.</p></div><span class="badge">10 TEMPLATES / NO DEPENDENCIES</span></header>
+<div class="shell">
+<aside><p class="eyebrow">CHOOSE A STARTING POINT</p><nav id="library" class="library" aria-label="Medical templates"></nav><p class="side-note">Choose a mechanism, customize its parameters, then export a reusable scene. Nothing is sent to a server.</p></aside>
+<main class="workspace">
+<section class="panel" aria-label="Scene preview"><div class="preview-head"><span><span class="live-dot"></span>DETERMINISTIC SVG PREVIEW</span><span id="template-code"></span></div><div id="stage" class="stage"></div><div class="transport"><button class="btn primary" id="play" type="button">Play</button><button class="btn" id="reset" type="button">Reset</button><label class="sr-only" for="seek">Timeline in seconds</label><input id="seek" type="range" min="0" max="6" step="0.01" value="0"><output id="clock">0.0 / 6 s</output></div><div class="notes"><p><strong>Educational schematic, not a clinical simulator.</strong></p><p id="limitations"></p><p id="sources"></p><p id="motion-note">Paused on a representative frame. Press Play to animate.</p></div></section>
+<section class="panel settings" aria-label="Scene settings"><p class="eyebrow">CONFIGURE & REUSE</p><h2 id="scene-name">Scene settings</h2><div class="two"><label>Format<select id="format"><option value="portrait">Portrait 9:16</option><option value="square">Square 1:1</option><option value="landscape">Landscape 16:9</option></select></label><label>Theme<select id="theme"><option value="clinical">Clinical light</option><option value="night">Clinical dark</option></select></label></div><label>Duration in seconds<input id="duration" type="number" min="2" max="60" step="1" value="6"></label><div id="parameters"></div><h3>Export this scene</h3><div class="exports"><button class="btn" id="svg" type="button">SVG illustration</button><button class="btn" id="png" type="button">PNG image</button><button class="btn primary wide" id="html" type="button">Standalone animated HTML</button><button class="btn" id="json-save" type="button">Save JSON</button><button class="btn" id="json-load" type="button">Load JSON</button></div><input id="file" type="file" accept=".json,application/json" hidden><p id="status" role="status" aria-live="polite"></p><details><summary>AI scene editor / JSON</summary><p class="help">Edit titles, captions, labels and parameters. Apply validates before replacing the current scene. Only registered fields are accepted.</p><label class="sr-only" for="json">Scene configuration JSON</label><textarea id="json" spellcheck="false"></textarea><button class="btn" id="apply-json" type="button">Validate & apply</button></details></section>
+</main></div>
+<footer>Original procedural SVG artwork. No stock images, fonts, CDN, backend or API keys. Open AGENTS.md for the agent workflow.</footer>
+<noscript>This studio requires JavaScript. Enable it to render the code-based templates.</noscript>
+<script src="core/medical-motion.js"></script>
+<script src="templates/01-vessel-flow.js"></script>
+<script src="templates/02-alveolar-exchange.js"></script>
+<script src="templates/03-cardiac-circulation.js"></script>
+<script src="templates/04-ecg-cycle.js"></script>
+<script src="templates/05-saltatory-conduction.js"></script>
+<script src="templates/06-chemical-synapse.js"></script>
+<script src="templates/07-nephron-exchange.js"></script>
+<script src="templates/08-membrane-transport.js"></script>
+<script src="templates/09-leukocyte-recruitment.js"></script>
+<script src="templates/10-wound-healing.js"></script>
+<script>
+(function(){
+'use strict';
+const M=MedicalMotion,$=id=>document.getElementById(id),meta=M.list();let player,config;
+function status(message,error=false){$('status').textContent=message;$('status').className=error?'error':'';}
+function download(name,content,type){const url=URL.createObjectURL(new Blob([content],{type})),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),15000);}
+function select(id,next){
+ const valid=M.validate(next||M.defaultConfig(id));
+ if(player)player.destroy();config=valid;
+ const def=M.get(config.templateId);
+ $('scene-name').textContent=def.category;$('template-code').textContent=String(meta.findIndex(d=>d.id===def.id)+1).padStart(2,'0')+' / 10';
+ $('format').value=config.format;$('theme').value=config.theme;$('duration').value=config.duration;$('seek').max=config.duration;
+ $('limitations').textContent=def.limitations;$('sources').replaceChildren();
+ def.sources.forEach((url,i)=>{const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Reference '+(i+1);$('sources').append(a,document.createTextNode('  '));});
+ $('parameters').replaceChildren();
+ Object.entries(def.parameterSchema).forEach(([key,s])=>{
+  const label=document.createElement('label');label.textContent=key.replace(/([A-Z])/g,' $1').replace(/^./,v=>v.toUpperCase());
+  const input=document.createElement(s.type==='enum'?'select':'input');input.id='param-'+key;input.dataset.param=key;
+  if(s.type==='enum')s.values.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;input.append(o);});
+  else{input.type='number';input.min=s.min;input.max=s.max;input.step=s.step;}
+  input.value=config.params[key];input.addEventListener('change',applyControls);label.append(input);
+  const hint=document.createElement('div');hint.className='help';hint.textContent=s.description;label.append(hint);$('parameters').append(label);
+ });
+ document.querySelectorAll('[data-template]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.template===def.id)));
+ player=M.create($('stage'),config,{onframe:s=>{$('seek').value=s.time;$('clock').textContent=s.time.toFixed(1)+' / '+s.duration+' s';$('play').textContent=s.playing?'Pause':'Play';}});
+ player.seek(config.duration*.5);$('json').value=player.exportJSON();status('Ready. All rendering stays on this device.');
+}
+function applyControls(){try{const next={...config,format:$('format').value,theme:$('theme').value,duration:Number($('duration').value),params:{...config.params}};document.querySelectorAll('[data-param]').forEach(input=>{next.params[input.dataset.param]=input.tagName==='SELECT'?input.value:Number(input.value);});select(next.templateId,next);}catch(e){status(e.message,true);}}
+meta.forEach((d,i)=>{const b=document.createElement('button');b.type='button';b.className='item';b.dataset.template=d.id;b.setAttribute('aria-pressed','false');const thumb=document.createElement('span');thumb.className='thumb';thumb.setAttribute('aria-hidden','true');thumb.innerHTML=M.renderSVG(M.defaultConfig(d.id),3,{diagramOnly:true});const title=document.createElement('span'),bold=document.createElement('b'),small=document.createElement('small');bold.textContent=d.id.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' ');small.textContent=String(i+1).padStart(2,'0')+' / '+d.category;title.append(bold,small);b.append(thumb,title);b.onclick=()=>select(d.id);$('library').append(b);});
+for(const id of ['format','theme','duration'])$(id).addEventListener('change',applyControls);
+$('play').onclick=()=>player.state.playing?player.pause():player.play();$('reset').onclick=()=>{player.pause();player.seek(0);};
+$('seek').oninput=()=>{player.pause();player.seek(Number($('seek').value));};
+$('apply-json').onclick=()=>{try{const next=JSON.parse($('json').value);select(next.templateId,next);}catch(e){status(e.message,true);}};
+$('json-load').onclick=()=>$('file').click();$('file').onchange=async()=>{const f=$('file').files[0];if(!f)return;try{if(f.size>100000)throw new Error('JSON must be smaller than 100 KB.');const next=JSON.parse(await f.text());select(next.templateId,next);}catch(e){status(e.message,true);}finally{$('file').value='';}};
+$('json-save').onclick=()=>download(config.templateId+'.json',player.exportJSON(),'application/json');
+$('svg').onclick=()=>{download(config.templateId+'.svg',player.exportSVG(),'image/svg+xml');status('SVG exported at the current frame.');};
+$('html').onclick=()=>{download(config.templateId+'.html',M.standalone(config),'text/html');status('Single-file animation exported. Open it directly in Chrome.');};
+$('png').onclick=async()=>{const source=player.exportSVG(),url=URL.createObjectURL(new Blob([source],{type:'image/svg+xml'}));try{const image=new Image();await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(new Error('Could not rasterize SVG. Export SVG instead.'));image.src=url;});const canvas=document.createElement('canvas');canvas.width=image.naturalWidth;canvas.height=image.naturalHeight;const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas is unavailable.');ctx.drawImage(image,0,0);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw new Error('PNG export failed.');download(config.templateId+'.png',blob,'image/png');status('PNG exported at the current frame.');}catch(e){status(e.message,true);}finally{URL.revokeObjectURL(url);}};
+const motion=matchMedia('(prefers-reduced-motion: reduce)');function motionChanged(){if(motion.matches){if(player)player.pause();$('motion-note').textContent='Reduced motion detected. Preview stays still until you explicitly press Play.';}}motion.addEventListener('change',motionChanged);
+select(meta[0].id);motionChanged();
+})();
+</script>
+</body>
+</html>

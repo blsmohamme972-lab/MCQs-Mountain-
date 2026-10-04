@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "engine": "core/medical-motion.js",
+  "agentGuide": "AGENTS.md",
+  "schema": "scene.schema.json",
+  "validation": "MedicalMotion.validate(scene) is authoritative for template-specific constraints.",
+  "templates": [
+    {
+      "id": "vessel-flow",
+      "file": "templates/01-vessel-flow.js",
+      "category": "Circulation",
+      "keywords": [
+        "vessel",
+        "artery",
+        "stenosis",
+        "lumen",
+        "blood flow"
+      ],
+      "example": "examples/vessel-flow.json"
+    },
+    {
+      "id": "alveolar-exchange",
+      "file": "templates/02-alveolar-exchange.js",
+      "category": "Respiration",
+      "keywords": [
+        "lung",
+        "alveolus",
+        "gas exchange",
+        "oxygen",
+        "carbon dioxide"
+      ],
+      "example": "examples/alveolar-exchange.json"
+    },
+    {
+      "id": "cardiac-circulation",
+      "file": "templates/03-cardiac-circulation.js",
+      "category": "Cardiology",
+      "keywords": [
+        "heart",
+        "circulation",
+        "atrium",
+        "ventricle",
+        "pulmonary",
+        "systemic"
+      ],
+      "example": "examples/cardiac-circulation.json"
+    },
+    {
+      "id": "ecg-cycle",
+      "file": "templates/04-ecg-cycle.js",
+      "category": "Electrophysiology",
+      "keywords": [
+        "ECG",
+        "EKG",
+        "P wave",
+        "QRS",
+        "T wave",
+        "electrical"
+      ],
+      "example": "examples/ecg-cycle.json"
+    },
+    {
+      "id": "saltatory-conduction",
+      "file": "templates/05-saltatory-conduction.js",
+      "category": "Neuroscience",
+      "keywords": [
+        "neuron",
+        "axon",
+        "myelin",
+        "nerve",
+        "saltatory",
+        "action potential"
+      ],
+      "example": "examples/saltatory-conduction.json"
+    },
+    {
+      "id": "chemical-synapse",
+      "file": "templates/06-chemical-synapse.js",
+      "category": "Neuroscience",
+      "keywords": [
+        "synapse",
+        "neurotransmitter",
+        "vesicle",
+        "receptor",
+        "chemical transmission"
+      ],
+      "example": "examples/chemical-synapse.json"
+    },
+    {
+      "id": "nephron-exchange",
+      "file": "templates/07-nephron-exchange.js",
+      "category": "Renal physiology",
+      "keywords": [
+        "kidney",
+        "nephron",
+        "filtration",
+        "reabsorption",
+        "secretion",
+        "renal"
+      ],
+      "example": "examples/nephron-exchange.json"
+    },
+    {
+      "id": "membrane-transport",
+      "file": "templates/08-membrane-transport.js",
+      "category": "Cell biology",
+      "keywords": [
+        "cell",
+        "membrane",
+        "diffusion",
+        "active transport",
+        "ATP",
+        "pump",
+        "channel"
+      ],
+      "example": "examples/membrane-transport.json"
+    },
+    {
+      "id": "leukocyte-recruitment",
+      "file": "templates/09-leukocyte-recruitment.js",
+      "category": "Inflammation",
+      "keywords": [
+        "inflammation",
+        "leukocyte",
+        "neutrophil",
+        "rolling",
+        "adhesion",
+        "extravasation",
+        "chemotaxis"
+      ],
+      "example": "examples/leukocyte-recruitment.json"
+    },
+    {
+      "id": "wound-healing",
+      "file": "templates/10-wound-healing.js",
+      "category": "Tissue repair",
+      "keywords": [
+        "wound",
+        "healing",
+        "hemostasis",
+        "inflammation",
+        "proliferation",
+        "remodeling",
+        "scar"
+      ],
+      "example": "examples/wound-healing.json"
+    }
+  ]
+}

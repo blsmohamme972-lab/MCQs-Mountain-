@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "vessel-flow",
+  "title": "A narrower route for blood",
+  "subtitle": "Follow directional flow through a simplified vessel lumen.",
+  "caption": "A narrowing changes the available lumen. Particle motion here is illustrative, not a flow or pressure calculation.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "narrowing": 0.55,
+    "speed": 1
+  },
+  "labels": {
+    "lumen": "Vessel lumen",
+    "wall": "Vessel wall",
+    "direction": "Direction of flow"
+  }
+}

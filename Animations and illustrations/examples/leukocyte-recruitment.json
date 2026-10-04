@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "templateId": "leukocyte-recruitment",
+  "title": "From bloodstream to tissue",
+  "subtitle": "Track rolling, adhesion, transmigration and tissue-directed movement.",
+  "caption": "Leukocyte recruitment is a coordinated sequence. This schematic shows one cell moving toward a tissue signal.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "cellSize": 22
+  },
+  "labels": {
+    "blood": "Bloodstream",
+    "tissue": "Tissue",
+    "signal": "Injury signal"
+  }
+}

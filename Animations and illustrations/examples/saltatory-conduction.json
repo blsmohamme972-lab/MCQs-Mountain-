@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "saltatory-conduction",
+  "title": "Regenerate the signal at nodes",
+  "subtitle": "A myelinated axon highlights successive nodes of Ranvier.",
+  "caption": "In a myelinated axon, action potentials are regenerated at successive nodes. The internodal electrical spread is simplified here.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "myelinOpacity": 0.85
+  },
+  "labels": {
+    "soma": "Cell body",
+    "myelin": "Myelin sheath",
+    "nodes": "Nodes of Ranvier",
+    "direction": "Direction along the axon"
+  }
+}

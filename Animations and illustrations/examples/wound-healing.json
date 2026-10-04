@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "templateId": "wound-healing",
+  "title": "Repair happens in overlapping phases",
+  "subtitle": "Watch a conceptual wound progress from clot formation to remodeling.",
+  "caption": "Hemostasis, inflammation, proliferation and remodeling overlap. Timing and the final scar vary with the wound and patient.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "woundWidth": 110
+  },
+  "labels": {
+    "skin": "Epidermis",
+    "dermis": "Dermis",
+    "scar": "Remodeling tissue"
+  }
+}
