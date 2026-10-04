@@ -180,7 +180,7 @@
   function get(id){const d=registry.get(id);if(!d)throw new Error('Unknown partId: '+id);return d;}
   function render(id,options={}){
     const d=get(id),o=validateOptions(options),C={...palette,accent:color(o.accent)};
-    return '<g transform="translate('+o.x+' '+o.y+') rotate('+o.rotation+') scale('+o.scale+')" opacity="'+o.opacity+'">'+d.render(o,C)+'</g>';
+    return '<g transform="translate('+(o.x-320)+' '+(o.y-220)+') rotate('+o.rotation+' 320 220) translate(320 220) scale('+o.scale+') translate(-320 -220)" opacity="'+o.opacity+'">'+d.render(o,C)+'</g>';
   }
   function renderSVG(id,options={}){
     const o=validateOptions(options),d=get(id);
