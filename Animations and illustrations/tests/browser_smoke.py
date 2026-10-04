@@ -64,7 +64,7 @@ with sync_playwright() as pw:
     assert page.locator('#play').inner_text() == 'Pause'
     page.evaluate('player.pause()')
     page.set_content((ROOT / 'dist' / 'medical-template-studio.html').read_text())
-    assert page.locator('[data-template]').count() == 10
+    assert page.locator('[data-template]').count() == 20
     # Parse all formats at five instants, in both themes.
     parsed = page.evaluate('''() => {
       let count=0; const parser=new DOMParser();
