@@ -284,5 +284,17 @@
       ],
       "example": "examples/apoptosis.json"
     }
+  ],
+  "partsCatalog": "parts/catalog.json",
+  "partsEngine": "parts/medical-parts.js",
+  "partsSearchFields": [
+    "id",
+    "title",
+    "description",
+    "category",
+    "anatomyLevel",
+    "role",
+    "keywords",
+    "aliases"
   ]
 }
