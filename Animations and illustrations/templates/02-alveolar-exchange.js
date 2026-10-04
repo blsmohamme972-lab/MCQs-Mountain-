@@ -21,7 +21,7 @@ MedicalMotion.register({
     out+=flow([[238,282],[238,330]],(p*c.params.speed)%1,C.teal,4,6);
     out+=flow([[402,330],[402,282]],(p*c.params.speed)%1,C.gold,4,6);
     for(let i=0;i<7;i++){const x=105+430*((p*.35+i/7)%1);out+=S.el('ellipse',{cx:x,cy:378,rx:16,ry:9,fill:C.red,opacity:.8});}
-    out+=text(320,438,'O₂: alveolus → blood   |   CO₂: blood → alveolus',C.muted,15,'middle',650);
+    out+=text(320,424,'O₂: alveolus → blood   |   CO₂: blood → alveolus',C.muted,15,'middle',650);
     return out;
   }
 });
