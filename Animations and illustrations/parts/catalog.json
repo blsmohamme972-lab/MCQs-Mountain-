@@ -56,7 +56,7 @@
       "source": [
         "https://www.ncbi.nlm.nih.gov/books/NBK8406/"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Flattened conceptual schematic; surface area, diffusion rates and ventilation-perfusion relationships are not calculated.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -463,7 +463,7 @@
       "anatomyLevel": "organ",
       "role": "structure",
       "title": "Alveolus",
-      "description": "alveolar air space with a thin capillary interface",
+      "description": "lobulated alveolar air space with a thin capillary exchange surface",
       "keywords": [
         "alveolus",
         "alveoli",
