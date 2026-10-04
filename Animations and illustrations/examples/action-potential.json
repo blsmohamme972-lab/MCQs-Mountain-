@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "templateId": "action-potential",
+  "title": "An action potential changes membrane voltage",
+  "subtitle": "Trace resting state, depolarization, repolarization and the refractory period.",
+  "caption": "The waveform is an explanatory trace of electrical state; it is not a patient ECG and not a measured membrane recording.",
+  "params": {
+    "speed": 1
+  },
+  "labels": {
+    "rest": "Resting state",
+    "up": "Depolarization",
+    "down": "Repolarization",
+    "ref": "Refractory period",
+    "voltage": "Relative membrane voltage"
+  },
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait"
+}
