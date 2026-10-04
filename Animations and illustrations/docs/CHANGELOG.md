@@ -34,3 +34,10 @@
 - Registered 20 complete medical motion templates with JSON examples, schema IDs, catalog metadata and offline build support.
 - Corrected label and path overlap in alveolar exchange, cardiac circulation and saltatory conduction scenes.
 - Added Telegram Mini App host guidance in `docs/TELEGRAM_MINI_APP.md`.
+
+
+## 2026-10-04 — Alveolus shape refinement
+
+- Reworked `templates/02-alveolar-exchange.js` from a perfect-circle air space into a lobulated alveolar sac with a separated exchange interface, capillary band, readable O₂/CO₂ labels and non-overlapping direction arrows.
+- Updated the reusable `parts/medical-parts.js` `alveolus` component and its catalog metadata so future clients receive the same improved shape.
+- Generated and visually reviewed diagram-only and portrait SVG/PNG previews. Local SVG rendering, PNG rasterization, JavaScript syntax checks and XML parsing passed.
