@@ -21,7 +21,7 @@ MedicalMotion.register({
     out+=rect(263,24,114,68,C.paper,22,{stroke:C.teal,'stroke-width':3})+wrap(320,66,c.labels.lungs,C.ink,21,100,1,'middle');
     out+=rect(245,360,150,54,C.paper,18,{stroke:C.gold,'stroke-width':3})+wrap(320,393,c.labels.body,C.ink,19,138,1,'middle');
     out+=text(94,112,'LOWER O₂',C.blue,15,'middle',750)+text(546,112,'HIGHER O₂',C.red,15,'middle',750);
-    out+=text(320,438,'Systemic veins → right heart → lungs → left heart → aorta',C.muted,14,'middle',650);
+    out+=text(320,424,'Systemic veins → right heart → lungs → left heart → aorta',C.muted,14,'middle',650);
     return out;
   }
 });
