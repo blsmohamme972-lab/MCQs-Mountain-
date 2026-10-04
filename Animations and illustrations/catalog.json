@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "engine": "core/medical-motion.js",
   "agentGuide": "AGENTS.md",
   "schema": "scene.schema.json",
@@ -144,6 +144,145 @@
         "scar"
       ],
       "example": "examples/wound-healing.json"
+    },
+    {
+      "id": "bacterial-morphology",
+      "file": "templates/11-bacterial-morphology.js",
+      "category": "Microbiology",
+      "keywords": [
+        "bacteria",
+        "cocci",
+        "bacilli",
+        "spirilla",
+        "microbiology",
+        "cell shape"
+      ],
+      "example": "examples/bacterial-morphology.json"
+    },
+    {
+      "id": "cell-cycle",
+      "file": "templates/12-cell-cycle.js",
+      "category": "Cell biology",
+      "keywords": [
+        "cell cycle",
+        "G1",
+        "S phase",
+        "G2",
+        "mitosis",
+        "DNA replication"
+      ],
+      "example": "examples/cell-cycle.json"
+    },
+    {
+      "id": "epithelial-barrier",
+      "file": "templates/13-epithelial-barrier.js",
+      "category": "Anatomy and histology",
+      "keywords": [
+        "epithelium",
+        "tight junction",
+        "barrier",
+        "paracellular",
+        "transcellular",
+        "histology"
+      ],
+      "example": "examples/epithelial-barrier.json"
+    },
+    {
+      "id": "sarcomere-sliding-filament",
+      "file": "templates/14-sarcomere-sliding-filament.js",
+      "category": "Physiology",
+      "keywords": [
+        "muscle",
+        "sarcomere",
+        "actin",
+        "myosin",
+        "contraction",
+        "physiology"
+      ],
+      "example": "examples/sarcomere-sliding-filament.json"
+    },
+    {
+      "id": "action-potential",
+      "file": "templates/15-action-potential.js",
+      "category": "Neurophysiology",
+      "keywords": [
+        "action potential",
+        "neuron",
+        "depolarization",
+        "repolarization",
+        "refractory",
+        "membrane voltage"
+      ],
+      "example": "examples/action-potential.json"
+    },
+    {
+      "id": "endocrine-negative-feedback",
+      "file": "templates/16-endocrine-negative-feedback.js",
+      "category": "Endocrine physiology",
+      "keywords": [
+        "endocrine",
+        "hormone",
+        "hypothalamus",
+        "pituitary",
+        "negative feedback",
+        "homeostasis"
+      ],
+      "example": "examples/endocrine-negative-feedback.json"
+    },
+    {
+      "id": "coagulation-fibrin",
+      "file": "templates/17-coagulation-fibrin.js",
+      "category": "Hematology and pathology",
+      "keywords": [
+        "coagulation",
+        "fibrin",
+        "thrombin",
+        "hemostasis",
+        "injury",
+        "hematology"
+      ],
+      "example": "examples/coagulation-fibrin.json"
+    },
+    {
+      "id": "acid-base-buffer",
+      "file": "templates/18-acid-base-buffer.js",
+      "category": "Physiology",
+      "keywords": [
+        "acid-base",
+        "bicarbonate",
+        "carbon dioxide",
+        "pH",
+        "buffer",
+        "physiology"
+      ],
+      "example": "examples/acid-base-buffer.json"
+    },
+    {
+      "id": "antibody-neutralization",
+      "file": "templates/19-antibody-neutralization.js",
+      "category": "Immunology",
+      "keywords": [
+        "antibody",
+        "antigen",
+        "immunity",
+        "neutralization",
+        "B cell",
+        "immunology"
+      ],
+      "example": "examples/antibody-neutralization.json"
+    },
+    {
+      "id": "apoptosis",
+      "file": "templates/20-apoptosis.js",
+      "category": "Cell pathology",
+      "keywords": [
+        "apoptosis",
+        "cell death",
+        "nucleus",
+        "apoptotic bodies",
+        "pathology"
+      ],
+      "example": "examples/apoptosis.json"
     }
   ]
 }
