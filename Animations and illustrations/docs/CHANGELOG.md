@@ -8,6 +8,7 @@
 - `node scripts/build.mjs` generated the offline studio, 20 independent scene files and the searchable parts gallery.
 - XML parsing accepted all 25 generated part SVG documents. JavaScript/MJS syntax checks passed for the engine, templates, tests and build script.
 - Browser smoke remains environment-dependent because Python Playwright is not installed in this workspace; rerun it where Playwright and Chromium are available.
+- Future expansion gap recorded: the current reusable-part inventory has no explicit `Pathology` or `Physiology` category; add a separately sourced, clinician-reviewed coherent set when that scope is requested.
 
 ## 2026-10-04 — Gross anatomy set and exact-count client API
 
