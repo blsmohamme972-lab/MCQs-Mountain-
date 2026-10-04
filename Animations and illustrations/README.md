@@ -42,7 +42,10 @@ All controls except the ECG cursor's cycles-per-minute setting are presentation 
 - `AGENTS.md`: required workflow, renderer contract, clinical safeguards and extension rules.
 - `catalog.json`: stable IDs, file paths, keywords and example paths for agent selection.
 - `core/medical-motion.js`: validation, geometry helpers, frame layout, playback and standalone export.
-- `templates/`: twenty independently loadable renderers, each with defaults, parameter descriptors and references.
+- `templates/`: twenty independently loadable complete-scene renderers, each with defaults, parameter descriptors and references.
+- `parts/`: twenty small reusable SVG components with searchable metadata for future scene composition.
+- `parts/index.html`: offline searchable gallery for the reusable parts.
+- `parts/catalog.json`: machine-searchable IDs, categories, anatomy levels, roles, aliases, sources and limitations.
 - `examples/`: one complete, importable scene JSON per template.
 - `scene.schema.json`: common scene-envelope schema; template-specific validation is enforced by the engine.
 - `docs/`: medical-source notes, Telegram Mini App integration rules and the test report.
@@ -89,6 +92,10 @@ python tests/browser_smoke.py
 
 The last command is optional and requires Python Playwright plus Chromium. Set `CHROMIUM_PATH` when necessary. See `docs/QA.md` for what was actually tested and what remains device-dependent.
 
+
+## Reusable parts
+
+Use the parts catalog when a future scene needs a small visual object rather than a complete explanatory mechanism. Search by category, anatomy level, role, keyword or alias before adding anything. The part engine returns deterministic SVG fragments that can be placed, scaled, rotated and recoloured by a host scene. `docs/ADDING_PARTS.md` defines the step-by-step addition workflow and the rule for choosing the smallest coherent missing set.
 
 ## Telegram Mini App readiness
 
