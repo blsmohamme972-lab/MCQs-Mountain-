@@ -16,7 +16,7 @@ MedicalMotion.register({
     const q=S.move([[80,260],[205,260],[255,245],[300,90],[345,245],[395,360],[455,315],[570,315]],p*c.params.speed%1);
     out+=circle(q[0],q[1],10,C.gold)+text(320,55,c.labels.voltage,C.muted,16,'middle',650);
     out+=text(150,290,c.labels.rest,C.ink,17,'middle',700)+text(300,78,c.labels.up,C.teal,17,'middle',700)+text(390,392,c.labels.down,C.red,17,'middle',700)+text(505,290,c.labels.ref,C.gold,17,'middle',700);
-    out+=wrap(320,435,'Electrical event sequence only; the trace is not a clinical rhythm strip.',C.muted,15,510,1,'middle');
+    out+=wrap(320,420,'Electrical event sequence only; the trace is not a clinical rhythm strip.',C.muted,15,510,1,'middle');
     return out;
   }
 });
