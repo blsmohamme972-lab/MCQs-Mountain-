@@ -1,0 +1,736 @@
+{
+  "version": 1,
+  "libraryType": "medical-illustration-parts",
+  "engine": "parts/medical-parts.js",
+  "schema": "parts/schema.json",
+  "searchFields": [
+    "id",
+    "title",
+    "description",
+    "category",
+    "anatomyLevel",
+    "role",
+    "keywords",
+    "aliases"
+  ],
+  "contract": {
+    "coordinateSystem": "640x440 viewBox",
+    "defaultAnchor": {
+      "x": 320,
+      "y": 220
+    },
+    "options": {
+      "x": "center x",
+      "y": "center y",
+      "scale": "0<scale<=8",
+      "rotation": "degrees",
+      "opacity": "0..1",
+      "accent": "palette key"
+    },
+    "rendering": "deterministic SVG fragment; no DOM, network, timers, random values or external assets",
+    "accuracy": "conceptual educational geometry; read limitations and sources before teaching deployment"
+  },
+  "parts": [
+    {
+      "id": "bacterium-coccus",
+      "file": "parts/medical-parts.js",
+      "category": "Microbiology",
+      "anatomyLevel": "cellular",
+      "role": "organism",
+      "title": "Coccus bacterium",
+      "description": "rounded bacterial cell silhouette",
+      "keywords": [
+        "bacterium",
+        "coccus",
+        "cocci",
+        "spherical",
+        "microbiology"
+      ],
+      "aliases": [
+        "round bacterium"
+      ],
+      "source": [
+        "https://www.ncbi.nlm.nih.gov/books/NBK8406/"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "bacterium-bacillus",
+      "file": "parts/medical-parts.js",
+      "category": "Microbiology",
+      "anatomyLevel": "cellular",
+      "role": "organism",
+      "title": "Bacillus bacterium",
+      "description": "rod-shaped bacterial cell silhouette",
+      "keywords": [
+        "bacterium",
+        "bacillus",
+        "bacilli",
+        "rod",
+        "microbiology"
+      ],
+      "aliases": [
+        "rod bacterium"
+      ],
+      "source": [
+        "https://www.ncbi.nlm.nih.gov/books/NBK8406/"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "bacterium-spirillum",
+      "file": "parts/medical-parts.js",
+      "category": "Microbiology",
+      "anatomyLevel": "cellular",
+      "role": "organism",
+      "title": "Spirillum bacterium",
+      "description": "curved spiral bacterial cell silhouette",
+      "keywords": [
+        "bacterium",
+        "spirillum",
+        "spirilla",
+        "spiral",
+        "microbiology"
+      ],
+      "aliases": [
+        "spiral bacterium"
+      ],
+      "source": [
+        "https://www.ncbi.nlm.nih.gov/books/NBK8406/"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "animal-cell",
+      "file": "parts/medical-parts.js",
+      "category": "Cell biology",
+      "anatomyLevel": "cellular",
+      "role": "cell",
+      "title": "Animal cell",
+      "description": "compact animal-cell silhouette",
+      "keywords": [
+        "cell",
+        "animal cell",
+        "cytoplasm",
+        "organelle",
+        "biology"
+      ],
+      "aliases": [
+        "eukaryotic cell"
+      ],
+      "source": [
+        "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "nucleus",
+      "file": "parts/medical-parts.js",
+      "category": "Cell biology",
+      "anatomyLevel": "cellular",
+      "role": "organelle",
+      "title": "Nucleus",
+      "description": "nucleus with envelope, nucleolus and chromatin marks",
+      "keywords": [
+        "nucleus",
+        "nuclear envelope",
+        "nucleolus",
+        "chromatin",
+        "cell biology"
+      ],
+      "aliases": [
+        "cell nucleus"
+      ],
+      "source": [
+        "https://openstax.org/books/biology-2e/pages/4-4-the-nucleus-and-ribosomes"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "mitochondrion",
+      "file": "parts/medical-parts.js",
+      "category": "Cell biology",
+      "anatomyLevel": "cellular",
+      "role": "organelle",
+      "title": "Mitochondrion",
+      "description": "elongated mitochondrion with folded inner membrane",
+      "keywords": [
+        "mitochondrion",
+        "mitochondria",
+        "cristae",
+        "ATP",
+        "organelle"
+      ],
+      "aliases": [
+        "mitochondria"
+      ],
+      "source": [
+        "https://openstax.org/books/biology-2e/pages/4-4-the-nucleus-and-ribosomes"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "epithelial-cell",
+      "file": "parts/medical-parts.js",
+      "category": "Histology",
+      "anatomyLevel": "tissue",
+      "role": "cell",
+      "title": "Epithelial cell",
+      "description": "polarized epithelial cell with apical surface and basal edge",
+      "keywords": [
+        "epithelial cell",
+        "epithelium",
+        "histology",
+        "apical",
+        "basal"
+      ],
+      "aliases": [
+        "columnar epithelial cell"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/4-2-epithelial-tissue"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "cell-membrane",
+      "file": "parts/medical-parts.js",
+      "category": "Cell biology",
+      "anatomyLevel": "molecular",
+      "role": "boundary",
+      "title": "Cell membrane",
+      "description": "phospholipid-bilayer fragment",
+      "keywords": [
+        "cell membrane",
+        "phospholipid",
+        "bilayer",
+        "membrane",
+        "transport"
+      ],
+      "aliases": [
+        "plasma membrane"
+      ],
+      "source": [
+        "https://openstax.org/books/biology-2e/pages/5-1-components-and-structure"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "dna-helix",
+      "file": "parts/medical-parts.js",
+      "category": "Molecular biology",
+      "anatomyLevel": "molecular",
+      "role": "structure",
+      "title": "DNA double helix",
+      "description": "compact DNA helix with paired bases",
+      "keywords": [
+        "DNA",
+        "double helix",
+        "base pair",
+        "genetics",
+        "nucleic acid"
+      ],
+      "aliases": [
+        "DNA molecule"
+      ],
+      "source": [
+        "https://openstax.org/books/biology-2e/pages/14-2-dna-structure-and-sequencing"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "neuron",
+      "file": "parts/medical-parts.js",
+      "category": "Neuroscience",
+      "anatomyLevel": "cellular",
+      "role": "cell",
+      "title": "Neuron",
+      "description": "neuron with soma, dendrites and myelinated axon path",
+      "keywords": [
+        "neuron",
+        "axon",
+        "dendrite",
+        "soma",
+        "myelin",
+        "nervous system"
+      ],
+      "aliases": [
+        "nerve cell"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/12-2-basic-structure-and-function-of-the-nervous-system"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "red-blood-cell",
+      "file": "parts/medical-parts.js",
+      "category": "Hematology",
+      "anatomyLevel": "cellular",
+      "role": "cell",
+      "title": "Red blood cell",
+      "description": "biconcave red-cell silhouette",
+      "keywords": [
+        "red blood cell",
+        "erythrocyte",
+        "RBC",
+        "blood",
+        "hematology"
+      ],
+      "aliases": [
+        "erythrocyte"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/18-2-production-of-the-formed-elements"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "white-blood-cell",
+      "file": "parts/medical-parts.js",
+      "category": "Immunology",
+      "anatomyLevel": "cellular",
+      "role": "cell",
+      "title": "White blood cell",
+      "description": "leukocyte with lobed nucleus",
+      "keywords": [
+        "white blood cell",
+        "leukocyte",
+        "neutrophil",
+        "immune cell",
+        "blood"
+      ],
+      "aliases": [
+        "leukocyte"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/18-2-production-of-the-formed-elements"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "alveolus",
+      "file": "parts/medical-parts.js",
+      "category": "Respiration",
+      "anatomyLevel": "organ",
+      "role": "structure",
+      "title": "Alveolus",
+      "description": "alveolar air space with a thin capillary interface",
+      "keywords": [
+        "alveolus",
+        "alveoli",
+        "lung",
+        "gas exchange",
+        "capillary"
+      ],
+      "aliases": [
+        "lung alveolus"
+      ],
+      "source": [
+        "https://www.nhlbi.nih.gov/health/lungs/respiratory-system"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "artery-vessel",
+      "file": "parts/medical-parts.js",
+      "category": "Anatomy",
+      "anatomyLevel": "organ",
+      "role": "structure",
+      "title": "Artery cross-section",
+      "description": "simplified vessel cross-section with wall layers and lumen",
+      "keywords": [
+        "artery",
+        "vessel",
+        "lumen",
+        "blood vessel",
+        "anatomy"
+      ],
+      "aliases": [
+        "arterial cross section"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-blood-flow-and-blood-pressure"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "receptor",
+      "file": "parts/medical-parts.js",
+      "category": "Cell biology",
+      "anatomyLevel": "molecular",
+      "role": "mechanism",
+      "title": "Membrane receptor",
+      "description": "receptor embedded in a membrane with an external binding site",
+      "keywords": [
+        "receptor",
+        "ligand",
+        "membrane protein",
+        "signaling",
+        "cell biology"
+      ],
+      "aliases": [
+        "cell receptor"
+      ],
+      "source": [
+        "https://openstax.org/books/biology-2e/pages/9-1-signaling-molecules-and-cellular-receptors"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "synapse",
+      "file": "parts/medical-parts.js",
+      "category": "Neuroscience",
+      "anatomyLevel": "cellular",
+      "role": "mechanism",
+      "title": "Chemical synapse",
+      "description": "presynaptic terminal, cleft and postsynaptic receptors",
+      "keywords": [
+        "synapse",
+        "neurotransmitter",
+        "vesicle",
+        "receptor",
+        "neuron"
+      ],
+      "aliases": [
+        "chemical synapse"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/12-4-the-action-potential"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "bone",
+      "file": "parts/medical-parts.js",
+      "category": "Anatomy",
+      "anatomyLevel": "tissue",
+      "role": "structure",
+      "title": "Bone cross-section",
+      "description": "compact bone fragment with simplified trabecular pattern",
+      "keywords": [
+        "bone",
+        "osseous tissue",
+        "trabeculae",
+        "skeleton",
+        "anatomy"
+      ],
+      "aliases": [
+        "bone tissue"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/6-3-bone-structure"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "scalpel",
+      "file": "parts/medical-parts.js",
+      "category": "Surgery",
+      "anatomyLevel": "instrument",
+      "role": "instrument",
+      "title": "Scalpel",
+      "description": "simple scalpel silhouette for procedural illustrations",
+      "keywords": [
+        "scalpel",
+        "surgery",
+        "instrument",
+        "incision",
+        "operative"
+      ],
+      "aliases": [
+        "surgical scalpel"
+      ],
+      "source": [
+        "https://www.ncbi.nlm.nih.gov/books/NBK519054/"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "syringe",
+      "file": "parts/medical-parts.js",
+      "category": "Surgery",
+      "anatomyLevel": "instrument",
+      "role": "instrument",
+      "title": "Syringe",
+      "description": "syringe with barrel, plunger and needle",
+      "keywords": [
+        "syringe",
+        "needle",
+        "injection",
+        "surgery",
+        "instrument"
+      ],
+      "aliases": [
+        "injection syringe"
+      ],
+      "source": [
+        "https://www.ncbi.nlm.nih.gov/books/NBK470404/"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "suture",
+      "file": "parts/medical-parts.js",
+      "category": "Surgery",
+      "anatomyLevel": "instrument",
+      "role": "mechanism",
+      "title": "Suture and needle",
+      "description": "curved surgical needle with thread for wound-closure scenes",
+      "keywords": [
+        "suture",
+        "needle",
+        "wound closure",
+        "surgery",
+        "thread"
+      ],
+      "aliases": [
+        "surgical suture"
+      ],
+      "source": [
+        "https://www.ncbi.nlm.nih.gov/books/NBK507908/"
+      ],
+      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    }
+  ]
+}
