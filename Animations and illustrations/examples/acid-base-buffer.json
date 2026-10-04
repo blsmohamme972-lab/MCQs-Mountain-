@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "templateId": "acid-base-buffer",
+  "title": "The bicarbonate buffer links CO2 and pH",
+  "subtitle": "Show the reversible carbonic-acid and bicarbonate relationships.",
+  "caption": "CO2 and water form carbonic acid, which can dissociate into hydrogen and bicarbonate; direction depends on the system state.",
+  "params": {
+    "state": "normal"
+  },
+  "labels": {
+    "co2": "CO₂",
+    "water": "H₂O",
+    "acid": "H₂CO₃",
+    "hydrogen": "H⁺",
+    "bicarb": "HCO₃⁻",
+    "lung": "Lung link"
+  },
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait"
+}
