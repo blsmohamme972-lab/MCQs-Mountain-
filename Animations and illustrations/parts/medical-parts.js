@@ -122,10 +122,18 @@
   });
   register({
     id:'alveolus',category:'Respiration',anatomyLevel:'organ',role:'structure',
-    title:'Alveolus',description:'An alveolar air space with a thin capillary interface.',
-    keywords:['alveolus','alveoli','lung','gas exchange','capillary'],aliases:['lung alveolus'],
-    limitations:'Flattened exchange schematic; surface area and diffusion rates are not calculated.',
-    render:function(o,C){let s=circle(320,220,105,C.soft,{stroke:C.blue,'stroke-width':6});s+=path('M 220 245 Q 320 270 420 245',C.teal,7);for(let i=0;i<5;i++)s+=ellipse(250+i*35,300,17,9,C.red);return s;}
+    title:'Alveolus',description:'A lobulated alveolar air space with a thin capillary exchange surface.',
+    keywords:['alveolus','alveoli','lung','gas exchange','capillary','air sac'],aliases:['lung alveolus'],
+    limitations:'Flattened exchange schematic; surface area, diffusion rates and ventilation-perfusion relationships are not calculated.',
+    render:function(o,C){
+      const sac='M 320 68 C 291 49 252 57 232 82 C 197 68 164 94 170 128 C 139 148 151 189 181 200 C 193 231 234 243 264 226 C 294 246 335 248 360 228 C 391 244 433 226 439 195 C 475 183 482 143 452 123 C 463 91 427 63 394 76 C 371 52 341 51 320 68 Z';
+      let s=path(sac,C.blue,6,C.soft);
+      s+=path('M 210 182 C 245 203 286 210 320 210 C 355 210 397 203 430 182',C.blue,3,'none',{opacity:.28});
+      s+=path('M 178 253 C 260 239 380 239 462 253',C.teal,8);
+      s+=path('M 178 261 C 260 247 380 247 462 261',C.teal,2,'none',{opacity:.24});
+      for(let i=0;i<5;i++)s+=ellipse(250+i*35,316,17,9,C.red,{opacity:.82});
+      return s;
+    }
   });
   register({
     id:'artery-vessel',category:'Anatomy',anatomyLevel:'organ',role:'structure',
