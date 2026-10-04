@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "coagulation-fibrin",
+  "title": "A clotting response builds a fibrin mesh",
+  "subtitle": "Follow a simplified injury-to-fibrin sequence without dosing or treatment claims.",
+  "caption": "Tissue injury exposes a trigger; thrombin generation helps convert fibrinogen into a stabilizing fibrin network.",
+  "params": {
+    "activation": 0.7
+  },
+  "labels": {
+    "injury": "Vessel injury",
+    "thrombin": "Thrombin",
+    "fibrin": "Fibrin mesh",
+    "platelets": "Platelet plug"
+  },
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait"
+}
