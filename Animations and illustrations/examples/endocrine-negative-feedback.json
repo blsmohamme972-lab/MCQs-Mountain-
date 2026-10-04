@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "templateId": "endocrine-negative-feedback",
+  "title": "Negative feedback stabilizes a hormone axis",
+  "subtitle": "Show a simple hypothalamus–pituitary–target gland control loop.",
+  "caption": "Upstream signals stimulate a target gland; circulating hormone feeds back to reduce upstream drive.",
+  "params": {
+    "feedbackStrength": 0.75
+  },
+  "labels": {
+    "hypothalamus": "Hypothalamus",
+    "pituitary": "Pituitary",
+    "target": "Target gland",
+    "hormone": "Circulating hormone",
+    "feedback": "Negative feedback"
+  },
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait"
+}
