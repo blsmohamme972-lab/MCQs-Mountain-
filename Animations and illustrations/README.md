@@ -1,6 +1,6 @@
 # Medical Motion - reusable medical animation templates
 
-A code-only library for future AI agents and authors. Ten original, parameterized SVG mechanisms share one deterministic JavaScript engine. This directory is a **standalone asset library**, not part of the MCQs application runtime. Nothing outside this directory is required or modified.
+A code-only library for future AI agents and authors. Twenty original, parameterized SVG mechanisms share one deterministic JavaScript engine. This directory is a **standalone asset library**, not part of the MCQs application runtime. Nothing outside this directory is required or modified.
 
 ## Start here
 
@@ -8,9 +8,9 @@ Download this directory with its relative paths intact and open `index.html` in 
 
 Choose a template, change its parameters, scrub the timeline, and export an SVG illustration, PNG image, JSON scene or **single-file animated HTML**. Playback starts only on an explicit click. The studio supports 9:16, 1:1 and 16:9, light/dark palettes and 2-60 second scenes. The default is a 6-second portrait scene.
 
-For one portable studio file, optionally run `node scripts/build.mjs`. It creates `dist/medical-template-studio.html`, ten independent scene HTML files and full metadata. Node is only an optional development/export tool, not a browser requirement. Generated files remain under this directory and are ignored by Git.
+For one portable studio file, optionally run `node scripts/build.mjs`. It creates `dist/medical-template-studio.html`, twenty independent scene HTML files and full metadata. Node is only an optional development/export tool, not a browser requirement. Generated files remain under this directory and are ignored by Git.
 
-## The ten templates
+## The twenty templates
 
 | ID | Reusable mechanism | Main controls |
 | --- | --- | --- |
@@ -24,6 +24,16 @@ For one portable studio file, optionally run `node scripts/build.mjs`. It create
 | `membrane-transport` | Facilitated diffusion or generic primary active transport | passive/active, speed |
 | `leukocyte-recruitment` | Rolling, adhesion, exit and tissue-directed movement | cell size |
 | `wound-healing` | Overlapping repair phases and tissue remodeling | initial visual wound width |
+| `bacterial-morphology` | Cocci, bacilli and spirilla shape language | selected morphology |
+| `cell-cycle` | G1, S, G2 and M phase order | presentation speed |
+| `epithelial-barrier` | Epithelial cells, junctions and routes | junction integrity |
+| `sarcomere-sliding-filament` | Actin and myosin overlap | visual overlap |
+| `action-potential` | Resting, depolarization, repolarization and refractory phases | presentation speed |
+| `endocrine-negative-feedback` | Generic hormone-axis feedback loop | feedback strength |
+| `coagulation-fibrin` | Injury, thrombin and fibrin mesh sequence | visual activation |
+| `acid-base-buffer` | Carbonic-acid and bicarbonate buffer relationship | qualitative CO2 state |
+| `antibody-neutralization` | Matching antigen recognition and blocking | visual binding |
+| `apoptosis` | Cell shrinkage, condensation and apoptotic bodies | visual progression |
 
 All controls except the ECG cursor's cycles-per-minute setting are presentation parameters, not measured physiology. Even that ECG is uncalibrated and is not a patient rhythm. Read each template's `limitations` and `sources` before reusing it medically. The illustrations are conceptual; they have not been clinically validated.
 
@@ -35,7 +45,7 @@ All controls except the ECG cursor's cycles-per-minute setting are presentation 
 - `templates/`: ten independently loadable renderers, each with defaults, parameter descriptors and references.
 - `examples/`: one complete, importable scene JSON per template.
 - `scene.schema.json`: common scene-envelope schema; template-specific validation is enforced by the engine.
-- `docs/`: medical-source notes and the test report.
+- `docs/`: medical-source notes, Telegram Mini App integration rules and the test report.
 - `scripts/` and `tests/`: optional build and verification commands.
 
 ## Minimal reuse
@@ -78,3 +88,8 @@ python tests/browser_smoke.py
 ```
 
 The last command is optional and requires Python Playwright plus Chromium. Set `CHROMIUM_PATH` when necessary. See `docs/QA.md` for what was actually tested and what remains device-dependent.
+
+
+## Telegram Mini App readiness
+
+The library remains a dependency-free asset store. Use `docs/TELEGRAM_MINI_APP.md` when embedding a selected standalone scene in a Telegram Mini App; keep bot-side validation of `Telegram.WebApp.initData` on the server and apply Telegram theme and safe-area variables in the host shell. Do not add Telegram runtime code to the reusable templates themselves.
