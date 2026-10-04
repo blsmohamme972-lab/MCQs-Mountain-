@@ -176,7 +176,67 @@
     limitations:'Closure technique, tissue tension and material properties are not represented.',
     render:function(o,C){let s=path('M 215 265 C 145 190 190 120 275 145 C 360 170 410 245 500 220',C.gold,5);s+=path('M 215 265 C 145 190 190 120 275 145',C.line,12,'none',{opacity:.75});s+=circle(500,220,7,C.gold);return s;}
   });
+
+  register({
+    id:'pituitary-gland',category:'Endocrinology',anatomyLevel:'organ',role:'structure',
+    title:'Pituitary gland',description:'A compact pituitary gland silhouette with anterior and posterior lobes and a stalk.',
+    keywords:['pituitary','hypophysis','pituitary gland','endocrine','sella'],aliases:['hypophysis','master gland'],
+    limitations:'Gross-anatomy schematic; lobes, vascular connections and hormone pathways are simplified.',
+    render:function(o,C){let s=path('M 320 150 C 282 142 242 166 232 208 C 222 248 240 284 278 292 C 296 296 308 284 320 275 C 332 284 344 296 362 292 C 400 284 418 248 408 208 C 398 166 358 142 320 150 Z',C.tissue,5,C.soft);s+=path('M 320 150 C 310 132 305 118 320 98 C 335 118 330 132 320 150',C.gold,7,'none');s+=path('M 320 155 V 275',C.red,4,'none',{opacity:.8});s+=circle(300,218,10,C.red,{opacity:.55})+circle(340,218,10,C.blue,{opacity:.55});return s;}
+  });
+  register({
+    id:'clavicle',category:'Anatomy',anatomyLevel:'organ',role:'structure',
+    title:'Clavicle',description:'An S-shaped clavicle silhouette with enlarged sternal and acromial ends.',
+    keywords:['clavicle','collarbone','pectoral girdle','shoulder','bone'],aliases:['collar bone','collarbone'],
+    limitations:'Single-bone gross-anatomy schematic; side, landmarks and fracture patterns are not represented.',
+    render:function(o,C){let s=path('M 135 238 C 190 190 235 186 286 214 C 320 233 320 248 354 226 C 406 192 458 194 505 235',C.gold,25,'none');s+=path('M 135 238 C 190 190 235 186 286 214 C 320 233 320 248 354 226 C 406 192 458 194 505 235',C.paper,5,'none',{opacity:.7});s+=circle(133,238,20,C.gold)+circle(507,235,20,C.gold);return s;}
+  });
+  register({
+    id:'trachea',category:'Respiration',anatomyLevel:'organ',role:'structure',
+    title:'Trachea',description:'A tracheal tube with cartilage rings and a simplified bifurcation into main bronchi.',
+    keywords:['trachea','windpipe','airway','bronchi','respiration'],aliases:['windpipe','tracheal tube'],
+    limitations:'Airway schematic; cartilage composition, mucosa, dimensions and airflow are not to scale.',
+    render:function(o,C){let s=rect(278,88,84,236,C.soft,36,{stroke:C.blue,'stroke-width':6});for(let y=112;y<305;y+=28)s+=path('M 285 '+y+' Q 320 '+(y-10)+' 355 '+y,C.teal,5,'none');s+=path('M 320 324 C 320 350 278 366 238 384',C.blue,24,'none')+path('M 320 324 C 320 350 362 366 402 384',C.blue,24,'none')+circle(238,384,16,C.soft,{stroke:C.blue,'stroke-width':5})+circle(402,384,16,C.soft,{stroke:C.blue,'stroke-width':5});return s;}
+  });
+  register({
+    id:'thyroid-gland',category:'Endocrinology',anatomyLevel:'organ',role:'structure',
+    title:'Thyroid gland',description:'A butterfly-shaped thyroid silhouette wrapped around a short tracheal segment.',
+    keywords:['thyroid','thyroid gland','endocrine','neck','trachea'],aliases:['thyroid'],
+    limitations:'Gross-anatomy schematic; lobe proportions, isthmus thickness and parathyroids are not shown to scale.',
+    render:function(o,C){let s='';for(let y=230;y<315;y+=25)s+=line(320,y,320,y+14,C.line,10);s+=ellipse(270,245,58,82,C.tissue,{stroke:C.red,'stroke-width':5,transform:'rotate(18 270 245)'});s+=ellipse(370,245,58,82,C.tissue,{stroke:C.red,'stroke-width':5,transform:'rotate(-18 370 245)'});s+=rect(292,224,56,42,C.tissue,20,{stroke:C.red,'stroke-width':5});s+=circle(270,245,8,C.gold,{opacity:.6})+circle(370,245,8,C.gold,{opacity:.6});return s;}
+  });
+  register({
+    id:'brainstem',category:'Neuroscience',anatomyLevel:'organ',role:'structure',
+    title:'Brainstem',description:'A simplified brainstem with midbrain, pons, medulla and a cerebellar contour.',
+    keywords:['brainstem','midbrain','pons','medulla','cerebellum','neuroanatomy'],aliases:['brain stem'],
+    limitations:'Orientation and nuclei are simplified; this is a gross educational silhouette, not a neuroanatomy atlas.',
+    render:function(o,C){let s=ellipse(420,220,72,100,C.soft,{stroke:C.purple,'stroke-width':5});for(let i=0;i<4;i++)s+=path('M '+390+' '+(155+i*35)+' Q 420 '+(135+i*35)+' 450 '+(155+i*35),C.purple,4,'none',{opacity:.75});s+=path('M 320 128 C 286 142 284 180 300 202 C 288 224 290 260 310 278 C 300 310 310 344 320 368 C 330 344 340 310 330 278 C 350 260 352 224 340 202 C 356 180 354 142 320 128 Z',C.tissue,5,C.soft);s+=line(320,150,320,352,C.red,4,{opacity:.7});return s;}
+  });
+
   const meta=d=>{const {render,...m}=d;return JSON.parse(JSON.stringify(m));};
+  function search(query='',filters={}){
+    if(typeof query!=='string')throw new Error('search query must be a string.');
+    const allowedFilters=new Set(['category','anatomyLevel','role']);
+    for(const key of Object.keys(filters||{}))if(!allowedFilters.has(key))throw new Error('Unknown search filter: '+key);
+    const q=query.trim().toLowerCase();
+    return Array.from(registry.values(),meta).filter(d=>{
+      const hay=[d.id,d.title,d.description,d.category,d.anatomyLevel,d.role,...d.keywords,...d.aliases].join(' ').toLowerCase();
+      return (!q||hay.includes(q))&&Object.entries(filters||{}).every(([k,v])=>!v||d[k]===v);
+    });
+  }
+  function renderBatch(specs,expectedCount){
+    if(!Array.isArray(specs)||!specs.length)throw new Error('renderBatch requires at least one part.');
+    if(expectedCount!==undefined&&(!Number.isInteger(expectedCount)||expectedCount<1||specs.length!==expectedCount))throw new Error('Requested '+expectedCount+' parts but received '+specs.length+'.');
+    return specs.map((spec,i)=>{
+      if(!spec||typeof spec!=='object'||typeof spec.id!=='string')throw new Error('Batch item '+i+' must contain a part id.');
+      return render(spec.id,spec.options||{});
+    }).join('');
+  }
+  function renderBatchSVG(specs,expectedCount){
+    const clean=Array.isArray(specs)?specs:[];
+    const titles=clean.map(spec=>get(spec.id).title).join(', ');
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" role="img" aria-label="'+escape('Medical parts: '+titles)+'" style="font-family:system-ui,-apple-system,Segoe UI,sans-serif">'+el('title',{},'Medical parts batch')+el('desc',{},escape(titles))+rect(0,0,640,440,palette.paper,0)+renderBatch(clean,expectedCount)+'</svg>';
+  }
   function get(id){const d=registry.get(id);if(!d)throw new Error('Unknown partId: '+id);return d;}
   function render(id,options={}){
     const d=get(id),o=validateOptions(options),C={...palette,accent:color(o.accent)};
@@ -189,6 +249,6 @@
   G.MedicalMotionParts=Object.freeze({
     version:'1.0.0',palette,register,get,
     list:()=>Array.from(registry.values(),meta),
-    validate:validateOptions,render,renderSVG
+    search,validate:validateOptions,render,renderSVG,renderBatch,renderBatchSVG
   });
 })(globalThis);
