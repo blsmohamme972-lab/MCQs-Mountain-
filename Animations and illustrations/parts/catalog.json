@@ -462,8 +462,8 @@
       "category": "Respiration",
       "anatomyLevel": "organ",
       "role": "structure",
-      "title": "Alveolus",
-      "description": "lobulated alveolar air space with a thin capillary exchange surface",
+      "title": "Alveolar cluster",
+      "description": "cluster of ten lobulated alveolar air spaces wrapped by a thin capillary mesh",
       "keywords": [
         "alveolus",
         "alveoli",
@@ -477,7 +477,7 @@
       "source": [
         "https://www.nhlbi.nih.gov/health/lungs/respiratory-system"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Conceptual ten-space cluster; individual cell layers, surface area, diffusion rates and ventilation-perfusion relationships are not calculated.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",

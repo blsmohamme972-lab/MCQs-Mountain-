@@ -122,16 +122,25 @@
   });
   register({
     id:'alveolus',category:'Respiration',anatomyLevel:'organ',role:'structure',
-    title:'Alveolus',description:'A lobulated alveolar air space with a thin capillary exchange surface.',
+    title:'Alveolar cluster',description:'A cluster of ten lobulated alveolar air spaces wrapped by a thin capillary mesh.',
     keywords:['alveolus','alveoli','lung','gas exchange','capillary','air sac'],aliases:['lung alveolus'],
-    limitations:'Flattened exchange schematic; surface area, diffusion rates and ventilation-perfusion relationships are not calculated.',
+    limitations:'Conceptual ten-space cluster; individual cell layers, surface area, diffusion rates and ventilation-perfusion relationships are not calculated.',
     render:function(o,C){
-      const sac='M 320 68 C 291 49 252 57 232 82 C 197 68 164 94 170 128 C 139 148 151 189 181 200 C 193 231 234 243 264 226 C 294 246 335 248 360 228 C 391 244 433 226 439 195 C 475 183 482 143 452 123 C 463 91 427 63 394 76 C 371 52 341 51 320 68 Z';
-      let s=path(sac,C.blue,6,C.soft);
-      s+=path('M 210 182 C 245 203 286 210 320 210 C 355 210 397 203 430 182',C.blue,3,'none',{opacity:.28});
-      s+=path('M 178 253 C 260 239 380 239 462 253',C.teal,8);
-      s+=path('M 178 261 C 260 247 380 247 462 261',C.teal,2,'none',{opacity:.24});
-      for(let i=0;i<5;i++)s+=ellipse(250+i*35,316,17,9,C.red,{opacity:.82});
+      const sac='M 0 -47 C -18 -66 -49 -58 -54 -31 C -79 -30 -94 -8 -80 13 C -92 35 -72 59 -47 54 C -34 76 -5 78 12 58 C 37 77 66 62 61 39 C 87 33 89 5 68 -10 C 79 -35 53 -58 30 -48 C 21 -69 7 -67 0 -47 Z';
+      const highlight='M -34 -10 C -18 -31 15 -37 35 -19';
+      const cells=[[218,126,.55,-8],[320,109,.62,2],[422,126,.55,8],[178,181,.5,-14],[268,168,.6,-5],[372,168,.6,5],[462,181,.5,14],[224,231,.53,-8],[320,222,.62,0],[416,231,.53,8]];
+      let s=path('M 320 45 V 70 M 320 70 C 292 81 266 95 245 116 M 320 70 C 348 81 374 95 395 116',C.blue,11,'none',{opacity:.9});
+      cells.forEach(([x,y,k,r])=>{
+        const tr='translate('+x+' '+y+') rotate('+r+') scale('+k+' '+k+')';
+        s+=path(sac,C.blue,4,C.soft,{transform:tr,'data-structure':'alveolar-space'});
+        s+=path(highlight,C.paper,3,'none',{transform:tr,opacity:.48});
+      });
+      s+=path('M 116 284 C 160 257 202 263 241 284 S 319 304 357 284 S 437 257 524 286',C.red,12,'none',{opacity:.3});
+      s+=path('M 116 284 C 160 257 202 263 241 284 S 319 304 357 284 S 437 257 524 286',C.teal,3,'none',{opacity:.9});
+      s+=path('M 142 296 C 181 271 214 275 249 294 S 318 317 350 294 S 420 270 499 296',C.red,3,'none',{opacity:.75});
+      s+=path('M 166 281 C 185 310 208 310 228 283 M 274 284 C 292 311 314 311 332 284 M 382 284 C 400 310 422 310 443 283',C.red,3,'none',{opacity:.72});
+      s+=rect(72,335,496,70,C.tissue,34,{stroke:C.red,'stroke-width':4});
+      for(let i=0;i<8;i++){const x=111+62*i,y=371+(i%2?5:-4);s+=ellipse(x,y,17,9,C.red,{opacity:.86,transform:'rotate('+(i%2?8:-7)+' '+x+' '+y+')'});s+=ellipse(x,y,8,3,C.paper,{opacity:.34,transform:'rotate('+(i%2?8:-7)+' '+x+' '+y+')'});}
       return s;
     }
   });
