@@ -1,0 +1,13 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Anatomy Callout</title><style>
+:root{font-family:Inter,system-ui,sans-serif;color:#123;background:#eef6ff}body{margin:0;display:grid;place-items:center;min-height:100vh}.stage{width:min(92vw,520px);aspect-ratio:9/16;background:white;border-radius:28px;overflow:hidden;box-shadow:0 18px 60px #1232;position:relative}svg{width:100%;height:100%}.label{font-size:24px;font-weight:700;fill:#123}.sub{font-size:17px;fill:#456}.focus{transform-origin:center;animation:pulse 1.4s ease-in-out infinite}@keyframes pulse{50%{transform:scale(1.09);opacity:.65}}@media(prefers-reduced-motion:reduce){.focus{animation:none}}</style></head><body>
+<div class="stage"><svg viewBox="0 0 540 960" role="img" aria-label="Reusable anatomy callout">
+<rect width="540" height="960" fill="#f8fbff"/><text x="40" y="72" class="label" id="title"></text><text x="40" y="102" class="sub" id="subtitle"></text>
+<path d="M270 205c-105 0-158 85-158 185v250c0 75 62 135 158 135s158-60 158-135V390c0-100-53-185-158-185z" fill="#dfeaf5" stroke="#9ab6cf" stroke-width="4"/>
+<path id="organ" d="M280 355c-42-47-112-12-109 48 3 72 80 124 109 145 29-21 106-73 109-145 3-60-67-95-109-48z" fill="#e85b68"/>
+<circle class="focus" cx="322" cy="430" r="62" fill="none" stroke="#ffb000" stroke-width="8"/>
+<path d="M370 430H485" stroke="#ffb000" stroke-width="5"/><circle cx="370" cy="430" r="7" fill="#ffb000"/>
+<text x="385" y="408" class="label" id="callout"></text><text x="385" y="438" class="sub" id="detail"></text>
+</svg></div><script>
+const CONFIG={title:"Anatomy Focus",subtitle:"Reusable labeled structure",callout:"Target",detail:"Key clinical point"};
+for(const k of ["title","subtitle","callout","detail"])document.getElementById(k).textContent=CONFIG[k];
+</script></body></html>
