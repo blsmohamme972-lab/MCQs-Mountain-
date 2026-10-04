@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 for(const file of ['core/medical-motion.js',...fs.readdirSync(path.join(root,'templates')).filter(f=>f.endsWith('.js')).sort().map(f=>'templates/'+f)]) vm.runInThisContext(fs.readFileSync(path.join(root,file),'utf8'),{filename:file});
-const M=globalThis.MedicalMotion;assert.equal(M.list().length,10);let frames=0,invalid=0;
+const M=globalThis.MedicalMotion;assert.equal(M.list().length,20);let frames=0,invalid=0;
 for(const d of M.list()){
  const original=M.defaultConfig(d.id),c=M.validate(original);assert.deepEqual(c,original);
  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(root,'examples',d.id+'.json'),'utf8')),original);
@@ -34,4 +34,4 @@ for(const bad of [{...c,duration:0},{...c,duration:'6'},{...c,version:2},{...c,t
 const hostile={...c,title:'<script>alert(1)</script>',caption:'</script><img src=x onerror=alert(1)>'};
 assert.ok(!M.renderSVG(hostile).includes('<script>'));assert.ok(!M.standalone(hostile).includes('<img src=x'));
 assert.throws(()=>M.renderSVG(c,NaN));assert.equal(M.renderSVG(c,-2),M.renderSVG(c,0));assert.equal(M.renderSVG(c,99),M.renderSVG(c,c.duration));
-console.log(JSON.stringify({templates:10,frames,invalidConfigurationsRejected:invalid,deterministic:true,closureIsolation:true},null,2));
+console.log(JSON.stringify({templates:20,frames,invalidConfigurationsRejected:invalid,deterministic:true,closureIsolation:true},null,2));
