@@ -10,5 +10,5 @@ const M=globalThis.MedicalMotion,out=path.join(root,'dist');fs.mkdirSync(path.jo
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8').replace(/<script src="([^"]+)"><\/script>/g,(_,file)=>'<script>\n'+fs.readFileSync(path.join(root,file),'utf8').replace(/<\/script/gi,'<\\/script')+'\n</script>');
 fs.writeFileSync(path.join(out,'medical-template-studio.html'),index);
 for(const d of M.list())fs.writeFileSync(path.join(out,'templates',d.id+'.html'),M.standalone(M.defaultConfig(d.id)));
-fs.writeFileSync(path.join(out,'full-catalog.json'),JSON.stringify({version:1,templates:M.list().map(d=>({...d,defaultConfig:M.defaultConfig(d.id)}))},null,2)+'\n');
-console.log('Built offline studio, 10 independent HTML scenes and full metadata in dist/.');
+fs.writeFileSync(path.join(out,'full-catalog.json'),JSON.stringify({version:2,templates:M.list().map(d=>({...d,defaultConfig:M.defaultConfig(d.id)}))},null,2)+'\n');
+console.log('Built offline studio, 20 independent HTML scenes and full metadata in dist/.');
