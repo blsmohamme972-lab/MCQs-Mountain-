@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "antibody-neutralization",
+  "title": "An antibody recognizes a matching antigen",
+  "subtitle": "Illustrate recognition and neutralization as reusable immune-system pieces.",
+  "caption": "A matching binding site can block a target or mark it for other immune mechanisms; one antibody is not the whole immune response.",
+  "params": {
+    "binding": 0.8
+  },
+  "labels": {
+    "antigen": "Antigen",
+    "antibody": "Antibody",
+    "binding": "Matching site",
+    "blocked": "Target blocked"
+  },
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait"
+}
