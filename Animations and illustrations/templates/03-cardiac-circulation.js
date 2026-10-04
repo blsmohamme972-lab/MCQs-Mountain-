@@ -10,17 +10,18 @@ MedicalMotion.register({
   labels:{ra:'Right atrium',rv:'Right ventricle',la:'Left atrium',lv:'Left ventricle',lungs:'Lungs',body:'Body tissues'},
   render:function(c,p,t,S){
     const {C,path,rect,wrap,flow,text,arrow}=S;
-    const blue=[[290,390],[40,390],[40,180],[140,180],[140,300],[240,300],[240,60],[280,60]];
-    const red=[[360,60],[500,60],[500,180],[500,300],[600,300],[600,390],[360,390]];
-    let out=path('M '+blue.map(q=>q.join(' ')).join(' L '),C.blue,12)+path('M '+red.map(q=>q.join(' ')).join(' L '),C.red,12);
-    out+=flow(blue,p*c.params.speed,C.paper,8,5)+flow(red,p*c.params.speed,C.paper,8,5);
-    for(const [key,x,y,col] of [['ra',140,180,C.blue],['rv',140,300,C.blue],['la',500,180,C.red],['lv',500,300,C.red]]) out+=rect(x-61,y-39,122,78,C.paper,20,{stroke:col,'stroke-width':3})+wrap(x,y-1,c.labels[key],C.ink,19,111,2,'middle');
-    out+=rect(263,28,114,65,C.paper,24,{stroke:C.teal,'stroke-width':3})+wrap(320,67,c.labels.lungs,C.ink,23,106,2,'middle');
-    out+=rect(245,363,150,54,C.paper,18,{stroke:C.teal,'stroke-width':3})+wrap(320,396,c.labels.body,C.ink,20,144,1,'middle');
-    out+=text(136,38,'LOWER O2',C.blue,17)+text(496,38,'HIGHER O2',C.red,17);
-    out+=text(150,100,'Pulmonary artery',C.blue,16)+text(486,99,'Pulmonary veins',C.red,16);
-    out+=arrow(140,226,140,249,C.blue,3)+arrow(500,226,500,249,C.red,3);
-    out+=text(105,435,'Systemic veins',C.blue,17)+text(550,435,'Aorta / arteries',C.red,17);
+    const blue=[[320,386],[46,386],[46,150],[102,150],[102,260],[178,260],[178,58],[263,58]];
+    const red=[[377,58],[462,58],[462,150],[538,150],[538,260],[462,260],[462,386],[400,386]];
+    let out=path('M '+blue.map(q=>q.join(' ')).join(' L '),C.blue,10)+path('M '+red.map(q=>q.join(' ')).join(' L '),C.red,10);
+    out+=flow(blue,(p*c.params.speed)%1,C.paper,7,5)+flow(red,(p*c.params.speed)%1,C.paper,7,5);
+    out+=arrow(46,320,46,270,C.blue,3)+arrow(102,214,102,244,C.blue,3)+arrow(178,58,235,58,C.blue,3);
+    out+=arrow(462,58,420,58,C.red,3)+arrow(538,214,538,244,C.red,3)+arrow(462,320,462,365,C.red,3);
+    for(const [key,x,y,col] of [['ra',164,150,C.blue],['rv',164,260,C.blue],['la',476,150,C.red],['lv',476,260,C.red]])
+      out+=rect(x-62,y-34,124,68,C.paper,18,{stroke:col,'stroke-width':3})+wrap(x,y+6,c.labels[key],C.ink,18,112,2,'middle');
+    out+=rect(263,24,114,68,C.paper,22,{stroke:C.teal,'stroke-width':3})+wrap(320,66,c.labels.lungs,C.ink,21,100,1,'middle');
+    out+=rect(245,360,150,54,C.paper,18,{stroke:C.gold,'stroke-width':3})+wrap(320,393,c.labels.body,C.ink,19,138,1,'middle');
+    out+=text(94,112,'LOWER O₂',C.blue,15,'middle',750)+text(546,112,'HIGHER O₂',C.red,15,'middle',750);
+    out+=text(320,438,'Systemic veins → right heart → lungs → left heart → aorta',C.muted,14,'middle',650);
     return out;
   }
 });
