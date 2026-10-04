@@ -28,7 +28,11 @@
       "accent": "palette key"
     },
     "rendering": "deterministic SVG fragment; no DOM, network, timers, random values or external assets",
-    "accuracy": "conceptual educational geometry; read limitations and sources before teaching deployment"
+    "accuracy": "conceptual educational geometry; read limitations and sources before teaching deployment",
+    "searchApi": "MedicalMotionParts.search(query, filters) returns searchable metadata without DOM or network access.",
+    "batchApi": "MedicalMotionParts.renderBatch(specs, expectedCount) renders a deterministic group and throws when an explicit requested count does not match.",
+    "batchSvgApi": "MedicalMotionParts.renderBatchSVG(specs, expectedCount) returns a reviewable 640x440 SVG document.",
+    "requestRule": "When a request specifies a count, pass that count as expectedCount and add exactly that many new catalog IDs; do not pad with decorative variants."
   },
   "parts": [
     {
@@ -731,6 +735,186 @@
           "accent"
         ]
       }
+    },
+    {
+      "id": "pituitary-gland",
+      "category": "Endocrinology",
+      "anatomyLevel": "organ",
+      "role": "structure",
+      "title": "Pituitary gland",
+      "description": "A compact pituitary gland silhouette with anterior and posterior lobes and a stalk.",
+      "keywords": [
+        "pituitary",
+        "hypophysis",
+        "pituitary gland",
+        "endocrine",
+        "sella"
+      ],
+      "aliases": [
+        "hypophysis",
+        "master gland"
+      ],
+      "source": [
+        "https://www.ncbi.nlm.nih.gov/books/NBK279054/"
+      ],
+      "limitations": "Gross-anatomy schematic; lobes, vascular connections and hormone pathways are simplified.",
+      "file": "parts/medical-parts.js",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "clavicle",
+      "category": "Anatomy",
+      "anatomyLevel": "organ",
+      "role": "structure",
+      "title": "Clavicle",
+      "description": "An S-shaped clavicle silhouette with enlarged sternal and acromial ends.",
+      "keywords": [
+        "clavicle",
+        "collarbone",
+        "pectoral girdle",
+        "shoulder",
+        "bone"
+      ],
+      "aliases": [
+        "collar bone",
+        "collarbone"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/8-3-the-pectoral-girdle"
+      ],
+      "limitations": "Single-bone gross-anatomy schematic; side, landmarks and fracture patterns are not represented.",
+      "file": "parts/medical-parts.js",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "trachea",
+      "category": "Respiration",
+      "anatomyLevel": "organ",
+      "role": "structure",
+      "title": "Trachea",
+      "description": "A tracheal tube with cartilage rings and a simplified bifurcation into main bronchi.",
+      "keywords": [
+        "trachea",
+        "windpipe",
+        "airway",
+        "bronchi",
+        "respiration"
+      ],
+      "aliases": [
+        "windpipe",
+        "tracheal tube"
+      ],
+      "source": [
+        "https://www.nhlbi.nih.gov/health/lungs/respiratory-system"
+      ],
+      "limitations": "Airway schematic; cartilage composition, mucosa, dimensions and airflow are not to scale.",
+      "file": "parts/medical-parts.js",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "thyroid-gland",
+      "category": "Endocrinology",
+      "anatomyLevel": "organ",
+      "role": "structure",
+      "title": "Thyroid gland",
+      "description": "A butterfly-shaped thyroid silhouette wrapped around a short tracheal segment.",
+      "keywords": [
+        "thyroid",
+        "thyroid gland",
+        "endocrine",
+        "neck",
+        "trachea"
+      ],
+      "aliases": [
+        "thyroid"
+      ],
+      "source": [
+        "https://www.ncbi.nlm.nih.gov/books/NBK279388/"
+      ],
+      "limitations": "Gross-anatomy schematic; lobe proportions, isthmus thickness and parathyroids are not shown to scale.",
+      "file": "parts/medical-parts.js",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
+    },
+    {
+      "id": "brainstem",
+      "category": "Neuroscience",
+      "anatomyLevel": "organ",
+      "role": "structure",
+      "title": "Brainstem",
+      "description": "A simplified brainstem with midbrain, pons, medulla and a cerebellar contour.",
+      "keywords": [
+        "brainstem",
+        "midbrain",
+        "pons",
+        "medulla",
+        "cerebellum",
+        "neuroanatomy"
+      ],
+      "aliases": [
+        "brain stem"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/12-2-basic-structure-and-function-of-the-nervous-system"
+      ],
+      "limitations": "Orientation and nuclei are simplified; this is a gross educational silhouette, not a neuroanatomy atlas.",
+      "file": "parts/medical-parts.js",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent"
+        ]
+      }
     }
-  ]
+  ],
+  "partsCount": 25
 }
