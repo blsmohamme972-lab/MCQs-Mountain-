@@ -1,0 +1,9 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Drug Receptor</title><style>
+body{margin:0;background:#f3f0ff;display:grid;place-items:center;min-height:100vh;font-family:system-ui}.stage{width:min(92vw,520px);aspect-ratio:9/16;background:#fff;border-radius:28px;overflow:hidden}svg{width:100%;height:100%}.drug{animation:bind 2.6s ease-in-out infinite;transform-origin:center}@keyframes bind{0%,20%{transform:translate(-150px,-180px)}60%,100%{transform:translate(0,0)}}.signal{animation:glow 2.6s ease-in-out infinite}@keyframes glow{0%,55%{opacity:.15}75%,100%{opacity:1}}@media(prefers-reduced-motion:reduce){.drug,.signal{animation:none}}</style></head><body><div class="stage"><svg viewBox="0 0 540 960">
+<rect width="540" height="960" fill="#fbfaff"/><text x="36" y="68" font-size="30" font-weight="800" fill="#20134a" id="title"/>
+<path d="M0 560 C90 520 150 600 235 555 S390 510 540 560V960H0z" fill="#e8ddff"/>
+<path d="M220 520v95h100v-95l-26 30-24-38-24 38z" fill="#7b5bc7"/><text x="196" y="650" font-size="20" fill="#4d3790">RECEPTOR</text>
+<g class="drug"><circle cx="270" cy="470" r="42" fill="#bb67dc"/><text x="270" y="478" text-anchor="middle" fill="white" font-size="18" font-weight="700">DRUG</text></g>
+<g class="signal"><path d="M270 675v120" stroke="#f6a623" stroke-width="9"/><path d="M250 770l20 28 20-28" fill="none" stroke="#f6a623" stroke-width="9"/><text x="270" y="850" text-anchor="middle" font-size="23" font-weight="700" fill="#9b6410" id="effect"/></g></svg></div><script>
+const CONFIG={title:"Ligand–Receptor Binding",effect:"DOWNSTREAM EFFECT"};title.textContent=CONFIG.title;effect.textContent=CONFIG.effect;
+</script></body></html>
