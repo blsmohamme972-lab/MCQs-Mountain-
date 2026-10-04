@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "apoptosis",
+  "title": "Apoptosis packages a cell for removal",
+  "subtitle": "Show a simplified sequence of cell shrinkage, nuclear condensation and apoptotic bodies.",
+  "caption": "Programmed cell death preserves membrane containment while fragments are cleared by neighboring or phagocytic cells.",
+  "params": {
+    "progress": 0.65
+  },
+  "labels": {
+    "cell": "Cell",
+    "nucleus": "Nucleus",
+    "bodies": "Apoptotic bodies",
+    "clearance": "Clearance"
+  },
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait"
+}
