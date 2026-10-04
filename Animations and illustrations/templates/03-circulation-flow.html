@@ -1,9 +1,0 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Circulation Flow</title><style>
-body{margin:0;background:#eef6ff;display:grid;place-items:center;min-height:100vh;font-family:system-ui}.stage{width:min(92vw,520px);aspect-ratio:9/16;background:white;border-radius:28px;overflow:hidden}svg{width:100%;height:100%}.blood{offset-path:path("M90 660 C170 560 155 345 270 300 C385 345 370 560 450 660");animation:move 3s linear infinite}@keyframes move{to{offset-distance:100%}}@media(prefers-reduced-motion:reduce){.blood{animation:none}}</style></head><body>
-<div class="stage"><svg viewBox="0 0 540 960"><rect width="540" height="960" fill="#f8fbff"/><text x="38" y="68" font-size="30" font-weight="800" fill="#123" id="title"/>
-<path d="M90 660 C170 560 155 345 270 300 C385 345 370 560 450 660" fill="none" stroke="#c8deef" stroke-width="42" stroke-linecap="round"/>
-<path d="M90 660 C170 560 155 345 270 300" fill="none" stroke="#397dcc" stroke-width="20" stroke-linecap="round"/><path d="M270 300 C385 345 370 560 450 660" fill="none" stroke="#df5d68" stroke-width="20" stroke-linecap="round"/>
-<path d="M270 295c-38-46-99-13-95 40 4 62 68 103 95 124 27-21 91-62 95-124 4-53-57-86-95-40z" fill="#e76270"/>
-<g id="particles"></g><text x="65" y="730" font-size="19" fill="#2b68ab">deoxygenated</text><text x="350" y="730" font-size="19" fill="#b8414c">oxygenated</text></svg></div><script>
-const CONFIG={title:"Blood Flow",particles:12};title.textContent=CONFIG.title;const g=document.getElementById("particles");for(let i=0;i<CONFIG.particles;i++){let c=document.createElementNS("http://www.w3.org/2000/svg","circle");c.setAttribute("r","8");c.setAttribute("fill",i<6?"#397dcc":"#df5d68");c.setAttribute("class","blood");c.style.animationDelay=`${-i*.25}s`;g.appendChild(c)}
-</script></body></html>
