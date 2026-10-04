@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Medical Motion Parts Library</title>
+<style>
+:root{--bg:#f3f7fc;--paper:#fff;--ink:#162d48;--muted:#526780;--line:#dbe5f0;--blue:#246bdd;--teal:#087f8c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+header{background:var(--paper);border-bottom:1px solid var(--line);padding:20px 24px;position:sticky;top:0;z-index:2}h1{margin:0;font-size:24px;letter-spacing:-.5px}header p{margin:5px 0 0;color:var(--muted)}
+main{max-width:1500px;margin:auto;padding:20px 24px 36px}.controls{display:grid;grid-template-columns:minmax(220px,2fr) repeat(3,minmax(140px,1fr));gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:16px}
+label{font-size:12px;font-weight:700;color:var(--muted)}input,select{display:block;width:100%;min-height:44px;margin-top:5px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font:inherit}input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+#status{color:var(--muted);min-height:24px;margin:8px 2px 14px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;min-width:0}.preview{background:#eaf1fb;padding:8px;min-height:190px;display:grid;place-items:center}.preview svg{width:100%;height:auto;display:block}.body{padding:14px}.eyebrow{color:var(--teal);font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase}.body h2{font-size:17px;line-height:1.25;margin:5px 0}.body p{color:var(--muted);font-size:13px;margin:6px 0}.tags{display:flex;flex-wrap:wrap;gap:5px;margin:10px 0}.tag{font-size:11px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px 7px;color:var(--muted)}.code{display:block;color:var(--ink);background:var(--bg);border-radius:8px;padding:8px;font:11px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;overflow:auto;white-space:nowrap}.copy{margin-top:9px;min-height:38px;border:1px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink);font-weight:700;cursor:pointer}.copy:hover{background:#edf3fc}.empty{grid-column:1/-1;background:var(--paper);border:1px dashed var(--line);border-radius:14px;padding:28px;text-align:center;color:var(--muted)}
+@media(max-width:800px){header{padding:16px}.controls{grid-template-columns:1fr 1fr;margin-bottom:12px}main{padding:14px}.controls label:first-child{grid-column:1/-1}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header><h1>Medical Motion Parts Library</h1><p>Searchable, deterministic SVG building blocks for future medical HTML animation scenes.</p></header>
+<main>
+<section class="controls" aria-label="Parts search">
+<label>Search<input id="search" type="search" placeholder="Try neuron, membrane, surgery..." autocomplete="off"></label>
+<label>Category<select id="category"><option value="">All categories</option></select></label>
+<label>Anatomy level<select id="level"><option value="">All levels</option></select></label>
+<label>Role<select id="role"><option value="">All roles</option></select></label>
+</section>
+<p id="status" role="status" aria-live="polite"></p>
+<section id="grid" class="grid" aria-label="Medical parts"></section>
+</main>
+<script src="medical-parts.js"></script>
+<script>
+(function(){
+'use strict';
+const M=MedicalMotionParts,$=id=>document.getElementById(id),items=M.list();
+const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function fill(id,values){const select=$(id);values.sort().forEach(value=>{const option=document.createElement('option');option.value=value;option.textContent=value;select.append(option);});}
+fill('category',[...new Set(items.map(d=>d.category))]);fill('level',[...new Set(items.map(d=>d.anatomyLevel))]);fill('role',[...new Set(items.map(d=>d.role))]);
+function matches(d){
+ const q=$('search').value.trim().toLowerCase(),hay=[d.id,d.title,d.description,d.category,d.anatomyLevel,d.role,...d.keywords,...d.aliases].join(' ').toLowerCase();
+ return (!q||hay.includes(q))&&(!$('category').value||d.category===$('category').value)&&(!$('level').value||d.anatomyLevel===$('level').value)&&(!$('role').value||d.role===$('role').value);
+}
+function copySnippet(id){
+ const snippet="MedicalMotionParts.render('"+id+"', { x: 320, y: 220, scale: 1 });";
+ if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(snippet).then(()=>{$('status').textContent='Copied '+id+' usage snippet.';}).catch(()=>{$('status').textContent=snippet;});
+ else $('status').textContent=snippet;
+}
+function render(){
+ const visible=items.filter(matches),grid=$('grid');grid.replaceChildren();
+ $('status').textContent=visible.length+' of '+items.length+' parts shown.';
+ if(!visible.length){const empty=document.createElement('p');empty.className='empty';empty.textContent='No matching parts. Search by mechanism, anatomy level, role or keyword.';grid.append(empty);return;}
+ visible.forEach(d=>{
+  const article=document.createElement('article');article.className='card';
+  const preview=document.createElement('div');preview.className='preview';preview.innerHTML=M.renderSVG(d.id,{accent:d.category==='Surgery'?'gold':'blue'});
+  const body=document.createElement('div');body.className='body';
+  const eyebrow=document.createElement('div');eyebrow.className='eyebrow';eyebrow.textContent=d.category+' · '+d.anatomyLevel;
+  const h2=document.createElement('h2');h2.textContent=d.title;
+  const p=document.createElement('p');p.textContent=d.description;
+  const tags=document.createElement('div');tags.className='tags';[d.role,...d.keywords.slice(0,3)].forEach(tag=>{const span=document.createElement('span');span.className='tag';span.textContent=tag;tags.append(span);});
+  const code=document.createElement('code');code.className='code';code.textContent="MedicalMotionParts.render('"+d.id+"', options)";
+  const button=document.createElement('button');button.type='button';button.className='copy';button.textContent='Copy usage snippet';button.onclick=()=>copySnippet(d.id);
+  body.append(eyebrow,h2,p,tags,code,button);article.append(preview,body);grid.append(article);
+ });
+}
+['search','category','level','role'].forEach(id=>$(id).addEventListener(id==='search'?'input':'change',render));render();
+})();
+</script>
+</body>
+</html>
