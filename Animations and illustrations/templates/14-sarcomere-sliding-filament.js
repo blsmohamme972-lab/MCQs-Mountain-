@@ -9,7 +9,7 @@ MedicalMotion.register({
   params:{overlap:0.55},parameterSchema:{overlap:{type:'number',min:0.2,max:0.9,step:0.05,description:'Visual overlap between actin and myosin.'}},
   labels:{zdisc:'Z disc',actin:'Thin filament / actin',myosin:'Thick filament / myosin',direction:'Sliding toward the center'},
   render:function(c,p,t,S){
-    const {C,line,path,rect,text,arrow,wrap}=S; let out='';
+    const {C,line,path,rect,circle,text,arrow,wrap}=S; let out='';
     out+=line(75,120,75,330,C.red,10)+line(565,120,565,330,C.red,10);
     out+=text(75,92,c.labels.zdisc,C.ink,17,'middle',700)+text(565,92,c.labels.zdisc,C.ink,17,'middle',700);
     const shift=110*c.params.overlap;
