@@ -1,3 +1,9 @@
+## 2026-10-05 — Fifteen reusable mechanism templates
+
+- Added templates 21–35 for phagocytosis, DNA replication, transcription, translation, enzyme inhibition, osmosis, oxidative phosphorylation, peristalsis, bile emulsification, lymphatic drainage, venous valves, bone remodeling, fracture repair, capillary filtration and second-messenger signaling.
+- Added one validated example scene and catalog metadata per template.
+- Updated the offline studio, common schema, build and verification counts to 35.
+
 # Medical Motion library changelog
 
 ## 2026-10-04 — Ten-template visual refinement and alveolar cluster rebuild
@@ -48,3 +54,4 @@
 - Reworked `templates/02-alveolar-exchange.js` from a perfect-circle air space into a lobulated alveolar sac with a separated exchange interface, capillary band, readable O₂/CO₂ labels and non-overlapping direction arrows.
 - Updated the reusable `parts/medical-parts.js` `alveolus` component and its catalog metadata so future clients receive the same improved shape.
 - Generated and visually reviewed diagram-only and portrait SVG/PNG previews. Local SVG rendering, PNG rasterization, JavaScript syntax checks and XML parsing passed.
+

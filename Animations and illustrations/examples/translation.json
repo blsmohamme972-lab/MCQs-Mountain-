@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "templateId": "translation",
+  "title": "Ribosome builds a polypeptide",
+  "subtitle": "Show a ribosome moving along mRNA while amino acids join into a growing chain.",
+  "caption": "The ribosome reads mRNA 5\u2032\u21923\u2032 and links amino acids into a polypeptide.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "progress": 0.65
+  },
+  "labels": {
+    "mrna": "mRNA 5\u2032\u21923\u2032",
+    "ribosome": "Ribosome",
+    "protein": "Growing polypeptide"
+  }
+}

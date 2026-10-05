@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "fracture-repair",
+  "title": "A fracture passes through repair stages",
+  "subtitle": "Show a simplified fracture gap progressing from hematoma to callus and remodeled bone.",
+  "caption": "Fracture repair progresses through hematoma, callus formation, bony union and remodeling.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "progress": 0.65
+  },
+  "labels": {
+    "fracture": "Fracture gap",
+    "hematoma": "Hematoma",
+    "callus": "Callus",
+    "union": "Remodeled union"
+  }
+}

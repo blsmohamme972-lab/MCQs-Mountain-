@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "venous-valves",
+  "title": "Valves keep venous flow one-way",
+  "subtitle": "Show a venous valve opening toward the heart and closing against backflow.",
+  "caption": "Low-pressure veins use valves and muscle compression to support one-way return toward the heart.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "progress": 0.65
+  },
+  "labels": {
+    "vein": "Vein",
+    "valve": "Venous valve",
+    "heart": "Toward heart",
+    "backflow": "Backflow blocked"
+  }
+}

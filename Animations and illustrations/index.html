@@ -13,7 +13,7 @@
 </style>
 </head>
 <body>
-<header><div class="brand" aria-hidden="true">M</div><div><h1>Medical Motion</h1><p>Reusable medical visuals. Built entirely with code.</p></div><span class="badge">20 TEMPLATE MODULES / NO DEPENDENCIES</span></header>
+<header><div class="brand" aria-hidden="true">M</div><div><h1>Medical Motion</h1><p>Reusable medical visuals. Built entirely with code.</p></div><span class="badge">35 TEMPLATE MODULES / NO DEPENDENCIES</span></header>
 <div class="shell">
 <aside><p class="eyebrow">CHOOSE A STARTING POINT</p><nav id="library" class="library" aria-label="Medical templates"></nav><label class="library-search" for="template-search">Search templates<input id="template-search" type="search" placeholder="alveolus, neuron, surgery..." autocomplete="off"></label><label class="library-search" for="category-filter">Category<select id="category-filter" class="library-filter"><option value="">All categories</option></select></label><p id="library-count" class="library-count" role="status" aria-live="polite"></p><p class="side-note">Choose a mechanism, customize its parameters, then export a reusable scene. Nothing is sent to a server.</p><p class="side-note"><a href="parts/index.html">Open reusable parts gallery</a></p></aside>
 <main class="workspace">
@@ -43,6 +43,21 @@
 <script src="templates/18-acid-base-buffer.js"></script>
 <script src="templates/19-antibody-neutralization.js"></script>
 <script src="templates/20-apoptosis.js"></script>
+<script src="templates/21-phagocytosis.js"></script>
+<script src="templates/22-dna-replication.js"></script>
+<script src="templates/23-transcription.js"></script>
+<script src="templates/24-translation.js"></script>
+<script src="templates/25-enzyme-inhibition.js"></script>
+<script src="templates/26-osmosis.js"></script>
+<script src="templates/27-oxidative-phosphorylation.js"></script>
+<script src="templates/28-peristalsis.js"></script>
+<script src="templates/29-bile-emulsification.js"></script>
+<script src="templates/30-lymphatic-drainage.js"></script>
+<script src="templates/31-venous-valves.js"></script>
+<script src="templates/32-bone-remodeling.js"></script>
+<script src="templates/33-fracture-repair.js"></script>
+<script src="templates/34-capillary-filtration.js"></script>
+<script src="templates/35-second-messenger.js"></script>
 <script>
 (function(){
 'use strict';
@@ -53,7 +68,7 @@ function select(id,next){
  const valid=M.validate(next||M.defaultConfig(id));
  if(player)player.destroy();config=valid;
  const def=M.get(config.templateId);
- $('scene-name').textContent=def.category;$('template-code').textContent=String(meta.findIndex(d=>d.id===def.id)+1).padStart(2,'0')+' / 20';
+ $('scene-name').textContent=def.category;$('template-code').textContent=String(meta.findIndex(d=>d.id===def.id)+1).padStart(2,'0')+' / 35';
  $('format').value=config.format;$('theme').value=config.theme;$('duration').value=config.duration;$('seek').max=config.duration;
  $('limitations').textContent=def.limitations;$('sources').replaceChildren();
  def.sources.forEach((url,i)=>{const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Reference '+(i+1);$('sources').append(a,document.createTextNode('  '));});
@@ -90,3 +105,4 @@ select(meta[0].id);motionChanged();
 </script>
 </body>
 </html>
+

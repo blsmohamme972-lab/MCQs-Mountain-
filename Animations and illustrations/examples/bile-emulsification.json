@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "templateId": "bile-emulsification",
+  "title": "Bile breaks fat into droplets",
+  "subtitle": "Animate large lipid globules becoming smaller droplets that expose more surface to digestive enzymes.",
+  "caption": "Bile disperses hydrophobic fat into smaller droplets; it does not chemically digest the lipid itself.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "progress": 0.62
+  },
+  "labels": {
+    "fat": "Fat",
+    "bile": "Bile salts",
+    "droplets": "Smaller droplets"
+  }
+}

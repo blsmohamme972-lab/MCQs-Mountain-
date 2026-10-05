@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "oxidative-phosphorylation",
+  "title": "A proton gradient powers ATP synthase",
+  "subtitle": "Show protons moving through ATP synthase to drive ATP formation across the inner mitochondrial membrane.",
+  "caption": "Electron transport builds a proton gradient; ATP synthase uses proton flow to join ADP and phosphate.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "progress": 0.68
+  },
+  "labels": {
+    "space": "Intermembrane space",
+    "membrane": "Inner membrane",
+    "matrix": "Matrix",
+    "machine": "ATP synthase"
+  }
+}

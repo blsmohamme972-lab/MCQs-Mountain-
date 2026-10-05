@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "templateId": "dna-replication",
+  "title": "DNA opens; two copies form",
+  "subtitle": "Show a simplified replication fork with complementary strands extending from a parental template.",
+  "caption": "Replication preserves one parental strand in each daughter double helix.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "progress": 0.62
+  },
+  "labels": {
+    "parental": "Parental strands",
+    "new": "New complementary strands",
+    "fork": "Replication fork"
+  }
+}

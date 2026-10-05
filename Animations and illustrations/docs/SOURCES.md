@@ -20,3 +20,24 @@ The medical content is deliberately foundational and qualitative. References sup
 [MDN requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame) and [MDN prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion) informed clock and motion-preference handling. They are documentation links only; the runtime does not fetch them.
 
 Review scientific content again before repurposing a template for pathology, interventions or formal clinical instruction. Source availability and web addresses can change. Automated rendering tests do not establish scientific correctness or human usability on every device.
+
+
+## Added in the 2026-10-05 template set
+
+| Template | Reference | Boundary |
+| --- | --- | --- |
+| Phagocytosis | [OpenStax Biology 2e 5.4](https://openstax.org/books/biology-2e/pages/5-4-bulk-transport) | Membrane engulfment sequence; no receptor or lysosome kinetics. |
+| DNA replication | [OpenStax Biology 2e 14.3](https://openstax.org/books/biology-2e/pages/14-3-basics-of-dna-replication) | Fork and complement language; no enzyme-level timing. |
+| Transcription | [OpenStax Biology 2e 15.2](https://openstax.org/books/biology-2e/pages/15-2-prokaryotic-transcription) | Template-to-RNA direction; no processing or regulation. |
+| Translation | [OpenStax Biology 2e 15.5](https://openstax.org/books/biology-2e/pages/15-5-ribosomes-and-protein-synthesis) | Ribosome and chain growth; no codon table or kinetics. |
+| Enzyme inhibition | [OpenStax Biology 2e 6.5](https://openstax.org/books/biology-2e/pages/6-5-enzymes) | Binding competition; no dose-response or treatment claim. |
+| Osmosis | [OpenStax Biology 2e 5.2](https://openstax.org/books/biology-2e/pages/5-2-passive-transport) | Water direction across a barrier; no tonicity calculation. |
+| Oxidative phosphorylation | [OpenStax Biology 2e 7.4](https://openstax.org/books/biology-2e/pages/7-4-oxidative-phosphorylation) | Proton-gradient concept; no ATP yield estimate. |
+| Peristalsis | [OpenStax A&P 2e 23.2](https://openstax.org/books/anatomy-and-physiology-2e/pages/23-2-digestive-system-processes-and-regulation) | Alternating contraction wave; no motility diagnosis. |
+| Bile emulsification | [OpenStax A&P 2e 23.6](https://openstax.org/books/anatomy-and-physiology-2e/pages/23-6-accessory-organs-in-digestion-the-liver-pancreas-and-gallbladder) | Droplet dispersion; no micelle or enzyme kinetics. |
+| Lymphatic drainage | [OpenStax A&P 2e 21.1](https://openstax.org/books/anatomy-and-physiology-2e/pages/21-1-anatomy-of-the-lymphatic-and-immune-systems) | Major return direction; no complete regional map. |
+| Venous valves | [OpenStax A&P 2e 20.1](https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-structure-and-function-of-blood-vessels) | One-way valve principle; no pressure or disease model. |
+| Bone remodeling | [OpenStax A&P 2e 6.4](https://openstax.org/books/anatomy-and-physiology-2e/pages/6-4-bone-formation-and-development) | Coupled resorption/deposition; no mineral or hormone model. |
+| Fracture repair | [OpenStax A&P 2e 6.5](https://openstax.org/books/anatomy-and-physiology-2e/pages/6-5-fractures-bone-repair) | Stage order; no healing timetable or prognosis. |
+| Capillary filtration | [OpenStax A&P 2e 20.1](https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-structure-and-function-of-blood-vessels) | Direction-only exchange; no Starling calculation. |
+| Second messenger | [OpenStax A&P 2e 18.1](https://openstax.org/books/anatomy-and-physiology-2e/pages/18-1-how-hormones-work) | Generic receptor relay; pathway subtype details omitted. |

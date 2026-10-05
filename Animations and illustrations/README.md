@@ -1,6 +1,6 @@
 # Medical Motion - reusable medical animation templates
 
-A code-only library for future AI agents and authors. Twenty original, parameterized SVG mechanisms share one deterministic JavaScript engine. This directory is a **standalone asset library**, not part of the MCQs application runtime. Nothing outside this directory is required or modified.
+A code-only library for future AI agents and authors. Thirty-five original, parameterized SVG mechanisms share one deterministic JavaScript engine. This directory is a **standalone asset library**, not part of the MCQs application runtime. Nothing outside this directory is required or modified.
 
 ## Start here
 
@@ -8,9 +8,9 @@ Download this directory with its relative paths intact and open `index.html` in 
 
 Choose a template, change its parameters, scrub the timeline, and export an SVG illustration, PNG image, JSON scene or **single-file animated HTML**. Playback starts only on an explicit click. The studio supports 9:16, 1:1 and 16:9, light/dark palettes and 2-60 second scenes. The default is a 6-second portrait scene.
 
-For one portable studio file, optionally run `node scripts/build.mjs`. It creates `dist/medical-template-studio.html`, twenty independent scene HTML files and full metadata. Node is only an optional development/export tool, not a browser requirement. Generated files remain under this directory and are ignored by Git.
+For one portable studio file, optionally run `node scripts/build.mjs`. It creates `dist/medical-template-studio.html`, thirty-five independent scene HTML files and full metadata. Node is only an optional development/export tool, not a browser requirement. Generated files remain under this directory and are ignored by Git.
 
-## The twenty templates
+## The thirty-five templates
 
 | ID | Reusable mechanism | Main controls |
 | --- | --- | --- |
@@ -34,6 +34,21 @@ For one portable studio file, optionally run `node scripts/build.mjs`. It create
 | `acid-base-buffer` | Carbonic-acid and bicarbonate buffer relationship | qualitative CO2 state |
 | `antibody-neutralization` | Matching antigen recognition and blocking | visual binding |
 | `apoptosis` | Cell shrinkage, condensation and apoptotic bodies | visual progression |
+| `phagocytosis` | Large-particle engulfment by a cell | progress |
+| `dna-replication` | Replication fork and complementary strands | progress |
+| `transcription` | DNA template to growing RNA | progress |
+| `translation` | Ribosome movement and polypeptide growth | progress |
+| `enzyme-inhibition` | Competitive or allosteric binding | mode, progress |
+| `osmosis` | Water across a semipermeable membrane | gradient |
+| `oxidative-phosphorylation` | Proton flow through ATP synthase | progress |
+| `peristalsis` | Contraction wave moving a bolus | speed |
+| `bile-emulsification` | Fat globule dispersion by bile salts | progress |
+| `lymphatic-drainage` | Tissue fluid to lymphatic to venous return | progress |
+| `venous-valves` | Valve opening and backflow prevention | progress |
+| `bone-remodeling` | Osteoclast resorption and osteoblast deposition | progress |
+| `fracture-repair` | Hematoma, callus, union and remodeling | progress |
+| `capillary-filtration` | Outward filtration and inward reabsorption | progress |
+| `second-messenger` | Receptor relay and intracellular amplification | progress |
 
 All controls except the ECG cursor's cycles-per-minute setting are presentation parameters, not measured physiology. Even that ECG is uncalibrated and is not a patient rhythm. Read each template's `limitations` and `sources` before reusing it medically. The illustrations are conceptual; they have not been clinically validated.
 
@@ -42,7 +57,7 @@ All controls except the ECG cursor's cycles-per-minute setting are presentation 
 - `AGENTS.md`: required workflow, renderer contract, clinical safeguards and extension rules.
 - `catalog.json`: stable IDs, file paths, keywords and example paths for agent selection.
 - `core/medical-motion.js`: validation, geometry helpers, frame layout, playback and standalone export.
-- `templates/`: twenty independently loadable complete-scene renderers, each with defaults, parameter descriptors and references.
+- `templates/`: thirty-five independently loadable complete-scene renderers, each with defaults, parameter descriptors and references.
 - `parts/`: twenty-five small reusable SVG components with searchable metadata for future scene composition.
 - `parts/index.html`: offline searchable gallery for the reusable parts.
 - `parts/catalog.json`: machine-searchable IDs, categories, anatomy levels, roles, aliases, sources and limitations.
@@ -104,3 +119,4 @@ Use the parts catalog when a future scene needs a small visual object rather tha
 ## Telegram Mini App readiness
 
 The library remains a dependency-free asset store. Use `docs/TELEGRAM_MINI_APP.md` when embedding a selected standalone scene in a Telegram Mini App; keep bot-side validation of `Telegram.WebApp.initData` on the server and apply Telegram theme and safe-area variables in the host shell. Do not add Telegram runtime code to the reusable templates themselves.
+

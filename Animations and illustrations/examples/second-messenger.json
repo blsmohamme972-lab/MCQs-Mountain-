@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "second-messenger",
+  "title": "A receptor relays a signal inside the cell",
+  "subtitle": "Animate ligand binding, receptor activation, second messenger spread and an intracellular response.",
+  "caption": "An extracellular ligand can trigger an intracellular second-messenger cascade without entering the cell.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "progress": 0.65
+  },
+  "labels": {
+    "ligand": "Ligand",
+    "receptor": "Receptor",
+    "messenger": "Second messenger",
+    "response": "Cell response"
+  }
+}

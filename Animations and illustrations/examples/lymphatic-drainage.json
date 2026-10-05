@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "templateId": "lymphatic-drainage",
+  "title": "Lymph returns tissue fluid to blood",
+  "subtitle": "Show interstitial fluid entering lymphatic capillaries, traveling through a vessel, and returning near a vein.",
+  "caption": "Lymphatic vessels collect excess tissue fluid and return it to the venous circulation.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "progress": 0.68
+  },
+  "labels": {
+    "tissue": "Tissue space",
+    "vessel": "Lymphatic vessel",
+    "vein": "Venous return"
+  }
+}

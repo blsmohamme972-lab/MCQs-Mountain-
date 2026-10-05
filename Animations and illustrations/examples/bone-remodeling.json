@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "bone-remodeling",
+  "title": "Old bone out; new bone in",
+  "subtitle": "Animate osteoclast resorption followed by osteoblast deposition on the same bone surface.",
+  "caption": "Adult remodeling couples removal of old or damaged matrix with deposition of new matrix.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "progress": 0.65
+  },
+  "labels": {
+    "old": "Old bone matrix",
+    "resorb": "Osteoclast resorption",
+    "new": "New bone matrix",
+    "build": "Osteoblast deposition"
+  }
+}

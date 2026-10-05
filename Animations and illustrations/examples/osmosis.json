@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "templateId": "osmosis",
+  "title": "Water follows free-water gradient",
+  "subtitle": "Show water crossing a semipermeable membrane while solute remains largely on one side.",
+  "caption": "In osmosis, free water moves across the membrane toward the side with lower free-water concentration.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "gradient": 0.65
+  },
+  "labels": {
+    "left": "More free water",
+    "right": "Less free water",
+    "membrane": "Semipermeable membrane"
+  }
+}

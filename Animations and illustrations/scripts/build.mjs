@@ -16,4 +16,5 @@ fs.copyFileSync(path.join(root,'parts','catalog.json'),path.join(out,'parts','ca
 fs.copyFileSync(path.join(root,'parts','schema.json'),path.join(out,'parts','schema.json'));
 for(const d of M.list())fs.writeFileSync(path.join(out,'templates',d.id+'.html'),M.standalone(M.defaultConfig(d.id)));
 fs.writeFileSync(path.join(out,'full-catalog.json'),JSON.stringify({version:1,templates:M.list().map(d=>({...d,defaultConfig:M.defaultConfig(d.id)}))},null,2)+'\n');
-console.log('Built offline studio, 20 independent HTML scenes, searchable parts gallery and full metadata in dist/.');
+console.log('Built offline studio, 35 independent HTML scenes, searchable parts gallery and full metadata in dist/.');
+

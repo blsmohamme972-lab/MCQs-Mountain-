@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "templateId": "peristalsis",
+  "title": "A wave moves the bolus forward",
+  "subtitle": "Animate alternating contraction and relaxation around a digestive tube.",
+  "caption": "Sequential smooth-muscle waves propel the bolus forward while the tube behind it relaxes.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "speed": 1
+  },
+  "labels": {
+    "tube": "Digestive tube",
+    "bolus": "Bolus",
+    "wave": "Contraction wave"
+  }
+}

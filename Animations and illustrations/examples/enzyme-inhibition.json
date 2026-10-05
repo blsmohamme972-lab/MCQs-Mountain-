@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "templateId": "enzyme-inhibition",
+  "title": "The active site has a competitor",
+  "subtitle": "Animate substrate binding and competitive inhibitor occupancy of an enzyme active site.",
+  "caption": "A competitive inhibitor uses the active site, so substrate and inhibitor compete for the same opening.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "mode": "competitive",
+    "progress": 0.6
+  },
+  "labels": {
+    "enzyme": "Enzyme",
+    "site": "Active site",
+    "substrate": "Substrate",
+    "inhibitor": "Inhibitor"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "templateId": "transcription",
+  "title": "DNA information becomes RNA",
+  "subtitle": "Animate a transcription bubble and an RNA strand growing 5\u2032\u21923\u2032 from a DNA template.",
+  "caption": "RNA polymerase reads the template while the new RNA extends in the 5\u2032\u21923\u2032 direction.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "progress": 0.6
+  },
+  "labels": {
+    "template": "DNA template",
+    "polymerase": "RNA polymerase",
+    "rna": "New RNA 5\u2032\u21923\u2032"
+  }
+}

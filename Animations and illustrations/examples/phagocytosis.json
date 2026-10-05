@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "templateId": "phagocytosis",
+  "title": "A cell engulfs a large particle",
+  "subtitle": "Show recognition, membrane wrapping and internalization during phagocytosis.",
+  "caption": "The membrane surrounds a large target, pinches off a vesicle, and keeps the cargo inside the cell.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "progress": 0.68
+  },
+  "labels": {
+    "cell": "Phagocyte",
+    "target": "Target particle",
+    "vesicle": "Internal vesicle"
+  }
+}

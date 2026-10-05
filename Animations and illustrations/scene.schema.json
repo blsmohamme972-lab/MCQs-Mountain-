@@ -32,7 +32,22 @@
         "coagulation-fibrin",
         "acid-base-buffer",
         "antibody-neutralization",
-        "apoptosis"
+        "apoptosis",
+        "phagocytosis",
+        "dna-replication",
+        "transcription",
+        "translation",
+        "enzyme-inhibition",
+        "osmosis",
+        "oxidative-phosphorylation",
+        "peristalsis",
+        "bile-emulsification",
+        "lymphatic-drainage",
+        "venous-valves",
+        "bone-remodeling",
+        "fracture-repair",
+        "capillary-filtration",
+        "second-messenger"
       ]
     },
     "title": {

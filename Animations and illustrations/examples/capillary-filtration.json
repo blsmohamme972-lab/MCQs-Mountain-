@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "templateId": "capillary-filtration",
+  "title": "Filtration and reabsorption balance fluid",
+  "subtitle": "Show fluid leaving a capillary at one end and returning at the other, with tissue fluid between.",
+  "caption": "Capillary exchange reflects opposing hydrostatic and oncotic forces; this schematic shows direction only.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "params": {
+    "progress": 0.62
+  },
+  "labels": {
+    "arterial": "Arterial end",
+    "capillary": "Capillary",
+    "venous": "Venous end",
+    "tissue": "Interstitial space"
+  }
+}

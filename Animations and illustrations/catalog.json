@@ -283,6 +283,187 @@
         "pathology"
       ],
       "example": "examples/apoptosis.json"
+    },
+    {
+      "id": "phagocytosis",
+      "file": "templates/21-phagocytosis.js",
+      "category": "Cell biology",
+      "keywords": [
+        "phagocytosis",
+        "endocytosis",
+        "engulfment",
+        "immune cell"
+      ],
+      "example": "examples/phagocytosis.json"
+    },
+    {
+      "id": "dna-replication",
+      "file": "templates/22-dna-replication.js",
+      "category": "Molecular biology",
+      "keywords": [
+        "DNA",
+        "replication",
+        "replication fork",
+        "semiconservative"
+      ],
+      "example": "examples/dna-replication.json"
+    },
+    {
+      "id": "transcription",
+      "file": "templates/23-transcription.js",
+      "category": "Molecular biology",
+      "keywords": [
+        "transcription",
+        "mRNA",
+        "RNA polymerase",
+        "gene expression"
+      ],
+      "example": "examples/transcription.json"
+    },
+    {
+      "id": "translation",
+      "file": "templates/24-translation.js",
+      "category": "Molecular biology",
+      "keywords": [
+        "translation",
+        "ribosome",
+        "mRNA",
+        "protein synthesis"
+      ],
+      "example": "examples/translation.json"
+    },
+    {
+      "id": "enzyme-inhibition",
+      "file": "templates/25-enzyme-inhibition.js",
+      "category": "Biochemistry",
+      "keywords": [
+        "enzyme",
+        "competitive inhibition",
+        "active site",
+        "substrate"
+      ],
+      "example": "examples/enzyme-inhibition.json"
+    },
+    {
+      "id": "osmosis",
+      "file": "templates/26-osmosis.js",
+      "category": "Cell physiology",
+      "keywords": [
+        "osmosis",
+        "water",
+        "semipermeable membrane",
+        "aquaporin"
+      ],
+      "example": "examples/osmosis.json"
+    },
+    {
+      "id": "oxidative-phosphorylation",
+      "file": "templates/27-oxidative-phosphorylation.js",
+      "category": "Cell metabolism",
+      "keywords": [
+        "mitochondria",
+        "proton gradient",
+        "ATP synthase",
+        "oxidative phosphorylation"
+      ],
+      "example": "examples/oxidative-phosphorylation.json"
+    },
+    {
+      "id": "peristalsis",
+      "file": "templates/28-peristalsis.js",
+      "category": "Gastrointestinal physiology",
+      "keywords": [
+        "peristalsis",
+        "esophagus",
+        "bolus",
+        "smooth muscle"
+      ],
+      "example": "examples/peristalsis.json"
+    },
+    {
+      "id": "bile-emulsification",
+      "file": "templates/29-bile-emulsification.js",
+      "category": "Digestion",
+      "keywords": [
+        "bile",
+        "emulsification",
+        "fat digestion",
+        "gallbladder"
+      ],
+      "example": "examples/bile-emulsification.json"
+    },
+    {
+      "id": "lymphatic-drainage",
+      "file": "templates/30-lymphatic-drainage.js",
+      "category": "Lymphatic system",
+      "keywords": [
+        "lymph",
+        "lymphatic drainage",
+        "thoracic duct",
+        "tissue fluid"
+      ],
+      "example": "examples/lymphatic-drainage.json"
+    },
+    {
+      "id": "venous-valves",
+      "file": "templates/31-venous-valves.js",
+      "category": "Circulation",
+      "keywords": [
+        "vein",
+        "venous valve",
+        "backflow",
+        "circulation"
+      ],
+      "example": "examples/venous-valves.json"
+    },
+    {
+      "id": "bone-remodeling",
+      "file": "templates/32-bone-remodeling.js",
+      "category": "Skeletal tissue",
+      "keywords": [
+        "bone",
+        "remodeling",
+        "osteoclast",
+        "osteoblast"
+      ],
+      "example": "examples/bone-remodeling.json"
+    },
+    {
+      "id": "fracture-repair",
+      "file": "templates/33-fracture-repair.js",
+      "category": "Skeletal tissue",
+      "keywords": [
+        "fracture",
+        "bone repair",
+        "hematoma",
+        "callus",
+        "remodeling"
+      ],
+      "example": "examples/fracture-repair.json"
+    },
+    {
+      "id": "capillary-filtration",
+      "file": "templates/34-capillary-filtration.js",
+      "category": "Microcirculation",
+      "keywords": [
+        "capillary",
+        "filtration",
+        "reabsorption",
+        "interstitial fluid"
+      ],
+      "example": "examples/capillary-filtration.json"
+    },
+    {
+      "id": "second-messenger",
+      "file": "templates/35-second-messenger.js",
+      "category": "Cell signaling",
+      "keywords": [
+        "cell signaling",
+        "receptor",
+        "second messenger",
+        "cAMP"
+      ],
+      "example": "examples/second-messenger.json"
     }
   ],
   "partsCatalog": "parts/catalog.json",
