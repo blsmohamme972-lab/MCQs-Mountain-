@@ -314,15 +314,34 @@
     keywords:['heart','atrium','ventricle','cardiac','circulation'],aliases:['four chamber heart'],
     limitations:'Schematic heart only; chamber volumes, valves, coronary anatomy and electrical timing are omitted.',
     dependencies:[],attachments:{venaCava:{x:245,y:75},pulmonaryArtery:{x:395,y:75},aorta:{x:320,y:70},center:{x:320,y:220}},bounds:{x:150,y:70,width:340,height:300},
-    render:function(o,C){let s=path('M 320 350 C 270 300 175 255 190 170 C 200 112 270 120 320 174 C 370 120 440 112 450 170 C 465 255 370 300 320 350 Z',C.red,6,C.tissue);s+=line(320,174,320,300,C.ink,4)+line(205,220,435,220,C.ink,4);s+=circle(255,178,28,C.soft,{stroke:C.blue,'stroke-width':3})+circle(385,178,28,C.soft,{stroke:C.blue,'stroke-width':3})+circle(255,260,38,C.soft,{stroke:C.blue,'stroke-width':3})+circle(385,260,38,C.soft,{stroke:C.blue,'stroke-width':3});return s;}
+    render:function(o,C){
+      // Structural geometry is extracted from templates/03-cardiac-circulation.js;
+      // labels and animated circuit arrows remain scene-specific.
+      let s=path('M 320 328 C 291 305 235 272 235 211 C 235 170 283 151 320 187 C 357 151 405 170 405 211 C 405 272 349 305 320 328 Z',C.red,6,C.tissue);
+      s+=path('M 320 187 V 282 M 246 227 C 270 217 296 219 320 232 M 320 232 C 344 219 370 217 394 227',C.red,4,'none',{opacity:.8});
+      s+=path('M 280 252 Q 294 238 308 252 M 332 252 Q 346 238 360 252',C.gold,4,'none',{opacity:.9});
+      s+=circle(278,203,5,C.blue,{opacity:.8})+circle(278,270,5,C.blue,{opacity:.8})+circle(362,203,5,C.red,{opacity:.8})+circle(362,270,5,C.red,{opacity:.8});
+      return s;
+    }
   });
   register({
     id:'nephron',version:2,category:'Renal physiology',anatomyLevel:'organ',role:'structure',
     title:'Nephron schematic',description:'A nephron loop with glomerulus, tubule, loop and collecting duct attachments.',
     keywords:['nephron','glomerulus','tubule','kidney','filtration'],aliases:['nephron loop'],
     limitations:'Schematic nephron; filtration, reabsorption, secretion and concentration are not calculated.',
-    dependencies:[],attachments:{afferent:{x:125,y:140},efferent:{x:175,y:140},collectingDuct:{x:520,y:110},center:{x:320,y:220}},bounds:{x:90,y:80,width:470,height:300},
-    render:function(o,C){let s=circle(160,160,55,C.soft,{stroke:C.red,'stroke-width':5});for(let i=0;i<5;i++)s+=path('M '+125+' '+(140+i*10)+' Q 160 '+(120+i*15)+' '+195+' '+(140+i*10),C.red,3,'none');s+=path('M 215 160 C 260 130 290 180 290 240 C 290 320 380 320 380 240 C 380 170 430 150 500 160',C.teal,12,'none')+path('M 500 100 V 350',C.blue,18,'none',{opacity:.65});return s;}
+    dependencies:[],attachments:{afferent:{x:125,y:140},efferent:{x:175,y:140},collectingDuct:{x:520,y:110},center:{x:320,y:220}},bounds:{x:50,y:45,width:545,height:325},
+    render:function(o,C){
+      // Structural geometry is extracted from templates/07-nephron-exchange.js;
+      // filtration and exchange arrows remain complete-scene concerns.
+      let s=circle(126,132,73,C.soft,{stroke:C.blue,'stroke-width':4});
+      s+=path('M 62 126 C 82 82 112 164 132 116 S 182 81 176 133 S 112 187 92 135 S 145 91 166 151',C.red,10,'none',{opacity:.88});
+      s+=path('M 54 161 C 82 193 132 206 178 169',C.gold,4,'none',{opacity:.8});
+      s+=path('M 188 132 C 228 110 267 105 298 128 C 335 157 311 194 274 212 C 239 229 247 270 286 277 C 326 284 348 248 373 270 C 399 293 374 335 342 347 C 300 363 246 346 227 315',C.gold,24,'none');
+      s+=path('M 188 132 C 228 110 267 105 298 128 C 335 157 311 194 274 212 C 239 229 247 270 286 277 C 326 284 348 248 373 270 C 399 293 374 335 342 347 C 300 363 246 346 227 315',C.paper,13,'none');
+      s+=path('M 212 88 C 265 54 338 66 395 108 C 451 150 514 130 590 98',C.red,9,'none',{opacity:.65});
+      s+=path('M 212 88 C 265 54 338 66 395 108 C 451 150 514 130 590 98',C.blue,3,'none');
+      return s;
+    }
   });
 
   };

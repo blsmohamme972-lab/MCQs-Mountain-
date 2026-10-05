@@ -1860,7 +1860,7 @@
       "parameterSchema": {
         "points": {
           "type": "polyline",
-          "description": "Polyline in local 640\u00d7440 coordinates."
+          "description": "Polyline in local 640×440 coordinates."
         },
         "count": {
           "type": "integer",
@@ -2652,10 +2652,10 @@
         }
       },
       "bounds": {
-        "x": 90,
-        "y": 80,
-        "width": 470,
-        "height": 300
+        "x": 50,
+        "y": 45,
+        "width": 545,
+        "height": 325
       },
       "dependencies": [],
       "parameterSchema": {},

@@ -63,6 +63,7 @@
 - Fixed accent recoloring for legacy parts and corrected malformed synapse coordinate concatenation. Corrected the coccus limitation metadata so it no longer claims gas-exchange constraints.
 - Versioned the reusable-parts contract to v2 with validated component parameters, themes, named attachments, local bounds, explicit dependencies, state metadata, runtime discovery and an explicit renderer context. The compatible `medical-parts.js` entry point remains available.
 - Added configurable vessel segments, path-based blood flow, attachment arrows and labels, platelets, fibrin mesh, layered tissue, fibroblasts, macrophages, plaque overlay, heart and nephron parts. Edema and necrosis remain backlog candidates.
+- The reusable heart and nephron definitions reuse the recognizable structural geometry from the existing complete scenes; their bounds and schematic limitations remain explicit.
 - Added three composed scene JSON examples and offline HTML export support with Play, Pause, Seek and Replay controls.
 - Added the scored coverage/backlog index and exact-N novelty workflow.
 
