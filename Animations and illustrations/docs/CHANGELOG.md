@@ -79,4 +79,5 @@
 - Re-centered the clot and reduced its scale in `examples/generated/blood-clotting-inside-artery-6s.html`; fibrin remains inside the lumen and all red-cell path points stay in the safe central lane.
 - Fixed a second bounds defect in `fibrin-mesh`: dense strands now interpolate across a fixed local span instead of accumulating past `bounds.y + bounds.height`.
 - Corrected the landscape composed-scene frame: the art box no longer paints over the heading, the local 640×440 canvas is centered and scaled to use the frame, and long captions wrap before the disclaimer.
+- Corrected `vessel-segment` bounds metadata to include its visible component title; bounds now cover the complete emitted artwork rather than only the wall ribbon.
 - Added regression assertions for closed vessel geometry, lumen fill, bounded dense fibrin and the maintained six-second example's flow/clot placement. The example remains deterministic, offline and six seconds long.

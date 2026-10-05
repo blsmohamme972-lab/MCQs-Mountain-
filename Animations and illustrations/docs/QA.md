@@ -62,4 +62,5 @@ Python browser QA requires Playwright and an available Chromium executable. Set 
 - Rebuilt the shared vessel segment as a closed layered lumen and checked that the supported narrowing range does not self-cross.
 - Checked the generated clot example at 0, 3 and 6 seconds: the vessel, fibrin mesh and RBC lane remain within their intended local geometry while fibrin density changes over time. This review caught and fixed the dense-mesh strand overflow before release.
 - Reviewed the landscape frame at 1280px and a 665px mobile-width raster: the heading remains above the art box, the vessel is centered, labels stay readable and the caption wraps within the card.
+- Checked metadata against emitted geometry: `vessel-segment` bounds now include its title and full wall/lumen region.
 - The dependency-free SVG/XML and Node checks passed. Browser smoke was retried with Playwright available in an isolated Python target, but no Chromium executable could be installed in this environment; no browser pass or direct `file://` claim is made.

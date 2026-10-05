@@ -58,6 +58,7 @@ assert.throws(()=>M.render('vessel-segment',{params:{kind:'artery',narrowing:2,v
 const vesselMarkup=M.render('vessel-segment',{params:{kind:'artery',narrowing:0,valve:false}});
 assert.ok((vesselMarkup.match(/ Z\"/g)||[]).length>=2,'vessel must expose closed outer and inner ribbons');
 assert.ok(vesselMarkup.includes('fill=\"#eaf1fb\"'),'vessel must include an explicit lumen fill');
+assert.ok(M.discover('vessel-segment').bounds.y<=60 && M.discover('vessel-segment').bounds.y+M.discover('vessel-segment').bounds.height>=330,'vessel bounds must include its visible title and wall');
 const denseFibrinMarkup=M.render('fibrin-mesh',{params:{density:1},progress:1});
 const denseHorizontalYs=[...denseFibrinMarkup.matchAll(/M 100 ([0-9.]+)/g)].map(m=>Number(m[1]));
 const denseDiagonalEnds=[...denseFibrinMarkup.matchAll(/ L [0-9.]+ ([0-9.]+)/g)].map(m=>Number(m[1]));
