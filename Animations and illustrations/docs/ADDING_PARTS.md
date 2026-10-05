@@ -35,10 +35,10 @@ A complete addition includes the renderer, metadata, a source and limitation not
 
 ## 4. Implement the part
 
-Add one deterministic renderer to `parts/medical-parts.js`:
+Add one deterministic renderer to a definition module under `parts/definitions/` (the current source module is `parts/definitions/medical.js`; the build concatenates definition modules into the compatible `parts/medical-parts.js` bundle):
 
 - use the 640 × 440 coordinate system and center anchor;
-- accept only the documented options: x, y, scale, rotation, opacity and accent;
+- receive the engine options and helper surface; accept only documented transform and v2 state fields (`theme`, `params`, `state`, `time`, `progress`);
 - draw original SVG geometry with escaped text;
 - avoid DOM access, network requests, timers, random values, external images, external fonts and CSS animation;
 - keep the shape conceptual and state its limitation;
@@ -49,7 +49,7 @@ Add the same ID and metadata to `parts/catalog.json`. Validate it against `parts
 
 ## 5. Update the searchable surfaces
 
-Update the gallery only when its loader contract changes. The gallery reads the catalog through the registered part metadata, so every new renderer must expose the same searchable fields: category, anatomyLevel, role, keywords and aliases.
+Update the gallery only when its loader contract changes. The gallery reads the catalog through the registered part metadata, so every new definition must expose the same searchable fields: category, anatomyLevel, role, keywords and aliases.
 
 If the part belongs in a complete explanatory scene, add a separate scene template under `templates/`; do not hide a full scene inside the parts engine.
 

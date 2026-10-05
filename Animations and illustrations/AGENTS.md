@@ -21,7 +21,7 @@ A scene has `version:1`, `templateId`, `title`, `subtitle`, `caption`, `duration
 
 `create(host, scene, {onframe})` returns an independent player. `seek(seconds)` is absolute, not a fraction. `update(scene)` validates before replacing the active scene, pauses and resets it. `state.config` is a copy. Call `destroy()` before removing the host or creating a replacement. Use explicit play controls and preserve reduced-motion behavior. Existing static previews remain usable without playing.
 
-Geometry is deterministic at a given configuration and time. `renderSVG` clamps time to [0,duration]. Renderers receive `p` in [0,1] and `t` in seconds. ECG uses `t` for its cursor cadence; the other mechanisms use normalized presentation time. Changing duration is not a claim about physiological timing.
+Geometry is deterministic at a given configuration and time. `renderSVG` clamps time to [0,duration]. Renderers receive `p` in [0,1] and `t` in seconds. ECG uses `t` for its cursor cadence; the other mechanisms use normalized presentation time. Templates that declare `params.progress` treat that value as a manual endpoint and ease the mechanism toward it with the clock, so play, seek and replay remain deterministic. Changing duration is not a claim about physiological timing.
 
 ## Adding or extending a renderer
 

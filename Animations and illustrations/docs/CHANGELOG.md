@@ -65,3 +65,9 @@
 - Added configurable vessel segments, path-based blood flow, attachment arrows and labels, platelets, fibrin mesh, layered tissue, fibroblasts, macrophages, plaque overlay, heart and nephron parts. Edema and necrosis remain backlog candidates.
 - Added three composed scene JSON examples and offline HTML export support with Play, Pause, Seek and Replay controls.
 - Added the scored coverage/backlog index and exact-N novelty workflow.
+
+
+## 2026-10-05 — Definition-module boundary and final v2 validation
+
+- Separated the 37 component registrations into `parts/definitions/medical.js`; `parts/medical-parts-engine.js` now owns validation, transforms, discovery, batching and renderer contexts. `scripts/build.mjs` regenerates the compatible classic `parts/medical-parts.js` bundle.
+- Re-ran `node tests/parts_verify.mjs`, `node tests/verify.mjs` and `node scripts/build.mjs` successfully. The optional `python tests/browser_smoke.py` check remains unavailable here because Playwright and Chromium are not installed.

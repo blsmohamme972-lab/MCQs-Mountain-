@@ -2,7 +2,7 @@
 
 ## Completed
 
-- JavaScript syntax and dependency-free Node tests: 35 registrations, 1036 frame render cases across aspect ratios/themes/times and parameter bounds, 138 invalid configurations rejected, stable output for identical input/time, and renderer serialization in isolated JavaScript contexts.
+- JavaScript syntax and dependency-free Node tests: 37 reusable components, 1794 frame render cases across aspect ratios/themes/times and parameter bounds, 230 invalid configurations rejected, stable output for identical input/time, and renderer serialization in isolated JavaScript contexts.
 - All 35 checked-in example scenes match the engine defaults and pass the common JSON Schema. The catalog IDs match the registered templates.
 - Python XML parsing accepted all 35 generated diagram-only SVG documents.
 - The browser smoke script is updated for 35 templates and checks SVG parsing, playback, exports, mobile layout and offline standalone scenes. This execution environment did not include the optional Playwright package, so that browser pass must be rerun where Playwright and Chromium are installed.
@@ -10,7 +10,7 @@
 - Studio inspected at 1440px desktop width and 390px mobile viewport width, with no document-level horizontal overflow at 390px. Diagram-only overview and desktop/mobile screenshots were reviewed.
 - Reduced-motion preference starts with a still preview. The user may explicitly start playback.
 - The dependency-free Node build generated the bundled studio and all 35 individual scene HTML files. Numeric-token and syntax checks passed. A Playwright run is still device- and environment-dependent.
-- Parts-library verification passed: 25 registered parts matched the catalog; every part rendered deterministically at default and transformed options; searchable metadata and exact-count batches passed; 9 invalid option cases were rejected.
+- Parts-library verification passed: 37 registered parts matched the catalog; every part rendered deterministically at default and transformed options; searchable metadata and exact-count batches passed; 9 invalid option cases were rejected.
 - Python XML parsing accepted all 25 generated reusable-part SVG documents. The built parts gallery contains the inlined engine and no external runtime dependency.
 
 ## Limits of this verification
@@ -47,3 +47,12 @@ Python browser QA requires Playwright and an available Chromium executable. Set 
 - Template QA compares independent diagram frames at 0, 50 and 100% of duration; the result must change in the mechanism artwork, not only captions or UI controls. Themes and portrait/square/landscape rendering remain covered by `tests/verify.mjs`.
 - Composed standalone exports inline the parts engine and scene renderer. The smoke suite checks the absence of external script sources and does not claim clinical validation.
 - Direct Chrome `file://` opening remains environment-dependent; if unavailable, report the injected about:blank/offline result separately rather than weakening the tests.
+
+
+## 2026-10-05 — Actual validation run
+
+- `node tests/parts_verify.mjs` passed: 37 components, contract v2, catalog/schema/runtime agreement, parameter and recolouring checks, deterministic output, attachment rendering and three composed examples.
+- `node tests/verify.mjs` passed: 35 templates, 1,794 frame cases, 230 invalid configurations rejected, deterministic output and closure isolation.
+- `node scripts/build.mjs` passed: the offline studio, 35 template exports, 3 composed exports and the 37-part gallery were generated.
+- XML parsing accepted nine representative composed/part SVG files in `tests/output/`.
+- `python tests/browser_smoke.py` was attempted and is unavailable in this environment (`ModuleNotFoundError: playwright`); direct Chrome review was also unavailable because the browser surface blocked the local preview. No browser pass is claimed.

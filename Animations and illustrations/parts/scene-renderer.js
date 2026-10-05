@@ -1,4 +1,4 @@
-/* Medical Motion composed-scene renderer v1.
+/* Medical Motion composed-scene renderer v2.
  * This is deliberately separate from the part registry. It accepts a small JSON scene,
  * supplies each part with an explicit renderer context, and can inline the exact part
  * engine for a self-contained export.
@@ -41,8 +41,9 @@
       const d=G.MedicalMotionParts.discover(component.id), options={...(component.options||{}),theme:scene.theme,time:t,progress:p};
       // The scene may explicitly provide a local attachment map for arrows and labels.
       options.state={...(options.state||{}),sceneIndex:index};
+      // Attachment maps are explicit scene data; they are forwarded before rendering so
+      // arrows and labels can resolve named points deterministically.
       art+=renderer.render(component.id,options);
-      if(index===0 && component.options&&component.options.state&&component.options.state.attachments) options.state.attachments=component.options.state.attachments;
     });
     const title='<text x="48" y="72" fill="'+C.teal+'" font-size="17" font-weight="750">COMPOSED MEDICAL MOTION</text>';
     const heading='<text x="48" y="132" fill="'+C.ink+'" font-size="38" font-weight="750">'+esc(scene.title)+'</text>';
@@ -59,5 +60,5 @@
     const script=safeEngine+'\n'+boot+'const scene='+JSON.stringify(scene).replace(/</g,'\\u003c')+';const seek=document.getElementById("seek"),play=document.getElementById("play"),reset=document.getElementById("reset"),host=document.getElementById("scene"),clock=document.getElementById("clock");let time=0,playing=false,last=0,raf=0;function draw(){host.innerHTML=MedicalMotionScene.renderSVG(scene,time);seek.value=time;clock.textContent=time.toFixed(1)+" / "+scene.duration+" s";play.textContent=playing?"Pause":"Play";}function tick(now){if(!playing)return;time+=Math.max(0,now-last)/1000;last=now;if(time>=scene.duration){time=scene.duration;playing=false;}draw();if(playing)raf=requestAnimationFrame(tick);}play.onclick=()=>{playing=!playing;if(playing){if(time>=scene.duration)time=0;last=performance.now();raf=requestAnimationFrame(tick);}else cancelAnimationFrame(raf);draw();};seek.oninput=()=>{playing=false;cancelAnimationFrame(raf);time=Number(seek.value);draw();};reset.onclick=()=>{playing=false;cancelAnimationFrame(raf);time=0;draw();};draw();';
     return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(scene.title)+'</title><style>body{margin:0;background:'+palettes[scene.theme].bg+';color:'+palettes[scene.theme].ink+';font:15px system-ui}main{max-width:960px;margin:auto;padding:12px}#scene svg{width:100%;height:auto;display:block}nav{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px}button{padding:11px 18px;border:0;border-radius:9px;font:inherit;cursor:pointer}input{flex:1;min-width:120px}p{color:'+palettes[scene.theme].muted+'}</style></head><body><main><div id="scene"></div><nav aria-label="Playback"><button id="play">Play</button><button id="reset">Replay</button><label for="seek">Seek</label><input id="seek" type="range" min="0" max="'+scene.duration+'" step="0.01" value="0"><output id="clock"></output></nav><p>Offline composed scene. Playback is explicit and deterministic.</p></main><script>'+script+'</scr'+'ipt></body></html>';
   }
-  G.MedicalMotionScene={version:'1.0.0',validate,renderSVG,standalone};
+  G.MedicalMotionScene={version:'2.0.0',validate,renderSVG,standalone};
 })(globalThis);
