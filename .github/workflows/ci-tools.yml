@@ -10,6 +10,7 @@ on:
       - "tools/**"
       - "worker/**"
       - "migrations/**"
+      - "Animations and illustrations/**"
       - ".github/workflows/**"
   pull_request:
     paths:
@@ -19,6 +20,7 @@ on:
       - "worker/**"
       - "migrations/**"
       - ".github/workflows/**"
+      - "Animations and illustrations/**"
 
 # Paths keep documentation-only pull requests and main commits from starting CI.
 # One run per pull request (or main) prevents outdated work from consuming minutes.
@@ -78,3 +80,34 @@ jobs:
           python -m json.tool content-worker/dist/content/catalog.json >/dev/null
           python -m json.tool content-worker/dist/content/config.json >/dev/null
 
+
+  medical_illustrations:
+    name: Medical illustration library
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Animations and illustrations
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24.x"
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Install pinned browser smoke dependency
+        run: python -m pip install "playwright==1.57.0"
+      - name: Install pinned Chromium
+        run: python -m playwright install --with-deps chromium
+      - name: Build and verify the offline library
+        run: |
+          node scripts/build.mjs
+          node scripts/build.mjs --check
+          node tests/parts_verify.mjs
+          node tests/verify.mjs
+          node tests/library_verify.mjs
+          node tests/layout_verify.mjs
+          node tests/visual_regression.mjs
+      - name: Run browser smoke checks
+        run: python tests/browser_smoke.py

@@ -11,7 +11,10 @@ OUT = ROOT / 'tests' / 'output'
 OUT.mkdir(parents=True, exist_ok=True)
 errors = []
 with sync_playwright() as pw:
-    browser = pw.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH', '/usr/bin/chromium'), headless=True, args=['--no-sandbox'])
+    launch = {'headless': True, 'args': ['--no-sandbox']}
+    if os.environ.get('CHROMIUM_PATH'):
+        launch['executable_path'] = os.environ['CHROMIUM_PATH']
+    browser = pw.chromium.launch(**launch)
     page = browser.new_page(viewport={'width': 1440, 'height': 1100}, device_scale_factor=1)
     page.on('pageerror', lambda error: errors.append(str(error)))
     requests = []
@@ -62,7 +65,7 @@ with sync_playwright() as pw:
     page.locator('#play').click()
     page.wait_for_timeout(160)
     assert page.locator('#play').inner_text() == 'Pause'
-    page.evaluate('player.pause()')
+    page.locator('#play').click()
     page.set_content((ROOT / 'dist' / 'medical-template-studio.html').read_text())
     assert page.locator('[data-template]').count() == 35
     # Parse all formats at five instants, in both themes.

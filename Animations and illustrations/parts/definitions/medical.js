@@ -247,7 +247,10 @@
       return s;
     }
   });
-  const attachmentPoint=(name,attachments)=>attachments[name]||attachments.center||{x:320,y:220};
+  const attachmentPoint=(name,attachments)=>{
+    if(!attachments||!Object.hasOwn(attachments,name))throw new Error('Unknown attachment: '+name);
+    return attachments[name];
+  };
   register({
     id:'attachment-arrow',version:2,category:'Composition',anatomyLevel:'tissue',role:'mechanism',
     title:'Attachment-aware arrow',description:'An arrow connecting named attachment points in a composed scene.',
@@ -363,4 +366,6 @@
   });
 
   };
+  G.MedicalMotionPartDefinitionModules=G.MedicalMotionPartDefinitionModules||[];
+  if(!G.MedicalMotionPartDefinitionModules.includes(G.MedicalMotionPartDefinitions))G.MedicalMotionPartDefinitionModules.push(G.MedicalMotionPartDefinitions);
 })(globalThis);

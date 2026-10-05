@@ -1,10 +1,21 @@
+# Medical Motion library changelog
+
 ## 2026-10-05 — Fifteen reusable mechanism templates
 
 - Added templates 21–35 for phagocytosis, DNA replication, transcription, translation, enzyme inhibition, osmosis, oxidative phosphorylation, peristalsis, bile emulsification, lymphatic drainage, venous valves, bone remodeling, fracture repair, capillary filtration and second-messenger signaling.
 - Added one validated example scene and catalog metadata per template.
 - Updated the offline studio, common schema, build and verification counts to 35.
 
-# Medical Motion library changelog
+
+## 2026-10-05 — Manifest, composition and generated-output hardening
+
+- Added `library.manifest.json` as the authoritative inventory and selection metadata source; the catalogs, schema enum, visible counts, explicit loaders, examples and tests are checked against it.
+- Reworked `scripts/build.mjs` to discover every definition module, reject duplicate or missing IDs, rebuild `parts/medical-parts.js`, and detect stale generated bundles and HTML provenance.
+- Hardened composed scenes: unknown attachment names, missing dependencies, unknown component instances, invalid parameters/state/transforms and local bounds violations fail before render; explicit named-instance connections are supported and layout audits report unsafe overlap.
+- Added deterministic layout and visual regression checks for defaults, parameter endpoints, themes, formats, first/middle/final frames, mobile-width and reduced-motion coverage.
+- Regenerated composed examples and the arterial-clot export from checked-in JSON/source shells without adding templates or parts.
+- Updated CI path filters and added a pinned Playwright/Chromium browser smoke job.
+
 
 ## 2026-10-04 — Ten-template visual refinement and alveolar cluster rebuild
 

@@ -1,0 +1,174 @@
+{
+  "version": 2,
+  "title": "Blood clotting inside an artery",
+  "caption": "Platelets aggregate into a focal plug while fibrin develops; red cells continue through the arterial lumen.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "landscape",
+  "components": [
+    {
+      "id": "vessel-segment",
+      "options": {
+        "x": 320,
+        "y": 220,
+        "scale": 1,
+        "params": {
+          "kind": "artery",
+          "narrowing": 0,
+          "valve": false
+        }
+      }
+    },
+    {
+      "id": "blood-flow",
+      "options": {
+        "x": 320,
+        "y": 220,
+        "scale": 1,
+        "params": {
+          "points": [
+            [
+              70,
+              218
+            ],
+            [
+              170,
+              218
+            ],
+            [
+              245,
+              216
+            ],
+            [
+              320,
+              220
+            ],
+            [
+              395,
+              224
+            ],
+            [
+              470,
+              220
+            ],
+            [
+              570,
+              220
+            ]
+          ],
+          "count": 11,
+          "speed": 1.05
+        }
+      }
+    },
+    {
+      "id": "platelet",
+      "options": {
+        "x": 230,
+        "y": 205,
+        "scale": 0.16,
+        "accent": "red",
+        "opacity": 0.38
+      }
+    },
+    {
+      "id": "platelet",
+      "options": {
+        "x": 265,
+        "y": 235,
+        "scale": 0.16,
+        "accent": "red",
+        "opacity": 0.42
+      }
+    },
+    {
+      "id": "platelet",
+      "options": {
+        "x": 375,
+        "y": 204,
+        "scale": 0.16,
+        "accent": "red",
+        "opacity": 0.4
+      }
+    },
+    {
+      "id": "platelet",
+      "options": {
+        "x": 410,
+        "y": 235,
+        "scale": 0.16,
+        "accent": "red",
+        "opacity": 0.36
+      }
+    },
+    {
+      "id": "fibrin-mesh",
+      "options": {
+        "x": 320,
+        "y": 220,
+        "scale": 0.3,
+        "accent": "gold",
+        "params": {
+          "density": 1
+        }
+      }
+    },
+    {
+      "id": "attachment-label",
+      "options": {
+        "params": {
+          "at": "center",
+          "label": "Platelet plug + fibrin",
+          "dx": 0,
+          "dy": -72
+        },
+        "state": {
+          "attachments": {
+            "center": {
+              "x": 320,
+              "y": 214
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "attachment-label",
+      "options": {
+        "params": {
+          "at": "center",
+          "label": "Moving red cells",
+          "dx": -8,
+          "dy": 86
+        },
+        "state": {
+          "attachments": {
+            "center": {
+              "x": 175,
+              "y": 220
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "attachment-label",
+      "options": {
+        "params": {
+          "at": "center",
+          "label": "Arterial lumen",
+          "dx": 0,
+          "dy": -78
+        },
+        "state": {
+          "attachments": {
+            "center": {
+              "x": 520,
+              "y": 220
+            }
+          }
+        }
+      }
+    }
+  ]
+}
