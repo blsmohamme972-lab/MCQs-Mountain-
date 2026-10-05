@@ -122,6 +122,22 @@
     }
     return p;
   }
+  function validateState(def,state){
+    const s=state||{};
+    for(const key of Object.keys(s))if(!Object.hasOwn(def.stateSchema||{},key)&&!['attachments','sceneIndex'].includes(key))throw new Error(def.id+'.'+key+' is not a declared state field.');
+    for(const [key,descriptor] of Object.entries(def.stateSchema||{})){
+      if(s[key]===undefined)continue;
+      const v=s[key];
+      if(descriptor.type==='number' && (typeof v!=='number'||!Number.isFinite(v)||v<descriptor.min||(descriptor.max!==undefined&&v>descriptor.max)))throw new Error(def.id+'.'+key+' is outside its state range.');
+      if(descriptor.type==='integer' && (!Number.isInteger(v)||v<descriptor.min||(descriptor.max!==undefined&&v>descriptor.max)))throw new Error(def.id+'.'+key+' is outside its state range.');
+    }
+    if(s.sceneIndex!==undefined&&(!Number.isInteger(s.sceneIndex)||s.sceneIndex<0))throw new Error(def.id+'.sceneIndex must be a non-negative integer.');
+    if(s.attachments!==undefined){
+      if(!s.attachments||typeof s.attachments!=='object'||Array.isArray(s.attachments))throw new Error(def.id+'.attachments must be an object.');
+      for(const [name,point] of Object.entries(s.attachments))if(!point||!Number.isFinite(point.x)||!Number.isFinite(point.y))throw new Error(def.id+'.attachments.'+name+' must contain finite x and y.');
+    }
+    return s;
+  }
   if(typeof G.MedicalMotionPartDefinitions!=='function')throw new Error('Medical Motion definitions are not loaded.');
   G.MedicalMotionPartDefinitions(register,{circle,ellipse,rect,line,path,move,arrow,text});
 
@@ -151,7 +167,7 @@
   }
   function get(id){const d=registry.get(id);if(!d)throw new Error('Unknown partId: '+id);return d;}
   function render(id,options={},context={}){
-    const d=get(id),o=validateOptions(options),o2={...o,params:validateParams(d,o.params)},C={...themes[o.theme],accent:themes[o.theme][o.accent]};
+    const d=get(id),o=validateOptions(options),o2={...o,params:validateParams(d,o.params),state:validateState(d,o.state)},C={...themes[o.theme],accent:themes[o.theme][o.accent]};
     const raw=String(d.render(o2,C,{...context,part:d,attachments:d.attachments,theme:o.theme}));
     // Accent is a real colour channel. Legacy definitions used red/blue directly, so map
     // those primary strokes to the requested accent while retaining neutral detail colours.
@@ -172,6 +188,6 @@
   G.MedicalMotionParts=Object.freeze({
     version:'2.0.0',contractVersion:2,palette,register,get,
     list:()=>Array.from(registry.values(),meta),
-    discover:discovery,search,validate:validateOptions,validateParams,render,renderSVG,renderBatch,renderBatchSVG,createRenderer
+    discover:discovery,search,validate:validateOptions,validateParams,validateState,render,renderSVG,renderBatch,renderBatchSVG,createRenderer
   });
 })(globalThis);

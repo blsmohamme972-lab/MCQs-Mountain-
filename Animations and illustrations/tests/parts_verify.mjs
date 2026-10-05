@@ -54,6 +54,8 @@ assert.notEqual(M.render('red-blood-cell',{accent:'blue'}),M.render('red-blood-c
 assert.notEqual(M.render('vessel-segment',{params:{kind:'artery',narrowing:0,valve:false},progress:0}),M.render('vessel-segment',{params:{kind:'artery',narrowing:.7,valve:true},progress:1}));
 assert.throws(()=>M.render('vessel-segment',{params:{kind:'artery',narrowing:2,valve:false}}));
 assert.throws(()=>M.render('blood-flow',{params:{points:[[1,2]],count:2,speed:1}}));
+assert.throws(()=>M.render('attachment-label',{state:{attachments:{center:{x:'bad',y:2}}}}));
+assert.throws(()=>M.render('attachment-label',{state:{hiddenState:true}}));
 const parameterVariants=[
   ['blood-flow',{params:{points:[[80,220],[560,220]],count:3,speed:.2},time:0}, {params:{points:[[80,180],[320,260],[560,180]],count:9,speed:2},time:2}],
   ['fibrin-mesh',{params:{density:.2},progress:.1},{params:{density:1},progress:1}],
