@@ -72,3 +72,11 @@
 
 - Separated the 37 component registrations into `parts/definitions/medical.js`; `parts/medical-parts-engine.js` now owns validation, transforms, discovery, batching and renderer contexts. `scripts/build.mjs` regenerates the compatible classic `parts/medical-parts.js` bundle.
 - Re-ran `node tests/parts_verify.mjs`, `node tests/verify.mjs` and `node scripts/build.mjs` successfully. The optional `python tests/browser_smoke.py` check remains unavailable here because Playwright and Chromium are not installed.
+
+## 2026-10-05 — Arterial clot example geometry correction
+
+- Reworked `vessel-segment` into a closed outer wall plus explicit inner lumen ribbon so narrowing remains a vessel shape instead of two open strokes.
+- Re-centered the clot and reduced its scale in `examples/generated/blood-clotting-inside-artery-6s.html`; fibrin remains inside the lumen and all red-cell path points stay in the safe central lane.
+- Fixed a second bounds defect in `fibrin-mesh`: dense strands now interpolate across a fixed local span instead of accumulating past `bounds.y + bounds.height`.
+- Corrected the landscape composed-scene frame: the art box no longer paints over the heading, the local 640×440 canvas is centered and scaled to use the frame, and long captions wrap before the disclaimer.
+- Added regression assertions for closed vessel geometry, lumen fill, bounded dense fibrin and the maintained six-second example's flow/clot placement. The example remains deterministic, offline and six seconds long.

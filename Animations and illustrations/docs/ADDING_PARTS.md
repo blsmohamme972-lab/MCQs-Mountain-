@@ -73,6 +73,10 @@ Add a dated entry to `docs/CHANGELOG.md` with:
 - test commands and their result;
 - any unresolved clinician-review item.
 
+### Learn from every visual defect
+
+If QA finds a part escaping its container, changing shape unexpectedly, or failing only at a later animation state, treat it as a contract defect rather than a one-off scene issue. Record **symptom, root cause, correction, prevention rule and regression command** in both the changelog and QA log. Fix the authoritative definition or renderer, rebuild the classic bundle, regenerate affected examples and add a test that samples the risky parameter/time combination. For containers, require closed geometry and an explicit interior fill; for repeated geometry, distribute instances across a fixed bounded span; for flow, verify particle radius and stroke margin against the receiving lumen. A generated HTML edit without a source fix and regression assertion is not complete.
+
 ## Standard request for an AI contributor
 
 Use this instruction when delegating future additions:

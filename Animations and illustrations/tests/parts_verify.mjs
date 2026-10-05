@@ -53,6 +53,15 @@ assert.equal(M.render('red-blood-cell',{x:100,y:90}).includes('translate(-220 -1
 assert.notEqual(M.render('red-blood-cell',{accent:'blue'}),M.render('red-blood-cell',{accent:'teal'}));
 assert.notEqual(M.render('vessel-segment',{params:{kind:'artery',narrowing:0,valve:false},progress:0}),M.render('vessel-segment',{params:{kind:'artery',narrowing:.7,valve:true},progress:1}));
 assert.throws(()=>M.render('vessel-segment',{params:{kind:'artery',narrowing:2,valve:false}}));
+// Vessel geometry is a closed, layered lumen. This catches regressions where a
+// composed flow lane is drawn against two open strokes and appears outside the vessel.
+const vesselMarkup=M.render('vessel-segment',{params:{kind:'artery',narrowing:0,valve:false}});
+assert.ok((vesselMarkup.match(/ Z\"/g)||[]).length>=2,'vessel must expose closed outer and inner ribbons');
+assert.ok(vesselMarkup.includes('fill=\"#eaf1fb\"'),'vessel must include an explicit lumen fill');
+const denseFibrinMarkup=M.render('fibrin-mesh',{params:{density:1},progress:1});
+const denseHorizontalYs=[...denseFibrinMarkup.matchAll(/M 100 ([0-9.]+)/g)].map(m=>Number(m[1]));
+const denseDiagonalEnds=[...denseFibrinMarkup.matchAll(/ L [0-9.]+ ([0-9.]+)/g)].map(m=>Number(m[1]));
+assert.ok([...denseHorizontalYs,...denseDiagonalEnds].every(y=>y>=110&&y<=330),'dense fibrin must remain inside its declared local bounds');
 assert.throws(()=>M.render('blood-flow',{params:{points:[[1,2]],count:2,speed:1}}));
 assert.throws(()=>M.render('attachment-label',{state:{attachments:{center:{x:'bad',y:2}}}}));
 assert.throws(()=>M.render('attachment-label',{state:{hiddenState:true}}));
@@ -97,4 +106,22 @@ for(const file of composed){
   const html=Scene.standalone(scene,fs.readFileSync(path.join(root,'parts/medical-parts.js'),'utf8'));
   assert.ok(html.includes('MedicalMotionParts')&&html.includes('Replay')&&!/<script[^>]+src=/.test(html)&&!html.includes('fetch('));
 }
+const layoutScene=JSON.parse(fs.readFileSync(path.join(composedRoot,'vessel-narrowing-flow.json'),'utf8'));
+const landscapeLayout=Scene.renderSVG({...layoutScene,format:'landscape'},layoutScene.duration*.5);
+assert.ok(landscapeLayout.includes('x="24" y="160"'),'landscape art box must begin below the heading');
+assert.ok(landscapeLayout.includes('translate(96 64) scale(1.7)'),'landscape local canvas must be centered and enlarged');
+assert.ok((landscapeLayout.match(/font-size="22"/g)||[]).length>=1,'landscape captions must use the wrapped compact size');
+// The maintained six-second clot example keeps the flow lane and clot inside the
+// artery's local lumen. This is intentionally checked from the scene source, not by
+// counting rendered instances.
+const clotHtml=fs.readFileSync(path.join(root,'examples/generated/blood-clotting-inside-artery-6s.html'),'utf8');
+const clotMatch=clotHtml.match(/\nconst scene=(\{[\s\S]*?\});\nconst host=/);
+assert.ok(clotMatch,'generated clot example must expose its deterministic scene source');
+const clotScene=JSON.parse(clotMatch[1]);
+const clotVessel=clotScene.components.find(c=>c.id==='vessel-segment');
+const clotFlow=clotScene.components.find(c=>c.id==='blood-flow');
+const clotMesh=clotScene.components.find(c=>c.id==='fibrin-mesh');
+assert.equal(clotVessel.options.params.narrowing,0);
+assert.ok(clotFlow.options.params.points.every(([x,y])=>x>=60&&x<=580&&y>=190&&y<=250));
+assert.equal(clotMesh.options.x,320);assert.equal(clotMesh.options.y,220);assert.ok(clotMesh.options.scale<=.3);
 console.log(JSON.stringify({parts:37,contractVersion:2,deterministic:true,transforms:true,search:true,exactCountBatch:true,compositionExamples:3,invalidOptionsRejected:9},null,2));

@@ -56,3 +56,10 @@ Python browser QA requires Playwright and an available Chromium executable. Set 
 - `node scripts/build.mjs` passed: the offline studio, 35 template exports, 3 composed exports and the 37-part gallery were generated.
 - XML parsing accepted nine representative composed/part SVG files in `tests/output/`.
 - `python tests/browser_smoke.py` was attempted and is unavailable in this environment (`ModuleNotFoundError: playwright`); direct Chrome review was also unavailable because the browser surface blocked the local preview. No browser pass is claimed.
+
+## 2026-10-05 — Arterial clot geometry correction
+
+- Rebuilt the shared vessel segment as a closed layered lumen and checked that the supported narrowing range does not self-cross.
+- Checked the generated clot example at 0, 3 and 6 seconds: the vessel, fibrin mesh and RBC lane remain within their intended local geometry while fibrin density changes over time. This review caught and fixed the dense-mesh strand overflow before release.
+- Reviewed the landscape frame at 1280px and a 665px mobile-width raster: the heading remains above the art box, the vessel is centered, labels stay readable and the caption wraps within the card.
+- The dependency-free SVG/XML and Node checks passed. Browser smoke was retried with Playwright available in an isolated Python target, but no Chromium executable could be installed in this environment; no browser pass or direct `file://` claim is made.
