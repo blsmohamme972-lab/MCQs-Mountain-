@@ -213,9 +213,17 @@
     parameterSchema:{kind:{type:'enum',values:['artery','vein','capillary'],description:'Wall and lumen variant.'},narrowing:{type:'number',min:0,max:.75,step:.05,description:'Illustrative central narrowing.'},valve:{type:'boolean',description:'Show a venous valve leaf pair.'}},
     render:function(o,C){
       const k=o.params.kind,n=o.params.narrowing,wall=k==='artery'?C.red:k==='vein'?C.blue:C.teal,lumen=k==='capillary'?18:48;
-      const top=220-lumen+80*n*Math.exp(-Math.pow((160)/100,2)), mid=220;
-      let s=path('M 52 '+(220-lumen)+' C 180 '+(220-lumen)+' 235 '+(220-lumen+80*n)+' 320 '+(220-lumen+80*n)+' S 460 '+(220-lumen)+' 588 '+(220-lumen),wall,k==='capillary'?8:18,C.soft)+path('M 52 '+(220+lumen)+' C 180 '+(220+lumen)+' 235 '+(220+lumen-80*n)+' 320 '+(220+lumen-80*n)+' S 460 '+(220+lumen)+' 588 '+(220+lumen),wall,k==='capillary'?8:18,C.soft);
-      s+=line(52,220,588,220,C.line,2,{'stroke-dasharray':'8 8',opacity:.65});
+      // Keep the vessel a closed, layered ribbon. The previous open strokes made a
+      // narrowing look like two crossing ropes and gave composed particles no clear
+      // lumen to stay inside. The neck is deliberately bounded so every supported
+      // narrowing value leaves a visible passage after the wall is inset.
+      const wallThickness=k==='capillary'?3:11;
+      const neck=Math.min(k==='capillary'?4:34*n,lumen-wallThickness*2-3);
+      const top=220-lumen,bottom=220+lumen,topCenter=top+neck,bottomCenter=bottom-neck;
+      const outer='M 52 '+top+' C 180 '+top+' 235 '+topCenter+' 320 '+topCenter+' S 460 '+top+' 588 '+top+' L 588 '+bottom+' C 460 '+bottom+' 405 '+bottomCenter+' 320 '+bottomCenter+' S 180 '+bottom+' 52 '+bottom+' Z';
+      const innerTop=top+wallThickness,innerBottom=bottom-wallThickness,innerCenterTop=topCenter+wallThickness,innerCenterBottom=bottomCenter-wallThickness;
+      const inner='M 52 '+innerTop+' C 180 '+innerTop+' 235 '+innerCenterTop+' 320 '+innerCenterTop+' S 460 '+innerTop+' 588 '+innerTop+' L 588 '+innerBottom+' C 460 '+innerBottom+' 405 '+innerCenterBottom+' 320 '+innerCenterBottom+' S 180 '+innerBottom+' 52 '+innerBottom+' Z';
+      let s=path(outer,wall,3,wall,{opacity:.96})+path(inner,C.line,2,C.soft)+line(52,220,588,220,C.line,2,{'stroke-dasharray':'8 8',opacity:.65});
       s+=text(320,86,k[0].toUpperCase()+k.slice(1)+' segment',C.ink,18,'middle',750);
       s+=circle(60,220,7,C.gold)+circle(580,220,7,C.gold);
       if(o.params.valve){s+=path('M 320 220 Q 285 190 270 220',C.gold,8,'none')+path('M 320 220 Q 355 190 370 220',C.gold,8,'none');}
@@ -272,7 +280,16 @@
     limitations:'Network topology is illustrative; clot strength, factor concentrations and lysis are omitted.',
     dependencies:['platelet'],attachments:{center:{x:320,y:220},inlet:{x:90,y:220},outlet:{x:550,y:220}},bounds:{x:80,y:110,width:480,height:220},
     defaults:{density:.7},parameterSchema:{density:{type:'number',min:.1,max:1,step:.05,description:'Final illustrative mesh density.'}},
-    render:function(o,C){let s='';const n=Math.max(2,Math.round(3+o.params.density*6*o.progress));for(let i=0;i<n;i++){const y=140+i*38;s+=path('M 100 '+y+' Q 180 '+(y-25)+' 260 '+(y+8)+' T 420 '+(y-4)+' T 540 '+y,C.gold,3,'none',{opacity:.35+.65*o.progress});}for(let i=0;i<n-1;i++)s+=path('M '+(150+i*42)+' 125 L '+(210+i*42)+' 315',C.teal,2,'none',{opacity:.25+.5*o.progress});return s;}
+    render:function(o,C){
+      let s='';const n=Math.max(2,Math.round(3+o.params.density*6*o.progress));
+      // Distribute every strand across a fixed local span. Incrementing y by a
+      // constant made the high-density frame exceed the declared 110–330 bounds,
+      // which let fibrin escape a vessel when the part was composed at small scale.
+      const top=145,bottom=295,step=(bottom-top)/(n-1);
+      for(let i=0;i<n;i++){const y=top+i*step;s+=path('M 100 '+y+' Q 180 '+(y-25)+' 260 '+(y+8)+' T 420 '+(y-4)+' T 540 '+y,C.gold,3,'none',{opacity:.35+.65*o.progress});}
+      for(let i=0;i<n-1;i++)s+=path('M '+(150+i*42)+' 135 L '+(210+i*42)+' 305',C.teal,2,'none',{opacity:.25+.5*o.progress});
+      return s;
+    }
   });
   register({
     id:'layered-tissue',version:2,category:'Histology',anatomyLevel:'tissue',role:'structure',

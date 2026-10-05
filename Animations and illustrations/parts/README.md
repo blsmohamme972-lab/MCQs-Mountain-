@@ -54,6 +54,20 @@ const review = MedicalMotionParts.renderBatchSVG(specs, requestedCount);
 
 When adding new IDs, update the renderer and catalog together. Use original deterministic geometry, source-backed descriptions and explicit limitations. A part is a reusable visual component, not a clinical simulator.
 
+## Geometry failure-prevention record
+
+Past composition review found two reusable failure modes: open vessel wall strokes were mistaken for a lumen boundary, and fibrin strands grew past the component's declared bounds at high density. The maintained correction is a closed outer/inner vessel ribbon, a fixed-span mesh layout and a centered clot example. Future parts must follow the same learning loop:
+
+| Check | Required evidence |
+|---|---|
+| Closed container | The SVG contains a closed interior boundary and an explicit fill for the usable region. |
+| Bounds over state | Geometry stays within `bounds` at default, minimum and maximum parameters and at 0/middle/end time. |
+| Composition margin | Particle radius and stroke width fit inside the target lumen or attachment region. |
+| Source-first repair | The definition/renderer is corrected before regenerating `medical-parts.js` and examples. |
+| Regression record | `docs/CHANGELOG.md` and `docs/QA.md` state symptom, cause, correction, prevention and test. |
+
+Do not close a visual bug by moving only one generated instance. If the same geometry could be composed again, fix its authoritative definition and add a reusable assertion in `tests/parts_verify.mjs`.
+
 ## Composed offline scenes
 
 `scene-renderer.js` validates a version-2 scene, supplies each part with `{scene,time,progress}` and exports a single HTML document with Play, Pause, Seek and Replay controls. `scripts/build.mjs` creates the three maintained examples under `dist/composed/`; the checked-in JSON examples are the source inputs. The export inlines `medical-parts.js`, so it has no runtime fetches, hidden globals or external assets.
@@ -61,4 +75,3 @@ When adding new IDs, update the renderer and catalog together. Use original dete
 Search `catalog.json` and the scene source before adding anything. For an explicit “add N” request, compare the starting ID set with the final ID set and verify the difference is exactly N; `renderBatch` instance counts do not establish component novelty.
 
 Use the searchable gallery at `parts/index.html` to inspect the current inventory. The complete addition workflow is documented in `../docs/ADDING_PARTS.md`.
-

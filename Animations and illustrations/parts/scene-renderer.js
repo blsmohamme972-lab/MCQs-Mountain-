@@ -11,6 +11,11 @@
     clinical:{bg:'#f3f7fc',paper:'#ffffff',ink:'#162d48',muted:'#526780',line:'#dbe5f0',teal:'#087f8c',gold:'#986300'},
     night:{bg:'#0b1526',paper:'#13243b',ink:'#f0f6ff',muted:'#b6c9e1',line:'#344a65',teal:'#66d6d0',gold:'#ffd276'}
   };
+  const wrapText=(value,maxChars)=>{
+    const words=String(value).trim().split(/\s+/),lines=[];let line='';
+    for(const word of words){const next=line?line+' '+word:word;if(line&&next.length>maxChars){lines.push(line);line=word;}else line=next;}
+    if(line)lines.push(line);return lines;
+  };
   function validate(scene){
     if(!scene||typeof scene!=='object'||Array.isArray(scene))throw new Error('Composed scene must be an object.');
     if(scene.version!==2)throw new Error('Composed scenes require version 2.');
@@ -47,10 +52,20 @@
     });
     const title='<text x="48" y="72" fill="'+C.teal+'" font-size="17" font-weight="750">COMPOSED MEDICAL MOTION</text>';
     const heading='<text x="48" y="132" fill="'+C.ink+'" font-size="38" font-weight="750">'+esc(scene.title)+'</text>';
-    const artY=scene.format==='landscape'?150:190, scale=scene.format==='landscape'?1.05:scene.format==='square'?.95:.84, artX=scene.format==='landscape'?40:64;
-    const artBox='<rect x="24" y="'+(artY-28)+'" width="'+(w-48)+'" height="'+(scene.format==='landscape'?430:470)+'" rx="24" fill="'+(scene.theme==='night'?'#203652':'#eaf1fb')+'"/>';
+    // Keep the heading above the art box and center the 640×440 local part canvas.
+    // The former landscape scale (1.05) left the vessel in the left half of the frame;
+    // the former art box also painted over the heading. Both defects were easy to miss
+    // in source-only review, so the layout is now explicit and covered by SVG checks.
+    const landscape=scene.format==='landscape';
+    const artY=landscape?64:190;
+    const scale=landscape?1.7:scene.format==='square'?.95:.84;
+    const artX=(w-640*scale)/2;
+    const artBoxY=landscape?160:artY-28;
+    const artBoxHeight=landscape?440:470;
+    const artBox='<rect x="24" y="'+artBoxY+'" width="'+(w-48)+'" height="'+artBoxHeight+'" rx="24" fill="'+(scene.theme==='night'?'#203652':'#eaf1fb')+'"/>';
     const captionY=scene.format==='landscape'?625:scene.format==='square'?855:1125;
-    const caption='<text x="48" y="'+captionY+'" fill="'+C.ink+'" font-size="24" font-weight="600">'+esc(scene.caption)+'</text><text x="48" y="'+(captionY+34)+'" fill="'+C.muted+'" font-size="14">SCHEMATIC · ORIGINAL SVG GEOMETRY · NOT CLINICALLY VALIDATED</text>';
+    const captionLines=wrapText(scene.caption,landscape?54:42),captionSize=landscape?22:24;
+    const caption=captionLines.map((line,i)=>'<text x="48" y="'+(captionY+i*28)+'" fill="'+C.ink+'" font-size="'+captionSize+'" font-weight="600">'+esc(line)+'</text>').join('')+'<text x="48" y="'+(captionY+captionLines.length*28+12)+'" fill="'+C.muted+'" font-size="14">SCHEMATIC · ORIGINAL SVG GEOMETRY · NOT CLINICALLY VALIDATED</text>';
     return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'" role="img" aria-label="'+esc(scene.title)+'" style="font-family:system-ui,-apple-system,Segoe UI,sans-serif"><title>'+esc(scene.title)+'</title><desc>'+esc(scene.caption)+'</desc><rect width="100%" height="100%" fill="'+C.bg+'"/><rect x="24" y="24" width="'+(w-48)+'" height="'+(h-48)+'" rx="28" fill="'+C.paper+'"/>'+title+heading+artBox+'<g transform="translate('+artX+' '+artY+') scale('+scale+')">'+art+'</g>'+caption+'</svg>';
   }
   function standalone(input,engineSource=''){

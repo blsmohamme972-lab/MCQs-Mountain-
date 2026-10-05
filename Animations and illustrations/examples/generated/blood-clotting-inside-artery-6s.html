@@ -46,8 +46,7 @@ input[type=range]{width:100%;min-width:120px;accent-color:var(--teal)}
 <div id="motion-note" class="note"></div>
 </section>
 </main>
-<script>
-/* Medical Motion part definitions v2.0.0.
+<script>/* Medical Motion part definitions v2.0.0.
  * This source module owns component geometry and metadata registration. The engine owns
  * validation, transforms, discovery, batching and renderer contexts. scripts/build.mjs
  * concatenates this file with medical-parts-engine.js into the classic medical-parts.js entry point.
@@ -262,9 +261,17 @@ input[type=range]{width:100%;min-width:120px;accent-color:var(--teal)}
     parameterSchema:{kind:{type:'enum',values:['artery','vein','capillary'],description:'Wall and lumen variant.'},narrowing:{type:'number',min:0,max:.75,step:.05,description:'Illustrative central narrowing.'},valve:{type:'boolean',description:'Show a venous valve leaf pair.'}},
     render:function(o,C){
       const k=o.params.kind,n=o.params.narrowing,wall=k==='artery'?C.red:k==='vein'?C.blue:C.teal,lumen=k==='capillary'?18:48;
-      const top=220-lumen+80*n*Math.exp(-Math.pow((160)/100,2)), mid=220;
-      let s=path('M 52 '+(220-lumen)+' C 180 '+(220-lumen)+' 235 '+(220-lumen+80*n)+' 320 '+(220-lumen+80*n)+' S 460 '+(220-lumen)+' 588 '+(220-lumen),wall,k==='capillary'?8:18,C.soft)+path('M 52 '+(220+lumen)+' C 180 '+(220+lumen)+' 235 '+(220+lumen-80*n)+' 320 '+(220+lumen-80*n)+' S 460 '+(220+lumen)+' 588 '+(220+lumen),wall,k==='capillary'?8:18,C.soft);
-      s+=line(52,220,588,220,C.line,2,{'stroke-dasharray':'8 8',opacity:.65});
+      // Keep the vessel a closed, layered ribbon. The previous open strokes made a
+      // narrowing look like two crossing ropes and gave composed particles no clear
+      // lumen to stay inside. The neck is deliberately bounded so every supported
+      // narrowing value leaves a visible passage after the wall is inset.
+      const wallThickness=k==='capillary'?3:11;
+      const neck=Math.min(k==='capillary'?4:34*n,lumen-wallThickness*2-3);
+      const top=220-lumen,bottom=220+lumen,topCenter=top+neck,bottomCenter=bottom-neck;
+      const outer='M 52 '+top+' C 180 '+top+' 235 '+topCenter+' 320 '+topCenter+' S 460 '+top+' 588 '+top+' L 588 '+bottom+' C 460 '+bottom+' 405 '+bottomCenter+' 320 '+bottomCenter+' S 180 '+bottom+' 52 '+bottom+' Z';
+      const innerTop=top+wallThickness,innerBottom=bottom-wallThickness,innerCenterTop=topCenter+wallThickness,innerCenterBottom=bottomCenter-wallThickness;
+      const inner='M 52 '+innerTop+' C 180 '+innerTop+' 235 '+innerCenterTop+' 320 '+innerCenterTop+' S 460 '+innerTop+' 588 '+innerTop+' L 588 '+innerBottom+' C 460 '+innerBottom+' 405 '+innerCenterBottom+' 320 '+innerCenterBottom+' S 180 '+innerBottom+' 52 '+innerBottom+' Z';
+      let s=path(outer,wall,3,wall,{opacity:.96})+path(inner,C.line,2,C.soft)+line(52,220,588,220,C.line,2,{'stroke-dasharray':'8 8',opacity:.65});
       s+=text(320,86,k[0].toUpperCase()+k.slice(1)+' segment',C.ink,18,'middle',750);
       s+=circle(60,220,7,C.gold)+circle(580,220,7,C.gold);
       if(o.params.valve){s+=path('M 320 220 Q 285 190 270 220',C.gold,8,'none')+path('M 320 220 Q 355 190 370 220',C.gold,8,'none');}
@@ -321,7 +328,16 @@ input[type=range]{width:100%;min-width:120px;accent-color:var(--teal)}
     limitations:'Network topology is illustrative; clot strength, factor concentrations and lysis are omitted.',
     dependencies:['platelet'],attachments:{center:{x:320,y:220},inlet:{x:90,y:220},outlet:{x:550,y:220}},bounds:{x:80,y:110,width:480,height:220},
     defaults:{density:.7},parameterSchema:{density:{type:'number',min:.1,max:1,step:.05,description:'Final illustrative mesh density.'}},
-    render:function(o,C){let s='';const n=Math.max(2,Math.round(3+o.params.density*6*o.progress));for(let i=0;i<n;i++){const y=140+i*38;s+=path('M 100 '+y+' Q 180 '+(y-25)+' 260 '+(y+8)+' T 420 '+(y-4)+' T 540 '+y,C.gold,3,'none',{opacity:.35+.65*o.progress});}for(let i=0;i<n-1;i++)s+=path('M '+(150+i*42)+' 125 L '+(210+i*42)+' 315',C.teal,2,'none',{opacity:.25+.5*o.progress});return s;}
+    render:function(o,C){
+      let s='';const n=Math.max(2,Math.round(3+o.params.density*6*o.progress));
+      // Distribute every strand across a fixed local span. Incrementing y by a
+      // constant made the high-density frame exceed the declared 110–330 bounds,
+      // which let fibrin escape a vessel when the part was composed at small scale.
+      const top=145,bottom=295,step=(bottom-top)/(n-1);
+      for(let i=0;i<n;i++){const y=top+i*step;s+=path('M 100 '+y+' Q 180 '+(y-25)+' 260 '+(y+8)+' T 420 '+(y-4)+' T 540 '+y,C.gold,3,'none',{opacity:.35+.65*o.progress});}
+      for(let i=0;i<n-1;i++)s+=path('M '+(150+i*42)+' 135 L '+(210+i*42)+' 305',C.teal,2,'none',{opacity:.25+.5*o.progress});
+      return s;
+    }
   });
   register({
     id:'layered-tissue',version:2,category:'Histology',anatomyLevel:'tissue',role:'structure',
@@ -414,7 +430,45 @@ input[type=range]{width:100%;min-width:120px;accent-color:var(--teal)}
     clinical:palette,
     night:{...palette,ink:'#f0f6ff',muted:'#b6c9e1',line:'#344a65',blue:'#80adff',red:'#ff89a1',teal:'#66d6d0',gold:'#ffd276',soft:'#203652',tissue:'#5f3843',paper:'#13243b'}
   };
-  const sourceMap={};
+  const sourceMap={
+    'bacterium-coccus':['https://www.ncbi.nlm.nih.gov/books/NBK8406/'],
+    'bacterium-bacillus':['https://www.ncbi.nlm.nih.gov/books/NBK8406/'],
+    'bacterium-spirillum':['https://www.ncbi.nlm.nih.gov/books/NBK8406/'],
+    'animal-cell':['https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells'],
+    'nucleus':['https://openstax.org/books/biology-2e/pages/4-4-the-nucleus-and-ribosomes'],
+    'mitochondrion':['https://openstax.org/books/biology-2e/pages/4-4-the-nucleus-and-ribosomes'],
+    'epithelial-cell':['https://openstax.org/books/anatomy-and-physiology-2e/pages/4-2-epithelial-tissue'],
+    'cell-membrane':['https://openstax.org/books/biology-2e/pages/5-1-components-and-structure'],
+    'dna-helix':['https://openstax.org/books/biology-2e/pages/14-2-dna-structure-and-sequencing'],
+    'neuron':['https://openstax.org/books/anatomy-and-physiology-2e/pages/12-2-basic-structure-and-function-of-the-nervous-system'],
+    'red-blood-cell':['https://openstax.org/books/anatomy-and-physiology-2e/pages/18-2-production-of-the-formed-elements'],
+    'white-blood-cell':['https://openstax.org/books/anatomy-and-physiology-2e/pages/18-2-production-of-the-formed-elements'],
+    'alveolus':['https://www.nhlbi.nih.gov/health/lungs/respiratory-system'],
+    'artery-vessel':['https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-blood-flow-and-blood-pressure'],
+    'receptor':['https://openstax.org/books/biology-2e/pages/9-1-signaling-molecules-and-cellular-receptors'],
+    'synapse':['https://openstax.org/books/anatomy-and-physiology-2e/pages/12-4-the-action-potential'],
+    'bone':['https://openstax.org/books/anatomy-and-physiology-2e/pages/6-3-bone-structure'],
+    'scalpel':['https://www.ncbi.nlm.nih.gov/books/NBK519054/'],
+    'syringe':['https://www.ncbi.nlm.nih.gov/books/NBK470404/'],
+    'suture':['https://www.ncbi.nlm.nih.gov/books/NBK507908/'],
+    'pituitary-gland':['https://www.ncbi.nlm.nih.gov/books/NBK279054/'],
+    'clavicle':['https://openstax.org/books/anatomy-and-physiology-2e/pages/8-3-the-pectoral-girdle'],
+    'trachea':['https://www.nhlbi.nih.gov/health/lungs/respiratory-system'],
+    'thyroid-gland':['https://www.ncbi.nlm.nih.gov/books/NBK279388/'],
+    'brainstem':['https://openstax.org/books/anatomy-and-physiology-2e/pages/12-2-basic-structure-and-function-of-the-nervous-system'],
+    'vessel-segment':['https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-blood-flow-and-blood-pressure'],
+    'blood-flow':['https://openstax.org/books/anatomy-and-physiology-2e/pages/20-2-blood-flow-blood-pressure-and-resistance'],
+    'attachment-arrow':['https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-blood-flow-and-blood-pressure'],
+    'attachment-label':['https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-blood-flow-and-blood-pressure'],
+    'platelet':['https://openstax.org/books/anatomy-and-physiology-2e/pages/18-5-hemostasis'],
+    'fibrin-mesh':['https://openstax.org/books/anatomy-and-physiology-2e/pages/18-5-hemostasis'],
+    'layered-tissue':['https://openstax.org/books/anatomy-and-physiology-2e/pages/4-2-epithelial-tissue'],
+    'fibroblast':['https://www.ncbi.nlm.nih.gov/books/NBK470443/'],
+    'macrophage':['https://openstax.org/books/anatomy-and-physiology-2e/pages/21-2-barriers-and-defenses'],
+    'plaque-overlay':['https://www.nhlbi.nih.gov/health/atherosclerosis'],
+    'heart':['https://openstax.org/books/anatomy-and-physiology-2e/pages/19-1-heart-anatomy'],
+    'nephron':['https://openstax.org/books/anatomy-and-physiology-2e/pages/25-1-the-urinary-system'],
+  };
   const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
   const el=(tag,attrs={},children='')=>'<'+tag+' '+Object.entries(attrs).map(([k,v])=>k+'="'+escape(v)+'"').join(' ')+'>'+children+'</'+tag+'>';
@@ -523,7 +577,7 @@ input[type=range]{width:100%;min-width:120px;accent-color:var(--teal)}
   function renderBatchSVG(specs,expectedCount,context={}){
     const clean=Array.isArray(specs)?specs:[];
     const titles=clean.map(spec=>get(spec.id).title).join(', ');
-    return '<svg viewBox="0 0 640 440" role="img" aria-label="'+escape('Medical parts: '+titles)+'" style="font-family:system-ui,-apple-system,Segoe UI,sans-serif">'+el('title',{},'Medical parts batch')+el('desc',{},escape(titles))+rect(0,0,640,440,palette.paper,0)+renderBatch(clean,expectedCount,context)+'</svg>';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" role="img" aria-label="'+escape('Medical parts: '+titles)+'" style="font-family:system-ui,-apple-system,Segoe UI,sans-serif">'+el('title',{},'Medical parts batch')+el('desc',{},escape(titles))+rect(0,0,640,440,palette.paper,0)+renderBatch(clean,expectedCount,context)+'</svg>';
   }
   function get(id){const d=registry.get(id);if(!d)throw new Error('Unknown partId: '+id);return d;}
   function render(id,options={},context={}){
@@ -536,7 +590,7 @@ input[type=range]{width:100%;min-width:120px;accent-color:var(--teal)}
   }
   function renderSVG(id,options={},context={}){
     const o=validateOptions(options),d=get(id),C=themes[o.theme];
-    return '<svg viewBox="0 0 640 440" role="img" aria-label="'+escape(d.title)+'" style="font-family:system-ui,-apple-system,Segoe UI,sans-serif">'+el('title',{},d.title)+el('desc',{},d.description+' '+d.limitations)+rect(0,0,640,440,C.paper,0)+render(id,o,context)+'</svg>';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" role="img" aria-label="'+escape(d.title)+'" style="font-family:system-ui,-apple-system,Segoe UI,sans-serif">'+el('title',{},d.title)+el('desc',{},d.description+' '+d.limitations)+rect(0,0,640,440,C.paper,0)+render(id,o,context)+'</svg>';
   }
   function createRenderer(context={}){
     return {render:(id,options={})=>render(id,options,context),renderSVG:(id,options={})=>renderSVG(id,options,context),renderBatch:(specs,count)=>renderBatch(specs,count,context),renderBatchSVG:(specs,count)=>renderBatchSVG(specs,count,context),get,search};
@@ -564,6 +618,11 @@ input[type=range]{width:100%;min-width:120px;accent-color:var(--teal)}
   const palettes={
     clinical:{bg:'#f3f7fc',paper:'#ffffff',ink:'#162d48',muted:'#526780',line:'#dbe5f0',teal:'#087f8c',gold:'#986300'},
     night:{bg:'#0b1526',paper:'#13243b',ink:'#f0f6ff',muted:'#b6c9e1',line:'#344a65',teal:'#66d6d0',gold:'#ffd276'}
+  };
+  const wrapText=(value,maxChars)=>{
+    const words=String(value).trim().split(/\s+/),lines=[];let line='';
+    for(const word of words){const next=line?line+' '+word:word;if(line&&next.length>maxChars){lines.push(line);line=word;}else line=next;}
+    if(line)lines.push(line);return lines;
   };
   function validate(scene){
     if(!scene||typeof scene!=='object'||Array.isArray(scene))throw new Error('Composed scene must be an object.');
@@ -601,11 +660,21 @@ input[type=range]{width:100%;min-width:120px;accent-color:var(--teal)}
     });
     const title='<text x="48" y="72" fill="'+C.teal+'" font-size="17" font-weight="750">COMPOSED MEDICAL MOTION</text>';
     const heading='<text x="48" y="132" fill="'+C.ink+'" font-size="38" font-weight="750">'+esc(scene.title)+'</text>';
-    const artY=scene.format==='landscape'?150:190, scale=scene.format==='landscape'?1.05:scene.format==='square'?.95:.84, artX=scene.format==='landscape'?40:64;
-    const artBox='<rect x="24" y="'+(artY-28)+'" width="'+(w-48)+'" height="'+(scene.format==='landscape'?430:470)+'" rx="24" fill="'+(scene.theme==='night'?'#203652':'#eaf1fb')+'"/>';
+    // Keep the heading above the art box and center the 640×440 local part canvas.
+    // The former landscape scale (1.05) left the vessel in the left half of the frame;
+    // the former art box also painted over the heading. Both defects were easy to miss
+    // in source-only review, so the layout is now explicit and covered by SVG checks.
+    const landscape=scene.format==='landscape';
+    const artY=landscape?64:190;
+    const scale=landscape?1.7:scene.format==='square'?.95:.84;
+    const artX=(w-640*scale)/2;
+    const artBoxY=landscape?160:artY-28;
+    const artBoxHeight=landscape?440:470;
+    const artBox='<rect x="24" y="'+artBoxY+'" width="'+(w-48)+'" height="'+artBoxHeight+'" rx="24" fill="'+(scene.theme==='night'?'#203652':'#eaf1fb')+'"/>';
     const captionY=scene.format==='landscape'?625:scene.format==='square'?855:1125;
-    const caption='<text x="48" y="'+captionY+'" fill="'+C.ink+'" font-size="24" font-weight="600">'+esc(scene.caption)+'</text><text x="48" y="'+(captionY+34)+'" fill="'+C.muted+'" font-size="14">SCHEMATIC · ORIGINAL SVG GEOMETRY · NOT CLINICALLY VALIDATED</text>';
-    return '<svg viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'" role="img" aria-label="'+esc(scene.title)+'" style="font-family:system-ui,-apple-system,Segoe UI,sans-serif"><title>'+esc(scene.title)+'</title><desc>'+esc(scene.caption)+'</desc><rect width="100%" height="100%" fill="'+C.bg+'"/><rect x="24" y="24" width="'+(w-48)+'" height="'+(h-48)+'" rx="28" fill="'+C.paper+'"/>'+title+heading+artBox+'<g transform="translate('+artX+' '+artY+') scale('+scale+')">'+art+'</g>'+caption+'</svg>';
+    const captionLines=wrapText(scene.caption,landscape?54:42),captionSize=landscape?22:24;
+    const caption=captionLines.map((line,i)=>'<text x="48" y="'+(captionY+i*28)+'" fill="'+C.ink+'" font-size="'+captionSize+'" font-weight="600">'+esc(line)+'</text>').join('')+'<text x="48" y="'+(captionY+captionLines.length*28+12)+'" fill="'+C.muted+'" font-size="14">SCHEMATIC · ORIGINAL SVG GEOMETRY · NOT CLINICALLY VALIDATED</text>';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'" role="img" aria-label="'+esc(scene.title)+'" style="font-family:system-ui,-apple-system,Segoe UI,sans-serif"><title>'+esc(scene.title)+'</title><desc>'+esc(scene.caption)+'</desc><rect width="100%" height="100%" fill="'+C.bg+'"/><rect x="24" y="24" width="'+(w-48)+'" height="'+(h-48)+'" rx="28" fill="'+C.paper+'"/>'+title+heading+artBox+'<g transform="translate('+artX+' '+artY+') scale('+scale+')">'+art+'</g>'+caption+'</svg>';
   }
   function standalone(input,engineSource=''){
     const scene=validate(input),safeEngine=String(engineSource||'').replace(/<\/script/gi,'<\\/script');
@@ -619,7 +688,7 @@ input[type=range]{width:100%;min-width:120px;accent-color:var(--teal)}
 
 
 'use strict';
-const scene={"version":2,"title":"Blood clotting inside an artery","caption":"Platelets form a focal plug while a fibrin mesh grows; red cells continue along a simplified arterial flow path.","duration":6,"theme":"clinical","format":"landscape","components":[{"id":"vessel-segment","options":{"x":320,"y":220,"scale":1,"params":{"kind":"artery","narrowing":0,"valve":false}}},{"id":"blood-flow","options":{"x":320,"y":220,"scale":1,"params":{"points":[[70,220],[220,220],[300,245],[390,250],[470,228],[570,220]],"count":11,"speed":1.05}}},{"id":"platelet","options":{"x":382,"y":164,"scale":0.38,"accent":"red"}},{"id":"fibrin-mesh","options":{"x":382,"y":170,"scale":0.34,"accent":"gold","params":{"density":1}}},{"id":"attachment-label","options":{"params":{"at":"center","label":"Platelets + fibrin","dx":0,"dy":-72},"state":{"attachments":{"center":{"x":382,"y":164}}}}},{"id":"attachment-label","options":{"params":{"at":"center","label":"Moving red cells","dx":-6,"dy":82},"state":{"attachments":{"center":{"x":190,"y":220}}}}},{"id":"attachment-label","options":{"params":{"at":"center","label":"Arterial lumen","dx":0,"dy":-72},"state":{"attachments":{"center":{"x":525,"y":220}}}}}]};
+const scene={"version":2,"title":"Blood clotting inside an artery","caption":"Platelets form a focal plug while a fibrin mesh grows; red cells stay within the arterial lumen.","duration":6,"theme":"clinical","format":"landscape","components":[{"id":"vessel-segment","options":{"x":320,"y":220,"scale":1,"params":{"kind":"artery","narrowing":0,"valve":false}}},{"id":"blood-flow","options":{"x":320,"y":220,"scale":1,"params":{"points":[[70,220],[180,220],[260,220],[340,220],[420,220],[570,220]],"count":11,"speed":1.05}}},{"id":"platelet","options":{"x":300,"y":220,"scale":0.18,"accent":"red"}},{"id":"platelet","options":{"x":322,"y":222,"scale":0.19,"accent":"red"}},{"id":"platelet","options":{"x":345,"y":220,"scale":0.17,"accent":"red"}},{"id":"fibrin-mesh","options":{"x":320,"y":220,"scale":0.3,"accent":"gold","params":{"density":1}}},{"id":"attachment-label","options":{"params":{"at":"center","label":"Platelets + fibrin","dx":0,"dy":-68},"state":{"attachments":{"center":{"x":320,"y":210}}}}},{"id":"attachment-label","options":{"params":{"at":"center","label":"Moving red cells","dx":-6,"dy":88},"state":{"attachments":{"center":{"x":170,"y":220}}}}},{"id":"attachment-label","options":{"params":{"at":"center","label":"Arterial lumen","dx":0,"dy":-76},"state":{"attachments":{"center":{"x":520,"y":220}}}}}]};
 const host=document.getElementById('scene');
 const playBtn=document.getElementById('play');
 const pauseBtn=document.getElementById('pause');

@@ -62,5 +62,27 @@ Search both catalogs and scene source before adding a component. For a request n
 
 Complete scenes under `templates/` must remain independent of the parts bundle unless they explicitly receive a renderer context. Composed examples use `parts/scene-renderer.js`; standalone exports inline the parts engine and component dependencies and must not fetch files at runtime.
 
-Run `node tests/parts_verify.mjs`, `node tests/verify.mjs`, `node scripts/build.mjs` and, when available, `python tests/browser_smoke.py`. Review multiple times, both themes, portrait/square/landscape layouts, hostile labels, reduced motion and offline file opening. Keep generated outputs out of application imports unless the user requests them.
+## Failure-learning and geometry safety
 
+When a review finds a visual or runtime defect, record the whole learning loop in `docs/CHANGELOG.md` and `docs/QA.md`: **symptom → root cause → source correction → prevention rule → regression check**. A generated HTML patch alone is incomplete. Correct the definition or renderer, regenerate the compatible bundle and affected examples, and add a deterministic test before declaring the defect fixed.
+
+For composable anatomy, apply these rules before adding a new part or scene:
+
+1. Container anatomy (vessels, tissue layers, sacs and chambers) must use closed geometry with an explicit interior region. Open strokes do not define a safe composition boundary.
+2. Every emitted path, circle, label and animated state must remain inside the declared local `bounds` for every supported parameter and sampled time (`0`, middle and end). Do not grow repeated geometry by an unbounded index increment; interpolate positions across a fixed span.
+3. Moving particles must follow a declared centerline with a visible margin from the container boundary. Check the particle radius plus stroke width against the lumen at the tightest point; do not rely on visual coincidence.
+4. Place dependent parts through named attachments or a documented shared local coordinate; do not guess offsets from a screenshot. Re-render the composition at all three checkpoints after changing scale or anchor.
+5. Review the actual standalone SVG/HTML on portrait, square and landscape layouts. If browser or device QA is unavailable, state the unavailable check and retain the static geometry and offline tests.
+6. In landscape exports, keep the heading outside the art box, center the local canvas, and wrap captions to the available width. A valid SVG can still be visually unusable when framing or text is allowed to overlap.
+
+Use this compact record for future fixes:
+
+```text
+Symptom: what a reviewer could see or reproduce.
+Root cause: the exact geometry, state, transform or export assumption.
+Correction: the authoritative source file and behavior changed.
+Prevention: the rule an agent must follow next time.
+Regression: the command/assertion/frame sample that fails if it returns.
+```
+
+Run `node tests/parts_verify.mjs`, `node tests/verify.mjs`, `node scripts/build.mjs` and, when available, `python tests/browser_smoke.py`. Review multiple times, both themes, portrait/square/landscape layouts, hostile labels, reduced motion and offline file opening. Keep generated outputs out of application imports unless the user requests them.
