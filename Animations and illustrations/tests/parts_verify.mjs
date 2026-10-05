@@ -77,6 +77,7 @@ assert.throws(()=>M.renderBatch(batch,2));
 // Composed scene checks exercise the explicit renderer context and offline export.
 vm.runInThisContext(fs.readFileSync(path.join(root,'parts/scene-renderer.js'),'utf8'),{filename:'parts/scene-renderer.js'});
 const Scene=globalThis.MedicalMotionScene;
+assert.throws(()=>Scene.validate({version:2,title:'Missing dependency',caption:'x',duration:4,format:'landscape',theme:'clinical',components:[{id:'plaque-overlay'}]}));
 const composedRoot=path.join(root,'examples','composed');
 const composed=fs.readdirSync(composedRoot).filter(f=>f.endsWith('.json')).sort();
 assert.equal(composed.length,3);
@@ -85,6 +86,12 @@ for(const file of composed){
   assert.doesNotThrow(()=>Scene.validate(scene));
   const a=Scene.renderSVG(scene,0),b=Scene.renderSVG(scene,scene.duration*.6);
   assert.ok(a.startsWith('<svg ')&&b.startsWith('<svg '));assert.notEqual(a,b);
+  for(const format of ['portrait','square','landscape'])for(const theme of ['clinical','night']){
+    const variant={...scene,format,theme},svg=Scene.renderSVG(variant,variant.duration*.35);
+    assert.ok(!/NaN|Infinity|undefined|<script/i.test(svg));
+  }
+  const hostile={...scene,title:'<script>alert(1)</script>',caption:'<img src=x>'};
+  assert.ok(!Scene.renderSVG(hostile,1).includes('<script>'));
   const html=Scene.standalone(scene,fs.readFileSync(path.join(root,'parts/medical-parts.js'),'utf8'));
   assert.ok(html.includes('MedicalMotionParts')&&html.includes('Replay')&&!/<script[^>]+src=/.test(html)&&!html.includes('fetch('));
 }
