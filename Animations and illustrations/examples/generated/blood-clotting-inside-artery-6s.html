@@ -689,7 +689,32 @@ input[type=range]{width:100%;min-width:120px;accent-color:var(--teal)}
 
 
 'use strict';
-const scene={"version":2,"title":"Blood clotting inside an artery","caption":"Platelets form a focal plug while a fibrin mesh grows; red cells stay within the arterial lumen.","duration":6,"theme":"clinical","format":"landscape","components":[{"id":"vessel-segment","options":{"x":320,"y":220,"scale":1,"params":{"kind":"artery","narrowing":0,"valve":false}}},{"id":"blood-flow","options":{"x":320,"y":220,"scale":1,"params":{"points":[[70,220],[180,220],[260,220],[340,220],[420,220],[570,220]],"count":11,"speed":1.05}}},{"id":"platelet","options":{"x":300,"y":220,"scale":0.18,"accent":"red"}},{"id":"platelet","options":{"x":322,"y":222,"scale":0.19,"accent":"red"}},{"id":"platelet","options":{"x":345,"y":220,"scale":0.17,"accent":"red"}},{"id":"fibrin-mesh","options":{"x":320,"y":220,"scale":0.3,"accent":"gold","params":{"density":1}}},{"id":"attachment-label","options":{"params":{"at":"center","label":"Platelets + fibrin","dx":0,"dy":-68},"state":{"attachments":{"center":{"x":320,"y":210}}}}},{"id":"attachment-label","options":{"params":{"at":"center","label":"Moving red cells","dx":-6,"dy":88},"state":{"attachments":{"center":{"x":170,"y":220}}}}},{"id":"attachment-label","options":{"params":{"at":"center","label":"Arterial lumen","dx":0,"dy":-76},"state":{"attachments":{"center":{"x":520,"y":220}}}}}]};
+const BASE_SCENE={
+  version:2,
+  title:'Blood clotting inside an artery',
+  caption:'Platelets aggregate into a focal plug while fibrin develops; red cells continue through the arterial lumen.',
+  duration:6,
+  theme:'clinical',
+  format:'landscape',
+  components:[
+    {id:'vessel-segment',options:{x:320,y:220,scale:1,params:{kind:'artery',narrowing:0,valve:false}}},
+    {id:'blood-flow',options:{x:320,y:220,scale:1,params:{points:[[70,218],[170,218],[245,216],[320,220],[395,224],[470,220],[570,220]],count:11,speed:1.05}}},
+    {id:'platelet',options:{x:230,y:205,scale:0.16,accent:'red',opacity:0.38}},
+    {id:'platelet',options:{x:265,y:235,scale:0.16,accent:'red',opacity:0.42}},
+    {id:'platelet',options:{x:375,y:204,scale:0.16,accent:'red',opacity:0.40}},
+    {id:'platelet',options:{x:410,y:235,scale:0.16,accent:'red',opacity:0.36}},
+    {id:'fibrin-mesh',options:{x:320,y:220,scale:0.30,accent:'gold',params:{density:1}}},
+    {id:'attachment-label',options:{params:{at:'center',label:'Platelet plug + fibrin',dx:0,dy:-72},state:{attachments:{center:{x:320,y:214}}}}},
+    {id:'attachment-label',options:{params:{at:'center',label:'Moving red cells',dx:-8,dy:86},state:{attachments:{center:{x:175,y:220}}}}},
+    {id:'attachment-label',options:{params:{at:'center',label:'Arterial lumen',dx:0,dy:-78},state:{attachments:{center:{x:520,y:220}}}}}
+  ]
+};
+const PLATELET_TARGETS=[
+  {x:302,y:214,scale:0.18},
+  {x:318,y:226,scale:0.19},
+  {x:336,y:213,scale:0.18},
+  {x:347,y:228,scale:0.17}
+];
 const host=document.getElementById('scene');
 const playBtn=document.getElementById('play');
 const pauseBtn=document.getElementById('pause');
@@ -698,11 +723,33 @@ const seek=document.getElementById('seek');
 const clock=document.getElementById('clock');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let timeMs=0,playing=false,raf=0,lastStamp=0;
-MedicalMotionScene.validate(scene);
+
+MedicalMotionScene.validate(BASE_SCENE);
+
+function clamp(v,a=0,b=1){return Math.max(a,Math.min(b,v));}
 function clampMs(v){return Math.max(0,Math.min(6000,Number(v)||0));}
+function smoothstep(v){v=clamp(v);return v*v*(3-2*v);}
+function lerp(a,b,t){return a+(b-a)*t;}
+
+function sceneAt(ms){
+  const p=clampMs(ms)/6000;
+  const aggregate=smoothstep((p-0.04)/0.58);
+  const scene=JSON.parse(JSON.stringify(BASE_SCENE));
+  for(let i=0;i<4;i++){
+    const c=scene.components[2+i].options;
+    const t=PLATELET_TARGETS[i];
+    c.x=lerp(c.x,t.x,aggregate);
+    c.y=lerp(c.y,t.y,aggregate);
+    c.scale=lerp(c.scale,t.scale,aggregate);
+    c.opacity=lerp(c.opacity,1,aggregate);
+  }
+  return scene;
+}
+
 function renderAtMs(ms){
   timeMs=clampMs(ms);
-  host.innerHTML=MedicalMotionScene.renderSVG(scene,timeMs/1000);
+  const frameScene=sceneAt(timeMs);
+  host.innerHTML=MedicalMotionScene.renderSVG(frameScene,timeMs/1000);
   seek.value=String(Math.round(timeMs));
   clock.textContent=(timeMs/1000).toFixed(2)+' s / 6.00 s';
   playBtn.setAttribute('aria-pressed',playing?'true':'false');
@@ -711,7 +758,9 @@ function renderAtMs(ms){
 function stop(){playing=false;if(raf)cancelAnimationFrame(raf);raf=0;}
 function frame(now){
   if(!playing)return;
-  const delta=Math.max(0,now-lastStamp);lastStamp=now;timeMs=clampMs(timeMs+delta);
+  const delta=Math.max(0,now-lastStamp);
+  lastStamp=now;
+  timeMs=clampMs(timeMs+delta);
   if(timeMs>=6000){timeMs=6000;playing=false;}
   renderAtMs(timeMs);
   if(playing)raf=requestAnimationFrame(frame);
@@ -719,13 +768,34 @@ function frame(now){
 playBtn.addEventListener('click',()=>{
   if(playing)return;
   if(timeMs>=6000)timeMs=0;
-  playing=true;lastStamp=performance.now();renderAtMs(timeMs);raf=requestAnimationFrame(frame);
+  playing=true;
+  lastStamp=performance.now();
+  renderAtMs(timeMs);
+  raf=requestAnimationFrame(frame);
 });
 pauseBtn.addEventListener('click',()=>{stop();renderAtMs(timeMs);});
-replayBtn.addEventListener('click',()=>{stop();timeMs=0;renderAtMs(0);playing=true;lastStamp=performance.now();raf=requestAnimationFrame(frame);});
+replayBtn.addEventListener('click',()=>{
+  stop();
+  timeMs=0;
+  renderAtMs(0);
+  playing=true;
+  lastStamp=performance.now();
+  raf=requestAnimationFrame(frame);
+});
 seek.addEventListener('input',()=>{stop();renderAtMs(seek.value);});
-document.getElementById('motion-note').textContent=reduced?'Reduced-motion preference detected. Playback remains manual.':'Playback is manual; seeking is deterministic.';
-window.__animationTest={renderAtMs,getTimeMs:()=>timeMs,isPlaying:()=>playing,fibrinMarkup:()=>host.querySelector('[data-part-id="fibrin-mesh"]')?.innerHTML||'',flowMarkup:()=>host.querySelector('[data-part-id="blood-flow"]')?.innerHTML||''};
+document.getElementById('motion-note').textContent=reduced
+  ? 'Reduced-motion preference detected. Playback remains manual.'
+  : 'Playback is manual; seeking reproduces the same frame deterministically.';
+
+window.__animationTest={
+  renderAtMs,
+  sceneAt,
+  getTimeMs:()=>timeMs,
+  isPlaying:()=>playing,
+  fibrinMarkup:()=>host.querySelector('[data-part-id="fibrin-mesh"]')?.innerHTML||'',
+  flowMarkup:()=>host.querySelector('[data-part-id="blood-flow"]')?.innerHTML||'',
+  plateletTransforms:()=>Array.from(host.querySelectorAll('[data-part-id="platelet"]')).map(n=>n.getAttribute('transform')+'|'+n.getAttribute('opacity'))
+};
 renderAtMs(0);
 </script>
 </body>
