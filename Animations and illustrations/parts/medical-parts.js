@@ -1,3 +1,10 @@
+/* Generated classic bundle. Do not edit.
+ * Inputs: parts/definitions/medical.js + parts/medical-parts-engine.js
+ * definition-sha256: f653df4a362743be7d51fbae928377a1c36c09915fad1c1fd6971e76d25eed7d
+ * engine-sha256: 9df9fa7630cfc09e5cacb6d52dd37aab4e648aa6385035b1d938e11fb6022607
+ */
+globalThis.MedicalMotionPartDefinitionModules=[];
+/* source: parts/definitions/medical.js */
 /* Medical Motion part definitions v2.0.0.
  * This source module owns component geometry and metadata registration. The engine owns
  * validation, transforms, discovery, batching and renderer contexts. scripts/build.mjs
@@ -247,7 +254,10 @@
       return s;
     }
   });
-  const attachmentPoint=(name,attachments)=>attachments[name]||attachments.center||{x:320,y:220};
+  const attachmentPoint=(name,attachments)=>{
+    if(!attachments||!Object.hasOwn(attachments,name))throw new Error('Unknown attachment: '+name);
+    return attachments[name];
+  };
   register({
     id:'attachment-arrow',version:2,category:'Composition',anatomyLevel:'tissue',role:'mechanism',
     title:'Attachment-aware arrow',description:'An arrow connecting named attachment points in a composed scene.',
@@ -363,11 +373,15 @@
   });
 
   };
+  G.MedicalMotionPartDefinitionModules=G.MedicalMotionPartDefinitionModules||[];
+  if(!G.MedicalMotionPartDefinitionModules.includes(G.MedicalMotionPartDefinitions))G.MedicalMotionPartDefinitionModules.push(G.MedicalMotionPartDefinitions);
 })(globalThis);
 
+/* collected definition module: parts/definitions/medical.js */
+if(typeof globalThis.MedicalMotionPartDefinitions==='function'&&!globalThis.MedicalMotionPartDefinitionModules.includes(globalThis.MedicalMotionPartDefinitions))globalThis.MedicalMotionPartDefinitionModules.push(globalThis.MedicalMotionPartDefinitions);
 /* Medical Motion Parts v2.0.0 | Deterministic, dependency-free SVG components.
  * Generated classic bundle: definitions/medical.js + medical-parts-engine.js.
- * catalog.json is the authoritative metadata source.
+ * library.manifest.json is the authoritative metadata source; catalogs are checked derivatives.
  * The compact source map keeps runtime discovery offline and is checked against the
  * catalog by tests/builds. Existing render(id, {x,y,scale,rotation,opacity,accent})
  * calls remain valid.
@@ -473,11 +487,17 @@
     def.bounds=def.bounds||{x:0,y:0,width:640,height:440};
     def.parameterSchema=def.parameterSchema||{};
     def.stateSchema=def.stateSchema||{time:{type:'number',min:0},progress:{type:'number',min:0,max:1}};
+    if(!Array.isArray(def.dependencies)||def.dependencies.some(id=>typeof id!=='string'))throw new Error(def.id+'.dependencies must be an array of IDs.');
+    for(const [name,point] of Object.entries(def.attachments))if(!point||!Number.isFinite(point.x)||!Number.isFinite(point.y))throw new Error(def.id+'.attachments.'+name+' must contain finite x and y.');
+    if(!def.bounds||![def.bounds.x,def.bounds.y,def.bounds.width,def.bounds.height].every(Number.isFinite)||def.bounds.width<=0||def.bounds.height<=0)throw new Error(def.id+'.bounds must be finite and positive.');
     registry.set(def.id,def);
   }
-  function validateParams(def,params){
+  function attachmentNames(def){return new Set(Object.keys(def.attachments||{}));}
+  function validateParams(def,params,state={}){
     for(const key of Object.keys(params||{}))if(!Object.hasOwn(def.parameterSchema||{},key))throw new Error(def.id+'.'+key+' is not a declared parameter.');
     const p={...(def.defaults||{}),...(params||{})};
+    const declaredAttachments=new Set([...attachmentNames(def),...Object.keys(state?.attachments||{})]);
+    for(const key of ['from','to','at'])if(p[key]!==undefined && (typeof p[key]!=='string'||!declaredAttachments.has(p[key])))throw new Error(def.id+'.'+key+' must name a declared attachment or supplied state attachment.');
     for(const [key,s] of Object.entries(def.parameterSchema||{})){
       const v=p[key];
       if(s.type==='number' && (typeof v!=='number'||!Number.isFinite(v)||v<s.min||v>s.max))throw new Error(def.id+'.'+key+' must be between '+s.min+' and '+s.max+'.');
@@ -489,7 +509,7 @@
     }
     return p;
   }
-  function validateState(def,state){
+  function validateState(def,state,params={}){
     const s=state||{};
     for(const key of Object.keys(s))if(!Object.hasOwn(def.stateSchema||{},key)&&!['attachments','sceneIndex'].includes(key))throw new Error(def.id+'.'+key+' is not a declared state field.');
     for(const [key,descriptor] of Object.entries(def.stateSchema||{})){
@@ -501,12 +521,19 @@
     if(s.sceneIndex!==undefined&&(!Number.isInteger(s.sceneIndex)||s.sceneIndex<0))throw new Error(def.id+'.sceneIndex must be a non-negative integer.');
     if(s.attachments!==undefined){
       if(!s.attachments||typeof s.attachments!=='object'||Array.isArray(s.attachments))throw new Error(def.id+'.attachments must be an object.');
-      for(const [name,point] of Object.entries(s.attachments))if(!point||!Number.isFinite(point.x)||!Number.isFinite(point.y))throw new Error(def.id+'.attachments.'+name+' must contain finite x and y.');
+      const permitted=new Set([...attachmentNames(def),...['from','to','at'].map(key=>params?.[key]).filter(Boolean)]);
+      for(const [name,point] of Object.entries(s.attachments)){
+        if(!permitted.has(name))throw new Error(def.id+'.attachments.'+name+' is not declared or referenced by an attachment parameter.');
+        if(!point||!Number.isFinite(point.x)||!Number.isFinite(point.y))throw new Error(def.id+'.attachments.'+name+' must contain finite x and y.');
+      }
     }
     return s;
   }
-  if(typeof G.MedicalMotionPartDefinitions!=='function')throw new Error('Medical Motion definitions are not loaded.');
-  G.MedicalMotionPartDefinitions(register,{circle,ellipse,rect,line,path,move,arrow,text});
+  const modules=Array.isArray(G.MedicalMotionPartDefinitionModules)?G.MedicalMotionPartDefinitionModules.slice():[];
+  if(typeof G.MedicalMotionPartDefinitions==='function'&&!modules.includes(G.MedicalMotionPartDefinitions))modules.push(G.MedicalMotionPartDefinitions);
+  if(!modules.length)throw new Error('Medical Motion definitions are not loaded.');
+  for(const define of modules)define(register,{circle,ellipse,rect,line,path,move,arrow,text});
+  for(const def of registry.values())for(const dep of def.dependencies)if(!registry.has(dep))throw new Error(def.id+' requires unknown part '+dep+'.');
 
   const meta=d=>{const {render,...m}=d;return JSON.parse(JSON.stringify(m));};
   function search(query='',filters={}){
@@ -534,11 +561,13 @@
   }
   function get(id){const d=registry.get(id);if(!d)throw new Error('Unknown partId: '+id);return d;}
   function render(id,options={},context={}){
-    const d=get(id),o=validateOptions(options),o2={...o,params:validateParams(d,o.params),state:validateState(d,o.state)},C={...themes[o.theme],accent:themes[o.theme][o.accent]};
-    const raw=String(d.render(o2,C,{...context,part:d,attachments:d.attachments,theme:o.theme}));
+    const d=get(id),o=validateOptions(options),params=validateParams(d,o.params,o.state);
+    const state={...o.state,attachments:{...d.attachments,...(o.state.attachments||{})}};
+    const o2={...o,params,state:validateState(d,state,params)},C={...themes[o.theme],accent:themes[o.theme][o.accent]};
+    const raw=String(d.render(o2,C,{...context,part:d,attachments:o2.state.attachments,theme:o.theme}));
     // Accent is a real colour channel. Legacy definitions used red/blue directly, so map
     // those primary strokes to the requested accent while retaining neutral detail colours.
-    const accent=o2.accent, painted=o.accent==='blue'?raw:raw.replaceAll(themes[o.theme].blue,accent).replaceAll(themes[o.theme].red,accent);
+    const accent=C.accent, painted=o.accent==='blue'?raw:raw.replaceAll(themes[o.theme].blue,accent).replaceAll(themes[o.theme].red,accent);
     return '<g data-part-id="'+escape(id)+'" data-part-version="'+d.version+'" data-accent="'+escape(o.accent)+'" transform="translate('+(o.x-320)+' '+(o.y-220)+') rotate('+o.rotation+' 320 220) translate(320 220) scale('+o.scale+') translate(-320 -220)" opacity="'+o.opacity+'">'+painted+'</g>';
   }
   function renderSVG(id,options={},context={}){
@@ -550,7 +579,7 @@
   }
   function discovery(id){
     const d=get(id);
-    return {id:d.id,version:d.version,title:d.title,description:d.description,sources:d.sources,limitations:d.limitations,dependencies:d.dependencies,attachments:d.attachments,bounds:d.bounds,parameterSchema:d.parameterSchema,stateSchema:d.stateSchema};
+    return {id:d.id,version:d.version,category:d.category,anatomyLevel:d.anatomyLevel,role:d.role,title:d.title,description:d.description,keywords:d.keywords,aliases:d.aliases,sources:d.sources,limitations:d.limitations,dependencies:d.dependencies,attachments:d.attachments,bounds:d.bounds,parameterSchema:d.parameterSchema,stateSchema:d.stateSchema};
   }
   G.MedicalMotionParts=Object.freeze({
     version:'2.0.0',contractVersion:2,palette,register,get,
@@ -558,3 +587,4 @@
     discover:discovery,search,validate:validateOptions,validateParams,validateState,render,renderSVG,renderBatch,renderBatchSVG,createRenderer
   });
 })(globalThis);
+

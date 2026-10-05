@@ -68,7 +68,7 @@ function select(id,next){
  const valid=M.validate(next||M.defaultConfig(id));
  if(player)player.destroy();config=valid;
  const def=M.get(config.templateId);
- $('scene-name').textContent=def.category;$('template-code').textContent=String(meta.findIndex(d=>d.id===def.id)+1).padStart(2,'0')+' / 35';
+ $('scene-name').textContent=def.category;$('template-code').textContent=String(meta.findIndex(d=>d.id===def.id)+1).padStart(2,'0')+' / '+meta.length;
  $('format').value=config.format;$('theme').value=config.theme;$('duration').value=config.duration;$('seek').max=config.duration;
  $('limitations').textContent=def.limitations;$('sources').replaceChildren();
  def.sources.forEach((url,i)=>{const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Reference '+(i+1);$('sources').append(a,document.createTextNode('  '));});

@@ -35,7 +35,7 @@ Helpers: `S.el(tag,attributes,children)`, `S.text(x,y,text,color,size,anchor,wei
 
 Parameter descriptors use either `{type:'number',min,max,step,description}` or `{type:'enum',values:[...],description}`. `step` is a UI increment, not an enforced quantization. Release particle count is rounded by that renderer. Do not label presentation units as millimeters, micrometers, mV, GFR or blood velocity.
 
-When adding template 11+, update the catalog, schema ID enum, example, index script list, visible template-count labels, and tests' expected counts together. Keep the explicit script list in numeric order and keep every template's metadata, example and renderer synchronized. `scripts/build.mjs` discovers template JS files automatically, but the studio's classic script list is deliberately explicit for offline loading.
+When adding template 11+, update `library.manifest.json` first, then the catalog, schema ID enum, example, index script list, visible template-count labels and tests' expected counts together; `node scripts/build.mjs --check` must pass. Keep the explicit script list in numeric order and keep every template's metadata, example and renderer synchronized. `scripts/build.mjs` discovers template JS files automatically, but the studio's classic script list is deliberately explicit for offline loading.
 
 ## Medical safeguards
 
@@ -54,7 +54,7 @@ This directory is a reusable asset library, not the Telegram host application. K
 
 ## Reusable parts contract
 
-The `parts/` directory is a versioned component library. `parts/catalog.json` is the authoritative metadata source; `parts/medical-parts.js` is the compatible offline runtime bundle and exposes contract version 2. Read `parts/README.md`, `parts/catalog.json`, `parts/schema.json` and `docs/ADDING_PARTS.md` before changing it.
+The `parts/` directory is a versioned component library. `library.manifest.json` is the authoritative inventory and selection metadata source. `parts/catalog.json`, `catalog.json`, schemas, visible counts and explicit loaders are checked derivatives. `parts/medical-parts.js` is the compatible offline runtime bundle and exposes contract version 2. Read `parts/README.md`, `library.manifest.json`, `parts/catalog.json`, `parts/schema.json` and `docs/ADDING_PARTS.md` before changing it.
 
 Every component has a stable ID, version, 640 x 440 local bounds, named attachment points, sources, limitations, dependencies, a validated component-specific parameter schema and deterministic animation state. The legacy transform calls (`x`, `y`, `scale`, `rotation`, `opacity`, `accent`) remain valid; v2 additionally validates `theme`, `params`, `state`, `time` and `progress`. Use `MedicalMotionParts.discover(id)` for runtime metadata and `createRenderer(context)` for explicit scene composition.
 

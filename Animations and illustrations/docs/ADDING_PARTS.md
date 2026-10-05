@@ -10,6 +10,7 @@ Read the repository handoff and design rules first:
 - root `tools/MASTER_PROMPT.md` for evidence discipline
 - `../AGENTS.md`
 - `../parts/README.md`
+- `../library.manifest.json`
 - `../parts/catalog.json`
 - `../parts/schema.json`
 
@@ -17,7 +18,7 @@ The MCQ packaging prompt governs question extraction. It does not authorize copy
 
 ## 2. Search before adding
 
-Search `parts/catalog.json` across:
+Search `library.manifest.json` first (then `parts/catalog.json`) across:
 
 - `id`, title and aliases
 - category: Microbiology, Cell biology, Anatomy, Histology, Physiology, Immunology, Neuroscience, Respiration, Hematology or Surgery
@@ -45,7 +46,7 @@ Add one deterministic renderer to a definition module under `parts/definitions/`
 - preserve labels and arrows when colour is unavailable;
 - never include doses, treatment recommendations, diagnoses or patient-specific predictions.
 
-Add the same ID and metadata to `parts/catalog.json`. Validate it against `parts/schema.json`.
+Add the ID and complete selection metadata to `library.manifest.json`, then keep `parts/catalog.json` and `parts/schema.json` synchronized; `node scripts/build.mjs --check` is the final consistency check.
 
 ## 5. Update the searchable surfaces
 
@@ -61,6 +62,10 @@ Run:
 node tests/parts_verify.mjs
 node tests/verify.mjs
 node scripts/build.mjs
+node scripts/build.mjs --check
+node tests/library_verify.mjs
+node tests/layout_verify.mjs
+node tests/visual_regression.mjs
 ~~~
 
 Inspect at least the default, dark-theme host, portrait and reduced-motion use cases. Confirm that the standalone output has no external requests and that labels remain inside the viewBox.
@@ -81,12 +86,12 @@ If QA finds a part escaping its container, changing shape unexpectedly, or faili
 
 Use this instruction when delegating future additions:
 
-> Read `Animations and illustrations/AGENTS.md`, `parts/README.md`, `parts/catalog.json` and `docs/ADDING_PARTS.md`. Search for duplicates and identify the smallest coherent missing set for the requested medical domain. Add the requested number, or 5–10 essential parts when no number is specified. For every part add original deterministic SVG geometry, English metadata, authoritative source links, limitations, catalog/schema updates, gallery visibility, tests and a dated changelog entry. Run the verification and build commands. Do not modify the application root, Telegram bot, secrets, infrastructure or medical content.
+> Read `Animations and illustrations/AGENTS.md`, `library.manifest.json`, `parts/README.md`, `parts/catalog.json` and `docs/ADDING_PARTS.md`. Search for duplicates and identify the smallest coherent missing set for the requested medical domain. Add the requested number, or 5–10 essential parts when no number is specified. For every part add original deterministic SVG geometry, English metadata, authoritative source links, limitations, catalog/schema updates, gallery visibility, tests and a dated changelog entry. Run the verification and build commands. Do not modify the application root, Telegram bot, secrets, infrastructure or medical content.
 
 
 ## Contract v2 and composition checklist
 
-`parts/catalog.json` is the authoritative metadata source. The classic `parts/medical-parts.js` bundle embeds a checked source map so `MedicalMotionParts.discover(id)` remains available when the file is opened directly. Keep geometry registrations separate from registry behavior when adding future modules; the bundle build may concatenate definition modules, but the public entry point must stay compatible.
+`library.manifest.json` is the authoritative metadata source; `parts/catalog.json` is a checked derivative. The classic `parts/medical-parts.js` bundle embeds a checked source map so `MedicalMotionParts.discover(id)` remains available when the file is opened directly. Keep geometry registrations separate from registry behavior when adding future modules; the bundle build may concatenate definition modules, but the public entry point must stay compatible.
 
 For every definition declare `version`, `sources`, `limitations`, `bounds`, named `attachments`, `dependencies`, `parameterSchema` and `stateSchema`. Put component-specific values under `options.params`; use `options.theme`, `options.time`, `options.progress` and `options.state` for deterministic frame state. Validate values in the engine and test that each meaningful parameter changes the artwork at more than one time. Test accent recoloring, both themes, transformed bounds and malformed attachment coordinates.
 

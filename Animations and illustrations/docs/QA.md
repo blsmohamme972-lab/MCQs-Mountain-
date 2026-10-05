@@ -1,5 +1,18 @@
 # Verification report - 2026-10-05
 
+## Current architecture validation
+
+- `library.manifest.json` is the single inventory authority. The build checks 35 template IDs, 37 part IDs, catalogs, schema enums, examples, visible counts, explicit loaders, definition-module IDs and the reproducible classic bundle.
+- `node tests/parts_verify.mjs` passed: 37 parts, contract v2, deterministic transforms, metadata agreement, explicit-count batches and strict attachment cases.
+- `node tests/verify.mjs` passed: 35 templates, 1,794 frame cases, 230 invalid configurations rejected, deterministic output and closure isolation.
+- `node tests/library_verify.mjs` passed provenance and generated-output checks. `node tests/layout_verify.mjs` passed 2,088 template frames and 54 composed frames at parameter endpoints, both themes and all formats. `node tests/visual_regression.mjs` passed 630 deterministic hashes and a 108-section contact-sheet check.
+- `node scripts/build.mjs --check` passed without rewriting files. Composed HTML and the six-second clot export are generated from checked-in JSON/source shells and carry source hashes.
+- Browser smoke is wired in CI with `playwright==1.57.0` and a pinned Chromium install. It was not run in this workspace because no Chromium executable is available.
+
+## Remaining browser limitation
+
+The local environment has no Chromium binary and no Python Playwright module, so no local browser pass is claimed. CI must run `python tests/browser_smoke.py` after installing the pinned browser.
+
 ## Completed
 
 - JavaScript syntax and dependency-free Node tests: 37 reusable components, 1794 frame render cases across aspect ratios/themes/times and parameter bounds, 230 invalid configurations rejected, stable output for identical input/time, and renderer serialization in isolated JavaScript contexts.
