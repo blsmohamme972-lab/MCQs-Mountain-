@@ -28,6 +28,7 @@
   function flow(points,phase,color,count=6,r=6) {
     return Array.from({length:count},(_,i)=>{const q=move(points,((phase+i/count)%1+1)%1);return circle(q[0],q[1],r,color);}).join('');
   }
+  const alveolarSac='M 0 -47 C -18 -66 -49 -58 -54 -31 C -79 -30 -94 -8 -80 13 C -92 35 -72 59 -47 54 C -34 76 -5 78 12 58 C 37 77 66 62 61 39 C 87 33 89 5 68 -10 C 79 -35 53 -58 30 -48 C 21 -69 7 -67 0 -47 Z';
   function wrap(x,y,value,color,size,width,maxLines=3,anchor='start') {
     const limit=Math.max(8,Math.floor(width/(size*.57))), words=String(value).split(/\s+/), lines=[];
     let s='';
@@ -41,7 +42,7 @@
     if(lines.length>maxLines) shown[maxLines-1]=shown[maxLines-1].slice(0,-3)+'...';
     return shown.map((v,i)=>text(x,y+i*size*1.3,v,color,size,anchor)).join('');
   }
-  const helpers={el,text,path,circle,rect,line,arrow,move,flow,wrap,clamp,escape};
+  const helpers={el,text,path,circle,rect,line,arrow,move,flow,wrap,clamp,escape,alveolarSac};
   function register(def) {
     if(!def || !/^[a-z][a-z0-9-]+$/.test(def.id) || typeof def.render!=='function') throw new Error('Invalid template definition.');
     if(registry.has(def.id)) throw new Error('Duplicate template: '+def.id);
@@ -77,7 +78,12 @@
   function renderAccepted(c,seconds,diagramOnly=false) {
     if(typeof seconds!=='number' || !Number.isFinite(seconds)) throw new Error('Time must be a finite number.');
     const d=get(c.templateId), C=themes[c.theme], t=clamp(seconds,0,c.duration), p=t/c.duration;
-    const art=d.render(c,p,t,{...helpers,C});
+    // params.progress remains the author's manual endpoint. During playback the clock
+    // deterministically eases that endpoint from zero to the selected value, so a slider
+    // seek changes the mechanism itself rather than only a caption/progress bar.
+    const frameConfig=clone(c);
+    if(Object.hasOwn(frameConfig.params,'progress')) frameConfig.params.progress=clamp(c.params.progress*p);
+    const art=d.render(frameConfig,p,t,{...helpers,C,parts:G.MedicalMotionParts||null,context:{time:t,progress:p}});
     let w=720,h=1280,body='';
     const phase=p<.25?0:p<.75?1:2;
     if(diagramOnly) {w=640;h=440;body=rect(0,0,w,h,C.paper,0)+art;}

@@ -12,7 +12,7 @@ MedicalMotion.register({
     const {C,line,path,rect,circle,text,arrow,wrap}=S; let out='';
     out+=line(75,120,75,330,C.red,10)+line(565,120,565,330,C.red,10);
     out+=text(75,92,c.labels.zdisc,C.ink,17,'middle',700)+text(565,92,c.labels.zdisc,C.ink,17,'middle',700);
-    const shift=110*c.params.overlap;
+    const overlap=c.params.overlap*(.35+.65*p), shift=110*overlap;
     out+=path('M 75 190 H '+(290+shift)+' M 75 230 H '+(290+shift)+' M 75 270 H '+(290+shift),C.teal,8);
     out+=path('M 565 190 H '+(330-shift)+' M 565 230 H '+(330-shift)+' M 565 270 H '+(330-shift),C.blue,8);
     for(let y=190;y<=270;y+=40){out+=circle(320,y,15,C.gold)+line(309,y,331,y,C.ink,3);}
@@ -22,3 +22,4 @@ MedicalMotion.register({
     return out;
   }
 });
+

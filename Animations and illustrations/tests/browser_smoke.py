@@ -87,6 +87,25 @@ with sync_playwright() as pw:
         isolated.locator('#reset').click()
         assert isolated.locator('#clock').inner_text().startswith('0.0')
         isolated.close()
+    # Composed exports include the parts engine and their playback controls.
+    composed_ids = ['vessel-narrowing-flow', 'clot-formation', 'wound-repair']
+    for cid in composed_ids:
+        composed = browser.new_page(viewport={'width':390,'height':844})
+        composed.context.set_offline(True)
+        composed.set_content((ROOT / 'dist' / 'composed' / (cid + '.html')).read_text())
+        assert composed.locator('#scene svg').count() == 1
+        composed.locator('#play').click(); composed.wait_for_timeout(90)
+        assert composed.locator('#play').inner_text() == 'Pause'
+        composed.locator('#reset').click()
+        assert composed.locator('#clock').inner_text().startswith('0.0')
+        assert composed.evaluate('document.documentElement.scrollWidth <= innerWidth')
+        composed.close()
+    parts_page = browser.new_page(viewport={'width':390,'height':844})
+    parts_page.context.set_offline(True)
+    parts_page.set_content((ROOT / 'dist' / 'parts' / 'index.html').read_text())
+    assert parts_page.locator('.card').count() == 37
+    assert parts_page.evaluate('document.documentElement.scrollWidth <= innerWidth')
+    parts_page.close()
     # Save diagram-only overview for human visual review.
     page.set_viewport_size({'width':1440,'height':1400})
     page.evaluate('''() => {document.querySelector('.shell').style.display='none';document.body.insertAdjacentHTML('afterbegin','<main id="review" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:20px"></main>');for(const d of MedicalMotion.list()){const section=document.createElement('section');section.style='background:white;padding:10px;border:1px solid #ddd';const h=document.createElement('h2');h.style='font:16px system-ui';h.textContent=d.id;section.append(h);const art=document.createElement('div');art.innerHTML=MedicalMotion.renderSVG(MedicalMotion.defaultConfig(d.id),3,{diagramOnly:true});art.firstChild.style='width:100%;height:auto';section.append(art);document.getElementById('review').append(section);}}''')
@@ -94,5 +113,5 @@ with sync_playwright() as pw:
     assert not requests, requests
     assert not errors, errors
     browser.close()
-print(json.dumps({'templates':35,'svgDocumentsParsed':parsed,'exports':['SVG','PNG','HTML','JSON'],'viewportChecks':['1440px','390px'],'reducedMotion':True,'externalNetworkRequests':len(requests),'standaloneOffline':True,'individualStandaloneScenes':35,'browserErrors':errors},indent=2))
+print(json.dumps({'templates':35,'parts':37,'composedScenes':3,'svgDocumentsParsed':parsed,'exports':['SVG','PNG','HTML','JSON'],'viewportChecks':['1440px','390px'],'reducedMotion':True,'externalNetworkRequests':len(requests),'standaloneOffline':True,'individualStandaloneScenes':35,'browserErrors':errors},indent=2))
 

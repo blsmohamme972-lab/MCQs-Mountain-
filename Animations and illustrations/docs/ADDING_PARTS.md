@@ -35,10 +35,10 @@ A complete addition includes the renderer, metadata, a source and limitation not
 
 ## 4. Implement the part
 
-Add one deterministic renderer to `parts/medical-parts.js`:
+Add one deterministic renderer to a definition module under `parts/definitions/` (the current source module is `parts/definitions/medical.js`; the build concatenates definition modules into the compatible `parts/medical-parts.js` bundle):
 
 - use the 640 × 440 coordinate system and center anchor;
-- accept only the documented options: x, y, scale, rotation, opacity and accent;
+- receive the engine options and helper surface; accept only documented transform and v2 state fields (`theme`, `params`, `state`, `time`, `progress`);
 - draw original SVG geometry with escaped text;
 - avoid DOM access, network requests, timers, random values, external images, external fonts and CSS animation;
 - keep the shape conceptual and state its limitation;
@@ -49,7 +49,7 @@ Add the same ID and metadata to `parts/catalog.json`. Validate it against `parts
 
 ## 5. Update the searchable surfaces
 
-Update the gallery only when its loader contract changes. The gallery reads the catalog through the registered part metadata, so every new renderer must expose the same searchable fields: category, anatomyLevel, role, keywords and aliases.
+Update the gallery only when its loader contract changes. The gallery reads the catalog through the registered part metadata, so every new definition must expose the same searchable fields: category, anatomyLevel, role, keywords and aliases.
 
 If the part belongs in a complete explanatory scene, add a separate scene template under `templates/`; do not hide a full scene inside the parts engine.
 
@@ -78,3 +78,14 @@ Add a dated entry to `docs/CHANGELOG.md` with:
 Use this instruction when delegating future additions:
 
 > Read `Animations and illustrations/AGENTS.md`, `parts/README.md`, `parts/catalog.json` and `docs/ADDING_PARTS.md`. Search for duplicates and identify the smallest coherent missing set for the requested medical domain. Add the requested number, or 5–10 essential parts when no number is specified. For every part add original deterministic SVG geometry, English metadata, authoritative source links, limitations, catalog/schema updates, gallery visibility, tests and a dated changelog entry. Run the verification and build commands. Do not modify the application root, Telegram bot, secrets, infrastructure or medical content.
+
+
+## Contract v2 and composition checklist
+
+`parts/catalog.json` is the authoritative metadata source. The classic `parts/medical-parts.js` bundle embeds a checked source map so `MedicalMotionParts.discover(id)` remains available when the file is opened directly. Keep geometry registrations separate from registry behavior when adding future modules; the bundle build may concatenate definition modules, but the public entry point must stay compatible.
+
+For every definition declare `version`, `sources`, `limitations`, `bounds`, named `attachments`, `dependencies`, `parameterSchema` and `stateSchema`. Put component-specific values under `options.params`; use `options.theme`, `options.time`, `options.progress` and `options.state` for deterministic frame state. Validate values in the engine and test that each meaningful parameter changes the artwork at more than one time. Test accent recoloring, both themes, transformed bounds and malformed attachment coordinates.
+
+A composed scene is a JSON object with `version: 2`, `components`, `duration`, `format`, `theme`, title and caption. Validate it through `MedicalMotionScene`, render with `MedicalMotionParts.createRenderer(context)`, and export it with the parts engine inlined. Dependencies are explicit and must be present in the scene; the export must contain no `<script src>`, network request or external asset.
+
+The coverage index at `docs/coverage-backlog.json` scores medical usefulness, reuse frequency, combinability and video value. For “add N”, save the starting ID set, search both catalogs and source files for duplicates, implement the highest-scoring nonduplicate gaps, and assert that the set difference is exactly N. A larger `renderBatch` is not evidence of new components.

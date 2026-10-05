@@ -11,6 +11,9 @@ for(const d of M.list()){
  const original=M.defaultConfig(d.id),c=M.validate(original);assert.deepEqual(c,original);
  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(root,'examples',d.id+'.json'),'utf8')),original);
  assert.ok(d.sources.length && d.limitations.length>25);assert.equal(d.stages.length,3);
+ const motionFrames=[0,.5,1].map(q=>M.renderSVG(c,q*c.duration,{diagramOnly:true}));
+ assert.notEqual(motionFrames[0],motionFrames[1],d.id+' does not change artwork between start and middle');
+ assert.notEqual(motionFrames[1],motionFrames[2],d.id+' does not change artwork between middle and end');
  for(const format of ['portrait','square','landscape'])for(const theme of ['clinical','night'])for(const p of [0,.125,.25,.5,.75,.9,1]){
   const config={...c,format,theme},svg=M.renderSVG(config,p*c.duration);frames++;
   assert.ok(svg.startsWith('<svg '));assert.ok(!/NaN|Infinity|undefined/.test(svg));assert.equal(svg,M.renderSVG(config,p*c.duration));

@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "scoring": {
+    "medicalUsefulness": "0-5: educational mechanisms most likely to need an accurate reusable visual",
+    "reuseFrequency": "0-5: likely use across scenes",
+    "combinability": "0-5: useful with independent parts and attachment points",
+    "videoValue": "0-5: meaningful time-driven motion rather than a static icon",
+    "total": "sum of the four scores; ties prefer higher combinability, then reuse frequency"
+  },
+  "selectionWorkflow": [
+    "Record the starting component IDs from parts/catalog.json.",
+    "Search both parts/catalog.json and every scene/template source for an existing equivalent.",
+    "Score only nonduplicate candidates with the four named dimensions.",
+    "Choose the highest-scoring coherent gap and record dependencies, alternatives and rationale.",
+    "After implementation compute final IDs minus starting IDs and require exactly N for an explicit add-N request.",
+    "Run parts_verify and review bounds, parameter changes, themes, deterministic frames and standalone dependencies."
+  ],
+  "candidates": [
+    {"id":"edema-overlay","intendedUses":["capillary filtration","wound repair","lymphatic drainage"],"existingAlternatives":["layered-tissue","lymphatic-drainage template"],"dependencies":["layered-tissue"],"scores":{"medicalUsefulness":5,"reuseFrequency":4,"combinability":5,"videoValue":4},"rationale":"High-value pathology effect, deliberately deferred until a source-backed geometry review.","status":"backlog"},
+    {"id":"necrosis-region","intendedUses":["ischemia","wound repair","pathology"],"existingAlternatives":["layered-tissue","macrophage"],"dependencies":["layered-tissue"],"scores":{"medicalUsefulness":4,"reuseFrequency":3,"combinability":4,"videoValue":4},"rationale":"Useful pathology overlay but needs careful boundary and limitation language.","status":"backlog"},
+    {"id":"lymph-node","intendedUses":["immune drainage","lymphatic flow","metastasis teaching"],"existingAlternatives":["white-blood-cell","lymphatic-drainage template"],"dependencies":["blood-flow"],"scores":{"medicalUsefulness":4,"reuseFrequency":3,"combinability":4,"videoValue":3},"rationale":"Adds a reusable immune checkpoint without duplicating the lymph vessel.","status":"backlog"},
+    {"id":"capillary-bed","intendedUses":["gas exchange","filtration","microcirculation"],"existingAlternatives":["vessel-segment","alveolus"],"dependencies":["vessel-segment","blood-flow"],"scores":{"medicalUsefulness":5,"reuseFrequency":5,"combinability":5,"videoValue":5},"rationale":"A high-reuse network candidate; first compare against the existing alveolar and vessel geometry before adding.","status":"backlog"}
+  ],
+  "deferred": ["edema-overlay", "necrosis-region"]
+}

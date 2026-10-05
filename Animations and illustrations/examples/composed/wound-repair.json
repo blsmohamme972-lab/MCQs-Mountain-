@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "title": "Wound repair",
+  "caption": "Layered tissue, macrophages and fibroblasts show a compact repair composition.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "square",
+  "components": [
+    {"id":"layered-tissue","options":{"x":320,"y":220,"scale":0.85,"params":{"thickness":0.33}}},
+    {"id":"macrophage","options":{"x":210,"y":225,"scale":0.28,"accent":"purple","progress":0}},
+    {"id":"fibroblast","options":{"x":400,"y":260,"scale":0.3,"accent":"teal","progress":0}},
+    {"id":"fibroblast","options":{"x":430,"y":205,"scale":0.25,"accent":"teal","progress":0}},
+    {"id":"platelet","options":{"x":320,"y":178,"scale":0.2,"accent":"red","progress":0}},
+    {"id":"fibrin-mesh","options":{"x":320,"y":190,"scale":0.6,"params":{"density":0.45},"progress":0}},
+    {"id":"attachment-label","options":{"x":320,"y":220,"scale":0.85,"params":{"at":"center","label":"Repair tissue","dx":0,"dy":-126},"state":{"attachments":{"center":{"x":320,"y":220}}}}}
+  ]
+}

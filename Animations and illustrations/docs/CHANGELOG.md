@@ -55,3 +55,20 @@
 - Updated the reusable `parts/medical-parts.js` `alveolus` component and its catalog metadata so future clients receive the same improved shape.
 - Generated and visually reviewed diagram-only and portrait SVG/PNG previews. Local SVG rendering, PNG rasterization, JavaScript syntax checks and XML parsing passed.
 
+
+
+## 2026-10-05 — Composition contract and mechanism animation repair
+
+- Repaired mechanism-level time changes in `coagulation-fibrin`, `enzyme-inhibition` and `venous-valves`; the clock now drives artwork while manual progress remains the selected endpoint. All advertised templates were checked at 0, 50 and 100% of duration.
+- Fixed accent recoloring for legacy parts and corrected malformed synapse coordinate concatenation. Corrected the coccus limitation metadata so it no longer claims gas-exchange constraints.
+- Versioned the reusable-parts contract to v2 with validated component parameters, themes, named attachments, local bounds, explicit dependencies, state metadata, runtime discovery and an explicit renderer context. The compatible `medical-parts.js` entry point remains available.
+- Added configurable vessel segments, path-based blood flow, attachment arrows and labels, platelets, fibrin mesh, layered tissue, fibroblasts, macrophages, plaque overlay, heart and nephron parts. Edema and necrosis remain backlog candidates.
+- The reusable heart and nephron definitions reuse the recognizable structural geometry from the existing complete scenes; their bounds and schematic limitations remain explicit.
+- Added three composed scene JSON examples and offline HTML export support with Play, Pause, Seek and Replay controls.
+- Added the scored coverage/backlog index and exact-N novelty workflow.
+
+
+## 2026-10-05 — Definition-module boundary and final v2 validation
+
+- Separated the 37 component registrations into `parts/definitions/medical.js`; `parts/medical-parts-engine.js` now owns validation, transforms, discovery, batching and renderer contexts. `scripts/build.mjs` regenerates the compatible classic `parts/medical-parts.js` bundle.
+- Re-ran `node tests/parts_verify.mjs`, `node tests/verify.mjs` and `node scripts/build.mjs` successfully. The optional `python tests/browser_smoke.py` check remains unavailable here because Playwright and Chromium are not installed.

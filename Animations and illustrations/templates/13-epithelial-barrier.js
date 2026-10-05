@@ -11,7 +11,7 @@ MedicalMotion.register({
   render:function(c,p,t,S){
     const {C,rect,path,circle,text,arrow,wrap}=S; let out='';
     out+=rect(48,30,544,64,C.soft,22)+text(320,70,c.labels.lumen,C.ink,22,'middle',750);
-    const gap=18*(1-c.params.junctionIntegrity), xs=[105,205,305,405,505];
+    const integrity=Math.min(1,c.params.junctionIntegrity*(.55+.45*p)+.15*p), gap=18*(1-integrity), xs=[105,205,305,405,505];
     xs.forEach((x,i)=>{out+=rect(x-42,135,84,210,C.tissue,22,{stroke:C.red,'stroke-width':3});if(i<xs.length-1){const gx=x+42+gap/2;out+=rect(gx,135,Math.max(4,18-gap),26,C.teal,8,{opacity:.9});}});
     out+=text(320,382,c.labels.cells,C.ink,22,'middle',750)+text(320,414,c.labels.junction,C.teal,18,'middle',700);
     out+=arrow(150,104,150,130,C.gold,3)+arrow(490,104,490,130,C.gold,3);
@@ -22,3 +22,4 @@ MedicalMotion.register({
     return out;
   }
 });
+

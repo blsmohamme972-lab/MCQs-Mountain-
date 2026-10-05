@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "title": "Clot formation",
+  "caption": "Platelets gather at an injury and a fibrin mesh grows around the plug.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "portrait",
+  "components": [
+    {"id":"vessel-segment","options":{"x":320,"y":220,"scale":0.95,"params":{"kind":"vein","narrowing":0.1,"valve":false}}},
+    {"id":"platelet","options":{"x":285,"y":220,"scale":0.3,"accent":"red","progress":0.2}},
+    {"id":"platelet","options":{"x":320,"y":230,"scale":0.28,"accent":"red","progress":0.45}},
+    {"id":"platelet","options":{"x":350,"y":218,"scale":0.28,"accent":"red","progress":0.7}},
+    {"id":"fibrin-mesh","options":{"x":320,"y":220,"scale":0.85,"params":{"density":0.85},"progress":0}},
+    {"id":"attachment-label","options":{"x":320,"y":220,"scale":0.9,"params":{"at":"center","label":"Platelet plug + fibrin","dx":0,"dy":-128},"state":{"attachments":{"center":{"x":320,"y":220}}}}}
+  ]
+}

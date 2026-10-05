@@ -21,7 +21,7 @@ A scene has `version:1`, `templateId`, `title`, `subtitle`, `caption`, `duration
 
 `create(host, scene, {onframe})` returns an independent player. `seek(seconds)` is absolute, not a fraction. `update(scene)` validates before replacing the active scene, pauses and resets it. `state.config` is a copy. Call `destroy()` before removing the host or creating a replacement. Use explicit play controls and preserve reduced-motion behavior. Existing static previews remain usable without playing.
 
-Geometry is deterministic at a given configuration and time. `renderSVG` clamps time to [0,duration]. Renderers receive `p` in [0,1] and `t` in seconds. ECG uses `t` for its cursor cadence; the other mechanisms use normalized presentation time. Changing duration is not a claim about physiological timing.
+Geometry is deterministic at a given configuration and time. `renderSVG` clamps time to [0,duration]. Renderers receive `p` in [0,1] and `t` in seconds. ECG uses `t` for its cursor cadence; the other mechanisms use normalized presentation time. Templates that declare `params.progress` treat that value as a manual endpoint and ease the mechanism toward it with the clock, so play, seek and replay remain deterministic. Changing duration is not a claim about physiological timing.
 
 ## Adding or extending a renderer
 
@@ -31,7 +31,7 @@ The render function must be self-contained and use only its arguments and standa
 
 Render only the internal artwork, on a 640 x 440 coordinate system; return an SVG fragment, not another framed document. The core owns titles, captions, accessible title/description and output ratios. Keep important content away from the artwork edges. `S.C` provides the selected palette: bg, paper, ink, muted, line, blue, red, teal, gold, soft, tissue. Never rely only on color for direction or identity; retain text and arrows.
 
-Helpers: `S.el(tag,attributes,children)`, `S.text(x,y,text,color,size,anchor,weight)`, `S.wrap(x,y,text,color,size,width,maxLines,anchor)`, `S.path(d,stroke,width,fill,extra)`, `S.circle`, `S.rect`, `S.line`, `S.arrow`, `S.move(polyline,fraction)`, `S.flow(polyline,phase,color,count,radius)`, `S.clamp` and `S.escape`. `el` children are raw markup; text and wrap escape text. Use trusted SVG tags/attribute names only.
+Helpers: `S.el(tag,attributes,children)`, `S.text(x,y,text,color,size,anchor,weight)`, `S.wrap(x,y,text,color,size,width,maxLines,anchor)`, `S.path(d,stroke,width,fill,extra)`, `S.circle`, `S.rect`, `S.line`, `S.arrow`, `S.move(polyline,fraction)`, `S.flow(polyline,phase,color,count,radius)`, `S.clamp`, `S.escape` and `S.alveolarSac`. `el` children are raw markup; text and wrap escape text. Use trusted SVG tags/attribute names only.
 
 Parameter descriptors use either `{type:'number',min,max,step,description}` or `{type:'enum',values:[...],description}`. `step` is a UI increment, not an enforced quantization. Release particle count is rounded by that renderer. Do not label presentation units as millimeters, micrometers, mV, GFR or blood velocity.
 
@@ -54,9 +54,13 @@ This directory is a reusable asset library, not the Telegram host application. K
 
 ## Reusable parts contract
 
-The `parts/` directory is the small-piece library for future scene composition. Complete explanatory scenes remain in `templates/`. Read `parts/README.md`, `parts/catalog.json` and `docs/ADDING_PARTS.md` before adding a part.
+The `parts/` directory is a versioned component library. `parts/catalog.json` is the authoritative metadata source; `parts/medical-parts.js` is the compatible offline runtime bundle and exposes contract version 2. Read `parts/README.md`, `parts/catalog.json`, `parts/schema.json` and `docs/ADDING_PARTS.md` before changing it.
 
-Every part must register a unique ID in `parts/medical-parts.js`, use the 640 x 440 coordinate system with a center anchor, expose only x/y/scale/rotation/opacity/accent options, and remain deterministic, offline-capable and free of DOM access, network requests, timers, randomness, external images and external fonts. Add English metadata, keywords, aliases, sources and limitations to `parts/catalog.json`, then validate the catalog with `parts/schema.json`.
-Use `MedicalMotionParts.search(query, filters)` for metadata-only lookup and `MedicalMotionParts.renderBatch(specs, expectedCount)` when a request names a count; pass the exact requested count so mismatches are rejected before HTML assembly. Use `renderBatchSVG` as the review artifact.
+Every component has a stable ID, version, 640 x 440 local bounds, named attachment points, sources, limitations, dependencies, a validated component-specific parameter schema and deterministic animation state. The legacy transform calls (`x`, `y`, `scale`, `rotation`, `opacity`, `accent`) remain valid; v2 additionally validates `theme`, `params`, `state`, `time` and `progress`. Use `MedicalMotionParts.discover(id)` for runtime metadata and `createRenderer(context)` for explicit scene composition.
 
-When a future request asks for more parts, search the catalog for duplicates first. Honor an explicit count exactly. Without a count, add the smallest coherent set of essential gaps, normally 5–10 items, and record the reason for the chosen count in `docs/CHANGELOG.md`. Update the gallery, tests and build output only when their contracts require it. Run `node tests/parts_verify.mjs`, `node tests/verify.mjs` and `node scripts/build.mjs` before reporting completion.
+Search both catalogs and scene source before adding a component. For a request naming N, verify `finalIds - startingIds` is exactly N; renderBatch instance counts are not a novelty check. Without a count, add the smallest coherent set of essential gaps and document the score and rationale in `docs/coverage-backlog.json` and `docs/CHANGELOG.md`. Preserve original geometry, source links and honest schematic limitations.
+
+Complete scenes under `templates/` must remain independent of the parts bundle unless they explicitly receive a renderer context. Composed examples use `parts/scene-renderer.js`; standalone exports inline the parts engine and component dependencies and must not fetch files at runtime.
+
+Run `node tests/parts_verify.mjs`, `node tests/verify.mjs`, `node scripts/build.mjs` and, when available, `python tests/browser_smoke.py`. Review multiple times, both themes, portrait/square/landscape layouts, hostile labels, reduced motion and offline file opening. Keep generated outputs out of application imports unless the user requests them.
+
