@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "libraryType": "medical-illustration-parts",
   "engine": "parts/medical-parts.js",
   "schema": "parts/schema.json",
@@ -14,6 +14,7 @@
     "aliases"
   ],
   "contract": {
+    "contractVersion": 2,
     "coordinateSystem": "640x440 viewBox",
     "defaultAnchor": {
       "x": 320,
@@ -25,24 +26,28 @@
       "scale": "0<scale<=8",
       "rotation": "degrees",
       "opacity": "0..1",
-      "accent": "palette key"
+      "accent": "palette key",
+      "theme": "clinical|night",
+      "params": "validated component parameters",
+      "state": "deterministic animation state",
+      "time": "seconds",
+      "progress": "0..1"
     },
     "rendering": "deterministic SVG fragment; no DOM, network, timers, random values or external assets",
-    "accuracy": "conceptual educational geometry; read limitations and sources before teaching deployment",
-    "searchApi": "MedicalMotionParts.search(query, filters) returns searchable metadata without DOM or network access.",
-    "batchApi": "MedicalMotionParts.renderBatch(specs, expectedCount) renders a deterministic group and throws when an explicit requested count does not match.",
-    "batchSvgApi": "MedicalMotionParts.renderBatchSVG(specs, expectedCount) returns a reviewable 640x440 SVG document.",
-    "requestRule": "When a request specifies a count, pass that count as expectedCount and add exactly that many new catalog IDs; do not pad with decorative variants."
+    "runtimeDiscovery": "MedicalMotionParts.discover(id) returns sources, limitations, attachments, bounds, dependencies, parameterSchema and stateSchema.",
+    "composition": "MedicalMotionParts.createRenderer(context) supplies explicit render context to independent parts.",
+    "requestRule": "Search catalog and scene source first. For an explicit count, add exactly that many new component IDs and verify against the starting inventory; renderBatch count alone is insufficient."
   },
   "parts": [
     {
       "id": "bacterium-coccus",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Microbiology",
       "anatomyLevel": "cellular",
       "role": "organism",
       "title": "Coccus bacterium",
-      "description": "rounded bacterial cell silhouette",
+      "description": "A rounded bacterial cell silhouette for morphology scenes.",
       "keywords": [
         "bacterium",
         "coccus",
@@ -56,7 +61,7 @@
       "source": [
         "https://www.ncbi.nlm.nih.gov/books/NBK8406/"
       ],
-      "limitations": "Flattened conceptual schematic; surface area, diffusion rates and ventilation-perfusion relationships are not calculated.",
+      "limitations": "Shape-only schematic; not a species or staining claim.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -66,18 +71,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "bacterium-bacillus",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Microbiology",
       "anatomyLevel": "cellular",
       "role": "organism",
       "title": "Bacillus bacterium",
-      "description": "rod-shaped bacterial cell silhouette",
+      "description": "A rod-shaped bacterial cell silhouette.",
       "keywords": [
         "bacterium",
         "bacillus",
@@ -91,7 +127,7 @@
       "source": [
         "https://www.ncbi.nlm.nih.gov/books/NBK8406/"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Shape-only schematic; dimensions, spores and motility are omitted.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -101,18 +137,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "bacterium-spirillum",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Microbiology",
       "anatomyLevel": "cellular",
       "role": "organism",
       "title": "Spirillum bacterium",
-      "description": "curved spiral bacterial cell silhouette",
+      "description": "A curved spiral bacterial cell silhouette.",
       "keywords": [
         "bacterium",
         "spirillum",
@@ -126,7 +193,7 @@
       "source": [
         "https://www.ncbi.nlm.nih.gov/books/NBK8406/"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Shape-only schematic; flagella and species identity are not represented.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -136,18 +203,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "animal-cell",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Cell biology",
       "anatomyLevel": "cellular",
       "role": "cell",
       "title": "Animal cell",
-      "description": "compact animal-cell silhouette",
+      "description": "A compact animal-cell silhouette with membrane, nucleus and organelles.",
       "keywords": [
         "cell",
         "animal cell",
@@ -161,7 +259,7 @@
       "source": [
         "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Selected organelles are illustrative and not to scale.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -171,18 +269,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "nucleus",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Cell biology",
       "anatomyLevel": "cellular",
       "role": "organelle",
       "title": "Nucleus",
-      "description": "nucleus with envelope, nucleolus and chromatin marks",
+      "description": "A nucleus with envelope, nucleolus and chromatin marks.",
       "keywords": [
         "nucleus",
         "nuclear envelope",
@@ -196,7 +325,7 @@
       "source": [
         "https://openstax.org/books/biology-2e/pages/4-4-the-nucleus-and-ribosomes"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Nuclear organization is schematic and not a microscopy reconstruction.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -206,18 +335,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "mitochondrion",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Cell biology",
       "anatomyLevel": "cellular",
       "role": "organelle",
       "title": "Mitochondrion",
-      "description": "elongated mitochondrion with folded inner membrane",
+      "description": "An elongated mitochondrion with folded inner membrane.",
       "keywords": [
         "mitochondrion",
         "mitochondria",
@@ -231,7 +391,7 @@
       "source": [
         "https://openstax.org/books/biology-2e/pages/4-4-the-nucleus-and-ribosomes"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Cristae and membrane spaces are simplified; no ATP rate is implied.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -241,18 +401,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "epithelial-cell",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Histology",
       "anatomyLevel": "tissue",
       "role": "cell",
       "title": "Epithelial cell",
-      "description": "polarized epithelial cell with apical surface and basal edge",
+      "description": "A polarized epithelial cell with an apical surface and basal edge.",
       "keywords": [
         "epithelial cell",
         "epithelium",
@@ -266,7 +457,7 @@
       "source": [
         "https://openstax.org/books/anatomy-and-physiology-2e/pages/4-2-epithelial-tissue"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Generic cell silhouette; tissue-specific junctions and polarity markers are omitted.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -276,18 +467,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "cell-membrane",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Cell biology",
       "anatomyLevel": "molecular",
       "role": "boundary",
       "title": "Cell membrane",
-      "description": "phospholipid-bilayer fragment",
+      "description": "A phospholipid-bilayer fragment with hydrophilic heads and hydrophobic core.",
       "keywords": [
         "cell membrane",
         "phospholipid",
@@ -301,7 +523,7 @@
       "source": [
         "https://openstax.org/books/biology-2e/pages/5-1-components-and-structure"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Molecular arrangement is conceptual and not a molecular-scale drawing.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -311,18 +533,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "dna-helix",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Molecular biology",
       "anatomyLevel": "molecular",
       "role": "structure",
       "title": "DNA double helix",
-      "description": "compact DNA helix with paired bases",
+      "description": "A compact DNA helix with paired bases.",
       "keywords": [
         "DNA",
         "double helix",
@@ -336,7 +589,7 @@
       "source": [
         "https://openstax.org/books/biology-2e/pages/14-2-dna-structure-and-sequencing"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Base sequence and molecular dimensions are not encoded.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -346,18 +599,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "neuron",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Neuroscience",
       "anatomyLevel": "cellular",
       "role": "cell",
       "title": "Neuron",
-      "description": "neuron with soma, dendrites and myelinated axon path",
+      "description": "A neuron with soma, dendrites and a myelinated axon path.",
       "keywords": [
         "neuron",
         "axon",
@@ -372,7 +656,7 @@
       "source": [
         "https://openstax.org/books/anatomy-and-physiology-2e/pages/12-2-basic-structure-and-function-of-the-nervous-system"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Signal direction is illustrative; no electrophysiology is calculated.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -382,18 +666,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "red-blood-cell",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Hematology",
       "anatomyLevel": "cellular",
       "role": "cell",
       "title": "Red blood cell",
-      "description": "biconcave red-cell silhouette",
+      "description": "A biconcave red-cell silhouette.",
       "keywords": [
         "red blood cell",
         "erythrocyte",
@@ -407,7 +722,7 @@
       "source": [
         "https://openstax.org/books/anatomy-and-physiology-2e/pages/18-2-production-of-the-formed-elements"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "No cell count, oxygen saturation or disease state is represented.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -417,18 +732,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "white-blood-cell",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Immunology",
       "anatomyLevel": "cellular",
       "role": "cell",
       "title": "White blood cell",
-      "description": "leukocyte with lobed nucleus",
+      "description": "A leukocyte with a lobed nucleus.",
       "keywords": [
         "white blood cell",
         "leukocyte",
@@ -442,7 +788,7 @@
       "source": [
         "https://openstax.org/books/anatomy-and-physiology-2e/pages/18-2-production-of-the-formed-elements"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Generic leukocyte; lineage and activation state are not identified.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -452,24 +798,56 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "alveolus",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Respiration",
       "anatomyLevel": "organ",
       "role": "structure",
       "title": "Alveolar cluster",
-      "description": "cluster of ten lobulated alveolar air spaces wrapped by a thin capillary mesh",
+      "description": "A cluster of ten lobulated alveolar air spaces wrapped by a thin capillary mesh.",
       "keywords": [
         "alveolus",
         "alveoli",
         "lung",
         "gas exchange",
-        "capillary"
+        "capillary",
+        "air sac"
       ],
       "aliases": [
         "lung alveolus"
@@ -487,18 +865,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "artery-vessel",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Anatomy",
       "anatomyLevel": "organ",
       "role": "structure",
       "title": "Artery cross-section",
-      "description": "simplified vessel cross-section with wall layers and lumen",
+      "description": "A simplified vessel cross-section with wall layers and lumen.",
       "keywords": [
         "artery",
         "vessel",
@@ -512,7 +921,7 @@
       "source": [
         "https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-blood-flow-and-blood-pressure"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Wall layers are simplified and not a histological diagnosis.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -522,18 +931,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "receptor",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Cell biology",
       "anatomyLevel": "molecular",
       "role": "mechanism",
       "title": "Membrane receptor",
-      "description": "receptor embedded in a membrane with an external binding site",
+      "description": "A receptor embedded in a membrane with an external binding site.",
       "keywords": [
         "receptor",
         "ligand",
@@ -547,7 +987,7 @@
       "source": [
         "https://openstax.org/books/biology-2e/pages/9-1-signaling-molecules-and-cellular-receptors"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Binding and downstream signaling are generic and not pathway-specific.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -557,18 +997,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "synapse",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Neuroscience",
       "anatomyLevel": "cellular",
       "role": "mechanism",
       "title": "Chemical synapse",
-      "description": "presynaptic terminal, cleft and postsynaptic receptors",
+      "description": "A presynaptic terminal, cleft and postsynaptic receptors.",
       "keywords": [
         "synapse",
         "neurotransmitter",
@@ -582,7 +1053,7 @@
       "source": [
         "https://openstax.org/books/anatomy-and-physiology-2e/pages/12-4-the-action-potential"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Release and receptor response are schematic; no transmitter concentration is implied.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -592,18 +1063,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "bone",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Anatomy",
       "anatomyLevel": "tissue",
       "role": "structure",
       "title": "Bone cross-section",
-      "description": "compact bone fragment with simplified trabecular pattern",
+      "description": "A compact bone fragment with a simplified trabecular pattern.",
       "keywords": [
         "bone",
         "osseous tissue",
@@ -617,7 +1119,7 @@
       "source": [
         "https://openstax.org/books/anatomy-and-physiology-2e/pages/6-3-bone-structure"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Generic bone texture; cortical and cancellous regions are not separated.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -627,18 +1129,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "scalpel",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Surgery",
       "anatomyLevel": "instrument",
       "role": "instrument",
       "title": "Scalpel",
-      "description": "simple scalpel silhouette for procedural illustrations",
+      "description": "A simple scalpel silhouette for procedural illustrations.",
       "keywords": [
         "scalpel",
         "surgery",
@@ -652,7 +1185,7 @@
       "source": [
         "https://www.ncbi.nlm.nih.gov/books/NBK519054/"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Generic instrument silhouette; no manufacturer or size is represented.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -662,18 +1195,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "syringe",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Surgery",
       "anatomyLevel": "instrument",
       "role": "instrument",
       "title": "Syringe",
-      "description": "syringe with barrel, plunger and needle",
+      "description": "A syringe with barrel, plunger and needle.",
       "keywords": [
         "syringe",
         "needle",
@@ -687,7 +1251,7 @@
       "source": [
         "https://www.ncbi.nlm.nih.gov/books/NBK470404/"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "No medication, dose or route is shown.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -697,18 +1261,49 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "suture",
       "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Surgery",
       "anatomyLevel": "instrument",
       "role": "mechanism",
       "title": "Suture and needle",
-      "description": "curved surgical needle with thread for wound-closure scenes",
+      "description": "A curved surgical needle with thread for wound-closure scenes.",
       "keywords": [
         "suture",
         "needle",
@@ -722,7 +1317,7 @@
       "source": [
         "https://www.ncbi.nlm.nih.gov/books/NBK507908/"
       ],
-      "limitations": "Conceptual schematic; use the part with its metadata limitations.",
+      "limitations": "Closure technique, tissue tension and material properties are not represented.",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -732,12 +1327,44 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "pituitary-gland",
+      "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Endocrinology",
       "anatomyLevel": "organ",
       "role": "structure",
@@ -758,7 +1385,6 @@
         "https://www.ncbi.nlm.nih.gov/books/NBK279054/"
       ],
       "limitations": "Gross-anatomy schematic; lobes, vascular connections and hormone pathways are simplified.",
-      "file": "parts/medical-parts.js",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -768,12 +1394,44 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "clavicle",
+      "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Anatomy",
       "anatomyLevel": "organ",
       "role": "structure",
@@ -794,7 +1452,6 @@
         "https://openstax.org/books/anatomy-and-physiology-2e/pages/8-3-the-pectoral-girdle"
       ],
       "limitations": "Single-bone gross-anatomy schematic; side, landmarks and fracture patterns are not represented.",
-      "file": "parts/medical-parts.js",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -804,12 +1461,44 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "trachea",
+      "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Respiration",
       "anatomyLevel": "organ",
       "role": "structure",
@@ -830,7 +1519,6 @@
         "https://www.nhlbi.nih.gov/health/lungs/respiratory-system"
       ],
       "limitations": "Airway schematic; cartilage composition, mucosa, dimensions and airflow are not to scale.",
-      "file": "parts/medical-parts.js",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -840,12 +1528,44 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "thyroid-gland",
+      "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Endocrinology",
       "anatomyLevel": "organ",
       "role": "structure",
@@ -865,7 +1585,6 @@
         "https://www.ncbi.nlm.nih.gov/books/NBK279388/"
       ],
       "limitations": "Gross-anatomy schematic; lobe proportions, isthmus thickness and parathyroids are not shown to scale.",
-      "file": "parts/medical-parts.js",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -875,12 +1594,44 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     },
     {
       "id": "brainstem",
+      "file": "parts/medical-parts.js",
+      "version": 2,
       "category": "Neuroscience",
       "anatomyLevel": "organ",
       "role": "structure",
@@ -901,7 +1652,6 @@
         "https://openstax.org/books/anatomy-and-physiology-2e/pages/12-2-basic-structure-and-function-of-the-nervous-system"
       ],
       "limitations": "Orientation and nuclei are simplified; this is a gross educational silhouette, not a neuroanatomy atlas.",
-      "file": "parts/medical-parts.js",
       "composition": {
         "viewBox": "0 0 640 440",
         "anchor": "center",
@@ -911,8 +1661,1014 @@
           "scale",
           "rotation",
           "opacity",
-          "accent"
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
         ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 440
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "vessel-segment",
+      "file": "parts/medical-parts.js",
+      "version": 2,
+      "category": "Circulation",
+      "anatomyLevel": "organ",
+      "role": "structure",
+      "title": "Longitudinal vessel segment",
+      "description": "A configurable artery, vein or capillary segment with named attachments and optional valve.",
+      "keywords": [
+        "vessel",
+        "artery",
+        "vein",
+        "capillary",
+        "valve",
+        "lumen",
+        "segment"
+      ],
+      "aliases": [
+        "longitudinal vessel"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-blood-flow-and-blood-pressure"
+      ],
+      "limitations": "Longitudinal educational schematic; wall layers, pressure, velocity and histology are not to scale.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
+        ]
+      },
+      "attachments": {
+        "inlet": {
+          "x": 60,
+          "y": 220
+        },
+        "outlet": {
+          "x": 580,
+          "y": 220
+        },
+        "center": {
+          "x": 320,
+          "y": 220
+        },
+        "valve": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 40,
+        "y": 100,
+        "width": 560,
+        "height": 240
+      },
+      "dependencies": [],
+      "parameterSchema": {
+        "kind": {
+          "type": "enum",
+          "values": [
+            "artery",
+            "vein",
+            "capillary"
+          ],
+          "description": "Wall and lumen variant."
+        },
+        "narrowing": {
+          "type": "number",
+          "min": 0,
+          "max": 0.75,
+          "step": 0.05,
+          "description": "Illustrative central narrowing."
+        },
+        "valve": {
+          "type": "boolean",
+          "description": "Show a venous valve leaf pair."
+        }
+      },
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "blood-flow",
+      "file": "parts/medical-parts.js",
+      "version": 2,
+      "category": "Circulation",
+      "anatomyLevel": "cellular",
+      "role": "mechanism",
+      "title": "Path-based blood flow",
+      "description": "Reusable deterministic red-cell particles moving along a supplied polyline.",
+      "keywords": [
+        "blood flow",
+        "particle flow",
+        "red blood cell",
+        "path",
+        "motion"
+      ],
+      "aliases": [
+        "blood particles"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/20-2-blood-flow-blood-pressure-and-resistance"
+      ],
+      "limitations": "Particles illustrate direction and continuity only; no blood velocity, viscosity or cell deformability is calculated.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
+        ]
+      },
+      "attachments": {
+        "start": {
+          "x": 80,
+          "y": 220
+        },
+        "end": {
+          "x": 560,
+          "y": 220
+        },
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 50,
+        "y": 120,
+        "width": 540,
+        "height": 200
+      },
+      "dependencies": [],
+      "parameterSchema": {
+        "points": {
+          "type": "polyline",
+          "description": "Polyline in local 640\u00d7440 coordinates."
+        },
+        "count": {
+          "type": "integer",
+          "min": 1,
+          "max": 24,
+          "step": 1,
+          "description": "Particle count."
+        },
+        "speed": {
+          "type": "number",
+          "min": 0.1,
+          "max": 4,
+          "step": 0.1,
+          "description": "Visual cycle speed."
+        }
+      },
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "attachment-arrow",
+      "file": "parts/medical-parts.js",
+      "version": 2,
+      "category": "Composition",
+      "anatomyLevel": "tissue",
+      "role": "mechanism",
+      "title": "Attachment-aware arrow",
+      "description": "An arrow connecting named attachment points in a composed scene.",
+      "keywords": [
+        "arrow",
+        "attachment",
+        "label",
+        "direction",
+        "annotation"
+      ],
+      "aliases": [
+        "component arrow"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-blood-flow-and-blood-pressure"
+      ],
+      "limitations": "Annotation geometry communicates a declared relationship; it does not infer anatomy or causality.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
+        ]
+      },
+      "attachments": {
+        "start": {
+          "x": 100,
+          "y": 220
+        },
+        "end": {
+          "x": 540,
+          "y": 220
+        },
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 60,
+        "y": 150,
+        "width": 520,
+        "height": 140
+      },
+      "dependencies": [],
+      "parameterSchema": {
+        "from": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "to": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 48
+        }
+      },
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "attachment-label",
+      "file": "parts/medical-parts.js",
+      "version": 2,
+      "category": "Composition",
+      "anatomyLevel": "tissue",
+      "role": "mechanism",
+      "title": "Attachment-aware label",
+      "description": "A concise label placed beside a named attachment point.",
+      "keywords": [
+        "label",
+        "attachment",
+        "annotation",
+        "callout"
+      ],
+      "aliases": [
+        "component label"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-blood-flow-and-blood-pressure"
+      ],
+      "limitations": "Label placement is schematic and does not encode a measured anatomical landmark.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
+        ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 40,
+        "y": 120,
+        "width": 560,
+        "height": 180
+      },
+      "dependencies": [],
+      "parameterSchema": {
+        "at": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 48
+        },
+        "dx": {
+          "type": "number",
+          "min": -320,
+          "max": 320,
+          "step": 1
+        },
+        "dy": {
+          "type": "number",
+          "min": -220,
+          "max": 220,
+          "step": 1
+        }
+      },
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "platelet",
+      "file": "parts/medical-parts.js",
+      "version": 2,
+      "category": "Hematology",
+      "anatomyLevel": "cellular",
+      "role": "cell",
+      "title": "Platelet",
+      "description": "A small activated platelet silhouette with granule marks.",
+      "keywords": [
+        "platelet",
+        "thrombocyte",
+        "clot",
+        "hemostasis"
+      ],
+      "aliases": [
+        "thrombocyte"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/18-5-hemostasis"
+      ],
+      "limitations": "Generic platelet icon; activation state and granule contents are not quantified.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
+        ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 230,
+        "y": 130,
+        "width": 180,
+        "height": 180
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "fibrin-mesh",
+      "file": "parts/medical-parts.js",
+      "version": 2,
+      "category": "Hematology",
+      "anatomyLevel": "molecular",
+      "role": "mechanism",
+      "title": "Fibrin mesh",
+      "description": "A reusable cross-linked fibrin network whose density follows deterministic progress.",
+      "keywords": [
+        "fibrin",
+        "mesh",
+        "clot",
+        "coagulation",
+        "network"
+      ],
+      "aliases": [
+        "fibrin network"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/18-5-hemostasis"
+      ],
+      "limitations": "Network topology is illustrative; clot strength, factor concentrations and lysis are omitted.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
+        ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        },
+        "inlet": {
+          "x": 90,
+          "y": 220
+        },
+        "outlet": {
+          "x": 550,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 80,
+        "y": 110,
+        "width": 480,
+        "height": 220
+      },
+      "dependencies": [
+        "platelet"
+      ],
+      "parameterSchema": {
+        "density": {
+          "type": "number",
+          "min": 0.1,
+          "max": 1,
+          "step": 0.05,
+          "description": "Final illustrative mesh density."
+        }
+      },
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "layered-tissue",
+      "file": "parts/medical-parts.js",
+      "version": 2,
+      "category": "Histology",
+      "anatomyLevel": "tissue",
+      "role": "structure",
+      "title": "Layered tissue",
+      "description": "Three distinct tissue layers with named attachment edges for wound scenes.",
+      "keywords": [
+        "tissue",
+        "epidermis",
+        "dermis",
+        "layer",
+        "wound"
+      ],
+      "aliases": [
+        "tissue layers"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/4-2-epithelial-tissue"
+      ],
+      "limitations": "Generic educational layers; cell types, thickness and histological diagnosis are not represented.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
+        ]
+      },
+      "attachments": {
+        "apical": {
+          "x": 320,
+          "y": 100
+        },
+        "basal": {
+          "x": 320,
+          "y": 340
+        },
+        "left": {
+          "x": 70,
+          "y": 220
+        },
+        "right": {
+          "x": 570,
+          "y": 220
+        },
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 60,
+        "y": 90,
+        "width": 520,
+        "height": 270
+      },
+      "dependencies": [],
+      "parameterSchema": {
+        "thickness": {
+          "type": "number",
+          "min": 0.2,
+          "max": 0.5,
+          "step": 0.05,
+          "description": "Relative layer height."
+        }
+      },
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "fibroblast",
+      "file": "parts/medical-parts.js",
+      "version": 2,
+      "category": "Tissue repair",
+      "anatomyLevel": "cellular",
+      "role": "cell",
+      "title": "Fibroblast",
+      "description": "A spindle-shaped fibroblast with a central nucleus for repair compositions.",
+      "keywords": [
+        "fibroblast",
+        "wound repair",
+        "collagen",
+        "connective tissue"
+      ],
+      "aliases": [
+        "repair fibroblast"
+      ],
+      "source": [
+        "https://www.ncbi.nlm.nih.gov/books/NBK470443/"
+      ],
+      "limitations": "Cell silhouette only; collagen synthesis rate and lineage are not represented.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
+        ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 150,
+        "y": 150,
+        "width": 340,
+        "height": 140
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "macrophage",
+      "file": "parts/medical-parts.js",
+      "version": 2,
+      "category": "Immunology",
+      "anatomyLevel": "cellular",
+      "role": "cell",
+      "title": "Macrophage",
+      "description": "An irregular macrophage silhouette with pseudopods for an inflammation scene.",
+      "keywords": [
+        "macrophage",
+        "immune cell",
+        "phagocytosis",
+        "inflammation"
+      ],
+      "aliases": [
+        "tissue macrophage"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/21-2-barriers-and-defenses"
+      ],
+      "limitations": "Generic immune-cell silhouette; polarization, cytokines and phagocytic rate are not represented.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
+        ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 150,
+        "y": 120,
+        "width": 340,
+        "height": 220
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "plaque-overlay",
+      "file": "parts/medical-parts.js",
+      "version": 2,
+      "category": "Pathology",
+      "anatomyLevel": "tissue",
+      "role": "mechanism",
+      "title": "Plaque overlay",
+      "description": "A configurable plaque shelf that narrows a vessel lumen without replacing vessel geometry.",
+      "keywords": [
+        "plaque",
+        "atherosclerosis",
+        "stenosis",
+        "vessel",
+        "overlay"
+      ],
+      "aliases": [
+        "atherosclerotic plaque"
+      ],
+      "source": [
+        "https://www.nhlbi.nih.gov/health/atherosclerosis"
+      ],
+      "limitations": "Conceptual overlay; composition, calcification, rupture and clinical risk are not represented.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
+        ]
+      },
+      "attachments": {
+        "center": {
+          "x": 320,
+          "y": 220
+        },
+        "upstream": {
+          "x": 240,
+          "y": 205
+        },
+        "downstream": {
+          "x": 410,
+          "y": 205
+        }
+      },
+      "bounds": {
+        "x": 220,
+        "y": 165,
+        "width": 210,
+        "height": 105
+      },
+      "dependencies": [
+        "vessel-segment"
+      ],
+      "parameterSchema": {
+        "severity": {
+          "type": "number",
+          "min": 0.1,
+          "max": 1,
+          "step": 0.05,
+          "description": "Illustrative shelf thickness."
+        }
+      },
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "heart",
+      "file": "parts/medical-parts.js",
+      "version": 2,
+      "category": "Cardiology",
+      "anatomyLevel": "organ",
+      "role": "structure",
+      "title": "Heart schematic",
+      "description": "A compact four-chamber heart with great-vessel attachment points.",
+      "keywords": [
+        "heart",
+        "atrium",
+        "ventricle",
+        "cardiac",
+        "circulation"
+      ],
+      "aliases": [
+        "four chamber heart"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/19-1-heart-anatomy"
+      ],
+      "limitations": "Schematic heart only; chamber volumes, valves, coronary anatomy and electrical timing are omitted.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
+        ]
+      },
+      "attachments": {
+        "venaCava": {
+          "x": 245,
+          "y": 75
+        },
+        "pulmonaryArtery": {
+          "x": 395,
+          "y": 75
+        },
+        "aorta": {
+          "x": 320,
+          "y": 70
+        },
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 150,
+        "y": 70,
+        "width": 340,
+        "height": 300
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "nephron",
+      "file": "parts/medical-parts.js",
+      "version": 2,
+      "category": "Renal physiology",
+      "anatomyLevel": "organ",
+      "role": "structure",
+      "title": "Nephron schematic",
+      "description": "A nephron loop with glomerulus, tubule, loop and collecting duct attachments.",
+      "keywords": [
+        "nephron",
+        "glomerulus",
+        "tubule",
+        "kidney",
+        "filtration"
+      ],
+      "aliases": [
+        "nephron loop"
+      ],
+      "source": [
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/25-1-the-urinary-system"
+      ],
+      "limitations": "Schematic nephron; filtration, reabsorption, secretion and concentration are not calculated.",
+      "composition": {
+        "viewBox": "0 0 640 440",
+        "anchor": "center",
+        "options": [
+          "x",
+          "y",
+          "scale",
+          "rotation",
+          "opacity",
+          "accent",
+          "theme",
+          "params",
+          "state",
+          "time",
+          "progress"
+        ]
+      },
+      "attachments": {
+        "afferent": {
+          "x": 125,
+          "y": 140
+        },
+        "efferent": {
+          "x": 175,
+          "y": 140
+        },
+        "collectingDuct": {
+          "x": 520,
+          "y": 110
+        },
+        "center": {
+          "x": 320,
+          "y": 220
+        }
+      },
+      "bounds": {
+        "x": 90,
+        "y": 80,
+        "width": 470,
+        "height": 300
+      },
+      "dependencies": [],
+      "parameterSchema": {},
+      "stateSchema": {
+        "time": {
+          "type": "number",
+          "min": 0
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 1
+        }
       }
     }
   ]

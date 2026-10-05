@@ -10,15 +10,15 @@ MedicalMotion.register({
   labels:{cocci:'Cocci',bacilli:'Bacilli',spirilla:'Spirilla',active:'Selected morphology'},
   render:function(c,p,t,S){
     const {C,rect,circle,path,text,wrap}=S; let out='';
-    const active=c.params.mode;
+    const active=c.params.mode, pulse=.94+.06*Math.sin(Math.PI*p);
     const chosen=k=>active==='all'||active===k;
     const cards=[['cocci',108,c.labels.cocci],['bacilli',258,c.labels.bacilli],['spirilla',408,c.labels.spirilla]];
     out+=text(320,28,c.labels.active,C.muted,16,'middle',650);
     cards.forEach(([key,y,label])=>{
-      const hi=chosen(key); out+=rect(42,y-40,556,112,hi?C.soft:C.paper,20,{stroke:hi?C.teal:C.line,'stroke-width':hi?3:2});
+      const hi=chosen(key); out+=rect(42,y-40,556,112,hi?C.soft:C.paper,20,{stroke:hi?C.teal:C.line,'stroke-width':hi?3:2,opacity:hi?pulse:1});
       out+=text(78,y-8,label,C.ink,21,'start',750);
       if(key==='cocci'){
-        for(let i=0;i<5;i++) out+=circle(300+i*43,y+10,18,C.red,{opacity:.85});
+        for(let i=0;i<5;i++) out+=circle(300+i*43,y+10,18+2*pulse,C.red,{opacity:.85});
         out+=circle(386,y+10,18,C.red,{opacity:.45});
       }else if(key==='bacilli'){
         for(let i=0;i<4;i++) out+=rect(285+i*58,y-8,43,36,C.gold,17,{opacity:.9});
@@ -30,3 +30,4 @@ MedicalMotion.register({
     return out;
   }
 });
+

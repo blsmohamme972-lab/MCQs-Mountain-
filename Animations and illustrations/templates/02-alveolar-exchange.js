@@ -9,9 +9,9 @@ MedicalMotion.register({
   params:{speed:1},parameterSchema:{speed:{type:'number',min:0.25,max:2,step:0.25,description:'Visual gas-motion multiplier.'}},
   labels:{air:'Alveolar air',blood:'Capillary blood',barrier:'Thin exchange interface'},
   render:function(c,p,t,S){
-    const {C,path,rect,text,circle,arrow,flow,wrap}=S; let out='';
+    const {C,path,rect,text,circle,arrow,flow,wrap,alveolarSac}=S; let out='';
     // Ten individually shaped air spaces form an alveolar cluster rather than one icon-like bubble.
-    const sac='M 0 -47 C -18 -66 -49 -58 -54 -31 C -79 -30 -94 -8 -80 13 C -92 35 -72 59 -47 54 C -34 76 -5 78 12 58 C 37 77 66 62 61 39 C 87 33 89 5 68 -10 C 79 -35 53 -58 30 -48 C 21 -69 7 -67 0 -47 Z';
+    const sac=alveolarSac;
     const highlight='M -34 -10 C -18 -31 15 -37 35 -19';
     const cells=[[218,82,.55,-8],[320,65,.62,2],[422,82,.55,8],[177,140,.5,-14],[266,126,.6,-5],[374,126,.6,5],[463,140,.5,14],[224,191,.53,-8],[320,181,.62,0],[416,191,.53,8]];
     out+=path('M 320 27 V 47 M 320 47 C 292 57 266 74 245 98 M 320 47 C 348 57 374 74 395 98',C.blue,12,'none',{opacity:.9});

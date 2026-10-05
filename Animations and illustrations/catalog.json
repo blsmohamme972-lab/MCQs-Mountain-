@@ -477,5 +477,42 @@
     "role",
     "keywords",
     "aliases"
+  ],
+  "composedExamples": [
+    {
+      "id": "vessel-narrowing-flow",
+      "source": "examples/composed/vessel-narrowing-flow.json",
+      "export": "examples/composed/vessel-narrowing-flow.html",
+      "components": [
+        "vessel-segment",
+        "plaque-overlay",
+        "blood-flow",
+        "attachment-label"
+      ]
+    },
+    {
+      "id": "clot-formation",
+      "source": "examples/composed/clot-formation.json",
+      "export": "examples/composed/clot-formation.html",
+      "components": [
+        "vessel-segment",
+        "platelet",
+        "fibrin-mesh",
+        "attachment-label"
+      ]
+    },
+    {
+      "id": "wound-repair",
+      "source": "examples/composed/wound-repair.json",
+      "export": "examples/composed/wound-repair.html",
+      "components": [
+        "layered-tissue",
+        "macrophage",
+        "fibroblast",
+        "platelet",
+        "fibrin-mesh",
+        "attachment-label"
+      ]
+    }
   ]
 }

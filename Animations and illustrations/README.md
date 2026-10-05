@@ -58,7 +58,7 @@ All controls except the ECG cursor's cycles-per-minute setting are presentation 
 - `catalog.json`: stable IDs, file paths, keywords and example paths for agent selection.
 - `core/medical-motion.js`: validation, geometry helpers, frame layout, playback and standalone export.
 - `templates/`: thirty-five independently loadable complete-scene renderers, each with defaults, parameter descriptors and references.
-- `parts/`: twenty-five small reusable SVG components with searchable metadata for future scene composition.
+- `parts/`: thirty-seven versioned reusable SVG components with searchable metadata for future scene composition.
 - `parts/index.html`: offline searchable gallery for the reusable parts.
 - `parts/catalog.json`: machine-searchable IDs, categories, anatomy levels, roles, aliases, sources and limitations.
 - `examples/`: one complete, importable scene JSON per template.
@@ -110,13 +110,18 @@ The last command is optional and requires Python Playwright plus Chromium. Set `
 
 ## Reusable parts
 
-Use the parts catalog when a future scene needs a small visual object rather than a complete explanatory mechanism. Search by category, anatomy level, role, keyword or alias before adding anything. The part engine returns deterministic SVG fragments that can be placed, scaled, rotated and recoloured by a host scene. `docs/ADDING_PARTS.md` defines the step-by-step addition workflow and the rule for choosing the smallest coherent missing set.
+Use the parts catalog when a future scene needs a small visual object rather than a complete explanatory mechanism. Search by category, anatomy level, role, keyword or alias before adding anything. The part engine returns deterministic SVG fragments that can be placed, scaled, rotated, recoloured and animated by a host scene. Contract v2 exposes sources, limitations, bounds, attachments, dependencies and validated component parameters at runtime. `docs/ADDING_PARTS.md` defines the step-by-step addition workflow and the rule for choosing the smallest coherent missing set.
 
 ### Exact-count part batches
 
-`parts/medical-parts.js` also exposes `search(query, filters)`, `renderBatch(specs, expectedCount)` and `renderBatchSVG(specs, expectedCount)`. The batch API is the handoff for future HTML video builders: when a request names a count, pass that count and the renderer rejects a mismatch before the scene is assembled.
+`parts/medical-parts.js` also exposes `search(query, filters)`, `discover(id)`, `createRenderer(context)`, `renderBatch(specs, expectedCount)` and `renderBatchSVG(specs, expectedCount)`. Composed scenes under `examples/composed/` export offline HTML with playback controls. The batch API is the handoff for future HTML video builders: when a request names a count, pass that count and the renderer rejects a mismatch before the scene is assembled.
 
 ## Telegram Mini App readiness
 
 The library remains a dependency-free asset store. Use `docs/TELEGRAM_MINI_APP.md` when embedding a selected standalone scene in a Telegram Mini App; keep bot-side validation of `Telegram.WebApp.initData` on the server and apply Telegram theme and safe-area variables in the host shell. Do not add Telegram runtime code to the reusable templates themselves.
 
+
+
+## Composed examples
+
+The maintained `examples/composed/` set demonstrates real part reuse: vessel narrowing with path-based blood flow, clot formation with platelets and fibrin, and wound repair with layered tissue, macrophages and fibroblasts. Each JSON source has a checked-in standalone HTML export with Play, Pause, Seek and Replay controls; the exports inline the parts engine and work without network access.

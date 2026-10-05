@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "title": "Vessel narrowing with blood flow",
+  "caption": "A plaque overlay narrows a vessel while red-cell particles follow a declared path.",
+  "duration": 6,
+  "theme": "clinical",
+  "format": "landscape",
+  "components": [
+    {"id":"vessel-segment","options":{"x":320,"y":220,"scale":1,"params":{"kind":"artery","narrowing":0.55,"valve":false}}},
+    {"id":"plaque-overlay","options":{"x":320,"y":220,"scale":1,"params":{"severity":0.7},"progress":1}},
+    {"id":"blood-flow","options":{"x":320,"y":220,"scale":1,"params":{"points":[[70,220],[230,220],[320,180],[410,220],[570,220]],"count":9,"speed":1},"progress":0}},
+    {"id":"attachment-label","options":{"x":320,"y":220,"scale":1,"params":{"at":"center","label":"Plaque / narrowing","dx":0,"dy":-116},"state":{"attachments":{"center":{"x":320,"y":220}}}}}
+  ]
+}

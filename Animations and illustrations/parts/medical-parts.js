@@ -1,4 +1,9 @@
-/* Medical Motion Parts v1.0.0 | Deterministic, dependency-free SVG components. */
+/* Medical Motion Parts v2.0.0 | Deterministic, dependency-free SVG components.
+ * Geometry is registered below; catalog.json is the authoritative metadata source.
+ * The compact source map keeps runtime discovery offline and is checked against the
+ * catalog by tests/builds. Existing render(id, {x,y,scale,rotation,opacity,accent})
+ * calls remain valid.
+ */
 (function bootMedicalMotionParts(G){
   'use strict';
   const palette={
@@ -6,8 +11,51 @@
     red:'#cf4263', teal:'#087f8c', gold:'#986300', purple:'#7254b8',
     soft:'#eaf1fb', tissue:'#f8ddd6', paper:'#ffffff'
   };
+  const themes={
+    clinical:palette,
+    night:{...palette,ink:'#f0f6ff',muted:'#b6c9e1',line:'#344a65',blue:'#80adff',red:'#ff89a1',teal:'#66d6d0',gold:'#ffd276',soft:'#203652',tissue:'#5f3843',paper:'#13243b'}
+  };
+  const sourceMap={
+    'bacterium-coccus':['https://www.ncbi.nlm.nih.gov/books/NBK8406/'],
+    'bacterium-bacillus':['https://www.ncbi.nlm.nih.gov/books/NBK8406/'],
+    'bacterium-spirillum':['https://www.ncbi.nlm.nih.gov/books/NBK8406/'],
+    'animal-cell':['https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells'],
+    'nucleus':['https://openstax.org/books/biology-2e/pages/4-4-the-nucleus-and-ribosomes'],
+    'mitochondrion':['https://openstax.org/books/biology-2e/pages/4-4-the-nucleus-and-ribosomes'],
+    'epithelial-cell':['https://openstax.org/books/anatomy-and-physiology-2e/pages/4-2-epithelial-tissue'],
+    'cell-membrane':['https://openstax.org/books/biology-2e/pages/5-1-components-and-structure'],
+    'dna-helix':['https://openstax.org/books/biology-2e/pages/14-2-dna-structure-and-sequencing'],
+    'neuron':['https://openstax.org/books/anatomy-and-physiology-2e/pages/12-2-basic-structure-and-function-of-the-nervous-system'],
+    'red-blood-cell':['https://openstax.org/books/anatomy-and-physiology-2e/pages/18-2-production-of-the-formed-elements'],
+    'white-blood-cell':['https://openstax.org/books/anatomy-and-physiology-2e/pages/18-2-production-of-the-formed-elements'],
+    'alveolus':['https://www.nhlbi.nih.gov/health/lungs/respiratory-system'],
+    'artery-vessel':['https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-blood-flow-and-blood-pressure'],
+    'receptor':['https://openstax.org/books/biology-2e/pages/9-1-signaling-molecules-and-cellular-receptors'],
+    'synapse':['https://openstax.org/books/anatomy-and-physiology-2e/pages/12-4-the-action-potential'],
+    'bone':['https://openstax.org/books/anatomy-and-physiology-2e/pages/6-3-bone-structure'],
+    'scalpel':['https://www.ncbi.nlm.nih.gov/books/NBK519054/'],
+    'syringe':['https://www.ncbi.nlm.nih.gov/books/NBK470404/'],
+    'suture':['https://www.ncbi.nlm.nih.gov/books/NBK507908/'],
+    'pituitary-gland':['https://www.ncbi.nlm.nih.gov/books/NBK279054/'],
+    'clavicle':['https://openstax.org/books/anatomy-and-physiology-2e/pages/8-3-the-pectoral-girdle'],
+    'trachea':['https://www.nhlbi.nih.gov/health/lungs/respiratory-system'],
+    'thyroid-gland':['https://www.ncbi.nlm.nih.gov/books/NBK279388/'],
+    'brainstem':['https://openstax.org/books/anatomy-and-physiology-2e/pages/12-2-basic-structure-and-function-of-the-nervous-system'],
+    'vessel-segment':['https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-blood-flow-and-blood-pressure'],
+    'blood-flow':['https://openstax.org/books/anatomy-and-physiology-2e/pages/20-2-blood-flow-blood-pressure-and-resistance'],
+    'attachment-arrow':['https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-blood-flow-and-blood-pressure'],
+    'attachment-label':['https://openstax.org/books/anatomy-and-physiology-2e/pages/20-1-blood-flow-and-blood-pressure'],
+    'platelet':['https://openstax.org/books/anatomy-and-physiology-2e/pages/18-5-hemostasis'],
+    'fibrin-mesh':['https://openstax.org/books/anatomy-and-physiology-2e/pages/18-5-hemostasis'],
+    'layered-tissue':['https://openstax.org/books/anatomy-and-physiology-2e/pages/4-2-epithelial-tissue'],
+    'fibroblast':['https://www.ncbi.nlm.nih.gov/books/NBK470443/'],
+    'macrophage':['https://openstax.org/books/anatomy-and-physiology-2e/pages/21-2-barriers-and-defenses'],
+    'plaque-overlay':['https://www.nhlbi.nih.gov/health/atherosclerosis'],
+    'heart':['https://openstax.org/books/anatomy-and-physiology-2e/pages/19-1-heart-anatomy'],
+    'nephron':['https://openstax.org/books/anatomy-and-physiology-2e/pages/25-1-the-urinary-system'],
+  };
   const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
   const el=(tag,attrs={},children='')=>'<'+tag+' '+Object.entries(attrs).map(([k,v])=>k+'="'+escape(v)+'"').join(' ')+'>'+children+'</'+tag+'>';
   const circle=(x,y,r,fill,extra={})=>el('circle',{cx:x,cy:y,r,fill,...extra});
   const ellipse=(x,y,rx,ry,fill,extra={})=>el('ellipse',{cx:x,cy:y,rx,ry,fill,...extra});
@@ -15,26 +63,63 @@
   const line=(x1,y1,x2,y2,stroke,width=4,extra={})=>el('line',{x1,y1,x2,y2,stroke,'stroke-width':width,'stroke-linecap':'round',...extra});
   const path=(d,stroke,width=4,fill='none',extra={})=>el('path',{d,stroke,'stroke-width':width,fill,'stroke-linecap':'round','stroke-linejoin':'round',...extra});
   const polygon=(points,fill,extra={})=>el('polygon',{points,fill,...extra});
+  const move=(points,fraction)=>{
+    const clean=Array.isArray(points)?points:[], lengths=clean.slice(1).map((q,i)=>Math.hypot(q[0]-clean[i][0],q[1]-clean[i][1]));
+    let d=clamp(fraction)*lengths.reduce((a,b)=>a+b,0);
+    for(let i=0;i<lengths.length;i++){if(d<=lengths[i]||i===lengths.length-1){const u=lengths[i]?d/lengths[i]:0;return [clean[i][0]+(clean[i+1][0]-clean[i][0])*u,clean[i][1]+(clean[i+1][1]-clean[i][1])*u];}d-=lengths[i];}
+    return clean[0]||[320,220];
+  };
+  const arrow=(x1,y1,x2,y2,stroke,width=4)=>{
+    const a=Math.atan2(y2-y1,x2-x1),n=11;
+    return line(x1,y1,x2,y2,stroke,width)+path('M '+(x2-n*Math.cos(a-.5))+' '+(y2-n*Math.sin(a-.5))+' L '+x2+' '+y2+' L '+(x2-n*Math.cos(a+.5))+' '+(y2-n*Math.sin(a+.5)),stroke,width);
+  };
   const text=(x,y,value,fill=palette.ink,size=18,anchor='middle',weight=650)=>el('text',{x,y,fill,'font-size':size,'text-anchor':anchor,'font-weight':weight},escape(value));
   const color=key=>palette[palette[key]?key:'blue'];
-  const allowed=new Set(['x','y','scale','rotation','opacity','accent']);
-  const defaults={x:320,y:220,scale:1,rotation:0,opacity:1,accent:'blue'};
+  const allowed=new Set(['x','y','scale','rotation','opacity','accent','theme','params','state','time','progress']);
+  const defaults={x:320,y:220,scale:1,rotation:0,opacity:1,accent:'blue',theme:'clinical',params:{},state:{},time:0,progress:0};
   function validateOptions(input={}){
     if(!input||typeof input!=='object'||Array.isArray(input))throw new Error('Part options must be an object.');
     for(const key of Object.keys(input))if(!allowed.has(key))throw new Error('Unknown part option: '+key);
-    const o={...defaults,...input};
+    const o={...defaults,...input,params:input.params===undefined?{}:input.params,state:input.state===undefined?{}:input.state};
     if(!Number.isFinite(o.x)||!Number.isFinite(o.y))throw new Error('x and y must be finite numbers.');
     if(!Number.isFinite(o.scale)||o.scale<=0||o.scale>8)throw new Error('scale must be between 0 and 8.');
     if(!Number.isFinite(o.rotation))throw new Error('rotation must be finite.');
     if(!Number.isFinite(o.opacity)||o.opacity<0||o.opacity>1)throw new Error('opacity must be between 0 and 1.');
     if(!Object.hasOwn(palette,o.accent))throw new Error('accent must be a palette key.');
+    if(!['clinical','night'].includes(o.theme))throw new Error('theme must be clinical or night.');
+    if(!Number.isFinite(o.time)||o.time<0)throw new Error('time must be a non-negative finite number.');
+    if(!Number.isFinite(o.progress)||o.progress<0||o.progress>1)throw new Error('progress must be between 0 and 1.');
+    if(!o.params||typeof o.params!=='object'||Array.isArray(o.params))throw new Error('params must be an object.');
+    if(!o.state||typeof o.state!=='object'||Array.isArray(o.state))throw new Error('state must be an object.');
     return o;
   }
   const registry=new Map();
   function register(def){
     if(!def||!/^[a-z][a-z0-9-]+$/.test(def.id)||typeof def.render!=='function')throw new Error('Invalid part definition.');
     if(registry.has(def.id))throw new Error('Duplicate part: '+def.id);
+    def.version=def.version||2;
+    def.sources=def.sources||sourceMap[def.id]||[];
+    def.source=def.sources;
+    def.dependencies=Array.isArray(def.dependencies)?def.dependencies:[];
+    def.attachments=def.attachments||{center:{x:320,y:220}};
+    def.bounds=def.bounds||{x:0,y:0,width:640,height:440};
+    def.parameterSchema=def.parameterSchema||{};
+    def.stateSchema=def.stateSchema||{time:{type:'number',min:0},progress:{type:'number',min:0,max:1}};
     registry.set(def.id,def);
+  }
+  function validateParams(def,params){
+    for(const key of Object.keys(params||{}))if(!Object.hasOwn(def.parameterSchema||{},key))throw new Error(def.id+'.'+key+' is not a declared parameter.');
+    const p={...(def.defaults||{}),...(params||{})};
+    for(const [key,s] of Object.entries(def.parameterSchema||{})){
+      const v=p[key];
+      if(s.type==='number' && (typeof v!=='number'||!Number.isFinite(v)||v<s.min||v>s.max))throw new Error(def.id+'.'+key+' must be between '+s.min+' and '+s.max+'.');
+      if(s.type==='integer' && (!Number.isInteger(v)||v<s.min||v>s.max))throw new Error(def.id+'.'+key+' must be an integer between '+s.min+' and '+s.max+'.');
+      if(s.type==='enum' && !s.values.includes(v))throw new Error(def.id+'.'+key+' must be one of '+s.values.join(', ')+'.');
+      if(s.type==='boolean' && typeof v!=='boolean')throw new Error(def.id+'.'+key+' must be boolean.');
+      if(s.type==='string' && (typeof v!=='string'||v.length>s.maxLength))throw new Error(def.id+'.'+key+' must be a string.');
+      if(s.type==='polyline' && (!Array.isArray(v)||v.length<2||v.some(q=>!Array.isArray(q)||q.length!==2||q.some(n=>!Number.isFinite(n)))))throw new Error(def.id+'.'+key+' must be a numeric polyline.');
+    }
+    return p;
   }
   register({
     id:'bacterium-coccus',category:'Microbiology',anatomyLevel:'cellular',role:'organism',
@@ -163,7 +248,7 @@
     title:'Chemical synapse',description:'A presynaptic terminal, cleft and postsynaptic receptors.',
     keywords:['synapse','neurotransmitter','vesicle','receptor','neuron'],aliases:['chemical synapse'],
     limitations:'Release and receptor response are schematic; no transmitter concentration is implied.',
-    render:function(o,C){let s=rect(120,105,170,180,C.soft,28,{stroke:C.blue,'stroke-width':5})+rect(350,150,170,135,C.tissue,28,{stroke:C.red,'stroke-width':5});for(let i=0;i<5;i++)s+=circle(165+i*28,170+(i%2)*45,9,C.gold);s+=line(300,200,350,200,C.teal,3,{'stroke-dasharray':'7 7'});for(let i=0;i<4;i++)s+=path('M '+400+i*26+' 190 Q '+412+i*26+' 170 '+424+i*26+' 190',C.red,4);return s;}
+    render:function(o,C){let s=rect(120,105,170,180,C.soft,28,{stroke:C.blue,'stroke-width':5})+rect(350,150,170,135,C.tissue,28,{stroke:C.red,'stroke-width':5});for(let i=0;i<5;i++)s+=circle(165+i*28,170+(i%2)*45,9,C.gold);s+=line(300,200,350,200,C.teal,3,{'stroke-dasharray':'7 7'});for(let i=0;i<4;i++){const x=400+i*26;s+=path('M '+x+' 190 Q '+(x+12)+' 170 '+(x+24)+' 190',C.red,4);}return s;}
   });
   register({
     id:'bone',category:'Anatomy',anatomyLevel:'tissue',role:'structure',
@@ -230,6 +315,130 @@
     render:function(o,C){let s=ellipse(420,220,72,100,C.soft,{stroke:C.purple,'stroke-width':5});for(let i=0;i<4;i++)s+=path('M '+390+' '+(155+i*35)+' Q 420 '+(135+i*35)+' 450 '+(155+i*35),C.purple,4,'none',{opacity:.75});s+=path('M 320 128 C 286 142 284 180 300 202 C 288 224 290 260 310 278 C 300 310 310 344 320 368 C 330 344 340 310 330 278 C 350 260 352 224 340 202 C 356 180 354 142 320 128 Z',C.tissue,5,C.soft);s+=line(320,150,320,352,C.red,4,{opacity:.7});return s;}
   });
 
+  // Composition-first components. Their parameter schemas are intentionally small so an
+  // agent can discover and validate a part without opening its renderer.
+  register({
+    id:'vessel-segment',version:2,category:'Circulation',anatomyLevel:'organ',role:'structure',
+    title:'Longitudinal vessel segment',description:'A configurable artery, vein or capillary segment with named attachments and optional valve.',
+    keywords:['vessel','artery','vein','capillary','valve','lumen','segment'],aliases:['longitudinal vessel'],
+    limitations:'Longitudinal educational schematic; wall layers, pressure, velocity and histology are not to scale.',
+    dependencies:[],attachments:{inlet:{x:60,y:220},outlet:{x:580,y:220},center:{x:320,y:220},valve:{x:320,y:220}},
+    bounds:{x:40,y:100,width:560,height:240},defaults:{kind:'artery',narrowing:.2,valve:false},
+    parameterSchema:{kind:{type:'enum',values:['artery','vein','capillary'],description:'Wall and lumen variant.'},narrowing:{type:'number',min:0,max:.75,step:.05,description:'Illustrative central narrowing.'},valve:{type:'boolean',description:'Show a venous valve leaf pair.'}},
+    render:function(o,C){
+      const k=o.params.kind,n=o.params.narrowing,wall=k==='artery'?C.red:k==='vein'?C.blue:C.teal,lumen=k==='capillary'?18:48;
+      const top=220-lumen+80*n*Math.exp(-Math.pow((160)/100,2)), mid=220;
+      let s=path('M 52 '+(220-lumen)+' C 180 '+(220-lumen)+' 235 '+(220-lumen+80*n)+' 320 '+(220-lumen+80*n)+' S 460 '+(220-lumen)+' 588 '+(220-lumen),wall,k==='capillary'?8:18,C.soft)+path('M 52 '+(220+lumen)+' C 180 '+(220+lumen)+' 235 '+(220+lumen-80*n)+' 320 '+(220+lumen-80*n)+' S 460 '+(220+lumen)+' 588 '+(220+lumen),wall,k==='capillary'?8:18,C.soft);
+      s+=line(52,220,588,220,C.line,2,{'stroke-dasharray':'8 8',opacity:.65});
+      s+=text(320,86,k[0].toUpperCase()+k.slice(1)+' segment',C.ink,18,'middle',750);
+      s+=circle(60,220,7,C.gold)+circle(580,220,7,C.gold);
+      if(o.params.valve){s+=path('M 320 220 Q 285 190 270 220',C.gold,8,'none')+path('M 320 220 Q 355 190 370 220',C.gold,8,'none');}
+      return s;
+    }
+  });
+  register({
+    id:'blood-flow',version:2,category:'Circulation',anatomyLevel:'cellular',role:'mechanism',
+    title:'Path-based blood flow',description:'Reusable deterministic red-cell particles moving along a supplied polyline.',
+    keywords:['blood flow','particle flow','red blood cell','path','motion'],aliases:['blood particles'],
+    limitations:'Particles illustrate direction and continuity only; no blood velocity, viscosity or cell deformability is calculated.',
+    dependencies:[],attachments:{start:{x:80,y:220},end:{x:560,y:220},center:{x:320,y:220}},bounds:{x:50,y:120,width:540,height:200},
+    defaults:{points:[[80,220],[560,220]],count:7,speed:1},parameterSchema:{
+      points:{type:'polyline',description:'Polyline in local 640×440 coordinates.'},count:{type:'integer',min:1,max:24,step:1,description:'Particle count.'},speed:{type:'number',min:.1,max:4,step:.1,description:'Visual cycle speed.'}
+    },
+    render:function(o,C){
+      const pts=o.params.points,phase=(o.time*o.params.speed/4+o.progress)%1;
+      let s=path('M '+pts.map(q=>q.join(' ')).join(' L '),C.red,10,'none',{opacity:.2});
+      for(let i=0;i<o.params.count;i++){const q=move(pts,(phase+i/o.params.count)%1);s+=ellipse(q[0],q[1],12,7,C.red,{transform:'rotate(8 '+q[0]+' '+q[1]+')'})+ellipse(q[0],q[1],5,2,C.paper,{opacity:.4});}
+      return s;
+    }
+  });
+  const attachmentPoint=(name,attachments)=>attachments[name]||attachments.center||{x:320,y:220};
+  register({
+    id:'attachment-arrow',version:2,category:'Composition',anatomyLevel:'tissue',role:'mechanism',
+    title:'Attachment-aware arrow',description:'An arrow connecting named attachment points in a composed scene.',
+    keywords:['arrow','attachment','label','direction','annotation'],aliases:['component arrow'],
+    limitations:'Annotation geometry communicates a declared relationship; it does not infer anatomy or causality.',
+    dependencies:[],attachments:{start:{x:100,y:220},end:{x:540,y:220},center:{x:320,y:220}},bounds:{x:60,y:150,width:520,height:140},
+    defaults:{from:'start',to:'end',label:'Direction'},parameterSchema:{from:{type:'string',maxLength:32},to:{type:'string',maxLength:32},label:{type:'string',maxLength:48}},
+    render:function(o,C){const a=attachmentPoint(o.params.from,o.state.attachments||{}),b=attachmentPoint(o.params.to,o.state.attachments||{});return arrow(a.x,a.y,b.x,b.y,C.teal,5)+text((a.x+b.x)/2,(a.y+b.y)/2-14,o.params.label,C.ink,16,'middle',750);}
+  });
+  register({
+    id:'attachment-label',version:2,category:'Composition',anatomyLevel:'tissue',role:'mechanism',
+    title:'Attachment-aware label',description:'A concise label placed beside a named attachment point.',
+    keywords:['label','attachment','annotation','callout'],aliases:['component label'],
+    limitations:'Label placement is schematic and does not encode a measured anatomical landmark.',
+    dependencies:[],attachments:{center:{x:320,y:220}},bounds:{x:40,y:120,width:560,height:180},
+    defaults:{at:'center',label:'Structure',dx:0,dy:-24},parameterSchema:{at:{type:'string',maxLength:32},label:{type:'string',maxLength:48},dx:{type:'number',min:-320,max:320,step:1},dy:{type:'number',min:-220,max:220,step:1}},
+    render:function(o,C){const a=attachmentPoint(o.params.at,o.state.attachments||{});return text(a.x+o.params.dx,a.y+o.params.dy,o.params.label,C.ink,17,'middle',750)+line(a.x,a.y,a.x+o.params.dx,a.y+o.params.dy+6,C.muted,2);}
+  });
+  register({
+    id:'platelet',version:2,category:'Hematology',anatomyLevel:'cellular',role:'cell',
+    title:'Platelet',description:'A small activated platelet silhouette with granule marks.',
+    keywords:['platelet','thrombocyte','clot','hemostasis'],aliases:['thrombocyte'],
+    limitations:'Generic platelet icon; activation state and granule contents are not quantified.',
+    dependencies:[],attachments:{center:{x:320,y:220}},bounds:{x:230,y:130,width:180,height:180},
+    render:function(o,C){let s=circle(320,220,42,C.red,{stroke:C.ink,'stroke-width':3});for(let i=0;i<6;i++){const a=i*Math.PI/3;s+=line(320+30*Math.cos(a),220+30*Math.sin(a),320+50*Math.cos(a),220+50*Math.sin(a),C.gold,5);}for(let i=0;i<4;i++)s+=circle(305+i*10,210+(i%2)*18,4,C.gold);return s;}
+  });
+  register({
+    id:'fibrin-mesh',version:2,category:'Hematology',anatomyLevel:'molecular',role:'mechanism',
+    title:'Fibrin mesh',description:'A reusable cross-linked fibrin network whose density follows deterministic progress.',
+    keywords:['fibrin','mesh','clot','coagulation','network'],aliases:['fibrin network'],
+    limitations:'Network topology is illustrative; clot strength, factor concentrations and lysis are omitted.',
+    dependencies:['platelet'],attachments:{center:{x:320,y:220},inlet:{x:90,y:220},outlet:{x:550,y:220}},bounds:{x:80,y:110,width:480,height:220},
+    defaults:{density:.7},parameterSchema:{density:{type:'number',min:.1,max:1,step:.05,description:'Final illustrative mesh density.'}},
+    render:function(o,C){let s='';const n=Math.max(2,Math.round(3+o.params.density*6*o.progress));for(let i=0;i<n;i++){const y=140+i*38;s+=path('M 100 '+y+' Q 180 '+(y-25)+' 260 '+(y+8)+' T 420 '+(y-4)+' T 540 '+y,C.gold,3,'none',{opacity:.35+.65*o.progress});}for(let i=0;i<n-1;i++)s+=path('M '+(150+i*42)+' 125 L '+(210+i*42)+' 315',C.teal,2,'none',{opacity:.25+.5*o.progress});return s;}
+  });
+  register({
+    id:'layered-tissue',version:2,category:'Histology',anatomyLevel:'tissue',role:'structure',
+    title:'Layered tissue',description:'Three distinct tissue layers with named attachment edges for wound scenes.',
+    keywords:['tissue','epidermis','dermis','layer','wound'],aliases:['tissue layers'],
+    limitations:'Generic educational layers; cell types, thickness and histological diagnosis are not represented.',
+    dependencies:[],attachments:{apical:{x:320,y:100},basal:{x:320,y:340},left:{x:70,y:220},right:{x:570,y:220},center:{x:320,y:220}},bounds:{x:60,y:90,width:520,height:270},
+    defaults:{thickness:.33},parameterSchema:{thickness:{type:'number',min:.2,max:.5,step:.05,description:'Relative layer height.'}},
+    render:function(o,C){const h=220*o.params.thickness;return rect(70,110,500,h,C.gold,12,{opacity:.78})+rect(70,110+h,500,h,C.tissue,12,{opacity:.86})+rect(70,110+2*h,500,220-h*2,C.soft,12,{opacity:.9})+line(70,110,570,110,C.line,3)+line(70,330,570,330,C.line,3);}
+  });
+  register({
+    id:'fibroblast',version:2,category:'Tissue repair',anatomyLevel:'cellular',role:'cell',
+    title:'Fibroblast',description:'A spindle-shaped fibroblast with a central nucleus for repair compositions.',
+    keywords:['fibroblast','wound repair','collagen','connective tissue'],aliases:['repair fibroblast'],
+    limitations:'Cell silhouette only; collagen synthesis rate and lineage are not represented.',
+    dependencies:[],attachments:{center:{x:320,y:220}},bounds:{x:150,y:150,width:340,height:140},
+    render:function(o,C){let s=path('M 150 245 C 220 165 420 165 490 245 C 420 275 220 275 150 245 Z',C.teal,5,C.soft);s+=ellipse(320,220,34,18,C.purple,{opacity:.8});s+=line(186,236,150,214,C.teal,5)+line(454,236,490,214,C.teal,5);return s;}
+  });
+  register({
+    id:'macrophage',version:2,category:'Immunology',anatomyLevel:'cellular',role:'cell',
+    title:'Macrophage',description:'An irregular macrophage silhouette with pseudopods for an inflammation scene.',
+    keywords:['macrophage','immune cell','phagocytosis','inflammation'],aliases:['tissue macrophage'],
+    limitations:'Generic immune-cell silhouette; polarization, cytokines and phagocytic rate are not represented.',
+    dependencies:[],attachments:{center:{x:320,y:220}},bounds:{x:150,y:120,width:340,height:220},
+    render:function(o,C){let s=path('M 230 170 C 180 150 155 205 188 235 C 150 280 220 320 260 284 C 300 330 360 302 362 270 C 430 295 485 245 444 202 C 460 145 390 130 356 170 C 320 122 260 128 230 170 Z',C.soft,5,C.blue);s+=circle(320,220,42,C.purple,{opacity:.72});for(let i=0;i<6;i++)s+=circle(285+(i%3)*28,188+Math.floor(i/3)*28,5,C.gold);return s;}
+  });
+  register({
+    id:'plaque-overlay',version:2,category:'Pathology',anatomyLevel:'tissue',role:'mechanism',
+    title:'Plaque overlay',description:'A configurable plaque shelf that narrows a vessel lumen without replacing vessel geometry.',
+    keywords:['plaque','atherosclerosis','stenosis','vessel','overlay'],aliases:['atherosclerotic plaque'],
+    limitations:'Conceptual overlay; composition, calcification, rupture and clinical risk are not represented.',
+    dependencies:['vessel-segment'],attachments:{center:{x:320,y:220},upstream:{x:240,y:205},downstream:{x:410,y:205}},bounds:{x:220,y:165,width:210,height:105},
+    defaults:{severity:.5},parameterSchema:{severity:{type:'number',min:.1,max:1,step:.05,description:'Illustrative shelf thickness.'}},
+    render:function(o,C){const h=12+42*o.params.severity;return path('M 220 220 C 250 '+(220-h)+' 280 '+(220-h*.6)+' 320 '+(220-h*.7)+' S 390 '+(220-h)+' 430 220',C.gold,Math.max(8,h/2),C.tissue,{opacity:.9})+path('M 225 216 Q 320 '+(184-h*.35)+' 425 216',C.red,3,'none',{opacity:.7});}
+  });
+  register({
+    id:'heart',version:2,category:'Cardiology',anatomyLevel:'organ',role:'structure',
+    title:'Heart schematic',description:'A compact four-chamber heart with great-vessel attachment points.',
+    keywords:['heart','atrium','ventricle','cardiac','circulation'],aliases:['four chamber heart'],
+    limitations:'Schematic heart only; chamber volumes, valves, coronary anatomy and electrical timing are omitted.',
+    dependencies:[],attachments:{venaCava:{x:245,y:75},pulmonaryArtery:{x:395,y:75},aorta:{x:320,y:70},center:{x:320,y:220}},bounds:{x:150,y:70,width:340,height:300},
+    render:function(o,C){let s=path('M 320 350 C 270 300 175 255 190 170 C 200 112 270 120 320 174 C 370 120 440 112 450 170 C 465 255 370 300 320 350 Z',C.red,6,C.tissue);s+=line(320,174,320,300,C.ink,4)+line(205,220,435,220,C.ink,4);s+=circle(255,178,28,C.soft,{stroke:C.blue,'stroke-width':3})+circle(385,178,28,C.soft,{stroke:C.blue,'stroke-width':3})+circle(255,260,38,C.soft,{stroke:C.blue,'stroke-width':3})+circle(385,260,38,C.soft,{stroke:C.blue,'stroke-width':3});return s;}
+  });
+  register({
+    id:'nephron',version:2,category:'Renal physiology',anatomyLevel:'organ',role:'structure',
+    title:'Nephron schematic',description:'A nephron loop with glomerulus, tubule, loop and collecting duct attachments.',
+    keywords:['nephron','glomerulus','tubule','kidney','filtration'],aliases:['nephron loop'],
+    limitations:'Schematic nephron; filtration, reabsorption, secretion and concentration are not calculated.',
+    dependencies:[],attachments:{afferent:{x:125,y:140},efferent:{x:175,y:140},collectingDuct:{x:520,y:110},center:{x:320,y:220}},bounds:{x:90,y:80,width:470,height:300},
+    render:function(o,C){let s=circle(160,160,55,C.soft,{stroke:C.red,'stroke-width':5});for(let i=0;i<5;i++)s+=path('M '+125+' '+(140+i*10)+' Q 160 '+(120+i*15)+' '+195+' '+(140+i*10),C.red,3,'none');s+=path('M 215 160 C 260 130 290 180 290 240 C 290 320 380 320 380 240 C 380 170 430 150 500 160',C.teal,12,'none')+path('M 500 100 V 350',C.blue,18,'none',{opacity:.65});return s;}
+  });
+
   const meta=d=>{const {render,...m}=d;return JSON.parse(JSON.stringify(m));};
   function search(query='',filters={}){
     if(typeof query!=='string')throw new Error('search query must be a string.');
@@ -241,31 +450,42 @@
       return (!q||hay.includes(q))&&Object.entries(filters||{}).every(([k,v])=>!v||d[k]===v);
     });
   }
-  function renderBatch(specs,expectedCount){
+  function renderBatch(specs,expectedCount,context={}){
     if(!Array.isArray(specs)||!specs.length)throw new Error('renderBatch requires at least one part.');
     if(expectedCount!==undefined&&(!Number.isInteger(expectedCount)||expectedCount<1||specs.length!==expectedCount))throw new Error('Requested '+expectedCount+' parts but received '+specs.length+'.');
     return specs.map((spec,i)=>{
       if(!spec||typeof spec!=='object'||typeof spec.id!=='string')throw new Error('Batch item '+i+' must contain a part id.');
-      return render(spec.id,spec.options||{});
+      return render(spec.id,spec.options||{},context);
     }).join('');
   }
-  function renderBatchSVG(specs,expectedCount){
+  function renderBatchSVG(specs,expectedCount,context={}){
     const clean=Array.isArray(specs)?specs:[];
     const titles=clean.map(spec=>get(spec.id).title).join(', ');
-    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" role="img" aria-label="'+escape('Medical parts: '+titles)+'" style="font-family:system-ui,-apple-system,Segoe UI,sans-serif">'+el('title',{},'Medical parts batch')+el('desc',{},escape(titles))+rect(0,0,640,440,palette.paper,0)+renderBatch(clean,expectedCount)+'</svg>';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" role="img" aria-label="'+escape('Medical parts: '+titles)+'" style="font-family:system-ui,-apple-system,Segoe UI,sans-serif">'+el('title',{},'Medical parts batch')+el('desc',{},escape(titles))+rect(0,0,640,440,palette.paper,0)+renderBatch(clean,expectedCount,context)+'</svg>';
   }
   function get(id){const d=registry.get(id);if(!d)throw new Error('Unknown partId: '+id);return d;}
-  function render(id,options={}){
-    const d=get(id),o=validateOptions(options),C={...palette,accent:color(o.accent)};
-    return '<g transform="translate('+(o.x-320)+' '+(o.y-220)+') rotate('+o.rotation+' 320 220) translate(320 220) scale('+o.scale+') translate(-320 -220)" opacity="'+o.opacity+'">'+d.render(o,C)+'</g>';
+  function render(id,options={},context={}){
+    const d=get(id),o=validateOptions(options),o2={...o,params:validateParams(d,o.params)},C={...themes[o.theme],accent:themes[o.theme][o.accent]};
+    const raw=String(d.render(o2,C,{...context,part:d,attachments:d.attachments,theme:o.theme}));
+    // Accent is a real colour channel. Legacy definitions used red/blue directly, so map
+    // those primary strokes to the requested accent while retaining neutral detail colours.
+    const accent=o2.accent, painted=o.accent==='blue'?raw:raw.replaceAll(themes[o.theme].blue,accent).replaceAll(themes[o.theme].red,accent);
+    return '<g data-part-id="'+escape(id)+'" data-part-version="'+d.version+'" data-accent="'+escape(o.accent)+'" transform="translate('+(o.x-320)+' '+(o.y-220)+') rotate('+o.rotation+' 320 220) translate(320 220) scale('+o.scale+') translate(-320 -220)" opacity="'+o.opacity+'">'+painted+'</g>';
   }
-  function renderSVG(id,options={}){
-    const o=validateOptions(options),d=get(id);
-    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" role="img" aria-label="'+escape(d.title)+'" style="font-family:system-ui,-apple-system,Segoe UI,sans-serif">'+el('title',{},d.title)+el('desc',{},d.description+' '+d.limitations)+rect(0,0,640,440,palette.paper,0)+render(id,o)+'</svg>';
+  function renderSVG(id,options={},context={}){
+    const o=validateOptions(options),d=get(id),C=themes[o.theme];
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" role="img" aria-label="'+escape(d.title)+'" style="font-family:system-ui,-apple-system,Segoe UI,sans-serif">'+el('title',{},d.title)+el('desc',{},d.description+' '+d.limitations)+rect(0,0,640,440,C.paper,0)+render(id,o,context)+'</svg>';
+  }
+  function createRenderer(context={}){
+    return {render:(id,options={})=>render(id,options,context),renderSVG:(id,options={})=>renderSVG(id,options,context),renderBatch:(specs,count)=>renderBatch(specs,count,context),renderBatchSVG:(specs,count)=>renderBatchSVG(specs,count,context),get,search};
+  }
+  function discovery(id){
+    const d=get(id);
+    return {id:d.id,version:d.version,title:d.title,description:d.description,sources:d.sources,limitations:d.limitations,dependencies:d.dependencies,attachments:d.attachments,bounds:d.bounds,parameterSchema:d.parameterSchema,stateSchema:d.stateSchema};
   }
   G.MedicalMotionParts=Object.freeze({
-    version:'1.0.0',palette,register,get,
+    version:'2.0.0',contractVersion:2,palette,register,get,
     list:()=>Array.from(registry.values(),meta),
-    search,validate:validateOptions,render,renderSVG,renderBatch,renderBatchSVG
+    discover:discovery,search,validate:validateOptions,validateParams,render,renderSVG,renderBatch,renderBatchSVG,createRenderer
   });
 })(globalThis);

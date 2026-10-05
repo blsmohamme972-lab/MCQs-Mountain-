@@ -39,3 +39,11 @@ Python browser QA requires Playwright and an available Chromium executable. Set 
 - Rendered a diagram-only SVG (640 × 440 viewBox) and a full portrait SVG (720 × 1280 viewBox), then rasterized both to PNG for visual inspection.
 - Confirmed readable separation of the sac, exchange interface, capillary blood, O₂/CO₂ arrows and explanatory labels. No visible label/path overlap remained in the reviewed frames.
 
+
+
+## 2026-10-05 — v2 component and motion QA
+
+- Node tests cover 37 reusable components, catalog/runtime metadata agreement, source and limitation discovery, attachments and bounds, effective parameter changes, accent recoloring, deterministic state, explicit-count batches and three composed scenes.
+- Template QA compares independent diagram frames at 0, 50 and 100% of duration; the result must change in the mechanism artwork, not only captions or UI controls. Themes and portrait/square/landscape rendering remain covered by `tests/verify.mjs`.
+- Composed standalone exports inline the parts engine and scene renderer. The smoke suite checks the absence of external script sources and does not claim clinical validation.
+- Direct Chrome `file://` opening remains environment-dependent; if unavailable, report the injected about:blank/offline result separately rather than weakening the tests.
