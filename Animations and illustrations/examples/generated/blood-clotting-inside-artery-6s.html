@@ -257,7 +257,8 @@ input[type=range]{width:100%;min-width:120px;accent-color:var(--teal)}
     keywords:['vessel','artery','vein','capillary','valve','lumen','segment'],aliases:['longitudinal vessel'],
     limitations:'Longitudinal educational schematic; wall layers, pressure, velocity and histology are not to scale.',
     dependencies:[],attachments:{inlet:{x:60,y:220},outlet:{x:580,y:220},center:{x:320,y:220},valve:{x:320,y:220}},
-    bounds:{x:40,y:100,width:560,height:240},defaults:{kind:'artery',narrowing:.2,valve:false},
+    // Include the component's short title at y=86 in the declared local bounds.
+    bounds:{x:40,y:60,width:560,height:310},defaults:{kind:'artery',narrowing:.2,valve:false},
     parameterSchema:{kind:{type:'enum',values:['artery','vein','capillary'],description:'Wall and lumen variant.'},narrowing:{type:'number',min:0,max:.75,step:.05,description:'Illustrative central narrowing.'},valve:{type:'boolean',description:'Show a venous valve leaf pair.'}},
     render:function(o,C){
       const k=o.params.kind,n=o.params.narrowing,wall=k==='artery'?C.red:k==='vein'?C.blue:C.teal,lumen=k==='capillary'?18:48;
