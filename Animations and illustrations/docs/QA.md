@@ -1,4 +1,4 @@
-# Verification report - 2026-10-04
+# Verification report - 2026-10-05
 
 ## Completed
 
@@ -11,7 +11,7 @@
 - Reduced-motion preference starts with a still preview. The user may explicitly start playback.
 - The dependency-free Node build generated the bundled studio and all 35 individual scene HTML files. Numeric-token and syntax checks passed. A Playwright run is still device- and environment-dependent.
 - Parts-library verification passed: 37 registered parts matched the catalog; every part rendered deterministically at default and transformed options; searchable metadata and exact-count batches passed; 9 invalid option cases were rejected.
-- Python XML parsing accepted all 25 generated reusable-part SVG documents. The built parts gallery contains the inlined engine and no external runtime dependency.
+- Python XML parsing accepted nine representative composed and reusable-part SVG documents. The built parts gallery contains the inlined engine and no external runtime dependency.
 
 ## Limits of this verification
 
