@@ -11,6 +11,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 PUBLISH = ROOT / "tools" / "publish.py"
 APP = ROOT / "app" / "index.html"
+EXPORT_MODULE = ROOT / "app" / "modules" / "mcq-export.js"
+EXPORT_CORE = ROOT / "app" / "modules" / "mcq-export-core.js"
+EXPORT_EXAMPLE = ROOT / "tools" / "fixtures" / "mcq-export-example.json"
 
 WEBP_STUB = (
     b"RIFF" + (30).to_bytes(4, "little") + b"WEBP" +
@@ -86,6 +89,26 @@ class AppContentContractTests(unittest.TestCase):
         self.assertIn("explanation_images", html)
         self.assertIn("catalogUsable(c)", html)
         self.assertIn('catalog_source", "sample"', html)
+        self.assertIn("globalThis.KafuMcqExport?.chapterControl", html)
+        self.assertIn("globalThis.KafuMcqExport?.bookControl", html)
+
+    def test_owner_export_contract_is_separate_from_student_content(self):
+        html = APP.read_text(encoding="utf-8")
+        module = EXPORT_MODULE.read_text(encoding="utf-8")
+        core = EXPORT_CORE.read_text(encoding="utf-8")
+        manifest = json.loads((ROOT / "app" / "modules" / "manifest.json").read_text(encoding="utf-8"))
+        self.assertIn("modules/mcq-export-core.js", manifest["scripts"])
+        self.assertIn("modules/mcq-export.js", manifest["scripts"])
+        self.assertIn("modules/mcq-export.css", manifest["styles"])
+        self.assertIn("/admin/mcq-export/", module)
+        self.assertIn("can_export_mcqs", module)
+        self.assertIn("navigator.clipboard.writeText(text)", module)
+        self.assertIn('export_type: "kafu_mcq_text_export"', core)
+        self.assertNotIn("SAMPLE.packs", module)
+        example = json.loads(EXPORT_EXAMPLE.read_text(encoding="utf-8"))
+        self.assertEqual(example["export_type"], "kafu_mcq_text_export")
+        self.assertEqual([q["id"] for q in example["questions"]], ["Q000000101", "Q000000102"])
+        self.assertFalse(example["export_metadata"]["image_bytes_embedded"])
 
     def test_library_falls_back_for_empty_or_broken_catalogs(self):
         script = r"""

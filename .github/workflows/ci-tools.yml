@@ -50,9 +50,11 @@ jobs:
       - name: Check Worker and Mini App JavaScript syntax and tests
         run: |
           node --check worker/admin.mjs
+          node --check worker/mcq-export.mjs
           node --check worker/leaderboard.mjs
           node --check worker/bot.mjs
           node --test worker/bot.test.mjs
+          node --test worker/mcq-export.test.mjs
           python - <<'PY'
           from pathlib import Path
           import re

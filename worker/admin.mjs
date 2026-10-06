@@ -1,4 +1,5 @@
 import { verifyTelegramInitData } from './leaderboard.mjs';
+import { handleMcqExport, verifyOwnerRequest } from './mcq-export.mjs';
 const LIMITS={rows_read:5_000_000,rows_written:100_000};
 function reply(body,status=200){return new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json','cache-control':'private, no-store','vary':'Authorization'}})}
 export async function verifyAdmin(request,env){
@@ -44,8 +45,13 @@ export async function d1Usage(env,now=new Date()){
 }
 export async function handleAdmin(request,env,path){
   if(request.method!=='POST')return reply({error:'method_not_allowed'},405);
+  if(path==='/admin/capabilities'){
+    const owner=await verifyOwnerRequest(request.clone(),env);
+    const admin=await verifyAdmin(request,env);
+    return reply({books:!!admin,d1_usage:!!admin,can_export_mcqs:!!owner});
+  }
+  if(path.startsWith('/admin/mcq-export/'))return handleMcqExport(request,env,path);
   if(!await verifyAdmin(request,env))return reply({error:'forbidden'},403);
-  if(path==='/admin/capabilities')return reply({books:true,d1_usage:true});
   if(path==='/admin/usage'){
     try{
       const usage=await d1Usage(env);

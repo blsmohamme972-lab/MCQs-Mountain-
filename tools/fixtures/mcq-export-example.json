@@ -1,0 +1,170 @@
+{
+  "export_type": "kafu_mcq_text_export",
+  "schema_version": 1,
+  "exported_at": "2026-10-06T00:00:00.000Z",
+  "source": {
+    "kind": "published",
+    "source_worker": "content-worker",
+    "catalog_url": "https://content.example/catalog.json",
+    "catalog_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "index_url": null,
+    "snapshot_pinned": true,
+    "chapters": [
+      {
+        "chapter_id": 1,
+        "url": "https://content.example/packs/fixture.json",
+        "image_url": "https://content.example/packs/fixture.images.zip",
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    ]
+  },
+  "scope": {
+    "type": "book",
+    "book_id": "FIXTURE-EXPORT",
+    "book_title": "Fixture Export Book",
+    "book_version": 1,
+    "chapter_id": null,
+    "chapter_title": "Whole book"
+  },
+  "book": {
+    "id": "FIXTURE-EXPORT",
+    "title": "Fixture Export Book",
+    "version": 1,
+    "questions": 2,
+    "chapters": [
+      {
+        "id": 1,
+        "title": "Fixture Chapter",
+        "questions": 2,
+        "qids": [
+          "Q000000101",
+          "Q000000102"
+        ],
+        "url": "https://content.example/packs/fixture.json",
+        "image_url": "https://content.example/packs/fixture.images.zip"
+      }
+    ]
+  },
+  "chapters": [
+    {
+      "id": 1,
+      "title": "Fixture Chapter",
+      "questions": 2,
+      "qids": [
+        "Q000000101",
+        "Q000000102"
+      ],
+      "url": "https://content.example/packs/fixture.json",
+      "image_url": "https://content.example/packs/fixture.images.zip"
+    }
+  ],
+  "expected_question_count": 2,
+  "exported_question_count": 2,
+  "part": null,
+  "questions": [
+    {
+      "id": "Q000000101",
+      "local_id": 1,
+      "type": "sba",
+      "stem": "Which option is first?",
+      "options": [
+        "Alpha",
+        "Beta"
+      ],
+      "answer": "A",
+      "explanation": "Fixture explanation.",
+      "source_page": 2,
+      "images": [
+        "Q000000101_1.webp"
+      ],
+      "chapter_id": 1,
+      "book_id": "FIXTURE-EXPORT",
+      "version": 1,
+      "status": "source_verified"
+    },
+    {
+      "id": "Q000000102",
+      "local_id": 2,
+      "type": "multi",
+      "stem": "Choose both.",
+      "options": [
+        "One",
+        "Two",
+        "Three"
+      ],
+      "answer": [
+        "A",
+        "B"
+      ],
+      "explanation": "Unicode: Δ.",
+      "source_page": 3,
+      "images": [],
+      "chapter_id": 1,
+      "book_id": "FIXTURE-EXPORT",
+      "version": 1,
+      "status": "source_verified"
+    }
+  ],
+  "export_metadata": {
+    "question_integrity": [
+      {
+        "qid": "Q000000101",
+        "publisher_fingerprint": "b3a99c182a6167e2d8eb166ff143818d585a7b2c690f362d21d5754777e4e536",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "7363ecca479363789c61fe551cd5a058dac1c3cfb866dd27a3869b2960322e44",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000000102",
+        "publisher_fingerprint": "48409b0515b7ce0f5a932c53ab7535c9c1218060158271187c881a8b8a83a530",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "47f7d8684996179a185ab7cd2332ce2c4ae6ebf7ab1a56e266785e5c57a61049",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      }
+    ],
+    "image_bytes_embedded": false,
+    "image_hash_scope": "question_json_only",
+    "image_packs": [
+      {
+        "chapter_id": 1,
+        "url": "https://content.example/packs/fixture.images.zip",
+        "entry_filenames": [
+          "Q000000101_1.webp"
+        ],
+        "checksums_available": false,
+        "entry_checksums": {},
+        "bytes_embedded": false
+      }
+    ],
+    "unavailable_metadata": {
+      "image_entry_checksums": "not published in the chapter manifest"
+    },
+    "content_hash": {
+      "algorithm": "SHA-256",
+      "canonicalization": "kafu-question-canonical-json-v1",
+      "covers": "complete original published question object",
+      "excludes": "export_metadata",
+      "verifies_image_bytes": false
+    },
+    "partition_policy": {
+      "max_part_bytes": 900000,
+      "split_boundary": "question_record",
+      "oversized_single_question": "kept as one record in its own part"
+    }
+  },
+  "ai_instructions": {
+    "retain_fields": [
+      "book_id",
+      "book_version",
+      "chapter_id",
+      "qid",
+      "publisher_fingerprint",
+      "content_hash"
+    ],
+    "image_dependent_content_requires_actual_images": true,
+    "do_not_guess_image_content": true,
+    "image_bytes_embedded": false
+  }
+}
