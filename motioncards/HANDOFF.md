@@ -154,3 +154,44 @@ Current production status:
 Next exact action:
 Run full Content Contract CI and Visual/Flow CI on the current branch head. Fix only reproducible failures tied to this hardening, then update this handoff/README/MASTER_PROMPT/PR description with exact run IDs and remaining owner-gated blockers.
 
+## Owner-audit hardening verification
+
+Runtime/code verification SHA: `873b374244bcecdfcb4c74a6a9d1d33f53b231bb`.
+
+Verified on that SHA:
+- Kafu Content Contract CI: SUCCESS — run `37458775325`.
+- Kafu Visual and Flow CI: SUCCESS — run `37458775180`.
+- Legacy Medical illustration job inside Content CI: SUCCESS.
+- Built-app MotionCards journeys: SUCCESS, including rapid reopen, stale-message rejection, background pause, Retry after a transient failed child load, same-QID new-session isolation, full-identity/account isolation, and soft-remove propagation on an already-open question.
+- Real Wrangler static-asset acceptance: SUCCESS with the actual `motioncards-worker/wrangler.jsonc`; exact immutable `.html` returned 200 without canonical redirect, correct Content-Type, CSP/sandbox, Kafu-only CORS, cache headers, exact entry SHA-256, and MessageChannel ready/intermediate/end playback.
+- Fresh offline authoring kit subprocess: scaffold -> edit -> trusted preview host -> package -> validate: SUCCESS.
+- State recovery tests: release lookup fail-closed, safe extraction, immutable candidates, initial promotion interruption, durable unpromoted candidate retry-base recovery, ambiguous candidate rejection: SUCCESS.
+- Publisher/intake tests: duplicate publication no-op contract, source revalidation, targeted replacement confirmation/staleness, remove/restore, multipart completeness/identity, leases/retries/drain: SUCCESS.
+
+Failure-before evidence observed during this hardening:
+- local preview rejected the loopback origin and direct child links were not a usable player;
+- direct `tools/motioncards/smoke.py` had an import-path dependency;
+- Cloudflare HTML routing had no explicit `html_handling:none`;
+- candidate verification had a Path-expression bug;
+- duplicate recovery could feed cards back into queue finish;
+- Retry changed only the URL fragment and could reuse the failed child document instead of issuing a new asset request;
+- queue tests contained malformed template-literal escaping and null-prototype assertion mismatches.
+Each reproduced failure was fixed without disabling a gate or updating a visual baseline to hide it.
+
+Documentation-only follow-up commits after the tested runtime SHA update README, MASTER_PROMPT, owner management instructions and this handoff. Re-run CI on the final documentation head before reporting final review status.
+
+### Owner demonstration after authorized deployment
+
+1. In the private owner chat send `/motioncards Q000000001`.
+2. Tap **Preview**: it opens the trusted Kafu host player.
+3. Tap **Replace** and upload a validated ZIP containing only the intended replacement card(s). Review the exact replacement list and confirm it; stale confirmation must be rejected.
+4. Tap **Remove from students** and confirm. After successful publication, the student's button disappears within the documented bounded refresh window (public index max-age 30s; app refresh 35s by default).
+5. Re-open `/motioncards QID`, choose **Restore previous compatible version**, and confirm. Only that QID is restored after source revalidation; unrelated newer cards remain intact.
+
+### Remaining owner-gated blockers
+
+- PR #67 remains Draft/Open and unmerged.
+- Migration 0006/any MotionCards production migration has not been applied.
+- The production `kafu-motioncards` service has not been created/deployed by this review work.
+- The real Telegram production queue has not been operated.
+- Final production acceptance still requires explicit owner approval followed by a real owner ZIP upload and student playback.
