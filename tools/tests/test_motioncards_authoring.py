@@ -118,7 +118,12 @@ class MotionCardsAuthoringTests(unittest.TestCase):
             scaffold_workspace(b,ws,"MULTI",1,[q["id"] for q in qs],None,8000)
             for p in (ws/"scenes").glob("*.json"):
                 data=json.loads(p.read_text());data["takeaway"]="Focused.";p.write_text(json.dumps(data))
-            old=package_module.MAX_ZIP_BYTES;package_module.MAX_ZIP_BYTES=12000
+            probe=root/"probe.zip";build_package(b,ws,probe)
+            # Force a realistic size-triggered split relative to the actual artifact,
+            # rather than relying on a magic byte count that changes with compiler size.
+            old=package_module.MAX_ZIP_BYTES
+            package_module.MAX_ZIP_BYTES=max(1024,int(probe.stat().st_size*0.70))
+            self.assertLess(package_module.MAX_ZIP_BYTES,probe.stat().st_size)
             try:parts=build_package_set(b,ws,out)
             finally:package_module.MAX_ZIP_BYTES=old
             self.assertGreaterEqual(len(parts),2)
