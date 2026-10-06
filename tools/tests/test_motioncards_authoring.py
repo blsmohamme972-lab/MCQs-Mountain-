@@ -2,6 +2,8 @@ import hashlib,json,tempfile,unittest,zipfile
 from pathlib import Path
 from motioncards.lib.core import adapt_exports,canonical_json,content_hash,publisher_fingerprint,resolve_answer,select_questions
 from motioncards.lib.package import scaffold_workspace,build_package,validate_package,check_archive_structure
+from motioncards.lib.multipart import build_package_set,validate_package_part,combine_parts
+import motioncards.lib.package as package_module
 from motioncards.lib.spec import parse_package_filename
 
 def question(qid,chapter=23,qtype="sba",answer="A",options=None):
@@ -107,5 +109,56 @@ class MotionCardsAuthoringTests(unittest.TestCase):
             with zipfile.ZipFile(path,"w") as z:
                 z.writestr("entries/A.html",b"x");z.writestr("entries/a.html",b"y")
             with self.assertRaisesRegex(ValueError,"collision"):check_archive_structure(path)
+
+
+    def test_multipart_preserves_complete_batch_membership_and_rejects_missing_part(self):
+        qs=[question(f"Q{n:09d}") for n in range(7341,7344)];b=adapt_exports([envelope(qs)])
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);ws=root/"ws";out=root/"MCARDS_MULTI_r1.zip"
+            scaffold_workspace(b,ws,"MULTI",1,[q["id"] for q in qs],None,8000)
+            for p in (ws/"scenes").glob("*.json"):
+                data=json.loads(p.read_text());data["takeaway"]="Focused.";p.write_text(json.dumps(data))
+            old=package_module.MAX_ZIP_BYTES;package_module.MAX_ZIP_BYTES=12000
+            try:parts=build_package_set(b,ws,out)
+            finally:package_module.MAX_ZIP_BYTES=old
+            self.assertGreaterEqual(len(parts),2)
+            for i,p in enumerate(parts,1):
+                m=validate_package_part(p)
+                self.assertEqual(m["multipart"]["part_index"],i)
+                self.assertEqual(m["multipart"]["batch_qids"],[q["id"] for q in qs])
+            combined,source_map,_=combine_parts(parts)
+            self.assertEqual([x["qid"] for x in combined["animations"]],[q["id"] for q in qs])
+            self.assertEqual(set(source_map),{q["id"] for q in qs})
+            with self.assertRaisesRegex(ValueError,"incomplete"):combine_parts(parts[:-1])
+
+    def test_checksum_manifest_type_ratio_and_symlink_attacks_rejected(self):
+        q1=question("Q000007341");b=adapt_exports([envelope([q1])])
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);ws=root/"ws";good=root/"MCARDS_SEC_r1.zip"
+            scaffold_workspace(b,ws,"SEC",1,[q1["id"]],None,8000)
+            scene=next((ws/"scenes").glob("*.json"));s=json.loads(scene.read_text());s["takeaway"]="Safe.";scene.write_text(json.dumps(s))
+            build_package(b,ws,good)
+            with zipfile.ZipFile(good) as src:
+                files={i.filename:src.read(i.filename) for i in src.infolist()}
+            entry=next(x for x in files if x.startswith("entries/"));files[entry]+=b"x"
+            bad=root/"checksum.zip"
+            with zipfile.ZipFile(bad,"w",zipfile.ZIP_DEFLATED) as z:
+                for n,d in files.items():z.writestr(n,d)
+            with self.assertRaisesRegex(ValueError,"checksum"):validate_package(bad)
+
+            files={i.filename:zipfile.ZipFile(good).read(i.filename) for i in zipfile.ZipFile(good).infolist()}
+            manifest=json.loads(files["motioncards-manifest.json"]);manifest["package_type"]="book"
+            files["motioncards-manifest.json"]=json.dumps(manifest).encode();badtype=root/"type.zip"
+            with zipfile.ZipFile(badtype,"w",zipfile.ZIP_DEFLATED) as z:
+                for n,d in files.items():z.writestr(n,d)
+            with self.assertRaisesRegex(ValueError,"manifest_type"):validate_package(badtype)
+
+            bomb=root/"bomb.zip"
+            with zipfile.ZipFile(bomb,"w",zipfile.ZIP_DEFLATED,compresslevel=9) as z:z.writestr("entries/Q000000001.html",b"A"*(2*1024*1024))
+            with self.assertRaisesRegex(ValueError,"ratio"):check_archive_structure(bomb)
+
+            symlink=root/"symlink.zip";info=zipfile.ZipInfo("entries/link.html");info.create_system=3;info.external_attr=(0o120777<<16)
+            with zipfile.ZipFile(symlink,"w") as z:z.writestr(info,b"target")
+            with self.assertRaisesRegex(ValueError,"symlink"):check_archive_structure(symlink)
 
 if __name__=="__main__":unittest.main()
