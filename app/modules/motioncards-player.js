@@ -13,8 +13,11 @@ const sessionKey=()=>{
   return lastSessionToken;
 };
 const current=()=>{
+  let route=null;
+  try{route=typeof cur==="function"?cur():null;}catch(_){return null;}
+  if(typeof SESSION==="undefined"||typeof QI==="undefined")return null;
   const qid=SESSION?.qids?.[SESSION.index],entry=qid&&QI[qid],q=entry?.q;
-  if(!qid||!entry||!q||cur().v!=="study")return null;
+  if(!qid||!entry||!q||route?.v!=="study")return null;
   if(SESSION.mode==="exam"&&!SESSION.finished)return null;
   return{qid,entry,q,account:accountKey(),session:sessionKey(),book_id:String(entry.b),book_version:Number(q.version),chapter_id:String(entry.ch)};
 };
@@ -227,6 +230,6 @@ document.addEventListener("visibilitychange",()=>{if(document.hidden&&active?.pl
 window.addEventListener("pagehide",()=>{if(active?.playing)pause();});
 MC.player={get active(){return active;},refresh:refreshAvailability,close:closePlayer,play,pause,seek,restart,retry:loadFrame,openTrustedPreview,productionRefreshWindowMs:REFRESH_AFTER};
 scheduleAvailability();refreshAvailability();
-const previewQid=new URL(location.href).searchParams.get("motioncards_preview");
+const previewQid=typeof location!=="undefined"&&location?.href?new URL(location.href).searchParams.get("motioncards_preview"):null;
 if(Core.QID.test(String(previewQid||"")))setTimeout(()=>openTrustedPreview(String(previewQid)),0);
 }});
