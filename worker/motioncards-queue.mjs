@@ -160,6 +160,12 @@ export async function confirmMotioncardAction(env,token){
   if(row.kind==="replace"){
     const group=await stmt(env,"SELECT * FROM motioncards_groups WHERE group_key=? AND status='awaiting_confirmation' AND candidate_digest=?",row.group_key,row.candidate_digest).first();
     if(!group)return{ok:false,text:"❌ Replacement candidate is stale; upload or inspect the current card again."};
+    let auth;try{auth=JSON.parse(row.targets_json||"{}")}catch(_){return{ok:false,text:"❌ Replacement confirmation data is invalid."};}
+    for(const [qid,target] of Object.entries(auth)){
+      const card=await stmt(env,"SELECT * FROM motioncards_cards WHERE qid=? AND active=1",qid).first();
+      if(!card||String(card.entry_sha256)!==String(target.expected_active_digest)||String(card.package_id)!==String(target.expected_active_package_id)||Number(card.package_revision)!==Number(target.expected_active_package_revision))
+        return{ok:false,text:"❌ Replacement target changed since validation; inspect the card again."};
+    }
     const results=await env.DB.batch([
       stmt(env,"UPDATE motioncards_groups SET status='ready',replacement_auth_json=?,error_summary=NULL WHERE group_key=? AND status='awaiting_confirmation' AND candidate_digest=?",row.targets_json,row.group_key,row.candidate_digest),
       stmt(env,"UPDATE motioncards_confirmations SET used_at=datetime('now') WHERE token=? AND used_at IS NULL AND expires_at>datetime('now')",row.token)
