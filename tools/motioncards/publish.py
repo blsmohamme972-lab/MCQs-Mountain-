@@ -196,18 +196,22 @@ def apply_management(operation:dict,state_path:Path,site:Path,fetch_json=live_js
     if not identity["book_id"] or identity["book_version"]<1 or not identity["chapter_id"] or not identity["qid"]:raise ValueError("motioncards_operation_identity_invalid")
     key=identity["book_id"]+"|"+str(identity["book_version"])+"|"+identity["qid"]
     active=state["animations"].get(key);expected=str(operation.get("expected_active_digest") or "")
-    if not active or str(active.get("entry_sha256"))!=expected:raise ValueError("motioncards_operation_stale_active")
-    if str(active.get("chapter_id"))!=identity["chapter_id"]:raise ValueError("motioncards_operation_chapter_mismatch")
-    next_state=copy.deepcopy(state);_append_history(next_state,key,active)
+    if active:
+        if str(active.get("entry_sha256"))!=expected:raise ValueError("motioncards_operation_stale_active")
+        if str(active.get("chapter_id"))!=identity["chapter_id"]:raise ValueError("motioncards_operation_chapter_mismatch")
+    elif expected:raise ValueError("motioncards_operation_stale_active")
+    next_state=copy.deepcopy(state)
+    if active:_append_history(next_state,key,active)
     affected=[]
     if operation["kind"]=="remove":
+        if not active:raise ValueError("motioncards_card_already_removed")
         del next_state["animations"][key]
         affected=[{**active,"active":False}]
     else:
         target_digest=str(operation.get("target_digest") or "")
         target=next((x for x in next_state["history"].get(key,[]) if str(x.get("entry_sha256"))==target_digest),None)
         if not target:raise ValueError("motioncards_restore_target_missing")
-        if target_digest==expected:raise ValueError("motioncards_restore_target_already_active")
+        if active and target_digest==expected:raise ValueError("motioncards_restore_target_already_active")
         verify_published_records([target],fetch_json)
         next_state["animations"][key]=copy.deepcopy(target);affected=[{**target,"active":True}]
     next_state["operations"][op_id]={"kind":operation["kind"],"qid":identity["qid"],"expected_active_digest":expected,"target_digest":operation.get("target_digest"),"affected":affected}
