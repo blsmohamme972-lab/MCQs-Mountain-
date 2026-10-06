@@ -87,7 +87,8 @@ def prepare(work:Path,allow_initial:bool):
                                      "target_digest":op.get("target_digest")},state,site)
             build=json.loads((site/"build-info.json").read_text());cards=_cards(result)
             _write_meta(work,{"empty":False,"kind":"admin","operation_id":op["operation_id"],"operation_kind":op["kind"],"lease_token":lease,
-                              "needs_deploy":bool(result.get("changed",True)),"state_sha256":build["state_sha256"],"tree_sha256":tree_sha(site),"cards":cards})
+                              "duplicate":bool(result.get("duplicate")),"needs_deploy":bool(result.get("changed",True)),"state_sha256":build["state_sha256"],
+                              "tree_sha256":tree_sha(site),"cards":cards,"reconciliation":result.get("reconciliation") or []})
             return 0
         except Exception as exc:
             safe=(type(exc).__name__+":"+str(exc))[:350]
@@ -115,7 +116,7 @@ def prepare(work:Path,allow_initial:bool):
         build=json.loads((site/"build-info.json").read_text());cards=_cards(result)
         _write_meta(work,{"empty":False,"kind":"package","group_key":group["group_key"],"lease_token":lease,"package_sha256":result["package_sha256"],
                           "animations":result["animations"],"duplicate":bool(result.get("duplicate")),"needs_deploy":bool(result.get("changed",True)),
-                          "state_sha256":build["state_sha256"],"tree_sha256":tree_sha(site),"cards":cards})
+                          "state_sha256":build["state_sha256"],"tree_sha256":tree_sha(site),"cards":cards,"reconciliation":result.get("reconciliation") or []})
         return 0
     except Exception as exc:
         safe=(type(exc).__name__+":"+str(exc))[:350]
@@ -128,13 +129,18 @@ def finish(work:Path,ok:bool,error=""):
     meta=json.loads((work/"result.json").read_text());q=Queue()
     if meta.get("kind")=="admin":
         payload={"operation_id":meta["operation_id"],"lease_token":meta["lease_token"],"ok":ok}
-        if ok:payload["card"]=meta["cards"][0]
+        if ok:
+            payload["card"]=meta["cards"][0]
+            payload["duplicate"]=bool(meta.get("duplicate",False))
+            if payload["duplicate"]:payload["reconciliation"]=meta.get("reconciliation") or []
         else:payload["error"]=error[:400]
         q.call("finish",payload)
         label=meta["operation_kind"]+" "+meta["cards"][0]["qid"] if meta.get("cards") else meta["operation_id"]
     else:
         payload={"group_key":meta["group_key"],"lease_token":meta["lease_token"],"ok":ok}
-        if ok:payload.update(package_sha256=meta["package_sha256"],animations=meta["animations"],cards=meta["cards"],duplicate=bool(meta.get("duplicate",False)))
+        if ok:
+            payload.update(package_sha256=meta["package_sha256"],animations=meta["animations"],cards=meta["cards"],duplicate=bool(meta.get("duplicate",False)))
+            if payload["duplicate"]:payload["reconciliation"]=meta.get("reconciliation") or []
         else:payload["error"]=error[:400]
         q.call("finish",payload);label=meta["group_key"]
     try:q.notify(("✅ " if ok else "❌ ")+"MotionCards "+label+(" published." if ok else " failed: "+error[:250]))
