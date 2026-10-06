@@ -116,7 +116,7 @@ def verify_candidate(work:Path,state:str):
     if sha256_file(site_file)!=meta["site_archive_sha256"]:raise RuntimeError("motioncards_candidate_site_artifact_hash_mismatch")
     data=json.loads(state_file.read_text())
     if state_digest(data)!=state:raise RuntimeError("motioncards_candidate_state_content_hash_mismatch")
-    extracted=work/"verified-site-"+state
+    extracted=work/("verified-site-"+state)
     shutil.rmtree(extracted,ignore_errors=True);_safe_extract(site_file,extracted)
     if tree_digest(extracted)!=meta["tree_sha256"]:raise RuntimeError("motioncards_candidate_tree_hash_mismatch")
     build=json.loads((extracted/"build-info.json").read_text())
