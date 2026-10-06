@@ -19,23 +19,43 @@ export async function queueMotioncardsDocument(env,doc){
     return{text:"❌ MotionCards ZIP required, up to 19 MB.",dispatch:false};
   const p=parseMotioncardsName(doc.file_name);
   if(!p)return{text:"❌ MotionCards filename must be MCARDS_PACKAGE-ID_rN.zip or _partXofY.zip.",dispatch:false};
-  const group=await stmt(env,"SELECT * FROM motioncards_groups WHERE group_key=?",p.group_key).first();
-  const existing=await stmt(env,"SELECT telegram_file_unique_id FROM motioncards_queue WHERE group_key=? AND part_index=?",p.group_key,p.part).first();
-  if(group?.status!=="failed"&&existing)return existing.telegram_file_unique_id===doc.file_unique_id?
-    {text:"📥 MotionCards already received",dispatch:false}:{text:"❌ A different MotionCards ZIP already occupies this part.",dispatch:false};
-  if(group&&["running","awaiting_confirmation","published"].includes(group.status))return{text:"❌ This MotionCards revision is running, awaiting confirmation, or published and cannot be overwritten.",dispatch:false};
-  if(group&&group.status!=="failed"&&Number(group.part_total)!==p.total)return{text:"❌ Conflicting MotionCards part count.",dispatch:false};
+
+  const before=await stmt(env,"SELECT * FROM motioncards_groups WHERE group_key=?",p.group_key).first();
+  const occupied=await stmt(env,"SELECT telegram_file_unique_id,file_size,filename FROM motioncards_queue WHERE group_key=? AND part_index=?",p.group_key,p.part).first();
+  if(occupied&&occupied.telegram_file_unique_id===doc.file_unique_id&&Number(occupied.file_size)===Number(doc.file_size)&&occupied.filename===doc.file_name)
+    return{text:"📥 MotionCards already received",dispatch:false};
+  if(before&&["running","awaiting_confirmation","published"].includes(before.status))
+    return{text:"❌ This MotionCards revision is running, awaiting confirmation, or published and cannot be overwritten.",dispatch:false};
+  if(before&&Number(before.part_total)!==p.total)
+    return{text:"❌ MotionCards upload has a different part count; clear the failed batch explicitly before changing its shape.",dispatch:false};
+  if(before?.status==="failed"&&Number(before.attempts)>=Number(before.max_attempts))
+    return{text:"❌ MotionCards retry limit reached; upload a new revision after review.",dispatch:false};
+
   const writes=[];
-  if(group?.status==="failed"){
-    if(Number(group.part_total)!==p.total)return{text:"❌ Failed MotionCards upload has a different part count; clear it explicitly before changing the batch shape.",dispatch:false};
-    if(Number(group.attempts)>=Number(group.max_attempts))return{text:"❌ MotionCards retry limit reached; upload a new revision after review.",dispatch:false};
-    writes.push(stmt(env,"UPDATE motioncards_groups SET status='waiting',error_summary=NULL,lease_token=NULL,lease_expires_at=NULL,finished_at=NULL,candidate_digest=NULL,replacement_targets_json=NULL,replacement_auth_json=NULL WHERE group_key=? AND status='failed'",p.group_key));
-  }else writes.push(stmt(env,"INSERT OR IGNORE INTO motioncards_groups(group_key,package_id,revision,part_total,status) VALUES(?,?,?,?, 'waiting')",p.group_key,p.package_id,p.revision,p.total));
-  writes.push(stmt(env,"INSERT INTO motioncards_queue(group_key,part_index,part_total,telegram_file_id,telegram_file_unique_id,filename,file_size) VALUES(?,?,?,?,?,?,?) ON CONFLICT(group_key,part_index) DO UPDATE SET telegram_file_id=excluded.telegram_file_id,telegram_file_unique_id=excluded.telegram_file_unique_id,filename=excluded.filename,file_size=excluded.file_size,created_at=datetime('now')",p.group_key,p.part,p.total,doc.file_id,doc.file_unique_id,doc.file_name,doc.file_size));
-  writes.push(stmt(env,"UPDATE motioncards_groups SET status=CASE WHEN (SELECT COUNT(*) FROM motioncards_queue WHERE group_key=?)=part_total THEN 'ready' ELSE 'waiting' END WHERE group_key=? AND status IN ('waiting','ready')",p.group_key,p.group_key));
+  if(before?.status==="failed"){
+    // Repair is allowed only while the group is still failed inside this transaction.
+    writes.push(stmt(env,"INSERT OR IGNORE INTO motioncards_queue(group_key,part_index,part_total,telegram_file_id,telegram_file_unique_id,filename,file_size) SELECT ?,?,?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM motioncards_groups WHERE group_key=? AND status='failed' AND part_total=? AND attempts<max_attempts)",p.group_key,p.part,p.total,doc.file_id,doc.file_unique_id,doc.file_name,doc.file_size,p.group_key,p.total));
+    writes.push(stmt(env,"UPDATE motioncards_queue SET part_total=?,telegram_file_id=?,telegram_file_unique_id=?,filename=?,file_size=?,created_at=datetime('now') WHERE group_key=? AND part_index=? AND EXISTS(SELECT 1 FROM motioncards_groups WHERE group_key=? AND status='failed' AND part_total=? AND attempts<max_attempts)",p.total,doc.file_id,doc.file_unique_id,doc.file_name,doc.file_size,p.group_key,p.part,p.group_key,p.total));
+    writes.push(stmt(env,"UPDATE motioncards_groups SET status='waiting',error_summary=NULL,lease_token=NULL,lease_expires_at=NULL,finished_at=NULL,candidate_digest=NULL,replacement_targets_json=NULL,replacement_auth_json=NULL WHERE group_key=? AND status='failed' AND part_total=? AND attempts<max_attempts",p.group_key,p.total));
+  }else{
+    writes.push(stmt(env,"INSERT OR IGNORE INTO motioncards_groups(group_key,package_id,revision,part_total,status) VALUES(?,?,?,?, 'waiting')",p.group_key,p.package_id,p.revision,p.total));
+    writes.push(stmt(env,"INSERT OR IGNORE INTO motioncards_queue(group_key,part_index,part_total,telegram_file_id,telegram_file_unique_id,filename,file_size) SELECT ?,?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM motioncards_groups WHERE group_key=? AND package_id=? AND revision=? AND part_total=? AND status IN ('waiting','ready'))",p.group_key,p.part,p.total,doc.file_id,doc.file_unique_id,doc.file_name,doc.file_size,p.group_key,p.package_id,p.revision,p.total));
+  }
+  writes.push(stmt(env,"UPDATE motioncards_groups SET status=CASE WHEN (SELECT COUNT(*) FROM motioncards_queue WHERE group_key=?)=part_total THEN 'ready' ELSE 'waiting' END WHERE group_key=? AND package_id=? AND revision=? AND part_total=? AND status IN ('waiting','ready')",p.group_key,p.group_key,p.package_id,p.revision,p.total));
   await env.DB.batch(writes);
-  const row=await stmt(env,"SELECT status,(SELECT COUNT(*) FROM motioncards_queue WHERE group_key=?) AS n FROM motioncards_groups WHERE group_key=?",p.group_key,p.group_key).first();
-  return{text:"📥 MotionCards "+p.group_key+" ("+(row?.n||0)+"/"+p.total+")",dispatch:row?.status==="ready"};
+
+  const [group,part]=await Promise.all([
+    stmt(env,"SELECT * FROM motioncards_groups WHERE group_key=?",p.group_key).first(),
+    stmt(env,"SELECT * FROM motioncards_queue WHERE group_key=? AND part_index=?",p.group_key,p.part).first()
+  ]);
+  if(!group||String(group.package_id)!==p.package_id||Number(group.revision)!==p.revision||Number(group.part_total)!==p.total)
+    return{text:"❌ MotionCards queue identity changed; retry after inspecting status.",dispatch:false};
+  if(!part||part.telegram_file_unique_id!==doc.file_unique_id||Number(part.file_size)!==Number(doc.file_size)||part.filename!==doc.file_name)
+    return{text:"❌ A different MotionCards ZIP already occupies this part.",dispatch:false};
+  if(!["waiting","ready"].includes(group.status))
+    return{text:"❌ MotionCards queue state changed before intake completed; no part was replaced.",dispatch:false};
+  const count=await stmt(env,"SELECT COUNT(*) AS n FROM motioncards_queue WHERE group_key=?",p.group_key).first();
+  return{text:"📥 MotionCards "+p.group_key+" ("+Number(count?.n||0)+"/"+p.total+")",dispatch:group.status==="ready"};
 }
 async function expireExhausted(env){
   await env.DB.batch([
@@ -75,25 +95,47 @@ function cardWrites(env,cards,guardSql,guardArgs){
     stmt(env,"INSERT INTO motioncards_cards(qid,book_id,book_version,chapter_id,content_hash,active,package_id,package_revision,entry_sha256,entry_url,duration_ms,updated_at) SELECT json_extract(value,'$.qid'),json_extract(value,'$.book_id'),json_extract(value,'$.book_version'),CAST(json_extract(value,'$.chapter_id') AS TEXT),json_extract(value,'$.content_hash'),1,json_extract(value,'$.package_id'),json_extract(value,'$.package_revision'),json_extract(value,'$.entry_sha256'),json_extract(value,'$.entry_url'),json_extract(value,'$.duration_ms'),datetime('now') FROM json_each(?) WHERE EXISTS("+guardSql+") ON CONFLICT(qid) DO UPDATE SET book_id=excluded.book_id,book_version=excluded.book_version,chapter_id=excluded.chapter_id,content_hash=excluded.content_hash,active=1,package_id=excluded.package_id,package_revision=excluded.package_revision,entry_sha256=excluded.entry_sha256,entry_url=excluded.entry_url,duration_ms=excluded.duration_ms,updated_at=datetime('now')",raw,...guardArgs)
   ];
 }
+function validReconciliation(snapshot){
+  if(!snapshot||!QID.test(String(snapshot.qid||""))||!snapshot.card||typeof snapshot.card.active!=="boolean"||!validCard(snapshot.card)||String(snapshot.card.qid)!==String(snapshot.qid))return false;
+  if(!Array.isArray(snapshot.versions)||snapshot.versions.some(v=>!validCard(v)||String(v.qid)!==String(snapshot.qid)))return false;
+  const ref=snapshot.card;
+  return snapshot.versions.every(v=>String(v.book_id)===String(ref.book_id)&&Number(v.book_version)===Number(ref.book_version)&&String(v.chapter_id)===String(ref.chapter_id)&&String(v.content_hash).toLowerCase()===String(ref.content_hash).toLowerCase());
+}
+function reconciliationWrites(env,snapshots,guardSql,guardArgs,extraSql="1",extraArgs=[]){
+  if(!Array.isArray(snapshots)||!snapshots.length||snapshots.some(x=>!validReconciliation(x)))return null;
+  const versions=snapshots.flatMap(x=>x.versions||[]),cards=snapshots.map(x=>({...x.card,active:x.card.active===true}));
+  const versionRaw=JSON.stringify(versions),cardRaw=JSON.stringify(cards),where="EXISTS("+guardSql+") AND ("+extraSql+")";
+  return[
+    stmt(env,"INSERT OR IGNORE INTO motioncards_card_versions(qid,book_id,book_version,chapter_id,content_hash,package_id,package_revision,entry_sha256,entry_url,duration_ms) SELECT json_extract(value,'$.qid'),json_extract(value,'$.book_id'),json_extract(value,'$.book_version'),CAST(json_extract(value,'$.chapter_id') AS TEXT),json_extract(value,'$.content_hash'),json_extract(value,'$.package_id'),json_extract(value,'$.package_revision'),json_extract(value,'$.entry_sha256'),json_extract(value,'$.entry_url'),json_extract(value,'$.duration_ms') FROM json_each(?) WHERE "+where,versionRaw,...guardArgs,...extraArgs),
+    stmt(env,"INSERT INTO motioncards_cards(qid,book_id,book_version,chapter_id,content_hash,active,package_id,package_revision,entry_sha256,entry_url,duration_ms,updated_at) SELECT json_extract(value,'$.qid'),json_extract(value,'$.book_id'),json_extract(value,'$.book_version'),CAST(json_extract(value,'$.chapter_id') AS TEXT),json_extract(value,'$.content_hash'),CASE WHEN json_extract(value,'$.active') THEN 1 ELSE 0 END,json_extract(value,'$.package_id'),json_extract(value,'$.package_revision'),json_extract(value,'$.entry_sha256'),json_extract(value,'$.entry_url'),json_extract(value,'$.duration_ms'),datetime('now') FROM json_each(?) WHERE "+where+" ON CONFLICT(qid) DO UPDATE SET book_id=excluded.book_id,book_version=excluded.book_version,chapter_id=excluded.chapter_id,content_hash=excluded.content_hash,active=excluded.active,package_id=excluded.package_id,package_revision=excluded.package_revision,entry_sha256=excluded.entry_sha256,entry_url=excluded.entry_url,duration_ms=excluded.duration_ms,updated_at=datetime('now')",cardRaw,...guardArgs,...extraArgs)
+  ];
+}
+
 export async function finishMotioncards(env,body){
   const key=String(body.group_key||""),lease=String(body.lease_token||"");
   if(body.ok){
     if(!HEX64.test(String(body.package_sha256||""))||!Number.isSafeInteger(body.animations)||body.animations<1)return{ok:false,status:400,error:"motioncards_finish_invalid"};
     const digest=String(body.package_sha256).toLowerCase(),duplicate=body.duplicate===true;
     const guard="SELECT 1 FROM motioncards_groups WHERE group_key=? AND status='running' AND lease_token=? AND lease_expires_at>=datetime('now')";
-    const writes=[];
+    const writes=[];let reconciliationIndex=-1;
     if(!duplicate){
       if(!Array.isArray(body.cards)||body.cards.length!==body.animations)return{ok:false,status:400,error:"motioncards_finish_invalid"};
       const cw=cardWrites(env,body.cards,guard,[key,lease]);if(!cw)return{ok:false,status:400,error:"motioncards_cards_invalid"};
       writes.push(...cw);
-    }else if(body.cards!=null&&!Array.isArray(body.cards))return{ok:false,status:400,error:"motioncards_finish_invalid"};
+    }else{
+      if(!Array.isArray(body.reconciliation)||!body.reconciliation.length)return{ok:false,status:400,error:"motioncards_reconciliation_required"};
+      const rw=reconciliationWrites(env,body.reconciliation,guard,[key,lease],"NOT EXISTS(SELECT 1 FROM motioncards_publications WHERE group_key=? AND package_sha256=?)",[key,digest]);
+      if(!rw)return{ok:false,status:400,error:"motioncards_reconciliation_invalid"};
+      reconciliationIndex=writes.length+1;writes.push(...rw);
+    }
     writes.push(
       stmt(env,"INSERT INTO motioncards_publications(group_key,package_id,revision,package_sha256,animations) SELECT group_key,package_id,revision,?,? FROM motioncards_groups WHERE group_key=? AND status='running' AND lease_token=? AND lease_expires_at>=datetime('now') ON CONFLICT(group_key) DO UPDATE SET package_sha256=excluded.package_sha256,animations=excluded.animations,published_at=datetime('now')",digest,body.animations,key,lease),
       stmt(env,"UPDATE motioncards_groups SET status='published',finished_at=datetime('now'),error_summary=NULL,published_digest=?,lease_token=NULL,lease_expires_at=NULL,replacement_auth_json=NULL WHERE group_key=? AND status='running' AND lease_token=? AND lease_expires_at>=datetime('now')",digest,key,lease)
     );
     const results=await env.DB.batch(writes);
     if(!results.at(-1)?.meta?.changes)return{ok:false,status:409,error:"motioncards_lease_invalid_or_expired"};
-    return{ok:true,status:200,duplicate};
+    const reconciled=duplicate&&reconciliationIndex>=0&&Number(results[reconciliationIndex]?.meta?.changes||0)>0;
+    return{ok:true,status:200,duplicate,reconciled};
   }
   const error=String(body.error||"motioncards_publish_failed").slice(0,400);
   const result=await stmt(env,"UPDATE motioncards_groups SET status='failed',finished_at=datetime('now'),error_summary=?,lease_token=NULL,lease_expires_at=NULL WHERE group_key=? AND status='running' AND lease_token=? AND lease_expires_at>=datetime('now')",error,key,lease).run();
@@ -109,18 +151,24 @@ export async function finishMotioncardsOperation(env,body){
     const changed=await stmt(env,"UPDATE motioncards_operations SET status='failed',finished_at=datetime('now'),error_summary=?,lease_token=NULL,lease_expires_at=NULL WHERE operation_id=? AND status='running' AND lease_token=? AND lease_expires_at>=datetime('now')",error,id,lease).run();
     return changed?.meta?.changes?{ok:true,status:200}:{ok:false,status:409,error:"motioncards_operation_lease_invalid_or_expired"};
   }
-  const card=body.card;if(!card||!validCard(card)||String(card.qid)!==String(op.qid))return{ok:false,status:400,error:"motioncards_operation_card_invalid"};
-  const guard="SELECT 1 FROM motioncards_operations WHERE operation_id=? AND status='running' AND lease_token=? AND lease_expires_at>=datetime('now')";
+  const duplicate=body.duplicate===true,guard="SELECT 1 FROM motioncards_operations WHERE operation_id=? AND status='running' AND lease_token=? AND lease_expires_at>=datetime('now')";
   const writes=[];
-  if(op.kind==="remove"){
-    writes.push(stmt(env,"UPDATE motioncards_cards SET active=0,updated_at=datetime('now') WHERE qid=? AND entry_sha256=? AND EXISTS("+guard+")",op.qid,op.expected_active_digest,id,lease));
+  if(duplicate){
+    if(!Array.isArray(body.reconciliation)||body.reconciliation.length!==1)return{ok:false,status:400,error:"motioncards_operation_reconciliation_required"};
+    const rw=reconciliationWrites(env,body.reconciliation,guard,[id,lease]);if(!rw)return{ok:false,status:400,error:"motioncards_operation_reconciliation_invalid"};
+    writes.push(...rw);
   }else{
-    const cw=cardWrites(env,[card],guard,[id,lease]);if(!cw)return{ok:false,status:400,error:"motioncards_operation_card_invalid"};writes.push(...cw);
+    const card=body.card;if(!card||!validCard(card)||String(card.qid)!==String(op.qid))return{ok:false,status:400,error:"motioncards_operation_card_invalid"};
+    if(op.kind==="remove"){
+      writes.push(stmt(env,"UPDATE motioncards_cards SET active=0,updated_at=datetime('now') WHERE qid=? AND entry_sha256=? AND EXISTS("+guard+")",op.qid,op.expected_active_digest,id,lease));
+    }else{
+      const cw=cardWrites(env,[card],guard,[id,lease]);if(!cw)return{ok:false,status:400,error:"motioncards_operation_card_invalid"};writes.push(...cw);
+    }
   }
   writes.push(stmt(env,"UPDATE motioncards_operations SET status='published',finished_at=datetime('now'),error_summary=NULL,lease_token=NULL,lease_expires_at=NULL WHERE operation_id=? AND status='running' AND lease_token=? AND lease_expires_at>=datetime('now')",id,lease));
   const results=await env.DB.batch(writes);
   if(!results.at(-1)?.meta?.changes)return{ok:false,status:409,error:"motioncards_operation_lease_invalid_or_expired"};
-  return{ok:true,status:200};
+  return{ok:true,status:200,duplicate,reconciled:duplicate};
 }
 export async function stageReplacementConfirmation(env,body){
   const key=String(body.group_key||""),lease=String(body.lease_token||""),digest=String(body.candidate_digest||"").toLowerCase();
