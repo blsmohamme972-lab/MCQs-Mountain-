@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { DatabaseSync } from "node:sqlite";
 import { readFileSync } from "node:fs";
 import bot, { parsePackageName, retryGroup, clearGroup } from "./bot.mjs";
+import { queueMotioncardsDocument, claimMotioncards, finishMotioncards, finishMotioncardsOperation, recoverMotioncards } from "./motioncards-queue.mjs";
 import { verifyTelegramInitData, baghdadWeekKey } from "./leaderboard.mjs";
 import { createHmac } from "node:crypto";
 
@@ -37,6 +38,7 @@ function testDB() {
 }
 async function harness(fn) {
   const DB = testDB(), messages = [], dispatches = [], dispatchUrls = [], pending = [], callbacks = [];
+  let failNextSendMessage=false;
   const env = { DB, BOT_TOKEN: "unit-bot", WEBHOOK_SECRET: "unit-hook", OWNER_TELEGRAM_ID: "123",
     DISPATCH_TOKEN: "unit-dispatch", QUEUE_API_TOKEN: "  unit-queue\n", CONTENT_BASE: "https://content.test" };
   const original = globalThis.fetch;
@@ -44,7 +46,10 @@ async function harness(fn) {
     url = String(url);
     if (url.startsWith("https://api.telegram.org/")) {
       const body = JSON.parse(init.body);
-      if (url.endsWith("sendMessage")) messages.push(body);
+      if (url.endsWith("sendMessage")) {
+        if(failNextSendMessage){failNextSendMessage=false;throw new Error("fixture Telegram notification failure");}
+        messages.push(body);
+      }
       if (url.endsWith("answerCallbackQuery")) callbacks.push(body);
       return { ok: true, json: async () => ({ ok: true, result: {} }) };
     }
@@ -67,7 +72,7 @@ async function harness(fn) {
     const response = await bot.fetch(new Request("https://kafu.test/bot", { method: "POST", headers: { "X-Telegram-Bot-Api-Secret-Token": "unit-hook" }, body: JSON.stringify({ callback_query: { id: "callback", data, from: { id }, message: { chat: { id, type } } } }) }), env, ctx);
     await Promise.all(pending.splice(0)); return response;
   };
-  try { await fn({ env, DB, messages, dispatches, dispatchUrls, callbacks, send, internal, cb }); }
+  try { await fn({ env, DB, messages, dispatches, dispatchUrls, callbacks, send, internal, cb, failNextTelegram(){failNextSendMessage=true;} }); }
   finally { globalThis.fetch = original; DB.sql.close(); }
 }
 const document = (name, unique = name) => ({ file_name: name, file_id: "file-" + unique, file_unique_id: "unique-" + unique, file_size: 100 });
@@ -75,6 +80,14 @@ const mcCard=(qid,package_id="MULTI",package_revision=2,sha="b".repeat(64))=>({
   qid,book_id:"BOOK",book_version:1,chapter_id:"1",content_hash:"a".repeat(64),package_id,package_revision,
   entry_sha256:sha,entry_url:`https://kafu-motioncards.blsmohamme97.workers.dev/assets/${package_id}/r${package_revision}/${qid}.${sha.slice(0,12)}.html`,duration_ms:6000
 });
+const mcSnapshot=(card,active=true,versions=[card])=>({qid:card.qid,card:{...card,active},versions:versions.map(v=>({...v}))});
+const insertCard=(h,card,active=1)=>{
+  h.DB.sql.prepare("INSERT INTO motioncards_cards(qid,book_id,book_version,chapter_id,content_hash,active,package_id,package_revision,entry_sha256,entry_url,duration_ms) VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(qid) DO UPDATE SET book_id=excluded.book_id,book_version=excluded.book_version,chapter_id=excluded.chapter_id,content_hash=excluded.content_hash,active=excluded.active,package_id=excluded.package_id,package_revision=excluded.package_revision,entry_sha256=excluded.entry_sha256,entry_url=excluded.entry_url,duration_ms=excluded.duration_ms")
+    .run(card.qid,card.book_id,card.book_version,card.chapter_id,card.content_hash,active,card.package_id,card.package_revision,card.entry_sha256,card.entry_url,card.duration_ms);
+};
+const insertVersion=(h,card)=>h.DB.sql.prepare("INSERT OR IGNORE INTO motioncards_card_versions(qid,book_id,book_version,chapter_id,content_hash,package_id,package_revision,entry_sha256,entry_url,duration_ms) VALUES(?,?,?,?,?,?,?,?,?,?)")
+  .run(card.qid,card.book_id,card.book_version,card.chapter_id,card.content_hash,card.package_id,card.package_revision,card.entry_sha256,card.entry_url,card.duration_ms);
+
 
 function signedInitData(user={id:321,first_name:"Ada",photo_url:"https://example.com/a.jpg"},authDate=Math.floor(Date.now()/1000),token="unit-bot"){
   const params=new URLSearchParams({auth_date:String(authDate),query_id:"AAE",user:JSON.stringify(user)});
@@ -705,18 +718,130 @@ test("replacement confirmation is bound to exact active digest and rejects stale
   assert.match(h.messages.at(-1).text,/changed|stale/i);
 }));
 
-test("duplicate MotionCards acknowledgement never reactivates or downgrades a newer card",()=>harness(async h=>{
-  await h.send(document("MCARDS_DUP_r1.zip"));
-  const claim=await (await h.internal("motioncards/claim")).json();
-  const newer=mcCard("Q000000030","NEWER",9,"9".repeat(64));
-  h.DB.sql.prepare("INSERT INTO motioncards_cards(qid,book_id,book_version,chapter_id,content_hash,active,package_id,package_revision,entry_sha256,entry_url,duration_ms) VALUES(?,?,?,?,?,0,?,?,?,?,?)")
-    .run(newer.qid,newer.book_id,newer.book_version,newer.chapter_id,newer.content_hash,newer.package_id,newer.package_revision,newer.entry_sha256,newer.entry_url,newer.duration_ms);
-  const res=await h.internal("motioncards/finish",{group_key:"DUP_r1",lease_token:claim.lease_token,ok:true,duplicate:true,animations:1,package_sha256:"8".repeat(64),cards:[]});
+test("lost first MotionCards acknowledgement reconciles cards and history from durable current state",()=>harness(async h=>{
+  await h.send(document("MCARDS_FIRST_r1.zip"));
+  const claim=await (await h.internal("motioncards/claim")).json(),card=mcCard("Q000000030","FIRST",1,"1".repeat(64));
+  const res=await h.internal("motioncards/finish",{group_key:"FIRST_r1",lease_token:claim.lease_token,ok:true,duplicate:true,animations:1,package_sha256:"8".repeat(64),cards:[card],reconciliation:[mcSnapshot(card,true,[card])]});
   assert.equal(res.status,200);
-  const card={...h.DB.sql.prepare("SELECT active,package_id,package_revision,entry_sha256 FROM motioncards_cards WHERE qid=?").get(newer.qid)};
-  assert.deepEqual(card,{active:0,package_id:"NEWER",package_revision:9,entry_sha256:"9".repeat(64)});
-  assert.equal(h.DB.sql.prepare("SELECT status FROM motioncards_groups WHERE group_key='DUP_r1'").get().status,"published");
+  const current={...h.DB.sql.prepare("SELECT active,package_id,package_revision,entry_sha256 FROM motioncards_cards WHERE qid=?").get(card.qid)};
+  assert.deepEqual(current,{active:1,package_id:"FIRST",package_revision:1,entry_sha256:"1".repeat(64)});
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM motioncards_card_versions WHERE qid=?").get(card.qid).n,1);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM motioncards_publications WHERE group_key='FIRST_r1'").get().n,1);
 }));
+
+test("lost replacement acknowledgement converges to durable active revision and history",()=>harness(async h=>{
+  const qid="Q000000031",old=mcCard(qid,"OLD",1,"2".repeat(64)),current=mcCard(qid,"REPL",2,"3".repeat(64));
+  insertCard(h,old,1);insertVersion(h,old);
+  await h.send(document("MCARDS_REPL_r2.zip"));const claim=await (await h.internal("motioncards/claim")).json();
+  const res=await h.internal("motioncards/finish",{group_key:"REPL_r2",lease_token:claim.lease_token,ok:true,duplicate:true,animations:1,package_sha256:"7".repeat(64),cards:[current],reconciliation:[mcSnapshot(current,true,[old,current])]});
+  assert.equal(res.status,200);
+  const row={...h.DB.sql.prepare("SELECT active,package_id,package_revision,entry_sha256 FROM motioncards_cards WHERE qid=?").get(qid)};
+  assert.deepEqual(row,{active:1,package_id:"REPL",package_revision:2,entry_sha256:"3".repeat(64)});
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM motioncards_card_versions WHERE qid=?").get(qid).n,2);
+}));
+
+test("already acknowledged duplicate cannot resurrect removed card or downgrade newer replacement",()=>harness(async h=>{
+  const qid="Q000000032",old=mcCard(qid,"ACK",1,"4".repeat(64)),newer=mcCard(qid,"NEWER",9,"5".repeat(64));
+  await h.send(document("MCARDS_ACK_r1.zip"));let claim=await (await h.internal("motioncards/claim")).json();
+  assert.equal((await h.internal("motioncards/finish",{group_key:"ACK_r1",lease_token:claim.lease_token,ok:true,animations:1,package_sha256:"6".repeat(64),cards:[old]})).status,200);
+  insertVersion(h,newer);insertCard(h,newer,0);
+  h.DB.sql.exec("UPDATE motioncards_groups SET status='ready',lease_token=NULL,lease_expires_at=NULL WHERE group_key='ACK_r1'");
+  claim=await (await h.internal("motioncards/claim")).json();
+  const res=await h.internal("motioncards/finish",{group_key:"ACK_r1",lease_token:claim.lease_token,ok:true,duplicate:true,animations:1,package_sha256:"6".repeat(64),cards:[old],reconciliation:[mcSnapshot(old,true,[old])]});
+  assert.equal(res.status,200);
+  const row={...h.DB.sql.prepare("SELECT active,package_id,package_revision,entry_sha256 FROM motioncards_cards WHERE qid=?").get(qid)};
+  assert.deepEqual(row,{active:0,package_id:"NEWER",package_revision:9,entry_sha256:"5".repeat(64)});
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM motioncards_card_versions WHERE qid=?").get(qid).n,2);
+}));
+
+test("lost remove and restore acknowledgements reconcile from durable operation state",()=>harness(async h=>{
+  const qid="Q000000033",card=mcCard(qid,"OPS",1,"6".repeat(64));insertCard(h,card,1);insertVersion(h,card);
+  h.DB.sql.prepare("INSERT INTO motioncards_operations(operation_id,kind,qid,book_id,book_version,chapter_id,status,owner_id,chat_id,expected_active_digest,attempts,lease_token,lease_expires_at) VALUES('op-remove','remove',?,?,?,?,?,'running','123','123',?,1,'lease-remove',datetime('now','+10 minutes'))")
+    .run(qid,card.book_id,card.book_version,card.chapter_id,card.entry_sha256);
+  let res=await h.internal("motioncards/finish",{operation_id:"op-remove",lease_token:"lease-remove",ok:true,duplicate:true,card:{...card,active:false},reconciliation:[mcSnapshot(card,false,[card])]});
+  assert.equal(res.status,200);assert.equal(h.DB.sql.prepare("SELECT active FROM motioncards_cards WHERE qid=?").get(qid).active,0);
+  h.DB.sql.prepare("INSERT INTO motioncards_operations(operation_id,kind,qid,book_id,book_version,chapter_id,status,owner_id,chat_id,expected_active_digest,target_digest,attempts,lease_token,lease_expires_at) VALUES('op-restore','restore',?,?,?,?,?,'running','123','123','',?,1,'lease-restore',datetime('now','+10 minutes'))")
+    .run(qid,card.book_id,card.book_version,card.chapter_id,card.entry_sha256);
+  res=await h.internal("motioncards/finish",{operation_id:"op-restore",lease_token:"lease-restore",ok:true,duplicate:true,card:{...card,active:true},reconciliation:[mcSnapshot(card,true,[card])]});
+  assert.equal(res.status,200);assert.equal(h.DB.sql.prepare("SELECT active FROM motioncards_cards WHERE qid=?").get(qid).active,1);
+}));
+
+test("expired replacement confirmation can be renewed, revalidated, or cancelled without changing active card",()=>harness(async h=>{
+  const qid="Q000000034",card=mcCard(qid,"OLD",1,"7".repeat(64));insertCard(h,card,1);insertVersion(h,card);
+  await h.send(document("MCARDS_PENDING_r2.zip"));let claim=await (await h.internal("motioncards/claim")).json();
+  const digest="8".repeat(64),target={qid,book_id:card.book_id,book_version:1,chapter_id:"1",candidate_digest:digest,expected_active_digest:card.entry_sha256,expected_active_package_id:"OLD",expected_active_package_revision:1};
+  let staged=await h.internal("motioncards/candidate",{group_key:"PENDING_r2",lease_token:claim.lease_token,candidate_digest:digest,targets:[target]});
+  assert.equal(staged.status,200);const first=(await staged.json()).token;
+  h.DB.sql.prepare("UPDATE motioncards_confirmations SET expires_at=datetime('now','-1 minute') WHERE token=?").run(first);
+  await h.cb("mcconfirm:"+first);assert.equal(h.DB.sql.prepare("SELECT status FROM motioncards_groups WHERE group_key='PENDING_r2'").get().status,"awaiting_confirmation");
+  await h.send("/motioncards "+qid);
+  const controls=h.messages.at(-1).reply_markup.inline_keyboard.flat();assert.ok(controls.some(x=>x.text==="Renew confirmation"));assert.ok(controls.some(x=>x.text==="Cancel replacement"));
+  await h.cb("mcrenew:"+qid);assert.equal(h.DB.sql.prepare("SELECT status FROM motioncards_groups WHERE group_key='PENDING_r2'").get().status,"ready");
+  assert.ok(h.DB.sql.prepare("SELECT used_at FROM motioncards_confirmations WHERE token=?").get(first).used_at);
+  claim=await (await h.internal("motioncards/claim")).json();
+  insertCard(h,mcCard(qid,"OTHER",3,"9".repeat(64)),1);
+  staged=await h.internal("motioncards/candidate",{group_key:"PENDING_r2",lease_token:claim.lease_token,candidate_digest:digest,targets:[target]});
+  assert.equal(staged.status,409,"renewal must revalidate the CURRENT active target");
+  h.DB.sql.prepare("UPDATE motioncards_groups SET status='ready',lease_token=NULL,lease_expires_at=NULL WHERE group_key='PENDING_r2'").run();
+  insertCard(h,card,1);claim=await (await h.internal("motioncards/claim")).json();
+  staged=await h.internal("motioncards/candidate",{group_key:"PENDING_r2",lease_token:claim.lease_token,candidate_digest:digest,targets:[target]});
+  assert.equal(staged.status,200);const second=(await staged.json()).token;assert.notEqual(second,first);
+  await h.cb("mccancel:"+qid);
+  const group=h.DB.sql.prepare("SELECT status,error_summary FROM motioncards_groups WHERE group_key='PENDING_r2'").get();
+  assert.equal(group.status,"failed");assert.equal(group.error_summary,"motioncards_replacement_cancelled_by_owner");
+  assert.equal(h.DB.sql.prepare("SELECT active,entry_sha256 FROM motioncards_cards WHERE qid=?").get(qid).active,1);
+  await h.cb("mcconfirm:"+second);assert.match(h.messages.at(-1).text,/expired|stale|used/i);
+}));
+
+test("replacement confirmation notification failure remains recoverable from owner management",()=>harness(async h=>{
+  const qid="Q000000035",card=mcCard(qid,"OLD",1,"a".repeat(64));insertCard(h,card,1);insertVersion(h,card);
+  await h.send(document("MCARDS_NOTIFY_r2.zip"));const claim=await (await h.internal("motioncards/claim")).json(),digest="b".repeat(64);
+  const target={qid,book_id:card.book_id,book_version:1,chapter_id:"1",candidate_digest:digest,expected_active_digest:card.entry_sha256,expected_active_package_id:"OLD",expected_active_package_revision:1};
+  h.failNextTelegram();
+  const staged=await h.internal("motioncards/candidate",{group_key:"NOTIFY_r2",lease_token:claim.lease_token,candidate_digest:digest,targets:[target]});
+  assert.equal(staged.status,200);assert.equal((await staged.json()).notification_sent,false);
+  assert.equal(h.DB.sql.prepare("SELECT status FROM motioncards_groups WHERE group_key='NOTIFY_r2'").get().status,"awaiting_confirmation");
+  await h.send("/motioncards "+qid);assert.ok(h.messages.at(-1).reply_markup.inline_keyboard.flat().some(x=>x.text==="Renew confirmation"));
+}));
+
+test("concurrent different MotionCards files cannot overwrite the same queued part",()=>harness(async h=>{
+  const [a,b]=await Promise.all([
+    queueMotioncardsDocument(h.env,document("MCARDS_RACE_r1.zip","race-a")),
+    queueMotioncardsDocument(h.env,document("MCARDS_RACE_r1.zip","race-b"))
+  ]);
+  const results=[a,b],accepted=results.filter(x=>x.dispatch),rejected=results.filter(x=>/different MotionCards ZIP/.test(x.text));
+  assert.equal(accepted.length,1);assert.equal(rejected.length,1);
+  const part=h.DB.sql.prepare("SELECT telegram_file_unique_id FROM motioncards_queue WHERE group_key='RACE_r1' AND part_index=1").get();
+  assert.ok(["unique-race-a","unique-race-b"].includes(part.telegram_file_unique_id));
+}));
+
+test("intake and clear lose races safely while concurrent failed repairs have one winner",()=>harness(async h=>{
+  await queueMotioncardsDocument(h.env,document("MCARDS_INTERLEAVE_r1.zip","old"));
+  h.DB.sql.exec("UPDATE motioncards_groups SET status='failed',error_summary='fixture'");
+  const originalBatch=h.DB.batch.bind(h.DB);let inject="claim";
+  h.DB.batch=async statements=>{
+    if(inject==="claim"){inject="";h.DB.sql.exec("UPDATE motioncards_groups SET status='running',lease_token='race-lease',lease_expires_at=datetime('now','+10 minutes') WHERE group_key='INTERLEAVE_r1'");}
+    return originalBatch(statements);
+  };
+  let result=await queueMotioncardsDocument(h.env,document("MCARDS_INTERLEAVE_r1.zip","replacement"));
+  assert.match(result.text,/state changed|different MotionCards ZIP/);assert.equal(h.DB.sql.prepare("SELECT telegram_file_unique_id FROM motioncards_queue WHERE group_key='INTERLEAVE_r1'").get().telegram_file_unique_id,"unique-old");
+  h.DB.batch=originalBatch;h.DB.sql.exec("UPDATE motioncards_groups SET status='failed',lease_token=NULL,lease_expires_at=NULL WHERE group_key='INTERLEAVE_r1'");
+  inject="clear";
+  h.DB.batch=async statements=>{
+    if(inject==="clear"){inject="";h.DB.sql.exec("UPDATE motioncards_groups SET status='running',lease_token='clear-race',lease_expires_at=datetime('now','+10 minutes') WHERE group_key='INTERLEAVE_r1'");}
+    return originalBatch(statements);
+  };
+  result=await recoverMotioncards(h.env,"clear","INTERLEAVE_r1");assert.equal(result.ok,false);
+  assert.equal(h.DB.sql.prepare("SELECT status FROM motioncards_groups WHERE group_key='INTERLEAVE_r1'").get().status,"running");
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM motioncards_queue WHERE group_key='INTERLEAVE_r1'").get().n,1);
+  h.DB.batch=originalBatch;h.DB.sql.exec("UPDATE motioncards_groups SET status='failed',lease_token=NULL,lease_expires_at=NULL WHERE group_key='INTERLEAVE_r1'");
+  const [x,y]=await Promise.all([
+    queueMotioncardsDocument(h.env,document("MCARDS_INTERLEAVE_r1.zip","repair-a")),
+    queueMotioncardsDocument(h.env,document("MCARDS_INTERLEAVE_r1.zip","repair-b"))
+  ]);
+  assert.equal([x,y].filter(v=>v.dispatch).length,1);assert.equal([x,y].filter(v=>/different MotionCards ZIP/.test(v.text)).length,1);
+}));
+
 
 test("MotionCards internal endpoints require the existing queue token", () => harness(async h => {
   const forbidden=await h.internal("motioncards/claim",{},"wrong");
