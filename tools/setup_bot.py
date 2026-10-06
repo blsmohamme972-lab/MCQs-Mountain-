@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Register Kafu's owner-only Telegram webhook after the Worker is deployed."""
+"""Register Kafu's Telegram webhook, Mini App menu button, and owner commands."""
 import json
 import os
 try:
@@ -9,6 +9,7 @@ except ModuleNotFoundError:
 
 token = os.environ["BOT_TOKEN"]
 secret = os.environ["WEBHOOK_SECRET"]
+owner_id = int(os.environ["OWNER_TELEGRAM_ID"])
 url = os.environ.get("KAFU_APP_URL", "https://kafu.blsmohamme97.workers.dev").rstrip("/")
 
 def call(method, data):
@@ -24,7 +25,18 @@ def call(method, data):
 
 call("setWebhook", {"url": url + "/bot", "secret_token": secret,
                     "allowed_updates": ["message", "callback_query"], "drop_pending_updates": False})
-call("setMyCommands", {"scope": {"type": "chat", "chat_id": int(os.environ["OWNER_TELEGRAM_ID"])},
+
+# Make the Mini App launch button explicit. The default button covers all private
+# chats; the owner-specific button also clears any stale per-chat override.
+menu_button = {
+    "type": "web_app",
+    "text": "Open Kafu",
+    "web_app": {"url": url + "/"},
+}
+call("setChatMenuButton", {"menu_button": menu_button})
+call("setChatMenuButton", {"chat_id": owner_id, "menu_button": menu_button})
+
+call("setMyCommands", {"scope": {"type": "chat", "chat_id": owner_id},
                        "commands": [
                            {"command": "queue", "description": "Show pending uploads"},
                            {"command": "books", "description": "Show published books"},
@@ -37,4 +49,4 @@ call("setMyCommands", {"scope": {"type": "chat", "chat_id": int(os.environ["OWNE
                            {"command": "rollback", "description": "Restore an earlier version"},
                            {"command": "remove", "description": "Remove a book"},
                        ]})
-print("Webhook registered for", url + "/bot")
+print("Webhook and Mini App menu registered for", url)
