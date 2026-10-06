@@ -646,7 +646,7 @@ test("MotionCards failed multipart repair preserves valid accepted parts",()=>ha
   h.DB.sql.exec("UPDATE motioncards_groups SET status='failed',error_summary='fixture'");
   await h.send(document("MCARDS_REPAIR_r1_part2of2.zip","p2-new"));
   assert.equal(h.DB.sql.prepare("SELECT status FROM motioncards_groups WHERE group_key='REPAIR_r1'").get().status,"ready");
-  const parts=h.DB.sql.prepare("SELECT part_index,telegram_file_unique_id FROM motioncards_queue WHERE group_key='REPAIR_r1' ORDER BY part_index").all();
+  const parts=h.DB.sql.prepare("SELECT part_index,telegram_file_unique_id FROM motioncards_queue WHERE group_key='REPAIR_r1' ORDER BY part_index").all().map(x=>({...x}));
   assert.deepEqual(parts,[{part_index:1,telegram_file_unique_id:"unique-p1"},{part_index:2,telegram_file_unique_id:"unique-p2-new"}]);
 }));
 
@@ -713,7 +713,7 @@ test("duplicate MotionCards acknowledgement never reactivates or downgrades a ne
     .run(newer.qid,newer.book_id,newer.book_version,newer.chapter_id,newer.content_hash,newer.package_id,newer.package_revision,newer.entry_sha256,newer.entry_url,newer.duration_ms);
   const res=await h.internal("motioncards/finish",{group_key:"DUP_r1",lease_token:claim.lease_token,ok:true,duplicate:true,animations:1,package_sha256:"8".repeat(64),cards:[]});
   assert.equal(res.status,200);
-  const card=h.DB.sql.prepare("SELECT active,package_id,package_revision,entry_sha256 FROM motioncards_cards WHERE qid=?").get(newer.qid);
+  const card={...h.DB.sql.prepare("SELECT active,package_id,package_revision,entry_sha256 FROM motioncards_cards WHERE qid=?").get(newer.qid)};
   assert.deepEqual(card,{active:0,package_id:"NEWER",package_revision:9,entry_sha256:"9".repeat(64)});
   assert.equal(h.DB.sql.prepare("SELECT status FROM motioncards_groups WHERE group_key='DUP_r1'").get().status,"published");
 }));
