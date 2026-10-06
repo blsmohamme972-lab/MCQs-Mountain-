@@ -6,51 +6,120 @@ STATUS: INCOMPLETE - SAFE TO CONTINUE
 
 ## Repository state
 - Branch: `feature/kafu-motioncards`
+- PR: #67 (draft, owner review required before merge/deploy)
 - Baseline/main inspected: `00f09cf42bbc021053ef95355bdad6b12f75e7b0`
-- Objective: build an independent AI-authored, question-linked animation pipeline from exported Kafu MCQ JSON through validation/package/upload/publish/player integration.
-- Merge/deploy/service creation/migrations: **NOT AUTHORIZED YET for this project**. Keep PR open for owner review.
+- Latest relevant branch SHA at this handoff update: parent work through `d95f3edbf39a756134899ad54ee2157a7d83974e`
+- Production merge/deploy/service creation/migration application: **NOT AUTHORIZED YET for this project**.
+
+## Objective
+Build an independent AI-authored, question-linked animation system:
+published Kafu export -> selection/durations -> AI-authored MotionCards -> validation/package -> existing Telegram bot intake -> isolated publisher -> immutable MotionCards content origin -> exact question-linked player.
 
 ## Ownership map
 
-### New MotionCards-owned paths
+### MotionCards-owned
 - `motioncards/**`
-- planned `app/modules/motioncards-*.js`, `app/modules/motioncards-*.css`
-- planned `motioncards-worker/**` or equivalent dedicated static-content config
-- planned `tools/motioncards/**`
-- planned MotionCards-specific tests/workflows/migrations using the `motioncards_` prefix
+- `motioncards-worker/**`
+- `app/modules/motioncards-core.js`
+- `app/modules/motioncards-player.js`
+- `app/modules/motioncards.css`
+- `worker/motioncards-queue.mjs`
+- `tools/motioncards.py`, `tools/motioncards/**`, MotionCards tests/flows
+- dedicated MotionCards workflow/config/state artifacts
+- additive `motioncards_` D1 tables
 
-### Shared integration files (minimal changes only)
+### Shared integration
 - `app/modules/manifest.json`
-- `app/design/study.js` only if a small explicit post-render hook is required
-- `worker/bot.mjs`, `worker/queue-state.mjs`
-- additive migration files
+- minimal study/render integration via installed MotionCards player
+- `worker/bot.mjs` document routing/internal MotionCards endpoints
+- additive migration file
 - `.github/workflows/ci-tools.yml`, `.github/workflows/ui.yml`
-- dedicated MotionCards publish workflow and app config/binding only after owner approval for infrastructure/deploy
+- dedicated `.github/workflows/publish-motioncards-queue.yml`
 
-### Protected legacy / unrelated files
-- `Animations and illustrations/**` — Medical Motion legacy library; do not touch or import.
-- DNAgens and unrelated projects.
-- Existing book publisher/content state and `kafu-content-state` release assets.
-- Protected `KAFU-UPLOAD-TEST` book.
-- Existing export, download, sync, leaderboard, grading and authorization behavior except narrowly tested compatibility fixes.
+### Protected legacy / unrelated
+- `Animations and illustrations/**` (Medical Motion)
+- DNAgens and unrelated projects
+- existing book queue/publisher/content state and `kafu-content-state`
+- protected `KAFU-UPLOAD-TEST`
+- existing CONTENT_SERVICE binding and MCQ export/cover fixes
+- grading, attempts, leaderboard, FSRS, downloads, sync and book publishing behavior
 
-## Inspection findings
-- Latest main equals baseline `00f09cf42bbc021053ef95355bdad6b12f75e7b0`.
-- No existing MotionCards branch/handoff found; only legacy `codex/medical-motion-v2`.
-- Final study decoration is installed by `app/design/study.js` after the base `VIEWS.study` renderer.
-- Base `render()` replaces `#app.innerHTML`; MotionCards playback must live in a stable host outside `#app` so background renders do not restart it.
-- Current app Worker keeps `CONTENT_SERVICE -> kafu-content-1`; this must remain intact.
-- Book Telegram intake currently routes every document through `queueDocument()` and the book filename grammar; MotionCards needs a small explicit filename router before that parser and isolated queue tables/contracts.
+## Implemented
 
-## Milestone 1 work
-- Branch + durable handoff created.
-- Next: implement authoritative schema/limits, export adapter with chapter-scope mismatch regression, hash/answer extraction, scaffold/validate/package CLI and isolated fixtures.
+### Source adapter / integrity
+- Reads `kafu_mcq_text_export` schema v1 directly.
+- Uses `questions[i].id/book_id/version/chapter_id`.
+- Joins `export_metadata.question_integrity` by QID.
+- Preserves original question objects; animation metadata is separate.
+- Shared `kafu-question-canonical-json-v1` golden vector matches JS export core.
+- Validates full content hash, publisher fingerprint contract, book/version/chapter identity.
+- Correct answer extraction supports SBA, EMQ, multi and statement-by-statement MTF.
+- Explicitly blocks unsupported answer encodings and image-dependent items whose bytes were not inspected.
+- Regression covers the 30-record Upper Limb export mislabeled Whole book; derives the supplied chapter and never invents the other 179 records.
+- Partition semantics do not confuse part count with aggregate export count.
 
-## Exact next action
-Create `motioncards/schema/`, `motioncards/lib/`, and `tools/motioncards/` with the export compatibility adapter and package contract, then add tests proving the 30-record chapter export mislabeled as whole-book is adapted without inventing the missing 179 records.
+### Selection / authoring kit
+- Exact QIDs or deterministic first-N supplied records.
+- Required integer duration_ms with per-QID overrides, 2-30s supported.
+- Scaffold, preview, validate and package CLI.
+- Declarative layers for labels, arrows, paths, highlights/focus, shapes and deterministic transitions.
+- Optional custom renderer is bounded and rejects network/timer/eval/storage APIs.
+- `MASTER_PROMPT.md`, `PROJECT_BRIEF.md`, `README.md`, `AGENTS.md`, `TOOLKIT.md`, examples and offline authoring bundle tooling exist.
+
+### ZIP security / contract
+- `MCARDS_<PACKAGE-ID>_r<N>.zip`; disjoint from book `_vN.zip` grammar.
+- Root `motioncards-manifest.json`, package/runtime/protocol versions separated.
+- Source records, editable scenes, compiled self-contained HTML and validation report.
+- Entry/source/scene SHA-256 generated by tooling.
+- Rejects traversal, absolute/noncanonical paths, Unicode/case collisions, symlinks, encryption, unsupported compression, CRC issues, bombs/ratios, executable/hosting files, missing/unapproved files and checksum/source-binding failures.
+- Multipart preserves complete batch membership and complete animation boundaries.
+
+### Player
+- Availability index per book/version; local positive/negative cache; no D1/HEAD-per-question path.
+- Exact match on book/version/chapter/QID/content_hash.
+- No button for active timed exam; review modes remain eligible.
+- Stable host is appended outside `#app`; background render does not replace active iframe.
+- `sandbox="allow-scripts"` only.
+- Host owns controls/timeline/final answer panel.
+- MessageChannel protocol validates channel, QID and protocol.
+- Child uses a deterministic `renderAt(time_ms)`; no independent timer loop controls scene motion.
+- Host owns play/pause/seek/restart/end; final panel remains until replay/close and hides on backward seek.
+- Current fix: compiled child now derives the random channel from iframe URL fragment so the ready handshake matches the host.
+
+### Intake / publisher
+- MotionCards filename router is isolated from legacy book parser.
+- Owner/private-chat/webhook protections remain.
+- Additive MotionCards queue tables and namespaced queue handler/internal operations.
+- Dedicated MotionCards workflow/state/publisher tools.
+- Publisher validates uploaded source binding against the actual approved published question source before activation.
+- Same package bytes are no-op; same identity/revision with different payload conflicts.
+- Intentional replacement required; unrelated mappings preserved.
+- Dedicated static MotionCards Worker config/runtime with restrictive CSP/security headers and public allowlist only.
+- No application auth secrets are intended in the content Worker.
 
 ## Test status
-- Not run yet on this branch.
 
-## Production status
-- No production mutation performed.
+Latest completed CI before the current two fixes:
+- Legacy Medical illustration job: PASS.
+- MotionCards authoring/integrity/publisher/boundary tests: all PASS except one multipart split test.
+- Visual flow: failed only because MotionCards child/host channel handshake never became ready.
+- Failures were traced to implementation/test mechanics, not bypassed:
+  1. child used a compile-time channel placeholder while host generated a fragment channel;
+  2. multipart split target stayed fixed at 8MB when the test temporarily lowered archive limit.
+
+Fixes now on branch:
+- child derives validated 36-hex channel from `location.hash`;
+- multipart split target respects the active ZIP ceiling;
+- Content CI pull-request paths now include `motioncards/**` and `motioncards-worker/**`.
+
+Current CI for these fixes: pending/not yet observed at this handoff update.
+
+## Known owner-gated work
+- Do not merge PR #67 yet.
+- Do not apply migration 0006 to production yet.
+- Do not create/deploy the production `kafu-motioncards` Worker/service yet.
+- Do not operate the real Telegram upload queue for acceptance yet.
+- Final production acceptance needs owner approval plus a real owner ZIP upload/question playback.
+
+## Exact next action
+Wait for/re-run CI on the handshake + multipart fixes. If green, inspect visual evidence and budgets, update this handoff with exact run IDs/results, and deliver the review report. If any check fails, fix the specific failure without weakening existing gates or baselines.
