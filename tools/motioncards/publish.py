@@ -92,7 +92,7 @@ def apply_package(zip_path:Path,state_path:Path,site:Path,fetch_json=live_json):
     state=load_state(state_path)
     old=state["packages"].get(identity)
     if old:
-        if old.get("sha256")==package_sha:return {"duplicate":True,"package_id":manifest["package_id"],"revision":manifest["package_revision"],"animations":len(manifest["animations"])}
+        if old.get("sha256")==package_sha:return {"duplicate":True,"changed":False,"package_id":manifest["package_id"],"revision":manifest["package_revision"],"animations":len(manifest["animations"]),"package_sha256":package_sha}
         raise ValueError("package_revision_conflict")
     verified=verify_published_sources(manifest,fetch_json)
     next_state=copy.deepcopy(state);next_site=site
@@ -125,7 +125,7 @@ def apply_package(zip_path:Path,state_path:Path,site:Path,fetch_json=live_json):
     except Exception:
         shutil.rmtree(assets,ignore_errors=True)
         raise
-    return {"duplicate":False,"package_id":manifest["package_id"],"revision":manifest["package_revision"],"animations":len(manifest["animations"]),"verified":verified,"package_sha256":package_sha}
+    return {"duplicate":False,"changed":True,"package_id":manifest["package_id"],"revision":manifest["package_revision"],"animations":len(manifest["animations"]),"verified":verified,"package_sha256":package_sha}
 
 
 def apply_packages(zip_paths:list[Path],state_path:Path,site:Path,fetch_json=live_json):
