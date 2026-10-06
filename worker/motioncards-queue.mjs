@@ -219,33 +219,30 @@ export async function createMotioncardConfirmation(env,kind,qid,targetVersionId=
   return{ok:true,token,kind,qid,expected_active_digest:expected,target};
 }
 export async function confirmMotioncardAction(env,token){
-  const owner=String(env.OWNER_TELEGRAM_ID),row=await stmt(env,"SELECT * FROM motioncards_confirmations WHERE token=? AND owner_id=? AND chat_id=? AND used_at IS NULL AND expires_at>datetime('now')",String(token||""),owner,owner).first();
+  const owner=String(env.OWNER_TELEGRAM_ID),value=String(token||"");
+  const row=await stmt(env,"SELECT * FROM motioncards_confirmations WHERE token=? AND owner_id=? AND chat_id=? AND used_at IS NULL AND expires_at>datetime('now')",value,owner,owner).first();
   if(!row)return{ok:false,text:"❌ MotionCards confirmation expired, stale, or already used."};
+
   if(row.kind==="replace"){
-    const group=await stmt(env,"SELECT * FROM motioncards_groups WHERE group_key=? AND status='awaiting_confirmation' AND candidate_digest=?",row.group_key,row.candidate_digest).first();
-    if(!group)return{ok:false,text:"❌ Replacement candidate is stale; upload or inspect the current card again."};
     let auth;try{auth=JSON.parse(row.targets_json||"{}")}catch(_){return{ok:false,text:"❌ Replacement confirmation data is invalid."};}
-    for(const [qid,target] of Object.entries(auth)){
-      const card=await stmt(env,"SELECT * FROM motioncards_cards WHERE qid=? AND active=1",qid).first();
-      if(!card||String(card.entry_sha256)!==String(target.expected_active_digest)||String(card.package_id)!==String(target.expected_active_package_id)||Number(card.package_revision)!==Number(target.expected_active_package_revision))
-        return{ok:false,text:"❌ Replacement target changed since validation; inspect the card again."};
-    }
+    if(!auth||Array.isArray(auth)||!Object.keys(auth).length)return{ok:false,text:"❌ Replacement confirmation data is invalid."};
+    const envelope=JSON.stringify({confirmation_token:row.token,targets:auth});
     const results=await env.DB.batch([
-      stmt(env,"UPDATE motioncards_groups SET status='ready',replacement_auth_json=?,error_summary=NULL WHERE group_key=? AND status='awaiting_confirmation' AND candidate_digest=?",row.targets_json,row.group_key,row.candidate_digest),
-      stmt(env,"UPDATE motioncards_confirmations SET used_at=datetime('now') WHERE token=? AND used_at IS NULL AND expires_at>datetime('now')",row.token)
+      stmt(env,"UPDATE motioncards_groups SET status='ready',replacement_auth_json=?,error_summary=NULL WHERE group_key=? AND status='awaiting_confirmation' AND candidate_digest=? AND EXISTS(SELECT 1 FROM motioncards_confirmations c WHERE c.token=? AND c.kind='replace' AND c.group_key=motioncards_groups.group_key AND c.owner_id=? AND c.chat_id=? AND c.used_at IS NULL AND c.expires_at>datetime('now') AND c.candidate_digest=motioncards_groups.candidate_digest AND NOT EXISTS(SELECT 1 FROM json_each(c.targets_json) t LEFT JOIN motioncards_cards card ON card.qid=t.key AND card.active=1 WHERE card.qid IS NULL OR lower(card.entry_sha256)<>lower(json_extract(t.value,'$.expected_active_digest')) OR card.package_id<>json_extract(t.value,'$.expected_active_package_id') OR card.package_revision<>CAST(json_extract(t.value,'$.expected_active_package_revision') AS INTEGER) OR lower(json_extract(t.value,'$.candidate_digest'))<>lower(c.candidate_digest)))",envelope,row.group_key,row.candidate_digest,row.token,owner,owner),
+      stmt(env,"UPDATE motioncards_confirmations SET used_at=datetime('now') WHERE token=? AND kind='replace' AND owner_id=? AND chat_id=? AND used_at IS NULL AND expires_at>datetime('now') AND EXISTS(SELECT 1 FROM motioncards_groups g WHERE g.group_key=motioncards_confirmations.group_key AND g.status='ready' AND g.candidate_digest=motioncards_confirmations.candidate_digest AND g.replacement_auth_json=?)",row.token,owner,owner,envelope)
     ]);
     if(!results[0]?.meta?.changes||!results[1]?.meta?.changes)return{ok:false,text:"❌ Replacement confirmation became stale."};
     return{ok:true,dispatch:true,text:"📥 Confirmed replacement "+row.group_key+"; validation/publishing queued."};
   }
-  const card=await stmt(env,"SELECT * FROM motioncards_cards WHERE qid=?",row.qid).first();
-  const current=card&&Number(card.active)?String(card.entry_sha256):"";
-  if(current!==String(row.expected_active_digest||""))return{ok:false,text:"❌ MotionCards state changed; inspect the card again before confirming."};
-  const identity=JSON.parse(row.targets_json||"{}"),op="mcop-"+row.token;
+
+  let identity;try{identity=JSON.parse(row.targets_json||"{}")}catch(_){return{ok:false,text:"❌ MotionCards confirmation data is invalid."};}
+  if(!identity||Array.isArray(identity)||String(identity.qid||"")!==String(row.qid||""))return{ok:false,text:"❌ MotionCards confirmation data is invalid."};
+  const op="mcop-"+row.token;
   const results=await env.DB.batch([
-    stmt(env,"INSERT OR IGNORE INTO motioncards_operations(operation_id,kind,qid,book_id,book_version,chapter_id,status,owner_id,chat_id,expected_active_digest,target_digest) VALUES(?,?,?,?,?,?,'ready',?,?,?,?)",op,row.kind,row.qid,identity.book_id,identity.book_version,String(identity.chapter_id),owner,owner,String(row.expected_active_digest||""),row.target_digest),
-    stmt(env,"UPDATE motioncards_confirmations SET used_at=datetime('now') WHERE token=? AND used_at IS NULL AND expires_at>datetime('now')",row.token)
+    stmt(env,"INSERT OR IGNORE INTO motioncards_operations(operation_id,kind,qid,book_id,book_version,chapter_id,status,owner_id,chat_id,expected_active_digest,target_digest) SELECT 'mcop-'||c.token,c.kind,c.qid,json_extract(c.targets_json,'$.book_id'),CAST(json_extract(c.targets_json,'$.book_version') AS INTEGER),CAST(json_extract(c.targets_json,'$.chapter_id') AS TEXT),'ready',c.owner_id,c.chat_id,COALESCE(c.expected_active_digest,''),c.target_digest FROM motioncards_confirmations c JOIN motioncards_cards card ON card.qid=c.qid WHERE c.token=? AND c.kind IN ('remove','restore') AND c.owner_id=? AND c.chat_id=? AND c.used_at IS NULL AND c.expires_at>datetime('now') AND COALESCE(CASE WHEN card.active=1 THEN card.entry_sha256 ELSE '' END,'')=COALESCE(c.expected_active_digest,'') AND card.book_id=json_extract(c.targets_json,'$.book_id') AND card.book_version=CAST(json_extract(c.targets_json,'$.book_version') AS INTEGER) AND CAST(card.chapter_id AS TEXT)=CAST(json_extract(c.targets_json,'$.chapter_id') AS TEXT) AND (c.kind='remove' OR EXISTS(SELECT 1 FROM motioncards_card_versions v WHERE v.qid=c.qid AND v.entry_sha256=c.target_digest AND v.book_id=json_extract(c.targets_json,'$.book_id') AND v.book_version=CAST(json_extract(c.targets_json,'$.book_version') AS INTEGER) AND CAST(v.chapter_id AS TEXT)=CAST(json_extract(c.targets_json,'$.chapter_id') AS TEXT)))",row.token,owner,owner),
+    stmt(env,"UPDATE motioncards_confirmations SET used_at=datetime('now') WHERE token=? AND owner_id=? AND chat_id=? AND used_at IS NULL AND expires_at>datetime('now') AND EXISTS(SELECT 1 FROM motioncards_operations o WHERE o.operation_id='mcop-'||motioncards_confirmations.token AND o.kind=motioncards_confirmations.kind AND o.qid=motioncards_confirmations.qid AND o.owner_id=motioncards_confirmations.owner_id AND o.chat_id=motioncards_confirmations.chat_id AND COALESCE(o.expected_active_digest,'')=COALESCE(motioncards_confirmations.expected_active_digest,'') AND COALESCE(o.target_digest,'')=COALESCE(motioncards_confirmations.target_digest,''))",row.token,owner,owner)
   ]);
-  if(!results[1]?.meta?.changes)return{ok:false,text:"❌ MotionCards confirmation became stale."};
+  if(!results[0]?.meta?.changes||!results[1]?.meta?.changes)return{ok:false,text:"❌ MotionCards confirmation became stale."};
   return{ok:true,dispatch:true,text:"📥 "+row.kind+" queued for "+row.qid+"."};
 }
 export async function recoverMotioncards(env,action,key){
