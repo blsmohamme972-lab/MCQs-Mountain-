@@ -61,10 +61,11 @@ async function fetchJson(url, label) {
   if (result.status >= 300 && result.status < 400) throw new Error(label + "_redirect");
   if (!result.ok) throw new Error(label + "_unavailable");
   const raw = await result.text();
-  if (new TextEncoder().encode(raw).byteLength > MAX_CONTENT_BYTES) throw new Error(label + "_too_large");
+  const bytes = new TextEncoder().encode(raw).byteLength;
+  if (bytes > MAX_CONTENT_BYTES) throw new Error(label + "_too_large");
   let data;
   try { data = JSON.parse(raw); } catch (_) { throw new Error(label + "_invalid_json"); }
-  return { data, sha256: await sha256Hex(raw) };
+  return { data, sha256: await sha256Hex(raw), bytes };
 }
 
 async function readCatalog(env, bookId, version) {
@@ -139,6 +140,7 @@ export async function handleMcqExport(request, env, path) {
       const data = pack.data;
       if (!data || data.schema !== 1 || data.book_id !== loaded.book.id || Number(data.version) !== Number(loaded.book.version) || String(data.chapter_id) !== String(chapter.id) || !Array.isArray(data.questions)) return response({ error: "chapter_identity_mismatch" }, 409);
       if (data.questions.length !== Number(chapter.questions) || data.questions.length > 20_000) return response({ error: "chapter_count_mismatch" }, 409);
+      if ((Number.isSafeInteger(Number(chapter.bytes)) && Number(chapter.bytes) !== pack.bytes) || (/^[a-f0-9]{64}$/i.test(String(chapter.sha256 || "")) && String(chapter.sha256).toLowerCase() !== pack.sha256)) return response({ error: "chapter_integrity_mismatch" }, 409);
       const seen = new Set();
       for (let i = 0; i < data.questions.length; i++) {
         const qid = String(data.questions[i]?.id || "");
