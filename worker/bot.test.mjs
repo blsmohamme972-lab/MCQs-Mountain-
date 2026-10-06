@@ -91,6 +91,7 @@ const insertVersion=(h,card)=>h.DB.sql.prepare("INSERT OR IGNORE INTO motioncard
 const atomicConfirmationFixture=(h,kind)=>{
   const qid="Q000000090",token="atomic-"+kind,activeDigest="a".repeat(64),candidateDigest="b".repeat(64),targetDigest="d".repeat(64);
   const card=mcCard(qid,"OLD",1,activeDigest);insertCard(h,card,1);insertVersion(h,card);
+  if(kind==="restore")insertVersion(h,mcCard(qid,"PREVIOUS",1,targetDigest));
   const identity={book_id:card.book_id,book_version:card.book_version,chapter_id:String(card.chapter_id),qid};
   const auth={[qid]:{qid,book_id:card.book_id,book_version:card.book_version,chapter_id:String(card.chapter_id),candidate_digest:candidateDigest,expected_active_digest:activeDigest,expected_active_package_id:"OLD",expected_active_package_revision:1}};
   if(kind==="replace"){
