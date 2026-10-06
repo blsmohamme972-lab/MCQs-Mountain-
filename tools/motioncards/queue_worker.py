@@ -5,7 +5,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 from tools.http_client import request_json,download,HttpStepError
-from tools.motioncards.publish import apply_package
+from tools.motioncards.publish import apply_packages
 
 MAX_ZIP=19*1024*1024
 
@@ -41,13 +41,15 @@ def prepare(work:Path,allow_initial:bool):
     try:
         parts=item.get("parts") or []
         if len(parts)!=int(group["part_total"]):raise ValueError("incomplete_motioncards_group")
-        if len(parts)!=1:raise ValueError("motioncards_multipart_processing_not_enabled_yet")
+        if [int(p["part_index"]) for p in parts]!=list(range(1,int(group["part_total"])+1)):raise ValueError("motioncards_part_sequence_invalid")
         work.mkdir(parents=True,exist_ok=True);state=work/"state.json";site=work/"site"
         if not state.exists():
             if not allow_initial:raise ValueError("motioncards_state_missing_owner_initialization_required")
             site.mkdir(parents=True,exist_ok=True)
-        package=work/parts[0]["filename"];telegram_file(parts[0]["telegram_file_id"],package)
-        result=apply_package(package,state,site)
+        packages=[]
+        for part in parts:
+            package=work/part["filename"];telegram_file(part["telegram_file_id"],package);packages.append(package)
+        result=apply_packages(packages,state,site)
         build=json.loads((site/"build-info.json").read_text())
         index_path=next((site/"indexes").rglob("index.json"));index=json.loads(index_path.read_text());sample=next(iter(index["animations"].values()))
         meta={"empty":False,"group_key":group["group_key"],"lease_token":lease,"package_sha256":result["package_sha256"],
