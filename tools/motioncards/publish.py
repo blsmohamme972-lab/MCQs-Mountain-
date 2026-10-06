@@ -149,12 +149,31 @@ def _public_record(row:dict,manifest:dict,target:Path,site:Path):
     for drop in ["entry_path","scene_path","scene_sha256","source_record_path","source_record_sha256","replace"]:public.pop(drop,None)
     return public
 
+def _management_snapshot(state:dict,rows:list[dict])->list[dict]:
+    snapshots=[]
+    for row in rows:
+        key=key_for(row);history=[copy.deepcopy(x) for x in (state["history"].get(key) or []) if isinstance(x,dict)]
+        active=state["animations"].get(key)
+        ordered=[];seen=set()
+        for item in history+([copy.deepcopy(active)] if isinstance(active,dict) else []):
+            digest=str(item.get("entry_sha256") or "")
+            identity=(str(item.get("qid") or ""),digest,str(item.get("package_id") or ""),int(item.get("package_revision") or 0))
+            if not digest or identity in seen:continue
+            seen.add(identity);ordered.append(item)
+        current=copy.deepcopy(active) if isinstance(active,dict) else (copy.deepcopy(ordered[-1]) if ordered else None)
+        if not current:raise ValueError("motioncards_reconcile_state_missing:"+str(row.get("qid")))
+        current["active"]=bool(active)
+        snapshots.append({"qid":str(row["qid"]),"card":current,"versions":ordered})
+    return snapshots
+
+
 def apply_packages(zip_paths:list[Path],state_path:Path,site:Path,fetch_json=live_json,replacement_authorizations:dict|None=None):
     plan=plan_packages(zip_paths,state_path,fetch_json);manifest=plan["manifest"];package_sha=plan["package_sha256"]
     state=load_state(state_path);identity=manifest["package_id"]+"_r"+str(manifest["package_revision"])
     if plan["duplicate"]:
-        affected=[state["animations"].get(key_for(row)) for row in manifest["animations"]]
-        return {"duplicate":True,"changed":False,"package_id":manifest["package_id"],"revision":manifest["package_revision"],"animations":len(manifest["animations"]),"package_sha256":package_sha,"affected":[x for x in affected if x]}
+        reconciliation=_management_snapshot(state,manifest["animations"])
+        affected=[copy.deepcopy(x["card"]) for x in reconciliation]
+        return {"duplicate":True,"changed":False,"package_id":manifest["package_id"],"revision":manifest["package_revision"],"animations":len(manifest["animations"]),"package_sha256":package_sha,"affected":affected,"reconciliation":reconciliation}
     next_state=copy.deepcopy(state);site.mkdir(parents=True,exist_ok=True)
     assets=site/"assets"/manifest["package_id"]/("r"+str(manifest["package_revision"]))
     if assets.exists():raise ValueError("package_asset_path_conflict")
@@ -191,7 +210,10 @@ def apply_management(operation:dict,state_path:Path,site:Path,fetch_json=live_js
     state=load_state(state_path)
     if op_id in state["operations"]:
         prior=state["operations"][op_id]
-        return {"duplicate":True,"changed":False,"operation_id":op_id,"kind":prior["kind"],"affected":prior.get("affected",[])}
+        qid=str(prior.get("qid") or operation.get("qid") or "")
+        identity={"book_id":str(operation.get("book_id") or ""),"book_version":int(operation.get("book_version") or 0),"chapter_id":str(operation.get("chapter_id") or ""),"qid":qid}
+        reconciliation=_management_snapshot(state,[identity])
+        return {"duplicate":True,"changed":False,"operation_id":op_id,"kind":prior["kind"],"affected":[copy.deepcopy(reconciliation[0]["card"])],"reconciliation":reconciliation}
     identity={"book_id":str(operation.get("book_id") or ""),"book_version":int(operation.get("book_version") or 0),
               "chapter_id":str(operation.get("chapter_id") or ""),"qid":str(operation.get("qid") or "")}
     if not identity["book_id"] or identity["book_version"]<1 or not identity["chapter_id"] or not identity["qid"]:raise ValueError("motioncards_operation_identity_invalid")
