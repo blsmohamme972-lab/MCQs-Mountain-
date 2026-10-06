@@ -87,7 +87,48 @@ jobs:
           STATE="${{ steps.prepare.outputs.state_sha256 }}"
           TAG="motioncards-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${STATE:0:12}"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-          npx wrangler versions upload --tag "$TAG" --message "staged MotionCards $GITHUB_SHA" --config motioncards-worker/wrangler.jsonc | tee /tmp/motioncards-upload.log
+
+          upload_staged() {
+            npx wrangler versions upload --tag "$TAG" --message "staged MotionCards $GITHUB_SHA" --config motioncards-worker/wrangler.jsonc 2>&1 | tee /tmp/motioncards-upload.log
+          }
+
+          set +e
+          upload_staged
+          UPLOAD_STATUS=${PIPESTATUS[0]}
+          set -e
+
+          if [[ "$UPLOAD_STATUS" -ne 0 ]]; then
+            if [[ "${{ inputs.initialize_state || 'false' }}" != "true" ]] || ! grep -Fq "Worker that does not yet exist" /tmp/motioncards-upload.log; then
+              exit "$UPLOAD_STATUS"
+            fi
+
+            echo "Bootstrapping empty MotionCards service for first publish only."
+            cat > motioncards-worker/bootstrap.mjs <<'EOF'
+          export default {
+            async fetch() {
+              return new Response("Kafu MotionCards is initializing.", {
+                status: 503,
+                headers: {
+                  "cache-control": "no-store",
+                  "retry-after": "60",
+                  "content-type": "text/plain; charset=utf-8"
+                }
+              });
+            }
+          };
+          EOF
+            cat > motioncards-worker/wrangler.bootstrap.jsonc <<'EOF'
+          {
+            "name": "kafu-motioncards",
+            "compatibility_date": "2026-09-27",
+            "main": "./bootstrap.mjs"
+          }
+          EOF
+            npx wrangler deploy --config motioncards-worker/wrangler.bootstrap.jsonc --message "bootstrap empty MotionCards service for first publish"
+            rm -f motioncards-worker/bootstrap.mjs motioncards-worker/wrangler.bootstrap.jsonc
+            upload_staged
+          fi
+
           VERSION_URL="$(grep -Eo 'https://[A-Za-z0-9._-]+\.workers\.dev/?' /tmp/motioncards-upload.log | tail -1)"
           test -n "$VERSION_URL"
           echo "version_url=$VERSION_URL" >> "$GITHUB_OUTPUT"

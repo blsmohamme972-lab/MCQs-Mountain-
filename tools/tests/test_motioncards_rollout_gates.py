@@ -27,6 +27,19 @@ class MotionCardsRolloutGateTests(unittest.TestCase):
         self.assertIn("-f production_authorized=true",text)
         self.assertNotIn("MOTIONCARDS_ROLLOUT_ENABLED: true",text)
 
+    def test_first_motioncards_service_bootstrap_is_first_publish_only_and_fail_closed(self):
+        text=(ROOT/".github/workflows/publish-motioncards-queue.yml").read_text(encoding="utf-8")
+        upload=text.index("Upload staged MotionCards Worker version")
+        smoke=text.index("Smoke exact staged MotionCards version")
+        segment=text[upload:smoke]
+        self.assertIn("Worker that does not yet exist",segment)
+        self.assertIn("inputs.initialize_state",segment)
+        self.assertIn("status: 503",segment)
+        self.assertIn("Bootstrapping empty MotionCards service for first publish only.",segment)
+        self.assertIn("wrangler deploy --config motioncards-worker/wrangler.bootstrap.jsonc",segment)
+        self.assertGreaterEqual(segment.count("wrangler versions upload"),1)
+        self.assertNotIn("versions deploy",segment)
+
     def test_ui_main_push_does_not_expect_production_sha_before_authorized_deploy(self):
         text=(ROOT/".github/workflows/ui.yml").read_text(encoding="utf-8")
         self.assertIn("Main journeys, offline persistence, budgets and approved screenshots",text)
