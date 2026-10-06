@@ -173,7 +173,8 @@ def apply_packages(zip_paths:list[Path],state_path:Path,site:Path,fetch_json=liv
     if plan["duplicate"]:
         reconciliation=_management_snapshot(state,manifest["animations"])
         affected=[copy.deepcopy(x["card"]) for x in reconciliation]
-        return {"duplicate":True,"changed":False,"package_id":manifest["package_id"],"revision":manifest["package_revision"],"animations":len(manifest["animations"]),"package_sha256":package_sha,"affected":affected,"reconciliation":reconciliation}
+        verified=verify_published_records(affected,fetch_json)
+        return {"duplicate":True,"changed":False,"package_id":manifest["package_id"],"revision":manifest["package_revision"],"animations":len(manifest["animations"]),"package_sha256":package_sha,"affected":affected,"reconciliation":reconciliation,"verified":verified}
     next_state=copy.deepcopy(state);site.mkdir(parents=True,exist_ok=True)
     assets=site/"assets"/manifest["package_id"]/("r"+str(manifest["package_revision"]))
     if assets.exists():raise ValueError("package_asset_path_conflict")
@@ -213,7 +214,9 @@ def apply_management(operation:dict,state_path:Path,site:Path,fetch_json=live_js
         qid=str(prior.get("qid") or operation.get("qid") or "")
         identity={"book_id":str(operation.get("book_id") or ""),"book_version":int(operation.get("book_version") or 0),"chapter_id":str(operation.get("chapter_id") or ""),"qid":qid}
         reconciliation=_management_snapshot(state,[identity])
-        return {"duplicate":True,"changed":False,"operation_id":op_id,"kind":prior["kind"],"affected":[copy.deepcopy(reconciliation[0]["card"])],"reconciliation":reconciliation}
+        affected=[copy.deepcopy(reconciliation[0]["card"])]
+        verify_published_records(affected,fetch_json)
+        return {"duplicate":True,"changed":False,"operation_id":op_id,"kind":prior["kind"],"affected":affected,"reconciliation":reconciliation}
     identity={"book_id":str(operation.get("book_id") or ""),"book_version":int(operation.get("book_version") or 0),
               "chapter_id":str(operation.get("chapter_id") or ""),"qid":str(operation.get("qid") or "")}
     if not identity["book_id"] or identity["book_version"]<1 or not identity["chapter_id"] or not identity["qid"]:raise ValueError("motioncards_operation_identity_invalid")
