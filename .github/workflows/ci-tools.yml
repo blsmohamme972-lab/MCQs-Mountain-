@@ -11,6 +11,8 @@ on:
       - "worker/**"
       - "migrations/**"
       - "Animations and illustrations/**"
+      - "motioncards/**"
+      - "motioncards-worker/**"
       - ".github/workflows/**"
   pull_request:
     paths:
@@ -51,6 +53,9 @@ jobs:
         run: |
           node --check worker/admin.mjs
           node --check worker/mcq-export.mjs
+          node --check worker/motioncards-queue.mjs
+          node --check motioncards-worker/worker.mjs
+          node --test motioncards-worker/worker.test.mjs
           node --check worker/leaderboard.mjs
           node --check worker/bot.mjs
           node --test worker/bot.test.mjs
