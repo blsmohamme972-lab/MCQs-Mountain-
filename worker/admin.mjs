@@ -48,6 +48,7 @@ export async function handleAdmin(request,env,path){
   if(path==='/admin/capabilities'){
     const owner=await verifyOwnerRequest(request.clone(),env);
     const admin=await verifyAdmin(request,env);
+    if(!owner&&!admin)return reply({error:'forbidden'},403);
     return reply({books:!!admin,d1_usage:!!admin,can_export_mcqs:!!owner});
   }
   if(path.startsWith('/admin/mcq-export/'))return handleMcqExport(request,env,path);
