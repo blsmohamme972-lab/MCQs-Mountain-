@@ -2,7 +2,39 @@
 
 > **SEPARATION WARNING:** Kafu MotionCards is a new independent system. Do not modify, import, copy, rebrand, or depend on `Animations and illustrations/`, Medical Motion, DNAgens, or their runtime code.
 
-STATUS: INCOMPLETE - SAFE TO CONTINUE
+STATUS: PRODUCTION ROLLOUT ENABLED - FIRSTPROD TEST CARD REMOVED
+
+## Production rollout completion — 2026-10-06
+
+This section is the authoritative current production state. Older sections below are retained as historical review/audit notes and may describe pre-rollout conditions that are no longer current.
+
+- PR #67 was merged to `main`; reviewed production merge SHA: `d4324fc2b902ac19ea0f8b99a61dc76916787bc2`.
+- Authorized app/D1 rollout completed successfully in **Deploy Kafu run #48** (`37494302375`) on that exact SHA.
+- D1 migration `0006_motioncards_queue.sql` applied successfully in run #48.
+- App Worker staged version ID: `8dacc75c-0637-4181-a1b1-f553c0018417`; staged smoke, promotion, production smoke, and exact-production-SHA UI smoke all passed.
+- First real package: `FIRSTPROD_r1`, QID `Q000007357`, package SHA-256 `1f0b703c612c811d98c356e45752513ffbcbacae06e2dfafd3f60b0ae19993c2`.
+- Initial production promotion succeeded in MotionCards run #7; run #8 recovered the durable active pointer; run #10 reconciled and acknowledged the exact duplicate package with no redeploy.
+- Owner remove/restore acceptance was exercised end-to-end in production:
+  - run #14: remove published successfully;
+  - run #16: restore published successfully;
+  - run #18: final remove published successfully.
+- Final production MotionCards state SHA-256 after run #18: `61ecfb101d975b3dc164e5ff0bb034db77eeb2991ad82123c4e105c408cfc836`.
+- Final MotionCards tree SHA-256 after run #18: `a5cdda09ae4109de69e100f3668530fee49d237c26dd6d62e3bc5c0dd250ba03`.
+- Final MotionCards Worker version ID from run #18: `6de7a9f5-ca34-48db-b816-9aaa258ccd64`.
+- Final acceptance state intentionally has **0 active MotionCards**. `Q000007357` / `FIRSTPROD_r1` is soft-removed from students and remains recoverable from history.
+- Run #18 production smoke: PASS with `active_cards: 0`, `removed_cards: 1`; production browser smoke: PASS; queue acknowledgement: PASS; ready queue count: 0.
+- Owner explicitly enabled repository variable `MOTIONCARDS_ROLLOUT_ENABLED=true`.
+- Gate verification run #19 (`37513105490`) was manually dispatched with both `initialize_state=false` and `production_authorized=false`. It executed successfully instead of being skipped, restored state `61ecfb...`, and returned `{"empty": true}`, proving normal enabled rollout behavior with an empty queue.
+- Normal hourly recovery/drain and ordinary automatic app deployment are now enabled by the rollout gate. First-rollout manual authorization is no longer required for ordinary MotionCards publishing.
+- Current production test posture: keep `FIRSTPROD_r1` removed; do not restore it unless intentionally testing restore again.
+
+Key production runs:
+- Deploy Kafu #48: https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/37494302375
+- MotionCards #10 first-package acknowledgement: https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/37505787872
+- MotionCards #14 remove: https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/37510227904
+- MotionCards #16 restore: https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/37510944734
+- MotionCards #18 final remove: https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/37511701380
+- MotionCards #19 enabled-gate empty-queue verification: https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/37513105490
 
 ## Repository state
 - Branch: `feature/kafu-motioncards`
