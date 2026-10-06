@@ -42,10 +42,12 @@ def check_archive_structure(path:Path):
         bad=z.testzip()
         if bad:raise ValueError("zip_crc_failed:"+bad)
 
-def scaffold_workspace(bundle:AdaptedExport,out:Path,package_id:str,revision:int,qids:list[str]|None,count:int|None,duration_ms:int|None,overrides:dict[str,int]|None=None,inspected_images:set[str]|None=None):
+def scaffold_workspace(bundle:AdaptedExport,out:Path,package_id:str,revision:int,qids:list[str]|None,count:int|None,duration_ms:int|None,overrides:dict[str,int]|None=None,inspected_images:set[str]|None=None,replacement_qids:set[str]|None=None):
     if not PACKAGE_ID_RE.fullmatch(package_id):raise ValueError("package_id_invalid")
     if not isinstance(revision,int) or revision<1:raise ValueError("package_revision_invalid")
     selected=select_questions(bundle,qids,count,duration_ms,overrides,inspected_images)
+    replacement_qids=set(replacement_qids or set());selected_ids={x["qid"] for x in selected}
+    if not replacement_qids.issubset(selected_ids):raise ValueError("replacement_qid_not_selected")
     out.mkdir(parents=True,exist_ok=True);(out/"scenes").mkdir(exist_ok=True);(out/"input").mkdir(exist_ok=True)
     for i,e in enumerate(bundle.envelopes,1):
         (out/"input"/f"raw-export-{i:03d}.json").write_text(json.dumps(e,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
@@ -57,6 +59,7 @@ def scaffold_workspace(bundle:AdaptedExport,out:Path,package_id:str,revision:int
             {"type":"label","text":str(q.get("stem") or "")[:80],"x":320,"y":70,"size":24,"start_ms":0,"end_ms":ms,"from":{"opacity":0.2,"scale":0.96},"to":{"opacity":1,"scale":1}},
             {"type":"arrow","x1":190,"y1":230,"x2":450,"y2":230,"stroke":"#16606A","stroke_width":7,"start_ms":int(ms*.2),"end_ms":int(ms*.8),"from":{"opacity":0},"to":{"opacity":1}}
         ]}
+        if item["qid"] in replacement_qids:scene["replace"]=True
         (out/"scenes"/f"{item['qid']}.scene.json").write_text(json.dumps(scene,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     return selection
 
