@@ -4,12 +4,13 @@ const MC=globalThis.KafuMotionCards,Core=MC?.core;
 if(!MC||!Core)throw new Error("motioncards_core_missing");
 const POSITIVE_TTL=30_000,NEGATIVE_TTL=15_000,READY_TIMEOUT=5000,REFRESH_AFTER=35_000;
 const refreshAfter=()=>Number.isFinite(Number(MC.REFRESH_AFTER_MS))?Math.max(100,Number(MC.REFRESH_AFTER_MS)):REFRESH_AFTER;
-const cache=new Map(),sessionIds=new WeakMap();
-let active=null,lookupSerial=0,refreshTimer=0,nextSessionId=1;
+const cache=new Map();
+let active=null,lookupSerial=0,refreshTimer=0,nextSessionId=1,lastSessionObject=null,lastSessionToken="none";
 const accountKey=()=>IN_TG&&TG?.initDataUnsafe?.user?.id!=null?"tg:"+String(TG.initDataUnsafe.user.id):IN_TG?"tg:session":"browser";
 const sessionKey=()=>{
-  if(!SESSION||typeof SESSION!=="object")return "none";
-  let id=sessionIds.get(SESSION);if(!id){id="s"+nextSessionId++;sessionIds.set(SESSION,id);}return id;
+  if(typeof SESSION==="undefined"||!SESSION||typeof SESSION!=="object"){lastSessionObject=null;lastSessionToken="none";return lastSessionToken;}
+  if(SESSION!==lastSessionObject){lastSessionObject=SESSION;lastSessionToken="s"+nextSessionId++;}
+  return lastSessionToken;
 };
 const current=()=>{
   const qid=SESSION?.qids?.[SESSION.index],entry=qid&&QI[qid],q=entry?.q;
