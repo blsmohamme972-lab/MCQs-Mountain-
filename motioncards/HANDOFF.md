@@ -195,3 +195,73 @@ Documentation-only follow-up commits after the tested runtime SHA update README,
 - The production `kafu-motioncards` service has not been created/deployed by this review work.
 - The real Telegram production queue has not been operated.
 - Final production acceptance still requires explicit owner approval followed by a real owner ZIP upload and student playback.
+
+## Follow-up queue/recovery audit hardening
+
+Code verification SHA before this handoff documentation update: `8bf03c2c22cb61b18f9d843f1cbfc2baafff11cb`.
+
+The follow-up audit reproduced four remaining control-plane failures against the current queue/migration logic: lost first acknowledgement left D1 management/history absent, expired replacement confirmation could strand an `awaiting_confirmation` group, concurrent intake could overwrite an occupied part, and clear could race a retry/claim. These cases now have repository regressions using the real MotionCards queue functions and the actual SQLite migration.
+
+### Durable publication reconciliation
+- Durable MotionCards `state.json` remains the publication-side source of truth; D1 is the management/control-plane projection.
+- On a duplicate retry after publication, the publisher emits a management reconciliation snapshot from the **current durable state**, not from the old upload. It includes each affected card's current active/removed state and relevant compatible version history.
+- The queue finisher applies that snapshot only when the exact group/digest has no prior publication acknowledgement. An already-acknowledged duplicate remains a no-op for card mappings.
+- This recovers a lost first acknowledgement without another content deployment and cannot resurrect a removed card or downgrade a newer replacement.
+- Lost remove/restore acknowledgements use the same current-state reconciliation rule.
+
+Verified regressions in Content CI run `37468259832`:
+- `lost first MotionCards acknowledgement reconciles cards and history from durable current state` — PASS.
+- `lost replacement acknowledgement converges to durable active revision and history` — PASS.
+- `already acknowledged duplicate cannot resurrect removed card or downgrade newer replacement` — PASS.
+- `lost remove and restore acknowledgements reconcile from durable operation state` — PASS.
+
+### Expired replacement confirmation recovery
+Owner flow:
+1. Re-open `/motioncards QID` after the 15-minute confirmation expired.
+2. The pending replacement is shown with **Renew confirmation** and **Cancel replacement**.
+3. **Renew confirmation** invalidates outstanding old tokens, requeues the already accepted parts, revalidates the package/source and the **current** active package/revision/digest, then issues a fresh confirmation.
+4. **Cancel replacement** invalidates the pending token and cancels only that candidate; the active student card is unchanged.
+5. Command equivalents: `/motioncards-retry PACKAGE-ID_rN` renews an awaiting replacement; `/motioncards-clear PACKAGE-ID_rN` cancels it.
+6. A failed Telegram notification after durable confirmation creation is non-fatal; the owner can recover from `/motioncards QID` or status.
+
+Old/used/cancelled/stale tokens fail closed. Renewal also fails closed if the active card changed after the original candidate was prepared.
+
+Verified regressions in Content CI run `37468259832`:
+- expired confirmation renewal/revalidation/cancellation — PASS.
+- confirmation notification failure remains recoverable — PASS.
+
+### Concurrent intake / clear
+- Part writes are guarded inside D1 transactions rather than relying on preflight reads alone.
+- Identical duplicate intake is idempotent and does not dispatch twice.
+- A different payload cannot replace an occupied part once another request wins.
+- Running, awaiting-confirmation and published groups reject part mutation.
+- Failed-part repair remains conditional and preserves other valid parts.
+- Clear guards both child-part and parent-group deletion against the current failed state; a claim/retry race leaves current running work untouched.
+- Claims/finish remain lease-token protected; stale leases cannot publish cards or publication records.
+
+Verified regressions in Content CI run `37468259832`:
+- concurrent different-file same-part intake — PASS.
+- intake/claim and clear/claim deterministic races — PASS.
+- concurrent failed repair has one winner — PASS.
+- expired lease cannot publish — PASS.
+- multiple ready uploads remain claimable without another upload — PASS.
+- failed multipart repair preserves accepted valid parts — PASS.
+
+### Full review verification on code SHA 8bf03c2
+- Kafu Content Contract CI: SUCCESS — run `37468259832`.
+- Kafu Visual and Flow CI: SUCCESS — run `37468259892`.
+- Worker queue suite: 47 pass / 0 fail.
+- Real Wrangler MotionCards static-asset/browser runtime: PASS, including exact immutable HTML route, security headers, entry SHA-256, and ready/intermediate/end MessageChannel playback.
+- Existing MCQ export, content binding, D1/read-bound checks, built-app flows and legacy Medical Motion job remained green.
+
+### Verification boundaries
+- The queue/race regressions are integrated local SQLite/D1-compatible tests using the repository's actual migration and queue functions; they are not a production Cloudflare queue execution.
+- Wrangler static-asset/player verification is a real local Wrangler runtime, not a mocked `ASSETS.fetch` response.
+- No production migration, MotionCards service creation/deployment, credential change, real Telegram queue operation, merge, or production acceptance occurred.
+
+### Current status / next action
+- PR #67: Draft/Open for owner review.
+- Branch: `feature/kafu-motioncards`.
+- No merge or deployment is authorized in this task.
+- Next action: owner reviews this hardened PR. If approved later, obtain explicit production authorization before applying MotionCards migrations, creating/deploying the MotionCards service, or operating the real owner queue.
+
