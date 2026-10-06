@@ -705,6 +705,19 @@ test("replacement confirmation is bound to exact active digest and rejects stale
   assert.match(h.messages.at(-1).text,/changed|stale/i);
 }));
 
+test("duplicate MotionCards acknowledgement never reactivates or downgrades a newer card",()=>harness(async h=>{
+  await h.send(document("MCARDS_DUP_r1.zip"));
+  const claim=await (await h.internal("motioncards/claim")).json();
+  const newer=mcCard("Q000000030","NEWER",9,"9".repeat(64));
+  h.DB.sql.prepare("INSERT INTO motioncards_cards(qid,book_id,book_version,chapter_id,content_hash,active,package_id,package_revision,entry_sha256,entry_url,duration_ms) VALUES(?,?,?,?,?,0,?,?,?,?,?)")
+    .run(newer.qid,newer.book_id,newer.book_version,newer.chapter_id,newer.content_hash,newer.package_id,newer.package_revision,newer.entry_sha256,newer.entry_url,newer.duration_ms);
+  const res=await h.internal("motioncards/finish",{group_key:"DUP_r1",lease_token:claim.lease_token,ok:true,duplicate:true,animations:1,package_sha256:"8".repeat(64),cards:[]});
+  assert.equal(res.status,200);
+  const card=h.DB.sql.prepare("SELECT active,package_id,package_revision,entry_sha256 FROM motioncards_cards WHERE qid=?").get(newer.qid);
+  assert.deepEqual(card,{active:0,package_id:"NEWER",package_revision:9,entry_sha256:"9".repeat(64)});
+  assert.equal(h.DB.sql.prepare("SELECT status FROM motioncards_groups WHERE group_key='DUP_r1'").get().status,"published");
+}));
+
 test("MotionCards internal endpoints require the existing queue token", () => harness(async h => {
   const forbidden=await h.internal("motioncards/claim",{},"wrong");
   assert.equal(forbidden.status,403);
