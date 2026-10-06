@@ -131,6 +131,23 @@ def _write_active(work:Path,state:str):
     active=work/"active.json";active.write_text(json.dumps({"schema":1,"state_sha256":state})+"\n")
     run("gh","release","upload",TAG,str(active),"--clobber")
 
+def _write_pending(work:Path,state:str):
+    pending=work/"pending.json";pending.write_text(json.dumps({"schema":1,"state_sha256":state})+"\n")
+    run("gh","release","upload",TAG,str(pending),"--clobber")
+
+def _candidate_states(assets:set[str])->list[str]:
+    out=[]
+    for name in assets:
+        if not (name.startswith("candidate-") and name.endswith(".json")):continue
+        state=name[len("candidate-"):-len(".json")].lower()
+        if _hex64(state) and set(_candidate_names(state)).issubset(assets):out.append(state)
+    return sorted(set(out))
+
+def _write_empty_retry_base(work:Path):
+    data={"schema":1,"packages":{},"animations":{},"history":{},"operations":{}}
+    (work/"state.json").write_text(json.dumps(data,ensure_ascii=False,indent=2,sort_keys=True)+"\n")
+    shutil.rmtree(work/"site",ignore_errors=True);(work/"site").mkdir(parents=True)
+
 def restore(work:Path,allow_initial:bool):
     shutil.rmtree(work,ignore_errors=True);(work/"site").mkdir(parents=True);(work/"release").mkdir()
     status=release_status()
@@ -148,9 +165,23 @@ def restore(work:Path,allow_initial:bool):
             if not needed.issubset(assets):raise RuntimeError("live_motioncards_state_has_no_durable_candidate")
             _install_verified(work,live);_write_active(work,live)
             print(json.dumps({"has_state":True,"state_sha256":live,"recovery":"promotion-before-pointer"}));return True
+        candidates=_candidate_states(assets)
+        pending_state=""
+        if "pending.json" in assets:
+            pending_file=download_one(work,"pending.json")
+            pending=json.loads(pending_file.read_text());pending_state=str(pending.get("state_sha256","")).lower()
+            if not _hex64(pending_state) or pending_state not in candidates:raise RuntimeError("motioncards_pending_pointer_invalid")
+        elif len(candidates)==1:
+            pending_state=candidates[0]
+        elif len(candidates)>1:
+            raise RuntimeError("motioncards_initial_candidate_ambiguous")
+        if pending_state:
+            # Verify the durable candidate, but do NOT install it as active: promotion never succeeded.
+            # Rebuild from the empty initial base so the same queued package is revalidated and redeployed.
+            verify_candidate(work,pending_state);_write_empty_retry_base(work)
+            print(json.dumps({"has_state":False,"recovery":"initial-candidate-retry-base","candidate_state_sha256":pending_state}));return False
         if not allow_initial:raise RuntimeError("motioncards_active_pointer_missing_owner_recovery_required")
-        candidates=sorted(x for x in assets if x.startswith("candidate-") and x.endswith(".json"))
-        print(json.dumps({"has_state":False,"recovery":"initial-before-promotion","durable_candidates":len(candidates)}));return False
+        print(json.dumps({"has_state":False,"recovery":"initial-empty"}));return False
 
     active_file=download_one(work,active_name)
     pointer=json.loads(active_file.read_text());active=str(pointer.get("state_sha256","")).lower()
@@ -183,6 +214,7 @@ def persist_candidate(work:Path):
         assets=set()
     else:assets=release_assets()
     for asset in [state_asset,site_asset,meta_asset]:upload_immutable(work,asset,assets)
+    _write_pending(work,state)
     print(state)
 
 def activate(work:Path):
