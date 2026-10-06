@@ -76,8 +76,8 @@ parent.postMessage({type:'kafu-motioncards-ready',protocol:1,channel_id:CONFIG.c
 
 def _validate_host_origins(allowed:list[str],preview:bool=False):
     if not allowed:raise ValueError("allowed_host_origin_invalid")
-    production=re.compile(r"https://[A-Za-z0-9.-]+(?::\\d+)?$")
-    loopback=re.compile(r"http://(?:127\\.0\\.0\\.1|localhost)(?::[1-9]\\d{0,4})?$")
+    production=re.compile(r"https://[A-Za-z0-9.-]+(?::\d+)?$")
+    loopback=re.compile(r"http://(?:127\.0\.0\.1|localhost)(?::[1-9]\d{0,4})?$")
     for origin in allowed:
         if production.fullmatch(origin):continue
         if preview and loopback.fullmatch(origin):continue
