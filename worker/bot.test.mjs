@@ -71,6 +71,10 @@ async function harness(fn) {
   finally { globalThis.fetch = original; DB.sql.close(); }
 }
 const document = (name, unique = name) => ({ file_name: name, file_id: "file-" + unique, file_unique_id: "unique-" + unique, file_size: 100 });
+const mcCard=(qid,package_id="MULTI",package_revision=2,sha="b".repeat(64))=>({
+  qid,book_id:"BOOK",book_version:1,chapter_id:"1",content_hash:"a".repeat(64),package_id,package_revision,
+  entry_sha256:sha,entry_url:`https://kafu-motioncards.blsmohamme97.workers.dev/assets/${package_id}/r${package_revision}/${qid}.${sha.slice(0,12)}.html`,duration_ms:6000
+});
 
 function signedInitData(user={id:321,first_name:"Ada",photo_url:"https://example.com/a.jpg"},authDate=Math.floor(Date.now()/1000),token="unit-bot"){
   const params=new URLSearchParams({auth_date:String(authDate),query_id:"AAE",user:JSON.stringify(user)});
@@ -609,21 +613,22 @@ test("MotionCards owner/private gate, duplicate event and invalid filename stay 
 }));
 
 test("MotionCards multipart, lease-protected claim/finish, retry and recovery are separate", () => harness(async h => {
+  const beforeDispatch=h.dispatchUrls.length;
   await h.send(document("MCARDS_MULTI_r2_part2of2.zip"));
   let row=h.DB.sql.prepare("SELECT * FROM motioncards_groups WHERE group_key='MULTI_r2'").get();
-  assert.equal(row.status,"waiting");
+  assert.equal(row.status,"waiting");assert.equal(h.dispatchUrls.length,beforeDispatch,"waiting MotionCards must not fall through to book dispatch");
   await h.send(document("MCARDS_MULTI_r2_part1of2.zip"));
-  row=h.DB.sql.prepare("SELECT * FROM motioncards_groups WHERE group_key='MULTI_r2'").get();
-  assert.equal(row.status,"ready");
+  row=h.DB.sql.prepare("SELECT * FROM motioncards_groups WHERE group_key='MULTI_r2'").get();assert.equal(row.status,"ready");
 
-  const claim=await (await h.internal("motioncards/claim")).json();
+  const claim=await (await h.internal("motioncards/claim")).json(),cards=[mcCard("Q000000001"),mcCard("Q000000002")];
   assert.equal(claim.kind,"motioncards");assert.equal(claim.parts.length,2);assert.match(claim.lease_token,/^[a-f0-9]{32}$/);
-  let bad=await h.internal("motioncards/finish",{group_key:"MULTI_r2",lease_token:"wrong",ok:true,animations:2,package_sha256:"a".repeat(64)});
-  assert.equal(bad.status,409);
-  let done=await h.internal("motioncards/finish",{group_key:"MULTI_r2",lease_token:claim.lease_token,ok:true,animations:2,package_sha256:"a".repeat(64)});
+  let bad=await h.internal("motioncards/finish",{group_key:"MULTI_r2",lease_token:"wrong",ok:true,animations:2,package_sha256:"c".repeat(64),cards});
+  assert.equal(bad.status,409);assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM motioncards_publications").get().n,0);
+  let done=await h.internal("motioncards/finish",{group_key:"MULTI_r2",lease_token:claim.lease_token,ok:true,animations:2,package_sha256:"c".repeat(64),cards});
   assert.equal(done.status,200);
   row=h.DB.sql.prepare("SELECT * FROM motioncards_groups WHERE group_key='MULTI_r2'").get();assert.equal(row.status,"published");
   assert.equal(h.DB.sql.prepare("SELECT animations FROM motioncards_publications").get().animations,2);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM motioncards_cards WHERE active=1").get().n,2);
 
   await h.send(document("MCARDS_FAIL_r1.zip"));
   const claim2=await (await h.internal("motioncards/claim")).json();
@@ -632,6 +637,72 @@ test("MotionCards multipart, lease-protected claim/finish, retry and recovery ar
   await h.send("/motioncards-retry FAIL_r1");
   row=h.DB.sql.prepare("SELECT * FROM motioncards_groups WHERE group_key='FAIL_r1'").get();assert.equal(row.status,"ready");
   assert.match(h.dispatchUrls.at(-1),/publish-motioncards-queue\.yml/);
+}));
+
+
+test("MotionCards failed multipart repair preserves valid accepted parts",()=>harness(async h=>{
+  await h.send(document("MCARDS_REPAIR_r1_part1of2.zip","p1"));
+  await h.send(document("MCARDS_REPAIR_r1_part2of2.zip","p2"));
+  h.DB.sql.exec("UPDATE motioncards_groups SET status='failed',error_summary='fixture'");
+  await h.send(document("MCARDS_REPAIR_r1_part2of2.zip","p2-new"));
+  assert.equal(h.DB.sql.prepare("SELECT status FROM motioncards_groups WHERE group_key='REPAIR_r1'").get().status,"ready");
+  const parts=h.DB.sql.prepare("SELECT part_index,telegram_file_unique_id FROM motioncards_queue WHERE group_key='REPAIR_r1' ORDER BY part_index").all();
+  assert.deepEqual(parts,[{part_index:1,telegram_file_unique_id:"unique-p1"},{part_index:2,telegram_file_unique_id:"unique-p2-new"}]);
+}));
+
+test("MotionCards expired lease cannot publish cards or publication record",()=>harness(async h=>{
+  await h.send(document("MCARDS_STALE_r1.zip"));
+  const claim=await (await h.internal("motioncards/claim")).json();
+  h.DB.sql.prepare("UPDATE motioncards_groups SET lease_expires_at=datetime('now','-1 minute') WHERE group_key='STALE_r1'").run();
+  const res=await h.internal("motioncards/finish",{group_key:"STALE_r1",lease_token:claim.lease_token,ok:true,animations:1,package_sha256:"d".repeat(64),cards:[mcCard("Q000000003","STALE",1)]});
+  assert.equal(res.status,409);assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM motioncards_publications").get().n,0);assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM motioncards_cards").get().n,0);
+}));
+
+test("MotionCards multiple ready uploads remain claimable without another upload",()=>harness(async h=>{
+  for(const id of ["A","B","C"])await h.send(document(\`MCARDS_\${id}_r1.zip\`));
+  for(let i=0;i<3;i++){
+    const ready=await (await h.internal("motioncards/has-ready")).json();assert.equal(ready.ready,true);
+    const claim=await (await h.internal("motioncards/claim")).json();assert.equal(claim.kind,"motioncards");
+    const qid=\`Q\${String(100+i).padStart(9,"0")}\`,card=mcCard(qid,claim.group.package_id,claim.group.revision);
+    assert.equal((await h.internal("motioncards/finish",{group_key:claim.group.group_key,lease_token:claim.lease_token,ok:true,animations:1,package_sha256:String(i+1).repeat(64),cards:[card]})).status,200);
+  }
+  const ready=await (await h.internal("motioncards/has-ready")).json();assert.equal(ready.ready,false);
+}));
+
+test("owner MotionCards management exposes trusted preview and confirmed remove/restore",()=>harness(async h=>{
+  const current=mcCard("Q000000010","NEW",2,"e".repeat(64)),prior=mcCard("Q000000010","OLD",1,"f".repeat(64));
+  const put=v=>h.DB.sql.prepare("INSERT INTO motioncards_card_versions(qid,book_id,book_version,chapter_id,content_hash,package_id,package_revision,entry_sha256,entry_url,duration_ms) VALUES(?,?,?,?,?,?,?,?,?,?)")
+    .run(v.qid,v.book_id,v.book_version,v.chapter_id,v.content_hash,v.package_id,v.package_revision,v.entry_sha256,v.entry_url,v.duration_ms);
+  put(prior);put(current);
+  h.DB.sql.prepare("INSERT INTO motioncards_cards(qid,book_id,book_version,chapter_id,content_hash,active,package_id,package_revision,entry_sha256,entry_url,duration_ms) VALUES(?,?,?,?,?,1,?,?,?,?,?)")
+    .run(current.qid,current.book_id,current.book_version,current.chapter_id,current.content_hash,current.package_id,current.package_revision,current.entry_sha256,current.entry_url,current.duration_ms);
+  await h.send("/motioncards Q000000010");
+  const view=h.messages.at(-1);assert.match(view.text,/Published/);
+  const buttons=view.reply_markup.inline_keyboard.flat();assert.ok(buttons.find(x=>x.text==="Preview").url.startsWith("https://kafu.blsmohamme97.workers.dev/?motioncards_preview=Q000000010"));
+  assert.ok(buttons.some(x=>x.text==="Replace"));assert.ok(buttons.some(x=>x.text==="Remove from students"));assert.ok(buttons.some(x=>/Restore/.test(x.text)));
+
+  await h.cb("mcremove:Q000000010");
+  const confirm=h.messages.at(-1).reply_markup.inline_keyboard[0][0].callback_data;assert.match(confirm,/^mcconfirm:/);
+  await h.cb(confirm);assert.equal(h.DB.sql.prepare("SELECT kind FROM motioncards_operations").get().kind,"remove");assert.match(h.dispatchUrls.at(-1),/publish-motioncards-queue\.yml/);
+  h.DB.sql.exec("DELETE FROM motioncards_operations; UPDATE motioncards_cards SET active=0");
+  await h.send("/motioncards Q000000010");
+  const restore=h.messages.at(-1).reply_markup.inline_keyboard.flat().find(x=>/Restore/.test(x.text));assert.ok(restore);
+  await h.cb(restore.callback_data);const restoreConfirm=h.messages.at(-1).reply_markup.inline_keyboard[0][0].callback_data;await h.cb(restoreConfirm);
+  assert.equal(h.DB.sql.prepare("SELECT kind FROM motioncards_operations").get().kind,"restore");
+}));
+
+test("replacement confirmation is bound to exact active digest and rejects stale state",()=>harness(async h=>{
+  const card=mcCard("Q000000020","OLD",1,"a".repeat(64));
+  h.DB.sql.prepare("INSERT INTO motioncards_cards(qid,book_id,book_version,chapter_id,content_hash,active,package_id,package_revision,entry_sha256,entry_url,duration_ms) VALUES(?,?,?,?,?,1,?,?,?,?,?)")
+    .run(card.qid,card.book_id,card.book_version,card.chapter_id,card.content_hash,card.package_id,card.package_revision,card.entry_sha256,card.entry_url,card.duration_ms);
+  await h.send(document("MCARDS_NEW_r2.zip"));const claim=await (await h.internal("motioncards/claim")).json();
+  const target={qid:card.qid,book_id:card.book_id,book_version:1,chapter_id:"1",candidate_digest:"b".repeat(64),expected_active_digest:card.entry_sha256,expected_active_package_id:"OLD",expected_active_package_revision:1};
+  const staged=await h.internal("motioncards/candidate",{group_key:"NEW_r2",lease_token:claim.lease_token,candidate_digest:"b".repeat(64),targets:[target]});assert.equal(staged.status,200);
+  const confirm=h.messages.at(-1).reply_markup.inline_keyboard[0][0].callback_data;
+  h.DB.sql.prepare("UPDATE motioncards_cards SET entry_sha256=?").run("c".repeat(64));
+  await h.cb(confirm);
+  assert.equal(h.DB.sql.prepare("SELECT status FROM motioncards_groups WHERE group_key='NEW_r2'").get().status,"awaiting_confirmation");
+  assert.match(h.messages.at(-1).text,/changed|stale/i);
 }));
 
 test("MotionCards internal endpoints require the existing queue token", () => harness(async h => {
