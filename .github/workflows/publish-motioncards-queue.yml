@@ -8,10 +8,12 @@ on:
         required: false
         default: false
         type: boolean
+  schedule:
+    - cron: "17 * * * *"
 
 permissions:
   contents: write
-  actions: read
+  actions: write
 
 concurrency:
   group: kafu-motioncards-publisher
@@ -53,12 +55,13 @@ jobs:
           if [[ -f /tmp/kafu-motioncards/result.json ]]; then
             echo "has_work=true" >> "$GITHUB_OUTPUT"
             echo "state_sha256=$(python -c 'import json;print(json.load(open("/tmp/kafu-motioncards/result.json"))["state_sha256"])')" >> "$GITHUB_OUTPUT"
+            echo "needs_deploy=$(python -c 'import json;print(str(bool(json.load(open("/tmp/kafu-motioncards/result.json"))["needs_deploy"])).lower())')" >> "$GITHUB_OUTPUT"
           else
             echo "has_work=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Stage complete candidate tree
-        if: steps.prepare.outputs.has_work == 'true'
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
         run: |
           set -euo pipefail
           rm -rf motioncards-worker/dist
@@ -68,14 +71,15 @@ jobs:
           test -s motioncards-worker/dist/build-info.json
 
       - name: Upload staged MotionCards Worker version
-        if: steps.prepare.outputs.has_work == 'true'
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
         id: staged
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           set -euo pipefail
-          TAG="motioncards-${GITHUB_SHA:0:12}-${GITHUB_RUN_ATTEMPT}"
+          STATE="${{ steps.prepare.outputs.state_sha256 }}"
+          TAG="motioncards-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${STATE:0:12}"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           npx wrangler versions upload --tag "$TAG" --message "staged MotionCards $GITHUB_SHA" --config motioncards-worker/wrangler.jsonc | tee /tmp/motioncards-upload.log
           VERSION_URL="$(grep -Eo 'https://[A-Za-z0-9._-]+\.workers\.dev/?' /tmp/motioncards-upload.log | tail -1)"
@@ -83,26 +87,26 @@ jobs:
           echo "version_url=$VERSION_URL" >> "$GITHUB_OUTPUT"
 
       - name: Smoke exact staged MotionCards version
-        if: steps.prepare.outputs.has_work == 'true'
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
         run: python -m tools.motioncards.smoke --url "${{ steps.staged.outputs.version_url }}" --result /tmp/kafu-motioncards/result.json
 
       - name: Persist recoverable candidate before promotion
-        if: steps.prepare.outputs.has_work == 'true'
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
         run: python tools/motioncards/state_store.py persist-candidate --work /tmp/kafu-motioncards
 
       - name: Promote staged MotionCards version to 100%
-        if: steps.prepare.outputs.has_work == 'true'
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx wrangler versions deploy --version-tag "${{ steps.staged.outputs.tag }}@100%" --yes --config motioncards-worker/wrangler.jsonc
 
       - name: Verify MotionCards production after promotion
-        if: steps.prepare.outputs.has_work == 'true'
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
         run: python -m tools.motioncards.smoke --url "$MOTIONCARDS_URL" --result /tmp/kafu-motioncards/result.json
 
       - name: Advance durable active state pointer
-        if: steps.prepare.outputs.has_work == 'true'
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
         run: python tools/motioncards/state_store.py activate --work /tmp/kafu-motioncards
 
       - name: Acknowledge queue only after durable production
@@ -110,6 +114,17 @@ jobs:
         env:
           QUEUE_API_TOKEN: ${{ secrets.QUEUE_API_TOKEN }}
         run: python tools/motioncards/queue_worker.py finish --work /tmp/kafu-motioncards --ok
+
+      - name: Continue draining ready MotionCards work
+        if: success() && steps.prepare.outputs.has_work == 'true'
+        env:
+          QUEUE_API_TOKEN: ${{ secrets.QUEUE_API_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if python tools/motioncards/queue_worker.py has-work; then
+            gh workflow run publish-motioncards-queue.yml --repo "$GITHUB_REPOSITORY"
+          fi
 
       - name: Fail prepared queue item when later workflow steps fail
         if: failure() && steps.prepare.outputs.has_work == 'true'
