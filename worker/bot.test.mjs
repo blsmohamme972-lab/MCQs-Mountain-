@@ -15,6 +15,7 @@ function testDB() {
   db.exec(readFileSync(new URL("../migrations/0003_leaderboard.sql", import.meta.url), "utf8"));
   db.exec(readFileSync(new URL("../migrations/0004_leaderboard_compact.sql", import.meta.url), "utf8"));
   db.exec(readFileSync(new URL("../migrations/0005_leaderboard_read_bounds.sql", import.meta.url), "utf8"));
+  db.exec(readFileSync(new URL("../migrations/0006_motioncards_queue.sql", import.meta.url), "utf8"));
   return {
     sql: db,
     prepare(sql) {
@@ -35,7 +36,7 @@ function testDB() {
   };
 }
 async function harness(fn) {
-  const DB = testDB(), messages = [], dispatches = [], pending = [], callbacks = [];
+  const DB = testDB(), messages = [], dispatches = [], dispatchUrls = [], pending = [], callbacks = [];
   const env = { DB, BOT_TOKEN: "unit-bot", WEBHOOK_SECRET: "unit-hook", OWNER_TELEGRAM_ID: "123",
     DISPATCH_TOKEN: "unit-dispatch", QUEUE_API_TOKEN: "  unit-queue\n", CONTENT_BASE: "https://content.test" };
   const original = globalThis.fetch;
@@ -47,7 +48,7 @@ async function harness(fn) {
       if (url.endsWith("answerCallbackQuery")) callbacks.push(body);
       return { ok: true, json: async () => ({ ok: true, result: {} }) };
     }
-    if (url.startsWith("https://api.github.com/")) { dispatches.push(JSON.parse(init.body)); return { status: 204 }; }
+    if (url.startsWith("https://api.github.com/")) { dispatchUrls.push(url); dispatches.push(JSON.parse(init.body)); return { status: 204 }; }
     if (url === "https://content.test/routes/Q000000.json") return { ok: true, json: async () => ({ routes: { Q000000001: { book_id: "TEST", chapter_id: 1 } } }) };
     if (url === "https://content.test/catalog.json") return { ok: true, json: async () => ({ books: [{ id: "TEST", version: 1, questions: 4, chapters: [{ id: 1 }] }] }) };
     throw new Error("Unmocked network request refused");
@@ -66,7 +67,7 @@ async function harness(fn) {
     const response = await bot.fetch(new Request("https://kafu.test/bot", { method: "POST", headers: { "X-Telegram-Bot-Api-Secret-Token": "unit-hook" }, body: JSON.stringify({ callback_query: { id: "callback", data, from: { id }, message: { chat: { id, type } } } }) }), env, ctx);
     await Promise.all(pending.splice(0)); return response;
   };
-  try { await fn({ env, DB, messages, dispatches, callbacks, send, internal, cb }); }
+  try { await fn({ env, DB, messages, dispatches, dispatchUrls, callbacks, send, internal, cb }); }
   finally { globalThis.fetch = original; DB.sql.close(); }
 }
 const document = (name, unique = name) => ({ file_name: name, file_id: "file-" + unique, file_unique_id: "unique-" + unique, file_size: 100 });
@@ -576,3 +577,66 @@ test('meter preserves D1 metadata, avoids fabricated zero and logs no identity',
   assert.equal(logs[0].rows_read,3);assert.equal(logs[0].endpoint,'/admin/books');
   assert.doesNotMatch(JSON.stringify(logs),/user_key|initData|sql|token/);
 });
+
+
+test("MotionCards filenames route before the unchanged book parser and dispatch only its workflow", () => harness(async h => {
+  await h.send(document("MCARDS_UPPER-LIMB_r1.zip"));
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM motioncards_groups").get().n,1);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM publish_groups").get().n,0);
+  assert.match(h.messages.at(-1).text,/MotionCards UPPER-LIMB_r1/);
+  assert.equal(h.dispatchUrls.length,1);
+  assert.match(h.dispatchUrls[0],/publish-motioncards-queue\.yml/);
+
+  await h.send(document("BOOK_v1.zip"));
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM publish_groups").get().n,1);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM motioncards_groups").get().n,1);
+  assert.match(h.dispatchUrls.at(-1),/publish-queue\.yml/);
+}));
+
+test("MotionCards owner/private gate, duplicate event and invalid filename stay isolated", () => harness(async h => {
+  await h.send(document("MCARDS_SECRET_r1.zip"),999);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM motioncards_groups").get().n,0);
+  await h.send(document("MCARDS_SECRET_r1.zip"),123,"group");
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM motioncards_groups").get().n,0);
+  await h.send(document("MCARDS_BAD_v1.zip"));
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM motioncards_groups").get().n,0);
+  assert.match(h.messages.at(-1).text,/filename must be/);
+  await h.send(document("MCARDS_OK_r1.zip"));
+  const dispatches=h.dispatchUrls.length;
+  await h.send(document("MCARDS_OK_r1.zip"));
+  assert.match(h.messages.at(-1).text,/already received/);
+  assert.equal(h.dispatchUrls.length,dispatches);
+}));
+
+test("MotionCards multipart, lease-protected claim/finish, retry and recovery are separate", () => harness(async h => {
+  await h.send(document("MCARDS_MULTI_r2_part2of2.zip"));
+  let row=h.DB.sql.prepare("SELECT * FROM motioncards_groups WHERE group_key='MULTI_r2'").get();
+  assert.equal(row.status,"waiting");
+  await h.send(document("MCARDS_MULTI_r2_part1of2.zip"));
+  row=h.DB.sql.prepare("SELECT * FROM motioncards_groups WHERE group_key='MULTI_r2'").get();
+  assert.equal(row.status,"ready");
+
+  const claim=await (await h.internal("motioncards/claim")).json();
+  assert.equal(claim.kind,"motioncards");assert.equal(claim.parts.length,2);assert.match(claim.lease_token,/^[a-f0-9]{32}$/);
+  let bad=await h.internal("motioncards/finish",{group_key:"MULTI_r2",lease_token:"wrong",ok:true,animations:2,package_sha256:"a".repeat(64)});
+  assert.equal(bad.status,409);
+  let done=await h.internal("motioncards/finish",{group_key:"MULTI_r2",lease_token:claim.lease_token,ok:true,animations:2,package_sha256:"a".repeat(64)});
+  assert.equal(done.status,200);
+  row=h.DB.sql.prepare("SELECT * FROM motioncards_groups WHERE group_key='MULTI_r2'").get();assert.equal(row.status,"published");
+  assert.equal(h.DB.sql.prepare("SELECT animations FROM motioncards_publications").get().animations,2);
+
+  await h.send(document("MCARDS_FAIL_r1.zip"));
+  const claim2=await (await h.internal("motioncards/claim")).json();
+  await h.internal("motioncards/finish",{group_key:"FAIL_r1",lease_token:claim2.lease_token,ok:false,error:"fixture failure"});
+  row=h.DB.sql.prepare("SELECT * FROM motioncards_groups WHERE group_key='FAIL_r1'").get();assert.equal(row.status,"failed");
+  await h.send("/motioncards-retry FAIL_r1");
+  row=h.DB.sql.prepare("SELECT * FROM motioncards_groups WHERE group_key='FAIL_r1'").get();assert.equal(row.status,"ready");
+  assert.match(h.dispatchUrls.at(-1),/publish-motioncards-queue\.yml/);
+}));
+
+test("MotionCards internal endpoints require the existing queue token", () => harness(async h => {
+  const forbidden=await h.internal("motioncards/claim",{},"wrong");
+  assert.equal(forbidden.status,403);
+  const method=await h.internal("motioncards/claim",{},"unit-queue","GET");
+  assert.equal(method.status,405);
+}));
