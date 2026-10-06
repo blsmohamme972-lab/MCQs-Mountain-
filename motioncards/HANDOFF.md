@@ -310,11 +310,35 @@ The exact authorized first-rollout sequence is documented in `docs/ADMIN.md`. No
 
 ### Current status
 
-STATUS: INCOMPLETE - SAFE TO CONTINUE
+STATUS: READY FOR OWNER REVIEW - DO NOT MERGE OR DEPLOY
 
-- PR #67 remains Draft/Open and unmerged.
-- Branch: `feature/kafu-motioncards`.
-- No merge, deployment, production migration, service creation, credential change, or real production queue operation is authorized.
-- Final action for this review task: run full Content Contract CI and Visual/Flow CI on the final review head. If both pass, update the PR description with exact final SHA/run IDs and stop for owner review.
-- Any future merge requires explicit production rollout authorization because merge is not production-neutral.
+Final verified review-code head before this handoff-only update: `ae94f19f58321c22b0efac1bdc1dc914110357eb`.
+
+Verification on that head:
+- Kafu Content Contract CI: SUCCESS — run `37476869185`.
+- Kafu Visual and Flow CI: SUCCESS on rerun attempt #2 — run `37476869576`.
+- Visual attempt #1 on the same SHA failed only on `ipad-dark-library-no-results`; no app/visual code or baseline changed, and rerun #2 passed main journeys, approved comparisons, real MotionCards Wrangler routing/handshake, budgets, and evidence generation.
+- Confirmation atomicity repository suite: replace/remove/restore valid, owner/chat mismatch, pre-expired, post-preflight expiry, post-preflight invalidation, changed target, duplicate callback, candidate-digest race, and renewal/cancellation race all PASS.
+- Worker queue suite: 64 pass / 0 fail.
+- MotionCards rollout-gate tests: PASS.
+- Legacy Medical Motion job: PASS.
+
+Failure-before evidence:
+- Content CI run `37475150809` failed the newly added confirmation atomicity regressions against the pre-fix implementation. In the reproduced race, a rejected callback could leave executable replacement/remove/restore work committed because the queue mutation changed one row while token consumption changed zero.
+
+Atomicity invariant after the fix:
+- Queue authorization and token eligibility are coupled inside guarded SQL executed in one D1 batch transaction.
+- A token that expires, is used/cancelled/renewed, loses owner/chat eligibility, points at a stale candidate, or sees a changed active target before the transaction produces no executable operation and does not authorize a replacement.
+- Valid confirmations remain single-use and idempotent.
+- Existing Renew/Cancel, durable-state reconciliation, intake/clear protections, player behavior, source validation, and legacy separation remain intact.
+
+Rollout boundary:
+- Merge is not production-neutral. `deploy-app.yml` can apply remote D1 migrations and promote the app after matching pushes to `main`; the MotionCards publisher has an hourly schedule.
+- Reviewed fail-closed gates are present, but no repository variable or production setting was changed during review.
+- The exact first-rollout sequence is documented in `docs/ADMIN.md`.
+- No merge, deployment, production migration, MotionCards service creation, credential change, repository rollout-variable change, or real production queue operation occurred.
+
+Next action:
+- Owner reviews PR #67.
+- If the owner wants production rollout later, obtain explicit production authorization covering the documented rollout sequence before merge/manual deployment/service creation/migration/publisher enablement.
 
