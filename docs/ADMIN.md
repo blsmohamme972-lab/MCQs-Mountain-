@@ -51,6 +51,24 @@ Do not upload PDFs to the bot. The bot accepts prepared ZIP packages only.
   
 The bot ignores non-owner users and group-chat commands.
 
+
+## Kafu MotionCards owner management
+
+MotionCards remain separate from the book publisher and its queue/state.
+
+- `/motioncards Q000000001` — inspect one published/known card. The response shows book/version, chapter, QID, current package revision, duration and status, with inline management actions.
+- **Preview** — opens the trusted Kafu player route for that QID; never use a raw MotionCards child HTML URL as the management preview.
+- **Replace** — upload a validated MotionCards ZIP containing only the intended replacement card(s). The bot lists exact replacement targets and requires explicit confirmation after validation. Confirmation expires and is bound to the owner/private chat, candidate digest, and expected active package/revision/digest.
+- **Remove from students** — reversible soft-unpublish for that QID only. It leaves the MCQ, progress, answers, other cards and historical bytes untouched.
+- **Restore previous compatible version** — restores only the selected QID after revalidating its current published question identity/content hash.
+- `/motioncards-status` — concise MotionCards queue status.
+- `/motioncards-retry PACKAGE-ID_rN` — requeue a failed complete MotionCards upload.
+- `/motioncards-clear PACKAGE-ID_rN` — clear failed MotionCards queue state only; it is not a published-card delete command.
+
+A successful remove/restore is published through the MotionCards state/deployment pipeline. The public index cache is 30 seconds and the app's bounded availability refresh is 35 seconds by default, so an already-open question should update within that window after successful publication. Do not promise deletion of bytes already cached/downloaded on a client.
+
+MotionCards queue recovery is lease/token protected and bounded. Do not manipulate `motioncards_` D1 rows, release assets, or hashes manually to force a replacement or restoration.
+
 ## When you see ❌
 
 1. Send `/queue` and read the failing `step=...`, method, host, path and status. These diagnostics intentionally contain no secrets.
