@@ -33,7 +33,7 @@ def main():
         browser=p.chromium.launch()
         for card in cards:
             path=urlsplit(card["entry_url"]).path;entry=base+path
-            ctx=browser.new_context(service_workers="block")
+            ctx=browser.new_context()
             blocked=[]
             def route_all(route):
                 u=urlsplit(route.request.url)
