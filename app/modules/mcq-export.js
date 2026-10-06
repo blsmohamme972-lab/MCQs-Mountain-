@@ -6,9 +6,16 @@ globalThis.KafuEnhancements.installers.push({ name: "mcq-export", install() {
     session: "", canExport: false, checking: false, active: null, preparing: false,
     error: "", done: 0, total: 0, catalog: null, prepared: null, fallbackText: "", controller: null,
   };
-  let run = 0, expiryTimer = null;
+  let run = 0, expiryTimer = null, retryTimer = null, retryAttempt = 0;
   const timeoutSignal = (ms) => typeof globalThis.AbortSignal?.timeout === "function" ? globalThis.AbortSignal.timeout(ms) : undefined;
-  const session = () => IN_TG ? String(TG?.initData || "") : "";
+  /* Telegram can finish attaching WebApp.initData just after the shell has
+     evaluated. Read it dynamically so a slow Telegram WebView does not leave
+     the owner permanently in the student state until a full reinstall. */
+  const telegramWebApp = () => globalThis.Telegram?.WebApp || TG || null;
+  const session = () => {
+    const webApp = telegramWebApp();
+    return webApp?.initData ? String(webApp.initData) : "";
+  };
   const current = () => session();
   const escText = (value) => esc(String(value ?? ""));
   const selectedBook = (id) => bookById(id);
@@ -26,9 +33,10 @@ globalThis.KafuEnhancements.installers.push({ name: "mcq-export", install() {
   function resetForSession(next) {
     if (state.controller) state.controller.abort();
     if (expiryTimer) { clearTimeout(expiryTimer); expiryTimer = null; }
+    if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
     state.session = next; state.canExport = false; state.checking = !!next;
     state.active = null; state.preparing = false; state.error = ""; state.catalog = null; state.prepared = null; state.fallbackText = "";
-    run += 1; SHEET = null;
+    run += 1; retryAttempt = 0; SHEET = null;
     if (next) {
       const params = typeof URLSearchParams === "function" ? new URLSearchParams(next) : null;
       const rawAuthDate = params?.get("auth_date");
@@ -43,13 +51,24 @@ globalThis.KafuEnhancements.installers.push({ name: "mcq-export", install() {
       if (next) probe(next).catch(() => {});
     }
   }
+  function scheduleProbe(expected) {
+    if (!expected || retryTimer) return;
+    const delay = Math.min(30000, 1000 * (2 ** Math.min(retryAttempt++, 5)));
+    retryTimer = setTimeout(() => {
+      retryTimer = null;
+      if (expected === current() && !state.canExport) probe(expected).catch(() => {});
+    }, delay);
+  }
   async function probe(expected) {
+    let retry = false;
     try {
       const response = await fetch("/admin/capabilities", { method: "POST", cache: "no-store", signal: timeoutSignal(10000), headers: { "content-type": "application/json" }, body: JSON.stringify({ initData: expected, capability: "mcq_export" }) });
       const data = await response.json();
       if (expected !== current()) return;
       state.canExport = response.ok && data.can_export_mcqs === true;
-    } catch (_) { if (expected === current()) state.canExport = false; }
+      retry = [408, 425, 429, 500, 502, 503, 504].includes(response.status);
+    } catch (_) { if (expected === current()) state.canExport = false; retry = true; }
+    if (retry && expected === current() && !state.canExport) scheduleProbe(expected);
     if (expected === current()) { state.checking = false; render(); }
   }
   const previousRender = render;
@@ -186,6 +205,15 @@ globalThis.KafuEnhancements.installers.push({ name: "mcq-export", install() {
   ACTIONS["mcq-export-close"] = (data, el, event) => { if (event?.target?.closest?.("[data-stop]")) return; closeSheet(); };
   const oldClose = ACTIONS["close-sheet"];
   ACTIONS["close-sheet"] = (...args) => { if (state.active) closeSheet(); else oldClose?.(...args); };
+  const refreshSession = () => {
+    const next = current();
+    if (next !== state.session) { ensureSession(); render(); return; }
+    if (next && !state.canExport && !state.checking) probe(next).catch(() => {});
+  };
+  document.addEventListener("visibilitychange", refreshSession);
+  window.addEventListener("focus", refreshSession);
   resetForSession(current());
   if (state.session) probe(state.session).catch(() => {});
+  /* Cover Telegram clients that populate initData immediately after ready(). */
+  [250, 1000, 3000].forEach((delay) => setTimeout(refreshSession, delay));
 }});
