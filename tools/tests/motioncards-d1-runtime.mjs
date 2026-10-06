@@ -26,7 +26,8 @@ const snapshot=(c,active=true,versions=[c])=>({qid:c.qid,card:{...c,active},vers
 
 try{
   const DB=await mf.getD1Database("DB");
-  const sql=readFileSync(new URL("../../migrations/0006_motioncards_queue.sql",import.meta.url),"utf8");
+  const sql=readFileSync(new URL("../../migrations/0006_motioncards_queue.sql",import.meta.url),"utf8")
+    .replace(/--[^\n]*/g,"").replace(/\s+/g," ");
   await DB.exec(sql);
   const env={DB,OWNER_TELEGRAM_ID:"123"};
 
