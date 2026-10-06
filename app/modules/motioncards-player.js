@@ -3,16 +3,20 @@ globalThis.KafuEnhancements.installers.push({name:"motioncards-player",install()
 const MC=globalThis.KafuMotionCards,Core=MC?.core;
 if(!MC||!Core)throw new Error("motioncards_core_missing");
 const POSITIVE_TTL=30_000,NEGATIVE_TTL=15_000,READY_TIMEOUT=5000,REFRESH_AFTER=35_000;
-const cache=new Map();
-let active=null,lookupSerial=0,refreshTimer=0;
+const cache=new Map(),sessionIds=new WeakMap();
+let active=null,lookupSerial=0,refreshTimer=0,nextSessionId=1;
 const accountKey=()=>IN_TG&&TG?.initDataUnsafe?.user?.id!=null?"tg:"+String(TG.initDataUnsafe.user.id):IN_TG?"tg:session":"browser";
+const sessionKey=()=>{
+  if(!SESSION||typeof SESSION!=="object")return "none";
+  let id=sessionIds.get(SESSION);if(!id){id="s"+nextSessionId++;sessionIds.set(SESSION,id);}return id;
+};
 const current=()=>{
   const qid=SESSION?.qids?.[SESSION.index],entry=qid&&QI[qid],q=entry?.q;
   if(!qid||!entry||!q||cur().v!=="study")return null;
   if(SESSION.mode==="exam"&&!SESSION.finished)return null;
-  return{qid,entry,q,account:accountKey(),book_id:String(entry.b),book_version:Number(q.version),chapter_id:String(entry.ch)};
+  return{qid,entry,q,account:accountKey(),session:sessionKey(),book_id:String(entry.b),book_version:Number(q.version),chapter_id:String(entry.ch)};
 };
-const sameIdentity=(a,b)=>!!a&&!!b&&a.qid===b.qid&&a.account===b.account&&a.book_id===b.book_id&&a.book_version===b.book_version&&a.chapter_id===b.chapter_id;
+const sameIdentity=(a,b)=>!!a&&!!b&&a.qid===b.qid&&a.account===b.account&&a.session===b.session&&a.book_id===b.book_id&&a.book_version===b.book_version&&a.chapter_id===b.chapter_id;
 const indexUrl=(entry,q)=>MC.CONTENT_BASE+"/indexes/"+encodeURIComponent(entry.b)+"/v"+encodeURIComponent(q.version)+"/index.json";
 async function indexFor(entry,q){
   const key=String(entry.b)+":"+String(q.version),now=Date.now(),hit=cache.get(key);
@@ -114,7 +118,7 @@ function closePlayer(restore=true){
   if(!active)return;
   const a=active;stopClock(a);clearTimeout(a.readyTimer);
   try{a.port?.postMessage({type:"destroy",protocol:MC.PROTOCOL,channel_id:a.channel,qid:a.qid});a.port?.close();}catch(_){}
-  window.removeEventListener("message",a.messageHandler);active=null;lookupSerial++;
+  window.removeEventListener("message",a.messageHandler);try{a.frame.src="about:blank";}catch(_){}active=null;lookupSerial++;
   a.root.replaceChildren();a.root.hidden=true;document.body.classList.remove("kafu-motioncards-open");
   const app=document.getElementById("app");if(app){app.inert=false;app.removeAttribute("aria-hidden");}
   restoreTelegram(a);
@@ -163,7 +167,7 @@ function openPlayer(qid,record,providedSnapshot=null,standalone=false){
   range.max=String(record.duration_ms);root.querySelector(".kafu-motioncards-takeaway").textContent=String(record.final_panel?.takeaway||"");
   const answer=root.querySelector(".kafu-motioncards-answer");for(const text of record.final_panel?.correct_answer_statements||[]){const p=document.createElement("p");p.textContent=String(text);answer.appendChild(p);}
   active={qid,record,root,frame:frameEl,play:playEl,range,restart:restartEl,timeLabel,duration:record.duration_ms,time:0,playing:false,anchor:0,raf:0,channel:"",connected:false,focus,scrollY,
-    messageHandler:connectFromReady,readyTimer:0,account:snapshot.account,book_id:snapshot.book_id,book_version:snapshot.book_version,chapter_id:snapshot.chapter_id,contentHash:String(record.content_hash).toLowerCase(),standalone,
+    messageHandler:connectFromReady,readyTimer:0,account:snapshot.account,session:snapshot.session,book_id:snapshot.book_id,book_version:snapshot.book_version,chapter_id:snapshot.chapter_id,contentHash:String(record.content_hash).toLowerCase(),standalone,
     mainWasVisible:!!mainBtnVisible,backWasVisible:!!(IN_TG&&TG.BackButton?.isVisible)};
   document.body.classList.add("kafu-motioncards-open");clearTimeout(refreshTimer);
   const app=document.getElementById("app");if(app){app.inert=true;app.setAttribute("aria-hidden","true");}
