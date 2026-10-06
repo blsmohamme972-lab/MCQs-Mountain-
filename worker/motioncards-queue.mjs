@@ -31,18 +31,20 @@ export async function queueMotioncardsDocument(env,doc){
   if(before?.status==="failed"&&Number(before.attempts)>=Number(before.max_attempts))
     return{text:"❌ MotionCards retry limit reached; upload a new revision after review.",dispatch:false};
 
-  const writes=[];
+  const writes=[];let partIndexes=[];
   if(before?.status==="failed"){
     // Repair is allowed only while the group is still failed inside this transaction.
+    partIndexes=[0,1];
     writes.push(stmt(env,"INSERT OR IGNORE INTO motioncards_queue(group_key,part_index,part_total,telegram_file_id,telegram_file_unique_id,filename,file_size) SELECT ?,?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM motioncards_groups WHERE group_key=? AND status='failed' AND part_total=? AND attempts<max_attempts)",p.group_key,p.part,p.total,doc.file_id,doc.file_unique_id,doc.file_name,doc.file_size,p.group_key,p.total));
     writes.push(stmt(env,"UPDATE motioncards_queue SET part_total=?,telegram_file_id=?,telegram_file_unique_id=?,filename=?,file_size=?,created_at=datetime('now') WHERE group_key=? AND part_index=? AND EXISTS(SELECT 1 FROM motioncards_groups WHERE group_key=? AND status='failed' AND part_total=? AND attempts<max_attempts)",p.total,doc.file_id,doc.file_unique_id,doc.file_name,doc.file_size,p.group_key,p.part,p.group_key,p.total));
     writes.push(stmt(env,"UPDATE motioncards_groups SET status='waiting',error_summary=NULL,lease_token=NULL,lease_expires_at=NULL,finished_at=NULL,candidate_digest=NULL,replacement_targets_json=NULL,replacement_auth_json=NULL WHERE group_key=? AND status='failed' AND part_total=? AND attempts<max_attempts",p.group_key,p.total));
   }else{
+    partIndexes=[1];
     writes.push(stmt(env,"INSERT OR IGNORE INTO motioncards_groups(group_key,package_id,revision,part_total,status) VALUES(?,?,?,?, 'waiting')",p.group_key,p.package_id,p.revision,p.total));
     writes.push(stmt(env,"INSERT OR IGNORE INTO motioncards_queue(group_key,part_index,part_total,telegram_file_id,telegram_file_unique_id,filename,file_size) SELECT ?,?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM motioncards_groups WHERE group_key=? AND package_id=? AND revision=? AND part_total=? AND status IN ('waiting','ready'))",p.group_key,p.part,p.total,doc.file_id,doc.file_unique_id,doc.file_name,doc.file_size,p.group_key,p.package_id,p.revision,p.total));
   }
   writes.push(stmt(env,"UPDATE motioncards_groups SET status=CASE WHEN (SELECT COUNT(*) FROM motioncards_queue WHERE group_key=?)=part_total THEN 'ready' ELSE 'waiting' END WHERE group_key=? AND package_id=? AND revision=? AND part_total=? AND status IN ('waiting','ready')",p.group_key,p.group_key,p.package_id,p.revision,p.total));
-  await env.DB.batch(writes);
+  const results=await env.DB.batch(writes),partChanged=partIndexes.some(i=>Number(results[i]?.meta?.changes||0)>0);
 
   const [group,part]=await Promise.all([
     stmt(env,"SELECT * FROM motioncards_groups WHERE group_key=?",p.group_key).first(),
@@ -55,6 +57,7 @@ export async function queueMotioncardsDocument(env,doc){
   if(!["waiting","ready"].includes(group.status))
     return{text:"❌ MotionCards queue state changed before intake completed; no part was replaced.",dispatch:false};
   const count=await stmt(env,"SELECT COUNT(*) AS n FROM motioncards_queue WHERE group_key=?",p.group_key).first();
+  if(!partChanged)return{text:"📥 MotionCards already received",dispatch:false};
   return{text:"📥 MotionCards "+p.group_key+" ("+Number(count?.n||0)+"/"+p.total+")",dispatch:group.status==="ready"};
 }
 async function expireExhausted(env){
