@@ -32,6 +32,7 @@ def main():
     s.add_argument("--duration-ms",type=int)
     s.add_argument("--duration",action="append",default=[],help="QID=milliseconds")
     s.add_argument("--inspected-image-qid",action="append",default=[])
+    s.add_argument("--replace",action="append",default=[],help="Selected QID to mark as an intended replacement; confirmation is still required before activation")
 
     p=sub.add_parser("package")
     p.add_argument("exports",nargs="+")
@@ -45,7 +46,7 @@ def main():
     a=ap.parse_args()
     if a.cmd=="scaffold":
         b=load(a.exports)
-        result=scaffold_workspace(b,a.out,a.package_id.upper(),a.revision,a.qids,a.count,a.duration_ms,overrides(a.duration),set(a.inspected_image_qid))
+        result=scaffold_workspace(b,a.out,a.package_id.upper(),a.revision,a.qids,a.count,a.duration_ms,overrides(a.duration),set(a.inspected_image_qid),set(a.replace))
         print(json.dumps(result,indent=2));return
     if a.cmd=="package":
         b=load(a.exports);paths=build_package_set(b,a.workspace,a.out)
