@@ -396,15 +396,17 @@ Detailed expected statuses and first-rollout sequence are in `docs/ADMIN.md`.
 
 STATUS: READY FOR OWNER REVIEW - DO NOT MERGE OR DEPLOY
 
-Verified code/review head before this handoff-only status update: `f2dc902460e5b67ca8585b1ffcf035390caebb85`.
+Final verified review-code head before this handoff-only update: `cf7dd5233d8e60f205f8e76442dcd93f36cb4d7e`.
 
-- Kafu Content Contract CI: SUCCESS — run `37483307375`.
-- Kafu Visual and Flow CI: SUCCESS — run `37483306897`.
+- Kafu Content Contract CI: SUCCESS — run `37486905242`.
+- Kafu Visual and Flow CI: SUCCESS — run `37486905333`.
 - Worker queue suite: 67 pass / 0 fail, including replace/remove/restore between-statements expiry-boundary regressions.
-- Miniflare/workerd D1-compatible runtime: PASS, including confirmation acceptance controls.
+- Miniflare/workerd D1-compatible runtime: PASS, including valid confirmation consumption and safe pre-expired rejection. The deterministic between-statements wall-clock fault injection remains SQLite-specific evidence and is not claimed as a production-D1 reproduction.
 - Rollout production-smoke gate tests: PASS.
+- Main journeys/approved visual comparisons: PASS.
+- Real MotionCards Wrangler static-asset routing and sandbox handshake: PASS.
 - Legacy Medical Motion job: PASS.
 - PR #67 remains Draft/Open and unmerged.
-- No merge, deployment, production migration, service creation, credential/variable change, or real production queue operation occurred.
+- No merge, deployment, production migration, service creation, credential/variable change, rollout-variable change, or real production queue operation occurred.
 - Next action: owner reviews PR #67. Any production rollout still requires separate explicit authorization and the documented sequence in `docs/ADMIN.md`.
 
