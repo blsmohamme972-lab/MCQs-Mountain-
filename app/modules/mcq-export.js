@@ -27,9 +27,25 @@ globalThis.KafuEnhancements.installers.push({ name: "mcq-export", install() {
       body: JSON.stringify({ initData: state.session, ...body }),
     });
     let data = null; try { data = await r.json(); } catch (_) {}
-    if (!r.ok) { const error = new Error(data?.error || "mcq_export_unavailable"); error.status = r.status; throw error; }
+    if (!r.ok) {
+      const error = new Error(data?.error || "mcq_export_unavailable");
+      error.status = r.status; error.code = data?.error || "mcq_export_unavailable"; error.diagnostic = data?.diagnostic || null;
+      throw error;
+    }
     return data;
   };
+  function readableError(error) {
+    const code = String(error?.code || error?.message || "mcq_export_unavailable");
+    const d = error?.diagnostic || {};
+    const detail = [d.upstream_status ? `HTTP ${d.upstream_status}` : "", d.cf_code ? `CF ${d.cf_code}` : ""].filter(Boolean).join(" · ");
+    const suffix = detail ? ` (${detail})` : "";
+    if (error?.status === 401 || error?.status === 403 || code === "forbidden") return "Export permission was refused. Reopen Kafu from Telegram and try again.";
+    if (/stale_snapshot|catalog changed|content changed/i.test(code)) return "Published content changed while preparing. Reopen the book and retry.";
+    if (/catalog_unavailable|book_index_unavailable|chapter_unavailable|fetch_exception/.test(code)) return `Could not reach the published content service. Please retry.${suffix}`;
+    if (/redirect/.test(code)) return "Published content returned an unexpected redirect. Export was stopped.";
+    if (/invalid_json|invalid|mismatch|count|qid|integrity|incomplete/.test(code)) return "Published content could not be completely verified, so no partial export was created.";
+    return "The published export could not be prepared. Please retry.";
+  }
   function resetForSession(next) {
     if (state.controller) state.controller.abort();
     if (expiryTimer) { clearTimeout(expiryTimer); expiryTimer = null; }
@@ -103,7 +119,7 @@ globalThis.KafuEnhancements.installers.push({ name: "mcq-export", install() {
     const meta = `<div class="export-meta"><div><strong>${escText(b?.title || state.active.bookId)}</strong></div><div>Book ID: ${escText(b?.id || state.active.bookId)} · Version: ${escText(version)}</div><div>Scope: ${scopeText()}</div><div>Expected questions: ${expected.toLocaleString()}</div></div>`;
     let body = meta;
     if (state.preparing) body += `<p class="note" role="status">Preparing published questions… ${state.done} / ${state.total}</p><progress max="${Math.max(1, state.total)}" value="${state.done}"></progress><div class="btns"><button class="btn ghost" data-a="mcq-export-cancel">Cancel</button></div>`;
-    else if (state.error) body += `<p class="export-error" role="alert">${escText(state.error)}</p><div class="btns"><button class="btn ghost" data-a="mcq-export-clear-error">Clear error</button><button class="btn" data-a="mcq-export-prepare">Retry</button></div>`;
+    else if (state.error) body += `<p class="export-error" role="alert">${escText(state.error)}</p><div class="btns"><button class="btn ghost" data-a="mcq-export-cancel">Close</button><button class="btn" data-a="mcq-export-prepare">Retry</button></div>`;
     else if (!state.prepared) body += `<p class="note">The complete published scope will be checked before copying.</p><div class="btns"><button class="btn ghost" data-a="mcq-export-cancel">Cancel</button><button class="btn" data-a="mcq-export-prepare">Prepare</button></div>`;
     else {
       const p = state.prepared;
@@ -177,7 +193,7 @@ globalThis.KafuEnhancements.installers.push({ name: "mcq-export", install() {
       state.preparing = false; state.controller = null;
       if (error?.name === "AbortError") return;
       if (error?.status === 401 || error?.status === 403) { state.canExport = false; state.active = null; SHEET = null; render(); return; }
-      state.error = error?.message || "The published export could not be prepared."; render();
+      state.error = readableError(error); render();
     }
   }
   function chosenText(part) { return part == null ? state.prepared?.completeText : state.prepared?.parts?.[Number(part)]?.text; }
