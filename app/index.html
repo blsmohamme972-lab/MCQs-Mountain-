@@ -1005,7 +1005,8 @@ const VIEWS = {
       const right = busy ? `<span class="spin" aria-label="Downloading"></span>`
         : have ? `<button class="btn small" data-a="study-ch" data-b="${esc(b.id)}" data-c="${c.id}">Study</button>`
         : `<button class="btn small ghost" data-a="dl" data-b="${esc(b.id)}" data-c="${c.id}">${ICON.down} Download</button>`;
-      return `<div class="ch-row"><span class="ch-no">${i + 1}</span><span class="grow"><span class="t">${esc(c.title)}</span><br><span class="s note">${c.questions} questions${have ? `, ${answered} answered` : ""}</span></span>${right}</div>`;
+      const exportControl = globalThis.KafuMcqExport?.chapterControl?.(b, c) || "";
+      return `<div class="ch-row"><span class="ch-no">${i + 1}</span><span class="grow"><span class="t">${esc(c.title)}</span><br><span class="s note">${c.questions} questions${have ? `, ${answered} answered` : ""}</span></span>${right}${exportControl}</div>`;
     }).join("");
     return {
       title: "",
@@ -1013,6 +1014,7 @@ const VIEWS = {
           <div class="pbar" style="margin-bottom:14px"><i style="width:${st.pct}%"></i></div>
           <div class="pill-row"><button class="pill ${fav ? "on" : ""}" data-a="fav-book" data-b="${esc(b.id)}" aria-pressed="${fav}">${fav ? ICON.heartOn : ICON.heart} ${fav ? "In my books" : "Add to my books"}</button></div>
         </div></div>
+        ${globalThis.KafuMcqExport?.bookControl?.(b) || ""}
         <h3 class="sec">Chapters ${allDl ? "" : `<button data-a="dl-all" data-b="${esc(b.id)}">Download all</button>`}</h3>
         <div class="list">${rows}</div>`,
     };

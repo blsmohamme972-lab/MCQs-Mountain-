@@ -1,0 +1,14 @@
+.mcq-export-actions { display: flex; align-items: center; gap: 8px; margin: 8px 0 12px; }
+.mcq-export-action { width: 34px; height: 34px; padding: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--teal); font: 600 15px/1 Poppins, sans-serif; display: inline-flex; align-items: center; justify-content: center; touch-action: manipulation; }
+.mcq-export-action:hover, .mcq-export-action:focus-visible { border-color: var(--teal-2); background: var(--teal-soft); outline: none; }
+.mcq-export-book { margin: 0 0 12px; }
+.mcq-export-book .mcq-export-action { width: 34px; min-width: 34px; }
+.mcq-export-label { color: var(--muted); font-size: 12px; }
+.mcq-export-sheet .export-meta { display: grid; gap: 5px; margin: 10px 0 12px; color: var(--muted); font-size: 13px; }
+.mcq-export-sheet .export-meta strong { color: var(--ink); font-weight: 600; }
+.mcq-export-sheet progress { width: 100%; height: 8px; accent-color: var(--teal-2); }
+.mcq-export-sheet .export-parts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-height: 30vh; overflow: auto; }
+.mcq-export-sheet .export-parts .btn { min-height: 42px; padding: 9px 8px; font-size: 13px; }
+.mcq-export-sheet textarea { width: 100%; min-height: 170px; resize: vertical; border: 1px solid var(--line); border-radius: 10px; padding: 10px; color: var(--ink); background: var(--surface-2); font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.mcq-export-sheet .export-error { color: #9c2633; margin: 8px 0; }
+@media (max-width: 380px) { .mcq-export-sheet .export-parts { grid-template-columns: 1fr; } }
