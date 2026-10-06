@@ -2,13 +2,14 @@ from __future__ import annotations
 import json,shutil,tempfile,zipfile
 from pathlib import Path
 from .compiler import compile_scene
+from . import package as package_module
 from .package import build_package,validate_package,check_archive_structure,sha256_bytes
-from .spec import MANIFEST_NAME,MAX_ZIP_BYTES
+from .spec import MANIFEST_NAME
 
 TARGET_UNCOMPRESSED=8*1024*1024
 
 def _target_uncompressed():
-    return min(TARGET_UNCOMPRESSED,max(1024,MAX_ZIP_BYTES//2))
+    return min(TARGET_UNCOMPRESSED,max(1024,package_module.MAX_ZIP_BYTES//2))
 
 def _rewrite_manifest(path:Path,update:dict):
     with zipfile.ZipFile(path) as src:
