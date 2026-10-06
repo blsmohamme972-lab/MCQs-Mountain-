@@ -95,6 +95,7 @@ jobs:
         run: python tools/motioncards/state_store.py persist-candidate --work /tmp/kafu-motioncards
 
       - name: Promote staged MotionCards version to 100%
+        id: promote
         if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -126,8 +127,8 @@ jobs:
             gh workflow run publish-motioncards-queue.yml --repo "$GITHUB_REPOSITORY"
           fi
 
-      - name: Fail prepared queue item when later workflow steps fail
-        if: failure() && steps.prepare.outputs.has_work == 'true'
+      - name: Fail prepared queue item when later workflow steps fail before promotion
+        if: failure() && steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true' && steps.promote.outcome != 'success'
         env:
           QUEUE_API_TOKEN: ${{ secrets.QUEUE_API_TOKEN }}
         run: python tools/motioncards/queue_worker.py finish --work /tmp/kafu-motioncards --error "MotionCards publish workflow failed after preparation"
