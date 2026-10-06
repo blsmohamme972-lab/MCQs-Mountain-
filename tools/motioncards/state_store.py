@@ -6,6 +6,7 @@ from pathlib import Path
 TAG="kafu-motioncards-state"
 PROD="https://kafu-motioncards.blsmohamme97.workers.dev"
 HEX64=set("0123456789abcdef")
+BOOTSTRAP_BODY=b"Kafu MotionCards is initializing."
 
 def run(*args,check=True):
     p=subprocess.run(args,text=True,capture_output=True)
@@ -63,7 +64,7 @@ def upload_immutable(work:Path,path:Path,assets:set[str]):
     run("gh","release","upload",TAG,str(path))
     assets.add(path.name)
 
-def live_state():
+def live_state(allow_bootstrap:bool=False):
     try:
         req=urllib.request.Request(PROD+"/build-info.json?restore=1",headers={"User-Agent":"kafu-motioncards-state/1.0"})
         with urllib.request.urlopen(req,timeout=15) as r:
@@ -73,6 +74,11 @@ def live_state():
             return "present",value.lower()
     except urllib.error.HTTPError as exc:
         if exc.code==404:return "absent",""
+        if exc.code==503 and allow_bootstrap:
+            try:body=exc.read(256).strip()
+            except Exception:body=b""
+            retry_after=str(exc.headers.get("Retry-After","") if exc.headers else "").strip()
+            if body==BOOTSTRAP_BODY and retry_after=="60":return "bootstrap",""
         raise RuntimeError("motioncards_live_state_http_"+str(exc.code)) from exc
     except (urllib.error.URLError,TimeoutError,OSError) as exc:
         raise RuntimeError("motioncards_live_state_unavailable") from exc
@@ -153,13 +159,14 @@ def _write_empty_retry_base(work:Path):
 def restore(work:Path,allow_initial:bool):
     shutil.rmtree(work,ignore_errors=True);(work/"site").mkdir(parents=True);(work/"release").mkdir()
     status=release_status()
-    live_kind,live=live_state()
+    assets=release_assets() if status=="present" else set()
+    allow_bootstrap=allow_initial and (status=="absent" or "active.json" not in assets)
+    live_kind,live=live_state(allow_bootstrap=allow_bootstrap)
     if status=="absent":
         if live_kind=="present":raise RuntimeError("live_motioncards_state_has_no_durable_release")
         if not allow_initial:raise RuntimeError("motioncards_state_missing_owner_initialization_required")
-        print(json.dumps({"has_state":False,"recovery":"initial-empty"}));return False
+        print(json.dumps({"has_state":False,"recovery":"initial-bootstrap" if live_kind=="bootstrap" else "initial-empty"}));return False
 
-    assets=release_assets()
     active_name="active.json"
     if active_name not in assets:
         if live_kind=="present":
