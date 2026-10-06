@@ -756,11 +756,11 @@ test("already acknowledged duplicate cannot resurrect removed card or downgrade 
 
 test("lost remove and restore acknowledgements reconcile from durable operation state",()=>harness(async h=>{
   const qid="Q000000033",card=mcCard(qid,"OPS",1,"6".repeat(64));insertCard(h,card,1);insertVersion(h,card);
-  h.DB.sql.prepare("INSERT INTO motioncards_operations(operation_id,kind,qid,book_id,book_version,chapter_id,status,owner_id,chat_id,expected_active_digest,attempts,lease_token,lease_expires_at) VALUES('op-remove','remove',?,?,?,?,?,'running','123','123',?,1,'lease-remove',datetime('now','+10 minutes'))")
+  h.DB.sql.prepare("INSERT INTO motioncards_operations(operation_id,kind,qid,book_id,book_version,chapter_id,status,owner_id,chat_id,expected_active_digest,attempts,lease_token,lease_expires_at) VALUES('op-remove','remove',?,?,?,?,'running','123','123',?,1,'lease-remove',datetime('now','+10 minutes'))")
     .run(qid,card.book_id,card.book_version,card.chapter_id,card.entry_sha256);
   let res=await h.internal("motioncards/finish",{operation_id:"op-remove",lease_token:"lease-remove",ok:true,duplicate:true,card:{...card,active:false},reconciliation:[mcSnapshot(card,false,[card])]});
   assert.equal(res.status,200);assert.equal(h.DB.sql.prepare("SELECT active FROM motioncards_cards WHERE qid=?").get(qid).active,0);
-  h.DB.sql.prepare("INSERT INTO motioncards_operations(operation_id,kind,qid,book_id,book_version,chapter_id,status,owner_id,chat_id,expected_active_digest,target_digest,attempts,lease_token,lease_expires_at) VALUES('op-restore','restore',?,?,?,?,?,'running','123','123','',?,1,'lease-restore',datetime('now','+10 minutes'))")
+  h.DB.sql.prepare("INSERT INTO motioncards_operations(operation_id,kind,qid,book_id,book_version,chapter_id,status,owner_id,chat_id,expected_active_digest,target_digest,attempts,lease_token,lease_expires_at) VALUES('op-restore','restore',?,?,?,?,'running','123','123','',?,1,'lease-restore',datetime('now','+10 minutes'))")
     .run(qid,card.book_id,card.book_version,card.chapter_id,card.entry_sha256);
   res=await h.internal("motioncards/finish",{operation_id:"op-restore",lease_token:"lease-restore",ok:true,duplicate:true,card:{...card,active:true},reconciliation:[mcSnapshot(card,true,[card])]});
   assert.equal(res.status,200);assert.equal(h.DB.sql.prepare("SELECT active FROM motioncards_cards WHERE qid=?").get(qid).active,1);
