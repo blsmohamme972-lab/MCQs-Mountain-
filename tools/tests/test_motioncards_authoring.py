@@ -166,4 +166,31 @@ class MotionCardsAuthoringTests(unittest.TestCase):
             with zipfile.ZipFile(symlink,"w") as z:z.writestr(info,b"target")
             with self.assertRaisesRegex(ValueError,"symlink"):check_archive_structure(symlink)
 
+
+    def test_publish_ready_rejects_unfinished_placeholder_and_non_boolean_replace(self):
+        q1=question("Q000007341");b=adapt_exports([envelope([q1])])
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);ws=root/"ws";out=root/"MCARDS_EDIT_r1.zip"
+            scaffold_workspace(b,ws,"EDIT",1,[q1["id"]],None,8000)
+            with self.assertRaisesRegex(ValueError,"unfinished_placeholder"):build_package(b,ws,out)
+            scene=next((ws/"scenes").glob("*.json"));data=json.loads(scene.read_text());data["takeaway"]="Finished.";data["replace"]="yes";scene.write_text(json.dumps(data))
+            with self.assertRaisesRegex(ValueError,"replace_intent_must_be_boolean"):build_package(b,ws,out)
+
+    def test_altered_compiled_entry_rejected_even_when_attacker_updates_checksum(self):
+        q1=question("Q000007341");b=adapt_exports([envelope([q1])])
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);ws=root/"ws";good=root/"MCARDS_EQUIV_r1.zip"
+            scaffold_workspace(b,ws,"EQUIV",1,[q1["id"]],None,8000)
+            scene=next((ws/"scenes").glob("*.json"));data=json.loads(scene.read_text());data["takeaway"]="Validated scene.";scene.write_text(json.dumps(data))
+            build_package(b,ws,good)
+            with zipfile.ZipFile(good) as src:files={i.filename:src.read(i.filename) for i in src.infolist()}
+            manifest=json.loads(files["motioncards-manifest.json"]);entry=manifest["animations"][0]["entry_path"]
+            files[entry]=b"<!doctype html><html><body>blank altered entry</body></html>"
+            manifest["animations"][0]["entry_sha256"]=hashlib.sha256(files[entry]).hexdigest()
+            files["motioncards-manifest.json"]=(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n").encode()
+            bad=root/"altered.zip"
+            with zipfile.ZipFile(bad,"w",zipfile.ZIP_DEFLATED) as z:
+                for name,raw in files.items():z.writestr(name,raw)
+            with self.assertRaisesRegex(ValueError,"compiled_entry_scene_mismatch"):validate_package(bad)
+
 if __name__=="__main__":unittest.main()
