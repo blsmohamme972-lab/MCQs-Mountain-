@@ -10,5 +10,11 @@
   "observability": {
     "enabled": true,
     "head_sampling_rate": 1
-  }
+  },
+  "services": [
+    {
+      "binding": "CONTENT_SERVICE",
+      "service": "kafu-content-1"
+    }
+  ]
 }
