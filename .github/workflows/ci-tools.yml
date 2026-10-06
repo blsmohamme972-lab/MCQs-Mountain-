@@ -23,6 +23,8 @@ on:
       - "migrations/**"
       - ".github/workflows/**"
       - "Animations and illustrations/**"
+      - "motioncards/**"
+      - "motioncards-worker/**"
 
 # Paths keep documentation-only pull requests and main commits from starting CI.
 # One run per pull request (or main) prevents outdated work from consuming minutes.
