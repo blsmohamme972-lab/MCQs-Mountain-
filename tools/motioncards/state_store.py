@@ -35,7 +35,9 @@ def release_status():
     p=run("gh","release","view",TAG,"--json","id",check=False)
     if p.returncode==0:return "present"
     detail=(p.stderr+"\n"+p.stdout).lower()
-    absent=any(x in detail for x in ["release not found","could not resolve to a release","http 404","status code 404","not found"])
+    # Only explicit release-resolution failures mean "no state yet".
+    # Generic 404/not-found text can also mean repository/auth/network denial.
+    absent=any(x in detail for x in ["release not found","could not resolve to a release"])
     if absent:return "absent"
     raise RuntimeError("motioncards_state_release_lookup_failed:"+detail[-300:])
 
