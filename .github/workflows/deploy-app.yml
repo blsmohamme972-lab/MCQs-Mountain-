@@ -106,4 +106,10 @@ jobs:
         run: npx wrangler versions deploy --version-tag "${{ steps.staged.outputs.tag }}@100%" --yes --config wrangler.app.jsonc
       - name: Verify production after promotion
         run: python tools/smoke_live.py --required-book KAFU-UPLOAD-TEST --export-book ANATOMY-MRCS-WOOD-BLACKBURN --export-version 2 --export-questions 209
+      - name: Install pinned browser for exact production UI verification
+        run: |
+          python -m pip install 'playwright==1.57.0'
+          python -m playwright install --with-deps chromium
+      - name: Verify exact production UI SHA after promotion
+        run: python tools/ui/production_smoke.py --commit "$GITHUB_SHA"
 
