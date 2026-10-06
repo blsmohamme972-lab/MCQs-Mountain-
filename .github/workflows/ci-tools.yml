@@ -110,6 +110,21 @@ jobs:
           python -m json.tool content-worker/dist/content/catalog.json >/dev/null
           python -m json.tool content-worker/dist/content/config.json >/dev/null
 
+      - name: Build synthetic MotionCards example and offline authoring kit
+        run: |
+          rm -rf /tmp/kafu-motioncards-ci
+          mkdir -p /tmp/kafu-motioncards-ci
+          python tools/motioncards_example.py --out /tmp/kafu-motioncards-ci/example
+          python tools/motioncards_bundle.py --out /tmp/kafu-motioncards-ci/kafu-motioncards-authoring-kit.zip
+          python tools/motioncards.py validate /tmp/kafu-motioncards-ci/example/MCARDS_FIXTURE-DEMO_r1.zip
+      - name: Keep MotionCards authoring artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: kafu-motioncards-authoring-example
+          path: /tmp/kafu-motioncards-ci/
+          retention-days: 7
+          if-no-files-found: error
+
 
   medical_illustrations:
     name: Medical illustration library
