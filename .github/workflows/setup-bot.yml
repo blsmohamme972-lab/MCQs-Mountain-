@@ -2,6 +2,12 @@ name: Setup Kafu Bot
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "tools/setup_bot.py"
+      - ".github/workflows/setup-bot.yml"
 
 permissions:
   contents: read
@@ -14,9 +20,9 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: Set secure webhook and owner commands
+      - name: Set secure webhook, Mini App menu, and owner commands
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
-          OWNER_TELEGRAM_ID: ${{ secrets.OWNER_TELEGRAM_ID }}
+          OWNER_TELEGRAM_ID: "8634102362"
         run: python tools/setup_bot.py
