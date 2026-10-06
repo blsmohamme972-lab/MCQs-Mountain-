@@ -1,8 +1,5 @@
 """Built-app browser regression for owner MCQ export controls."""
-TG_OWNER="""(() => { const noop=()=>{}; window.Telegram={WebApp:{initData:'query_id=owner&auth_date=1791260000',initDataUnsafe:{user:{id:8634102362,first_name:'Owner'}},ready:noop,expand:noop,onEvent:noop,setHeaderColor:noop,setBackgroundColor:noop,BackButton:{show:noop,hide:noop,onClick:noop},MainButton:{setParams:noop,hide:noop,onClick:noop}}}; })();"""
-
 def install_capability(ctx,allowed):
-    ctx.add_init_script(TG_OWNER)
     body='{"can_export_mcqs":true}' if allowed else '{"can_export_mcqs":false}'
     ctx.route("**/admin/capabilities",lambda route:route.fulfill(status=200,content_type="application/json",body=body))
 
@@ -23,6 +20,8 @@ def run(browser,origin,pack,out,helpers):
     for device in ('phone','ipad'):
         ctx=helpers['context'](browser,origin,device,'light');install_capability(ctx,True)
         page,errors=helpers['open_app'](ctx,origin,pack)
+        page.evaluate("() => { window.Telegram={WebApp:{initData:'query_id=owner'}}; render(); }")
+        page.wait_for_timeout(50)
         assert_book(page,2)
         page.locator('[data-a="mcq-export-chapter"]').click()
         page.wait_for_selector('.mcq-export-sheet[role="dialog"]')
@@ -37,6 +36,8 @@ def run(browser,origin,pack,out,helpers):
 
     ctx=helpers['context'](browser,origin,'phone','light');install_capability(ctx,False)
     page,errors=helpers['open_app'](ctx,origin,pack)
+    page.evaluate("() => { window.Telegram={WebApp:{initData:'query_id=denied'}}; render(); }")
+    page.wait_for_timeout(50)
     assert_book(page,0)
     assert not errors,errors
     ctx.close()
