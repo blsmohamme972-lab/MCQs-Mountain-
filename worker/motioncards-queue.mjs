@@ -173,8 +173,13 @@ export async function finishMotioncardsOperation(env,body){
 export async function stageReplacementConfirmation(env,body){
   const key=String(body.group_key||""),lease=String(body.lease_token||""),digest=String(body.candidate_digest||"").toLowerCase();
   const targets=Array.isArray(body.targets)?body.targets:[];
-  if(!HEX64.test(digest)||!targets.length||targets.some(x=>!QID.test(String(x.qid||""))||!HEX64.test(String(x.expected_active_digest||""))||String(x.candidate_digest||"").toLowerCase()!==digest))
+  if(!HEX64.test(digest)||!targets.length||targets.some(x=>!QID.test(String(x.qid||""))||!HEX64.test(String(x.expected_active_digest||""))||
+      typeof x.expected_active_package_id!=="string"||!x.expected_active_package_id||!Number.isSafeInteger(Number(x.expected_active_package_revision))||Number(x.expected_active_package_revision)<1||
+      String(x.candidate_digest||"").toLowerCase()!==digest))
     return{ok:false,status:400,error:"motioncards_replacement_candidate_invalid"};
+  const rawTargets=JSON.stringify(targets);
+  const stale=await stmt(env,"SELECT COUNT(*) AS n FROM json_each(?) t LEFT JOIN motioncards_cards c ON c.qid=json_extract(t.value,'$.qid') AND c.active=1 WHERE c.qid IS NULL OR lower(c.entry_sha256)<>lower(json_extract(t.value,'$.expected_active_digest')) OR c.package_id<>json_extract(t.value,'$.expected_active_package_id') OR c.package_revision<>CAST(json_extract(t.value,'$.expected_active_package_revision') AS INTEGER)",rawTargets).first();
+  if(Number(stale?.n||0)>0)return{ok:false,status:409,error:"motioncards_replacement_target_stale"};
   const token=randomToken(),auth=Object.fromEntries(targets.map(x=>[x.qid,x])),owner=String(env.OWNER_TELEGRAM_ID);
   const results=await env.DB.batch([
     stmt(env,"UPDATE motioncards_groups SET status='awaiting_confirmation',attempts=CASE WHEN attempts>0 THEN attempts-1 ELSE 0 END,candidate_digest=?,replacement_targets_json=?,replacement_auth_json=NULL,lease_token=NULL,lease_expires_at=NULL WHERE group_key=? AND status='running' AND lease_token=? AND lease_expires_at>=datetime('now')",digest,JSON.stringify(targets),key,lease),
