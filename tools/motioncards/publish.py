@@ -6,6 +6,7 @@ ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 from motioncards.lib.core import content_hash
 from motioncards.lib.package import validate_package
+from motioncards.lib.multipart import combine_parts
 from tools.http_client import request_json
 
 CONTENT_BASE="https://kafu-content-1.blsmohamme97.workers.dev"
@@ -126,8 +127,49 @@ def apply_package(zip_path:Path,state_path:Path,site:Path,fetch_json=live_json):
         raise
     return {"duplicate":False,"package_id":manifest["package_id"],"revision":manifest["package_revision"],"animations":len(manifest["animations"]),"verified":verified,"package_sha256":package_sha}
 
+
+def apply_packages(zip_paths:list[Path],state_path:Path,site:Path,fetch_json=live_json):
+    if len(zip_paths)==1:
+        return apply_package(zip_paths[0],state_path,site,fetch_json)
+    manifest,source_by_qid,package_sha=combine_parts(zip_paths)
+    identity=manifest["package_id"]+"_r"+str(manifest["package_revision"])
+    state=load_state(state_path)
+    old=state["packages"].get(identity)
+    if old:
+        if old.get("sha256")==package_sha:return {"duplicate":True,"package_id":manifest["package_id"],"revision":manifest["package_revision"],"animations":len(manifest["animations"])}
+        raise ValueError("package_revision_conflict")
+    verified=verify_published_sources(manifest,fetch_json)
+    next_state=copy.deepcopy(state);site.mkdir(parents=True,exist_ok=True)
+    assets=site/"assets"/manifest["package_id"]/("r"+str(manifest["package_revision"]))
+    if assets.exists():raise ValueError("package_asset_path_conflict")
+    pending=[]
+    for row in manifest["animations"]:
+        key=key_for(row);existing=next_state["animations"].get(key)
+        if existing and not row.get("replace"):raise ValueError("animation_replace_requires_explicit_intent:"+row["qid"])
+        pending.append((key,row))
+    assets.mkdir(parents=True,exist_ok=False)
+    try:
+        handles={}
+        try:
+            for p in set(source_by_qid.values()):handles[p]=zipfile.ZipFile(p)
+            for key,row in pending:
+                raw=handles[source_by_qid[row["qid"]]].read(row["entry_path"])
+                short=row["entry_sha256"][:12];name=row["qid"]+"."+short+".html";target=assets/name;target.write_bytes(raw)
+                public=dict(row);public.update(package_id=manifest["package_id"],package_revision=manifest["package_revision"],entry_url=PUBLIC_BASE+"/"+target.relative_to(site).as_posix())
+                for drop in ["entry_path","scene_path","scene_sha256","source_record_path","source_record_sha256","replace"]:public.pop(drop,None)
+                next_state["animations"][key]=public
+        finally:
+            for z in handles.values():z.close()
+        next_state["packages"][identity]={"sha256":package_sha,"package_id":manifest["package_id"],"revision":manifest["package_revision"],"animations":[r["qid"] for r in manifest["animations"]]}
+        build_indexes(next_state,site)
+        (site/"build-info.json").write_text(json.dumps({"schema":1,"state_sha256":hashlib.sha256(json.dumps(next_state,sort_keys=True,separators=(",",":")).encode()).hexdigest(),"packages":len(next_state["packages"]),"animations":len(next_state["animations"])})+"\n")
+        save_state(state_path,next_state)
+    except Exception:
+        shutil.rmtree(assets,ignore_errors=True);raise
+    return {"duplicate":False,"package_id":manifest["package_id"],"revision":manifest["package_revision"],"animations":len(manifest["animations"]),"verified":verified,"package_sha256":package_sha}
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("zip",type=Path);ap.add_argument("--state",type=Path,required=True);ap.add_argument("--site",type=Path,required=True)
-    a=ap.parse_args();print(json.dumps(apply_package(a.zip,a.state,a.site),indent=2))
+    a=ap.parse_args();print(json.dumps(apply_packages([a.zip],a.state,a.site),indent=2))
 if __name__=="__main__":main()
