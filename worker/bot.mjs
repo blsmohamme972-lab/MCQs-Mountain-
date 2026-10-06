@@ -1,9 +1,10 @@
 import { meterDatabase, logD1Request } from './d1-metrics.mjs';
 // Kafu control plane. Heavy publishing work stays in GitHub Actions.
 import { parsePackageName, queueDocument, retryGroup, clearGroup } from "./queue-state.mjs";
+import { looksMotioncardsFilename, parseMotioncardsName, queueMotioncardsDocument, claimMotioncards, finishMotioncards, recoverMotioncards, motioncardsStatus } from "./motioncards-queue.mjs";
 import { handleLeaderboard } from "./leaderboard.mjs";
 import { handleAdmin } from "./admin.mjs";
-export { parsePackageName, retryGroup, clearGroup };
+export { parsePackageName, retryGroup, clearGroup, parseMotioncardsName };
 const ID = /^[A-Z0-9][A-Z0-9-]*$/;
 const QID = /^Q\d{9}$/;
 
@@ -62,6 +63,15 @@ async function dispatch(env) {
   });
   if (res.status !== 204) throw new Error(`GitHub dispatch: ${res.status}`);
 }
+async function dispatchMotioncards(env) {
+  const repo = env.GITHUB_REPOSITORY || "blsmohamme972-lab/MCQs-Mountain-";
+  if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) throw new Error("Invalid GitHub repository");
+  const res = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/publish-motioncards-queue.yml/dispatches`, {
+    method: "POST", headers: { authorization: `Bearer ${env.DISPATCH_TOKEN}`, accept: "application/vnd.github+json",
+      "x-github-api-version": "2022-11-28", "user-agent": "kafu-motioncards-queue" }, body: JSON.stringify({ ref: "main" }),
+  });
+  if (res.status !== 204) throw new Error(`GitHub MotionCards dispatch: ${res.status}`);
+}
 async function adminJob(env, kind, bookId, version = null) {
   if (!ID.test(bookId || "") || (version !== null && (!Number.isSafeInteger(version) || version < 1)))
     return "❌ Invalid book ID or version.";
@@ -77,7 +87,7 @@ async function bookForQuestion(env, qid) {
 async function command(env, raw) {
   const [cmd, arg, arg2, arg3] = raw.trim().split(/\s+/);
   switch (cmd.toLowerCase().split("@")[0]) {
-    case "/help": return "/queue /books /status /warnings BOOK-ID /flags [/flags approve-all BOOK-ID CONFIRM] /hold QID PAGE /retry BOOK-ID_vN /clear BOOK-ID_vN /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID";
+    case "/help": return "/queue /books /status /warnings BOOK-ID /flags [/flags approve-all BOOK-ID CONFIRM] /hold QID PAGE /retry BOOK-ID_vN /clear BOOK-ID_vN /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID /motioncards-status /motioncards-retry PACKAGE-ID_rN /motioncards-clear PACKAGE-ID_rN";
     case "/queue": {
       const r = await env.DB.prepare("SELECT group_key,status,part_total,error_summary FROM publish_groups ORDER BY created_at DESC LIMIT 15").all();
       const a = await env.DB.prepare("SELECT kind,book_id,status,error_summary FROM admin_jobs ORDER BY id DESC LIMIT 5").all();
@@ -150,6 +160,13 @@ async function command(env, raw) {
     }
     case "/rollback": return arg && arg2 ? adminJob(env, "rollback", arg.toUpperCase(), Number(arg2)) : "Usage: /rollback BOOK-ID VERSION";
     case "/remove": return arg ? adminJob(env, "remove", arg.toUpperCase()) : "Usage: /remove BOOK-ID";
+    case "/motioncards-status": return motioncardsStatus(env);
+    case "/motioncards-retry": {
+      const result=await recoverMotioncards(env,"retry",arg);
+      if(result.ok) result.dispatch=true;
+      return result;
+    }
+    case "/motioncards-clear": return recoverMotioncards(env,"clear",arg);
     default: return "Use /help for admin commands.";
   }
 }
@@ -178,9 +195,13 @@ async function webhook(request, env, ctx) {
     if (/^(approve|reject):Q\d{9}$/.test(cb.data || "")) ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
     return reply("OK");
   }
-  let text;
-  if (m.document) text = await queueDocument(env, m.document);
-  else if (m.text?.startsWith("/")) {
+  let text, dispatchKind = null;
+  if (m.document) {
+    if (looksMotioncardsFilename(m.document.file_name)) {
+      const result = await queueMotioncardsDocument(env, m.document);
+      text = result.text; if (result.dispatch) dispatchKind = "motioncards";
+    } else text = await queueDocument(env, m.document);
+  } else if (m.text?.startsWith("/")) {
     const parts = m.text.trim().split(/\s+/);
     if (parts[0].toLowerCase().split("@")[0] === "/flags" && QID.test(parts[1] || "")) {
       const x = await env.DB.prepare("SELECT qid,source_page,status FROM flags WHERE qid=?").bind(parts[1]).first();
@@ -191,14 +212,18 @@ async function webhook(request, env, ctx) {
         return reply("OK");
       }
     }
-    text = await command(env, m.text);
+    const result = await command(env, m.text);
+    if (result && typeof result === "object" && !result.book_pages) {
+      text = result.text; if (result.dispatch) dispatchKind = "motioncards";
+    } else text = result;
   } else return reply("OK");
   if (text.book_pages) {
     for (const page of text.book_pages) await message(env, page, { parse_mode: "HTML" });
     return reply("OK");
   }
   await message(env, text);
-  if (text.startsWith("📥") && !text.includes("already received")) ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
+  if (dispatchKind === "motioncards") ctx.waitUntil(dispatchMotioncards(env).catch(e => message(env, `⚠️ MotionCards queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
+  else if (text.startsWith("📥") && !text.includes("already received")) ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
   return reply("OK");
 }
 async function tokenFingerprint(value) {
@@ -215,6 +240,24 @@ async function queueAuthorization(request, env) {
 async function internal(request, env, path) {
   if (!(await queueAuthorization(request, env))) return reply({ error: "bad_queue_token" }, 403);
   if (request.method !== "POST") return reply("Method not allowed", 405);
+  if (path === "/internal/motioncards/claim") return reply(await claimMotioncards(env));
+  if (path === "/internal/motioncards/finish") {
+    const body = await request.json();
+    const result = await finishMotioncards(env, body);
+    return reply(result.ok ? { ok: true } : { error: result.error }, result.status);
+  }
+  if (path === "/internal/motioncards/recover") {
+    const body = await request.json();
+    if (!["retry","clear"].includes(body.action)) return reply({ error: "invalid_recovery_action" }, 400);
+    const result = await recoverMotioncards(env, body.action, String(body.group_key || ""));
+    if (result.ok && body.action === "retry" && body.dispatch !== false) await dispatchMotioncards(env);
+    return reply(result, result.ok ? 200 : 409);
+  }
+  if (path === "/internal/motioncards/notify") {
+    const body = await request.json();
+    await message(env, String(body.text || "").slice(0, 3500));
+    return reply({ ok: true });
+  }
   if (path === "/internal/claim") {
     const group = await env.DB.prepare("UPDATE publish_groups SET status='running',claimed_at=datetime('now'),attempts=attempts+1 WHERE group_key=(SELECT g.group_key FROM publish_groups g JOIN publish_queue q ON q.group_key=g.group_key WHERE g.status='ready' GROUP BY g.group_key ORDER BY MIN(q.job_id) LIMIT 1) AND status='ready' RETURNING *").first();
     if (group) {
