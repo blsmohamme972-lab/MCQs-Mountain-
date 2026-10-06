@@ -8,6 +8,11 @@ on:
         required: false
         default: false
         type: boolean
+      production_authorized:
+        description: "Explicit owner authorization for MotionCards production publishing before rollout gate is enabled"
+        required: false
+        default: false
+        type: boolean
   schedule:
     - cron: "17 * * * *"
 
@@ -26,6 +31,7 @@ env:
 
 jobs:
   publish:
+    if: ${{ (github.event_name == 'schedule' && vars.MOTIONCARDS_ROLLOUT_ENABLED == 'true') || (github.event_name == 'workflow_dispatch' && (vars.MOTIONCARDS_ROLLOUT_ENABLED == 'true' || inputs.production_authorized == true)) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -150,7 +156,14 @@ jobs:
         run: |
           set -euo pipefail
           if python tools/motioncards/queue_worker.py has-work; then
-            gh workflow run publish-motioncards-queue.yml --repo "$GITHUB_REPOSITORY"
+            if [[ "${{ vars.MOTIONCARDS_ROLLOUT_ENABLED || 'false' }}" == "true" ]]; then
+              gh workflow run publish-motioncards-queue.yml --repo "$GITHUB_REPOSITORY"
+            elif [[ "${{ inputs.production_authorized || 'false' }}" == "true" ]]; then
+              gh workflow run publish-motioncards-queue.yml --repo "$GITHUB_REPOSITORY" -f production_authorized=true
+            else
+              echo "MotionCards continuation blocked by rollout gate."
+              exit 1
+            fi
           fi
 
       - name: Fail prepared queue item when later workflow steps fail before promotion
