@@ -27,5 +27,23 @@ class MotionCardsRolloutGateTests(unittest.TestCase):
         self.assertIn("-f production_authorized=true",text)
         self.assertNotIn("MOTIONCARDS_ROLLOUT_ENABLED: true",text)
 
+    def test_ui_main_push_does_not_expect_production_sha_before_authorized_deploy(self):
+        text=(ROOT/".github/workflows/ui.yml").read_text(encoding="utf-8")
+        self.assertIn("Main journeys, offline persistence, budgets and approved screenshots",text)
+        self.assertNotIn('python tools/ui/production_smoke.py --commit "$GITHUB_SHA"',text)
+
+    def test_authorized_app_deploy_verifies_exact_production_sha_after_promotion(self):
+        text=(ROOT/".github/workflows/deploy-app.yml").read_text(encoding="utf-8")
+        promote=text.index("Promote staged version to 100%")
+        exact=text.index('python tools/ui/production_smoke.py --commit "$GITHUB_SHA"')
+        self.assertGreater(exact,promote)
+        self.assertIn("Verify exact production UI SHA after promotion",text)
+
+    def test_failed_deploy_cannot_report_exact_production_success(self):
+        text=(ROOT/".github/workflows/deploy-app.yml").read_text(encoding="utf-8")
+        exact=text.index("Verify exact production UI SHA after promotion")
+        self.assertNotIn("if: always()",text[exact:])
+        self.assertIn("Verify production after promotion",text)
+
 if __name__=="__main__":
     unittest.main()
