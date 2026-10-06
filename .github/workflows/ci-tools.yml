@@ -66,6 +66,29 @@ jobs:
           Path("/tmp/kafu-app.js").write_text(inline[-1], encoding="utf-8")
           PY
           node --check /tmp/kafu-app.js
+      - name: Verify Cloudflare content service binding against live published book
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4 dev --remote --config tools/cloudflare/wrangler.content-binding-smoke.jsonc --port 8789 > /tmp/kafu-binding-smoke.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for i in $(seq 1 45); do
+            if curl --fail --silent --show-error http://127.0.0.1:8789/ -o /tmp/kafu-binding-smoke.json; then break; fi
+            sleep 2
+          done
+          test -s /tmp/kafu-binding-smoke.json || { cat /tmp/kafu-binding-smoke.log; exit 1; }
+          python - <<'PY'
+          import json
+          d=json.load(open("/tmp/kafu-binding-smoke.json"))
+          assert d.get("ok") is True, d
+          assert d["book_id"]=="ANATOMY-MRCS-WOOD-BLACKBURN", d
+          assert d["version"]==2 and d["questions"]==209 and d["chapters"]>0, d
+          assert d["catalog_status"]==200 and "json" in d["catalog_content_type"].lower(), d
+          print("remote content service binding: PASS", d)
+          PY
       - name: Measure D1 reads with local workerd as history grows
         run: |
           npm install --no-save --package-lock=false miniflare@4.20260730.0
