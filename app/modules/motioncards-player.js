@@ -47,13 +47,15 @@ function injectButton(snapshot,record){
   const now=current();if(!sameIdentity(now,snapshot)||active)return;
   const section=document.querySelector(".k-study"),stem=section?.querySelector(".k-question-card .stem, .stem");
   if(!section||!stem)return;
+  const anchor=section.querySelector(".k-question-head")||stem.closest(".k-question-card");
+  if(!anchor||anchor.parentNode!==section)return;
   let button=buttonFor(snapshot.qid);
   if(!button){
     button=document.createElement("button");button.type="button";button.className="kafu-motioncards-trigger";button.dataset.a="motioncards-open";button.dataset.q=snapshot.qid;
     button.setAttribute("aria-label","Open Kafu MotionCards animation");
     button.innerHTML='<span class="kafu-motioncards-trigger-icon" aria-hidden="true">▶</span><span><strong>Kafu MotionCards</strong><small>Visual explanation</small></span>';
-    stem.parentNode.insertBefore(button,stem);
   }
+  if(button.parentNode!==section||button.nextElementSibling!==anchor)section.insertBefore(button,anchor);
   button._motioncardsRecord=record;
 }
 function scheduleAvailability(){
@@ -87,7 +89,11 @@ function post(type,extra={}){
 }
 function sendTime(type="tick"){
   if(!active)return;const t=Math.max(0,Math.min(active.duration,active.time));
-  post(type,{time_ms:t});active.range.value=String(t);active.timeLabel.textContent=(t/1000).toFixed(1)+" / "+(active.duration/1000).toFixed(1)+" s";setFinal(t>=active.duration);
+  post(type,{time_ms:t});active.range.value=String(t);
+  active.range.style.setProperty("--kafu-motioncards-progress",String(active.duration>0?(t/active.duration)*100:0)+"%");
+  const rangeText=(t/1000).toFixed(1)+" of "+(active.duration/1000).toFixed(1)+" seconds";
+  if(active.range.getAttribute("aria-valuetext")!==rangeText)active.range.setAttribute("aria-valuetext",rangeText);
+  active.timeLabel.textContent=(t/1000).toFixed(1)+" / "+(active.duration/1000).toFixed(1)+" s";setFinal(t>=active.duration);
 }
 function stopClock(a=active){if(a?.raf)cancelAnimationFrame(a.raf);if(a)a.raf=0;}
 function frame(now){
@@ -167,9 +173,11 @@ function openPlayer(qid,record,providedSnapshot=null,standalone=false){
   root.hidden=false;
   root.innerHTML='<div class="kafu-motioncards-overlay" role="dialog" aria-modal="true" aria-label="Kafu MotionCards">'+
     '<header class="kafu-motioncards-bar"><button type="button" class="kafu-motioncards-close" data-motioncards-host="close" aria-label="Close MotionCards">←</button><div><strong>Kafu MotionCards</strong><small>'+esc(snapshot.qid)+'</small></div></header>'+
-    '<section class="kafu-motioncards-stage"><div class="kafu-motioncards-loading" role="status">Loading animation…</div><div class="kafu-motioncards-error" role="alert" hidden><span data-motioncards-error-text></span><button type="button" data-motioncards-host="retry">Retry</button></div><iframe title="Kafu MotionCards animation" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe></section>'+
-    '<section class="kafu-motioncards-final" hidden><strong>Takeaway</strong><p class="kafu-motioncards-takeaway"></p><strong>Correct answer</strong><div class="kafu-motioncards-answer"></div></section>'+
-    '<footer class="kafu-motioncards-controls"><button type="button" data-motioncards-host="play" disabled aria-pressed="false">Play</button><button type="button" data-motioncards-host="restart" disabled>Restart</button><label><span class="sr-only">Animation position</span><input data-motioncards-host="seek" type="range" min="0" step="50" disabled></label><output data-motioncards-host="time"></output></footer></div>';
+    '<div class="kafu-motioncards-scroll"><div class="kafu-motioncards-main">'+
+      '<section class="kafu-motioncards-stage"><iframe title="Kafu MotionCards animation" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe></section>'+
+      '<div class="kafu-motioncards-status"><div class="kafu-motioncards-error" role="alert" hidden><span data-motioncards-error-text></span><button type="button" data-motioncards-host="retry">Retry</button></div><div class="kafu-motioncards-loading" role="status">Loading animation…</div></div>'+
+      '<footer class="kafu-motioncards-controls"><button type="button" data-motioncards-host="play" disabled aria-pressed="false">Play</button><button type="button" data-motioncards-host="restart" disabled>Restart</button><label><span class="sr-only">Animation position</span><input data-motioncards-host="seek" type="range" min="0" step="50" disabled></label><output data-motioncards-host="time" aria-live="off"></output></footer>'+
+    '</div><div class="kafu-motioncards-final-slot" aria-live="polite" aria-atomic="true"><section class="kafu-motioncards-final" hidden><strong>Takeaway</strong><p class="kafu-motioncards-takeaway"></p><strong>Correct answer</strong><div class="kafu-motioncards-answer"></div></section><div class="kafu-motioncards-final-placeholder" aria-hidden="true"><strong>Takeaway</strong><p>Your takeaway and correct answer appear here when the animation finishes.</p></div></div></div></div>';
   const frameEl=root.querySelector("iframe"),playEl=root.querySelector("[data-motioncards-host='play']"),range=root.querySelector("[data-motioncards-host='seek']"),restartEl=root.querySelector("[data-motioncards-host='restart']"),timeLabel=root.querySelector("[data-motioncards-host='time']");
   range.max=String(record.duration_ms);root.querySelector(".kafu-motioncards-takeaway").textContent=String(record.final_panel?.takeaway||"");
   const answer=root.querySelector(".kafu-motioncards-answer");for(const text of record.final_panel?.correct_answer_statements||[]){const p=document.createElement("p");p.textContent=String(text);answer.appendChild(p);}
