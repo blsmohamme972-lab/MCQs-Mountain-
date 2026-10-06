@@ -2,6 +2,12 @@ name: Deploy Kafu
 
 on:
   workflow_dispatch:
+    inputs:
+      motioncards_rollout_authorized:
+        description: "Explicit owner authorization for the first MotionCards production rollout"
+        required: false
+        default: false
+        type: boolean
   push:
     branches:
       - main
@@ -23,6 +29,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+      - name: Gate MotionCards first production rollout
+        env:
+          MOTIONCARDS_ROLLOUT_ENABLED: ${{ vars.MOTIONCARDS_ROLLOUT_ENABLED || 'false' }}
+          MOTIONCARDS_ROLLOUT_AUTHORIZED: ${{ inputs.motioncards_rollout_authorized || 'false' }}
+        run: |
+          set -euo pipefail
+          if [[ -f migrations/0006_motioncards_queue.sql && "$MOTIONCARDS_ROLLOUT_ENABLED" != "true" && "$MOTIONCARDS_ROLLOUT_AUTHORIZED" != "true" ]]; then
+            echo "::error::MotionCards production rollout is gated. Obtain explicit owner rollout authorization, then use workflow_dispatch with motioncards_rollout_authorized=true. Do not treat a merge as production-neutral."
+            exit 1
+          fi
       - name: Fetch hash-pinned frontend dependencies
         run: python tools/vendor_frontend.py
       - name: Assemble tested frontend modules
