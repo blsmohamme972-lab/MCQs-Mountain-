@@ -48,7 +48,7 @@ def main():
         page.wait_for_function("document.body.dataset.ready==='1'",timeout=7000)
         page.wait_for_function("document.body.dataset.state==='1500'",timeout=7000)
         page.wait_for_function("document.body.dataset.ended==='1'",timeout=7000)
-        assert not page.locator("iframe").get_attribute("sandbox").find("allow-scripts")
+        assert page.locator("iframe").get_attribute("sandbox")=="allow-scripts"
         browser.close()
     print(json.dumps({"motioncards_worker_runtime":"PASS","entry":meta["entry_path"],"sha256":meta["entry_sha256"]}))
 if __name__=="__main__":main()
