@@ -26,6 +26,7 @@ function headersFor(path,response){
     h.set("Access-Control-Allow-Origin",APP_ORIGIN);
     h.set("Cache-Control","public, max-age=30, must-revalidate");
   }else if(path.startsWith("/assets/")){
+    h.set("Access-Control-Allow-Origin",APP_ORIGIN);
     h.set("Cache-Control","public, max-age=31536000, immutable");
     h.set("Content-Security-Policy",CSP);
   }else h.set("Cache-Control","public, max-age=60");
