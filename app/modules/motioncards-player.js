@@ -38,7 +38,7 @@ async function resolveMatch(snapshot){
   if(hash!==String(record.content_hash).toLowerCase())return null;
   return record;
 }
-function buttonFor(qid){return document.querySelector("[data-a='motioncards-open'][data-q='"+CSS.escape(qid)+"']");}
+function buttonFor(qid){if(!Core.QID.test(String(qid||"")))return null;return document.querySelector("[data-a='motioncards-open'][data-q='"+String(qid)+"']");}
 function clearButton(qid){buttonFor(qid)?.remove();}
 function injectButton(snapshot,record){
   const now=current();if(!sameIdentity(now,snapshot)||active)return;
@@ -227,6 +227,6 @@ document.addEventListener("visibilitychange",()=>{if(document.hidden&&active?.pl
 window.addEventListener("pagehide",()=>{if(active?.playing)pause();});
 MC.player={get active(){return active;},refresh:refreshAvailability,close:closePlayer,play,pause,seek,restart,retry:loadFrame,openTrustedPreview,productionRefreshWindowMs:REFRESH_AFTER};
 scheduleAvailability();refreshAvailability();
-const previewQid=new URLSearchParams(location.search).get("motioncards_preview");
+const previewQid=new URL(location.href).searchParams.get("motioncards_preview");
 if(Core.QID.test(String(previewQid||"")))setTimeout(()=>openTrustedPreview(String(previewQid)),0);
 }});
