@@ -14,7 +14,7 @@ async function hmac(key, text) {
   return new Uint8Array(await crypto.subtle.sign("HMAC", imported, encoder.encode(text)));
 }
 function hex(bytes) { return [...bytes].map((x) => x.toString(16).padStart(2, "0")).join(""); }
-async function initData(id = OWNER, authDate = Math.floor(NOW.getTime() / 1000), mutate = false) {
+async function initData(id = OWNER, authDate = Math.floor(Date.now() / 1000), mutate = false) {
   const params = new URLSearchParams();
   params.set("auth_date", String(authDate));
   params.set("query_id", "fixture-query");
@@ -63,7 +63,7 @@ async function withResponses(catalog, chapter, fn) {
 
 await withFetch(async () => {
   const signed = await initData();
-  const auth = await verifyOwnerRequest(request({ initData: signed }), env(), NOW);
+  const auth = await verifyOwnerRequest(request({ initData: signed }), env(), new Date());
   assert.equal(auth.user.id, OWNER);
   const catalog = await handleMcqExport(request({ initData: signed, book_id: book.id, version: 1 }), env(), "/admin/mcq-export/catalog");
   assert.equal(catalog.status, 200);
