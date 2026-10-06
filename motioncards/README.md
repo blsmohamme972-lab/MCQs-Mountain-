@@ -31,7 +31,25 @@ Published MotionCards are managed through the existing private owner bot; do not
 
 The student availability index is served with a 30-second cache and the app performs a bounded refresh cycle (35 seconds by default), so a removed card disappears from an already-open compatible question within that documented window after a successful publication. This does not promise deletion of bytes already present on an offline client.
 
-Replacement, removal, and restoration use the same candidate/state/deployment pipeline as ordinary MotionCards publishing. Same-package recovery is a no-op and must not reactivate a removed card or overwrite a newer replacement.
+Replacement, removal, and restoration use the same candidate/state/deployment pipeline as ordinary MotionCards publishing.
+
+### Expired replacement confirmation
+
+Missing the 15-minute replacement confirmation does **not** require rebuilding the ZIP or incrementing its package revision.
+
+- Re-open `/motioncards QID`. A card with a pending replacement shows **Renew confirmation** and **Cancel replacement**.
+- **Renew confirmation** invalidates every old open token for that candidate, requeues the already accepted ZIP parts, revalidates the package/source and the **current** active package/revision/digest, then issues a fresh confirmation. If the active card changed meanwhile, renewal fails closed as stale.
+- **Cancel replacement** invalidates the old token and cancels only the pending replacement. The active student card is not removed or changed.
+- Command equivalents are `/motioncards-retry PACKAGE-ID_rN` to renew an awaiting replacement and `/motioncards-clear PACKAGE-ID_rN` to cancel an awaiting replacement. For an ordinary `failed` group, those commands retain their retry/clear meanings.
+- A Telegram notification failure after the confirmation is durably created does not fail publication state. Re-open `/motioncards QID` to recover the pending confirmation.
+
+### Lost acknowledgement recovery
+
+The immutable/durable MotionCards state is the publication-side source of truth; D1 is the control/management projection.
+
+If promotion/state persistence succeeded but the **first** queue acknowledgement was lost, retrying the identical package is recognized as a content duplicate and does not require another content deployment. Before D1 is repaired, the publisher builds a management snapshot from the **current durable state**, revalidates those current records against the currently published MCQs, and sends the active/removed state plus relevant version history to the queue finisher.
+
+D1 applies that reconciliation only when the publication acknowledgement for that exact group/digest is missing. If the acknowledgement already exists, duplicate retry is a management no-op. This prevents an old ZIP from resurrecting a removed card or downgrading a newer replacement. Remove/restore operation acknowledgements use the same durable-current-state reconciliation rule.
 
 ## Local preview
 
