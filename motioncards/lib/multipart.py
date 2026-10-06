@@ -7,6 +7,9 @@ from .spec import MANIFEST_NAME,MAX_ZIP_BYTES
 
 TARGET_UNCOMPRESSED=8*1024*1024
 
+def _target_uncompressed():
+    return min(TARGET_UNCOMPRESSED,max(1024,MAX_ZIP_BYTES//2))
+
 def _rewrite_manifest(path:Path,update:dict):
     with zipfile.ZipFile(path) as src:
         files={info.filename:src.read(info.filename) for info in src.infolist()}
@@ -51,7 +54,7 @@ def build_package_set(bundle,workspace:Path,out_zip:Path):
     chunks=[];current=[];weight=0
     for row in rows:
         w=_estimate(bundle,workspace,row)
-        if current and weight+w>TARGET_UNCOMPRESSED:
+        if current and weight+w>_target_uncompressed():
             chunks.append(current);current=[];weight=0
         current.append(row);weight+=w
     if current:chunks.append(current)
