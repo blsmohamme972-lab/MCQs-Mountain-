@@ -111,7 +111,13 @@ def prepare(work:Path,allow_initial:bool):
         authorizations=None
         if group.get("replacement_auth_json"):
             if str(group.get("candidate_digest") or "").lower()!=str(plan["package_sha256"]).lower():raise ValueError("motioncards_confirmed_candidate_digest_changed")
-            authorizations=json.loads(group["replacement_auth_json"])
+            raw_auth=json.loads(group["replacement_auth_json"])
+            if isinstance(raw_auth,dict) and "confirmation_token" in raw_auth and "targets" in raw_auth:
+                token=str(raw_auth.get("confirmation_token") or "")
+                if not token or not isinstance(raw_auth.get("targets"),dict):raise ValueError("motioncards_replacement_authorization_invalid")
+                authorizations=raw_auth["targets"]
+            else:
+                authorizations=raw_auth
         result=apply_packages(packages,state,site,replacement_authorizations=authorizations)
         build=json.loads((site/"build-info.json").read_text());cards=_cards(result)
         _write_meta(work,{"empty":False,"kind":"package","group_key":group["group_key"],"lease_token":lease,"package_sha256":result["package_sha256"],
