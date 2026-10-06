@@ -152,10 +152,12 @@ function connectFromReady(event){
 function loadFrame(){
   if(!active)return;
   clearTimeout(active.readyTimer);try{active.port?.close();}catch(_){}
-  active.port=null;active.connected=false;active.channel=randomChannel();active.play.disabled=true;active.restart.disabled=true;active.range.disabled=true;
+  active.port=null;active.connected=false;active.channel=randomChannel();active.loadAttempt=(active.loadAttempt||0)+1;active.play.disabled=true;active.restart.disabled=true;active.range.disabled=true;
   active.root.querySelector(".kafu-motioncards-loading").hidden=false;active.root.querySelector(".kafu-motioncards-error").hidden=true;
   active.readyTimer=setTimeout(()=>fail("The animation did not become ready. Retry or close it and continue studying."),READY_TIMEOUT);
-  active.frame.src=active.record.entry_url+"#"+active.channel;
+  const target=new URL(active.record.entry_url);
+  if(active.loadAttempt>1)target.searchParams.set("motioncards_retry",active.channel);
+  target.hash=active.channel;active.frame.src=target.href;
 }
 function openPlayer(qid,record,providedSnapshot=null,standalone=false){
   const snapshot=providedSnapshot||current();
