@@ -112,6 +112,14 @@ def full_player(browser,origin,pack,out,helpers):
     second_channel=page.evaluate("KafuMotionCards.player.active.channel");assert first_channel!=second_channel
     page.evaluate("""old => window.dispatchEvent(new MessageEvent('message',{data:{type:'kafu-motioncards-ready',protocol:1,qid:SESSION.qids[SESSION.index],channel_id:old},source:window}))""",first_channel)
     assert page.evaluate("KafuMotionCards.player.active.channel")==second_channel
+    # A brand-new study session with the same QID is still a different lifecycle.
+    page.evaluate("""() => {
+      const qid=SESSION.qids[SESSION.index];
+      startSession({mode:'study',title:'Fresh MotionCards session',bookId:'DESIGN-CARDIO',chId:1,qids:[qid]});
+    }""")
+    page.wait_for_function("!KafuMotionCards.player.active")
+    page.wait_for_selector("[data-a='motioncards-open']",timeout=5000)
+    page.locator("[data-a='motioncards-open']").click();page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
     # Full question identity change closes the player; underlying pending MCQ state remains.
     page.evaluate("QI[SESSION.qids[SESSION.index]].ch=999;render()")
     page.wait_for_function("!KafuMotionCards.player.active");page.evaluate("QI[SESSION.qids[SESSION.index]].ch=1;render()")
@@ -181,9 +189,29 @@ def account_switch_case(browser,origin,pack,helpers):
     assert not errors,errors;ctx.close()
     return "account/session or full-question identity switch closes the active player without leaking state"
 
+def removal_refresh_case(browser,origin,pack,helpers):
+    ctx=helpers["phone_context"](browser,origin,390,"light")
+    q,record,index,html=fixture(pack,origin);state={"active":True}
+    def index_route(route):
+        body=dict(index);body["animations"]={q["id"]:record} if state["active"] else {}
+        route.fulfill(status=200,content_type="application/json",body=json.dumps(body))
+    ctx.route(f"{BASE}/indexes/**",index_route)
+    ctx.route(f"{BASE}/assets/**",lambda route:route.fulfill(status=200,content_type="text/html",body=html))
+    page,errors=helpers["open_app"](ctx,origin,pack)
+    page.evaluate("KafuMotionCards.REFRESH_AFTER_MS=120")
+    start(page,[q["id"]])
+    assert page.locator("[data-a='motioncards-open']").count()==1
+    assert page.evaluate("KafuMotionCards.player.productionRefreshWindowMs")==35000
+    state["active"]=False
+    page.wait_for_function("!document.querySelector('[data-a=motioncards-open]')",timeout=3000)
+    assert page.locator(".k-study .stem").count()==1
+    assert not errors,errors;ctx.close()
+    return "soft-remove propagation: an already-open question loses its button on the bounded refresh cycle (35s production window)"
+
 def run(browser,origin,pack,out,helpers):
     passed=full_player(browser,origin,pack,out,helpers)
     passed.extend(variants(browser,origin,pack,out,helpers))
     passed.append(timeout_case(browser,origin,pack,helpers))
     passed.append(account_switch_case(browser,origin,pack,helpers))
+    passed.append(removal_refresh_case(browser,origin,pack,helpers))
     return {"passed":passed}
