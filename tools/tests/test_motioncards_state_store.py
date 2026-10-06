@@ -40,12 +40,10 @@ class MotionCardsStateStoreTests(unittest.TestCase):
     def test_bootstrap_503_is_allowed_only_for_owner_initial_recovery(self):
         class Bootstrap503(urllib.error.HTTPError):
             pass
-        exc=urllib.error.HTTPError(s.PROD+"/build-info.json",503,"Service Unavailable",{"Retry-After":"60"},None)
-        exc.fp=io.BytesIO(s.BOOTSTRAP_BODY)
+        exc=urllib.error.HTTPError(s.PROD+"/build-info.json",503,"Service Unavailable",{"Retry-After":"60"},io.BytesIO(s.BOOTSTRAP_BODY))
         with patch("urllib.request.urlopen",side_effect=exc):
             self.assertEqual(s.live_state(allow_bootstrap=True),("bootstrap",""))
-        exc2=urllib.error.HTTPError(s.PROD+"/build-info.json",503,"Service Unavailable",{"Retry-After":"60"},None)
-        exc2.fp=io.BytesIO(s.BOOTSTRAP_BODY)
+        exc2=urllib.error.HTTPError(s.PROD+"/build-info.json",503,"Service Unavailable",{"Retry-After":"60"},io.BytesIO(s.BOOTSTRAP_BODY))
         with patch("urllib.request.urlopen",side_effect=exc2):
             with self.assertRaisesRegex(RuntimeError,"live_state_http_503"):s.live_state(allow_bootstrap=False)
 
@@ -77,7 +75,8 @@ class MotionCardsStateStoreTests(unittest.TestCase):
     def test_unavailable_live_check_never_authorizes_old_pointer(self):
         with tempfile.TemporaryDirectory() as td:
             work=Path(td)
-            with patch.object(s,"release_status",return_value="present"),patch.object(s,"live_state",side_effect=RuntimeError("motioncards_live_state_unavailable")):
+            with patch.object(s,"release_status",return_value="present"),patch.object(s,"release_assets",return_value=set()),\
+                 patch.object(s,"live_state",side_effect=RuntimeError("motioncards_live_state_unavailable")):
                 with self.assertRaisesRegex(RuntimeError,"live_state_unavailable"):s.restore(work,False)
 
     def test_unpromoted_initial_candidate_stays_inert_but_recovers_retry_base(self):
