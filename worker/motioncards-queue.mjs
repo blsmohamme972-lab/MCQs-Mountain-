@@ -34,7 +34,7 @@ export async function queueMotioncardsDocument(env,doc){
   const writes=[];
   if(before?.status==="failed"){
     // Repair is allowed only while the group is still failed inside this transaction.
-    writes.push(stmt(env,"INSERT OR IGNORE INTO motioncards_queue(group_key,part_index,part_total,telegram_file_id,telegram_file_unique_id,filename,file_size) SELECT ?,?,?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM motioncards_groups WHERE group_key=? AND status='failed' AND part_total=? AND attempts<max_attempts)",p.group_key,p.part,p.total,doc.file_id,doc.file_unique_id,doc.file_name,doc.file_size,p.group_key,p.total));
+    writes.push(stmt(env,"INSERT OR IGNORE INTO motioncards_queue(group_key,part_index,part_total,telegram_file_id,telegram_file_unique_id,filename,file_size) SELECT ?,?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM motioncards_groups WHERE group_key=? AND status='failed' AND part_total=? AND attempts<max_attempts)",p.group_key,p.part,p.total,doc.file_id,doc.file_unique_id,doc.file_name,doc.file_size,p.group_key,p.total));
     writes.push(stmt(env,"UPDATE motioncards_queue SET part_total=?,telegram_file_id=?,telegram_file_unique_id=?,filename=?,file_size=?,created_at=datetime('now') WHERE group_key=? AND part_index=? AND EXISTS(SELECT 1 FROM motioncards_groups WHERE group_key=? AND status='failed' AND part_total=? AND attempts<max_attempts)",p.total,doc.file_id,doc.file_unique_id,doc.file_name,doc.file_size,p.group_key,p.part,p.group_key,p.total));
     writes.push(stmt(env,"UPDATE motioncards_groups SET status='waiting',error_summary=NULL,lease_token=NULL,lease_expires_at=NULL,finished_at=NULL,candidate_digest=NULL,replacement_targets_json=NULL,replacement_auth_json=NULL WHERE group_key=? AND status='failed' AND part_total=? AND attempts<max_attempts",p.group_key,p.total));
   }else{
@@ -175,20 +175,23 @@ export async function stageReplacementConfirmation(env,body){
   const targets=Array.isArray(body.targets)?body.targets:[];
   if(!HEX64.test(digest)||!targets.length||targets.some(x=>!QID.test(String(x.qid||""))||!HEX64.test(String(x.expected_active_digest||""))||String(x.candidate_digest||"").toLowerCase()!==digest))
     return{ok:false,status:400,error:"motioncards_replacement_candidate_invalid"};
-  const group=await stmt(env,"SELECT * FROM motioncards_groups WHERE group_key=? AND status='running' AND lease_token=? AND lease_expires_at>=datetime('now')",key,lease).first();
-  if(!group)return{ok:false,status:409,error:"motioncards_lease_invalid_or_expired"};
-  const token=randomToken(),auth=Object.fromEntries(targets.map(x=>[x.qid,x]));
-  const changed=await stmt(env,"UPDATE motioncards_groups SET status='awaiting_confirmation',candidate_digest=?,replacement_targets_json=?,replacement_auth_json=NULL,lease_token=NULL,lease_expires_at=NULL WHERE group_key=? AND status='running' AND lease_token=?",digest,JSON.stringify(targets),key,lease).run();
-  if(!changed?.meta?.changes)return{ok:false,status:409,error:"motioncards_lease_invalid_or_expired"};
-  await stmt(env,"INSERT INTO motioncards_confirmations(token,kind,group_key,owner_id,chat_id,candidate_digest,targets_json,expires_at) VALUES(?,'replace',?,?,?,?,?,datetime('now','+15 minutes'))",token,key,String(env.OWNER_TELEGRAM_ID),String(env.OWNER_TELEGRAM_ID),digest,JSON.stringify(auth)).run();
+  const token=randomToken(),auth=Object.fromEntries(targets.map(x=>[x.qid,x])),owner=String(env.OWNER_TELEGRAM_ID);
+  const results=await env.DB.batch([
+    stmt(env,"UPDATE motioncards_groups SET status='awaiting_confirmation',attempts=CASE WHEN attempts>0 THEN attempts-1 ELSE 0 END,candidate_digest=?,replacement_targets_json=?,replacement_auth_json=NULL,lease_token=NULL,lease_expires_at=NULL WHERE group_key=? AND status='running' AND lease_token=? AND lease_expires_at>=datetime('now')",digest,JSON.stringify(targets),key,lease),
+    stmt(env,"INSERT INTO motioncards_confirmations(token,kind,group_key,owner_id,chat_id,candidate_digest,targets_json,expires_at) SELECT ?,'replace',?,?,?,?,?,datetime('now','+15 minutes') WHERE EXISTS(SELECT 1 FROM motioncards_groups WHERE group_key=? AND status='awaiting_confirmation' AND candidate_digest=?)",token,key,owner,owner,digest,JSON.stringify(auth),key,digest)
+  ]);
+  if(!results[0]?.meta?.changes||!results[1]?.meta?.changes)return{ok:false,status:409,error:"motioncards_lease_invalid_or_expired"};
   return{ok:true,status:200,token,group_key:key,targets};
 }
 export async function getMotioncardManagement(env,qid){
   if(!QID.test(String(qid||"")))return null;
   const card=await stmt(env,"SELECT * FROM motioncards_cards WHERE qid=?",qid).first();
   if(!card)return null;
-  const versions=await stmt(env,"SELECT * FROM motioncards_card_versions WHERE qid=? AND book_id=? AND book_version=? AND chapter_id=? AND content_hash=? ORDER BY version_id DESC LIMIT 8",qid,card.book_id,card.book_version,String(card.chapter_id),card.content_hash).all();
-  return{card,versions:versions.results||[]};
+  const [versions,pending]=await Promise.all([
+    stmt(env,"SELECT * FROM motioncards_card_versions WHERE qid=? AND book_id=? AND book_version=? AND chapter_id=? AND content_hash=? ORDER BY version_id DESC LIMIT 8",qid,card.book_id,card.book_version,String(card.chapter_id),card.content_hash).all(),
+    stmt(env,"SELECT group_key,candidate_digest,replacement_targets_json FROM motioncards_groups WHERE status='awaiting_confirmation' AND EXISTS(SELECT 1 FROM json_each(replacement_targets_json) WHERE json_extract(value,'$.qid')=?) ORDER BY created_at DESC LIMIT 1",qid).first()
+  ]);
+  return{card,versions:versions.results||[],pending_replacement:pending||null};
 }
 export async function createMotioncardConfirmation(env,kind,qid,targetVersionId=null){
   if(!["remove","restore"].includes(kind)||!QID.test(String(qid||"")))return{ok:false,error:"motioncards_management_invalid"};
@@ -241,11 +244,37 @@ export async function recoverMotioncards(env,action,key){
   const p=parseMotioncardsName("MCARDS_"+String(key||"")+".zip");
   if(!p||p.total!==1)return{ok:false,text:"Usage: /motioncards-retry PACKAGE-ID_rN"};
   const group=await stmt(env,"SELECT * FROM motioncards_groups WHERE group_key=?",p.group_key).first();
-  if(!group||group.status!=="failed")return{ok:false,text:"❌ No failed MotionCards upload found."};
+  if(!group)return{ok:false,text:"❌ No MotionCards upload found."};
+
+  if(group.status==="awaiting_confirmation"){
+    if(action==="retry"||action==="renew"){
+      const results=await env.DB.batch([
+        stmt(env,"UPDATE motioncards_confirmations SET used_at=datetime('now') WHERE kind='replace' AND group_key=? AND used_at IS NULL",p.group_key),
+        stmt(env,"UPDATE motioncards_groups SET status='ready',candidate_digest=NULL,replacement_targets_json=NULL,replacement_auth_json=NULL,error_summary=NULL,lease_token=NULL,lease_expires_at=NULL,finished_at=NULL WHERE group_key=? AND status='awaiting_confirmation'",p.group_key)
+      ]);
+      if(!results[1]?.meta?.changes)return{ok:false,text:"❌ MotionCards replacement state changed; refresh status."};
+      return{ok:true,text:"📥 Replacement candidate will be revalidated and a fresh confirmation issued: "+p.group_key,dispatch:true,renewed:true};
+    }
+    if(action==="clear"||action==="cancel"){
+      const results=await env.DB.batch([
+        stmt(env,"UPDATE motioncards_confirmations SET used_at=datetime('now') WHERE kind='replace' AND group_key=? AND used_at IS NULL",p.group_key),
+        stmt(env,"UPDATE motioncards_groups SET status='failed',finished_at=datetime('now'),error_summary='motioncards_replacement_cancelled_by_owner',candidate_digest=NULL,replacement_targets_json=NULL,replacement_auth_json=NULL,lease_token=NULL,lease_expires_at=NULL WHERE group_key=? AND status='awaiting_confirmation'",p.group_key)
+      ]);
+      if(!results[1]?.meta?.changes)return{ok:false,text:"❌ MotionCards replacement state changed; refresh status."};
+      return{ok:true,text:"🛑 Cancelled pending replacement "+p.group_key+". The active MotionCard was not changed.",dispatch:false,cancelled:true};
+    }
+  }
+
+  if(group.status!=="failed")return{ok:false,text:"❌ MotionCards upload is not failed or awaiting confirmation."};
   if(action==="clear"){
-    await env.DB.batch([stmt(env,"DELETE FROM motioncards_queue WHERE group_key=?",p.group_key),stmt(env,"DELETE FROM motioncards_groups WHERE group_key=? AND status='failed'",p.group_key)]);
+    const results=await env.DB.batch([
+      stmt(env,"DELETE FROM motioncards_queue WHERE group_key=? AND EXISTS(SELECT 1 FROM motioncards_groups WHERE group_key=? AND status='failed')",p.group_key,p.group_key),
+      stmt(env,"DELETE FROM motioncards_groups WHERE group_key=? AND status='failed'",p.group_key)
+    ]);
+    if(!results[1]?.meta?.changes)return{ok:false,text:"❌ MotionCards clear lost the race; current work was left untouched."};
     return{ok:true,text:"🧹 cleared MotionCards "+p.group_key};
   }
+  if(action!=="retry")return{ok:false,text:"❌ Invalid MotionCards recovery action."};
   if(group.attempts>=group.max_attempts)return{ok:false,text:"❌ MotionCards retry limit reached; upload a new revision after review."};
   const parts=await stmt(env,"SELECT COUNT(*) AS n FROM motioncards_queue WHERE group_key=?",p.group_key).first();
   const next=Number(parts?.n||0)===Number(group.part_total)?"ready":"waiting";
@@ -255,9 +284,15 @@ export async function recoverMotioncards(env,action,key){
 }
 export async function motioncardsStatus(env){
   const [g,o]=await Promise.all([
-    stmt(env,"SELECT group_key,status,attempts,error_summary FROM motioncards_groups ORDER BY created_at DESC LIMIT 12").all(),
+    stmt(env,"SELECT group_key,status,attempts,error_summary,replacement_targets_json FROM motioncards_groups ORDER BY created_at DESC LIMIT 12").all(),
     stmt(env,"SELECT operation_id,kind,qid,status,attempts,error_summary FROM motioncards_operations ORDER BY created_at DESC LIMIT 8").all()
   ]);
-  return[...(g.results||[]).map(x=>x.group_key+": "+x.status+" ("+x.attempts+" attempts)"+(x.error_summary?" — "+x.error_summary:"")),
+  return[...(g.results||[]).map(x=>{
+      let hint="";
+      if(x.status==="awaiting_confirmation"){
+        try{const qids=(JSON.parse(x.replacement_targets_json||"[]")||[]).map(v=>v.qid).filter(Boolean);hint=qids.length?" — use /motioncards "+qids[0]+" to Renew/Cancel":"";}catch(_){}
+      }
+      return x.group_key+": "+x.status+" ("+x.attempts+" attempts)"+(x.error_summary?" — "+x.error_summary:"")+hint;
+    }),
     ...(o.results||[]).map(x=>x.operation_id+" "+x.kind+" "+x.qid+": "+x.status+(x.error_summary?" — "+x.error_summary:""))].join("\n")||"MotionCards queue empty.";
 }
