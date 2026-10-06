@@ -39,6 +39,7 @@ try{
   assert.equal([a,b].filter(x=>/different MotionCards ZIP/.test(x.text)).length,1);
   const occupied=await DB.prepare("SELECT telegram_file_unique_id FROM motioncards_queue WHERE group_key='RACE_r1' AND part_index=1").first();
   assert.ok(["unique-a","unique-b"].includes(occupied.telegram_file_unique_id));
+  await DB.prepare("UPDATE motioncards_groups SET status='failed',attempts=max_attempts WHERE group_key='RACE_r1'").run();
 
   // Durable publication exists, but first queue acknowledgement was lost.
   await queueMotioncardsDocument(env,doc("MCARDS_RECOVER_r1.zip","recover"));
