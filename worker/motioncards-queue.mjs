@@ -134,7 +134,7 @@ export async function getMotioncardManagement(env,qid){
   if(!QID.test(String(qid||"")))return null;
   const card=await stmt(env,"SELECT * FROM motioncards_cards WHERE qid=?",qid).first();
   if(!card)return null;
-  const versions=await stmt(env,"SELECT * FROM motioncards_card_versions WHERE qid=? ORDER BY version_id DESC LIMIT 8",qid).all();
+  const versions=await stmt(env,"SELECT * FROM motioncards_card_versions WHERE qid=? AND book_id=? AND book_version=? AND chapter_id=? AND content_hash=? ORDER BY version_id DESC LIMIT 8",qid,card.book_id,card.book_version,String(card.chapter_id),card.content_hash).all();
   return{card,versions:versions.results||[]};
 }
 export async function createMotioncardConfirmation(env,kind,qid,targetVersionId=null){
