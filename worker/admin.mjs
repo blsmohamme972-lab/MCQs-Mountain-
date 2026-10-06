@@ -51,6 +51,7 @@ export async function handleAdmin(request,env,path){
     const owner=await verifyOwnerRequest(request.clone(),env);
     const admin=await verifyAdmin(request,env);
     if(!owner&&!admin)return reply({error:'forbidden'},403);
+    if(owner&&!admin&&!exportProbe)return reply({error:'forbidden'},403);
     const capabilities={books:!!admin,d1_usage:!!admin};
     if(exportProbe)capabilities.can_export_mcqs=!!owner;
     return reply(capabilities);
