@@ -134,7 +134,7 @@ def finish(work:Path,ok:bool,error=""):
         label=meta["operation_kind"]+" "+meta["cards"][0]["qid"] if meta.get("cards") else meta["operation_id"]
     else:
         payload={"group_key":meta["group_key"],"lease_token":meta["lease_token"],"ok":ok}
-        if ok:payload.update(package_sha256=meta["package_sha256"],animations=meta["animations"],cards=meta["cards"])
+        if ok:payload.update(package_sha256=meta["package_sha256"],animations=meta["animations"],cards=meta["cards"],duplicate=bool(meta.get("duplicate",False)))
         else:payload["error"]=error[:400]
         q.call("finish",payload);label=meta["group_key"]
     try:q.notify(("✅ " if ok else "❌ ")+"MotionCards "+label+(" published." if ok else " failed: "+error[:250]))
