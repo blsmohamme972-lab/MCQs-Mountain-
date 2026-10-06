@@ -28,6 +28,7 @@ def main():
     assert headers.get("X-Content-Type-Options",headers.get("x-content-type-options"))=="nosniff"
     assert headers.get("Referrer-Policy",headers.get("referrer-policy"))=="no-referrer"
     assert headers.get("Cache-Control",headers.get("cache-control"))=="public, max-age=31536000, immutable"
+    assert headers.get("Access-Control-Allow-Origin",headers.get("access-control-allow-origin"))==APP
     import hashlib
     assert hashlib.sha256(body).hexdigest()==meta["entry_sha256"]
     s,ih,_=get(base+meta["index_path"]);assert s==200
