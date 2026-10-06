@@ -1,7 +1,7 @@
 import { meterDatabase, logD1Request } from './d1-metrics.mjs';
 // Kafu control plane. Heavy publishing work stays in GitHub Actions.
 import { parsePackageName, queueDocument, retryGroup, clearGroup } from "./queue-state.mjs";
-import { looksMotioncardsFilename, parseMotioncardsName, queueMotioncardsDocument, claimMotioncards, finishMotioncards, recoverMotioncards, motioncardsStatus } from "./motioncards-queue.mjs";
+import { looksMotioncardsFilename, parseMotioncardsName, queueMotioncardsDocument, claimMotioncards, finishMotioncards, recoverMotioncards, motioncardsStatus, hasReadyMotioncards } from "./motioncards-queue.mjs";
 import { handleLeaderboard } from "./leaderboard.mjs";
 import { handleAdmin } from "./admin.mjs";
 export { parsePackageName, retryGroup, clearGroup, parseMotioncardsName };
@@ -161,11 +161,7 @@ async function command(env, raw) {
     case "/rollback": return arg && arg2 ? adminJob(env, "rollback", arg.toUpperCase(), Number(arg2)) : "Usage: /rollback BOOK-ID VERSION";
     case "/remove": return arg ? adminJob(env, "remove", arg.toUpperCase()) : "Usage: /remove BOOK-ID";
     case "/motioncards-status": return motioncardsStatus(env);
-    case "/motioncards-retry": {
-      const result=await recoverMotioncards(env,"retry",arg);
-      if(result.ok) result.dispatch=true;
-      return result;
-    }
+    case "/motioncards-retry": return recoverMotioncards(env,"retry",arg);
     case "/motioncards-clear": return recoverMotioncards(env,"clear",arg);
     default: return "Use /help for admin commands.";
   }
@@ -195,9 +191,10 @@ async function webhook(request, env, ctx) {
     if (/^(approve|reject):Q\d{9}$/.test(cb.data || "")) ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
     return reply("OK");
   }
-  let text, dispatchKind = null;
+  let text, dispatchKind = null, motioncardsHandled = false;
   if (m.document) {
     if (looksMotioncardsFilename(m.document.file_name)) {
+      motioncardsHandled = true;
       const result = await queueMotioncardsDocument(env, m.document);
       text = result.text; if (result.dispatch) dispatchKind = "motioncards";
     } else text = await queueDocument(env, m.document);
@@ -223,7 +220,7 @@ async function webhook(request, env, ctx) {
   }
   await message(env, text);
   if (dispatchKind === "motioncards") ctx.waitUntil(dispatchMotioncards(env).catch(e => message(env, `⚠️ MotionCards queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
-  else if (text.startsWith("📥") && !text.includes("already received")) ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
+  else if (!motioncardsHandled && text.startsWith("📥") && !text.includes("already received")) ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
   return reply("OK");
 }
 async function tokenFingerprint(value) {
@@ -241,6 +238,7 @@ async function internal(request, env, path) {
   if (!(await queueAuthorization(request, env))) return reply({ error: "bad_queue_token" }, 403);
   if (request.method !== "POST") return reply("Method not allowed", 405);
   if (path === "/internal/motioncards/claim") return reply(await claimMotioncards(env));
+  if (path === "/internal/motioncards/has-ready") return reply(await hasReadyMotioncards(env));
   if (path === "/internal/motioncards/finish") {
     const body = await request.json();
     const result = await finishMotioncards(env, body);
