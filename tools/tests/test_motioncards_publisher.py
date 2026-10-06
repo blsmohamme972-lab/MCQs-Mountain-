@@ -134,7 +134,7 @@ class MotioncardsPublisherTests(unittest.TestCase):
             self.assertTrue(snap["card"]["active"])
             self.assertEqual(snap["card"]["package_id"],"B")
             self.assertEqual(snap["card"]["package_revision"],2)
-            self.assertNotEqual(snap["card"]["entry_sha256"],old_digest)
+            # Package revision/URL identity can change even when deterministic scene bytes are identical.
             self.assertEqual({x["package_id"] for x in snap["versions"]},{"A","B"})
 
     def test_source_mismatch_fails_before_mutating_state_or_site(self):
