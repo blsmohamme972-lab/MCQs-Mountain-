@@ -108,6 +108,8 @@ Preview:
 python tools/motioncards.py preview --workspace work/my-batch --port 8767
 ```
 
+The preview command serves a **trusted loopback host player** with the real MessageChannel/timeline contract, host-owned controls, and the source-derived final panel. Open the host page listed by the preview index; do not treat a raw child `.html` entry as a functioning preview. Loopback HTTP is permitted only in this explicit preview mode. Production entries remain HTTPS-host restricted.
+
 Package:
 
 ```bash
@@ -221,6 +223,8 @@ Then visually inspect each authored animation at:
 
 A schema PASS is not a medical-quality review.
 
+The validator also rebuilds deterministic compiled entries from the validated scene source and pinned runtime, then compares the exact bytes. Do not edit compiled HTML or replace it with a blank/custom file and update the checksum. Publish-ready scenes reject unfinished `EDIT:` takeaways and non-boolean replacement intent.
+
 ## Handoff for a content batch
 
 Record:
@@ -234,3 +238,18 @@ Record:
 - produced ZIP path and SHA-256.
 
 Do not modify Kafu platform code merely to generate a content batch.
+
+## Replacing an existing published card
+
+Content authors still create an ordinary narrowly scoped MotionCards ZIP. Do **not** manually edit state or hashes and do not rebuild unrelated cards.
+
+If the selected QID already has an active MotionCard:
+1. Keep the requested replacement QID(s) only.
+2. Set `replace: true` as a genuine JSON boolean in the validated scene source.
+3. Package and validate normally.
+4. Upload the ZIP to the existing owner bot.
+5. The platform validates the candidate and shows the owner the exact cards that would be replaced.
+6. Publication waits for the owner's explicit expiring confirmation. A stale `replace:true` flag alone is never authorization.
+
+Removing/restoring published cards is an owner platform-management action via `/motioncards QID`, not a content-authoring task.
+
