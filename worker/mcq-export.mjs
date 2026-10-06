@@ -56,10 +56,58 @@ function approvedContentUrl(raw, base) {
   return url;
 }
 
-async function fetchJson(url, label) {
-  const result = await fetch(url, { cache: "no-store", redirect: "manual", headers: { "user-agent": "kafu-owner-mcq-export/1.0" } });
-  if (result.status >= 300 && result.status < 400) throw new Error(label + "_redirect");
-  if (!result.ok) throw new Error(label + "_unavailable");
+function safeUpstreamDiagnostic(result, raw = "") {
+  const contentType = String(result.headers.get("content-type") || "").slice(0, 120);
+  const cfRay = String(result.headers.get("cf-ray") || "").slice(0, 80);
+  const match = String(raw || "").match(/(?:error\s*(?:code)?\s*[:#-]?\s*)(10\d{2})/i);
+  return {
+    upstream_status: Number(result.status) || 0,
+    content_type: contentType,
+    ...(match ? { cf_code: Number(match[1]) } : {}),
+    ...(cfRay ? { cf_ray: cfRay } : {}),
+  };
+}
+
+async function readErrorSnippet(result, limit = 4096) {
+  if (!result.body?.getReader) return (await result.text()).slice(0, limit);
+  const reader = result.body.getReader(); const chunks = []; let total = 0;
+  try {
+    while (total < limit) {
+      const part = await reader.read(); if (part.done) break;
+      const take = part.value.subarray(0, Math.min(part.value.length, limit - total));
+      chunks.push(take); total += take.length;
+      if (take.length < part.value.length) break;
+    }
+  } finally { await reader.cancel().catch(() => {}); }
+  const bytes = new Uint8Array(total); let offset = 0;
+  for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
+  return new TextDecoder().decode(bytes);
+}
+
+async function contentFetch(env, url) {
+  const target = new URL(url);
+  const base = contentBase(env);
+  const init = { cache: "no-store", redirect: "manual", headers: { "user-agent": "kafu-owner-mcq-export/1.0" } };
+  if (target.origin === base.origin && env.CONTENT_SERVICE?.fetch) return env.CONTENT_SERVICE.fetch(new Request(target.href, init));
+  return fetch(target.href, init);
+}
+
+async function fetchJson(env, url, label) {
+  let result;
+  try { result = await contentFetch(env, url); }
+  catch (_) {
+    console.warn("mcq_export_upstream", JSON.stringify({ label, origin: new URL(url).origin, path: new URL(url).pathname, fetch_exception: true }));
+    const error = new Error(label + "_unavailable"); error.upstream = { fetch_exception: true }; throw error;
+  }
+  if (result.status >= 300 && result.status < 400) {
+    const error = new Error(label + "_redirect"); error.upstream = safeUpstreamDiagnostic(result); throw error;
+  }
+  if (!result.ok) {
+    const snippet = await readErrorSnippet(result);
+    const diagnostic = safeUpstreamDiagnostic(result, snippet);
+    console.warn("mcq_export_upstream", JSON.stringify({ label, origin: new URL(url).origin, path: new URL(url).pathname, ...diagnostic }));
+    const error = new Error(label + "_unavailable"); error.upstream = diagnostic; throw error;
+  }
   const raw = await result.text();
   const bytes = new TextEncoder().encode(raw).byteLength;
   if (bytes > MAX_CONTENT_BYTES) throw new Error(label + "_too_large");
@@ -73,7 +121,7 @@ async function readCatalog(env, bookId, version) {
   if (!Number.isSafeInteger(Number(version)) || Number(version) < 1) throw new Error("book_version_invalid");
   const base = contentBase(env);
   const catalogUrl = new URL("/catalog.json", base).href;
-  const loaded = await fetchJson(catalogUrl, "catalog");
+  const loaded = await fetchJson(env, catalogUrl, "catalog");
   if (!loaded.data || !Array.isArray(loaded.data.books)) throw new Error("catalog_invalid");
   const book = (loaded.data.books || []).find((candidate) => String(candidate?.id) === String(bookId) && Number(candidate?.version) === Number(version));
   if (!book || String(book.id).toUpperCase().startsWith("SAMPLE")) throw new Error("published_book_not_found");
@@ -96,7 +144,7 @@ async function readCatalog(env, bookId, version) {
   let bookIndex = null;
   let indexSha256 = null;
   if (indexUrl) {
-    const loadedIndex = await fetchJson(indexUrl, "book_index");
+    const loadedIndex = await fetchJson(env, indexUrl, "book_index");
     const index = loadedIndex.data;
     if (!index || String(index.book_id) !== String(book.id) || Number(index.version) !== Number(book.version) || typeof index.title !== "string" || !Array.isArray(index.chapters)) throw new Error("book_index_mismatch");
     if (Number(index.question_count) !== expectedTotal || index.chapters.length !== chapters.length) throw new Error("book_index_mismatch");
@@ -136,7 +184,7 @@ export async function handleMcqExport(request, env, path) {
       if (String(auth.body.catalog_sha256 || "") !== loaded.snapshot.catalog_sha256) return response({ error: "stale_snapshot" }, 409);
       const chapter = safeChapter(loaded.book, auth.body.chapter_id);
       const url = approvedContentUrl(chapter.url, loaded.base);
-      const pack = await fetchJson(url.href, "chapter");
+      const pack = await fetchJson(env, url.href, "chapter");
       const data = pack.data;
       if (!data || data.schema !== 1 || data.book_id !== loaded.book.id || Number(data.version) !== Number(loaded.book.version) || String(data.chapter_id) !== String(chapter.id) || !Array.isArray(data.questions)) return response({ error: "chapter_identity_mismatch" }, 409);
       if (data.questions.length !== Number(chapter.questions) || data.questions.length > 20_000) return response({ error: "chapter_count_mismatch" }, 409);
@@ -153,7 +201,7 @@ export async function handleMcqExport(request, env, path) {
   } catch (error) {
     const code = String(error?.message || "export_unavailable").replace(/[^a-z0-9_:-]/gi, "_").slice(0, 80) || "export_unavailable";
     const status = /stale|mismatch|count|identity/.test(code) ? 409 : 503;
-    return response({ error: code }, status);
+    return response({ error: code, ...(error?.upstream ? { diagnostic: error.upstream } : {}) }, status);
   }
 }
 

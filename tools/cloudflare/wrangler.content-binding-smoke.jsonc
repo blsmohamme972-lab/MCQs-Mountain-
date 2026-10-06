@@ -1,0 +1,12 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "kafu-content-binding-smoke",
+  "compatibility_date": "2026-09-27",
+  "main": "./content-binding-smoke.mjs",
+  "services": [
+    {
+      "binding": "CONTENT_SERVICE",
+      "service": "kafu-content-1"
+    }
+  ]
+}

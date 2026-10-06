@@ -833,7 +833,11 @@ function greetingName() {
 }
 function partOfDay() { const h = new Date().getHours(); return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"; }
 function coverHTML(book, cls) {
-  return `<div class="cover ${cls || ""}" style="background:${book.cover_url ? `linear-gradient(rgba(6,20,22,.14),rgba(6,20,22,.42)),url(&quot;${esc(book.cover_url)}&quot;) center/cover no-repeat` : esc(book.color || specColor(book.specialty))}"><div class="ct">${esc(book.title)}</div><div class="ca">${esc((book.authors || []).join(", "))}</div></div>`;
+  const title = String(book.title || "Book"), authors = (book.authors || []).join(", ");
+  const fallback = `<div class="cover-copy"><div class="ct">${esc(title)}</div><div class="ca">${esc(authors)}</div></div>`;
+  const base = esc(book.color || specColor(book.specialty));
+  if (!book.cover_url) return `<div class="cover cover-fallback ${cls || ""}" role="img" aria-label="${esc("Book cover: " + title)}" style="background:${base}">${fallback}</div>`;
+  return `<div class="cover cover-image ${cls || ""}" style="background:${base}"><img class="cover-art" src="${esc(book.cover_url)}" alt="${esc("Cover of " + title)}" loading="lazy" onerror="this.hidden=true;this.parentElement.classList.add('cover-image-failed')">${fallback}</div>`;
 }
 function rowHTML(action, data, icon, title, sub, right, red) {
   const attrs = Object.entries(data || {}).map(([k, v]) => `data-${k}="${esc(v)}"`).join(" ");

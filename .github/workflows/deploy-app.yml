@@ -82,12 +82,12 @@ jobs:
           test -n "$VERSION_URL"
           echo "version_url=$VERSION_URL" >> "$GITHUB_OUTPUT"
       - name: Smoke exact staged Version URL
-        run: python tools/smoke_live.py --app-url "${{ steps.staged.outputs.version_url }}" --required-book KAFU-UPLOAD-TEST
+        run: python tools/smoke_live.py --app-url "${{ steps.staged.outputs.version_url }}" --required-book KAFU-UPLOAD-TEST --export-book ANATOMY-MRCS-WOOD-BLACKBURN --export-version 2 --export-questions 209
       - name: Promote staged version to 100%
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx wrangler versions deploy --version-tag "${{ steps.staged.outputs.tag }}@100%" --yes --config wrangler.app.jsonc
       - name: Verify production after promotion
-        run: python tools/smoke_live.py --required-book KAFU-UPLOAD-TEST
+        run: python tools/smoke_live.py --required-book KAFU-UPLOAD-TEST --export-book ANATOMY-MRCS-WOOD-BLACKBURN --export-version 2 --export-questions 209
 

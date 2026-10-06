@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { webcrypto } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { handleMcqExport, verifyOwnerRequest, OWNER_AUTH_MAX_AGE_SECONDS } from "./mcq-export.mjs";
 import { handleAdmin } from "./admin.mjs";
 
@@ -109,5 +110,45 @@ await withFetch(async () => {
   assert.equal((await stale.json()).error, "stale_snapshot");
   assert.match(sha, /^[a-f0-9]{64}$/);
 });
+
+
+{
+  const config = JSON.parse(readFileSync(new URL("../wrangler.app.jsonc", import.meta.url), "utf8"));
+  assert.deepEqual(
+    (config.services || []).find((entry) => entry.binding === "CONTENT_SERVICE"),
+    { binding: "CONTENT_SERVICE", service: "kafu-content-1" },
+  );
+}
+
+{
+  const base = "https://kafu-content-1.blsmohamme97.workers.dev";
+  const boundBook = { ...book, chapters: book.chapters.map((chapter) => ({ ...chapter,
+    url: base + "/packs/one.json", image_url: base + "/packs/one.zip" })) };
+  const boundCatalog = JSON.stringify({ schema: 1, books: [boundBook] });
+  const boundChapter = JSON.stringify({ schema: 1, book_id: boundBook.id, chapter_id: 1, version: 1, questions: [q] });
+  const calls = [];
+  const serviceEnv = {
+    BOT_TOKEN, OWNER_TELEGRAM_ID: OWNER,
+    CONTENT_SERVICE: { fetch: async (request) => {
+      const url = String(request.url || request);
+      calls.push(url);
+      if (url.endsWith("/catalog.json")) return new Response(boundCatalog, { status: 200, headers: { "content-type": "application/json", "cf-ray": "fixture-ray" } });
+      if (url.endsWith("/packs/one.json")) return new Response(boundChapter, { status: 200, headers: { "content-type": "application/json" } });
+      throw new Error("unexpected_service_binding_fetch");
+    } },
+  };
+  const previous = globalThis.fetch;
+  globalThis.fetch = async () => { throw new Error("global_fetch_must_not_handle_bound_content"); };
+  try {
+    const signed = await initData();
+    const catalog = await handleMcqExport(request({ initData: signed, book_id: boundBook.id, version: 1 }), serviceEnv, "/admin/mcq-export/catalog");
+    assert.equal(catalog.status, 200);
+    const catalogBody = await catalog.json();
+    const chapter = await handleMcqExport(request({ initData: signed, book_id: boundBook.id, version: 1, chapter_id: 1, catalog_sha256: catalogBody.snapshot.catalog_sha256 }), serviceEnv, "/admin/mcq-export/chapter");
+    assert.equal(chapter.status, 200);
+    assert.deepEqual((await chapter.json()).pack.questions[0], q);
+  } finally { globalThis.fetch = previous; }
+  assert.deepEqual(calls, [base + "/catalog.json", base + "/catalog.json", base + "/packs/one.json"]);
+}
 
 console.log("owner export auth/content contract: PASS");
