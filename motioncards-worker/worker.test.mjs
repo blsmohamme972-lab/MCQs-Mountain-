@@ -25,7 +25,7 @@ test("entry response has restrictive HTTP sandbox headers",async()=>{
 test("index response uses Kafu-only CORS and short freshness",async()=>{
   const r=await worker.fetch(new Request("https://cards.test/indexes/BOOK/v2/index.json"),env("{}","application/json"));
   assert.equal(r.headers.get("access-control-allow-origin"),"https://kafu.blsmohamme97.workers.dev");
-  assert.ok(r.headers.get("cache-control").includes("max-age=60"));
+  assert.ok(r.headers.get("cache-control").includes("max-age=30"));
 });
 
 test("unapproved paths are never served",async()=>{
