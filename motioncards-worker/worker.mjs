@@ -24,7 +24,7 @@ function headersFor(path,response){
   h.set("Cross-Origin-Resource-Policy","cross-origin");
   if(path.startsWith("/indexes/")){
     h.set("Access-Control-Allow-Origin",APP_ORIGIN);
-    h.set("Cache-Control","public, max-age=60, stale-while-revalidate=120");
+    h.set("Cache-Control","public, max-age=30, must-revalidate");
   }else if(path.startsWith("/assets/")){
     h.set("Cache-Control","public, max-age=31536000, immutable");
     h.set("Content-Security-Policy",CSP);
