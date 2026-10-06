@@ -1,10 +1,10 @@
 name: Kafu Visual and Flow CI
 on:
   pull_request:
-    paths: ['app/**']
+    paths: ['app/**', 'motioncards/**', 'motioncards-worker/**', 'tools/ui/**']
   push:
     branches: [main]
-    paths: ['app/**']
+    paths: ['app/**', 'motioncards/**', 'motioncards-worker/**', 'tools/ui/**']
 permissions:
   contents: read
 concurrency:
