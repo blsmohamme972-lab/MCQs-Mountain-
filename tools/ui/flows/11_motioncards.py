@@ -77,6 +77,13 @@ def full_player(browser,origin,pack,out,helpers):
     page.locator("[data-motioncards-host='play']").click()
     page.wait_for_timeout(180)
     t2=float(page.locator("[data-motioncards-host='seek']").input_value());assert abs(t2-t1)<120,(t1,t2)
+    # Backgrounding while playing pauses the real scene clock and returning cannot jump to completion.
+    page.locator("[data-motioncards-host='play']").click();page.wait_for_timeout(160)
+    page.evaluate("Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'))")
+    hidden_t=float(page.locator("[data-motioncards-host='seek']").input_value());page.wait_for_timeout(260)
+    assert abs(float(page.locator("[data-motioncards-host='seek']").input_value())-hidden_t)<100
+    page.evaluate("Object.defineProperty(document,'hidden',{configurable:true,value:false});document.dispatchEvent(new Event('visibilitychange'))")
+    assert page.locator("[data-motioncards-host='play']").inner_text() in ("Play","Replay")
     page.locator("[data-motioncards-host='seek']").evaluate("(el)=>{el.value='2000';el.dispatchEvent(new Event('input',{bubbles:true}))}")
     frame=page.frame_locator("#kafu-motioncards-root iframe")
     page.wait_for_timeout(80);assert "2.0s" in frame.locator("#time").inner_text()
@@ -96,6 +103,18 @@ def full_player(browser,origin,pack,out,helpers):
     }""")
     assert before==after,(before,after)
     assert page.evaluate("document.getElementById('app').inert") is False
+    # Rapid reopen creates a fresh channel/frame; stale messages from the closed frame are ignored.
+    page.wait_for_selector("[data-a='motioncards-open']",timeout=5000)
+    page.locator("[data-a='motioncards-open']").click();page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
+    first_channel=page.evaluate("KafuMotionCards.player.active.channel")
+    page.locator("[data-motioncards-host='close']").click();page.wait_for_selector("[data-a='motioncards-open']",timeout=5000)
+    page.locator("[data-a='motioncards-open']").click();page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
+    second_channel=page.evaluate("KafuMotionCards.player.active.channel");assert first_channel!=second_channel
+    page.evaluate("""old => window.dispatchEvent(new MessageEvent('message',{data:{type:'kafu-motioncards-ready',protocol:1,qid:SESSION.qids[SESSION.index],channel_id:old},source:window}))""",first_channel)
+    assert page.evaluate("KafuMotionCards.player.active.channel")==second_channel
+    # Full question identity change closes the player; underlying pending MCQ state remains.
+    page.evaluate("QI[SESSION.qids[SESSION.index]].ch=999;render()")
+    page.wait_for_function("!KafuMotionCards.player.active");page.evaluate("QI[SESSION.qids[SESSION.index]].ch=1;render()")
 
     # Unmatched question has no placeholder/button.
     page.evaluate("SESSION.index=1;render()");page.wait_for_timeout(200)
@@ -126,17 +145,45 @@ def variants(browser,origin,pack,out,helpers):
     return passed
 
 def timeout_case(browser,origin,pack,helpers):
-    ctx=helpers["phone_context"](browser,origin,390,"light");install_routes(ctx,pack,origin,True)
+    ctx=helpers["phone_context"](browser,origin,390,"light")
+    q,record,index,html=fixture(pack,origin);attempt={"n":0}
+    ctx.route(f"{BASE}/indexes/**",lambda route:route.fulfill(status=200,content_type="application/json",body=json.dumps(index)))
+    def asset(route):
+        attempt["n"]+=1
+        route.fulfill(status=200,content_type="text/html",body="<!doctype html><title>Broken fixture</title>" if attempt["n"]==1 else html)
+    ctx.route(f"{BASE}/assets/**",asset)
     page,errors=helpers["open_app"](ctx,origin,pack);start(page,[pack["questions"][0]["id"]])
     page.locator("[data-a='motioncards-open']").click()
     page.wait_for_selector(".kafu-motioncards-error:not([hidden])",timeout=7000)
     assert "did not become ready" in page.locator(".kafu-motioncards-error").inner_text()
+    assert page.locator("[data-motioncards-host='retry']:visible").count()==1
+    old=page.evaluate("KafuMotionCards.player.active.channel")
+    page.locator("[data-motioncards-host='retry']").click()
+    page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
+    assert page.evaluate("KafuMotionCards.player.active.channel")!=old
     page.locator("[data-motioncards-host='close']").click();assert page.locator(".k-study .stem").count()==1
     assert not errors,errors;ctx.close()
-    return "ready-timeout fails closed and studying remains available"
+    return "ready-timeout exposes a real retry; retry uses a fresh channel and studying remains available"
+
+def account_switch_case(browser,origin,pack,helpers):
+    ctx=helpers["phone_context"](browser,origin,390,"light");install_routes(ctx,pack,origin)
+    page,errors=helpers["open_app"](ctx,origin,pack);start(page,[pack["questions"][0]["id"]])
+    page.locator("[data-a='motioncards-open']").click();page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
+    if page.evaluate("typeof TG!=='undefined' && !!TG && !!TG.initDataUnsafe"):
+        page.evaluate("TG.initDataUnsafe.user={id:222,first_name:'B'};render()")
+        page.wait_for_function("!KafuMotionCards.player.active")
+        page.evaluate("TG.initDataUnsafe.user={id:111,first_name:'A'};render()")
+        page.wait_for_selector("[data-a='motioncards-open']",timeout=5000)
+    else:
+        # Browser-only sessions still bind to full book/version/chapter/QID identity.
+        page.evaluate("QI[SESSION.qids[SESSION.index]].b='OTHER';render()")
+        page.wait_for_function("!KafuMotionCards.player.active")
+    assert not errors,errors;ctx.close()
+    return "account/session or full-question identity switch closes the active player without leaking state"
 
 def run(browser,origin,pack,out,helpers):
     passed=full_player(browser,origin,pack,out,helpers)
     passed.extend(variants(browser,origin,pack,out,helpers))
     passed.append(timeout_case(browser,origin,pack,helpers))
+    passed.append(account_switch_case(browser,origin,pack,helpers))
     return {"passed":passed}
