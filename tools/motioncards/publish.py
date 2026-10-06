@@ -80,8 +80,9 @@ def key_for(row:dict)->str:
 
 def _append_history(state:dict,key:str,record:dict):
     rows=state["history"].setdefault(key,[])
-    sha=str(record.get("entry_sha256") or "")
-    if sha and not any(str(x.get("entry_sha256"))==sha for x in rows):rows.append(copy.deepcopy(record))
+    identity=(str(record.get("entry_sha256") or ""),str(record.get("package_id") or ""),int(record.get("package_revision") or 0))
+    if identity[0] and not any((str(x.get("entry_sha256") or ""),str(x.get("package_id") or ""),int(x.get("package_revision") or 0))==identity for x in rows):
+        rows.append(copy.deepcopy(record))
 
 def build_indexes(state:dict,site:Path):
     indexes=site/"indexes"
