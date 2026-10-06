@@ -22,6 +22,8 @@ class MotionCardsStateStoreTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError,"release_lookup_failed"):s.release_status()
         with patch.object(s,"run",return_value=SimpleNamespace(returncode=1,stderr="release not found",stdout="")):
             self.assertEqual(s.release_status(),"absent")
+        with patch.object(s,"run",return_value=SimpleNamespace(returncode=1,stderr="HTTP 404 repository not found",stdout="")):
+            with self.assertRaisesRegex(RuntimeError,"release_lookup_failed"):s.release_status()
 
     def test_safe_extract_rejects_links_and_traversal(self):
         with tempfile.TemporaryDirectory() as td:
