@@ -1,5 +1,6 @@
 from __future__ import annotations
 import hashlib,json,posixpath,re,stat,unicodedata,zipfile
+from urllib.parse import urlsplit
 from pathlib import Path
 from .core import AdaptedExport,select_questions,resolve_answer,content_hash
 from .compiler import compile_scene,validate_scene
@@ -103,37 +104,96 @@ def build_package(bundle:AdaptedExport,workspace:Path,out_zip:Path):
     check_archive_structure(out_zip)
     return manifest
 
+def _validate_source_provenance(source:dict):
+    if not isinstance(source,dict) or source.get("kind")!="published":raise ValueError("source_provenance_invalid")
+    for field in ["catalog_url","index_url"]:
+        raw=source.get(field)
+        if raw in {None,""} and field=="index_url":continue
+        u=urlsplit(str(raw or ""))
+        if u.scheme!="https" or u.netloc!="kafu-content-1.blsmohamme97.workers.dev" or u.username or u.password or u.query or u.fragment:
+            raise ValueError("source_provenance_url_invalid:"+field)
+    for field in ["catalog_sha256","index_sha256"]:
+        raw=source.get(field)
+        if raw in {None,""} and field=="index_sha256":continue
+        if not re.fullmatch(r"[a-f0-9]{64}",str(raw or ""),re.I):raise ValueError("source_provenance_hash_invalid:"+field)
+
+def _validate_manifest_record(row:dict):
+    required=["book_id","book_version","chapter_id","qid","publisher_fingerprint","content_hash","content_hash_algorithm",
+              "content_hash_canonicalization","duration_ms","entry_path","entry_sha256","scene_path","scene_sha256",
+              "source_record_path","source_record_sha256","final_panel","replace"]
+    if not isinstance(row,dict) or any(k not in row for k in required):raise ValueError("manifest_animation_record_invalid")
+    qid=str(row.get("qid") or "")
+    if not QID_RE.fullmatch(qid):raise ValueError("manifest_qid_invalid")
+    if not isinstance(row.get("book_id"),str) or not row["book_id"] or not isinstance(row.get("book_version"),int) or row["book_version"]<1:
+        raise ValueError("manifest_book_identity_invalid")
+    if not isinstance(row.get("chapter_id"),(str,int)) or isinstance(row.get("chapter_id"),bool):raise ValueError("manifest_chapter_identity_invalid")
+    if row.get("content_hash_algorithm")!="SHA-256" or row.get("content_hash_canonicalization")!="kafu-question-canonical-json-v1":
+        raise ValueError("manifest_content_hash_contract_invalid")
+    if not re.fullmatch(r"[a-f0-9]{64}",str(row.get("publisher_fingerprint") or ""),re.I):raise ValueError("manifest_fingerprint_invalid")
+    if not re.fullmatch(r"[a-f0-9]{64}",str(row.get("content_hash") or ""),re.I):raise ValueError("manifest_content_hash_invalid")
+    if not isinstance(row.get("replace"),bool):raise ValueError("replace_intent_must_be_boolean")
+    validate_duration(row.get("duration_ms"))
+    panel=row.get("final_panel")
+    if not isinstance(panel,dict) or not isinstance(panel.get("takeaway"),str) or not panel["takeaway"].strip():
+        raise ValueError("final_panel_invalid")
+    statements=panel.get("correct_answer_statements")
+    if not isinstance(statements,list) or not statements or any(not isinstance(x,str) or not x.strip() for x in statements):
+        raise ValueError("final_panel_answers_invalid")
+    return qid
+
 def validate_package(path:Path):
     check_archive_structure(path)
     with zipfile.ZipFile(path) as z:
         names=set(z.namelist())
         if MANIFEST_NAME not in names:raise ValueError("manifest_missing")
-        m=json.loads(z.read(MANIFEST_NAME))
-        if m.get("package_type")!=PACKAGE_TYPE or m.get("schema_version")!=SCHEMA_VERSION:raise ValueError("manifest_type_invalid")
-        if not PACKAGE_ID_RE.fullmatch(str(m.get("package_id") or "")) or not isinstance(m.get("package_revision"),int) or m["package_revision"]<1:raise ValueError("manifest_identity_invalid")
+        try:m=json.loads(z.read(MANIFEST_NAME))
+        except Exception as exc:raise ValueError("manifest_json_invalid") from exc
+        if not isinstance(m,dict) or m.get("package_type")!=PACKAGE_TYPE or m.get("schema_version")!=SCHEMA_VERSION:raise ValueError("manifest_type_invalid")
+        if not PACKAGE_ID_RE.fullmatch(str(m.get("package_id") or "")) or not isinstance(m.get("package_revision"),int) or isinstance(m.get("package_revision"),bool) or m["package_revision"]<1:raise ValueError("manifest_identity_invalid")
         if m.get("runtime_version")!=RUNTIME_VERSION or m.get("protocol_version")!=PROTOCOL_VERSION:raise ValueError("runtime_protocol_unsupported")
+        _validate_source_provenance(m.get("source"))
+        selection=m.get("selection")
+        if not isinstance(selection,dict) or not isinstance(selection.get("qids"),list) or not isinstance(selection.get("count"),int):
+            raise ValueError("selection_manifest_invalid")
         rows=m.get("animations")
         if not isinstance(rows,list) or not 1<=len(rows)<=MAX_ANIMATIONS:raise ValueError("animation_count_invalid")
-        qids=set();paths=set()
+        qids=set();paths=set();ordered=[]
         for row in rows:
-            qid=str(row.get("qid") or "")
-            if not QID_RE.fullmatch(qid) or qid in qids:raise ValueError("manifest_qid_duplicate_or_invalid")
-            qids.add(qid);validate_duration(row.get("duration_ms"))
-            for field in ["entry_path","scene_path","source_record_path"]:
+            qid=_validate_manifest_record(row)
+            if qid in qids:raise ValueError("manifest_qid_duplicate_or_invalid")
+            qids.add(qid);ordered.append(qid)
+            expected_paths={"entry_path":f"entries/{qid}.html","scene_path":f"scenes/{qid}.scene.json","source_record_path":f"source/questions/{qid}.json"}
+            for field,expected_path in expected_paths.items():
                 p=safe_path(row.get(field) or "")
+                if p!=expected_path:raise ValueError("manifest_asset_path_invalid:"+field)
                 if p in paths:raise ValueError("manifest_path_duplicate")
                 paths.add(p)
                 if p not in names:raise ValueError("manifest_asset_missing:"+p)
             for field,pathfield in [("entry_sha256","entry_path"),("scene_sha256","scene_path"),("source_record_sha256","source_record_path")]:
                 expected=str(row.get(field) or "")
-                if not re.fullmatch(r"[a-f0-9]{64}",expected):raise ValueError("manifest_hash_invalid")
-                if sha256_bytes(z.read(row[pathfield]))!=expected:raise ValueError("manifest_checksum_mismatch:"+qid)
-            source=json.loads(z.read(row["source_record_path"]))
-            q=source.get("question");integ=source.get("integrity") or {}
-            if not isinstance(q,dict) or q.get("id")!=qid or content_hash(q)!=row.get("content_hash") or integ.get("content_hash")!=row.get("content_hash"):raise ValueError("source_binding_mismatch:"+qid)
+                if not re.fullmatch(r"[a-f0-9]{64}",expected,re.I):raise ValueError("manifest_hash_invalid")
+                if sha256_bytes(z.read(row[pathfield]))!=expected.lower():raise ValueError("manifest_checksum_mismatch:"+qid)
+            try:source=json.loads(z.read(row["source_record_path"]));scene=json.loads(z.read(row["scene_path"]))
+            except Exception as exc:raise ValueError("motioncards_source_or_scene_json_invalid:"+qid) from exc
+            q=source.get("question") if isinstance(source,dict) else None;integ=source.get("integrity") if isinstance(source,dict) else None
+            provenance=source.get("provenance") if isinstance(source,dict) else None
+            if provenance!=m.get("source"):raise ValueError("source_provenance_mismatch:"+qid)
+            if not isinstance(q,dict) or not isinstance(integ,dict) or q.get("id")!=qid:raise ValueError("source_binding_mismatch:"+qid)
+            if str(q.get("book_id"))!=row["book_id"] or int(q.get("version") or 0)!=row["book_version"] or str(q.get("chapter_id"))!=str(row["chapter_id"]):
+                raise ValueError("source_identity_mismatch:"+qid)
+            if content_hash(q)!=row["content_hash"].lower() or str(integ.get("content_hash","")).lower()!=row["content_hash"].lower():
+                raise ValueError("source_binding_mismatch:"+qid)
+            if str(integ.get("publisher_fingerprint","")).lower()!=row["publisher_fingerprint"].lower():raise ValueError("source_fingerprint_mismatch:"+qid)
+            validate_scene(scene,qid,row["duration_ms"])
+            if bool(scene.get("replace",False))!=row["replace"]:raise ValueError("replace_intent_scene_manifest_mismatch:"+qid)
+            if scene["takeaway"]!=row["final_panel"]["takeaway"]:raise ValueError("takeaway_scene_manifest_mismatch:"+qid)
             resolved=resolve_answer(q)
-            if resolved["statements"]!=row.get("final_panel",{}).get("correct_answer_statements"):raise ValueError("final_answer_not_source_derived:"+qid)
-        if set(m.get("selection",{}).get("qids") or [])!=qids or int(m.get("selection",{}).get("count") or -1)!=len(qids):raise ValueError("selection_manifest_mismatch")
+            if resolved["kind"]!=row["final_panel"].get("correct_answer_kind") or resolved["statements"]!=row["final_panel"].get("correct_answer_statements"):
+                raise ValueError("final_answer_not_source_derived:"+qid)
+            rebuilt=compile_scene(scene).encode()
+            if rebuilt!=z.read(row["entry_path"]):raise ValueError("compiled_entry_scene_mismatch:"+qid)
+            if sha256_bytes(rebuilt)!=row["entry_sha256"].lower():raise ValueError("compiled_entry_hash_mismatch:"+qid)
+        if selection["qids"]!=ordered or selection["count"]!=len(ordered):raise ValueError("selection_manifest_mismatch")
         allowed=set(ALLOWED_ROOT_FILES)|paths
         extra=[n for n in names if n not in allowed and not n.startswith("reports/")]
         if extra:raise ValueError("unapproved_package_files:"+",".join(sorted(extra)[:5]))
