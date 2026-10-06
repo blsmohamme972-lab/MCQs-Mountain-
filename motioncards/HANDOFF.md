@@ -265,3 +265,56 @@ Verified regressions in Content CI run `37468259832`:
 - No merge or deployment is authorized in this task.
 - Next action: owner reviews this hardened PR. If approved later, obtain explicit production authorization before applying MotionCards migrations, creating/deploying the MotionCards service, or operating the real owner queue.
 
+## Confirmation atomicity hardening
+
+Reviewed/audited input head: `6d4cac0010a0a686193e40433184d3d46d02b030`.
+
+Failure-before evidence:
+- Audit harness reproduced the race on replace/remove/restore: queue mutation changed 1 row while token-consumption changed 0 rows after expiry/invalidation between preflight and the batch.
+- Repository regressions were added **before** the fix against the real `confirmMotioncardAction()` and migration `0006_motioncards_queue.sql`.
+- Content CI run `37475150809` failed exactly on those new atomicity cases while the unrelated legacy Medical Motion job remained green.
+
+Implemented correction:
+- Confirmation preflight remains only for readable errors; authorization no longer relies on it.
+- Replace transition now guards the group mutation inside SQL on owner/chat identity, token unused/unexpired state, candidate digest, awaiting-confirmation state, and every current active target's digest/package/revision.
+- Confirmed replacement authorization stored on the group is bound to the exact confirmation token plus target map. The queue worker unwraps this envelope backward-compatibly before publisher validation.
+- Remove/restore operation insertion is now an `INSERT ... SELECT` directly from an eligible confirmation joined to the current card. It validates owner/chat, expiry/unused status, current active digest, book/version/chapter identity, and for restore the requested historical target row.
+- Token consumption is guarded by the transition created by that exact token. If expiry, invalidation, cancellation/renewal, candidate change, or target change wins before the transaction, both writes are no-op and no executable work is created.
+- Concurrent duplicate callbacks remain single-use and idempotent.
+
+Repository regressions cover all three operation kinds:
+- valid confirmation;
+- owner/chat mismatch;
+- expired before read;
+- expiry after preflight/before transaction;
+- used/invalidation after preflight;
+- changed current target after preflight;
+- duplicate callback;
+- replacement candidate-digest race;
+- replacement concurrent renewal/cancellation.
+
+### Merge/deployment safety
+
+Merge is **not** production-neutral in this repository:
+- `deploy-app.yml` watches matching pushes to `main`, applies remote D1 migrations, and promotes the app Worker.
+- `publish-motioncards-queue.yml` has an hourly schedule.
+
+Review-only gating changes are now prepared without changing any production setting:
+- `MOTIONCARDS_ROLLOUT_ENABLED` defaults effectively false/unset.
+- `deploy-app.yml` stops before remote migration/deployment while the gate is false unless manually dispatched with `motioncards_rollout_authorized=true`.
+- Scheduled MotionCards publishing is skipped while the gate is false.
+- Manual pre-gate MotionCards publishing requires `production_authorized=true`.
+- Gate behavior has repository regression coverage in `tools/tests/test_motioncards_rollout_gates.py`.
+
+The exact authorized first-rollout sequence is documented in `docs/ADMIN.md`. No repository variable, production workflow, migration, service, credential, or real queue has been changed/operated in this review work.
+
+### Current status
+
+STATUS: INCOMPLETE - SAFE TO CONTINUE
+
+- PR #67 remains Draft/Open and unmerged.
+- Branch: `feature/kafu-motioncards`.
+- No merge, deployment, production migration, service creation, credential change, or real production queue operation is authorized.
+- Final action for this review task: run full Content Contract CI and Visual/Flow CI on the final review head. If both pass, update the PR description with exact final SHA/run IDs and stop for owner review.
+- Any future merge requires explicit production rollout authorization because merge is not production-neutral.
+
