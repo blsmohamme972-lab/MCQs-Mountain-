@@ -27,7 +27,9 @@ def validate_scene(scene:dict,qid:str,duration_ms:int):
     return scene
 
 RUNTIME_JS=r"""
-CONFIG.channel_id=location.hash.slice(1);if(!/^[A-Za-z0-9_-]{16,96}$/.test(CONFIG.channel_id))throw new Error('motioncards_channel_invalid');\nconst MC={protocol:1,qid:CONFIG.qid,duration:CONFIG.duration_ms,port:null,destroyed:false};
+CONFIG.channel_id=location.hash.slice(1);if(!/^[A-Za-z0-9_-]{16,96}$/.test(CONFIG.channel_id))throw new Error('motioncards_channel_invalid');\nconst hashChannel=location.hash.slice(1);
+CONFIG.channel_id=/^[a-f0-9]{36}$/.test(hashChannel)?hashChannel:"";
+const MC={protocol:1,qid:CONFIG.qid,duration:CONFIG.duration_ms,port:null,destroyed:false};
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const lerp=(a,b,p)=>a+(b-a)*p;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
