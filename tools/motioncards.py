@@ -5,7 +5,8 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from motioncards.lib.core import adapt_exports
-from motioncards.lib.package import scaffold_workspace,build_package,validate_package
+from motioncards.lib.package import scaffold_workspace
+from motioncards.lib.multipart import build_package_set,validate_package_part
 from motioncards.lib.compiler import compile_scene,validate_scene
 from motioncards.lib.spec import parse_package_filename
 
@@ -47,10 +48,11 @@ def main():
         result=scaffold_workspace(b,a.out,a.package_id.upper(),a.revision,a.qids,a.count,a.duration_ms,overrides(a.duration),set(a.inspected_image_qid))
         print(json.dumps(result,indent=2));return
     if a.cmd=="package":
-        b=load(a.exports);m=build_package(b,a.workspace,a.out)
-        print(json.dumps({"zip":str(a.out),"animations":len(m["animations"])},indent=2));return
+        b=load(a.exports);paths=build_package_set(b,a.workspace,a.out)
+        total=sum(len(validate_package_part(p)["animations"]) for p in paths)
+        print(json.dumps({"zips":[str(p) for p in paths],"animations":total},indent=2));return
     if a.cmd=="validate":
-        m=validate_package(a.zip)
+        m=validate_package_part(a.zip)
         print(json.dumps({"status":"PASS","package_id":m["package_id"],"revision":m["package_revision"],"animations":len(m["animations"])},indent=2));return
     if a.cmd=="filename":
         print(json.dumps(parse_package_filename(a.name)));return
