@@ -3,7 +3,8 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
   queueMotioncardsDocument, claimMotioncards, finishMotioncards,
-  stageReplacementConfirmation, recoverMotioncards
+  stageReplacementConfirmation, recoverMotioncards, createMotioncardConfirmation,
+  confirmMotioncardAction
 } from "../../worker/motioncards-queue.mjs";
 
 const mf=new Miniflare({
@@ -93,7 +94,29 @@ try{
   assert.equal((await DB.prepare("SELECT status FROM motioncards_groups WHERE group_key='RENEW_r2'").first()).status,"ready");
   assert.ok((await DB.prepare("SELECT used_at FROM motioncards_confirmations WHERE token=?").bind(staged.token).first()).used_at);
 
-  console.log(JSON.stringify({motioncards_d1_runtime:true,concurrent_intake:true,lost_ack_reconciled:true,acknowledged_duplicate_noop:true,confirmation_renewal:true}));
+  // D1/workerd acceptance controls: valid confirmation consumes once; pre-expired confirmation creates no work.
+  const acceptCard=card("Q000000903","ACCEPT",1,"2".repeat(64));
+  await DB.prepare("INSERT INTO motioncards_cards(qid,book_id,book_version,chapter_id,content_hash,active,package_id,package_revision,entry_sha256,entry_url,duration_ms) VALUES(?,?,?,?,?,1,?,?,?,?,?)")
+    .bind(acceptCard.qid,acceptCard.book_id,acceptCard.book_version,acceptCard.chapter_id,acceptCard.content_hash,acceptCard.package_id,acceptCard.package_revision,acceptCard.entry_sha256,acceptCard.entry_url,acceptCard.duration_ms).run();
+  await DB.prepare("INSERT OR IGNORE INTO motioncards_card_versions(qid,book_id,book_version,chapter_id,content_hash,package_id,package_revision,entry_sha256,entry_url,duration_ms) VALUES(?,?,?,?,?,?,?,?,?,?)")
+    .bind(acceptCard.qid,acceptCard.book_id,acceptCard.book_version,acceptCard.chapter_id,acceptCard.content_hash,acceptCard.package_id,acceptCard.package_revision,acceptCard.entry_sha256,acceptCard.entry_url,acceptCard.duration_ms).run();
+  const validConfirm=await createMotioncardConfirmation(env,"remove",acceptCard.qid);
+  assert.equal(validConfirm.ok,true);
+  const accepted=await confirmMotioncardAction(env,validConfirm.token);
+  assert.equal(accepted.ok,true);
+  assert.equal((await DB.prepare("SELECT COUNT(*) n FROM motioncards_operations WHERE operation_id=? AND status='ready'").bind("mcop-"+validConfirm.token).first()).n,1);
+  assert.ok((await DB.prepare("SELECT used_at FROM motioncards_confirmations WHERE token=?").bind(validConfirm.token).first()).used_at);
+
+  const expiredCard=card("Q000000904","EXPIRED",1,"3".repeat(64));
+  await DB.prepare("INSERT INTO motioncards_cards(qid,book_id,book_version,chapter_id,content_hash,active,package_id,package_revision,entry_sha256,entry_url,duration_ms) VALUES(?,?,?,?,?,1,?,?,?,?,?)")
+    .bind(expiredCard.qid,expiredCard.book_id,expiredCard.book_version,expiredCard.chapter_id,expiredCard.content_hash,expiredCard.package_id,expiredCard.package_revision,expiredCard.entry_sha256,expiredCard.entry_url,expiredCard.duration_ms).run();
+  const expiredConfirm=await createMotioncardConfirmation(env,"remove",expiredCard.qid);
+  await DB.prepare("UPDATE motioncards_confirmations SET expires_at=datetime('now','-1 second') WHERE token=?").bind(expiredConfirm.token).run();
+  const rejected=await confirmMotioncardAction(env,expiredConfirm.token);
+  assert.equal(rejected.ok,false);
+  assert.equal((await DB.prepare("SELECT COUNT(*) n FROM motioncards_operations WHERE operation_id=?").bind("mcop-"+expiredConfirm.token).first()).n,0);
+
+  console.log(JSON.stringify({motioncards_d1_runtime:true,concurrent_intake:true,lost_ack_reconciled:true,acknowledged_duplicate_noop:true,confirmation_renewal:true,confirmation_acceptance_controls:true}));
 }finally{
   await mf.dispose();
 }
