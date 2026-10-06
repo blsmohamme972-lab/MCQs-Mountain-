@@ -78,17 +78,22 @@ function cardWrites(env,cards,guardSql,guardArgs){
 export async function finishMotioncards(env,body){
   const key=String(body.group_key||""),lease=String(body.lease_token||"");
   if(body.ok){
-    if(!HEX64.test(String(body.package_sha256||""))||!Number.isSafeInteger(body.animations)||body.animations<1||!Array.isArray(body.cards)||body.cards.length!==body.animations)return{ok:false,status:400,error:"motioncards_finish_invalid"};
-    const digest=String(body.package_sha256).toLowerCase();
+    if(!HEX64.test(String(body.package_sha256||""))||!Number.isSafeInteger(body.animations)||body.animations<1)return{ok:false,status:400,error:"motioncards_finish_invalid"};
+    const digest=String(body.package_sha256).toLowerCase(),duplicate=body.duplicate===true;
     const guard="SELECT 1 FROM motioncards_groups WHERE group_key=? AND status='running' AND lease_token=? AND lease_expires_at>=datetime('now')";
-    const cw=cardWrites(env,body.cards,guard,[key,lease]);if(!cw)return{ok:false,status:400,error:"motioncards_cards_invalid"};
-    const results=await env.DB.batch([
-      ...cw,
+    const writes=[];
+    if(!duplicate){
+      if(!Array.isArray(body.cards)||body.cards.length!==body.animations)return{ok:false,status:400,error:"motioncards_finish_invalid"};
+      const cw=cardWrites(env,body.cards,guard,[key,lease]);if(!cw)return{ok:false,status:400,error:"motioncards_cards_invalid"};
+      writes.push(...cw);
+    }else if(body.cards!=null&&!Array.isArray(body.cards))return{ok:false,status:400,error:"motioncards_finish_invalid"};
+    writes.push(
       stmt(env,"INSERT INTO motioncards_publications(group_key,package_id,revision,package_sha256,animations) SELECT group_key,package_id,revision,?,? FROM motioncards_groups WHERE group_key=? AND status='running' AND lease_token=? AND lease_expires_at>=datetime('now') ON CONFLICT(group_key) DO UPDATE SET package_sha256=excluded.package_sha256,animations=excluded.animations,published_at=datetime('now')",digest,body.animations,key,lease),
       stmt(env,"UPDATE motioncards_groups SET status='published',finished_at=datetime('now'),error_summary=NULL,published_digest=?,lease_token=NULL,lease_expires_at=NULL,replacement_auth_json=NULL WHERE group_key=? AND status='running' AND lease_token=? AND lease_expires_at>=datetime('now')",digest,key,lease)
-    ]);
+    );
+    const results=await env.DB.batch(writes);
     if(!results.at(-1)?.meta?.changes)return{ok:false,status:409,error:"motioncards_lease_invalid_or_expired"};
-    return{ok:true,status:200};
+    return{ok:true,status:200,duplicate};
   }
   const error=String(body.error||"motioncards_publish_failed").slice(0,400);
   const result=await stmt(env,"UPDATE motioncards_groups SET status='failed',finished_at=datetime('now'),error_summary=?,lease_token=NULL,lease_expires_at=NULL WHERE group_key=? AND status='running' AND lease_token=? AND lease_expires_at>=datetime('now')",error,key,lease).run();
