@@ -124,3 +124,12 @@ After review is complete, obtain one explicit production authorization that name
 
 If any step fails, leave `MOTIONCARDS_ROLLOUT_ENABLED` false, preserve the previous active MotionCards state, and use the documented recovery path. Do not bypass the gate to make a workflow green.
 
+### Expected CI/deployment statuses around the rollout gate
+
+- **Gated merge, rollout variable false/unset:** Content CI and Visual/Flow local/built checks still run normally. The matching `deploy-app.yml` push run is expected to stop at **Gate MotionCards first production rollout** before remote D1 migration or Worker promotion. Exact-production-SHA UI verification is **not run**, because no deployment occurred. This is an intentional blocked deployment, not a production test failure and not a production PASS.
+- **Authorized first rollout:** after explicit owner authorization, manually dispatch `deploy-app.yml` on the reviewed merged `main` commit with `motioncards_rollout_authorized=true`. The workflow must pass staged smoke, promotion, normal production smoke, then `Verify exact production UI SHA after promotion` using that workflow's exact `GITHUB_SHA`. Only then is the production SHA check PASS.
+- **Normal enabled rollout:** after the owner explicitly enables `MOTIONCARDS_ROLLOUT_ENABLED=true`, matching pushes to `main` may deploy normally. The exact-production-SHA UI smoke remains in `deploy-app.yml` after promotion and must pass for that deployed SHA.
+- **Failed deployment:** if the gate, migration, staged smoke, promotion, or normal production smoke fails, the exact-production-SHA browser smoke is not executed by default step semantics. Do not report it as PASS or relabel a skipped production check as success.
+
+`.github/workflows/ui.yml` deliberately contains only local/built Visual/Flow verification. Production SHA verification belongs to the deployment workflow because only that workflow knows that an authorized promotion actually occurred.
+
