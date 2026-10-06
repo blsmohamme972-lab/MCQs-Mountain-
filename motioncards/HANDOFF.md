@@ -123,3 +123,34 @@ Current CI for these fixes: pending/not yet observed at this handoff update.
 
 ## Exact next action
 Wait for/re-run CI on the handshake + multipart fixes. If green, inspect visual evidence and budgets, update this handoff with exact run IDs/results, and deliver the review report. If any check fails, fix the specific failure without weakening existing gates or baselines.
+
+## Hardening milestone after owner audit
+
+Reference SHA before this handoff update: `5fc9acfdbcfe75b2ce956945a1807d672e862280`.
+
+Implemented on the existing PR/branch without merge/deploy:
+- Local authoring preview now uses a trusted preview host with the real MessageChannel/timeline/final-panel contract. HTTP loopback is accepted only through the explicit preview compiler mode; production host-origin validation remains HTTPS-only.
+- `tools/motioncards/smoke.py` is a reliable direct/module entrypoint with an explicit repository import path; workflow callers use `python -m tools.motioncards.smoke`.
+- `motioncards-worker/wrangler.jsonc` sets `assets.html_handling: "none"`; the real Wrangler runtime acceptance verifies exact `.html` delivery without canonical redirect, Content-Type, CSP sandbox, Kafu-only CORS, immutable cache headers, byte hash, and browser handshake.
+- Deterministic compiler validation rejects unfinished `EDIT:` takeaway placeholders and non-boolean replacement intent. Arrow heads now follow arbitrary arrow direction; transform rotation is rendered.
+- Duplicate publication returns a stable `package_sha256`/changed contract. Queue finish with `duplicate:true` acknowledges the queue/publication record without card upserts, so it cannot reactivate a removed card or overwrite a newer replacement.
+- Downloaded queue identity validation requires filename/group/manifest package ID+revision, multipart indexes/totals, complete membership, and exact downloaded sizes before publishing.
+- MotionCards queue uses expiring lease tokens, stale-finish rejection, bounded attempts, continuation dispatch, hourly recovery, and preserves valid multipart parts during repair.
+- Owner management is implemented through `/motioncards QID`: trusted Preview, Replace guidance, reversible Remove, and compatible-version Restore. Replacement activation requires expiring owner/private-chat confirmation bound to candidate digest and expected active package/revision/digest.
+- Soft remove/restore uses the same state candidate/deployment pipeline; unrelated cards remain intact. Student availability refresh remains bounded to 35 seconds in production and is now explicitly exercised on an already-open question.
+- Player lifecycle now binds account + study-session instance + book/version/chapter/QID + full content hash. It cancels its RAF before teardown, blanks the stale iframe, pauses on visibility/page exit, has a real Retry action, focus trapping/restoration, stale-channel rejection, and rapid-reopen/session-switch coverage.
+- Initial publication recovery now distinguishes durable-but-unpromoted candidates from active state. A verified pending candidate can rebuild an empty retry base without becoming active; multiple ambiguous candidates fail closed. Generic repository/auth 404s are no longer treated as proof that the state release is absent.
+- State candidate restore verifies state/tree/artifact hashes and uses safe tar extraction; candidate artifacts remain immutable.
+- Package validation checks full nested contracts, exact source identity/duration/final panel, current published source membership at publication, and rebuilds deterministic compiled entries from validated scene source to compare exact bytes.
+- Existing real asset-routing acceptance is preserved and strengthened with Kafu-only asset CORS.
+
+Current production status:
+- No merge to main.
+- No production migration applied.
+- No MotionCards service created/deployed by this hardening work.
+- No real Telegram production queue operation performed.
+- No secrets or credentials changed.
+
+Next exact action:
+Run full Content Contract CI and Visual/Flow CI on the current branch head. Fix only reproducible failures tied to this hardening, then update this handoff/README/MASTER_PROMPT/PR description with exact run IDs and remaining owner-gated blockers.
+
