@@ -84,7 +84,7 @@ jobs:
 
       - name: Smoke exact staged MotionCards version
         if: steps.prepare.outputs.has_work == 'true'
-        run: python tools/motioncards/smoke.py --url "${{ steps.staged.outputs.version_url }}" --result /tmp/kafu-motioncards/result.json
+        run: python -m tools.motioncards.smoke --url "${{ steps.staged.outputs.version_url }}" --result /tmp/kafu-motioncards/result.json
 
       - name: Persist recoverable candidate before promotion
         if: steps.prepare.outputs.has_work == 'true'
@@ -99,7 +99,7 @@ jobs:
 
       - name: Verify MotionCards production after promotion
         if: steps.prepare.outputs.has_work == 'true'
-        run: python tools/motioncards/smoke.py --url "$MOTIONCARDS_URL" --result /tmp/kafu-motioncards/result.json
+        run: python -m tools.motioncards.smoke --url "$MOTIONCARDS_URL" --result /tmp/kafu-motioncards/result.json
 
       - name: Advance durable active state pointer
         if: steps.prepare.outputs.has_work == 'true'
