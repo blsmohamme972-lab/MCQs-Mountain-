@@ -3,6 +3,7 @@ globalThis.KafuEnhancements.installers.push({name:"motioncards-player",install()
 const MC=globalThis.KafuMotionCards,Core=MC?.core;
 if(!MC||!Core)throw new Error("motioncards_core_missing");
 const POSITIVE_TTL=30_000,NEGATIVE_TTL=15_000,READY_TIMEOUT=5000,REFRESH_AFTER=35_000;
+const refreshAfter=()=>Number.isFinite(Number(MC.REFRESH_AFTER_MS))?Math.max(100,Number(MC.REFRESH_AFTER_MS)):REFRESH_AFTER;
 const cache=new Map(),sessionIds=new WeakMap();
 let active=null,lookupSerial=0,refreshTimer=0,nextSessionId=1;
 const accountKey=()=>IN_TG&&TG?.initDataUnsafe?.user?.id!=null?"tg:"+String(TG.initDataUnsafe.user.id):IN_TG?"tg:session":"browser";
@@ -53,7 +54,7 @@ function injectButton(snapshot,record){
 }
 function scheduleAvailability(){
   clearTimeout(refreshTimer);refreshTimer=0;
-  if(!active&&current())refreshTimer=setTimeout(()=>{cache.clear();refreshAvailability();},REFRESH_AFTER);
+  if(!active&&current())refreshTimer=setTimeout(()=>{cache.clear();refreshAvailability();},refreshAfter());
 }
 function refreshAvailability(){
   const snapshot=current(),serial=++lookupSerial;
@@ -223,7 +224,7 @@ document.addEventListener("keydown",event=>{
 },true);
 document.addEventListener("visibilitychange",()=>{if(document.hidden&&active?.playing)pause();});
 window.addEventListener("pagehide",()=>{if(active?.playing)pause();});
-MC.player={get active(){return active;},refresh:refreshAvailability,close:closePlayer,play,pause,seek,restart,retry:loadFrame,openTrustedPreview};
+MC.player={get active(){return active;},refresh:refreshAvailability,close:closePlayer,play,pause,seek,restart,retry:loadFrame,openTrustedPreview,productionRefreshWindowMs:REFRESH_AFTER};
 scheduleAvailability();refreshAvailability();
 const previewQid=new URLSearchParams(location.search).get("motioncards_preview");
 if(Core.QID.test(String(previewQid||"")))setTimeout(()=>openTrustedPreview(String(previewQid)),0);
