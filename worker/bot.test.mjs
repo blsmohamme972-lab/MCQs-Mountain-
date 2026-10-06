@@ -659,11 +659,11 @@ test("MotionCards expired lease cannot publish cards or publication record",()=>
 }));
 
 test("MotionCards multiple ready uploads remain claimable without another upload",()=>harness(async h=>{
-  for(const id of ["A","B","C"])await h.send(document(\`MCARDS_\${id}_r1.zip\`));
+  for(const id of ["A","B","C"])await h.send(document(`MCARDS_${id}_r1.zip`));
   for(let i=0;i<3;i++){
     const ready=await (await h.internal("motioncards/has-ready")).json();assert.equal(ready.ready,true);
     const claim=await (await h.internal("motioncards/claim")).json();assert.equal(claim.kind,"motioncards");
-    const qid=\`Q\${String(100+i).padStart(9,"0")}\`,card=mcCard(qid,claim.group.package_id,claim.group.revision);
+    const qid=`Q${String(100+i).padStart(9,"0")}`,card=mcCard(qid,claim.group.package_id,claim.group.revision);
     assert.equal((await h.internal("motioncards/finish",{group_key:claim.group.group_key,lease_token:claim.lease_token,ok:true,animations:1,package_sha256:String(i+1).repeat(64),cards:[card]})).status,200);
   }
   const ready=await (await h.internal("motioncards/has-ready")).json();assert.equal(ready.ready,false);
