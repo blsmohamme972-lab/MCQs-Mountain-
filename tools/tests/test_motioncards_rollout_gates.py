@@ -40,6 +40,11 @@ class MotionCardsRolloutGateTests(unittest.TestCase):
         self.assertGreaterEqual(segment.count("wrangler versions upload"),1)
         self.assertNotIn("versions deploy",segment)
 
+    def test_motioncards_browser_smoke_keeps_strict_sandbox_without_playwright_service_worker_hook(self):
+        text=(ROOT/"tools/motioncards/browser_smoke.py").read_text(encoding="utf-8")
+        self.assertIn('sandbox="allow-scripts"',text)
+        self.assertNotIn('service_workers="block"',text)
+
     def test_ui_main_push_does_not_expect_production_sha_before_authorized_deploy(self):
         text=(ROOT/".github/workflows/ui.yml").read_text(encoding="utf-8")
         self.assertIn("Main journeys, offline persistence, budgets and approved screenshots",text)
