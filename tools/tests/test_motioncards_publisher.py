@@ -106,6 +106,37 @@ class MotioncardsPublisherTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,"confirmation_stale"):
                 apply_package(stale_zip,state,site,fetcher(qs),{stale_plan["replacements"][0]["qid"]:stale_plan["replacements"][0]})
 
+    def test_duplicate_recovery_snapshot_tracks_current_durable_state_not_old_zip(self):
+        qs=[q("Q000000001")]
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);state=root/"state.json";site=root/"site"
+            original=make(root,"A",1,qs,["Q000000001"])
+            first=apply_package(original,state,site,fetcher(qs))
+            old_digest=first["affected"][0]["entry_sha256"]
+
+            apply_management({"operation_id":"remove-a","kind":"remove","book_id":"BOOK","book_version":1,"chapter_id":1,
+                              "qid":"Q000000001","expected_active_digest":old_digest},state,site,fetcher(qs))
+            removed=apply_package(original,state,site,fetcher(qs))
+            self.assertTrue(removed["duplicate"])
+            self.assertFalse(removed["reconciliation"][0]["card"]["active"])
+            self.assertEqual(removed["reconciliation"][0]["card"]["entry_sha256"],old_digest)
+            self.assertGreaterEqual(len(removed["reconciliation"][0]["versions"]),1)
+
+            apply_management({"operation_id":"restore-a","kind":"restore","book_id":"BOOK","book_version":1,"chapter_id":1,
+                              "qid":"Q000000001","expected_active_digest":"","target_digest":old_digest},state,site,fetcher(qs))
+            replacement=make(root,"B",2,qs,["Q000000001"],True)
+            plan=plan_packages([replacement],state,fetcher(qs))
+            auth={plan["replacements"][0]["qid"]:plan["replacements"][0]}
+            apply_package(replacement,state,site,fetcher(qs),auth)
+
+            duplicate_old=apply_package(original,state,site,fetcher(qs))
+            snap=duplicate_old["reconciliation"][0]
+            self.assertTrue(snap["card"]["active"])
+            self.assertEqual(snap["card"]["package_id"],"B")
+            self.assertEqual(snap["card"]["package_revision"],2)
+            self.assertNotEqual(snap["card"]["entry_sha256"],old_digest)
+            self.assertEqual({x["package_id"] for x in snap["versions"]},{"A","B"})
+
     def test_source_mismatch_fails_before_mutating_state_or_site(self):
         original=q("Q000000001")
         with tempfile.TemporaryDirectory() as td:
