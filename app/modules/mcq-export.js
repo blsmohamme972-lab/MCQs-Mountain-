@@ -30,7 +30,9 @@ globalThis.KafuEnhancements.installers.push({ name: "mcq-export", install() {
     state.active = null; state.preparing = false; state.error = ""; state.catalog = null; state.prepared = null; state.fallbackText = "";
     run += 1; SHEET = null;
     if (next) {
-      const authDate = Number(new URLSearchParams(next).get("auth_date"));
+      const params = typeof URLSearchParams === "function" ? new URLSearchParams(next) : null;
+      const rawAuthDate = params?.get("auth_date");
+      const authDate = rawAuthDate == null ? NaN : Number(rawAuthDate);
       if (Number.isFinite(authDate)) expiryTimer = setTimeout(() => { if (current() === next) { resetForSession(""); render(); } }, Math.max(0, (authDate + 86400) * 1000 - Date.now() + 1000));
     }
   }
