@@ -48,7 +48,9 @@ def prepare(work:Path,allow_initial:bool):
     package=work/parts[0]["filename"];telegram_file(parts[0]["telegram_file_id"],package)
     result=apply_package(package,state,site)
     build=json.loads((site/"build-info.json").read_text())
-    sample=next(iter(json.loads((site/next((site/"indexes").rglob("index.json")).relative_to(site)).read_text())["animations"].values()))
+    index_path=next((site/"indexes").rglob("index.json"))
+    index=json.loads(index_path.read_text())
+    sample=next(iter(index["animations"].values()))
     meta={"empty":False,"group_key":group["group_key"],"lease_token":item["lease_token"],"package_sha256":result["package_sha256"],
           "animations":result["animations"],"state_sha256":build["state_sha256"],"tree_sha256":tree_sha(site),
           "sample":{"book_id":sample["book_id"],"book_version":sample["book_version"],"qid":sample["qid"],"entry_url":sample["entry_url"]}}
