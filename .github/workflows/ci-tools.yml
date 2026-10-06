@@ -96,10 +96,11 @@ jobs:
           assert d["catalog_status"]==200 and "json" in d["catalog_content_type"].lower(), d
           print("remote content service binding: PASS", d)
           PY
-      - name: Measure D1 reads with local workerd as history grows
+      - name: Measure D1 reads and exercise MotionCards D1 concurrency with local workerd
         run: |
           npm install --no-save --package-lock=false miniflare@4.20260730.0
           node tools/tests/d1-read-bounds.mjs
+          node tools/tests/motioncards-d1-runtime.mjs
       - name: Verify real D1 analytics access without logging private metrics
         env:
           D1_ANALYTICS_TOKEN: ${{ secrets.D1_ANALYTICS_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
