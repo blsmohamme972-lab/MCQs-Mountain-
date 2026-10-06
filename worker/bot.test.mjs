@@ -913,6 +913,28 @@ for(const kind of ["replace","remove","restore"]){
     }finally{restore();}
   }));
 
+  test("MotionCards "+kind+" confirmation uses first guarded transition as expiry linearization point",()=>harness(async h=>{
+    const f=atomicConfirmationFixture(h,kind),originalBatch=h.DB.batch.bind(h.DB),changes=[];
+    h.DB.sql.prepare("UPDATE motioncards_confirmations SET expires_at=datetime('now','+1 second') WHERE token=?").run(f.token);
+    h.DB.batch=async statements=>{
+      h.DB.sql.exec("BEGIN IMMEDIATE");
+      try{
+        const first=statements[0].runSync();changes.push(first.meta.changes);
+        Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,1150);
+        const second=statements[1].runSync();changes.push(second.meta.changes);
+        h.DB.sql.exec("COMMIT");
+        return[first,second];
+      }catch(error){h.DB.sql.exec("ROLLBACK");throw error;}
+    };
+    try{
+      const result=await confirmMotioncardAction(h.env,f.token);
+      assert.equal(result.ok,true,"expiry after the accepted transition must not retroactively reject it");
+      assert.deepEqual(changes,[1,1]);
+      assert.equal(confirmationExecutable(h,kind),true);
+      assert.ok(h.DB.sql.prepare("SELECT used_at FROM motioncards_confirmations WHERE token=?").get(f.token).used_at);
+    }finally{h.DB.batch=originalBatch;}
+  }));
+
   test("MotionCards "+kind+" confirmation changed target after preflight cannot queue work",()=>harness(async h=>{
     const f=atomicConfirmationFixture(h,kind),restore=interleaveBeforeConfirmationBatch(h,x=>x.DB.sql.prepare("UPDATE motioncards_cards SET entry_sha256=?,package_id='CHANGED',package_revision=9 WHERE qid=?").run("f".repeat(64),f.qid));
     try{
