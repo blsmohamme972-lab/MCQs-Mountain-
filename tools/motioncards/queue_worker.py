@@ -37,25 +37,28 @@ def prepare(work:Path,allow_initial:bool):
     if item.get("kind")=="empty":
         print(json.dumps({"empty":True}));return 0
     if item.get("kind")!="motioncards":raise ValueError("unexpected_motioncards_claim")
-    group=item["group"];parts=item.get("parts") or []
-    if len(parts)!=int(group["part_total"]):raise ValueError("incomplete_motioncards_group")
-    if len(parts)!=1:
-        raise ValueError("motioncards_multipart_processing_not_enabled_yet")
-    work.mkdir(parents=True,exist_ok=True);state=work/"state.json";site=work/"site"
-    if not state.exists():
-        if not allow_initial:raise ValueError("motioncards_state_missing_owner_initialization_required")
-        site.mkdir(parents=True,exist_ok=True)
-    package=work/parts[0]["filename"];telegram_file(parts[0]["telegram_file_id"],package)
-    result=apply_package(package,state,site)
-    build=json.loads((site/"build-info.json").read_text())
-    index_path=next((site/"indexes").rglob("index.json"))
-    index=json.loads(index_path.read_text())
-    sample=next(iter(index["animations"].values()))
-    meta={"empty":False,"group_key":group["group_key"],"lease_token":item["lease_token"],"package_sha256":result["package_sha256"],
-          "animations":result["animations"],"state_sha256":build["state_sha256"],"tree_sha256":tree_sha(site),
-          "sample":{"book_id":sample["book_id"],"book_version":sample["book_version"],"qid":sample["qid"],"entry_url":sample["entry_url"]}}
-    (work/"result.json").write_text(json.dumps(meta,indent=2)+"\n")
-    print(json.dumps(meta));return 0
+    group=item["group"];lease=item["lease_token"]
+    try:
+        parts=item.get("parts") or []
+        if len(parts)!=int(group["part_total"]):raise ValueError("incomplete_motioncards_group")
+        if len(parts)!=1:raise ValueError("motioncards_multipart_processing_not_enabled_yet")
+        work.mkdir(parents=True,exist_ok=True);state=work/"state.json";site=work/"site"
+        if not state.exists():
+            if not allow_initial:raise ValueError("motioncards_state_missing_owner_initialization_required")
+            site.mkdir(parents=True,exist_ok=True)
+        package=work/parts[0]["filename"];telegram_file(parts[0]["telegram_file_id"],package)
+        result=apply_package(package,state,site)
+        build=json.loads((site/"build-info.json").read_text())
+        index_path=next((site/"indexes").rglob("index.json"));index=json.loads(index_path.read_text());sample=next(iter(index["animations"].values()))
+        meta={"empty":False,"group_key":group["group_key"],"lease_token":lease,"package_sha256":result["package_sha256"],
+              "animations":result["animations"],"state_sha256":build["state_sha256"],"tree_sha256":tree_sha(site),
+              "sample":{"book_id":sample["book_id"],"book_version":sample["book_version"],"qid":sample["qid"],"entry_url":sample["entry_url"]}}
+        (work/"result.json").write_text(json.dumps(meta,indent=2)+"\n");print(json.dumps(meta));return 0
+    except Exception as exc:
+        safe=(type(exc).__name__+":"+str(exc))[:350]
+        q.call("finish",{"group_key":group["group_key"],"lease_token":lease,"ok":False,"error":safe})
+        q.notify("❌ MotionCards "+group["group_key"]+" failed: "+safe)
+        raise
 
 def finish(work:Path,ok:bool,error=""):
     meta=json.loads((work/"result.json").read_text())
