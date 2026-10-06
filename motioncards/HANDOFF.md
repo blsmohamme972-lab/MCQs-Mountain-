@@ -342,3 +342,61 @@ Next action:
 - Owner reviews PR #67.
 - If the owner wants production rollout later, obtain explicit production authorization covering the documented rollout sequence before merge/manual deployment/service creation/migration/publisher enablement.
 
+## Between-statements confirmation expiry + production-smoke alignment
+
+Reviewed input head: `6acaebb70ebb7c8b78d6faa0f0ca18093a738121`.
+
+### Failure-before evidence
+
+The supplied read-only audit bundle imports the unchanged real `worker/motioncards-queue.mjs` and loads migrations `0001` through `0006` into isolated Node SQLite. It delays only wall-clock time between the two statements inside one `BEGIN IMMEDIATE / COMMIT` transaction.
+
+Against the reviewed head it reproduced for replace/remove/restore:
+- first guarded mutation changes: 1;
+- later token-consumption changes: 0 after expiry;
+- callback returns rejected;
+- executable work remains committed;
+- token `used_at` remains null.
+
+Independent local rerun of that audit produced `REJECTED_BUT_EXECUTABLE=3`.
+
+Repository regression `MotionCards <kind> confirmation uses first guarded transition as expiry linearization point` was added before the fix. On the test-only SHA `a56a5a17c3accc96023edc59dfc517852ea09b3a`, Content CI job `112332752999` failed exactly three cases: replace, remove and restore. The earlier preflight/before-batch protections remained green.
+
+Rollout mismatch was also captured before the workflow fix. Content CI run `37482231724` failed the new rollout assertions because `ui.yml` still required `production_smoke.py --commit "$GITHUB_SHA"` on every matching main push while `deploy-app.yml` intentionally blocks unauthorized first rollout.
+
+### Confirmation acceptance timing
+
+The explicit linearization point is now **the first guarded database transition**:
+- for replace: the guarded `motioncards_groups awaiting_confirmation -> ready` update;
+- for remove/restore: the guarded `INSERT ... SELECT` that creates the exact ready operation.
+
+That first transition evaluates expiry together with owner/chat identity, token unused state, candidate/current-target identity and operation-specific validation.
+
+The second statement consumes the exact token only if the exact transition artifact created by that token exists. It intentionally **does not evaluate wall-clock expiry again**. Therefore a token valid at the accepted first transition cannot be retroactively rejected merely because wall-clock time advances before token consumption. This does not extend token life: a token already expired at the first transition changes zero rows and creates no executable work.
+
+Token consumption still requires the same token, owner/chat, unused state and exact transition binding; zero-row consumption is still a failure. Renew/Cancel and stale-target protections remain unchanged.
+
+### Runtime evidence boundaries
+
+- **SQLite fault injection:** deterministically crosses expiry between statements by sleeping inside the local batch adapter. This is the boundary regression and is not production D1 evidence.
+- **D1-compatible local runtime:** `tools/tests/motioncards-d1-runtime.mjs` uses Miniflare/workerd with the real migration and real queue module. It verifies valid confirmation consumption and pre-expired rejection in addition to the existing concurrency/reconciliation controls. It does not claim deterministic wall-clock delay injection between D1 batch statements.
+- **Production:** no production D1, queue or Telegram confirmation was exercised in this review task.
+
+### Production smoke / rollout gate alignment
+
+- `.github/workflows/ui.yml` keeps local/built Visual/Flow, browser, budget and Wrangler checks but no longer waits for a production SHA on a matching main push.
+- `.github/workflows/deploy-app.yml` owns the exact-production-SHA browser smoke after successful promotion and normal production smoke.
+- Gated merge with rollout disabled: local CI can pass; app deployment is intentionally blocked before remote writes; exact production SHA check is not run.
+- Authorized first rollout: manual `deploy-app.yml` with `motioncards_rollout_authorized=true` must deploy first, then run exact SHA smoke.
+- Normal enabled rollout: matching main pushes deploy and retain the same exact SHA post-promotion smoke.
+- Failed deployment: the later exact-SHA step is not executed and must not be reported as PASS.
+
+Detailed expected statuses and first-rollout sequence are in `docs/ADMIN.md`.
+
+### Current status
+
+STATUS: INCOMPLETE - FINAL CI PENDING
+
+- PR #67 remains Draft/Open and unmerged.
+- No merge, deployment, production migration, service creation, credential/variable change, or real production queue operation occurred.
+- Next action: run full Content Contract CI and Visual/Flow CI on the final review head. If both pass, update this handoff/PR status to owner review and stop.
+
