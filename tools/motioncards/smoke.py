@@ -5,7 +5,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 ROOT=Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
-from tools.http_client import request_json
+from tools.http_client import request_json,HttpStepError
 
 CSP_REQUIRED=["default-src 'none'","connect-src 'none'","worker-src 'none'","form-action 'none'","sandbox allow-scripts"]
 MAX_ENTRY=2*1024*1024
@@ -36,6 +36,16 @@ def check_entry(base,row):
     if headers.get("Referrer-Policy")!="no-referrer":raise ValueError("motioncards_referrer_policy_missing")
     return len(raw)
 
+def load_index(base,meta,card):
+    book_id=str(card["book_id"]);version=int(card["book_version"]);qid=str(card["qid"])
+    url=base+"/indexes/"+book_id+"/v"+str(version)+"/index.json?state="+meta["state_sha256"]
+    try:
+        return request_json(url,step="motioncards.smoke.index."+qid)
+    except HttpStepError as exc:
+        if card.get("active") is False and exc.status==404:
+            return {"animations":{}}
+        raise
+
 def main():
     ap=argparse.ArgumentParser();ap.add_argument("--url",required=True);ap.add_argument("--result",required=True);a=ap.parse_args()
     base=a.url.rstrip("/");meta=json.load(open(a.result))
@@ -45,8 +55,8 @@ def main():
     if not isinstance(cards,list) or not cards:raise ValueError("motioncards_smoke_affected_cards_missing")
     entry_bytes=0;active=removed=0
     for card in cards:
-        book_id=str(card["book_id"]);version=int(card["book_version"]);qid=str(card["qid"])
-        idx=request_json(base+"/indexes/"+book_id+"/v"+str(version)+"/index.json?state="+meta["state_sha256"],step="motioncards.smoke.index."+qid)
+        qid=str(card["qid"])
+        idx=load_index(base,meta,card)
         row=idx.get("animations",{}).get(qid)
         if card.get("active") is False:
             removed+=1
