@@ -1,4 +1,4 @@
-import json,tarfile,tempfile,unittest
+import io,json,tarfile,tempfile,unittest,urllib.error
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -36,6 +36,27 @@ class MotionCardsStateStoreTests(unittest.TestCase):
                 with tarfile.open(path,"w:gz") as tar:
                     info=tarfile.TarInfo("safe");info.size=0;make(info);tar.addfile(info)
                 with self.assertRaisesRegex(RuntimeError,"tar_"):s._safe_extract(path,root/("out-"+name))
+
+    def test_bootstrap_503_is_allowed_only_for_owner_initial_recovery(self):
+        class Bootstrap503(urllib.error.HTTPError):
+            pass
+        exc=urllib.error.HTTPError(s.PROD+"/build-info.json",503,"Service Unavailable",{"Retry-After":"60"},None)
+        exc.fp=io.BytesIO(s.BOOTSTRAP_BODY)
+        with patch("urllib.request.urlopen",side_effect=exc):
+            self.assertEqual(s.live_state(allow_bootstrap=True),("bootstrap",""))
+        exc2=urllib.error.HTTPError(s.PROD+"/build-info.json",503,"Service Unavailable",{"Retry-After":"60"},None)
+        exc2.fp=io.BytesIO(s.BOOTSTRAP_BODY)
+        with patch("urllib.request.urlopen",side_effect=exc2):
+            with self.assertRaisesRegex(RuntimeError,"live_state_http_503"):s.live_state(allow_bootstrap=False)
+
+    def test_bootstrap_503_does_not_override_existing_active_pointer(self):
+        with tempfile.TemporaryDirectory() as td:
+            work=Path(td)
+            assets={"active.json"}
+            with patch.object(s,"release_status",return_value="present"),patch.object(s,"release_assets",return_value=assets),\
+                 patch.object(s,"live_state",side_effect=RuntimeError("motioncards_live_state_http_503")) as live:
+                with self.assertRaisesRegex(RuntimeError,"live_state_http_503"):s.restore(work,True)
+                live.assert_called_once_with(allow_bootstrap=False)
 
     def test_initial_promotion_without_active_pointer_recovers_verified_live_candidate(self):
         with tempfile.TemporaryDirectory() as td:
