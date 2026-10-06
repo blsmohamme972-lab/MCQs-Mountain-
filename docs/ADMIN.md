@@ -51,6 +51,24 @@ Do not upload PDFs to the bot. The bot accepts prepared ZIP packages only.
   
 The bot ignores non-owner users and group-chat commands.
 
+
+## Kafu MotionCards owner management
+
+MotionCards remain separate from the book publisher and its queue/state.
+
+- `/motioncards Q000000001` — inspect one published/known card. The response shows book/version, chapter, QID, current package revision, duration and status, with inline management actions.
+- **Preview** — opens the trusted Kafu player route for that QID; never use a raw MotionCards child HTML URL as the management preview.
+- **Replace** — upload a validated MotionCards ZIP containing only the intended replacement card(s). The bot lists exact replacement targets and requires explicit confirmation after validation. Confirmation expires and is bound to the owner/private chat, candidate digest, and expected active package/revision/digest.
+- **Remove from students** — reversible soft-unpublish for that QID only. It leaves the MCQ, progress, answers, other cards and historical bytes untouched.
+- **Restore previous compatible version** — restores only the selected QID after revalidating its current published question identity/content hash.
+- `/motioncards-status` — concise MotionCards queue status.
+- `/motioncards-retry PACKAGE-ID_rN` — requeue a failed complete MotionCards upload.
+- `/motioncards-clear PACKAGE-ID_rN` — clear failed MotionCards queue state only; it is not a published-card delete command.
+
+A successful remove/restore is published through the MotionCards state/deployment pipeline. The public index cache is 30 seconds and the app's bounded availability refresh is 35 seconds by default, so an already-open question should update within that window after successful publication. Do not promise deletion of bytes already cached/downloaded on a client.
+
+MotionCards queue recovery is lease/token protected and bounded. Do not manipulate `motioncards_` D1 rows, release assets, or hashes manually to force a replacement or restoration.
+
 ## When you see ❌
 
 1. Send `/queue` and read the failing `step=...`, method, host, path and status. These diagnostics intentionally contain no secrets.
@@ -77,3 +95,41 @@ Audit mismatches are never student-visible: packaging must fix them before deliv
 - Content helper workflow: `docs/CONTENT_TEAM.md`.
 - Personal sync: `docs/PERSONAL_SYNC.md`.
 - Backup proposal: PR #20 is still owner-controlled and must not be assumed active until it is actually merged and a backup run is verified.
+
+## Kafu MotionCards first production rollout safety
+
+A merge of PR #67 is **not production-neutral**. The existing `.github/workflows/deploy-app.yml` watches matching pushes to `main`, applies remote D1 migrations, uploads app Worker secrets, stages the app Worker, and promotes it after smoke tests. The MotionCards publisher workflow also has an hourly schedule.
+
+This review branch therefore prepares a fail-closed rollout gate without changing any production setting now:
+
+- Repository variable `MOTIONCARDS_ROLLOUT_ENABLED` is expected to be absent/false during review.
+- While it is not `true`, `deploy-app.yml` stops before remote D1 migration/deployment unless the owner manually dispatches it with `motioncards_rollout_authorized=true`.
+- The hourly MotionCards publisher job is skipped while the variable is not `true`.
+- A manual MotionCards publisher run before the gate is enabled requires `production_authorized=true`.
+- No one should set the variable, dispatch either production workflow, merge this PR, apply migrations, create the MotionCards service, or operate the real queue without explicit owner production authorization.
+
+### Authorized first-rollout sequence
+
+After review is complete, obtain one explicit production authorization that names the following sequence. Do not treat merge approval alone as sufficient.
+
+1. Confirm the reviewed PR head and both required CI workflows are green.
+2. Keep `MOTIONCARDS_ROLLOUT_ENABLED` false/unset.
+3. Merge only after the owner explicitly authorizes the production rollout consequences of the merge.
+4. Because the automatic push deployment is gated, manually dispatch `deploy-app.yml` with `motioncards_rollout_authorized=true`. This is the authorized step that may apply MotionCards D1 migration(s), stage the app Worker, smoke the exact staged version, promote it, and verify production.
+5. Verify the app Worker, D1 schema, owner-only bot management endpoints, and existing book/export/study behavior before enabling any MotionCards publishing.
+6. Under the same explicit authorization, create/use the dedicated `kafu-motioncards` service only through the reviewed MotionCards workflow. For a genuinely empty first state, `initialize_state=true` is allowed only when the state release is confirmed absent.
+7. Do not upload or claim a real production MotionCards package until the owner explicitly authorizes that acceptance step. When authorized, manually run the publisher with `production_authorized=true` and verify the exact staged/production MotionCards before queue acknowledgement.
+8. After the first production acceptance is successful, the owner may explicitly authorize setting repository variable `MOTIONCARDS_ROLLOUT_ENABLED=true`. Only then do hourly recovery/drain and ordinary automatic app deploys resume without the first-rollout manual flag.
+9. Record the deployed app SHA, MotionCards state SHA/release, service version/deployment identifier, migration status, and acceptance result in `motioncards/HANDOFF.md`.
+
+If any step fails, leave `MOTIONCARDS_ROLLOUT_ENABLED` false, preserve the previous active MotionCards state, and use the documented recovery path. Do not bypass the gate to make a workflow green.
+
+### Expected CI/deployment statuses around the rollout gate
+
+- **Gated merge, rollout variable false/unset:** Content CI and Visual/Flow local/built checks still run normally. The matching `deploy-app.yml` push run is expected to stop at **Gate MotionCards first production rollout** before remote D1 migration or Worker promotion. Exact-production-SHA UI verification is **not run**, because no deployment occurred. This is an intentional blocked deployment, not a production test failure and not a production PASS.
+- **Authorized first rollout:** after explicit owner authorization, manually dispatch `deploy-app.yml` on the reviewed merged `main` commit with `motioncards_rollout_authorized=true`. The workflow must pass staged smoke, promotion, normal production smoke, then `Verify exact production UI SHA after promotion` using that workflow's exact `GITHUB_SHA`. Only then is the production SHA check PASS.
+- **Normal enabled rollout:** after the owner explicitly enables `MOTIONCARDS_ROLLOUT_ENABLED=true`, matching pushes to `main` may deploy normally. The exact-production-SHA UI smoke remains in `deploy-app.yml` after promotion and must pass for that deployed SHA.
+- **Failed deployment:** if the gate, migration, staged smoke, promotion, or normal production smoke fails, the exact-production-SHA browser smoke is not executed by default step semantics. Do not report it as PASS or relabel a skipped production check as success.
+
+`.github/workflows/ui.yml` deliberately contains only local/built Visual/Flow verification. Production SHA verification belongs to the deployment workflow because only that workflow knows that an authorized promotion actually occurred.
+

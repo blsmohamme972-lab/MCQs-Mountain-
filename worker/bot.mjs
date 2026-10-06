@@ -1,9 +1,10 @@
 import { meterDatabase, logD1Request } from './d1-metrics.mjs';
 // Kafu control plane. Heavy publishing work stays in GitHub Actions.
 import { parsePackageName, queueDocument, retryGroup, clearGroup } from "./queue-state.mjs";
+import { looksMotioncardsFilename, parseMotioncardsName, queueMotioncardsDocument, claimMotioncards, finishMotioncards, finishMotioncardsOperation, recoverMotioncards, motioncardsStatus, hasReadyMotioncards, stageReplacementConfirmation, getMotioncardManagement, createMotioncardConfirmation, confirmMotioncardAction } from "./motioncards-queue.mjs";
 import { handleLeaderboard } from "./leaderboard.mjs";
 import { handleAdmin } from "./admin.mjs";
-export { parsePackageName, retryGroup, clearGroup };
+export { parsePackageName, retryGroup, clearGroup, parseMotioncardsName };
 const ID = /^[A-Z0-9][A-Z0-9-]*$/;
 const QID = /^Q\d{9}$/;
 
@@ -62,6 +63,15 @@ async function dispatch(env) {
   });
   if (res.status !== 204) throw new Error(`GitHub dispatch: ${res.status}`);
 }
+async function dispatchMotioncards(env) {
+  const repo = env.GITHUB_REPOSITORY || "blsmohamme972-lab/MCQs-Mountain-";
+  if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) throw new Error("Invalid GitHub repository");
+  const res = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/publish-motioncards-queue.yml/dispatches`, {
+    method: "POST", headers: { authorization: `Bearer ${env.DISPATCH_TOKEN}`, accept: "application/vnd.github+json",
+      "x-github-api-version": "2022-11-28", "user-agent": "kafu-motioncards-queue" }, body: JSON.stringify({ ref: "main" }),
+  });
+  if (res.status !== 204) throw new Error(`GitHub MotionCards dispatch: ${res.status}`);
+}
 async function adminJob(env, kind, bookId, version = null) {
   if (!ID.test(bookId || "") || (version !== null && (!Number.isSafeInteger(version) || version < 1)))
     return "❌ Invalid book ID or version.";
@@ -77,7 +87,7 @@ async function bookForQuestion(env, qid) {
 async function command(env, raw) {
   const [cmd, arg, arg2, arg3] = raw.trim().split(/\s+/);
   switch (cmd.toLowerCase().split("@")[0]) {
-    case "/help": return "/queue /books /status /warnings BOOK-ID /flags [/flags approve-all BOOK-ID CONFIRM] /hold QID PAGE /retry BOOK-ID_vN /clear BOOK-ID_vN /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID";
+    case "/help": return "/queue /books /status /warnings BOOK-ID /flags [/flags approve-all BOOK-ID CONFIRM] /hold QID PAGE /retry BOOK-ID_vN /clear BOOK-ID_vN /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID /motioncards QID /motioncards-status /motioncards-retry PACKAGE-ID_rN /motioncards-clear PACKAGE-ID_rN — retry renews an expired replacement confirmation; clear cancels a pending replacement";
     case "/queue": {
       const r = await env.DB.prepare("SELECT group_key,status,part_total,error_summary FROM publish_groups ORDER BY created_at DESC LIMIT 15").all();
       const a = await env.DB.prepare("SELECT kind,book_id,status,error_summary FROM admin_jobs ORDER BY id DESC LIMIT 5").all();
@@ -150,22 +160,87 @@ async function command(env, raw) {
     }
     case "/rollback": return arg && arg2 ? adminJob(env, "rollback", arg.toUpperCase(), Number(arg2)) : "Usage: /rollback BOOK-ID VERSION";
     case "/remove": return arg ? adminJob(env, "remove", arg.toUpperCase()) : "Usage: /remove BOOK-ID";
+    case "/motioncards-status": return motioncardsStatus(env);
+    case "/motioncards-retry": return recoverMotioncards(env,"retry",arg);
+    case "/motioncards-clear": return recoverMotioncards(env,"clear",arg);
     default: return "Use /help for admin commands.";
   }
 }
+async function motioncardsOwnerMessage(env,qid){
+  const info=await getMotioncardManagement(env,qid);
+  if(!info)return{ text:"No published Kafu MotionCards record found for "+qid+".", reply_markup:null };
+  const card=info.card,active=Number(card.active)===1,pending=info.pending_replacement;
+  const prior=(info.versions||[]).find(v=>!active||v.entry_sha256!==card.entry_sha256);
+  const lines=[
+    "🎞 Kafu MotionCards",
+    "Book: "+card.book_id+" v"+card.book_version,
+    "Chapter: "+card.chapter_id,
+    "QID: "+card.qid,
+    "Status: "+(active?"Published":"Removed from students"),
+    "Revision: "+card.package_id+" r"+card.package_revision,
+    "Duration: "+card.duration_ms+" ms"
+  ];
+  if(pending)lines.push("Pending replacement: "+pending.group_key+" — confirmation required/expired");
+  const buttons=[];
+  if(active)buttons.push([{text:"Preview",url:"https://kafu.blsmohamme97.workers.dev/?motioncards_preview="+encodeURIComponent(card.qid)}]);
+  buttons.push([{text:"Replace",callback_data:"mcreplace:"+card.qid},{text:active?"Remove from students":"Removed",callback_data:active?"mcremove:"+card.qid:"mcnoop"}]);
+  if(prior)buttons.push([{text:"Restore previous compatible version",callback_data:"mcrestore:"+card.qid+":"+prior.version_id}]);
+  if(pending)buttons.push([{text:"Renew confirmation",callback_data:"mcrenew:"+card.qid},{text:"Cancel replacement",callback_data:"mccancel:"+card.qid}]);
+  return{text:lines.join("\n"),reply_markup:{inline_keyboard:buttons}};
+}
 async function callback(env, cb) {
-  const m = /^(approve|reject|source):Q\d{9}$/.exec(cb.data || "");
-  if (!m) return;
-  const qid = cb.data.slice(cb.data.indexOf(":") + 1);
+  const data=String(cb.data||"");
+  if(data==="mcnoop"){await telegram(env,"answerCallbackQuery",{callback_query_id:cb.id,text:"This card is already removed."});return{};}
+  if(data.startsWith("mcrenew:")||data.startsWith("mccancel:")){
+    const renew=data.startsWith("mcrenew:"),qid=data.slice(data.indexOf(":")+1);
+    if(!QID.test(qid))return{};
+    const info=await getMotioncardManagement(env,qid),pending=info?.pending_replacement;
+    if(!pending){await telegram(env,"answerCallbackQuery",{callback_query_id:cb.id,text:"No pending replacement for this card.",show_alert:true});return{};}
+    const result=await recoverMotioncards(env,renew?"renew":"cancel",pending.group_key);
+    await telegram(env,"answerCallbackQuery",{callback_query_id:cb.id,text:result.ok?(renew?"Renewal queued":"Replacement cancelled"):"Not changed",show_alert:!result.ok});
+    await message(env,result.text);
+    return{dispatchMotioncards:!!result.dispatch};
+  }
+  if(data.startsWith("mcreplace:")){
+    const qid=data.slice("mcreplace:".length);
+    if(!QID.test(qid))return{};
+    await telegram(env,"answerCallbackQuery",{callback_query_id:cb.id,text:"Replacement mode"});
+    await message(env,"Create a replacement ZIP containing only the intended MotionCard(s), then upload it here. Kafu will validate it and show the exact cards/revision being replaced before activation. No manual hash or database editing is required.");
+    return{};
+  }
+  if(data.startsWith("mcremove:")){
+    const qid=data.slice("mcremove:".length),x=await createMotioncardConfirmation(env,"remove",qid);
+    if(!x.ok){await telegram(env,"answerCallbackQuery",{callback_query_id:cb.id,text:x.error,show_alert:true});return{};}
+    await telegram(env,"answerCallbackQuery",{callback_query_id:cb.id,text:"Confirm removal"});
+    await message(env,"Remove "+qid+" from students? This is reversible; the previous bytes/history remain recoverable.",{reply_markup:{inline_keyboard:[[{text:"Confirm remove",callback_data:"mcconfirm:"+x.token}]]}});
+    return{};
+  }
+  if(data.startsWith("mcrestore:")){
+    const parts=data.split(":"),qid=parts[1],versionId=Number(parts[2]),x=await createMotioncardConfirmation(env,"restore",qid,versionId);
+    if(!x.ok){await telegram(env,"answerCallbackQuery",{callback_query_id:cb.id,text:x.error,show_alert:true});return{};}
+    await telegram(env,"answerCallbackQuery",{callback_query_id:cb.id,text:"Confirm restore"});
+    await message(env,"Restore the selected compatible prior MotionCard for "+qid+"? The current published question binding will be revalidated before activation.",{reply_markup:{inline_keyboard:[[{text:"Confirm restore",callback_data:"mcconfirm:"+x.token}]]}});
+    return{};
+  }
+  if(data.startsWith("mcconfirm:")){
+    const result=await confirmMotioncardAction(env,data.slice("mcconfirm:".length));
+    await telegram(env,"answerCallbackQuery",{callback_query_id:cb.id,text:result.ok?"Confirmed":"Not confirmed",show_alert:!result.ok});
+    await message(env,result.text);
+    return{dispatchMotioncards:!!result.dispatch};
+  }
+  const m = /^(approve|reject|source):Q\d{9}$/.exec(data);
+  if (!m) return{};
+  const qid = data.slice(data.indexOf(":") + 1);
   const row = await env.DB.prepare("SELECT book_id,source_page FROM flags WHERE qid=?").bind(qid).first();
-  if (!row) return;
+  if (!row) return{};
   if (m[1] === "source") {
     await telegram(env, "answerCallbackQuery", { callback_query_id: cb.id, text: `Source page: ${row.source_page ?? "unknown"}`, show_alert: true });
-    return;
+    return{};
   }
   await env.DB.prepare("UPDATE flags SET status=? WHERE qid=?").bind(m[1] === "approve" ? "approved" : "rejected", qid).run();
   await adminJob(env, "moderate", row.book_id);
   await telegram(env, "answerCallbackQuery", { callback_query_id: cb.id, text: `${qid}: ${m[1]}` });
+  return{dispatchBooks:/^(approve|reject)$/.test(m[1])};
 }
 async function webhook(request, env, ctx) {
   if (!env.WEBHOOK_SECRET || request.headers.get("X-Telegram-Bot-Api-Secret-Token") !== env.WEBHOOK_SECRET) return reply("Forbidden", 403);
@@ -174,14 +249,27 @@ async function webhook(request, env, ctx) {
   const actor = cb?.from || m?.from, chat = cb?.message?.chat || m?.chat;
   if (!actor || String(actor.id) !== String(env.OWNER_TELEGRAM_ID) || chat?.type !== "private" || String(chat.id) !== String(env.OWNER_TELEGRAM_ID)) return reply("OK");
   if (cb) {
-    await callback(env, cb);
-    if (/^(approve|reject):Q\d{9}$/.test(cb.data || "")) ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
+    const action=await callback(env, cb);
+    if(action?.dispatchMotioncards)ctx.waitUntil(dispatchMotioncards(env).catch(e=>message(env,`⚠️ MotionCards queued, but Action dispatch failed: ${safeText(env,e.message)}`)));
+    else if(action?.dispatchBooks)ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
     return reply("OK");
   }
-  let text;
-  if (m.document) text = await queueDocument(env, m.document);
-  else if (m.text?.startsWith("/")) {
+  let text, dispatchKind = null, motioncardsHandled = false;
+  if (m.document) {
+    if (looksMotioncardsFilename(m.document.file_name)) {
+      motioncardsHandled = true;
+      const result = await queueMotioncardsDocument(env, m.document);
+      text = result.text; if (result.dispatch) dispatchKind = "motioncards";
+    } else text = await queueDocument(env, m.document);
+  } else if (m.text?.startsWith("/")) {
     const parts = m.text.trim().split(/\s+/);
+    if (parts[0].toLowerCase().split("@")[0] === "/motioncards") {
+      const qid=String(parts[1]||"").toUpperCase();
+      if(!QID.test(qid)){await message(env,"Usage: /motioncards Q000000001");return reply("OK");}
+      const view=await motioncardsOwnerMessage(env,qid);
+      await message(env,view.text,view.reply_markup?{reply_markup:view.reply_markup}:{});
+      return reply("OK");
+    }
     if (parts[0].toLowerCase().split("@")[0] === "/flags" && QID.test(parts[1] || "")) {
       const x = await env.DB.prepare("SELECT qid,source_page,status FROM flags WHERE qid=?").bind(parts[1]).first();
       if (x) {
@@ -191,14 +279,18 @@ async function webhook(request, env, ctx) {
         return reply("OK");
       }
     }
-    text = await command(env, m.text);
+    const result = await command(env, m.text);
+    if (result && typeof result === "object" && !result.book_pages) {
+      text = result.text; if (result.dispatch) dispatchKind = "motioncards";
+    } else text = result;
   } else return reply("OK");
   if (text.book_pages) {
     for (const page of text.book_pages) await message(env, page, { parse_mode: "HTML" });
     return reply("OK");
   }
   await message(env, text);
-  if (text.startsWith("📥") && !text.includes("already received")) ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
+  if (dispatchKind === "motioncards") ctx.waitUntil(dispatchMotioncards(env).catch(e => message(env, `⚠️ MotionCards queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
+  else if (!motioncardsHandled && text.startsWith("📥") && !text.includes("already received")) ctx.waitUntil(dispatch(env).catch(e => message(env, `⚠️ Queued, but Action dispatch failed: ${safeText(env, e.message)}`)));
   return reply("OK");
 }
 async function tokenFingerprint(value) {
@@ -215,6 +307,35 @@ async function queueAuthorization(request, env) {
 async function internal(request, env, path) {
   if (!(await queueAuthorization(request, env))) return reply({ error: "bad_queue_token" }, 403);
   if (request.method !== "POST") return reply("Method not allowed", 405);
+  if (path === "/internal/motioncards/claim") return reply(await claimMotioncards(env));
+  if (path === "/internal/motioncards/has-ready") return reply(await hasReadyMotioncards(env));
+  if (path === "/internal/motioncards/finish") {
+    const body = await request.json();
+    const result = body.operation_id ? await finishMotioncardsOperation(env,body) : await finishMotioncards(env, body);
+    return reply(result.ok ? { ok: true } : { error: result.error }, result.status);
+  }
+  if (path === "/internal/motioncards/candidate") {
+    const body=await request.json(),result=await stageReplacementConfirmation(env,body);
+    if(!result.ok)return reply({error:result.error},result.status);
+    const targets=result.targets.map(x=>x.qid+" — active "+x.expected_active_package_id+" r"+x.expected_active_package_revision).join("\n");
+    let notification_sent=true;
+    try{
+      await message(env,"⚠️ Replacement candidate "+result.group_key+" passed validation and would replace:\n"+targets+"\nConfirm only if these are the intended cards. If this notice is missed, use /motioncards QID to renew or cancel.",{reply_markup:{inline_keyboard:[[{text:"Confirm replacement",callback_data:"mcconfirm:"+result.token}]]}});
+    }catch(error){notification_sent=false;console.warn("MotionCards replacement confirmation notification failed:",safeText(env,error?.message||error));}
+    return reply({ok:true,token:result.token,notification_sent});
+  }
+  if (path === "/internal/motioncards/recover") {
+    const body = await request.json();
+    if (!["retry","clear"].includes(body.action)) return reply({ error: "invalid_recovery_action" }, 400);
+    const result = await recoverMotioncards(env, body.action, String(body.group_key || ""));
+    if (result.ok && body.action === "retry" && body.dispatch !== false) await dispatchMotioncards(env);
+    return reply(result, result.ok ? 200 : 409);
+  }
+  if (path === "/internal/motioncards/notify") {
+    const body = await request.json();
+    await message(env, String(body.text || "").slice(0, 3500));
+    return reply({ ok: true });
+  }
   if (path === "/internal/claim") {
     const group = await env.DB.prepare("UPDATE publish_groups SET status='running',claimed_at=datetime('now'),attempts=attempts+1 WHERE group_key=(SELECT g.group_key FROM publish_groups g JOIN publish_queue q ON q.group_key=g.group_key WHERE g.status='ready' GROUP BY g.group_key ORDER BY MIN(q.job_id) LIMIT 1) AND status='ready' RETURNING *").first();
     if (group) {

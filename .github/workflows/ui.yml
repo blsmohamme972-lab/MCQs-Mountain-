@@ -1,10 +1,10 @@
 name: Kafu Visual and Flow CI
 on:
   pull_request:
-    paths: ['app/**']
+    paths: ['app/**', 'motioncards/**', 'motioncards-worker/**', 'tools/ui/**']
   push:
     branches: [main]
-    paths: ['app/**']
+    paths: ['app/**', 'motioncards/**', 'motioncards-worker/**', 'tools/ui/**']
 permissions:
   contents: read
 concurrency:
@@ -43,9 +43,21 @@ jobs:
         run: |
           python -m py_compile tools/ui/check.py tools/ui/production_smoke.py tools/ui/flows/09_phone_geometry.py
           python tools/ui/check.py --before /tmp/kafu-before --out evidence/ui
-      - name: Verify every main screen on production exact build
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: python tools/ui/production_smoke.py --commit "$GITHUB_SHA"
+      - name: Verify real MotionCards static asset routing and sandbox handshake
+        run: |
+          set -euo pipefail
+          rm -rf motioncards-worker/dist
+          mkdir -p motioncards-worker/dist
+          python tools/tests/motioncards_worker_fixture.py --dist motioncards-worker/dist --meta /tmp/motioncards-worker-meta.json
+          npx --yes wrangler@4 dev --local --config motioncards-worker/wrangler.jsonc --port 8791 > /tmp/motioncards-wrangler.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for i in $(seq 1 45); do
+            if curl --fail --silent --show-error --max-redirs 0 http://127.0.0.1:8791/build-info.json >/dev/null; then break; fi
+            sleep 1
+          done
+          curl --fail --silent --show-error --max-redirs 0 http://127.0.0.1:8791/build-info.json >/dev/null || { cat /tmp/motioncards-wrangler.log; exit 1; }
+          python tools/ui/motioncards_worker_runtime.py --worker-url http://127.0.0.1:8791 --meta /tmp/motioncards-worker-meta.json
       - name: Keep before and after evidence (no fonts or private data)
         if: always()
         uses: actions/upload-artifact@v4

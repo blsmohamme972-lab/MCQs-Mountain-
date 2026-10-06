@@ -1,0 +1,173 @@
+name: Publish Kafu MotionCards Queue
+
+on:
+  workflow_dispatch:
+    inputs:
+      initialize_state:
+        description: "Owner-only first publish when no MotionCards state release exists yet"
+        required: false
+        default: false
+        type: boolean
+      production_authorized:
+        description: "Explicit owner authorization for MotionCards production publishing before rollout gate is enabled"
+        required: false
+        default: false
+        type: boolean
+  schedule:
+    - cron: "17 * * * *"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: kafu-motioncards-publisher
+  cancel-in-progress: false
+
+env:
+  QUEUE_API_URL: https://kafu.blsmohamme97.workers.dev
+  MOTIONCARDS_URL: https://kafu-motioncards.blsmohamme97.workers.dev
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  publish:
+    if: ${{ (github.event_name == 'schedule' && vars.MOTIONCARDS_ROLLOUT_ENABLED == 'true') || (github.event_name == 'workflow_dispatch' && (vars.MOTIONCARDS_ROLLOUT_ENABLED == 'true' || inputs.production_authorized == true)) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Install Wrangler
+        run: npm install --no-save --package-lock=false wrangler@4
+
+      - name: Restore independent MotionCards state
+        run: |
+          set -euo pipefail
+          EXTRA=()
+          if [[ "${{ inputs.initialize_state || 'false' }}" == "true" ]]; then EXTRA+=(--allow-initial); fi
+          python tools/motioncards/state_store.py restore --work /tmp/kafu-motioncards "${EXTRA[@]}"
+
+      - name: Claim and validate one MotionCards job
+        id: prepare
+        env:
+          QUEUE_API_TOKEN: ${{ secrets.QUEUE_API_TOKEN }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: |
+          set -euo pipefail
+          EXTRA=()
+          if [[ "${{ inputs.initialize_state || 'false' }}" == "true" ]]; then EXTRA+=(--allow-initial); fi
+          python tools/motioncards/queue_worker.py prepare --work /tmp/kafu-motioncards "${EXTRA[@]}"
+          if [[ -f /tmp/kafu-motioncards/result.json ]]; then
+            echo "has_work=true" >> "$GITHUB_OUTPUT"
+            echo "state_sha256=$(python -c 'import json;print(json.load(open("/tmp/kafu-motioncards/result.json"))["state_sha256"])')" >> "$GITHUB_OUTPUT"
+            echo "needs_deploy=$(python -c 'import json;print(str(bool(json.load(open("/tmp/kafu-motioncards/result.json"))["needs_deploy"])).lower())')" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_work=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Stage complete candidate tree
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
+        run: |
+          set -euo pipefail
+          rm -rf motioncards-worker/dist
+          mkdir -p motioncards-worker/dist
+          cp -a /tmp/kafu-motioncards/site/. motioncards-worker/dist/
+          python -m py_compile tools/motioncards/queue_worker.py tools/motioncards/publish.py tools/motioncards/state_store.py tools/motioncards/smoke.py
+          test -s motioncards-worker/dist/build-info.json
+
+      - name: Upload staged MotionCards Worker version
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
+        id: staged
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          STATE="${{ steps.prepare.outputs.state_sha256 }}"
+          TAG="motioncards-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${STATE:0:12}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          npx wrangler versions upload --tag "$TAG" --message "staged MotionCards $GITHUB_SHA" --config motioncards-worker/wrangler.jsonc | tee /tmp/motioncards-upload.log
+          VERSION_URL="$(grep -Eo 'https://[A-Za-z0-9._-]+\.workers\.dev/?' /tmp/motioncards-upload.log | tail -1)"
+          test -n "$VERSION_URL"
+          echo "version_url=$VERSION_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Smoke exact staged MotionCards version
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
+        run: python -m tools.motioncards.smoke --url "${{ steps.staged.outputs.version_url }}" --result /tmp/kafu-motioncards/result.json
+
+      - name: Install isolated browser for staged MotionCards playback smoke
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
+        run: |
+          python -m pip install 'playwright==1.57.0'
+          python -m playwright install --with-deps chromium
+
+      - name: Exercise every affected staged MotionCard in sandbox
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
+        env:
+          GH_TOKEN: ""
+          QUEUE_API_TOKEN: ""
+          BOT_TOKEN: ""
+          CLOUDFLARE_API_TOKEN: ""
+          CLOUDFLARE_ACCOUNT_ID: ""
+        run: python -m tools.motioncards.browser_smoke --url "${{ steps.staged.outputs.version_url }}" --result /tmp/kafu-motioncards/result.json
+
+      - name: Persist recoverable candidate before promotion
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
+        run: python tools/motioncards/state_store.py persist-candidate --work /tmp/kafu-motioncards
+
+      - name: Promote staged MotionCards version to 100%
+        id: promote
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler versions deploy --version-tag "${{ steps.staged.outputs.tag }}@100%" --yes --config motioncards-worker/wrangler.jsonc
+
+      - name: Verify MotionCards production after promotion
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
+        run: python -m tools.motioncards.smoke --url "$MOTIONCARDS_URL" --result /tmp/kafu-motioncards/result.json
+
+      - name: Exercise every affected production MotionCard in sandbox
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
+        env:
+          GH_TOKEN: ""
+          QUEUE_API_TOKEN: ""
+          BOT_TOKEN: ""
+          CLOUDFLARE_API_TOKEN: ""
+          CLOUDFLARE_ACCOUNT_ID: ""
+        run: python -m tools.motioncards.browser_smoke --url "$MOTIONCARDS_URL" --result /tmp/kafu-motioncards/result.json
+
+      - name: Advance durable active state pointer
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
+        run: python tools/motioncards/state_store.py activate --work /tmp/kafu-motioncards
+
+      - name: Acknowledge queue only after durable production
+        if: steps.prepare.outputs.has_work == 'true'
+        env:
+          QUEUE_API_TOKEN: ${{ secrets.QUEUE_API_TOKEN }}
+        run: python tools/motioncards/queue_worker.py finish --work /tmp/kafu-motioncards --ok
+
+      - name: Continue draining ready MotionCards work
+        if: success() && steps.prepare.outputs.has_work == 'true'
+        env:
+          QUEUE_API_TOKEN: ${{ secrets.QUEUE_API_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if python tools/motioncards/queue_worker.py has-work; then
+            if [[ "${{ vars.MOTIONCARDS_ROLLOUT_ENABLED || 'false' }}" == "true" ]]; then
+              gh workflow run publish-motioncards-queue.yml --repo "$GITHUB_REPOSITORY"
+            elif [[ "${{ inputs.production_authorized || 'false' }}" == "true" ]]; then
+              gh workflow run publish-motioncards-queue.yml --repo "$GITHUB_REPOSITORY" -f production_authorized=true
+            else
+              echo "MotionCards continuation blocked by rollout gate."
+              exit 1
+            fi
+          fi
+
+      - name: Fail prepared queue item when later workflow steps fail before promotion
+        if: failure() && steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true' && steps.promote.outcome != 'success'
+        env:
+          QUEUE_API_TOKEN: ${{ secrets.QUEUE_API_TOKEN }}
+        run: python tools/motioncards/queue_worker.py finish --work /tmp/kafu-motioncards --error "MotionCards publish workflow failed after preparation"

@@ -150,6 +150,9 @@ def run(browser,origin,pack,out,helpers):
     page.locator('[data-a="mcq-export-copy-complete"],[data-a="mcq-export-copy"]').first.click();page.wait_for_selector('#mcq-export-fallback')
     fallback=json.loads(page.locator('#mcq-export-fallback').input_value())
     assert [q["id"] for q in fallback["questions"]]==book["chapters"][1]["qids"]
+    assert fallback["scope"]["type"]=="chapter"
+    assert str(fallback["scope"]["chapter_id"])=="2"
+    assert fallback["scope"]["chapter_title"]=="Chapter Two"
     assert not errors,errors;ctx.close();passed.append('built iPad: chapter Prepare returns exact chapter QIDs and clipboard denial exposes identical manual-copy JSON')
 
     # Retry a transient catalog failure; raw catalog_unavailable must not leak to the user.

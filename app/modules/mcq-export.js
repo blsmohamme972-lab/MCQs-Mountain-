@@ -184,7 +184,7 @@ globalThis.KafuEnhancements.installers.push({ name: "mcq-export", install() {
       const expected = chapters.reduce((sum, chapter) => sum + Number(chapter.questions || 0), 0);
       if (allIds.size !== expected || allIds.size !== Number(active.chapterId == null ? book.questions : chapters[0].questions)) throw new Error("Complete export validation failed; no partial text was kept.");
       const source = { catalog_url: catalog.snapshot.catalog_url, catalog_sha256: catalog.snapshot.catalog_sha256, index_sha256: catalog.snapshot.index_sha256 || null, chapters: chapters.map((chapter) => ({ chapter_id: chapter.id, url: chapter.url, image_url: chapter.image_url || null, sha256: chapterHashes.get(String(chapter.id)) || null })) };
-      const object = await Core.buildExport({ book, bookIndex: catalog.book_index || null, chapters, chapterPacks: packs, source, scope: active, exportedAt: new Date().toISOString() });
+      const object = await Core.buildExport({ book, bookIndex: catalog.book_index || null, chapters, chapterPacks: packs, source, scope: { chapter_id: active.chapterId ?? null }, exportedAt: new Date().toISOString() });
       const split = Core.partitionExport(object);
       state.prepared = { object, completeText: split.completeText, parts: split.parts, count: expected };
       state.preparing = false; state.controller = null; render();

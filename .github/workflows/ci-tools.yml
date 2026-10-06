@@ -11,6 +11,8 @@ on:
       - "worker/**"
       - "migrations/**"
       - "Animations and illustrations/**"
+      - "motioncards/**"
+      - "motioncards-worker/**"
       - ".github/workflows/**"
   pull_request:
     paths:
@@ -21,6 +23,8 @@ on:
       - "migrations/**"
       - ".github/workflows/**"
       - "Animations and illustrations/**"
+      - "motioncards/**"
+      - "motioncards-worker/**"
 
 # Paths keep documentation-only pull requests and main commits from starting CI.
 # One run per pull request (or main) prevents outdated work from consuming minutes.
@@ -51,6 +55,9 @@ jobs:
         run: |
           node --check worker/admin.mjs
           node --check worker/mcq-export.mjs
+          node --check worker/motioncards-queue.mjs
+          node --check motioncards-worker/worker.mjs
+          node --test motioncards-worker/worker.test.mjs
           node --check worker/leaderboard.mjs
           node --check worker/bot.mjs
           node --test worker/bot.test.mjs
@@ -89,10 +96,11 @@ jobs:
           assert d["catalog_status"]==200 and "json" in d["catalog_content_type"].lower(), d
           print("remote content service binding: PASS", d)
           PY
-      - name: Measure D1 reads with local workerd as history grows
+      - name: Measure D1 reads and exercise MotionCards D1 concurrency with local workerd
         run: |
           npm install --no-save --package-lock=false miniflare@4.20260730.0
           node tools/tests/d1-read-bounds.mjs
+          node tools/tests/motioncards-d1-runtime.mjs
       - name: Verify real D1 analytics access without logging private metrics
         env:
           D1_ANALYTICS_TOKEN: ${{ secrets.D1_ANALYTICS_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
@@ -104,6 +112,21 @@ jobs:
         run: |
           python -m json.tool content-worker/dist/content/catalog.json >/dev/null
           python -m json.tool content-worker/dist/content/config.json >/dev/null
+
+      - name: Build synthetic MotionCards example and offline authoring kit
+        run: |
+          rm -rf /tmp/kafu-motioncards-ci
+          mkdir -p /tmp/kafu-motioncards-ci
+          python tools/motioncards_example.py --out /tmp/kafu-motioncards-ci/example
+          python tools/motioncards_bundle.py --out /tmp/kafu-motioncards-ci/kafu-motioncards-authoring-kit.zip
+          python tools/motioncards.py validate /tmp/kafu-motioncards-ci/example/MCARDS_FIXTURE-DEMO_r1.zip
+      - name: Keep MotionCards authoring artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: kafu-motioncards-authoring-example
+          path: /tmp/kafu-motioncards-ci/
+          retention-days: 7
+          if-no-files-found: error
 
 
   medical_illustrations:
