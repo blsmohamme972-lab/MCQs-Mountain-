@@ -87,7 +87,7 @@ async function bookForQuestion(env, qid) {
 async function command(env, raw) {
   const [cmd, arg, arg2, arg3] = raw.trim().split(/\s+/);
   switch (cmd.toLowerCase().split("@")[0]) {
-    case "/help": return "/queue /books /status /warnings BOOK-ID /flags [/flags approve-all BOOK-ID CONFIRM] /hold QID PAGE /retry BOOK-ID_vN /clear BOOK-ID_vN /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID /motioncards QID /motioncards-status /motioncards-retry PACKAGE-ID_rN /motioncards-clear PACKAGE-ID_rN";
+    case "/help": return "/queue /books /status /warnings BOOK-ID /flags [/flags approve-all BOOK-ID CONFIRM] /hold QID PAGE /retry BOOK-ID_vN /clear BOOK-ID_vN /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID /motioncards QID /motioncards-status /motioncards-retry PACKAGE-ID_rN /motioncards-clear PACKAGE-ID_rN — retry renews an expired replacement confirmation; clear cancels a pending replacement";
     case "/queue": {
       const r = await env.DB.prepare("SELECT group_key,status,part_total,error_summary FROM publish_groups ORDER BY created_at DESC LIMIT 15").all();
       const a = await env.DB.prepare("SELECT kind,book_id,status,error_summary FROM admin_jobs ORDER BY id DESC LIMIT 5").all();
@@ -169,7 +169,7 @@ async function command(env, raw) {
 async function motioncardsOwnerMessage(env,qid){
   const info=await getMotioncardManagement(env,qid);
   if(!info)return{ text:"No published Kafu MotionCards record found for "+qid+".", reply_markup:null };
-  const card=info.card,active=Number(card.active)===1;
+  const card=info.card,active=Number(card.active)===1,pending=info.pending_replacement;
   const prior=(info.versions||[]).find(v=>!active||v.entry_sha256!==card.entry_sha256);
   const lines=[
     "🎞 Kafu MotionCards",
@@ -180,15 +180,27 @@ async function motioncardsOwnerMessage(env,qid){
     "Revision: "+card.package_id+" r"+card.package_revision,
     "Duration: "+card.duration_ms+" ms"
   ];
+  if(pending)lines.push("Pending replacement: "+pending.group_key+" — confirmation required/expired");
   const buttons=[];
   if(active)buttons.push([{text:"Preview",url:"https://kafu.blsmohamme97.workers.dev/?motioncards_preview="+encodeURIComponent(card.qid)}]);
   buttons.push([{text:"Replace",callback_data:"mcreplace:"+card.qid},{text:active?"Remove from students":"Removed",callback_data:active?"mcremove:"+card.qid:"mcnoop"}]);
   if(prior)buttons.push([{text:"Restore previous compatible version",callback_data:"mcrestore:"+card.qid+":"+prior.version_id}]);
+  if(pending)buttons.push([{text:"Renew confirmation",callback_data:"mcrenew:"+card.qid},{text:"Cancel replacement",callback_data:"mccancel:"+card.qid}]);
   return{text:lines.join("\n"),reply_markup:{inline_keyboard:buttons}};
 }
 async function callback(env, cb) {
   const data=String(cb.data||"");
   if(data==="mcnoop"){await telegram(env,"answerCallbackQuery",{callback_query_id:cb.id,text:"This card is already removed."});return{};}
+  if(data.startsWith("mcrenew:")||data.startsWith("mccancel:")){
+    const renew=data.startsWith("mcrenew:"),qid=data.slice(data.indexOf(":")+1);
+    if(!QID.test(qid))return{};
+    const info=await getMotioncardManagement(env,qid),pending=info?.pending_replacement;
+    if(!pending){await telegram(env,"answerCallbackQuery",{callback_query_id:cb.id,text:"No pending replacement for this card.",show_alert:true});return{};}
+    const result=await recoverMotioncards(env,renew?"renew":"cancel",pending.group_key);
+    await telegram(env,"answerCallbackQuery",{callback_query_id:cb.id,text:result.ok?(renew?"Renewal queued":"Replacement cancelled"):"Not changed",show_alert:!result.ok});
+    await message(env,result.text);
+    return{dispatchMotioncards:!!result.dispatch};
+  }
   if(data.startsWith("mcreplace:")){
     const qid=data.slice("mcreplace:".length);
     if(!QID.test(qid))return{};
@@ -306,8 +318,11 @@ async function internal(request, env, path) {
     const body=await request.json(),result=await stageReplacementConfirmation(env,body);
     if(!result.ok)return reply({error:result.error},result.status);
     const targets=result.targets.map(x=>x.qid+" — active "+x.expected_active_package_id+" r"+x.expected_active_package_revision).join("\n");
-    await message(env,"⚠️ Replacement candidate "+result.group_key+" passed validation and would replace:\n"+targets+"\nConfirm only if these are the intended cards.",{reply_markup:{inline_keyboard:[[{text:"Confirm replacement",callback_data:"mcconfirm:"+result.token}]]}});
-    return reply({ok:true,token:result.token});
+    let notification_sent=true;
+    try{
+      await message(env,"⚠️ Replacement candidate "+result.group_key+" passed validation and would replace:\n"+targets+"\nConfirm only if these are the intended cards. If this notice is missed, use /motioncards QID to renew or cancel.",{reply_markup:{inline_keyboard:[[{text:"Confirm replacement",callback_data:"mcconfirm:"+result.token}]]}});
+    }catch(error){notification_sent=false;console.warn("MotionCards replacement confirmation notification failed:",safeText(env,error?.message||error));}
+    return reply({ok:true,token:result.token,notification_sent});
   }
   if (path === "/internal/motioncards/recover") {
     const body = await request.json();
