@@ -27,7 +27,7 @@ def validate_scene(scene:dict,qid:str,duration_ms:int):
     return scene
 
 RUNTIME_JS=r"""
-const MC={protocol:1,qid:CONFIG.qid,duration:CONFIG.duration_ms,port:null,destroyed:false};
+CONFIG.channel_id=location.hash.slice(1);if(!/^[A-Za-z0-9_-]{16,96}$/.test(CONFIG.channel_id))throw new Error('motioncards_channel_invalid');\nconst MC={protocol:1,qid:CONFIG.qid,duration:CONFIG.duration_ms,port:null,destroyed:false};
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const lerp=(a,b,p)=>a+(b-a)*p;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -73,7 +73,7 @@ def compile_scene(scene:dict,allowed_host_origins:list[str]|None=None)->str:
     qid=str(scene["qid"]);duration=int(scene["duration_ms"]);validate_scene(scene,qid,duration)
     allowed=allowed_host_origins or ["https://kafu.blsmohamme97.workers.dev"]
     if not allowed or any(not re.fullmatch(r"https://[A-Za-z0-9.-]+(?::\d+)?",x) for x in allowed):raise ValueError("allowed_host_origin_invalid")
-    cfg={"qid":qid,"duration_ms":duration,"layers":scene["layers"],"channel_id":"__HOST_REPLACES_CHANNEL__","allowed_host_origins":allowed,"runtime_version":RUNTIME_VERSION}
+    cfg={"qid":qid,"duration_ms":duration,"layers":scene["layers"],"channel_id":"","allowed_host_origins":allowed,"runtime_version":RUNTIME_VERSION}
     custom=scene.get("custom_renderer") or "function renderCustom(){}"
     cfgtext=json.dumps(cfg,ensure_ascii=False,separators=(",",":")).replace("<","\\u003c")
     return """<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
