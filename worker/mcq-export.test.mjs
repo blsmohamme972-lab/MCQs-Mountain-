@@ -35,10 +35,10 @@ const catalogRaw = JSON.stringify({ schema: 1, books: [book] });
 const chapterRaw = JSON.stringify({ schema: 1, book_id: book.id, chapter_id: 1, version: 1, questions: [q] });
 
 {
-  const capability = await handleAdmin(adminRequest({ initData: await initData() }), { ...env(), ADMIN_IDS: "778" }, "/admin/capabilities");
+  const capability = await handleAdmin(adminRequest({ initData: await initData(), capability: "mcq_export" }), { ...env(), ADMIN_IDS: "778" }, "/admin/capabilities");
   assert.equal(capability.status, 200);
   assert.deepEqual(await capability.json(), { books: false, d1_usage: false, can_export_mcqs: true });
-  const otherAdmin = await handleAdmin(adminRequest({ initData: await initData("778") }), { ...env(), ADMIN_IDS: "778" }, "/admin/capabilities");
+  const otherAdmin = await handleAdmin(adminRequest({ initData: await initData("778"), capability: "mcq_export" }), { ...env(), ADMIN_IDS: "778" }, "/admin/capabilities");
   assert.deepEqual(await otherAdmin.json(), { books: true, d1_usage: true, can_export_mcqs: false });
 }
 

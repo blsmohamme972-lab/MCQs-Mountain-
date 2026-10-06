@@ -6,7 +6,7 @@ globalThis.KafuEnhancements.installers.push({ name: "mcq-export", install() {
     session: "", canExport: false, checking: false, active: null, preparing: false,
     error: "", done: 0, total: 0, catalog: null, prepared: null, fallbackText: "", controller: null,
   };
-  let run = 0;
+  let run = 0, expiryTimer = null;
   const timeoutSignal = (ms) => typeof globalThis.AbortSignal?.timeout === "function" ? globalThis.AbortSignal.timeout(ms) : undefined;
   const session = () => IN_TG ? String(TG?.initData || "") : "";
   const current = () => session();
@@ -25,9 +25,14 @@ globalThis.KafuEnhancements.installers.push({ name: "mcq-export", install() {
   };
   function resetForSession(next) {
     if (state.controller) state.controller.abort();
+    if (expiryTimer) { clearTimeout(expiryTimer); expiryTimer = null; }
     state.session = next; state.canExport = false; state.checking = !!next;
     state.active = null; state.preparing = false; state.error = ""; state.catalog = null; state.prepared = null; state.fallbackText = "";
     run += 1; SHEET = null;
+    if (next) {
+      const authDate = Number(new URLSearchParams(next).get("auth_date"));
+      if (Number.isFinite(authDate)) expiryTimer = setTimeout(() => { if (current() === next) { resetForSession(""); render(); } }, Math.max(0, (authDate + 86400) * 1000 - Date.now() + 1000));
+    }
   }
   function ensureSession() {
     const next = current();
@@ -38,7 +43,7 @@ globalThis.KafuEnhancements.installers.push({ name: "mcq-export", install() {
   }
   async function probe(expected) {
     try {
-      const response = await fetch("/admin/capabilities", { method: "POST", cache: "no-store", signal: timeoutSignal(10000), headers: { "content-type": "application/json" }, body: JSON.stringify({ initData: expected }) });
+      const response = await fetch("/admin/capabilities", { method: "POST", cache: "no-store", signal: timeoutSignal(10000), headers: { "content-type": "application/json" }, body: JSON.stringify({ initData: expected, capability: "mcq_export" }) });
       const data = await response.json();
       if (expected !== current()) return;
       state.canExport = response.ok && data.can_export_mcqs === true;
@@ -141,8 +146,8 @@ globalThis.KafuEnhancements.installers.push({ name: "mcq-export", install() {
       const allIds = new Set(); for (const chapter of chapters) for (const q of packs.get(String(chapter.id)).questions) { if (allIds.has(q.id)) throw new Error("Duplicate QID across chapters."); allIds.add(q.id); }
       const expected = chapters.reduce((sum, chapter) => sum + Number(chapter.questions || 0), 0);
       if (allIds.size !== expected || allIds.size !== Number(active.chapterId == null ? book.questions : chapters[0].questions)) throw new Error("Complete export validation failed; no partial text was kept.");
-      const source = { catalog_url: catalog.snapshot.catalog_url, catalog_sha256: catalog.snapshot.catalog_sha256, chapters: chapters.map((chapter) => ({ chapter_id: chapter.id, url: chapter.url, image_url: chapter.image_url || null, sha256: chapterHashes.get(String(chapter.id)) || null })) };
-      const object = await Core.buildExport({ book, chapters, chapterPacks: packs, source, scope: active, exportedAt: new Date().toISOString() });
+      const source = { catalog_url: catalog.snapshot.catalog_url, catalog_sha256: catalog.snapshot.catalog_sha256, index_sha256: catalog.snapshot.index_sha256 || null, chapters: chapters.map((chapter) => ({ chapter_id: chapter.id, url: chapter.url, image_url: chapter.image_url || null, sha256: chapterHashes.get(String(chapter.id)) || null })) };
+      const object = await Core.buildExport({ book, bookIndex: catalog.book_index || null, chapters, chapterPacks: packs, source, scope: active, exportedAt: new Date().toISOString() });
       const split = Core.partitionExport(object);
       state.prepared = { object, completeText: split.completeText, parts: split.parts, count: expected };
       state.preparing = false; state.controller = null; render();

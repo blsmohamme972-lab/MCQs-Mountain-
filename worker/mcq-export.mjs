@@ -49,6 +49,7 @@ function contentBase(env) {
 }
 
 function approvedContentUrl(raw, base) {
+  if (typeof raw !== "string" || !raw.trim()) throw new Error("content_url_invalid");
   let url;
   try { url = new URL(String(raw || ""), base); } catch (_) { throw new Error("content_url_invalid"); }
   if (url.protocol !== "https:" || url.origin !== base.origin || url.username || url.password || url.hash) throw new Error("content_url_invalid");
@@ -60,7 +61,7 @@ async function fetchJson(url, label) {
   if (result.status >= 300 && result.status < 400) throw new Error(label + "_redirect");
   if (!result.ok) throw new Error(label + "_unavailable");
   const raw = await result.text();
-  if (raw.length > MAX_CONTENT_BYTES) throw new Error(label + "_too_large");
+  if (new TextEncoder().encode(raw).byteLength > MAX_CONTENT_BYTES) throw new Error(label + "_too_large");
   let data;
   try { data = JSON.parse(raw); } catch (_) { throw new Error(label + "_invalid_json"); }
   return { data, sha256: await sha256Hex(raw) };
@@ -75,17 +76,42 @@ async function readCatalog(env, bookId, version) {
   if (!loaded.data || !Array.isArray(loaded.data.books)) throw new Error("catalog_invalid");
   const book = (loaded.data.books || []).find((candidate) => String(candidate?.id) === String(bookId) && Number(candidate?.version) === Number(version));
   if (!book || String(book.id).toUpperCase().startsWith("SAMPLE")) throw new Error("published_book_not_found");
+  if (typeof book.title !== "string" || !Number.isSafeInteger(Number(book.questions)) || Number(book.questions) < 0) throw new Error("published_book_manifest_invalid");
   if (!Array.isArray(book.chapters) || !book.chapters.length) throw new Error("published_chapters_missing");
-  for (const chapter of book.chapters) {
+  const seenQids = new Set();
+  const chapters = book.chapters.map((chapter) => {
     if (chapter?.id == null || typeof chapter.title !== "string" || !Number.isSafeInteger(Number(chapter.questions)) || Number(chapter.questions) < 0 || !Array.isArray(chapter.qids) || chapter.qids.length !== Number(chapter.questions)) throw new Error("published_chapter_manifest_invalid");
-    approvedContentUrl(chapter.url, base);
-    if (chapter.image_url) approvedContentUrl(chapter.image_url, base);
-  }
+    const url = approvedContentUrl(chapter.url, base).href;
+    const qids = chapter.qids.map((qid) => String(qid));
+    if (qids.some((qid) => !qid || seenQids.has(qid))) throw new Error("published_qid_duplicate");
+    qids.forEach((qid) => seenQids.add(qid));
+    const resolved = { ...chapter, url, qids };
+    if (chapter.image_url) resolved.image_url = approvedContentUrl(chapter.image_url, base).href;
+    return resolved;
+  });
+  const expectedTotal = chapters.reduce((sum, chapter) => sum + Number(chapter.questions), 0);
+  if (expectedTotal !== Number(book.questions)) throw new Error("published_book_count_mismatch");
   const indexUrl = book.index_url ? approvedContentUrl(book.index_url, base).href : null;
+  let bookIndex = null;
+  let indexSha256 = null;
+  if (indexUrl) {
+    const loadedIndex = await fetchJson(indexUrl, "book_index");
+    const index = loadedIndex.data;
+    if (!index || String(index.book_id) !== String(book.id) || Number(index.version) !== Number(book.version) || typeof index.title !== "string" || !Array.isArray(index.chapters)) throw new Error("book_index_mismatch");
+    if (Number(index.question_count) !== expectedTotal || index.chapters.length !== chapters.length) throw new Error("book_index_mismatch");
+    for (let i = 0; i < chapters.length; i++) {
+      const fromCatalog = chapters[i], fromIndex = index.chapters[i];
+      if (!fromIndex || String(fromIndex.id) !== String(fromCatalog.id) || fromIndex.title !== fromCatalog.title || Number(fromIndex.questions) !== Number(fromCatalog.questions) || JSON.stringify((fromIndex.qids || []).map(String)) !== JSON.stringify(fromCatalog.qids) || approvedContentUrl(fromIndex.url, base).href !== fromCatalog.url || (fromCatalog.image_url || null) !== (fromIndex.image_url ? approvedContentUrl(fromIndex.image_url, base).href : null)) throw new Error("book_index_mismatch");
+    }
+    bookIndex = { ...index, index_url: indexUrl, chapters: index.chapters.map((chapter) => ({ ...chapter, url: approvedContentUrl(chapter.url, base).href, ...(chapter.image_url ? { image_url: approvedContentUrl(chapter.image_url, base).href } : {}) })) };
+    indexSha256 = loadedIndex.sha256;
+  }
+  const resolvedBook = { ...book, index_url: indexUrl, chapters };
   return {
     base,
-    book,
-    snapshot: { catalog_url: catalogUrl, catalog_sha256: loaded.sha256, index_url: indexUrl },
+    book: resolvedBook,
+    bookIndex,
+    snapshot: { catalog_url: catalogUrl, catalog_sha256: loaded.sha256, index_url: indexUrl, index_sha256: indexSha256 },
   };
 }
 
@@ -101,8 +127,8 @@ export async function handleMcqExport(request, env, path) {
   if (!auth) return response({ error: "forbidden" }, 403);
   try {
     if (path === "/admin/mcq-export/catalog") {
-      const { book, snapshot } = await readCatalog(env, auth.body.book_id, auth.body.version);
-      return response({ ok: true, source_kind: "published", snapshot, book, chapters: book.chapters });
+      const { book, bookIndex, snapshot } = await readCatalog(env, auth.body.book_id, auth.body.version);
+      return response({ ok: true, source_kind: "published", snapshot, book, book_index: bookIndex, chapters: book.chapters });
     }
     if (path === "/admin/mcq-export/chapter") {
       const loaded = await readCatalog(env, auth.body.book_id, auth.body.version);
@@ -111,8 +137,14 @@ export async function handleMcqExport(request, env, path) {
       const url = approvedContentUrl(chapter.url, loaded.base);
       const pack = await fetchJson(url.href, "chapter");
       const data = pack.data;
-      if (!data || data.book_id !== loaded.book.id || Number(data.version) !== Number(loaded.book.version) || String(data.chapter_id) !== String(chapter.id) || !Array.isArray(data.questions)) return response({ error: "chapter_identity_mismatch" }, 409);
+      if (!data || data.schema !== 1 || data.book_id !== loaded.book.id || Number(data.version) !== Number(loaded.book.version) || String(data.chapter_id) !== String(chapter.id) || !Array.isArray(data.questions)) return response({ error: "chapter_identity_mismatch" }, 409);
       if (data.questions.length !== Number(chapter.questions) || data.questions.length > 20_000) return response({ error: "chapter_count_mismatch" }, 409);
+      const seen = new Set();
+      for (let i = 0; i < data.questions.length; i++) {
+        const qid = String(data.questions[i]?.id || "");
+        if (!qid || seen.has(qid) || qid !== String(chapter.qids[i])) return response({ error: "chapter_qid_mismatch" }, 409);
+        seen.add(qid);
+      }
       return response({ ok: true, source_kind: "published", snapshot: { ...loaded.snapshot, chapter_sha256: pack.sha256 }, chapter, pack: data });
     }
     return response({ error: "not_found" }, 404);

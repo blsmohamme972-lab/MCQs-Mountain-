@@ -72,18 +72,19 @@
           for (const name of question?.[field] || []) if (typeof name === "string") names.add(name);
         }
       }
+      const entry_checksums = chapter.image_checksums && typeof chapter.image_checksums === "object" && !Array.isArray(chapter.image_checksums) ? { ...chapter.image_checksums } : {};
       return {
         chapter_id: chapter.id,
         url: chapter.image_url || null,
         entry_filenames: [...names].sort(),
-        checksums_available: false,
-        entry_checksums: {},
+        checksums_available: Object.keys(entry_checksums).length > 0,
+        entry_checksums,
         bytes_embedded: false,
       };
     });
   }
 
-  async function buildExport({ book, chapters, chapterPacks, source, scope, exportedAt }) {
+  async function buildExport({ book, bookIndex = null, chapters, chapterPacks, source, scope, exportedAt }) {
     const questions = [];
     for (const chapter of chapters) questions.push(...(chapterPacks.get(String(chapter.id))?.questions || []));
     const question_integrity = [];
@@ -99,6 +100,7 @@
         catalog_url: source.catalog_url,
         catalog_sha256: source.catalog_sha256,
         index_url: book.index_url || null,
+        index_sha256: source.index_sha256 || null,
         snapshot_pinned: true,
         chapters: source.chapters,
       },
@@ -111,6 +113,7 @@
         chapter_title: scope.chapter_id == null ? "Whole book" : (chapters[0]?.title || null),
       },
       book,
+      book_index: bookIndex,
       chapters,
       expected_question_count: expected,
       exported_question_count: questions.length,
@@ -122,7 +125,8 @@
         image_hash_scope: "question_json_only",
         image_packs: imagePackMetadata(chapters, chapterPacks),
         unavailable_metadata: {
-          image_entry_checksums: "not published in the chapter manifest",
+          ...(chapters.some((chapter) => chapter.image_checksums && typeof chapter.image_checksums === "object" && !Array.isArray(chapter.image_checksums) && Object.keys(chapter.image_checksums).length) ? {} : { image_entry_checksums: "not published in the chapter manifest" }),
+          book_index: bookIndex ? null : "not published in the catalog",
         },
         content_hash: {
           algorithm: "SHA-256",
@@ -173,7 +177,12 @@
 
     const chunks = [];
     let current = [];
-    const candidateBytes = (questions) => utf8Bytes(jsonText(partObject(base, questions, [], 0, 1, all.length)));
+    const candidateBytes = (questions) => {
+      const ids = new Set(questions.map((question) => question.id));
+      const integrity = allIntegrity.filter((row) => ids.has(row.qid));
+      /* Use the largest plausible part-number width while packing so the final part stays under the policy. */
+      return utf8Bytes(jsonText(partObject(base, questions, integrity, all.length, all.length, all.length)));
+    };
     for (const question of all) {
       const next = current.concat([question]);
       if (current.length && candidateBytes(next) > limit) {

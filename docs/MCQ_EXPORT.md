@@ -4,7 +4,7 @@ The Mini App exposes the **Copy MCQs for AI** controls only after `/admin/capabi
 
 The two export reads are private, `POST`, `no-store` endpoints:
 
-- `/admin/mcq-export/catalog` pins a published book/version and returns the validated catalog snapshot hash.
+- `/admin/mcq-export/catalog` pins a published book/version, checks the published book index when the catalog provides one, and returns the validated catalog/index snapshot hashes.
 - `/admin/mcq-export/chapter` accepts only the pinned book/version/chapter ID, re-reads the catalog, rejects a changed snapshot, validates the approved Content Worker origin, refuses redirects, and returns one bounded published chapter pack.
 
 The browser requests chapters with a maximum concurrency of two, validates every manifest count and ordered permanent QID, rejects sample content, duplicate QIDs, missing chapters, and revision changes, then assembles the export. The original question objects are copied into `questions` without rewriting or answer shuffling.
@@ -14,8 +14,9 @@ The browser requests chapters with a maximum concurrency of two, validates every
 Each complete export is a UTF-8 JSON object with:
 
 - `export_type: "kafu_mcq_text_export"` and `schema_version: 1`;
-- `exported_at`, `source`, pinned catalog/chapter SHA-256 hashes, and published image-pack URLs;
+- `exported_at`, `source`, pinned catalog/index/chapter SHA-256 hashes, and published image-pack URLs;
 - `scope`, complete `book` metadata, all actual `chapters`, and expected/exported counts;
+- `book_index` when the published catalog exposes that metadata (otherwise `null`);
 - `questions`, containing the original published objects, including all supported question types and fields;
 - `export_metadata.question_integrity`, with the exact QID, publisher fingerprint (authoritative when present, otherwise the implementation-equivalent `tools/publish.py` fingerprint), and a SHA-256 `content_hash` over the versioned canonical serialization of that complete question object;
 - `export_metadata.image_bytes_embedded: false`, image entry filenames and checksums only when published, and an explicit statement that question hashes do not verify image bytes;

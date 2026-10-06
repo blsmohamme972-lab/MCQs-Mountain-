@@ -2,7 +2,7 @@
 .mcq-export-action { width: 34px; height: 34px; padding: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--teal); font: 600 15px/1 Poppins, sans-serif; display: inline-flex; align-items: center; justify-content: center; touch-action: manipulation; }
 .mcq-export-action:hover, .mcq-export-action:focus-visible { border-color: var(--teal-2); background: var(--teal-soft); outline: none; }
 .mcq-export-book { margin: 0 0 12px; }
-.mcq-export-book .mcq-export-action { width: auto; min-width: 34px; padding: 0 10px; }
+.mcq-export-book .mcq-export-action { width: 34px; min-width: 34px; }
 .mcq-export-label { color: var(--muted); font-size: 12px; }
 .mcq-export-sheet .export-meta { display: grid; gap: 5px; margin: 10px 0 12px; color: var(--muted); font-size: 13px; }
 .mcq-export-sheet .export-meta strong { color: var(--ink); font-weight: 600; }
