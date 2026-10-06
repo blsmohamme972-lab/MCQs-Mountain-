@@ -130,7 +130,8 @@ def run(browser,origin,pack,out,helpers):
     page.evaluate("Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async t=>{window.__copied=t}}})")
     prepare(page,"book")
     assert 'Validated 4 published questions.' in page.locator('.mcq-export-sheet').inner_text()
-    page.locator('[data-a="mcq-export-copy-complete"]').click();page.wait_for_function("!!window.__copied")
+    copy_button=page.locator('[data-a="mcq-export-copy-complete"],[data-a="mcq-export-copy"]').first
+    copy_button.click();page.wait_for_function("!!window.__copied")
     copied=json.loads(page.evaluate("window.__copied"))
     assert len(copied["questions"])==4
     assert [q["id"] for q in copied["questions"]]==[q["id"] for q in pack["questions"]]
@@ -146,7 +147,7 @@ def run(browser,origin,pack,out,helpers):
     page.evaluate("Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async()=>{throw new Error('denied')}}})")
     prepare(page,"chapter",2)
     assert 'Validated 2 published questions.' in page.locator('.mcq-export-sheet').inner_text()
-    page.locator('[data-a="mcq-export-copy-complete"]').click();page.wait_for_selector('#mcq-export-fallback')
+    page.locator('[data-a="mcq-export-copy-complete"],[data-a="mcq-export-copy"]').first.click();page.wait_for_selector('#mcq-export-fallback')
     fallback=json.loads(page.locator('#mcq-export-fallback').input_value())
     assert [q["id"] for q in fallback["questions"]]==book["chapters"][1]["qids"]
     assert not errors,errors;ctx.close();passed.append('built iPad: chapter Prepare returns exact chapter QIDs and clipboard denial exposes identical manual-copy JSON')
