@@ -4,7 +4,20 @@ from .spec import PROTOCOL_VERSION,RUNTIME_VERSION,validate_duration,QID_RE
 
 UNSAFE_CUSTOM=re.compile(r"\b(eval|Function|fetch|XMLHttpRequest|WebSocket|EventSource|Worker|SharedWorker|setTimeout|setInterval|requestAnimationFrame|document\.|localStorage|sessionStorage|indexedDB|window\.open|location\s*=)\b")
 
+def _validate_scene_v2(scene:dict,qid:str,duration_ms:int):
+    from .engine_v2 import validate_scene_v2
+    if scene.get("qid")!=qid or not QID_RE.fullmatch(str(qid)):raise ValueError("scene_qid_mismatch")
+    if scene.get("duration_ms")!=duration_ms:raise ValueError("scene_duration_mismatch")
+    validate_duration(duration_ms)
+    takeaway=scene.get("takeaway")
+    if not isinstance(takeaway,str) or not takeaway.strip() or len(takeaway.strip())>240:raise ValueError("takeaway_invalid")
+    if takeaway.strip().upper().startswith("EDIT:"):raise ValueError("takeaway_unfinished_placeholder")
+    if "replace" in scene and not isinstance(scene["replace"],bool):raise ValueError("replace_intent_must_be_boolean")
+    return validate_scene_v2(scene,duration_ms)
+
 def validate_scene(scene:dict,qid:str,duration_ms:int):
+    # Schema v2 (engine_v2.py) is opt-in per scene; schema v1 below is frozen byte-for-byte.
+    if isinstance(scene,dict) and scene.get("schema_version")==2:return _validate_scene_v2(scene,qid,duration_ms)
     if not isinstance(scene,dict) or scene.get("schema_version")!=1:raise ValueError("scene_schema_unsupported")
     if scene.get("qid")!=qid or not QID_RE.fullmatch(str(qid)):raise ValueError("scene_qid_mismatch")
     if scene.get("duration_ms")!=duration_ms:raise ValueError("scene_duration_mismatch")
@@ -87,6 +100,9 @@ def _validate_host_origins(allowed:list[str],preview:bool=False):
 def compile_scene(scene:dict,allowed_host_origins:list[str]|None=None,preview:bool=False)->str:
     qid=str(scene["qid"]);duration=int(scene["duration_ms"]);validate_scene(scene,qid,duration)
     allowed=_validate_host_origins(allowed_host_origins or ["https://kafu.blsmohamme97.workers.dev"],preview)
+    if scene.get("schema_version")==2:
+        from .engine_v2 import compile_scene_v2
+        return compile_scene_v2(scene,allowed,RUNTIME_VERSION)
     cfg={"qid":qid,"duration_ms":duration,"layers":scene["layers"],"channel_id":"","allowed_host_origins":allowed,"runtime_version":RUNTIME_VERSION}
     custom=scene.get("custom_renderer") or "function renderCustom(){}"
     cfgtext=json.dumps(cfg,ensure_ascii=False,separators=(",",":")).replace("<","\\u003c")

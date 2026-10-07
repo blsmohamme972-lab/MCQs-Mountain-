@@ -19,6 +19,8 @@ Development and content authoring are deliberately separate. Content-generation 
 
 See `PROJECT_BRIEF.md`, `AGENTS.md`, `MASTER_PROMPT.md`, and `HANDOFF.md`.
 
+**Authoring new cards:** use scene schema v2. `AUTHORING_V2.md` is the compact reference, and `examples/v2-*.scene.json` are the gold examples. Check every card with `python tools/motioncards.py lint --workspace …` and look at it with `python tools/motioncards.py render --workspace … --out …` before packaging. Legacy v1 scenes keep working unchanged.
+
 ## Owner management
 
 Published MotionCards are managed through the existing private owner bot; do not edit hashes, release assets, or D1 rows manually.

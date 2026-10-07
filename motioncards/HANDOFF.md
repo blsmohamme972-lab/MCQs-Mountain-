@@ -442,3 +442,57 @@ Final verified review-code head before this handoff-only update: `cf7dd5233d8e60
 - No merge, deployment, production migration, service creation, credential/variable change, rollout-variable change, or real production queue operation occurred.
 - Next action: owner reviews PR #67. Any production rollout still requires separate explicit authorization and the documented sequence in `docs/ADMIN.md`.
 
+
+## Scene engine v2 (2026-10-07)
+
+### Why
+
+v1 scenes looked flat and robotic. The causes were in the engine, not in the authoring model:
+- `scale`/`rotate` pivoted around the canvas origin, so animated shapes slid diagonally;
+- interpolation was linear only, with no easing;
+- `start_ms/end_ms` defined both visibility and tween length, so "appear quickly, then stay" was impossible;
+- there were only two states (`from`/`to`);
+- there were only 7 primitives, with no gradients, groups, drawn-on strokes, motion along a path, particles or text wrapping;
+- authors drew blind, with no rendered feedback.
+
+### What changed
+
+- `motioncards/lib/engine_v2.py`: strict validator, layout linter and deterministic runtime for scenes that declare `"schema_version": 2`. It adds:
+  - easing and keyframes;
+  - `show` separate from `keys`, and enter/exit presets;
+  - pivots on each shape's own centre;
+  - path morphing and drawn-on strokes;
+  - `along` paths, `particles`, `spotlight` and a camera, with `fixed` HUD layers;
+  - wrapped, auto-fitting text with label boxes;
+  - gradients, shadows and glow;
+  - validated PNG/JPEG/WebP data-URI assets;
+  - colour tokens, groups, `repeat`, and a hardened `custom_renderer` with `h.el`.
+- `compiler.py` dispatches on `schema_version`. **The v1 path is untouched and byte-identical**: golden hashes are pinned in `tools/tests/test_motioncards_engine_v2.py`, so every previously built v1 ZIP still passes the publisher's rebuild-and-compare check.
+- Unchanged:
+  - the host/iframe protocol (1);
+  - the manifest/index `runtime_version` (1);
+  - the app player;
+  - the MotionCards Worker CSP;
+  - the bot;
+  - D1, the queue and the publisher.
+
+  No app, Worker or bot deployment is needed for v2. Only the validator/compiler code that the publisher workflow checks out from `main` must contain v2 before a v2 ZIP is uploaded.
+- `motioncards/lib/render.py` plus `tools/motioncards.py render|lint`:
+  - renders scenes through the real sandboxed MessageChannel protocol under the production entry CSP;
+  - writes phone/tablet PNG frames and a contact sheet;
+  - fails on a card render error or a non-deterministic seek.
+- Scaffold now writes v2 starter scenes (`--schema 1` keeps the legacy starter). v2 rejects leftover `EDIT:` text.
+- Authoring docs:
+  - `AUTHORING_V2.md` is the compact reference the AI reads;
+  - `examples/v2-stenosis-flow.scene.json` and `examples/v2-synapse-steps.scene.json` are the gold examples;
+  - `MASTER_PROMPT.md` points to these and adds the lint/render steps;
+  - the authoring kit bundle includes the new files.
+- CI: new `motioncards_engine` job (Playwright 1.57.0 + Chromium) runs the browser tests.
+
+### Verified in the cloud session
+
+- MotionCards Python tests: 58/58 pass on Python 3.13, including the browser tests. On Python 3.11 the browser tests skip without Playwright and the rest pass.
+- Compiled bytes are identical across Python 3.11, 3.12 and 3.13, so ZIPs built in any authoring environment match the publisher's rebuild.
+- `tools/motioncards/browser_smoke.py` (the publisher's own post-deploy check, unmodified) passes for v1 and v2 entries served with the exact production CSP. HTTPS staging was simulated locally because this sandbox blocks outbound network.
+- The full authoring-kit flow (bundle → extract → scaffold → lint → render → package → validate) passes from a clean extracted kit.
+- The four non-MotionCards failures in the local full suite (`test_frontend_modules` ×2, `test_service_worker_build`, `test_design_style` fonts) are pre-existing. They need `cdn.jsdelivr.net`, which this sandbox's network policy blocks, and they fail identically without this change.

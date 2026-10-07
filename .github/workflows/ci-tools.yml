@@ -129,6 +129,23 @@ jobs:
           if-no-files-found: error
 
 
+  motioncards_engine:
+    name: MotionCards engine browser tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Install pinned browser test dependencies
+        run: python -m pip install "playwright==1.57.0" "Pillow>=11,<13"
+      - name: Install pinned Chromium
+        run: python -m playwright install --with-deps chromium
+      - name: Render every engine feature through the sandboxed host protocol
+        env:
+          MOTIONCARDS_BROWSER_TESTS: "1"
+        run: python -m unittest tools.tests.test_motioncards_engine_v2 -v
+
   medical_illustrations:
     name: Medical illustration library
     if: github.event_name == 'push' || github.event_name == 'pull_request'
