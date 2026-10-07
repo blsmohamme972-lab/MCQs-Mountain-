@@ -14,6 +14,7 @@
 - Added `motioncards lint`, plus `motioncards render` (phone/tablet PNG frames and a contact sheet under the production CSP).
 - Added the compact `AUTHORING_V2.md` and two gold examples.
 - Added v2 free mode (`svg` + `script` with `render(t, api)`, full DOM inside the sandbox) and removed the custom-renderer identifier blacklist. Errors now report their location, determinism is checked on the DOM, and a computed O₂–Hb curve example was added.
+- Added `motioncards import-svg` (clean, fit, id-scope and credit third-party SVG art; `--template` for `<use>` symbols), `credits` shown on the card, and the imported-art sickle cell example.
 
 ### M2 Step 2
 - Added synthetic all-types, v2, multipart, and broken fixture generation.

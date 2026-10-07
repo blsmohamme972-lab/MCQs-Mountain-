@@ -519,3 +519,26 @@ Honest correction of the first v2 iteration: a large custom JSON DSL is itself a
   - compiled bytes are identical on Python 3.11 and 3.13;
   - unmodified `browser_smoke.py` passes for 6 entries (2 v1, 4 v2) under the production CSP;
   - the clean-kit flow scaffold → lint → render → package → validate passes for the free-mode example.
+
+### Imported illustrations and 3D evaluation (2026-10-07, follow-up)
+
+- `motioncards/lib/assets.py` plus `tools/motioncards.py import-svg FILE|URL --scene … --id … --box … [--template] [--credit …]`:
+  - cleans third-party SVG: removes DOCTYPE, metadata, editor namespaces and event handlers, and rejects external links/CSS;
+  - fits it into a stage box, or into a `<defs>` template for `<use>`;
+  - prefixes every id and CSS class, so multiple imports never collide;
+  - rounds coordinates without merging compact numbers;
+  - records `credits`, which the runtime prints small in the card corner (CC BY attribution).
+- Tested with real Servier Medical Art and Bioicons files (heart, heart interior, lung, erythrocyte, neuron): five imports render together with no collisions.
+- New gold example `examples/v2-imported-art-sickle.scene.json`: the model-authored part is about 1.15k tokens; the imported art never enters the model context.
+- Validator gap fixed: `<style>` with `@import` or external `url()` inside `svg` is now rejected.
+- 3D: three.js r150 (614 KB) runs inside a card under the production CSP and sandbox (WebGL OK in headless Chromium).
+  - It costs about 640 KB per card.
+  - The DOM determinism check does not cover canvas pixels.
+  - A model-invented "biconcave" shape came out anatomically wrong in the test.
+  - Documented as possible but rarely worth it.
+- Measured token cost per card (characters/3.6):
+  - v1 examples: 300–410;
+  - v2 cards: 1.1k–2.2k;
+  - `AUTHORING_V2.md` read once per session: about 3.8k.
+
+  v2 cards are therefore larger than v1 cards. The gains are in quality, in errors caught locally with their location, and in imported art costing about 0 tokens instead of 8k–25k.

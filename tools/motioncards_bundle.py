@@ -6,8 +6,8 @@ ROOT=Path(__file__).resolve().parents[1]
 FILES=[
  "motioncards/__init__.py","motioncards/README.md","motioncards/PROJECT_BRIEF.md","motioncards/MASTER_PROMPT.md","motioncards/TOOLKIT.md","motioncards/AGENTS.md",
  "motioncards/schema/motioncards-manifest.schema.json","motioncards/schema/scene.schema.json","motioncards/golden/canonical-v1.json",
- "motioncards/lib/__init__.py","motioncards/lib/spec.py","motioncards/lib/core.py","motioncards/lib/compiler.py","motioncards/lib/package.py","motioncards/lib/multipart.py","motioncards/lib/engine_v2.py","motioncards/lib/render.py","motioncards/AUTHORING_V2.md",
- "motioncards/examples/flow.scene.json","motioncards/examples/sequence.scene.json","motioncards/examples/v2-stenosis-flow.scene.json","motioncards/examples/v2-synapse-steps.scene.json","motioncards/examples/v2-free-o2-curve.scene.json","tools/motioncards.py"
+ "motioncards/lib/__init__.py","motioncards/lib/spec.py","motioncards/lib/core.py","motioncards/lib/compiler.py","motioncards/lib/package.py","motioncards/lib/multipart.py","motioncards/lib/engine_v2.py","motioncards/lib/render.py","motioncards/lib/assets.py","motioncards/AUTHORING_V2.md",
+ "motioncards/examples/flow.scene.json","motioncards/examples/sequence.scene.json","motioncards/examples/v2-stenosis-flow.scene.json","motioncards/examples/v2-synapse-steps.scene.json","motioncards/examples/v2-free-o2-curve.scene.json","motioncards/examples/v2-imported-art-sickle.scene.json","tools/motioncards.py"
 ]
 def main():
  ap=argparse.ArgumentParser();ap.add_argument("--out",type=Path,required=True);a=ap.parse_args();a.out.parent.mkdir(parents=True,exist_ok=True)

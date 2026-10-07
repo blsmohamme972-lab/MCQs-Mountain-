@@ -13,7 +13,7 @@ from __future__ import annotations
 import base64,binascii,json,math,re
 import xml.etree.ElementTree as ET
 
-SCENE_V2_KEYS={"schema_version","qid","duration_ms","takeaway","replace","stage","palette","gradients","assets","camera","layers","svg","script","custom_renderer"}
+SCENE_V2_KEYS={"schema_version","qid","duration_ms","takeaway","replace","stage","palette","gradients","assets","camera","layers","svg","script","custom_renderer","credits"}
 MAX_SCENE_BYTES=1_500_000
 MAX_NODES=400
 MAX_DEPTH=6
@@ -453,6 +453,11 @@ def validate_scene_v2(scene:dict,duration_ms:int):
                 if c in k:_num(k[c],f"{kp}.{c}")
             if "zoom" in k:_num(k["zoom"],kp+".zoom",0.2,8)
             if "ease" in k:_ease(k["ease"],kp+".ease")
+    if "credits" in scene:
+        cr=scene["credits"]
+        if not isinstance(cr,list) or not 1<=len(cr)<=12:_fail("credits","credits must be a list of 1..12 strings")
+        for i,c in enumerate(cr):
+            if not isinstance(c,str) or not c.strip() or len(c)>300:_fail(f"credits[{i}]","each credit must be a non-empty string of at most 300 characters")
     free="svg" in scene or "script" in scene
     if "svg" in scene:_validate_svg(scene["svg"],ctx)
     if "script" in scene:_validate_code(scene["script"],"script",MAX_SCRIPT_CHARS,r"\brender\b","must define function render(t, api)")
@@ -485,6 +490,7 @@ def _validate_svg(svg,ctx:_Ctx):
     for el in root.iter():
         tag=el.tag.split("}")[-1]
         if tag=="script":_fail("svg","<script> inside svg is not run; put code in scene.script")
+        if tag=="style" and el.text and re.search(r"@import|url\(\s*['\"]?\s*(?:https?:)?//",el.text,re.I):_fail("svg","<style> loads external CSS, which is blocked in production")
         for key,val in el.attrib.items():
             name=key.split("}")[-1]
             if name in {"href","src"}:
@@ -856,6 +862,8 @@ try{
   for(const e of art.querySelectorAll('*'))for(const k of ['fill','stroke','stop-color','flood-color','color']){const v=e.getAttribute(k);if(v&&v[0]==='@')e.setAttribute(k,color(v));}
  }
  for(const L of SC.layers||[])roots.push(build(L,L.fixed?hud:cam,1));
+ if(SC.credits){const c=mk('text',{x:W-8,y:H-8,'text-anchor':'end','font-size':9,'font-family':FONTS.sans,fill:'#5f7a80',opacity:.8},hud);c.textContent=SC.credits.join(' · ');
+  if(c.getComputedTextLength()>W-16)c.setAttribute('textLength',W-16),c.setAttribute('lengthAdjust','spacingAndGlyphs');}
  if(CONFIG.has_script&&typeof render!=='function')throw new Error('script must define function render(t, api)');
  if(CONFIG.has_custom&&typeof renderCustom!=='function')throw new Error('custom_renderer must define function renderCustom(layer, t, helpers)');
  if(CONFIG.has_script&&typeof setup==='function')setup(api);
@@ -888,7 +896,7 @@ BOOT_JS=("\"use strict\";var __MC_BOOT={config:__CFG__,errors:[]};"
  "var a=0x2545F491;Math.random=function(){a=(a+0x6D2B79F5)>>>0;var t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};})();")
 
 def compile_scene_v2(scene:dict,allowed:list[str],runtime_version:int)->str:
-    s={k:scene[k] for k in ("stage","palette","gradients","assets","camera","layers","svg") if k in scene}
+    s={k:scene[k] for k in ("stage","palette","gradients","assets","camera","layers","svg","credits") if k in scene}
     if "svg" in s:
         head=s["svg"].split(">",1)[0]
         if "xmlns=" not in head:s["svg"]=s["svg"].replace("<svg",'<svg xmlns="http://www.w3.org/2000/svg"',1)

@@ -112,6 +112,45 @@ Common fields: `id`, `fixed` (top level only; ignores the camera, use it for tit
 | `spotlight` | dims everything except a circle (`cx cy r`) or box (`x y width height rx`); `dim` (default 0.6), `color`. Key the geometry to walk the eye through steps |
 | `image` | `asset` (id from `assets`), `x y width height`, `fit` (`contain`/`cover`/`stretch`) |
 
+## Professional illustrations from the internet (import, never paste)
+
+Never paste a downloaded SVG into your reply: one medical illustration is 8k–25k tokens. Import it with the tool. The model then only references it by id.
+
+```bash
+# Place a drawing on the stage (box = x,y,width,height in stage px)
+python tools/motioncards.py import-svg heart.svg --scene work/b/scenes/Q….scene.json --id heart --box 40,110,300,320 \
+  --credit "Heart: Servier Medical Art, CC BY 4.0"
+# Reusable symbol for many copies (box = width,height, centred on 0,0), drawn with <use href="#rbc">
+python tools/motioncards.py import-svg erythrocyte.svg --scene … --id rbc --template --box 44,44 --credit "…"
+```
+
+The tool:
+- strips DOCTYPE, metadata, editor junk and event handlers;
+- rejects external links;
+- scales the art into the box;
+- makes every internal id and CSS class unique, so two files can never break each other's gradients;
+- rounds coordinates to 2 decimals;
+- records the credit, which the card shows small in the corner.
+
+Then animate it from `script`: `api.$('#heart')` (transform, opacity, filters, or parts by id), or `<use href="#rbc">` copies moved along paths.
+
+Sources and licences:
+- **Servier Medical Art** (CC BY 3.0/4.0, attribution required). Many of these drawings are mirrored in the `bioicons` GitHub repo under `static/icons/cc-by-3.0/`.
+- **Bioicons** (CC0/CC BY/MIT, varies per icon).
+- **Health Icons** (CC0).
+- **Wikimedia Commons**: check each file; CC BY-SA requires the derived card to stay under the same licence.
+
+Never use images whose licence you cannot name. Never trace copyrighted textbook figures.
+
+Quality rules:
+- Keep one art style per card; do not mix flat icons with detailed illustrations.
+- Check anatomical correctness of the chosen drawing against the source question.
+- Animate the teaching relationship (flow, change, sequence) on top of the art; do not just show a static picture.
+
+## 3D (possible, rarely worth it)
+
+three.js runs inside a card (tested: WebGL works in the sandbox under the production CSP). It costs about 640 KB per card, because each card is self-contained. It is heavier on phones and offline storage. The `render` determinism check covers SVG, not canvas pixels. Use 3D only when depth is the point (e.g. a spatial relationship), and get the geometry from a trusted model, not invented shapes.
+
 ## Colour
 
 Built-in tokens, used as `"@name"`:
@@ -156,5 +195,6 @@ Gradients: `{"id":"g1","kind":"linear","angle":90,"stops":[{"offset":0,"color":"
 
 Gold examples:
 - `examples/v2-free-o2-curve.scene.json`: free mode, computed physiology curve, professional chart styling;
+- `examples/v2-imported-art-sickle.scene.json`: imported Servier cells reused with `<use>`, morph from normal to sickle, vaso-occlusion queue computed in `setup`;
 - `examples/v2-stenosis-flow.scene.json`: layers; flow, morph, camera, particles;
 - `examples/v2-synapse-steps.scene.json`: layers; stepwise mechanism, along-path, spotlight, captions.

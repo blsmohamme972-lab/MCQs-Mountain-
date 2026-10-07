@@ -136,6 +136,7 @@ class EngineV2Tests(unittest.TestCase):
          (lambda s:s.update(svg="<svg><script>alert(1)</script></svg>"),"<script> inside svg is not run"),
          (lambda s:s.update(svg='<svg><image href="https://example.com/a.png"/></svg>'),"external URLs are blocked in production"),
          (lambda s:s.update(svg='<svg><rect style="fill:url(//x.com/a)"/></svg>'),"external url() is blocked"),
+         (lambda s:s.update(svg='<svg><style>@import url(https://x.com/a.css);</style></svg>'),"<style> loads external CSS"),
          (lambda s:s.update(svg='<svg><image href="asset:nope"/></svg>'),"unknown asset id"),
          (lambda s:s.update(svg='<svg><rect fill="@nope"/></svg>'),"unknown colour token"),
          (lambda s:s.update(extra=1),"unknown top-level fields extra"),
@@ -220,6 +221,41 @@ class EngineV2Tests(unittest.TestCase):
             paths=build_package_set(b,ws,Path(td)/"MCARDS_MIXED_r1.zip")
             total=sum(len(validate_package_part(p)["animations"]) for p in paths)
             self.assertEqual(total,6)
+
+class AssetImportTests(unittest.TestCase):
+    SRC="""<?xml version="1.0"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" viewBox="10 20 200 100" inkscape:version="1.2">
+<metadata>junk</metadata><title>t</title><style>.a{fill:url(#g)}</style>
+<defs><linearGradient id="g"><stop offset="0.123456" stop-color="red"/></linearGradient></defs>
+<path class="a" d="M1.005.5l2-3" onclick="alert(1)" inkscape:label="x"/><use xlink:href="#g"/></svg>"""
+    def test_import_cleans_scales_and_namespaces_ids(self):
+        from motioncards.lib.assets import prepare_svg
+        g=prepare_svg(self.SRC,"heart",(0,0,400,400))
+        self.assertTrue(g.startswith('<g id="heart" transform="translate(-20 60) scale(2 2)">'),g[:80])
+        for gone in ("metadata","<title","inkscape","onclick","DOCTYPE"):self.assertNotIn(gone,g)
+        self.assertIn('id="heart-0"',g);self.assertIn("url(#heart-0)",g);self.assertIn('href="#heart-0"',g)
+        self.assertIn(".heart-a{",g);self.assertIn('class="heart-a"',g)
+        self.assertIn('d="M1 0.5l2-3"',g)          # rounded numbers never merge
+        self.assertIn('offset="0.12"',g)
+
+    def test_two_imports_validate_together_and_template_goes_to_defs(self):
+        from motioncards.lib.assets import prepare_svg,prepare_template,add_to_scene,AssetImportError
+        scene={"schema_version":2,"qid":"Q000000001","duration_ms":3000,"takeaway":"x","script":"function render(t,api){}"}
+        add_to_scene(scene,prepare_svg(self.SRC,"one",(0,0,100,100)),"Art: Example, CC BY 4.0")
+        add_to_scene(scene,prepare_template(self.SRC,"two",40,40),"Art: Example, CC BY 4.0")
+        self.assertEqual(scene["credits"],["Art: Example, CC BY 4.0"])
+        self.assertIn('<defs><g id="two"',scene["svg"])
+        validate_scene(scene,"Q000000001",3000)
+        self.assertIn("Art: Example",compile_scene(scene))
+        with self.assertRaises(AssetImportError):add_to_scene(scene,prepare_svg(self.SRC,"one",(0,0,10,10)))
+
+    def test_import_rejects_external_resources_and_entities(self):
+        from motioncards.lib.assets import prepare_svg,AssetImportError
+        for bad in ['<svg viewBox="0 0 1 1"><image href="https://x.com/a.png"/></svg>',
+                    '<svg viewBox="0 0 1 1"><style>@import url(//x.com/a.css);</style></svg>',
+                    '<!DOCTYPE svg [<!ENTITY a "b">]><svg viewBox="0 0 1 1"><text>&a;</text></svg>',
+                    '<svg><rect/></svg>']:
+            with self.assertRaises(AssetImportError):prepare_svg(bad,"x",(0,0,10,10))
 
 @unittest.skipUnless(shutil.which("chromium") or os.environ.get("MOTIONCARDS_CHROMIUM") or os.environ.get("MOTIONCARDS_BROWSER_TESTS")=="1","browser runtime tests need Chromium (set MOTIONCARDS_BROWSER_TESTS=1 or MOTIONCARDS_CHROMIUM)")
 class EngineV2BrowserTests(unittest.TestCase):
