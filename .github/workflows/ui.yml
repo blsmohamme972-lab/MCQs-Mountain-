@@ -58,11 +58,14 @@ jobs:
           done
           curl --fail --silent --show-error --max-redirs 0 http://127.0.0.1:8791/build-info.json >/dev/null || { cat /tmp/motioncards-wrangler.log; exit 1; }
           python tools/ui/motioncards_worker_runtime.py --worker-url http://127.0.0.1:8791 --meta /tmp/motioncards-worker-meta.json
+      # Evidence is for reviewing a PR, not a test result: a full artifact storage quota must not
+      # turn a passing run red, and a short retention keeps ~28 MB per run from filling the quota.
       - name: Keep before and after evidence (no fonts or private data)
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: kafu-ui-evidence
           path: evidence/ui/
-          retention-days: 7
+          retention-days: 2
           if-no-files-found: warn
