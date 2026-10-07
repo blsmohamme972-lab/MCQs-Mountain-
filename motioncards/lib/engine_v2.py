@@ -11,8 +11,9 @@ student's phone.
 """
 from __future__ import annotations
 import base64,binascii,json,math,re
+import xml.etree.ElementTree as ET
 
-SCENE_V2_KEYS={"schema_version","qid","duration_ms","takeaway","replace","stage","palette","gradients","assets","camera","layers","custom_renderer"}
+SCENE_V2_KEYS={"schema_version","qid","duration_ms","takeaway","replace","stage","palette","gradients","assets","camera","layers","svg","script","custom_renderer"}
 MAX_SCENE_BYTES=1_500_000
 MAX_NODES=400
 MAX_DEPTH=6
@@ -24,6 +25,9 @@ MAX_ASSET_CHARS_TOTAL=1_200_000
 MAX_PATH_CHARS=8000
 MAX_TEXT_CHARS=300
 MAX_CUSTOM_CHARS=20000
+MAX_SVG_CHARS=1_200_000
+MAX_SCRIPT_CHARS=800_000
+SVG_NS="{http://www.w3.org/2000/svg}"
 ABS_LIMIT=100000
 
 EASINGS={"linear","ease_in","ease_out","ease_in_out","sine","back_out","back_in","elastic_out","bounce_out","step"}
@@ -65,7 +69,10 @@ ID_RE=re.compile(r"^[a-z][a-z0-9_-]{0,31}$")
 TOKEN_NAME_RE=re.compile(r"^[a-z][a-z0-9_]{0,23}$")
 PATH_RE=re.compile(r"^[MmLlHhVvCcSsQqTtAaZz0-9eE.,+\-\s]*$")
 PATH_NUM_RE=re.compile(r"-?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
-UNSAFE_CUSTOM_V2=re.compile(r"\b(eval|Function|fetch|XMLHttpRequest|WebSocket|EventSource|Worker|SharedWorker|setTimeout|setInterval|requestAnimationFrame|document\.|localStorage|sessionStorage|indexedDB|window|globalThis|self|parent|top|opener|postMessage|importScripts|import|location|navigator|constructor|__proto__)\b")
+# Author code runs inside the sandboxed, network-less iframe (sandbox="allow-scripts", strict CSP);
+# that is the security boundary.  Only sequences that would break the HTML document are rejected.
+SCRIPT_BREAKERS=re.compile(r"</script|<script|<!--",re.I)
+EXTERNAL_REF=re.compile(r"^\s*(?:https?:)?//",re.I)
 
 TRANSFORM_KEYS={"x","y","scale","scale_x","scale_y","rotate","opacity"}
 PAINT_KEYS={"fill","stroke","stroke_width"}
@@ -446,18 +453,49 @@ def validate_scene_v2(scene:dict,duration_ms:int):
                 if c in k:_num(k[c],f"{kp}.{c}")
             if "zoom" in k:_num(k["zoom"],kp+".zoom",0.2,8)
             if "ease" in k:_ease(k["ease"],kp+".ease")
-    layers=scene.get("layers")
-    if not isinstance(layers,list) or not 1<=len(layers)<=MAX_NODES:_fail("layers",f"layers must be a list of 1..{MAX_NODES}")
+    free="svg" in scene or "script" in scene
+    if "svg" in scene:_validate_svg(scene["svg"],ctx)
+    if "script" in scene:_validate_code(scene["script"],"script",MAX_SCRIPT_CHARS,r"\brender\b","must define function render(t, api)")
+    layers=scene.get("layers",[] if free else None)
+    lo=0 if free else 1
+    if not isinstance(layers,list) or not lo<=len(layers)<=MAX_NODES:_fail("layers",f"layers must be a list of {lo}..{MAX_NODES}"+("" if free else " (or provide svg/script)"))
     ids=set()
     for i,layer in enumerate(layers):_validate_layer(layer,f"layers[{i}]",ctx,1,ids)
-    custom=scene.get("custom_renderer")
-    if custom is not None:
-        if not isinstance(custom,str) or len(custom)>MAX_CUSTOM_CHARS:_fail("custom_renderer",f"must be a string of at most {MAX_CUSTOM_CHARS} characters")
-        bad=UNSAFE_CUSTOM_V2.search(custom)
-        if bad:_fail("custom_renderer",f"forbidden identifier {bad.group(1)!r}; use only the supplied helpers")
-        if "function renderCustom(" not in custom:_fail("custom_renderer","must define function renderCustom(layer,timeMs,helpers)")
-        if "</" in custom:_fail("custom_renderer","must not contain '</'")
+    if "custom_renderer" in scene:_validate_code(scene["custom_renderer"],"custom_renderer",MAX_CUSTOM_CHARS,r"function\s+renderCustom\s*\(","must define function renderCustom(layer,timeMs,helpers)")
     return scene
+
+def _validate_code(code,path,limit,required,required_msg):
+    if not isinstance(code,str) or not code.strip():_fail(path,"must be a non-empty string")
+    if len(code)>limit:_fail(path,f"longer than {limit} characters")
+    m=SCRIPT_BREAKERS.search(code)
+    if m:
+        line=code.count("\n",0,m.start())+1
+        _fail(path,f"line {line}: {m.group(0)!r} would end the page's script element; write it as '<\\/script' or split the string")
+    if not re.search(required,code):_fail(path,required_msg)
+
+def _validate_svg(svg,ctx:_Ctx):
+    if not isinstance(svg,str) or not svg.strip():_fail("svg","must be a non-empty SVG string")
+    if len(svg)>MAX_SVG_CHARS:_fail("svg",f"longer than {MAX_SVG_CHARS} characters")
+    if re.search(r"<!DOCTYPE|<!ENTITY",svg,re.I):_fail("svg","remove <!DOCTYPE>/<!ENTITY> declarations")
+    try:root=ET.fromstring(svg)
+    except ET.ParseError as exc:
+        line,col=getattr(exc,"position",(0,0))
+        _fail("svg",f"not well-formed XML at line {line}, column {col+1}: {exc}")
+    if root.tag not in {"svg",SVG_NS+"svg"}:_fail("svg","root element must be <svg>")
+    for el in root.iter():
+        tag=el.tag.split("}")[-1]
+        if tag=="script":_fail("svg","<script> inside svg is not run; put code in scene.script")
+        for key,val in el.attrib.items():
+            name=key.split("}")[-1]
+            if name in {"href","src"}:
+                if val.startswith("asset:"):
+                    aid=val[6:]
+                    if aid not in ctx.assets:_fail("svg",f"<{tag} {name}=\"{val}\">: unknown asset id (declare it in scene.assets)")
+                    ctx.used_assets.add(aid)
+                elif EXTERNAL_REF.match(val):_fail("svg",f"<{tag} {name}=\"{val[:60]}\">: external URLs are blocked in production; embed the image in scene.assets and use href=\"asset:<id>\"")
+            if re.search(r"url\(\s*['\"]?\s*(?:https?:)?//",val,re.I):_fail("svg",f"<{tag} {name}>: external url() is blocked in production")
+            if isinstance(val,str) and val.startswith("@") and name in {"fill","stroke","stop-color","flood-color","color"}:
+                if val[1:] not in ctx.tokens:_fail("svg",f"<{tag} {name}=\"{val}\">: unknown colour token")
 
 def lint_scene_v2(scene:dict)->list[str]:
     """Non-fatal layout warnings: things that are valid but usually look bad."""
@@ -494,13 +532,22 @@ def lint_scene_v2(scene:dict)->list[str]:
         if name and name!="none":return False
         if l.get("opacity",1)==0:return False
         return True
-    if not any(visible_at_zero(l) for l in scene.get("layers",[])):
+    code=str(scene.get("script") or "")+str(scene.get("custom_renderer") or "")
+    if re.search(r"\bDate\.now\b|\bperformance\.now\b|\bnew Date\b",code):
+        warnings.append("script uses the wall clock (Date/performance.now); frames must depend only on t or pause/seek will look wrong")
+    if "Math.random" in code:
+        warnings.append("Math.random is seeded, but every call returns a new value: draw random numbers once in setup(api) (or use api.random(seed)), never inside render()")
+    if re.search(r"https?://(?!www\.w3\.org/)",code):
+        warnings.append("script mentions an external URL; network access is blocked in production")
+    if "svg" in scene or "script" in scene:pass
+    elif not any(visible_at_zero(l) for l in scene.get("layers",[])):
         warnings.append("first frame (t=0) is empty: the app shows this frame before Play, so keep the main structure visible at t=0 (no enter effect)")
     for aid in (scene.get("assets") or {}):
         if aid not in used:warnings.append(f"assets.{aid}: declared but never used (adds size)")
     return warnings
 
-RUNTIME_V2_JS=r"""
+RUNTIME_V2_JS=r"""(()=>{"use strict";
+const CONFIG=__MC_BOOT.config,root=document.getElementById('root'),AUTHOR_LINE=__MC_AUTHOR_LINE__;
 const hashChannel=location.hash.slice(1);
 if(!/^[a-f0-9]{36}$/.test(hashChannel))throw new Error('motioncards_channel_invalid');
 CONFIG.channel_id=hashChannel;
@@ -768,8 +815,23 @@ function update(n,t){
  }
  for(const c of n.children)update(c,t);
 }
-const helpers={clamp,lerp,ease,color,W,H,D,CONFIG,
- el:(tag,attrs,parent)=>{if(!['g','rect','circle','ellipse','line','path','polygon','polyline','text','tspan'].includes(tag))throw new Error('motioncards_custom_tag');const a={};for(const k in attrs||{}){if(/^on|href|style/i.test(k))throw new Error('motioncards_custom_attr');a[k]=typeof attrs[k]==='string'?color(attrs[k]):attrs[k];}return mk(tag,a,parent||customLayer);}};
+const colorAttrs=attrs=>{const a={};for(const k in attrs||{})a[k]=typeof attrs[k]==='string'?color(attrs[k]):attrs[k];return a;};
+const helpers={clamp,lerp,ease,color,W,H,D,CONFIG,el:(tag,attrs,parent)=>mk(tag,colorAttrs(attrs),parent||customLayer)};
+let art=null;
+const api={D,W,H,svg,hud,tokens:TOKENS,clamp,lerp,ease,color,t:0,
+ seg:(t,a,b,e)=>ease(e||'linear',b>a?(t-a)/(b-a):(t>=b?1:0)),
+ mixColor:(a,b,p)=>{const x=parseColor(a),y=parseColor(b),q=clamp(p,0,1);return cssColor({c:x.map((v,i)=>v+(y[i]-v)*q)});},
+ random:seed=>rand(Number(seed)||1),
+ asset:id=>(SC.assets||{})[id],
+ $:sel=>svg.querySelector(sel),$$:sel=>Array.from(svg.querySelectorAll(sel)),
+ el:(tag,attrs,parent)=>mk(tag,colorAttrs(attrs),parent||art),
+ set:(el,attrs)=>{if(!el)throw new Error('api.set: element not found');for(const k in attrs)setA(el,k,typeof attrs[k]==='string'?color(attrs[k]):(typeof attrs[k]==='number'?fmt(attrs[k]):attrs[k]));return el;},
+ pointAt:(el,f)=>{if(!el)throw new Error('api.pointAt: path not found');const L=el.getTotalLength(),a=el.getPointAtLength(clamp(f,0,1)*L),b=el.getPointAtLength(clamp(f+.002,0,1)*L),c=el.getPointAtLength(clamp(f-.002,0,1)*L);return{x:a.x,y:a.y,angle:Math.atan2(b.y-c.y,b.x-c.x)*180/Math.PI,length:L};}};
+function describe(e){const m=String(e&&e.message||e);return m;}
+function fail(msg){
+ if(!MC.broken){MC.broken=msg;root.dataset.error=msg;console.error('motioncards error: '+msg);}
+ if(MC.port)MC.port.postMessage({type:'error',protocol:1,channel_id:CONFIG.channel_id,qid:CONFIG.qid});
+}
 function renderAt(ms){
  const t=clamp(Number(ms)||0,0,D);
  if(MC.broken)return;
@@ -778,11 +840,26 @@ function renderAt(ms){
   setA(cam,'transform','translate('+fmt(W/2)+' '+fmt(H/2)+') scale('+fmt(z)+') translate('+fmt(-cx)+' '+fmt(-cy)+')');
   setA(customLayer,'transform',cam.getAttribute('transform'));
   for(const n of roots)update(n,t);
-  if(typeof renderCustom==='function'){customLayer.replaceChildren();renderCustom(customLayer,t,helpers);}
+  if(CONFIG.has_custom&&typeof renderCustom==='function'){customLayer.replaceChildren();renderCustom(customLayer,t,helpers);}
+  if(CONFIG.has_script){api.t=t;render(t,api);}
   root.dataset.ended=t>=D?'1':'0';root.dataset.t=String(t);
- }catch(e){MC.broken=String(e&&e.message||e);if(MC.port)MC.port.postMessage({type:'error',protocol:1,channel_id:CONFIG.channel_id,qid:CONFIG.qid});}
+ }catch(e){fail((CONFIG.has_script?'render(t='+t+'): ':'')+describe(e));}
 }
-try{for(const L of SC.layers)roots.push(build(L,L.fixed?hud:cam,1));}catch(e){MC.broken=String(e&&e.message||e);}
+try{
+ if(__MC_BOOT.errors.length){const x=__MC_BOOT.errors[0];throw new Error(x.m+(x.l>=AUTHOR_LINE?' (script line '+(x.l-AUTHOR_LINE+1)+')':''));}
+ art=mk('g',{id:'art'},null);cam.insertBefore(art,cam.firstChild);
+ if(SC.svg){
+  const doc=new DOMParser().parseFromString(SC.svg,'image/svg+xml'),pe=doc.getElementsByTagName('parsererror')[0];
+  if(pe)throw new Error('svg could not be parsed: '+pe.textContent.slice(0,200));
+  for(const c of Array.from(doc.documentElement.childNodes))art.appendChild(document.importNode(c,true));
+  for(const e of art.querySelectorAll('[href^="asset:"]'))e.setAttribute('href',(SC.assets||{})[e.getAttribute('href').slice(6)]||'');
+  for(const e of art.querySelectorAll('*'))for(const k of ['fill','stroke','stop-color','flood-color','color']){const v=e.getAttribute(k);if(v&&v[0]==='@')e.setAttribute(k,color(v));}
+ }
+ for(const L of SC.layers||[])roots.push(build(L,L.fixed?hud:cam,1));
+ if(CONFIG.has_script&&typeof render!=='function')throw new Error('script must define function render(t, api)');
+ if(CONFIG.has_custom&&typeof renderCustom!=='function')throw new Error('custom_renderer must define function renderCustom(layer, t, helpers)');
+ if(CONFIG.has_script&&typeof setup==='function')setup(api);
+}catch(e){fail(describe(e));}
 function valid(m){return m&&m.protocol===1&&m.channel_id===CONFIG.channel_id&&m.qid===CONFIG.qid;}
 addEventListener('message',ev=>{
  if(ev.source!==parent||!CONFIG.allowed_host_origins.includes(ev.origin))return;
@@ -801,23 +878,41 @@ addEventListener('message',ev=>{
 });
 renderAt(0);
 parent.postMessage({type:'kafu-motioncards-ready',protocol:1,channel_id:CONFIG.channel_id,qid:CONFIG.qid},'*');
+})();
 """
 
+BOOT_JS=("\"use strict\";var __MC_BOOT={config:__CFG__,errors:[]};"
+ "addEventListener('error',function(e){__MC_BOOT.errors.push({m:String(e&&e.message||'script error'),l:Number(e&&e.lineno)||0});});"
+ "(function(){var warned=false;function inert(){if(!warned){warned=true;console.warn('motioncards: timers and requestAnimationFrame are inert; animate inside render(t, api) so pause and seek work');}return 0;}"
+ "['setTimeout','setInterval','requestAnimationFrame','requestIdleCallback'].forEach(function(k){self[k]=inert;});"
+ "var a=0x2545F491;Math.random=function(){a=(a+0x6D2B79F5)>>>0;var t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};})();")
+
 def compile_scene_v2(scene:dict,allowed:list[str],runtime_version:int)->str:
-    s={k:scene[k] for k in ("stage","palette","gradients","assets","camera","layers") if k in scene}
+    s={k:scene[k] for k in ("stage","palette","gradients","assets","camera","layers","svg") if k in scene}
+    if "svg" in s:
+        head=s["svg"].split(">",1)[0]
+        if "xmlns=" not in head:s["svg"]=s["svg"].replace("<svg",'<svg xmlns="http://www.w3.org/2000/svg"',1)
+    script=str(scene.get("script") or "").replace("\r\n","\n")
+    custom=str(scene.get("custom_renderer") or "").replace("\r\n","\n")
     used={}
-    text=json.dumps(s,ensure_ascii=False)+str(scene.get("custom_renderer") or "")
+    text=json.dumps(s,ensure_ascii=False)+script+custom
     for name,val in BUILTIN_TOKENS.items():
         if "@"+name in text:used[name]=val
-    cfg={"qid":str(scene["qid"]),"duration_ms":int(scene["duration_ms"]),"engine":2,"scene":s,"tokens":used,"channel_id":"","allowed_host_origins":allowed,"runtime_version":runtime_version}
-    custom=scene.get("custom_renderer") or "function renderCustom(){}"
+    cfg={"qid":str(scene["qid"]),"duration_ms":int(scene["duration_ms"]),"engine":2,"scene":s,"tokens":used,"has_script":bool(script),"has_custom":bool(custom),
+         "channel_id":"","allowed_host_origins":allowed,"runtime_version":runtime_version}
     cfgtext=json.dumps(cfg,ensure_ascii=False,separators=(",",":")).replace("<","\\u003c").replace("\u2028","\\u2028").replace("\u2029","\\u2029")
     bg="#fbfaf7"
     stage=scene.get("stage") or {}
     if isinstance(stage.get("background"),str) and HEX_RE.fullmatch(stage["background"]):bg=stage["background"]
-    runtime=RUNTIME_V2_JS.replace("\r\n","\n")
-    custom=custom.replace("\r\n","\n")
-    return """<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    head="""<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <style>html,body{margin:0;height:100%;background:"""+bg+""";color:#16323a;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Noto Sans Arabic",Arial,sans-serif;-webkit-font-smoothing:antialiased}#root{height:100%;overflow:hidden}svg{width:100%;height:100%;display:block;text-rendering:geometricPrecision;shape-rendering:geometricPrecision}</style></head>
 <body><main id="root" data-engine="2"><svg id="stage" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Kafu MotionCards animation"></svg></main>
-<script>"use strict";const CONFIG="""+cfgtext+""";const root=document.getElementById('root');"""+custom+"\n"+runtime+"""</script></body></html>"""
+<script>"""+BOOT_JS.replace("__CFG__",cfgtext)+"""</script>
+<script>
+"""
+    author_line=head.count("\n")+1
+    author=(script+"\n"+custom).strip("\n")
+    runtime=RUNTIME_V2_JS.replace("\r\n","\n").replace("__MC_AUTHOR_LINE__",str(author_line))
+    return head+author+"""
+</script>
+<script>"""+runtime+"""</script></body></html>"""

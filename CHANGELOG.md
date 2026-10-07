@@ -13,6 +13,7 @@
 - v1 output is byte-identical (golden-hash tested). Protocol, index runtime_version, CSP, app, bot and publisher are unchanged.
 - Added `motioncards lint`, plus `motioncards render` (phone/tablet PNG frames and a contact sheet under the production CSP).
 - Added the compact `AUTHORING_V2.md` and two gold examples.
+- Added v2 free mode (`svg` + `script` with `render(t, api)`, full DOM inside the sandbox) and removed the custom-renderer identifier blacklist. Errors now report their location, determinism is checked on the DOM, and a computed O₂–Hb curve example was added.
 
 ### M2 Step 2
 - Added synthetic all-types, v2, multipart, and broken fixture generation.

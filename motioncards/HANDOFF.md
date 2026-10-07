@@ -496,3 +496,26 @@ v1 scenes looked flat and robotic. The causes were in the engine, not in the aut
 - `tools/motioncards/browser_smoke.py` (the publisher's own post-deploy check, unmodified) passes for v1 and v2 entries served with the exact production CSP. HTTPS staging was simulated locally because this sandbox blocks outbound network.
 - The full authoring-kit flow (bundle → extract → scaffold → lint → render → package → validate) passes from a clean extracted kit.
 - The four non-MotionCards failures in the local full suite (`test_frontend_modules` ×2, `test_service_worker_build`, `test_design_style` fonts) are pre-existing. They need `cdn.jsdelivr.net`, which this sandbox's network policy blocks, and they fail identically without this change.
+
+### Free mode and removal of the identifier blacklist (2026-10-07, follow-up)
+
+Honest correction of the first v2 iteration: a large custom JSON DSL is itself a constraint, because models are far more fluent in plain SVG and JavaScript. The `custom_renderer` identifier blacklist (`window`, `document`, `self`, …) was also security theatre: the real boundary is the sandboxed, opaque-origin iframe plus the network-less CSP.
+
+- v2 scenes may now include `svg` (any well-formed SVG markup) and `script` (plain JavaScript with full DOM access inside the sandbox; `function render(t, api)` plus an optional `setup(api)`). Layers become an optional shortcut, and the two can be mixed.
+- Rejected only where something would otherwise break or silently fail:
+  - `</script`, `<script` or `<!--` in code (they end the page's script element; reported with line number);
+  - malformed SVG (reported with line and column);
+  - `<script>` inside `svg`;
+  - external `href`/`url()` (blocked by CSP in production);
+  - unknown `asset:`/`@token` references.
+- Runtime guards that prevent pause/seek bugs without failing the card:
+  - timers and `requestAnimationFrame` are inert, with a one-time console note;
+  - `Math.random` is seeded;
+  - the runtime runs in an IIFE, so author globals cannot collide with runtime names (tested).
+- Errors carry their location, e.g. `script line N`, `render(t=…)`, or SVG line/column. They are surfaced by `motioncards render`, which now checks determinism on the visible DOM (exact) instead of screenshot pixels (paint-timing flaky).
+- New gold example `examples/v2-free-o2-curve.scene.json`: the O₂–Hb dissociation curve computed from the Hill equation (n = 2.7; P50 26.8 → 35 mmHg). Saturations at tissue PO₂ 40 are computed (75% → 59%), not drawn by eye.
+- Verified:
+  - all MotionCards tests pass on Python 3.13 with browser tests, and on Python 3.11 without them;
+  - compiled bytes are identical on Python 3.11 and 3.13;
+  - unmodified `browser_smoke.py` passes for 6 entries (2 v1, 4 v2) under the production CSP;
+  - the clean-kit flow scaffold → lint → render → package → validate passes for the free-mode example.

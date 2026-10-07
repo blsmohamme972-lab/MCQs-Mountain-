@@ -123,7 +123,7 @@ python tools/motioncards.py validate dist/MCARDS_MY-BATCH_r1.zip
 
 Edit only `work/<batch>/scenes/Q#########.scene.json`.
 
-**Author new cards with schema v2: read `AUTHORING_V2.md` (compact reference) and the two `examples/v2-*.scene.json` gold examples.** v2 adds:
+**Author new cards with schema v2: read `AUTHORING_V2.md` (compact reference) and the `examples/v2-*.scene.json` gold examples.** For professional or precise cards use v2 *free mode*: plain SVG plus a JavaScript `render(t, api)` with full DOM access inside the sandbox. v2 adds:
 - easing;
 - separate visibility (`show`) and motion (`keys`);
 - enter/exit presets;
@@ -140,7 +140,7 @@ Required in every scene:
 - one short `takeaway`
 - `layers`
 
-The authoritative host timeline drives every frame. Do not use CSS animations or independent timers. A `custom_renderer` is allowed for rare cases (see `AUTHORING_V2.md`); the validator rejects network, storage, timers, workers, eval/Function and navigation.
+The authoritative host timeline drives every frame. Do not use CSS animations or independent timers. Free-mode code runs inside the sandboxed, network-less iframe. Timers are inert, `Math.random` is seeded, and `render` must be a pure function of `t` (the `render` command verifies this).
 
 Legacy v1 scenes use `start_ms`, `end_ms`, `from`, `to` with the primitives `label rect circle arrow path highlight focus` (see `TOOLKIT.md`).
 

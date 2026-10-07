@@ -44,6 +44,10 @@ def _launch(p):
     exe=os.environ.get("MOTIONCARDS_CHROMIUM")
     return p.chromium.launch(executable_path=exe) if exe else p.chromium.launch()
 
+def _explain(errors:list)->str:
+    own=[e.replace("motioncards error: ","") for e in errors if "motioncards error" in e]
+    return (own or errors or ["no error message was captured"])[0]
+
 def _router(html:str,qid:str,blocked:list):
     entry=ORIGIN+"/"+qid+".html"
     def route(r):
@@ -73,33 +77,36 @@ def render_scenes(scenes:list[dict],out:Path,times:list[int]|None=None,frames:in
                 ctx=browser.new_context(device_scale_factor=2)
                 blocked=[]
                 ctx.route("**/*",_router(html,qid,blocked))
-                page=ctx.new_page();errors=[]
+                page=ctx.new_page();errors=[];notes=[]
                 page.on("pageerror",lambda e:errors.append(str(e)))
-                page.on("console",lambda m:errors.append(m.text) if m.type=="error" else None)
+                page.on("console",lambda m:errors.append(m.text) if m.type=="error" else (notes.append(m.text) if "motioncards" in m.text else None))
                 page.goto(HOST_URL)
                 files=[]
                 for size in sizes:
                     w,h=SIZES[size]
                     page.set_viewport_size({"width":w,"height":h})
                     page.evaluate("([s,q,w,h])=>mcLoad(s,q,w,h)",[ORIGIN+"/"+qid+".html",qid,w,h])
-                    page.wait_for_function("window.mcReady===true||window.mcErrors.length>0",timeout=8000)
-                    if page.evaluate("window.mcErrors.length"):raise RuntimeError(f"{qid}: card reported a render error")
+                    try:page.wait_for_function("window.mcReady===true||window.mcErrors.length>0",timeout=8000)
+                    except Exception:raise RuntimeError(f"{qid}: card never became ready; "+_explain(errors)) from None
+                    if page.evaluate("window.mcErrors.length"):raise RuntimeError(f"{qid}: "+_explain(errors))
                     for t in stamps:
-                        page.evaluate("ms=>mcSeek(ms)",t)
+                        try:page.evaluate("ms=>mcSeek(ms)",t)
+                        except Exception:raise RuntimeError(f"{qid}: failed at t={t} ms; "+_explain(errors)) from None
                         f=out/f"{qid}_{size}_{t:05d}ms.png"
                         page.locator("iframe").screenshot(path=str(f))
                         files.append(str(f))
                     # Seeking backwards must reproduce exactly the same frame (deterministic timeline).
-                    mid=stamps[len(stamps)//2];first=page.locator("iframe").screenshot()
-                    page.evaluate("ms=>mcSeek(ms)",mid);page.locator("iframe").screenshot()
-                    page.evaluate("ms=>mcSeek(ms)",stamps[-1]);page.evaluate("ms=>mcSeek(ms)",mid)
-                    again=page.locator("iframe").screenshot()
-                    page.evaluate("ms=>mcSeek(ms)",stamps[0]);page.evaluate("ms=>mcSeek(ms)",mid)
-                    if page.locator("iframe").screenshot()!=again:raise RuntimeError(f"{qid}: frame at {mid} ms differs after seeking back (non-deterministic scene)")
+                    # Compared on the rendered DOM (exact, not subject to paint timing).
+                    frame=page.frames[-1]
+                    snap=lambda:frame.evaluate("()=>{const c=document.getElementById('stage').cloneNode(true);c.querySelectorAll('[display=\"none\"],[style*=\"display: none\"],[style*=\"display:none\"]').forEach(e=>e.remove());return c.outerHTML}")
+                    for mid in sorted({stamps[len(stamps)//2],stamps[-1]}):
+                        page.evaluate("ms=>mcSeek(ms)",stamps[-1]);page.evaluate("ms=>mcSeek(ms)",mid);again=snap()
+                        page.evaluate("ms=>mcSeek(ms)",stamps[0]);page.evaluate("ms=>mcSeek(ms)",mid)
+                        if snap()!=again:raise RuntimeError(f"{qid}: frame at {mid} ms differs depending on the previous frame; render(t) must compute everything from t, not accumulate state")
                 errs=[e for e in errors if "favicon" not in e]
                 if errs or blocked:raise RuntimeError(f"{qid}: runtime errors {errs[:3]} blocked {blocked[:3]}")
                 ctx.close()
-                report={"qid":qid,"frames":files,"times_ms":stamps,"sizes":sizes}
+                report={"qid":qid,"frames":files,"times_ms":stamps,"sizes":sizes,"notes":sorted(set(notes))}
                 if sheet:
                     s=_contact_sheet(files,out/f"{qid}_sheet.png",len(stamps))
                     if s:report["sheet"]=s

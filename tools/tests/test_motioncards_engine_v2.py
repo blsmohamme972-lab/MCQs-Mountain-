@@ -86,7 +86,7 @@ class EngineV2Tests(unittest.TestCase):
             self.assertEqual(a,b)
             self.assertLess(len(a.encode()),MAX_ENTRY_BYTES)
             self.assertIn('data-engine="2"',a)
-            self.assertNotIn("</script",a.split("<script>",1)[1].rsplit("</script>",1)[0])
+            self.assertEqual(a.lower().count("<script"),3);self.assertEqual(a.lower().count("</script"),3)
             # The production entry must only trust the production host origin.
             self.assertIn('"allowed_host_origins":["https://kafu.blsmohamme97.workers.dev"]',a)
 
@@ -126,9 +126,18 @@ class EngineV2Tests(unittest.TestCase):
          (lambda s:s.update(assets={"dot":"data:image/svg+xml;base64,PHN2Zz4="}),"asset must be data:image/png|jpeg|webp"),
          (lambda s:s["layers"][14].update(count=500),"layers[14].count:must be between 1 and 200"),
          (lambda s:s["layers"][15].update(r=20),"spotlight needs either cx/cy/r"),
-         (lambda s:s.update(custom_renderer="function renderCustom(l,t,h){window.top.location='x'}"),"forbidden identifier 'window'"),
-         (lambda s:s.update(custom_renderer="function renderCustom(l,t,h){fetch('x')}"),"forbidden identifier 'fetch'"),
-         (lambda s:s.update(custom_renderer="function renderCustom(l,t,h){'</script>'}"),"must not contain '</'"),
+         (lambda s:s.update(custom_renderer="function renderCustom(l,t,h){\n'</script>'}"),"custom_renderer:line 2: '</script' would end the page's script element"),
+         (lambda s:s.update(custom_renderer="function other(){}"),"must define function renderCustom"),
+         (lambda s:s.update(script="function render(t,api){\n var x='<!--';}"),"script:line 2: '<!--'"),
+         (lambda s:s.update(script="function draw(t){}"),"script:must define function render(t, api)"),
+         (lambda s:s.update(svg="<svg><g>\n<rect></g></svg>"),"svg:not well-formed XML at line 2"),
+         (lambda s:s.update(svg="<g/>"),"root element must be <svg>"),
+         (lambda s:s.update(svg="<!DOCTYPE svg><svg/>"),"remove <!DOCTYPE>"),
+         (lambda s:s.update(svg="<svg><script>alert(1)</script></svg>"),"<script> inside svg is not run"),
+         (lambda s:s.update(svg='<svg><image href="https://example.com/a.png"/></svg>'),"external URLs are blocked in production"),
+         (lambda s:s.update(svg='<svg><rect style="fill:url(//x.com/a)"/></svg>'),"external url() is blocked"),
+         (lambda s:s.update(svg='<svg><image href="asset:nope"/></svg>'),"unknown asset id"),
+         (lambda s:s.update(svg='<svg><rect fill="@nope"/></svg>'),"unknown colour token"),
          (lambda s:s.update(extra=1),"unknown top-level fields extra"),
          (lambda s:s["camera"]["keys"].append({"t":100,"zoom":20}),"camera.keys"),
          (lambda s:s.update(takeaway="EDIT: later"),"takeaway_unfinished_placeholder"),
@@ -144,6 +153,17 @@ class EngineV2Tests(unittest.TestCase):
         s=copy.deepcopy(base);s["qid"]="Q000000001"
         with self.assertRaises(ValueError):validate_scene(s,"Q000000009",8000)
         with self.assertRaises(ValueError):validate_scene(base,"Q000000009",9000)
+
+    def test_free_mode_example_and_script_only_scene_are_valid(self):
+        s=json.loads((EXAMPLES/"v2-free-o2-curve.scene.json").read_text())
+        validate_scene(s,s["qid"],s["duration_ms"]);self.assertEqual(lint_scene_v2(s),[])
+        bare={"schema_version":2,"qid":"Q000000001","duration_ms":3000,"takeaway":"x","script":"function render(t,api){}"}
+        validate_scene(bare,"Q000000001",3000)
+        html=compile_scene({**bare,"svg":"<svg><circle r='3'/></svg>"})
+        self.assertIn('xmlns=\\"http://www.w3.org/2000/svg\\"',html)  # namespace added for DOMParser
+        with self.assertRaises(ValueError):validate_scene({**bare,"script":None},"Q000000001",3000)
+        w=" ".join(lint_scene_v2({**bare,"script":"function render(t,api){const r=Math.random();const n=Date.now();}"}))
+        self.assertIn("Math.random",w);self.assertIn("wall clock",w)
 
     def test_lint_flags_empty_first_frame_and_overflowing_text(self):
         s={"schema_version":2,"qid":"Q000000001","duration_ms":4000,"takeaway":"x",
@@ -212,6 +232,31 @@ class EngineV2BrowserTests(unittest.TestCase):
             reports=render_scenes(scenes,Path(td),frames=7,sizes=["phone","tablet"],sheet=False)
             self.assertEqual(len(reports),len(scenes))
             for r in reports:self.assertEqual(len(r["frames"]),14)
+
+    def _bare(self,script,svg=None,qid="Q000000006"):
+        s={"schema_version":2,"qid":qid,"duration_ms":2000,"takeaway":"Free mode test.","script":script}
+        if svg:s["svg"]=svg
+        return s
+
+    def test_free_mode_errors_are_reported_with_location_and_runtime_names_cannot_collide(self):
+        try:import playwright  # noqa: F401
+        except ImportError:self.skipTest("playwright not installed")
+        from motioncards.lib.render import render_scenes
+        with tempfile.TemporaryDirectory() as td:
+            out=Path(td)
+            # Author globals that shadow runtime internals must not break the card.
+            ok=self._bare("const W=1,H=2,D=3,svg=null,cam=null,MC=null,CONFIG=null,root=null;function clamp(){return 0}\n"
+                          "let n=0;function setup(api){n=api.$$('circle').length;}\n"
+                          "function render(t,api){api.set(api.$('#c'),{cx:20+t/20,fill:'@accent'});setTimeout(()=>{throw new Error('timer ran')},0);requestAnimationFrame(()=>{throw new Error('raf ran')});}",
+                          "<svg><circle id='c' cx='20' cy='20' r='10'/></svg>")
+            r=render_scenes([ok],out,frames=3,sizes=["phone"],sheet=False)
+            self.assertTrue(any("inert" in x for x in r[0]["notes"]),r[0]["notes"])
+            with self.assertRaises(RuntimeError) as ctx:render_scenes([self._bare("function render(t,api){\n  let x = ;\n}")],out,frames=2,sizes=["phone"],sheet=False)
+            self.assertIn("script line 2",str(ctx.exception))
+            with self.assertRaises(RuntimeError) as ctx:render_scenes([self._bare("function render(t,api){ if(t>1500) api.set(api.$('#missing'),{x:1}); }")],out,frames=3,sizes=["phone"],sheet=False)
+            self.assertIn("render(t=2000): api.set: element not found",str(ctx.exception))
+            with self.assertRaises(RuntimeError) as ctx:render_scenes([self._bare("let x=0;function render(t,api){x+=1;api.el('rect',{x:x,width:5,height:5});}")],out,frames=3,sizes=["phone"],sheet=False)
+            self.assertIn("differs depending on the previous frame",str(ctx.exception))
 
     def test_scale_and_rotate_happen_around_the_shape_centre_and_errors_are_reported(self):
         try:from playwright.sync_api import sync_playwright

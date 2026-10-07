@@ -11,7 +11,50 @@ v2 is opt-in per scene (`"schema_version": 2`). v1 scenes still work unchanged. 
 3. `python tools/motioncards.py render --workspace work/<batch> --out work/<batch>/render`: look at `<QID>_sheet.png` (phone + tablet frames). Fix overlaps, text off-stage, an empty first frame and cramped labels. This needs `pip install playwright`; skip it only if no browser is available.
 4. `package`, then `validate`.
 
-## Scene
+## Two ways to draw (mix them freely)
+
+1. **Free mode (SVG + JavaScript): use it for anything professional or precise.** Write normal SVG and normal JavaScript, the way you already know them.
+2. **Layers** (declarative JSON below): a shortcut for simple cards: titles, captions, arrows, particles and spotlights in a few lines.
+
+### Free mode
+
+```json
+{"schema_version":2,"qid":"Q000000123","duration_ms":9000,"takeaway":"One sentence.",
+ "stage":{"width":640,"height":560,"background":"#f4f8f8"},
+ "layers":[{"type":"text","text":"Title","x":320,"y":50,"size":28,"weight":800,"max_width":600,"fit":true,"fixed":true}],
+ "svg":"<svg><defs>...</defs><path id=\"vessel\" d=\"M ...\" fill=\"@artery\"/>...</svg>",
+ "script":"function setup(api){ /* build once */ }\nfunction render(t, api){ /* draw frame at t ms */ }"}
+```
+
+- **`svg`:** any SVG markup: gradients, filters, masks, clipPaths, patterns, `<text>`, `<foreignObject>`. Its children are placed on the stage (stage coordinates; the root `<svg>` is only a wrapper). Colours can be `@tokens`. Images use `href="asset:<id>"`. It is checked for well-formed XML; errors report line and column.
+- **`script`:** plain JavaScript with full DOM access inside the sandbox.
+  - Define `function render(t, api)`, called for every frame with `t` in ms. Optionally define `function setup(api)`, called once before the first frame.
+  - **Compute every frame only from `t`** (pure function of time). That keeps pause, seek and replay exact. `render` checks this and fails if a frame depends on the previous one.
+  - Precompute in `setup`. Never accumulate state in `render`.
+  - `setTimeout`, `setInterval` and `requestAnimationFrame` are inert, because the host owns the clock. `Math.random` is seeded; draw random values in `setup`.
+  - The network is blocked: no external images, fonts or scripts. Embed images via `assets`.
+  - Inline libraries are allowed if their licence permits it and they can be driven by `t` (seek/progress APIs).
+  - The only text forbidden in code is `</script`, `<script` and `<!--`. Write `'<\/script'` if you need it in a string.
+- **`api`:**
+
+  | helper | what it does |
+  |---|---|
+  | `api.$(sel)`, `api.$$(sel)` | query the stage |
+  | `api.el(tag, attrs, parent?)` | create an SVG element; strings may be `@tokens` |
+  | `api.set(el, attrs)` | set attributes; numbers are rounded, `@tokens` resolved |
+  | `api.seg(t, a, b, ease?)` | 0..1 progress between `a` and `b` ms, eased |
+  | `api.ease(name, p)`, `api.clamp`, `api.lerp` | easing and maths |
+  | `api.mixColor(c1, c2, p)` | colour interpolation |
+  | `api.random(seed)` | seeded PRNG function |
+  | `api.pointAt(pathEl, f)` | `{x, y, angle, length}` at fraction `f` along a path |
+  | `api.asset(id)` | data URI of an asset |
+  | `api.color(token)` | resolve a colour token |
+  | `api.W`, `api.H`, `api.D`, `api.svg`, `api.hud` | stage width/height, duration, stage `<svg>`, fixed layer group |
+
+- **Precision:** compute geometry from the real relationship instead of eyeballing it (e.g. a dissociation curve from the Hill equation, pressures from a formula). See `examples/v2-free-o2-curve.scene.json`.
+- Errors come back with their location, e.g. `script line 12: Unexpected token`, `render(t=4200): api.set: element not found`, or `svg: not well-formed XML at line 3, column 9`.
+
+### Layers scene
 
 ```json
 {"schema_version":2,"qid":"Q000000123","duration_ms":9000,"takeaway":"One sentence.",
@@ -21,8 +64,8 @@ v2 is opt-in per scene (`"schema_version": 2`). v1 scenes still work unchanged. 
 ```
 
 - Stage default is 640×560, which reads well on phones (about 340×360) and tablets. Coordinates are stage pixels; y grows downward.
-- Layers draw in order: the first one is at the back. At most 400 layers in total (groups included).
-- **The first frame (t=0) must not be empty.** The app shows it before Play. Keep the main structure visible at t=0 with no `enter`.
+- Free-mode `svg` is drawn first (back), then layers in order, then `custom_renderer`. At most 400 layers in total (groups included).
+- **The first frame (t=0) must not be empty.** The app shows it before Play.
 
 ## Timing model (the important part)
 
@@ -88,13 +131,9 @@ Gradients: `{"id":"g1","kind":"linear","angle":90,"stops":[{"offset":0,"color":"
 
 `"assets":{"heart":"data:image/webp;base64,..."}` (PNG, JPEG or WebP). Each asset is at most 600 KB and all assets together at most 1.2M characters. Use it for pre-drawn anatomy art, then animate it with `keys` and overlay arrows, particles and labels on top. Never copy copyrighted artwork.
 
-## Custom renderer (rare)
+## Custom renderer (legacy shortcut)
 
-`"custom_renderer":"function renderCustom(layer,t,h){ h.el('circle',{cx:100+t/10,cy:50,r:8,fill:'@accent'}); }"`
-- Called every frame on a cleared top layer.
-- `h.el(tag,attrs,parent?)` creates SVG elements: `g rect circle ellipse line path polygon polyline text tspan`.
-- `h` also provides `clamp lerp ease color W H D`.
-- No `window`, `document`, timers or network; the validator rejects them.
+`"custom_renderer":"function renderCustom(layer,t,h){ h.el('circle',{cx:100+t/10,cy:50,r:8,fill:'@accent'}); }"` draws on a top layer that is cleared every frame. Prefer free mode (`svg` + `script`) for new work.
 
 ## Quality checklist (what makes a card look good)
 
@@ -115,4 +154,7 @@ Gradients: `{"id":"g1","kind":"linear","angle":90,"stops":[{"offset":0,"color":"
 - Use `particles` instead of many moving circles.
 - Use `max_width` + `fit` instead of hand-tuned font sizes.
 
-Gold examples: `examples/v2-stenosis-flow.scene.json` (flow, morph, camera, particles) and `examples/v2-synapse-steps.scene.json` (stepwise mechanism, along-path, spotlight, captions).
+Gold examples:
+- `examples/v2-free-o2-curve.scene.json`: free mode, computed physiology curve, professional chart styling;
+- `examples/v2-stenosis-flow.scene.json`: layers; flow, morph, camera, particles;
+- `examples/v2-synapse-steps.scene.json`: layers; stepwise mechanism, along-path, spotlight, captions.
