@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+### MotionCards scene engine v2
+- Added opt-in schema v2 scenes:
+  - easing, keyframes, and visibility separate from motion;
+  - enter/exit presets and pivots on each shape's own centre;
+  - path morphing, drawn-on strokes and motion along paths;
+  - particles, spotlight and camera;
+  - wrapped, auto-fitting text;
+  - gradients, shadows and validated raster assets.
+- v1 output is byte-identical (golden-hash tested). Protocol, index runtime_version, CSP, app, bot and publisher are unchanged.
+- Added `motioncards lint`, plus `motioncards render` (phone/tablet PNG frames and a contact sheet under the production CSP).
+- Added the compact `AUTHORING_V2.md` and two gold examples.
+- Added v2 free mode (`svg` + `script` with `render(t, api)`, full DOM inside the sandbox) and removed the custom-renderer identifier blacklist. Errors now report their location, determinism is checked on the DOM, and a computed O₂–Hb curve example was added.
+- Added `motioncards import-svg` (clean, fit, id-scope and credit third-party SVG art; `--template` for `<use>` symbols), `credits` shown on the card, and the imported-art sickle cell example.
+- Research-backed authoring rules:
+  - a per-source licence table (NIH BioArt, Servier, Reactome, Health Icons);
+  - NC/ND art refused by `import-svg` and flagged by `lint`;
+  - lint warning against complex organic path morphs.
+
 ### M2 Step 2
 - Added synthetic all-types, v2, multipart, and broken fixture generation.
 - Added real publishing-path fixture proof through the Publish Kafu Book workflow.

@@ -442,3 +442,124 @@ Final verified review-code head before this handoff-only update: `cf7dd5233d8e60
 - No merge, deployment, production migration, service creation, credential/variable change, rollout-variable change, or real production queue operation occurred.
 - Next action: owner reviews PR #67. Any production rollout still requires separate explicit authorization and the documented sequence in `docs/ADMIN.md`.
 
+
+## Scene engine v2 (2026-10-07)
+
+### Why
+
+v1 scenes looked flat and robotic. The causes were in the engine, not in the authoring model:
+- `scale`/`rotate` pivoted around the canvas origin, so animated shapes slid diagonally;
+- interpolation was linear only, with no easing;
+- `start_ms/end_ms` defined both visibility and tween length, so "appear quickly, then stay" was impossible;
+- there were only two states (`from`/`to`);
+- there were only 7 primitives, with no gradients, groups, drawn-on strokes, motion along a path, particles or text wrapping;
+- authors drew blind, with no rendered feedback.
+
+### What changed
+
+- `motioncards/lib/engine_v2.py`: strict validator, layout linter and deterministic runtime for scenes that declare `"schema_version": 2`. It adds:
+  - easing and keyframes;
+  - `show` separate from `keys`, and enter/exit presets;
+  - pivots on each shape's own centre;
+  - path morphing and drawn-on strokes;
+  - `along` paths, `particles`, `spotlight` and a camera, with `fixed` HUD layers;
+  - wrapped, auto-fitting text with label boxes;
+  - gradients, shadows and glow;
+  - validated PNG/JPEG/WebP data-URI assets;
+  - colour tokens, groups, `repeat`, and a hardened `custom_renderer` with `h.el`.
+- `compiler.py` dispatches on `schema_version`. **The v1 path is untouched and byte-identical**: golden hashes are pinned in `tools/tests/test_motioncards_engine_v2.py`, so every previously built v1 ZIP still passes the publisher's rebuild-and-compare check.
+- Unchanged:
+  - the host/iframe protocol (1);
+  - the manifest/index `runtime_version` (1);
+  - the app player;
+  - the MotionCards Worker CSP;
+  - the bot;
+  - D1, the queue and the publisher.
+
+  No app, Worker or bot deployment is needed for v2. Only the validator/compiler code that the publisher workflow checks out from `main` must contain v2 before a v2 ZIP is uploaded.
+- `motioncards/lib/render.py` plus `tools/motioncards.py render|lint`:
+  - renders scenes through the real sandboxed MessageChannel protocol under the production entry CSP;
+  - writes phone/tablet PNG frames and a contact sheet;
+  - fails on a card render error or a non-deterministic seek.
+- Scaffold now writes v2 starter scenes (`--schema 1` keeps the legacy starter). v2 rejects leftover `EDIT:` text.
+- Authoring docs:
+  - `AUTHORING_V2.md` is the compact reference the AI reads;
+  - `examples/v2-stenosis-flow.scene.json` and `examples/v2-synapse-steps.scene.json` are the gold examples;
+  - `MASTER_PROMPT.md` points to these and adds the lint/render steps;
+  - the authoring kit bundle includes the new files.
+- CI: new `motioncards_engine` job (Playwright 1.57.0 + Chromium) runs the browser tests.
+
+### Verified in the cloud session
+
+- MotionCards Python tests: 58/58 pass on Python 3.13, including the browser tests. On Python 3.11 the browser tests skip without Playwright and the rest pass.
+- Compiled bytes are identical across Python 3.11, 3.12 and 3.13, so ZIPs built in any authoring environment match the publisher's rebuild.
+- `tools/motioncards/browser_smoke.py` (the publisher's own post-deploy check, unmodified) passes for v1 and v2 entries served with the exact production CSP. HTTPS staging was simulated locally because this sandbox blocks outbound network.
+- The full authoring-kit flow (bundle → extract → scaffold → lint → render → package → validate) passes from a clean extracted kit.
+- The four non-MotionCards failures in the local full suite (`test_frontend_modules` ×2, `test_service_worker_build`, `test_design_style` fonts) are pre-existing. They need `cdn.jsdelivr.net`, which this sandbox's network policy blocks, and they fail identically without this change.
+
+### Free mode and removal of the identifier blacklist (2026-10-07, follow-up)
+
+Honest correction of the first v2 iteration: a large custom JSON DSL is itself a constraint, because models are far more fluent in plain SVG and JavaScript. The `custom_renderer` identifier blacklist (`window`, `document`, `self`, …) was also security theatre: the real boundary is the sandboxed, opaque-origin iframe plus the network-less CSP.
+
+- v2 scenes may now include `svg` (any well-formed SVG markup) and `script` (plain JavaScript with full DOM access inside the sandbox; `function render(t, api)` plus an optional `setup(api)`). Layers become an optional shortcut, and the two can be mixed.
+- Rejected only where something would otherwise break or silently fail:
+  - `</script`, `<script` or `<!--` in code (they end the page's script element; reported with line number);
+  - malformed SVG (reported with line and column);
+  - `<script>` inside `svg`;
+  - external `href`/`url()` (blocked by CSP in production);
+  - unknown `asset:`/`@token` references.
+- Runtime guards that prevent pause/seek bugs without failing the card:
+  - timers and `requestAnimationFrame` are inert, with a one-time console note;
+  - `Math.random` is seeded;
+  - the runtime runs in an IIFE, so author globals cannot collide with runtime names (tested).
+- Errors carry their location, e.g. `script line N`, `render(t=…)`, or SVG line/column. They are surfaced by `motioncards render`, which now checks determinism on the visible DOM (exact) instead of screenshot pixels (paint-timing flaky).
+- New gold example `examples/v2-free-o2-curve.scene.json`: the O₂–Hb dissociation curve computed from the Hill equation (n = 2.7; P50 26.8 → 35 mmHg). Saturations at tissue PO₂ 40 are computed (75% → 59%), not drawn by eye.
+- Verified:
+  - all MotionCards tests pass on Python 3.13 with browser tests, and on Python 3.11 without them;
+  - compiled bytes are identical on Python 3.11 and 3.13;
+  - unmodified `browser_smoke.py` passes for 6 entries (2 v1, 4 v2) under the production CSP;
+  - the clean-kit flow scaffold → lint → render → package → validate passes for the free-mode example.
+
+### Imported illustrations and 3D evaluation (2026-10-07, follow-up)
+
+- `motioncards/lib/assets.py` plus `tools/motioncards.py import-svg FILE|URL --scene … --id … --box … [--template] [--credit …]`:
+  - cleans third-party SVG: removes DOCTYPE, metadata, editor namespaces and event handlers, and rejects external links/CSS;
+  - fits it into a stage box, or into a `<defs>` template for `<use>`;
+  - prefixes every id and CSS class, so multiple imports never collide;
+  - rounds coordinates without merging compact numbers;
+  - records `credits`, which the runtime prints small in the card corner (CC BY attribution).
+- Tested with real Servier Medical Art and Bioicons files (heart, heart interior, lung, erythrocyte, neuron): five imports render together with no collisions.
+- New gold example `examples/v2-imported-art-sickle.scene.json`: the model-authored part is about 1.15k tokens; the imported art never enters the model context.
+- Validator gap fixed: `<style>` with `@import` or external `url()` inside `svg` is now rejected.
+- 3D: three.js r150 (614 KB) runs inside a card under the production CSP and sandbox (WebGL OK in headless Chromium).
+  - It costs about 640 KB per card.
+  - The DOM determinism check does not cover canvas pixels.
+  - A model-invented "biconcave" shape came out anatomically wrong in the test.
+  - Documented as possible but rarely worth it.
+- Measured token cost per card (characters/3.6):
+  - v1 examples: 300–410;
+  - v2 cards: 1.1k–2.2k;
+  - `AUTHORING_V2.md` read once per session: about 3.8k.
+
+  v2 cards are therefore larger than v1 cards. The gains are in quality, in errors caught locally with their location, and in imported art costing about 0 tokens instead of 8k–25k.
+
+### Research-backed adjustments (2026-10-07, follow-up)
+
+Web research findings and what was changed:
+- **Image input helps:** Graphic-Design-Bench (arXiv 2604.04192) shows image-conditioned SVG fidelity well above text-only. This supports keeping the `render` visual loop mandatory.
+- **AI-written Lottie stays out:** the same benchmark scores AI-written Lottie animation poorly (best 0.598), so Lottie stays out of AI authoring.
+- **Organic morphing stays out:** LiveSVG (arXiv 2605.30174) and VAnim report that language models handle rigid transforms but not non-rigid organic deformation.
+  - `AUTHORING_V2.md`: never morph complex organic outlines; cross-fade between real drawings instead.
+  - `lint`: warns when a keyed path morph has more than 60 numbers.
+- **Licences per source:**
+  - NIH BioArt Source: mostly public domain, but the licence is set per entry and includes NC/ND variants.
+  - Servier: CC BY 4.0 on the official site; the Bioicons mirrors carry CC BY 3.0.
+  - Reactome Icon Library: CC BY 4.0.
+  - Health Icons: CC0.
+  - All four are documented with credit wording.
+- **NC/ND licences refused:** `import-svg` refuses any NC/ND credit, because cards are derivatives and the app may be paid. `lint` flags NC/ND credits added by hand.
+- **Not adopted:**
+  - 3D anatomy (Z-Anatomy, CC BY-SA, with upstream BodyParts3D licence doubts, no glTF and uncertain project status);
+  - GSAP (its free licence asks for a paid business licence when end users pay).
+- **Offline open item:** Telegram iOS WebView offline storage remains a device-test item before any offline MotionCards work.
+- Tests: all MotionCards tests pass on Python 3.13 with browser tests, and on Python 3.11 without them.

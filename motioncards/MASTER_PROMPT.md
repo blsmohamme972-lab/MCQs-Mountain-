@@ -123,25 +123,26 @@ python tools/motioncards.py validate dist/MCARDS_MY-BATCH_r1.zip
 
 Edit only `work/<batch>/scenes/Q#########.scene.json`.
 
-Required:
-- `schema_version: 1`
+**Author new cards with schema v2: read `AUTHORING_V2.md` (compact reference) and the `examples/v2-*.scene.json` gold examples.** For professional or precise cards use v2 *free mode*: plain SVG plus a JavaScript `render(t, api)` with full DOM access inside the sandbox. v2 adds:
+- easing;
+- separate visibility (`show`) and motion (`keys`);
+- enter/exit presets;
+- scaling and rotation around each shape's own centre;
+- path morphing and drawn-on lines;
+- motion along paths, particles, spotlight and camera;
+- text wrapping and labels;
+- gradients, shadows and embedded raster illustrations.
+
+Required in every scene:
+- `schema_version` (`2` for new cards; `1` is the legacy engine and stays supported byte-for-byte)
 - exact `qid`
 - exact `duration_ms`
 - one short `takeaway`
 - `layers`
 
-Useful v1 primitives:
-- `label`
-- `rect`
-- `circle`
-- `arrow`
-- `path`
-- `highlight`
-- `focus`
+The authoritative host timeline drives every frame. Do not use CSS animations or independent timers. Free-mode code runs inside the sandboxed, network-less iframe. Timers are inert, `Math.random` is seeded, and `render` must be a pure function of `t` (the `render` command verifies this).
 
-Each layer may define `start_ms`, `end_ms`, `from`, and `to`. Movement is interpolated by the authoritative host timeline. Do not use CSS animations or independent timers.
-
-A documented `custom_renderer` may be used for a subject that cannot be expressed cleanly with the primitives. It must expose `function renderCustom(art,timeMs,helpers)` and must remain deterministic. The validator rejects network APIs, storage APIs, timers, workers, eval/Function and navigation.
+Legacy v1 scenes use `start_ms`, `end_ms`, `from`, `to` with the primitives `label rect circle arrow path highlight focus` (see `TOOLKIT.md`).
 
 ## Educational rules
 
@@ -209,9 +210,13 @@ The current incoming ceiling is **19 * 1024 * 1024 bytes = 19,922,944 bytes**. T
 Run:
 
 ```bash
+python tools/motioncards.py lint --workspace work/my-batch
+python tools/motioncards.py render --workspace work/my-batch --out work/my-batch/render
 python -m unittest tools.tests.test_motioncards_authoring -v
 python tools/motioncards.py validate dist/MCARDS_MY-BATCH_r1.zip
 ```
+
+`lint` fails on any invalid scene with the exact field path and prints layout warnings. `render` (requires `pip install playwright` and a Chromium) writes PNG frames plus one `<QID>_sheet.png` contact sheet per card at phone and tablet framing. It fails if the card reports a render error or if seeking backwards does not reproduce the same frame. Look at the sheet and fix what looks wrong before packaging.
 
 Then visually inspect each authored animation at:
 - start

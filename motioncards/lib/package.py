@@ -42,7 +42,20 @@ def check_archive_structure(path:Path):
         bad=z.testzip()
         if bad:raise ValueError("zip_crc_failed:"+bad)
 
-def scaffold_workspace(bundle:AdaptedExport,out:Path,package_id:str,revision:int,qids:list[str]|None,count:int|None,duration_ms:int|None,overrides:dict[str,int]|None=None,inspected_images:set[str]|None=None,replacement_qids:set[str]|None=None):
+def _starter_scene_v2(qid:str,ms:int,stem:str)->dict:
+    title=" ".join(stem.split())
+    if len(title)>90:title=title[:90].rsplit(" ",1)[0]+"…"
+    return {"schema_version":2,"qid":qid,"duration_ms":ms,"takeaway":"EDIT: one short teaching takeaway",
+        "stage":{"width":640,"height":560},
+        "layers":[
+            {"type":"text","text":title or "Key relationship","x":320,"y":64,"size":26,"weight":800,"max_width":580,"fit":True,"max_lines":2,"fixed":True},
+            {"type":"circle","cx":180,"cy":300,"r":70,"fill":"@surface","stroke":"@ink","stroke_width":3},
+            {"type":"circle","cx":460,"cy":300,"r":70,"fill":"@surface","stroke":"@ink","stroke_width":3,"show":[int(ms*.15),ms],"enter":"pop"},
+            {"type":"arrow","x1":265,"y1":300,"x2":375,"y2":300,"stroke":"@accent","stroke_width":8,"show":[int(ms*.3),ms],"enter":"draw"}
+        ]}
+
+def scaffold_workspace(bundle:AdaptedExport,out:Path,package_id:str,revision:int,qids:list[str]|None,count:int|None,duration_ms:int|None,overrides:dict[str,int]|None=None,inspected_images:set[str]|None=None,replacement_qids:set[str]|None=None,schema:int=2):
+    if schema not in {1,2}:raise ValueError("scene_schema_unsupported")
     if not PACKAGE_ID_RE.fullmatch(package_id):raise ValueError("package_id_invalid")
     if not isinstance(revision,int) or revision<1:raise ValueError("package_revision_invalid")
     selected=select_questions(bundle,qids,count,duration_ms,overrides,inspected_images)
@@ -55,7 +68,8 @@ def scaffold_workspace(bundle:AdaptedExport,out:Path,package_id:str,revision:int
     (out/"selection.json").write_text(json.dumps(selection,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     for item in selected:
         q=item["question"];ms=item["duration_ms"]
-        scene={"schema_version":1,"qid":item["qid"],"duration_ms":ms,"takeaway":"EDIT: one short teaching takeaway","layers":[
+        if schema==2:scene=_starter_scene_v2(item["qid"],ms,str(q.get("stem") or ""))
+        else:scene={"schema_version":1,"qid":item["qid"],"duration_ms":ms,"takeaway":"EDIT: one short teaching takeaway","layers":[
             {"type":"label","text":str(q.get("stem") or "")[:80],"x":320,"y":70,"size":24,"start_ms":0,"end_ms":ms,"from":{"opacity":0.2,"scale":0.96},"to":{"opacity":1,"scale":1}},
             {"type":"arrow","x1":190,"y1":230,"x2":450,"y2":230,"stroke":"#16606A","stroke_width":7,"start_ms":int(ms*.2),"end_ms":int(ms*.8),"from":{"opacity":0},"to":{"opacity":1}}
         ]}

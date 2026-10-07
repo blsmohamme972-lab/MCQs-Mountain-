@@ -1,4 +1,6 @@
-# Kafu MotionCards scene toolkit
+# Kafu MotionCards scene toolkit (legacy v1)
+
+> New cards should use schema v2. See `AUTHORING_V2.md`. This page documents the v1 engine, which remains supported unchanged for existing scenes.
 
 The v1 toolkit is intentionally small. Scene authors describe **what changes over time**; the compiler/player own responsive framing and time.
 

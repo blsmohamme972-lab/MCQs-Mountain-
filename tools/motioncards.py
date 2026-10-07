@@ -8,6 +8,7 @@ from motioncards.lib.core import adapt_exports,resolve_answer
 from motioncards.lib.package import scaffold_workspace
 from motioncards.lib.multipart import build_package_set,validate_package_part
 from motioncards.lib.compiler import compile_scene,validate_scene,preview_host_html
+from motioncards.lib.engine_v2 import lint_scene_v2
 from motioncards.lib.spec import parse_package_filename
 
 def load(paths):return adapt_exports([json.loads(Path(x).read_text(encoding="utf-8")) for x in paths])
@@ -16,6 +17,16 @@ def overrides(values):
     out={}
     for item in values or []:
         qid,ms=item.split("=",1);out[qid]=int(ms)
+    return out
+
+def scene_targets(targets,workspace):
+    paths=list(targets or [])
+    if workspace:paths+=sorted((workspace/"scenes").glob("*.scene.json"))
+    if not paths:raise SystemExit("give scene files or --workspace")
+    out=[]
+    for p in paths:
+        try:out.append((p,json.loads(p.read_text(encoding="utf-8"))))
+        except json.JSONDecodeError as exc:raise SystemExit(f"{p}: invalid JSON: {exc}")
     return out
 
 def main():
@@ -33,6 +44,7 @@ def main():
     s.add_argument("--duration",action="append",default=[],help="QID=milliseconds")
     s.add_argument("--inspected-image-qid",action="append",default=[])
     s.add_argument("--replace",action="append",default=[],help="Selected QID to mark as an intended replacement; confirmation is still required before activation")
+    s.add_argument("--schema",type=int,choices=[1,2],default=2,help="Starter scene schema (2 = current engine; 1 = legacy)")
 
     p=sub.add_parser("package")
     p.add_argument("exports",nargs="+")
@@ -42,13 +54,65 @@ def main():
     v=sub.add_parser("validate");v.add_argument("zip",type=Path)
     f=sub.add_parser("filename");f.add_argument("name")
     pr=sub.add_parser("preview");pr.add_argument("--workspace",type=Path,required=True);pr.add_argument("--port",type=int,default=8767)
+    im=sub.add_parser("import-svg",help="Clean, fit and add an SVG illustration (file or URL) to a scene; the model only references it by id")
+    im.add_argument("source",help="local .svg path or https URL");im.add_argument("--scene",type=Path,required=True)
+    im.add_argument("--id",required=True);im.add_argument("--box",required=True,help="x,y,width,height in stage pixels")
+    im.add_argument("--template",action="store_true",help="reusable symbol: --box is width,height centred on 0,0; draw copies with <use href=#id>")
+    im.add_argument("--fit",default="contain",choices=["contain","cover","stretch"]);im.add_argument("--decimals",type=int,default=2)
+    im.add_argument("--credit",help='licence attribution shown on the card, e.g. "Heart: Servier Medical Art, CC BY 3.0"')
+    li=sub.add_parser("lint",help="Validate scenes and print layout warnings")
+    li.add_argument("targets",nargs="*",type=Path,help="scene .json files");li.add_argument("--workspace",type=Path)
+    rn=sub.add_parser("render",help="Render scenes to PNG frames + contact sheet (needs playwright + Chromium)")
+    rn.add_argument("targets",nargs="*",type=Path,help="scene .json files");rn.add_argument("--workspace",type=Path)
+    rn.add_argument("--out",type=Path,default=Path("render"));rn.add_argument("--frames",type=int,default=6)
+    rn.add_argument("--times",help="comma-separated milliseconds, e.g. 0,1500,4000")
+    rn.add_argument("--sizes",default="phone,tablet",help="phone,tablet")
 
     a=ap.parse_args()
     if a.cmd=="scaffold":
         b=load(a.exports)
-        result=scaffold_workspace(b,a.out,a.package_id.upper(),a.revision,a.qids,a.count,a.duration_ms,overrides(a.duration),set(a.inspected_image_qid),set(a.replace))
+        result=scaffold_workspace(b,a.out,a.package_id.upper(),a.revision,a.qids,a.count,a.duration_ms,overrides(a.duration),set(a.inspected_image_qid),set(a.replace),a.schema)
         print(json.dumps(result,indent=2));return
+    if a.cmd=="import-svg":
+        from motioncards.lib.assets import prepare_svg,add_to_scene
+        if a.source.startswith(("http://","https://")):
+            import urllib.request
+            with urllib.request.urlopen(a.source,timeout=30) as r:raw=r.read(5_000_001)
+            if len(raw)>5_000_000:raise SystemExit("downloaded file is larger than 5 MB")
+            text=raw.decode("utf-8")
+        else:text=Path(a.source).read_text(encoding="utf-8")
+        from motioncards.lib.assets import prepare_template
+        box=tuple(float(x) for x in a.box.split(","))
+        if len(box)!=(2 if a.template else 4):raise SystemExit("--box needs "+("width,height" if a.template else "x,y,width,height"))
+        scene=json.loads(a.scene.read_text(encoding="utf-8"))
+        frag=prepare_template(text,a.id,box[0],box[1],a.decimals) if a.template else prepare_svg(text,a.id,box,a.decimals,a.fit)
+        add_to_scene(scene,frag,a.credit)
+        if scene.get("schema_version")==2:validate_scene(scene,str(scene.get("qid")),scene.get("duration_ms"))
+        a.scene.write_text(json.dumps(scene,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+        print(json.dumps({"imported":a.id,"source_bytes":len(text.encode()),"fragment_bytes":len(frag.encode()),"use_in_script":f"api.$('#{a.id}')","use_in_svg":f"<use href=\"#{a.id}\"/>"},indent=2));return
+    if a.cmd in {"lint","render"}:
+        scenes=scene_targets(a.targets,a.workspace)
+        problems=0;report=[]
+        for path,scene in scenes:
+            try:
+                validate_scene(scene,str(scene.get("qid")),scene.get("duration_ms"))
+                warnings=lint_scene_v2(scene) if scene.get("schema_version")==2 else []
+                report.append({"scene":str(path),"status":"PASS","warnings":warnings})
+            except ValueError as exc:
+                problems+=1;report.append({"scene":str(path),"status":"FAIL","error":str(exc)})
+        if a.cmd=="lint" or problems:
+            print(json.dumps(report,ensure_ascii=False,indent=2))
+            if problems:sys.exit(1)
+            return
+        from motioncards.lib.render import render_scenes
+        times=[int(x) for x in a.times.split(",")] if a.times else None
+        out=render_scenes([sc for _,sc in scenes],a.out,times=times,frames=a.frames,sizes=[x.strip() for x in a.sizes.split(",") if x.strip()])
+        for row,item in zip(report,out):row.update(item)
+        print(json.dumps(report,ensure_ascii=False,indent=2));return
     if a.cmd=="package":
+        for path,scene in scene_targets([],a.workspace):
+            if scene.get("schema_version")==2:
+                for w in lint_scene_v2(scene):print(f"warning: {path.name}: {w}",file=sys.stderr)
         b=load(a.exports);paths=build_package_set(b,a.workspace,a.out)
         total=sum(len(validate_package_part(p)["animations"]) for p in paths)
         print(json.dumps({"zips":[str(p) for p in paths],"animations":total},indent=2));return
