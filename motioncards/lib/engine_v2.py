@@ -543,6 +543,15 @@ def lint_scene_v2(scene:dict)->list[str]:
         warnings.append("script uses the wall clock (Date/performance.now); frames must depend only on t or pause/seek will look wrong")
     if "Math.random" in code:
         warnings.append("Math.random is seeded, but every call returns a new value: draw random numbers once in setup(api) (or use api.random(seed)), never inside render()")
+    for c in scene.get("credits") or []:
+        if re.search(r"\b(?:CC[\s-]*)?BY[\s-]*(?:NC|ND)\b|non[\s-]?commercial|no[\s-]?derivatives?",str(c),re.I):
+            warnings.append(f"credit {c!r} names an NC/ND licence; that material may not be used in MotionCards")
+    def complex_morphs(layers,path):
+        for i,l in enumerate(layers):
+            if l.get("type")=="group":complex_morphs(l.get("layers",[]),f"{path}[{i}].layers");continue
+            if l.get("type")=="path" and any("d" in k for k in l.get("keys",[])) and len(PATH_NUM_RE.findall(str(l.get("d",""))))>60:
+                warnings.append(f"{path}[{i}]: morphing a complex path; organic morphs usually look wrong, so cross-fade two drawings instead")
+    complex_morphs(scene.get("layers",[]),"layers")
     if re.search(r"https?://(?!www\.w3\.org/)",code):
         warnings.append("script mentions an external URL; network access is blocked in production")
     if "svg" in scene or "script" in scene:pass

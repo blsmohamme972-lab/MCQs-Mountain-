@@ -119,8 +119,16 @@ def prepare_template(source:str,asset_id:str,width:float,height:float,decimals:i
     """A reusable symbol centred on (0,0), placed in <defs>: draw copies with <use href="#id" x= y=>."""
     return "<defs>"+prepare_svg(source,asset_id,(-width/2,-height/2,width,height),decimals,"contain")+"</defs>"
 
+RESTRICTED_LICENCE=re.compile(r"\b(?:CC[\s-]*)?BY[\s-]*(?:NC|ND)\b|\bnon[\s-]?commercial\b|\bno[\s-]?derivatives?\b",re.I)
+
+def check_credit(credit:str|None):
+    """Cards are modified derivatives and the app may be paid: NC/ND material is never allowed."""
+    if credit and RESTRICTED_LICENCE.search(credit):
+        raise AssetImportError("NC (non-commercial) or ND (no-derivatives) licences are not allowed in MotionCards; choose public-domain, CC0 or CC BY/BY-SA art")
+
 def add_to_scene(scene:dict,fragment:str,credit:str|None=None)->dict:
     """Append an imported fragment to scene['svg'] (creating it) and record the credit."""
+    check_credit(credit)
     svg=scene.get("svg") or '<svg xmlns="http://www.w3.org/2000/svg"></svg>'
     if "</svg>" not in svg:raise AssetImportError("scene svg has no closing </svg>")
     m=re.search(r'<g id="([a-z][a-z0-9_-]*)"',fragment)

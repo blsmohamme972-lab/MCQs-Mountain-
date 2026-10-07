@@ -249,6 +249,26 @@ class AssetImportTests(unittest.TestCase):
         self.assertIn("Art: Example",compile_scene(scene))
         with self.assertRaises(AssetImportError):add_to_scene(scene,prepare_svg(self.SRC,"one",(0,0,10,10)))
 
+    def test_restricted_licences_are_refused_and_flagged(self):
+        from motioncards.lib.assets import prepare_svg,add_to_scene,AssetImportError
+        scene={"schema_version":2,"qid":"Q000000001","duration_ms":3000,"takeaway":"x","script":"function render(t,api){}"}
+        frag=prepare_svg(self.SRC,"one",(0,0,100,100))
+        for bad in ["Art: X, CC BY-NC 4.0","Art: X, CC-BY-ND","Art: X, non-commercial use only","Art: X, CC BY NC SA"]:
+            with self.assertRaises(AssetImportError):add_to_scene(dict(scene),frag,bad)
+        add_to_scene(scene,frag,"Heart: Servier Medical Art, CC BY 4.0")
+        self.assertEqual(lint_scene_v2(scene),[])
+        scene["credits"].append("Cell: Y, CC BY-NC-SA 4.0")
+        self.assertTrue(any("NC/ND" in w for w in lint_scene_v2(scene)))
+
+    def test_lint_warns_on_complex_organic_morph(self):
+        d="M 0 0 "+" ".join(f"C {i} {i+1} {i+2} {i+3} {i+4} {i+5}" for i in range(12))
+        d2="M 1 1 "+" ".join(f"C {i} {i+2} {i+2} {i+3} {i+4} {i+6}" for i in range(12))
+        s={"schema_version":2,"qid":"Q000000001","duration_ms":3000,"takeaway":"x",
+           "layers":[{"type":"path","d":d,"keys":[{"t":0,"d":d},{"t":3000,"d":d2}]}]}
+        validate_scene(s,"Q000000001",3000)
+        self.assertTrue(any("cross-fade" in w for w in lint_scene_v2(s)))
+        self.assertFalse(any("cross-fade" in w for w in lint_scene_v2(json.loads((EXAMPLES/"v2-stenosis-flow.scene.json").read_text()))))
+
     def test_import_rejects_external_resources_and_entities(self):
         from motioncards.lib.assets import prepare_svg,AssetImportError
         for bad in ['<svg viewBox="0 0 1 1"><image href="https://x.com/a.png"/></svg>',

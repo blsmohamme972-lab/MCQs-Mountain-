@@ -542,3 +542,24 @@ Honest correction of the first v2 iteration: a large custom JSON DSL is itself a
   - `AUTHORING_V2.md` read once per session: about 3.8k.
 
   v2 cards are therefore larger than v1 cards. The gains are in quality, in errors caught locally with their location, and in imported art costing about 0 tokens instead of 8k–25k.
+
+### Research-backed adjustments (2026-10-07, follow-up)
+
+Web research findings and what was changed:
+- **Image input helps:** Graphic-Design-Bench (arXiv 2604.04192) shows image-conditioned SVG fidelity well above text-only. This supports keeping the `render` visual loop mandatory.
+- **AI-written Lottie stays out:** the same benchmark scores AI-written Lottie animation poorly (best 0.598), so Lottie stays out of AI authoring.
+- **Organic morphing stays out:** LiveSVG (arXiv 2605.30174) and VAnim report that language models handle rigid transforms but not non-rigid organic deformation.
+  - `AUTHORING_V2.md`: never morph complex organic outlines; cross-fade between real drawings instead.
+  - `lint`: warns when a keyed path morph has more than 60 numbers.
+- **Licences per source:**
+  - NIH BioArt Source: mostly public domain, but the licence is set per entry and includes NC/ND variants.
+  - Servier: CC BY 4.0 on the official site; the Bioicons mirrors carry CC BY 3.0.
+  - Reactome Icon Library: CC BY 4.0.
+  - Health Icons: CC0.
+  - All four are documented with credit wording.
+- **NC/ND licences refused:** `import-svg` refuses any NC/ND credit, because cards are derivatives and the app may be paid. `lint` flags NC/ND credits added by hand.
+- **Not adopted:**
+  - 3D anatomy (Z-Anatomy, CC BY-SA, with upstream BodyParts3D licence doubts, no glTF and uncertain project status);
+  - GSAP (its free licence asks for a paid business licence when end users pay).
+- **Offline open item:** Telegram iOS WebView offline storage remains a device-test item before any offline MotionCards work.
+- Tests: all MotionCards tests pass on Python 3.13 with browser tests, and on Python 3.11 without them.

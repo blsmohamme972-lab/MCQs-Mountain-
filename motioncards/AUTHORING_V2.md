@@ -134,18 +134,27 @@ The tool:
 
 Then animate it from `script`: `api.$('#heart')` (transform, opacity, filters, or parts by id), or `<use href="#rbc">` copies moved along paths.
 
-Sources and licences:
-- **Servier Medical Art** (CC BY 3.0/4.0, attribution required). Many of these drawings are mirrored in the `bioicons` GitHub repo under `static/icons/cc-by-3.0/`.
-- **Bioicons** (CC0/CC BY/MIT, varies per icon).
-- **Health Icons** (CC0).
-- **Wikimedia Commons**: check each file; CC BY-SA requires the derived card to stay under the same licence.
+Sources and licences (checked October 2026; the licence on each individual file always wins):
 
-Never use images whose licence you cannot name. Never trace copyrighted textbook figures.
+| Source | Licence | Notes |
+|---|---|---|
+| **NIH BioArt Source** (bioart.niaid.nih.gov) | Mostly public domain, **set per entry** | Some entries are CC BY, BY-SA, BY-NC or BY-ND. Read each entry's licence |
+| **Servier Medical Art** (smart.servier.com) | CC BY 4.0 on the official site | Credit required; the official site gives the wording. Copies mirrored in the `bioicons` GitHub repo (`static/icons/cc-by-3.0/`) carry CC BY 3.0; credit them as such |
+| **Reactome Icon Library** | CC BY 4.0 | Credit Reactome (CSHL, OICR, EBI); cells, proteins, organelles |
+| **Health Icons** | CC0 | Simple pictograms. The icons are CC0; the site's code is MIT |
+| **Bioicons** | Varies per icon (CC0, CC BY, MIT) | The licence is in the folder name |
+| **Wikimedia Commons** | Varies per file | CC BY-SA makes the card share-alike too |
+
+Rules:
+- **Never use NC (non-commercial) or ND (no-derivatives) material.** Cards are modified, and the app may be paid. `import-svg` refuses a credit containing NC or ND.
+- Never use images whose licence you cannot name. Never trace copyrighted textbook figures.
+- Write the credit as `"<what>: <author/source>, <licence>"`, e.g. `"Heart: Servier Medical Art, CC BY 4.0"`.
 
 Quality rules:
 - Keep one art style per card; do not mix flat icons with detailed illustrations.
 - Check anatomical correctness of the chosen drawing against the source question.
 - Animate the teaching relationship (flow, change, sequence) on top of the art; do not just show a static picture.
+- Move imported art with rigid changes: position, rotation, scale, opacity, colour, `<use>` copies and drawn-on paths. Language models are reliably weak at non-rigid deformation of organic shapes, so **do not morph complex organic outlines**. Swap or cross-fade between two drawings instead (as the sickle example does).
 
 ## 3D (possible, rarely worth it)
 
@@ -183,6 +192,7 @@ Gradients: `{"id":"g1","kind":"linear","angle":90,"stops":[{"offset":0,"color":"
 - **Use a consistent colour meaning** (e.g. `@good` for normal or physiological, `@bad` or `@accent` for pathology) and no more than 5 hues.
 - **Hold the final state** for the last 1.5–2 s so the takeaway sinks in. The host then shows the Takeaway and the Correct answer.
 - **Accuracy beats decoration.** If you are unsure of a fact, simplify the drawing; never invent anatomy.
+- **Morph only simple geometry** (a narrowing wall, a curve computed from an equation). For organic shapes, cross-fade between two real drawings.
 
 ## Token-saving patterns
 
