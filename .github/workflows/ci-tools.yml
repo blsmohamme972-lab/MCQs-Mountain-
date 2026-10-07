@@ -121,6 +121,8 @@ jobs:
           python tools/motioncards_bundle.py --out /tmp/kafu-motioncards-ci/kafu-motioncards-authoring-kit.zip
           python tools/motioncards.py validate /tmp/kafu-motioncards-ci/example/MCARDS_FIXTURE-DEMO_r1.zip
       - name: Keep MotionCards authoring artifacts
+        # The kit was already built and validated above; storage quota must not fail the job.
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: kafu-motioncards-authoring-example
