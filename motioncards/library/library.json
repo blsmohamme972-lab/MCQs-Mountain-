@@ -95,7 +95,67 @@
       "file": "art/liver-3d.svg",
       "view": "liver with right and left lobes and inferior surface shading, anterior view (right lobe on the left of the image)",
       "use": "liver trauma, Pringle manoeuvre, porta hepatis"
+    },
+    "pelvis-front": {
+      "file": "art/togo-pelvis-male-anterior.svg",
+      "view": "male bony pelvis, anterior view: sacrum, iliac wings, pubic symphysis, obturator foramina",
+      "use": "pelvic brim, iliac vessels, ureters, pelvic fractures",
+      "credit": "Togo Picture Gallery © DBCLS, CC BY 4.0",
+      "style": "togo"
+    },
+    "pelvis-back": {
+      "file": "art/togo-pelvis-male-posterior.svg",
+      "view": "male bony pelvis, posterior view: sacrum with sacral foramina, ischial spines and tuberosities",
+      "use": "sacral roots, pudendal nerve, sciatic notch",
+      "credit": "Togo Picture Gallery © DBCLS, CC BY 4.0",
+      "style": "togo"
+    },
+    "hip-bone-lateral": {
+      "file": "art/togo-hip-bone-right-lateral.svg",
+      "view": "right hip bone, lateral view: acetabulum, obturator foramen",
+      "use": "obturator canal and hernia, acetabulum",
+      "credit": "Togo Picture Gallery © DBCLS, CC BY 4.0",
+      "style": "togo"
+    },
+    "back-muscles": {
+      "file": "art/musculature-back.svg",
+      "view": "whole body from behind with superficial muscles (buttocks visible)",
+      "use": "dermatomes of the back and buttock, sciatica",
+      "style": "servier"
+    },
+    "bladder": {
+      "file": "art/bladder.svg",
+      "view": "bladder opened in coronal section with ureters entering and the start of the urethra",
+      "use": "bladder, ureteric orifices, bladder neck",
+      "style": "servier"
+    },
+    "rectum": {
+      "file": "art/rectum.svg",
+      "view": "rectum and anal canal opened in coronal section with sphincters and ischioanal fat",
+      "use": "anal canal, sphincters, fistula, haemorrhoids",
+      "style": "servier"
+    },
+    "kidney-cut": {
+      "file": "art/kidney-2.svg",
+      "view": "single kidney with renal pelvis and upper ureter, darker style",
+      "use": "kidney, pelviureteric junction, ureter",
+      "style": "servier"
+    },
+    "pelvis-front-female": {
+      "file": "art/togo-pelvis-female-anterior.svg",
+      "view": "female bony pelvis, anterior view (wider, rounder inlet)",
+      "use": "female pelvic anatomy, ureters, rectum",
+      "credit": "Togo Picture Gallery © DBCLS, CC BY 4.0",
+      "style": "togo"
+    },
+    "pelvis-back-female": {
+      "file": "art/togo-pelvis-female-posterior.svg",
+      "view": "female bony pelvis, posterior view: sacral foramina, ischial spines",
+      "use": "pudendal nerve, sacral roots in women",
+      "credit": "Togo Picture Gallery © DBCLS, CC BY 4.0",
+      "style": "togo"
     }
   },
-  "credit": "Servier Medical Art (smart.servier.com), CC BY 3.0"
+  "credit": "Servier Medical Art (smart.servier.com), CC BY 3.0",
+  "credit_note": "Each item uses 'credit' when present, otherwise the top-level 'credit'. Never mix styles (servier vs togo) in one card."
 }

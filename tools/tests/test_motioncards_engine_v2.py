@@ -343,6 +343,23 @@ class AssetImportTests(unittest.TestCase):
         scene["script"]+="\nfunction setup(api){R.grid(api);}"
         self.assertTrue(any("R.grid" in w for w in lint_scene_v2(scene)))
 
+    def test_illustrator_exports_import_but_other_entities_are_refused(self):
+        from motioncards.lib.assets import prepare_svg,AssetImportError
+        ai=("<?xml version=\"1.0\"?><!-- Generator: Adobe Illustrator -->"
+            "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\" [\n"
+            "\t<!ENTITY ns_extend \"http://ns.adobe.com/Extensibility/1.0/\">\n\t<!ENTITY ns_ai \"http://ns.adobe.com/AdobeIllustrator/10.0/\">\n]>"
+            "<svg xmlns:x=\"&ns_extend;\" xmlns:i=\"&ns_ai;\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 10 10\">"
+            "<switch><foreignObject requiredExtensions=\"&ns_ai;\" x=\"0\" y=\"0\" width=\"1\" height=\"1\"><i:pgf>PRIVATE</i:pgf></foreignObject>"
+            "<g i:extraneous=\"self\"><rect width=\"4\" height=\"4\" fill=\"#a59983\"/></g></switch></svg>")
+        g=prepare_svg(ai,"bone",(0,0,100,100))
+        self.assertIn("<rect",g);self.assertNotIn("foreignObject",g);self.assertNotIn("PRIVATE",g);self.assertNotIn("&",g)
+        for bad in ['<!DOCTYPE svg [<!ENTITY a "http://x.com/">]><svg viewBox="0 0 1 1"><text>&a;</text></svg>',   # URL entity used in text
+                    '<!DOCTYPE svg [<!ENTITY a "plain">]><svg xmlns:a="&a;" viewBox="0 0 1 1"/>',                    # not a URL
+                    '<!DOCTYPE svg [<!ENTITY a SYSTEM "file:///etc/passwd">]><svg viewBox="0 0 1 1"/>',              # external entity
+                    '<!DOCTYPE svg [<!ENTITY % p "x">]><svg viewBox="0 0 1 1"/>',                                     # parameter entity
+                    '<!DOCTYPE svg [<!ENTITY a "http://x.com/"><!ELEMENT svg ANY>]><svg viewBox="0 0 1 1"/>']:       # other declarations
+            with self.assertRaises(AssetImportError,msg=bad):prepare_svg(bad,"x",(0,0,10,10))
+
     def test_import_rejects_external_resources_and_entities(self):
         from motioncards.lib.assets import prepare_svg,AssetImportError
         for bad in ['<svg viewBox="0 0 1 1"><image href="https://x.com/a.png"/></svg>',
