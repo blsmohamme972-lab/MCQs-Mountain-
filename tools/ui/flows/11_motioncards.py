@@ -1,6 +1,6 @@
 """Built-app Kafu MotionCards player integration and security flow."""
 from __future__ import annotations
-import hashlib,json
+import hashlib,json,time
 from pathlib import Path
 from motioncards.lib.compiler import compile_scene
 from motioncards.lib.core import content_hash
@@ -157,6 +157,7 @@ def timeout_case(browser,origin,pack,helpers):
     q,record,index,html=fixture(pack,origin);attempt={"n":0}
     ctx.route(f"{BASE}/indexes/**",lambda route:route.fulfill(status=200,content_type="application/json",body=json.dumps(index)))
     def asset(route):
+        if not route.request.is_navigation_request():return route.abort()   # no device copy: the card loads from the network
         attempt["n"]+=1
         route.fulfill(status=200,content_type="text/html",body="<!doctype html><title>Broken fixture</title>" if attempt["n"]==1 else html)
     ctx.route(f"{BASE}/assets/**",asset)
@@ -193,6 +194,7 @@ def removal_refresh_case(browser,origin,pack,helpers):
     ctx=helpers["phone_context"](browser,origin,390,"light")
     q,record,index,html=fixture(pack,origin);state={"active":True}
     def index_route(route):
+        if state.get("down"):return route.abort()
         body=dict(index);body["animations"]={q["id"]:record} if state["active"] else {}
         route.fulfill(status=200,content_type="application/json",body=json.dumps(body))
     ctx.route(f"{BASE}/indexes/**",index_route)
@@ -202,11 +204,13 @@ def removal_refresh_case(browser,origin,pack,helpers):
     start(page,[q["id"]])
     assert page.locator("[data-a='motioncards-open']").count()==1
     assert page.evaluate("KafuMotionCards.player.productionRefreshWindowMs")==35000
-    state["active"]=False
+    state["down"]=True;page.wait_for_timeout(800)      # a network blip on refresh must not hide the button
+    assert page.locator("[data-a='motioncards-open']").count()==1
+    state["down"]=False;state["active"]=False
     page.wait_for_function("!document.querySelector('[data-a=motioncards-open]')",timeout=3000)
     assert page.locator(".k-study .stem").count()==1
     assert not errors,errors;ctx.close()
-    return "soft-remove propagation: an already-open question loses its button on the bounded refresh cycle (35s production window)"
+    return "soft-remove propagation: an already-open question loses its button on the bounded refresh cycle (35s production window); a network blip keeps it"
 
 VOICE=Path(__file__).resolve().parents[3]/"voiceover"/"samples"/"ch10"/"Q000009379.opus"
 
@@ -261,7 +265,41 @@ def voice_case(browser,origin,pack,helpers):
         page.evaluate("localStorage.removeItem('kafu.motioncards.voice.muted')")
         assert not errors,errors;ctx.close()
         results.append("verified voice plays on the Play tap, picture follows the voice within 150 ms, pause/seek move it, mute persists")
+    # A slow phone can run the card's ready message before its voice script; the host must still get the voice.
+    ctx=helpers["phone_context"](browser,origin,390,"light");q,index,html=voice_fixture(pack,origin,False)
+    html=html.replace('<script type="application/octet-stream" id="kafu-voice"',f'<script src="{BASE}/assets/slow.js"></script><script type="application/octet-stream" id="kafu-voice"')
+    def slow(route):time.sleep(1.0);route.fulfill(status=200,content_type="text/javascript",body="")
+    ctx.route(f"{BASE}/indexes/**",serve(json.dumps(index),"application/json"));ctx.route(f"{BASE}/assets/**",serve(html,"text/html"));ctx.route(f"{BASE}/assets/slow.js",slow)
+    page,errors=helpers["open_app"](ctx,origin,pack);start(page,[q["id"]])
+    page.locator("[data-a='motioncards-open']").click();page.wait_for_selector("[data-motioncards-host='mute']:not([hidden])",timeout=9000)
+    assert page.evaluate("!!KafuMotionCards.player.active.voice") and not errors,errors;ctx.close()
+    results.append("voice still arrives when the card's voice script runs after its ready message (slow phones)")
     return results
+
+def offline_case(browser,origin,pack,helpers):
+    """A saved chapter keeps its MotionCards (voice inside) on the device; they play offline and leave with the chapter."""
+    ctx=helpers["phone_context"](browser,origin,390,"light");q,index,html=voice_fixture(pack,origin,False);state={"up":True,"hits":0}
+    def idx(route):
+        if not state["up"]:return route.abort()
+        route.fulfill(status=200,content_type="application/json",body=json.dumps(index),headers={"access-control-allow-origin":origin})
+    def card(route):
+        if not state["up"]:return route.abort()
+        state["hits"]+=1;route.fulfill(status=200,content_type="text/html",body=html,headers={"access-control-allow-origin":origin})
+    ctx.route(f"{BASE}/indexes/**",idx);ctx.route(f"{BASE}/assets/**",card)
+    page,errors=helpers["open_app"](ctx,origin,pack);start(page,[q["id"]])
+    key=page.evaluate("(()=>{const e=QI[%s];return e.b+':'+e.ch})()"%json.dumps(q["id"]))
+    page.evaluate("k=>KafuMotionCards.player.saveCards(k,PACKS[k])",key)
+    assert state["hits"]==1,state
+    state["up"]=False
+    page.locator("[data-a='motioncards-open']").click();page.wait_for_selector("[data-motioncards-host='mute']:not([hidden])",timeout=9000)
+    assert page.evaluate("KafuMotionCards.player.active.frame.src.startsWith('blob:')")
+    page.locator("[data-motioncards-host='play']").click();page.wait_for_timeout(1200)
+    assert page.evaluate("KafuMotionCards.player.active.voice.position")>500 and state["hits"]==1
+    page.locator("[data-motioncards-host='close']").click();page.wait_for_function("!KafuMotionCards.player.active")
+    page.evaluate("k=>deleteChapter(k)",key)
+    assert page.evaluate("caches.open('kafu-motioncards-v1').then(c=>c.keys()).then(k=>k.length)")==0
+    assert not errors,errors;ctx.close()
+    return "a saved chapter stores its MotionCards (voice inside, SHA-256 checked); they play offline from the device and are removed with the chapter"
 
 def run(browser,origin,pack,out,helpers):
     passed=full_player(browser,origin,pack,out,helpers)
@@ -270,4 +308,5 @@ def run(browser,origin,pack,out,helpers):
     passed.append(account_switch_case(browser,origin,pack,helpers))
     passed.append(removal_refresh_case(browser,origin,pack,helpers))
     passed.extend(voice_case(browser,origin,pack,helpers))
+    passed.append(offline_case(browser,origin,pack,helpers))
     return {"passed":passed}

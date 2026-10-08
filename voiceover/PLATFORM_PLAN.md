@@ -36,6 +36,14 @@
   - Pause and seek move the voice, and mute persists.
   - A voice whose bytes don't match the index is never played, and the card still plays.
 
+### 4. Cards and voice saved on the device
+- **What it does:** when a chapter is saved for offline, its MotionCards (each with its voice inside) are saved in the app's Cache Storage (`kafu-motioncards-v1`). A card is also saved the first time it plays.
+- **Integrity:** a stored card is used only if its bytes match the index `entry_sha256`.
+- **Security:** it plays from a `blob:` URL in the same `sandbox="allow-scripts"` iframe, with the card's CSP added as a `<meta>` tag. The card still gets an opaque origin, no storage and no network.
+- **Network use:** after the first download, opening a card makes no card request; offline, the chapter's saved index copy keeps the button.
+- **Cleanup:** deleting the chapter removes its cards, and a newer revision replaces older copies when the chapter is saved again.
+- **Fallback:** without Cache Storage, the card loads from the network as before.
+
 ## Left to do
 - **Shards for 300+ books (Golden rule 6):** the free plan allows 20,000 files per Worker version, about 75 books at one file per card. Before the published card count nears 20,000, publish by book to `kafu-motioncards-1 … N`. The free plan allows 100 Workers, and each one is assets-only, so each stays free and unlimited. The index records each card's URL, so the app needs no change.
 - **iPhones older than iOS 18.4** (no Ogg Opus): today the card plays silently there (no error, and the mute button stays hidden). Optional upgrade: lazy-load a small WASM Opus decoder on those phones only; check its licence and size first.

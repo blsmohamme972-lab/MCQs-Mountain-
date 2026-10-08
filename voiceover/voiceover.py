@@ -257,9 +257,11 @@ def speech_onsets(pcm, cues, sr=16000, frame_ms=10, rel_db=-30.0) -> list[int | 
     n = sr * frame_ms // 1000; frames = len(pcm) // n
     if frames == 0: return [None] * len(cues)
     rms = np.sqrt(np.mean(pcm[:frames * n].reshape(frames, n) ** 2, axis=1) + 1e-12)
-    thr = rms.max() * 10 ** (rel_db / 20); out = []
+    thr = rms.max() * 10 ** (rel_db / 20); out = []; prev_end = 0
     for c in cues:
-        lo, hi = max(0, (c["t_ms"] - 400) // frame_ms), min(frames, (c["t_ms"] + 400) // frame_ms)
+        # search from 400 ms early, but never inside the previous beat's own line
+        lo, hi = max(0, (c["t_ms"] - 400) // frame_ms, prev_end // frame_ms + 1), min(frames, (c["t_ms"] + 400) // frame_ms)
+        prev_end = c.get("end_ms", c["t_ms"])
         hit = next((i for i in range(lo, hi) if rms[i] > thr), None)
         out.append(None if hit is None else hit * frame_ms - c["t_ms"])
     return out

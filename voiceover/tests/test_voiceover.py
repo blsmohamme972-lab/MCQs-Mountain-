@@ -54,6 +54,13 @@ class Signal(unittest.TestCase):
         y = np.concatenate([np.zeros(V.SR // 5, np.float32), np.full(V.SR // 2, 0.2, np.float32)])
         self.assertLess(abs(len(V.trim_lead(y)) - (V.SR // 2 + V.SR * 8 // 1000)), V.SR // 200 + 1)
 
+    def test_onset_ignores_the_previous_beats_tail(self):
+        import numpy as np
+        sr = 16000; x = np.zeros(sr * 3, np.float32)
+        x[int(0.5 * sr):int(1.38 * sr)] = 0.3; x[int(1.5 * sr):int(2.0 * sr)] = 0.3   # line 1 ends 120 ms before line 2
+        on = V.speech_onsets(x, [{"t_ms": 500, "end_ms": 1380}, {"t_ms": 1500, "end_ms": 2000}], sr=sr)
+        self.assertEqual(on, [0, 0])
+
     def test_assign_words_to_nearest_beat(self):
         W = type("W", (), {})
         def w(s, e): o = W(); o.start, o.end = s, e; return o
