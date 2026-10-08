@@ -566,7 +566,8 @@ Web research findings and what was changed:
 
 ### Everyday art sources (2026-10-08, docs only)
 
-- `AUTHORING_V2.md` "Approved art sources" now lists non-medical sources (E1 Fluent Emoji MIT, E2 Noto Emoji 2D Apache 2.0, E3 Twemoji CC BY 4.0, E4 Kenney CC0 vector packs, E5 Open Peeps CC0), a "maybe" list and a "Do not use" list. Licences were read from each project's own file or page on 2026-10-08; samples were imported and rendered.
+- Everyday art now starts with Servier itself: bioicons `General_items`/`Animals`/`Plants_Algae` SVGs (S1) and the SMART PowerPoint sets (S2, CC BY 4.0: People, Risk-Factors, Dietetics, …). The new `tools/motioncards_smart.py` lists and extracts single drawings from a SMART set as cropped SVG (LibreOffice → PDF → `pdftocairo` → crop in Chromium). Houses, rivers and landscapes remain a gap: IAN/UMCES symbols cover them but are CC BY-SA (owner decision).
+- Emoji sets are demoted to small props: (E1 Fluent Emoji MIT, E2 Noto Emoji 2D Apache 2.0, E3 Twemoji CC BY 4.0, E4 Kenney CC0 vector packs, E5 Open Peeps CC0), a "maybe" list and a "Do not use" list. Licences were read from each project's own file or page on 2026-10-08; samples were imported and rendered.
 - Found: `import-svg` drops attributes on the root `<svg>`, so Figma exports with root `fill="none"` (Fluent Emoji) render black blobs. The doc gives a wrap-in-`<g fill="none">` workaround; fixing the importer is a separate change.
 - The three temperature recipes (`R.thermometer`, `R.sweat`, `R.arrowGrow`) were added to the Recipes table.
 - No library art was added: library entries need `used_in` card QIDs.

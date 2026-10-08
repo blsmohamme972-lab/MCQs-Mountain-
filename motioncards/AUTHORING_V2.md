@@ -202,15 +202,36 @@ Checked October 2026 for Kafu's goals: MRCS clinical anatomy, vector art whose p
 | 6 | **Health Icons**: `https://raw.githubusercontent.com/resolvetosavelives/healthicons/main/public/icons/svg/{outline,filled}/<category>/<name>.svg` (categories include `body`, `symbols`, `medications`, `devices`, `conditions`) | Small symbols only (warning, drug, device). Never the main picture | CC0 | none needed |
 | 7 | **Tabler Icons**: `https://raw.githubusercontent.com/tabler/tabler-icons/main/icons/outline/<name>.svg` | UI marks only: arrows, ticks, crosses | MIT | none needed |
 
-#### Everyday art (non-medical: people, animals, home, food, weather, landscape, transport, tools)
+#### Everyday art (non-medical: people, lifestyle, food, animals, weather, equipment)
 
-Checked 8 October 2026: each licence was read from the project's own licence file or page, and samples were imported with `import-svg` and rendered next to `lib:heart`. Use these when the card needs an everyday object, a patient in daily life, or a setting (a hot day, a river, a meal), never in place of the medical sources above.
+Checked 8 October 2026: each licence was read from the project's own licence file or page, and samples were imported with `import-svg` and rendered next to `lib:heart`.
+
+**Start with Servier: it is the same artist and style as the library, so a card stays uniform.** Servier draws far more than organs:
+
+| # | Source | What is there | Licence | Credit to pass to `--credit` |
+|---|---|---|---|---|
+| S1 | **bioicons Servier, everyday folders** (plain SVG, same URL pattern as row 1): `.../cc-by-3.0/General_items/Servier/<name>.svg`, `.../Animals/Servier/<name>.svg`, `.../Plants_Algae/Servier/<name>.svg` | 162 general items: food and drink (bread, glass-water, milk, burger, wine, salt), seasons and weather (sun, summer, winter, autumn, spring, day, night, heat, uv-radition), toilet, bath, faucet, hand-washing, cigarette, clock, stopwatch, scale, traffic lights, ventilator, arrows. 52 animals (dog, cat, horse, ox, sheep, pig, fish, mouse, rat), 21 fruits and vegetables | CC BY 3.0 | `"<What>: Servier Medical Art, CC BY 3.0"` |
+| S2 | **SMART Servier PowerPoint sets** (vector shapes, not SVG): `https://smart.servier.com/wp-content/uploads/2016/10/SMART-<Set>.pptx`. Useful sets: `People` (newborn to elderly, all ethnicities, clothed and unclothed), `Risk-Factors` (tobacco, alcohol, excess weight, obesity, age, hygiene, sitting, running, cycling, lifting, raised legs, day/night, clock, heat, UV), `Dietetics`, `General-items`, `Medical-acts`, `Medical-equipment`; also `.../2025/06/SMART-Emergency-equipment.pptx` | Every page says: "Servier Medical Art is licensed under CC BY 4.0 … even for commercial purposes" | `"<What>: Servier Medical Art (smart.servier.com), CC BY 4.0"` |
+
+Get one drawing out of a SMART set with `tools/motioncards_smart.py` (needs LibreOffice, `pdftocairo` and the Chromium used by `render`):
+
+```bash
+python3 tools/motioncards_smart.py list SMART-Risk-Factors.pptx           # slide titles and the group name of each drawing (x = position on the slide, left to right)
+python3 tools/motioncards_smart.py extract SMART-Risk-Factors.pptx 13 "Group 135" cyclist.svg
+python3 tools/motioncards.py import-svg cyclist.svg --scene … --id cyclist --box 20,20,300,260 --credit "Cyclist: Servier Medical Art (smart.servier.com), CC BY 4.0"
+```
+
+Tested: cyclist, man lifting a box, patient with raised legs, day/sun and a clothed woman each import at 9–103 KB and render cleanly next to `lib:heart`. Each drawing comes out as many separate paths without names: move or fade it whole, or cross-fade two drawings. Do not try to animate limbs. If a slide has two groups with the same name, `extract` keeps both. Then crop the scene box, or pick another slide.
+
+**Still missing from Servier: houses, rivers, landscapes and vehicles other than a bicycle and an ambulance.** No source we found is both permissive and drawn as finely as Servier. The best-looking one, the IAN/UMCES symbol library (3,000+ SVG landscapes, rivers, animals, buildings), is **CC BY-SA 4.0**, so it is excluded until the owner decides otherwise. Until then, draw a simple setting yourself with the style kit, or use a small prop from the emoji sets below. Never make an emoji the main picture.
+
+**Small props only (when S1/S2 have nothing):** pick one family per card.
 
 | # | Source | Use it for | Licence: what you may take | Credit to pass to `--credit` |
 |---|---|---|---|---|
-| E1 | **Microsoft Fluent Emoji**, Color style: `https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/<Name>/Color/<name>_color.svg` (e.g. `assets/Dog/Color/dog_color.svg`; folder names have spaces, encode them as `%20`; people with skin tones use `<Name>/Default/Color/<name>_color_default.svg`). Flat style: `.../<Name>/Flat/<name>_flat.svg` | **First choice for everyday objects.** About 1,600 subjects. The soft gradients sit best next to Servier. Color is 5–22 KB per drawing and uses SVG filters, so keep it static or only move/fade it; use Flat (about 2 KB, no filters) when a card needs many copies. **Before importing a Color or Flat file, apply the root-fill fix below** | MIT (`LICENSE`: "Permission is hereby granted … to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies"). The 3D style is PNG only: do not use it | `"<What>: Microsoft Fluent Emoji, MIT"` |
-| E2 | **Google Noto Emoji**: `https://raw.githubusercontent.com/googlefonts/noto-emoji/main/2D/svg/emoji_u<codepoint>.svg` (lowercase hex, sequences joined with `_`, e.g. `emoji_u1f3de.svg` = national park) | Second choice. Rounded flat colour, 3–9 KB, clean separate shapes. Good landscapes and buildings | Apache 2.0 (`2D/svg/LICENSE`). The fonts are OFL and the `3D/` folder is PNG only: use only `2D/svg` | `"<What>: Google Noto Emoji, Apache 2.0"` |
-| E3 | **Twemoji** (maintained fork): `https://raw.githubusercontent.com/jdecked/twemoji/main/assets/svg/<codepoint>.svg` (lowercase hex, sequences joined with `-`) | Third choice. The lightest (1–3 KB), simplest flat shapes; good for small repeated symbols (sun, raindrop, snowflake) | Graphics CC BY 4.0 (`LICENSE-GRAPHICS`; README: "The graphics are licensed under the CC-BY 4.0") | `"<What>: Twemoji (github.com/jdecked/twemoji), CC BY 4.0"` |
+| E1 | **Microsoft Fluent Emoji**, Color style: `https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/<Name>/Color/<name>_color.svg` (e.g. `assets/Dog/Color/dog_color.svg`; folder names have spaces, encode them as `%20`; people with skin tones use `<Name>/Default/Color/<name>_color_default.svg`). Flat style: `.../<Name>/Flat/<name>_flat.svg` | About 1,600 subjects. Of the emoji sets, its soft gradients sit best next to Servier. Color is 5–22 KB per drawing and uses SVG filters, so keep it static or only move/fade it; use Flat (about 2 KB, no filters) when a card needs many copies. **Before importing a Color or Flat file, apply the root-fill fix below** | MIT (`LICENSE`: "Permission is hereby granted … to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies"). The 3D style is PNG only: do not use it | `"<What>: Microsoft Fluent Emoji, MIT"` |
+| E2 | **Google Noto Emoji**: `https://raw.githubusercontent.com/googlefonts/noto-emoji/main/2D/svg/emoji_u<codepoint>.svg` (lowercase hex, sequences joined with `_`, e.g. `emoji_u1f3de.svg` = national park) | Rounded flat colour, 3–9 KB, clean separate shapes. Good landscapes and buildings | Apache 2.0 (`2D/svg/LICENSE`). The fonts are OFL and the `3D/` folder is PNG only: use only `2D/svg` | `"<What>: Google Noto Emoji, Apache 2.0"` |
+| E3 | **Twemoji** (maintained fork): `https://raw.githubusercontent.com/jdecked/twemoji/main/assets/svg/<codepoint>.svg` (lowercase hex, sequences joined with `-`) | The lightest (1–3 KB), simplest flat shapes; good for small repeated symbols (sun, raindrop, snowflake) | Graphics CC BY 4.0 (`LICENSE-GRAPHICS`; README: "The graphics are licensed under the CC-BY 4.0") | `"<What>: Twemoji (github.com/jdecked/twemoji), CC BY 4.0"` |
 | E4 | **Kenney** 2D packs: download the pack zip from `https://kenney.nl/assets/<pack>`; use only packs whose zip has a `Vector/` folder (e.g. Fish Pack) | Game-style scenery: terrain, water plants, rocks, fish, simple props. Tiny files (1–2 KB) with separate shapes. Coverage is spotty; most packs are PNG or 3D | CC0 (`License.txt` in every zip: "You can use this content for personal, educational, and commercial purposes") | `"<What>: Kenney (kenney.nl), CC0"` (optional) |
 | E5 | **Open Peeps** (Pablo Stanley): single files linked from `https://www.openpeeps.com/`; whole library from `https://gum.co/openpeeps` (enter 0 to download free) | People in black-and-white line art: a patient sitting, a person shrugging. Each peep is about 12 KB after import, with separate head, body and arm groups | CC0 (site: "The library is in the public domain under the CC0 License … even for commercial purposes, without asking permission") | `"<What>: Open Peeps by Pablo Stanley, CC0"` (optional) |
 
@@ -221,11 +242,11 @@ python3 -c "import re,sys;s=open(sys.argv[1]).read();m=re.search(r'<svg[^>]*>',s
 ```
 
 Rules for everyday art:
-- **One emoji family per card.** Never mix Fluent, Noto and Twemoji, or emoji with Open Peeps line art, in one card. Keep the Servier medical drawing as the main picture; everyday art is the setting or a small prop.
+- **One emoji family per card.** Never mix Fluent, Noto and Twemoji, or emoji with Open Peeps line art, in one card. Servier art (medical, S1 or S2) is always the main picture.
 - Leave out logos, brand glyphs and flags.
 - Render once and check the result: an import that looks fine as a file can still break (see the root-fill fix).
 
-**Maybe (use only if E1–E5 have nothing that fits, and say so in the reply):**
+**Maybe (use only if S1, S2 and E1–E5 have nothing that fits, and say so in the reply):**
 
 | Source | Licence | Why not first choice | Credit |
 |---|---|---|---|
@@ -240,6 +261,7 @@ Rules for everyday art:
 | Source | Why |
 |---|---|
 | OpenMoji | CC BY-SA 4.0: share-alike would force the cards' licence |
+| IAN/UMCES symbol libraries | CC BY-SA 4.0 (beautiful; owner decision needed, see above) |
 | unDraw | Licence forbids compiling the assets "to replicate a similar or competing service" or distributing them "in packs or otherwise" |
 | CocoMaterial | The creator's announcement forbids compiling the illustrations to replicate the service (same trap as unDraw); its licence page could not be read |
 | DrawKit | Own non-transferable licence, not an open licence |
