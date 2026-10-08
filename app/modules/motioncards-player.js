@@ -28,14 +28,14 @@ async function indexFor(entry,q){
   if(hit&&hit.until>now)return hit.value;
   try{
     const r=await fetch(indexUrl(entry,q),{cache:"no-cache",credentials:"omit",referrerPolicy:"no-referrer"});
-    if(!r.ok){cache.set(key,{until:now+NEGATIVE_TTL,value:null});return null;}
+    if(!r.ok){cache.set(key,{until:now+NEGATIVE_TTL,value:undefined});return undefined;}
     const data=await r.json();
     if(!data||data.schema!==1||String(data.book_id)!==String(entry.b)||Number(data.book_version)!==Number(q.version)||data.runtime_version!==MC.VERSION||data.protocol_version!==MC.PROTOCOL||!data.animations||typeof data.animations!=="object")throw new Error("motioncards_index_invalid");
     cache.set(key,{until:now+POSITIVE_TTL,value:data});return data;
-  }catch(_){cache.set(key,{until:now+NEGATIVE_TTL,value:null});return null;}
+  }catch(_){cache.set(key,{until:now+NEGATIVE_TTL,value:undefined});return undefined;}
 }
 async function resolveMatch(snapshot){
-  const data=await indexFor(snapshot.entry,snapshot.q);if(!data)return null;
+  const data=await indexFor(snapshot.entry,snapshot.q);if(!data)return data;   // undefined: index unreachable right now
   const record=data.animations[snapshot.qid];if(!Core.validRecord(record,snapshot.q,snapshot.entry))return null;
   const hash=await Core.questionHash(snapshot.q);
   if(hash!==String(record.content_hash).toLowerCase())return null;
@@ -69,6 +69,7 @@ function refreshAvailability(){
   resolveMatch(snapshot).then(async record=>{
     if(serial!==lookupSerial)return;
     const now=current();if(!sameIdentity(now,snapshot))return;
+    if(record===undefined){scheduleAvailability();return;}   // a network blip keeps the button; only a fresh index removes it
     if(!record){clearButton(snapshot.qid);scheduleAvailability();return;}
     const currentHash=await Core.questionHash(now.q);
     if(serial!==lookupSerial||!sameIdentity(current(),snapshot)||currentHash!==String(record.content_hash).toLowerCase()){clearButton(snapshot.qid);return;}
@@ -129,7 +130,7 @@ function restoreTelegram(a){
 }
 function closePlayer(restore=true){
   if(!active)return;
-  const a=active;stopClock(a);clearTimeout(a.readyTimer);dropVoice(a);
+  const a=active;stopClock(a);clearTimeout(a.readyTimer);clearTimeout(a.loadWait);a.pending=0;dropVoice(a);
   try{a.port?.postMessage({type:"destroy",protocol:MC.PROTOCOL,channel_id:a.channel,qid:a.qid});a.port?.close();}catch(_){}
   window.removeEventListener("message",a.messageHandler);try{a.frame.src="about:blank";}catch(_){}active=null;lookupSerial++;
   a.root.replaceChildren();a.root.hidden=true;document.body.classList.remove("kafu-motioncards-open");
@@ -160,7 +161,12 @@ async function acceptVoice(x,channel){
 function connectFromReady(event){
   if(!active||event.source!==active.frame.contentWindow)return;
   const m=event.data;if(!m||m.type!=="kafu-motioncards-ready"||m.protocol!==MC.PROTOCOL||m.qid!==active.qid||m.channel_id!==active.channel)return;
-  if(active.connected)return;
+  if(active.connected||active.port||active.pending)return;
+  // The card says ready before its voice script has run; connect only once its document has fully loaded.
+  const a=active,go=()=>{if(active===a&&a.pending){a.pending=0;clearTimeout(a.loadWait);connectPort();}};
+  a.pending=go;if(a.loaded)go();else a.loadWait=setTimeout(go,3000);
+}
+function connectPort(){
   const channel=new MessageChannel(),expectedChannel=active.channel;active.port=channel.port1;
   active.port.onmessage=e=>{
     if(!active||active.channel!==expectedChannel)return;
@@ -180,6 +186,7 @@ function loadFrame(){
   active.readyTimer=setTimeout(()=>fail("The animation did not become ready. Retry or close it and continue studying."),READY_TIMEOUT);
   const target=new URL(active.record.entry_url);
   if(active.loadAttempt>1)target.searchParams.set("motioncards_retry",active.channel);
+  const a=active,c=a.channel;a.loaded=false;a.pending=0;clearTimeout(a.loadWait);a.frame.onload=()=>{if(active===a&&a.channel===c){a.loaded=true;if(a.pending)a.pending();}};
   target.hash=active.channel;active.frame.src=target.href;
 }
 function openPlayer(qid,record,providedSnapshot=null,standalone=false){
