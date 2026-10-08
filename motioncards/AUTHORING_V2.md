@@ -135,6 +135,8 @@ python tools/motioncards.py import-svg lib:healthy-lung --scene work/b/scenes/Qâ
 | `fill="url(#kit-tissue)"` `kit-muscle` `kit-lung` `kit-tumour` `kit-bone` | radial organ fills, lit from the upper left |
 | `stroke`/`fill="url(#kit-nerve)"` `kit-vein` `kit-artery` | cylindrical gradients for vertical nerves and vessels |
 
+**Never put a kit filter or a kit gradient on a perfectly horizontal or vertical line.** Kit filters and gradients are sized to the element's bounding box. A flat line has zero height (or width), so it vanishes or is clipped to a sliver. Draw a band as a `rect` with `rx`, or use a solid colour.
+
 Filters re-render whenever the element changes, so put them on static shapes or on shapes that only move, fade or scale. Never put one on an element that changes shape every frame and covers half the stage. In free mode, append your elements to the art's parent (`const P = api.$("#lungs").parentNode`) so they stack above the art. To put something behind the art, use `P.insertBefore(el, api.$("#lungs"))`.
 
 ## Professional illustrations from the internet (import, never paste)
