@@ -43,6 +43,11 @@ class Text(unittest.TestCase):
         self.assertEqual(V.word_score("The INR rises.", "The INR rises. The INR rises."), 1.0)
         self.assertLess(V.word_score("Ketoacidosis", "ketosidosis"), 0.95)
 
+    def test_word_score_reads_digits_as_spoken_numbers(self):
+        self.assertEqual(V.word_score("Sixty percent travels as bicarbonate", "60 % travels as bicarbonate."), 1.0)
+        self.assertEqual(V.word_score("Only six point one", "only 6 .1"), 1.0)
+        self.assertEqual(V.word_score("Type two cells", "Type 2 cells"), 1.0)
+
 
 class Signal(unittest.TestCase):
     def test_onsets_and_trim(self):

@@ -1,0 +1,27 @@
+{
+ "qid": "Q000009416",
+ "duration_ms": 8000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "speed": 1.05,
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2700,
+   "caption": "PaO₂: oxygen pressure in blood",
+   "say": "PaO₂: oxygen pressure in blood"
+  },
+  {
+   "start_ms": 2700,
+   "end_ms": 5200,
+   "caption": "Here: only 6.1 kPa",
+   "say": "Here: only 6.1 kPa"
+  },
+  {
+   "start_ms": 5200,
+   "end_ms": 8000,
+   "caption": "Low PaO₂ means hypoxaemia",
+   "say": "Low PaO₂ means hypoxaemia"
+  }
+ ]
+}

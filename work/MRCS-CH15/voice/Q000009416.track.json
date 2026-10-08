@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009416",
+ "file": "Q000009416.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 15070,
+ "sha256": "c6def50bede0dda209cefd7c20562e23bf585a0a46e532f14909c3e597053b4e",
+ "track_ms": 7654,
+ "card_ms": 8000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2543,
+   "text": "PaO₂: oxygen pressure in blood",
+   "speed": 1.184
+  },
+  {
+   "t_ms": 2820,
+   "end_ms": 5061,
+   "text": "Here: only 6.1 kPa",
+   "speed": 1.112
+  },
+  {
+   "t_ms": 5320,
+   "end_ms": 7554,
+   "text": "Low PaO₂ means hypoxaemia",
+   "speed": 1.05
+  }
+ ]
+}

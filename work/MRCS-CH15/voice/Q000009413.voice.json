@@ -1,0 +1,27 @@
+{
+ "qid": "Q000009413",
+ "duration_ms": 8000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "speed": 1.05,
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2700,
+   "caption": "Tissues release carbon dioxide",
+   "say": "Tissues release carbon dioxide"
+  },
+  {
+   "start_ms": 2700,
+   "end_ms": 5200,
+   "caption": "Red cells make bicarbonate",
+   "say": "Red cells make bicarbonate"
+  },
+  {
+   "start_ms": 5200,
+   "end_ms": 8000,
+   "caption": "Sixty percent travels as bicarbonate",
+   "say": "Sixty percent travels as bicarbonate"
+  }
+ ]
+}

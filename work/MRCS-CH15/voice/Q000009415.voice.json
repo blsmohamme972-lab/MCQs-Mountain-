@@ -1,0 +1,27 @@
+{
+ "qid": "Q000009415",
+ "duration_ms": 8000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "speed": 1.05,
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2700,
+   "caption": "Stored blood lacks 2,3-DPG",
+   "say": "Stored blood lacks 2,3-DPG"
+  },
+  {
+   "start_ms": 2700,
+   "end_ms": 5200,
+   "caption": "The curve shifts left",
+   "say": "The curve shifts left"
+  },
+  {
+   "start_ms": 5200,
+   "end_ms": 8000,
+   "caption": "Haemoglobin clings to its oxygen",
+   "say": "Haemoglobin clings to its oxygen"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009412",
+ "file": "Q000009412.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 13919,
+ "sha256": "fb2cc64a10d94a0415a39c215ab4236d4c6ebf66c31382c09f3fc0cccecba93d",
+ "track_ms": 7372,
+ "card_ms": 8000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2570,
+   "text": "Mask oxygen: fifteen litres a minute",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2820,
+   "end_ms": 4571,
+   "text": "Faster breaths entrain room air",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 5320,
+   "end_ms": 7272,
+   "text": "Inspiratory flow rate decides it",
+   "speed": 1.05
+  }
+ ]
+}

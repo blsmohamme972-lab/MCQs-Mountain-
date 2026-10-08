@@ -1,0 +1,140 @@
+[
+ {
+  "qid": "Q000009412",
+  "beats": [
+   {
+    "say": "Mask oxygen: fifteen litres a minute",
+    "heard": "Mask oxygen, 15 liters a minute,",
+    "score": 0.967,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Faster breaths entrain room air",
+    "heard": "faster breaths and train room air.",
+    "score": 0.945,
+    "onset_error_ms": 20
+   },
+   {
+    "say": "Inspiratory flow rate decides it",
+    "heard": "Inspiratory flow rate decides it.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009413",
+  "beats": [
+   {
+    "say": "Tissues release carbon dioxide",
+    "heard": "Tissues release carbon dioxide.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Red cells make bicarbonate",
+    "heard": "Red cells make bicarbonate.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Sixty percent travels as bicarbonate",
+    "heard": "60 % travels as bicarbonate. .",
+    "score": 1.0,
+    "onset_error_ms": 20
+   }
+  ]
+ },
+ {
+  "qid": "Q000009414",
+  "beats": [
+   {
+    "say": "Type two cells line the alveolus",
+    "heard": "Type 2 cells line the alveolus.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "They secrete surfactant",
+    "heard": "They secrete surfactant.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Surfactant is mainly lipid",
+    "heard": "Surfactant is mainly lipid.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009415",
+  "beats": [
+   {
+    "say": "Stored blood lacks 2,3-DPG",
+    "heard": "Stored blood lacks 2 -3D PG.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "The curve shifts left",
+    "heard": "The curve shifts left.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Haemoglobin clings to its oxygen",
+    "heard": "Hemoglobin clings to its oxygen.",
+    "score": 0.982,
+    "onset_error_ms": 50
+   }
+  ]
+ },
+ {
+  "qid": "Q000009416",
+  "beats": [
+   {
+    "say": "PaO₂: oxygen pressure in blood",
+    "heard": "PaO2, oxygen pressure and blood.",
+    "score": 0.885,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Here: only 6.1 kPa",
+    "heard": "Here, only 6 .1 kilopascals.",
+    "score": 0.927,
+    "onset_error_ms": 20
+   },
+   {
+    "say": "Low PaO₂ means hypoxaemia",
+    "heard": "Low PaO2 means hypoxemia.",
+    "score": 0.909,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009417",
+  "beats": [
+   {
+    "say": "Some alveoli get no air",
+    "heard": "Some alveoli get no air.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Blood passes them without oxygen",
+    "heard": "Blood passes them without oxygen.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Shunted blood lowers the PaO₂",
+    "heard": "Shaunted blood lowers the pee, AO2. Thank you.",
+    "score": 0.913,
+    "onset_error_ms": 10
+   }
+  ]
+ }
+]

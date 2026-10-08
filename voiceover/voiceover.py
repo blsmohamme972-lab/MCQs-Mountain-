@@ -100,7 +100,20 @@ def ipa_split(text: str, ipa: dict) -> list[tuple[str, bool]]:
     return out
 
 
+_ONES = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen".split()
+_TENS = "_ _ twenty thirty forty fifty sixty seventy eighty ninety".split()
+
+
+def _num_words(m: re.Match) -> str:
+    """'15' -> 'fifteen', '6.1' -> 'six point one': the recogniser writes digits where the line spells them out."""
+    whole, frac = m.group(1), m.group(2)
+    n = int(whole)
+    w = _ONES[n] if n < 20 else (_TENS[n // 10] + ("" if n % 10 == 0 else " " + _ONES[n % 10])) if n < 100 else whole
+    return w + ("".join(" point " + " ".join(_ONES[int(d)] for d in frac)) if frac else "")
+
+
 def norm_words(text: str) -> list[str]:
+    text = re.sub(r"(\d+)(?:\s*\.\s*(\d+))?", _num_words, text.replace("%", " percent"))
     return [w for w in re.sub(r"[^a-z0-9 ]", " ", text.lower().replace("-", "")).split() if w]
 
 

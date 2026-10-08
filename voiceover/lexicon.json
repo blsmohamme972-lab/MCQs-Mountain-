@@ -32,7 +32,11 @@
   "&": "and",
   "=": "equals",
   "≈": "about",
-  "%": "percent"
+  "%": "percent",
+  "PaO₂": "P, A, O two",
+  "PaCO₂": "P, A, C O two",
+  "2,3-DPG": "two three D P G",
+  "DPPC": "D P P C"
  },
  "ipa": {
   "en-us": {
@@ -52,7 +56,10 @@
    "creatinine": "kɹiːˈætɪniːn",
    "preload": "pɹˈiːlˌoʊd",
    "arteriole": "ɑːɹtˈɪɹiˌoʊl",
-   "arterioles": "ɑːɹtˈɪɹiˌoʊlz"
+   "arterioles": "ɑːɹtˈɪɹiˌoʊlz",
+   "hypoxaemia": "hˌaɪpɑːksˈiːmiə",
+   "hypoxemia": "hˌaɪpɑːksˈiːmiə",
+   "shunted": "ʃˈʌntɪd"
   },
   "en-gb": {
    "ketoacidosis": "kˌiːtəʊˌæsɪdˈəʊsɪs",
