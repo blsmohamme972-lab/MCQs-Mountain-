@@ -30,5 +30,6 @@ test('only the next chapter is prefetched, with no recursive full-book download'
   h.run('CATALOG={books:[{id:"BOOK",version:1,title:"Book",questions:3,chapters:[1,2,3].map(id=>({id,title:"Chapter "+id,questions:1,url:base+"/chapter"+id+".json",bytes:300}))}],specialties:[],fields:[],removed_books:[]};');
   await h.run('startChapter("BOOK",1)');await new Promise(resolve=>setImmediate(resolve));
   await h.run('KafuDownloads.manager.finish(KafuDownloads.metadata("BOOK",2))');
-  assert.equal(requested.length,2);assert.ok(requested.some(url=>url.endsWith('chapter2.json')));assert.ok(!requested.some(url=>url.endsWith('chapter3.json')));
+  const chapters=requested.filter(url=>url.startsWith(base));   // saving a chapter may also look up its MotionCards index
+  assert.equal(chapters.length,2);assert.ok(chapters.some(url=>url.endsWith('chapter2.json')));assert.ok(!requested.some(url=>url.endsWith('chapter3.json')));
 });
