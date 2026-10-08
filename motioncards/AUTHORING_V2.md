@@ -122,6 +122,16 @@ python tools/motioncards.py style-kit work/b/scenes/Q….scene.json
 python tools/motioncards.py import-svg lib:healthy-lung --scene work/b/scenes/Q….scene.json --id lungs --box 100,96,440,450
 ```
 
+**Where to find art, in this order** (best quality and same style first; details, URL patterns and credits are in "Approved art sources" below):
+
+| Need | Look here first | Then |
+|---|---|---|
+| Organs, anatomy, cells | `motioncards.py library` (offline) | Servier SVGs: search [bioicons.com](https://bioicons.com/) (set the licence filter to CC BY 3.0 and pick drawings by Servier), then import from the raw GitHub URL (pattern in row 1 below). Sections and regions: [Togo Picture Gallery](https://togotv.dbcls.jp/en/pics.html). Pathology and microbes: [NIAID BioArt](https://bioart.niaid.nih.gov/) (PD or CC BY entries only). Fine surgical anatomy: [Gray's Anatomy plates](https://commons.wikimedia.org/wiki/Category:Gray%27s_Anatomy_plates) |
+| People, patients, doctors, lifestyle (sitting, running, cycling, lifting, obesity, smoking, hygiene, age) | Servier SMART: search [smart.servier.com](https://smart.servier.com/) (e.g. `https://smart.servier.com/?s=cyclist`) or browse [People](https://smart.servier.com/category/general-items/people/), [Food](https://smart.servier.com/category/general-items/food/), [Equipment](https://smart.servier.com/category/general-items/equipment/); download the set's `.pptx` and cut the drawing out with `tools/motioncards_smart.py` | Servier SVGs on [bioicons.com](https://bioicons.com/) in `General_items`, `Animals`, `Plants_Algae`, `People-Other` |
+| Food, drink, weather, seasons, day/night, animals, everyday objects | Servier SVGs on [bioicons.com](https://bioicons.com/) (`General_items`, `Animals`, `Plants_Algae`) | SMART Food or Risk-Factors sets |
+| Small symbols (warning, drug, device) | [Health Icons](https://healthicons.org/) | [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) as a small prop only |
+| House, river, landscape, vehicles | No approved source matches Servier quality yet. Draw a simple setting with the style kit | A small [Noto](https://github.com/googlefonts/noto-emoji/tree/main/2D/svg) or Fluent emoji, or a [Kenney](https://kenney.nl/assets) vector pack |
+
 `lib:` imports add the Servier credit automatically. Render once with a grid (draw lines every 20 px in `setup`) to read where the organs landed, then place your additions on that art.
 
 **Style kit:** `style-kit` adds `<defs id="kit">` to the scene, once. Use it on everything you draw yourself, so your shapes look like they belong next to the art instead of flat clip-art:
