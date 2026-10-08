@@ -49,6 +49,7 @@ jobs:
           rm -rf motioncards-worker/dist
           mkdir -p motioncards-worker/dist
           python tools/tests/motioncards_worker_fixture.py --dist motioncards-worker/dist --meta /tmp/motioncards-worker-meta.json
+          cp motioncards-worker/_headers motioncards-worker/dist/_headers
           npx --yes wrangler@4 dev --local --config motioncards-worker/wrangler.jsonc --port 8791 > /tmp/motioncards-wrangler.log 2>&1 &
           PID=$!
           trap 'kill "$PID" 2>/dev/null || true' EXIT

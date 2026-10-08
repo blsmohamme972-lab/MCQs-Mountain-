@@ -73,6 +73,11 @@ jobs:
           rm -rf motioncards-worker/dist
           mkdir -p motioncards-worker/dist
           cp -a /tmp/kafu-motioncards/site/. motioncards-worker/dist/
+          # Card/index headers come from the static _headers file (no Worker invocation, free and unlimited).
+          # Never deploy without it: cards would lose their CSP sandbox.
+          cp motioncards-worker/_headers motioncards-worker/dist/_headers
+          grep -q "sandbox allow-scripts" motioncards-worker/dist/_headers
+          grep -q "frame-ancestors https://kafu.blsmohamme97.workers.dev" motioncards-worker/dist/_headers
           python -m py_compile tools/motioncards/queue_worker.py tools/motioncards/publish.py tools/motioncards/state_store.py tools/motioncards/smoke.py
           test -s motioncards-worker/dist/build-info.json
 
