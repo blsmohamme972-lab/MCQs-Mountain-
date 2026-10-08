@@ -41,11 +41,13 @@ def _estimate(bundle,workspace:Path,row:dict):
     scene=json.loads(scene_path.read_text(encoding="utf-8"))
     question=next(q for q in bundle.questions if q["id"]==qid)
     source={"question":question,"integrity":bundle.integrity[qid],"provenance":bundle.provenance}
-    return len(compile_scene(scene).encode())+len(scene_path.read_bytes())+len(json.dumps(source,ensure_ascii=False).encode())+8192
+    voice=workspace/"voice"/f"{qid}.opus"
+    voice_bytes=voice.stat().st_size*7//3 if voice.exists() else 0   # the file itself plus its base64 copy inside the entry
+    return len(compile_scene(scene).encode())+len(scene_path.read_bytes())+len(json.dumps(source,ensure_ascii=False).encode())+voice_bytes+8192
 
-def build_package_set(bundle,workspace:Path,out_zip:Path):
+def build_package_set(bundle,workspace:Path,out_zip:Path,require_voice:bool=False):
     try:
-        build_package(bundle,workspace,out_zip)
+        build_package(bundle,workspace,out_zip,require_voice)
         return [out_zip]
     except ValueError as exc:
         if str(exc)!="zip_too_large":raise
@@ -66,9 +68,13 @@ def build_package_set(bundle,workspace:Path,out_zip:Path):
             tmp=Path(td);(tmp/"scenes").mkdir()
             subset={**selection,"selected":chunk}
             (tmp/"selection.json").write_text(json.dumps(subset,ensure_ascii=False,indent=2)+"\n")
-            for row in chunk:shutil.copy2(workspace/"scenes"/f"{row['qid']}.scene.json",tmp/"scenes"/f"{row['qid']}.scene.json")
+            for row in chunk:
+                shutil.copy2(workspace/"scenes"/f"{row['qid']}.scene.json",tmp/"scenes"/f"{row['qid']}.scene.json")
+                for ext in (".opus",".track.json"):
+                    src=workspace/"voice"/f"{row['qid']}{ext}"
+                    if src.exists():(tmp/"voice").mkdir(exist_ok=True);shutil.copy2(src,tmp/"voice"/src.name)
             name=out_zip.with_name(out_zip.stem+f"_part{index}of{total}.zip")
-            build_package(bundle,tmp,name)
+            build_package(bundle,tmp,name,require_voice)
             _rewrite_manifest(name,{"multipart":{"part_index":index,"total_parts":total,"batch_count":len(batch_qids),"batch_qids":batch_qids,"part_qids":[x["qid"] for x in chunk]}})
             validate_package_part(name);outputs.append(name)
     return outputs

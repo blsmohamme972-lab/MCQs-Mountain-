@@ -97,12 +97,16 @@ def _validate_host_origins(allowed:list[str],preview:bool=False):
         raise ValueError("allowed_host_origin_invalid")
     return allowed
 
-def compile_scene(scene:dict,allowed_host_origins:list[str]|None=None,preview:bool=False)->str:
+def compile_scene(scene:dict,allowed_host_origins:list[str]|None=None,preview:bool=False,voice:bytes|None=None)->str:
     qid=str(scene["qid"]);duration=int(scene["duration_ms"]);validate_scene(scene,qid,duration)
     allowed=_validate_host_origins(allowed_host_origins or ["https://kafu.blsmohamme97.workers.dev"],preview)
     if scene.get("schema_version")==2:
         from .engine_v2 import compile_scene_v2
-        return compile_scene_v2(scene,allowed,RUNTIME_VERSION)
+        html=compile_scene_v2(scene,allowed,RUNTIME_VERSION)
+        if voice is None:return html
+        from .voice import embed_voice
+        return embed_voice(html,voice)
+    if voice is not None:raise ValueError("voice_requires_schema_v2")
     cfg={"qid":qid,"duration_ms":duration,"layers":scene["layers"],"channel_id":"","allowed_host_origins":allowed,"runtime_version":RUNTIME_VERSION}
     custom=scene.get("custom_renderer") or "function renderCustom(){}"
     cfgtext=json.dumps(cfg,ensure_ascii=False,separators=(",",":")).replace("<","\\u003c")
