@@ -563,3 +563,10 @@ Web research findings and what was changed:
   - GSAP (its free licence asks for a paid business licence when end users pay).
 - **Offline open item:** Telegram iOS WebView offline storage remains a device-test item before any offline MotionCards work.
 - Tests: all MotionCards tests pass on Python 3.13 with browser tests, and on Python 3.11 without them.
+
+### Everyday art sources (2026-10-08, docs only)
+
+- `AUTHORING_V2.md` "Approved art sources" now lists non-medical sources (E1 Fluent Emoji MIT, E2 Noto Emoji 2D Apache 2.0, E3 Twemoji CC BY 4.0, E4 Kenney CC0 vector packs, E5 Open Peeps CC0), a "maybe" list and a "Do not use" list. Licences were read from each project's own file or page on 2026-10-08; samples were imported and rendered.
+- Found: `import-svg` drops attributes on the root `<svg>`, so Figma exports with root `fill="none"` (Fluent Emoji) render black blobs. The doc gives a wrap-in-`<g fill="none">` workaround; fixing the importer is a separate change.
+- The three temperature recipes (`R.thermometer`, `R.sweat`, `R.arrowGrow`) were added to the Recipes table.
+- No library art was added: library entries need `used_in` card QIDs.

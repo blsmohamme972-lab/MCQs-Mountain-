@@ -180,6 +180,9 @@ Then animate it from `script`: `api.$('#heart')` (transform, opacity, filters, o
 | `gl = R.glow(api, P, x, y, {r, color})` | `gl.update(t, on)` | Pain, inflammation, danger |
 | `tr = R.travel(api, P, d, {width})` | `tr.update(t, f)` | Hernia sac, catheter, bolus, stone travelling a route |
 | `L = R.callout(api, P, "text", x, y, color, [toX, toY])` | `R.fade(api, L, t, in0, in1, out0, out1)` | Label chip with a leader line |
+| `th = R.thermometer(api, P, x, y0, y1, lo, hi, {ticks})` | `th.update(v, color)` | Body or room temperature: tube top at `y0`, bulb at `y1`, scale `lo`..`hi` °C, optional tick values, live °C label |
+| `sw = R.sweat(api, P, [[x, y, size], ...])` | `sw.update(t, f)` | Sweat or any liquid beading up drop by drop (`f` 0..1 = how wet) |
+| `a = R.arrowGrow(api, P, d, color, w)` | `a.update(t, f)` | Arrow that grows along any path `d`: heat loss, flow direction, cause → effect |
 | `R.scaleAbout(api, el, s)` | | Grow or pulse a shape about its own centre |
 
 `P` is the art's parent (`R.layer(api, "#st")`), so new elements stack above the art; pass `{behind: st}` to put them behind it. `R.grid(api)` draws a 20 px layout grid; `lint` warns until you remove it. Write your own code only for what no recipe covers.
@@ -198,6 +201,52 @@ Checked October 2026 for Kafu's goals: MRCS clinical anatomy, vector art whose p
 | 5 | **Mikael Häggström diagrams** on Wikimedia Commons (gallery: `https://en.wikiversity.org/wiki/WikiJournal_of_Medicine/Medical_gallery_of_Mikael_H%C3%A4ggstr%C3%B6m_2014`) | Whole-body maps: symptoms, organ positions | CC0 for the 2014 gallery; check newer files | `"<What>: Mikael Häggström, CC0"` |
 | 6 | **Health Icons**: `https://raw.githubusercontent.com/resolvetosavelives/healthicons/main/public/icons/svg/{outline,filled}/<category>/<name>.svg` (categories include `body`, `symbols`, `medications`, `devices`, `conditions`) | Small symbols only (warning, drug, device). Never the main picture | CC0 | none needed |
 | 7 | **Tabler Icons**: `https://raw.githubusercontent.com/tabler/tabler-icons/main/icons/outline/<name>.svg` | UI marks only: arrows, ticks, crosses | MIT | none needed |
+
+#### Everyday art (non-medical: people, animals, home, food, weather, landscape, transport, tools)
+
+Checked 8 October 2026: each licence was read from the project's own licence file or page, and samples were imported with `import-svg` and rendered next to `lib:heart`. Use these when the card needs an everyday object, a patient in daily life, or a setting (a hot day, a river, a meal), never in place of the medical sources above.
+
+| # | Source | Use it for | Licence: what you may take | Credit to pass to `--credit` |
+|---|---|---|---|---|
+| E1 | **Microsoft Fluent Emoji**, Color style: `https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/<Name>/Color/<name>_color.svg` (e.g. `assets/Dog/Color/dog_color.svg`; folder names have spaces, encode them as `%20`; people with skin tones use `<Name>/Default/Color/<name>_color_default.svg`). Flat style: `.../<Name>/Flat/<name>_flat.svg` | **First choice for everyday objects.** About 1,600 subjects. The soft gradients sit best next to Servier. Color is 5–22 KB per drawing and uses SVG filters, so keep it static or only move/fade it; use Flat (about 2 KB, no filters) when a card needs many copies. **Before importing a Color or Flat file, apply the root-fill fix below** | MIT (`LICENSE`: "Permission is hereby granted … to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies"). The 3D style is PNG only: do not use it | `"<What>: Microsoft Fluent Emoji, MIT"` |
+| E2 | **Google Noto Emoji**: `https://raw.githubusercontent.com/googlefonts/noto-emoji/main/2D/svg/emoji_u<codepoint>.svg` (lowercase hex, sequences joined with `_`, e.g. `emoji_u1f3de.svg` = national park) | Second choice. Rounded flat colour, 3–9 KB, clean separate shapes. Good landscapes and buildings | Apache 2.0 (`2D/svg/LICENSE`). The fonts are OFL and the `3D/` folder is PNG only: use only `2D/svg` | `"<What>: Google Noto Emoji, Apache 2.0"` |
+| E3 | **Twemoji** (maintained fork): `https://raw.githubusercontent.com/jdecked/twemoji/main/assets/svg/<codepoint>.svg` (lowercase hex, sequences joined with `-`) | Third choice. The lightest (1–3 KB), simplest flat shapes; good for small repeated symbols (sun, raindrop, snowflake) | Graphics CC BY 4.0 (`LICENSE-GRAPHICS`; README: "The graphics are licensed under the CC-BY 4.0") | `"<What>: Twemoji (github.com/jdecked/twemoji), CC BY 4.0"` |
+| E4 | **Kenney** 2D packs: download the pack zip from `https://kenney.nl/assets/<pack>`; use only packs whose zip has a `Vector/` folder (e.g. Fish Pack) | Game-style scenery: terrain, water plants, rocks, fish, simple props. Tiny files (1–2 KB) with separate shapes. Coverage is spotty; most packs are PNG or 3D | CC0 (`License.txt` in every zip: "You can use this content for personal, educational, and commercial purposes") | `"<What>: Kenney (kenney.nl), CC0"` (optional) |
+| E5 | **Open Peeps** (Pablo Stanley): single files linked from `https://www.openpeeps.com/`; whole library from `https://gum.co/openpeeps` (enter 0 to download free) | People in black-and-white line art: a patient sitting, a person shrugging. Each peep is about 12 KB after import, with separate head, body and arm groups | CC0 (site: "The library is in the public domain under the CC0 License … even for commercial purposes, without asking permission") | `"<What>: Open Peeps by Pablo Stanley, CC0"` (optional) |
+
+**Root-fill fix (Fluent Emoji and other Figma exports).** `import-svg` drops attributes on the root `<svg>`. Fluent files put `fill="none"` there, so their stroke-only paths turn into black blobs after import. Wrap the content in a group first, then import the fixed copy:
+
+```bash
+python3 -c "import re,sys;s=open(sys.argv[1]).read();m=re.search(r'<svg[^>]*>',s);open(sys.argv[2],'w').write(s[:m.end()]+'<g fill=\"none\">'+s[m.end():].replace('</svg>','</g></svg>'))" dog_color.svg dog_fixed.svg
+```
+
+Rules for everyday art:
+- **One emoji family per card.** Never mix Fluent, Noto and Twemoji, or emoji with Open Peeps line art, in one card. Keep the Servier medical drawing as the main picture; everyday art is the setting or a small prop.
+- Leave out logos, brand glyphs and flags.
+- Render once and check the result: an import that looks fine as a file can still break (see the root-fill fix).
+
+**Maybe (use only if E1–E5 have nothing that fits, and say so in the reply):**
+
+| Source | Licence | Why not first choice | Credit |
+|---|---|---|---|
+| **Humaaans** and **Open Doodles** (Pablo Stanley): `https://gum.co/humaaans`, `https://www.opendoodles.com/` | CC0 (each site says so) | Downloads go through Gumroad or Dropbox, so no stable per-file URL. Not render-tested yet | `"<What>: Humaaans by Pablo Stanley, CC0"` / `"<What>: Open Doodles by Pablo Stanley, CC0"` |
+| **Openclipart**: `https://openclipart.org/` (copies at `https://freesvg.org/`) | CC0 per upload (FAQ) | The site timed out during the check. Every file has a different style and quality; check the file page | `"<What>: <artist>, Openclipart, CC0"` |
+| **game-icons.net**: `https://raw.githubusercontent.com/game-icons/icons/master/<author>/<name>.svg` | CC BY 3.0, or CC0 where `license.txt` says so ("Please, include a mention 'Icons made by {author}'") | One-colour silhouettes only. Each file starts with a black 512×512 square: delete the first `<path>` before importing | `"<What>: <author>, game-icons.net, CC BY 3.0"` |
+| **Streamline Emojis**: the `@iconify-json/streamline-emojis` package on jsDelivr (no per-file URL; extract the icon from `icons.json`) | CC BY 4.0 (`webalys-hq/streamline-vectors` README: "You must give appropriate credit and provide a link to the Streamline website"). Only the sets marked CC BY 4.0; other Streamline free sets have a restrictive licence | Cartoon outline style that clashes with Servier | `"<What>: Streamline (streamlinehq.com), CC BY 4.0"` |
+| **Mozilla FxEmoji**: `https://github.com/mozilla/fxemoji` | Visual design CC BY 4.0 (`LICENSE.md`); the code is Apache 2.0, and Iconify wrongly lists the art as Apache | Old set (2015), smaller, dated style | `"<What>: Mozilla FxEmoji, CC BY 4.0"` |
+
+**Do not use** (checked 8 October 2026):
+
+| Source | Why |
+|---|---|
+| OpenMoji | CC BY-SA 4.0: share-alike would force the cards' licence |
+| unDraw | Licence forbids compiling the assets "to replicate a similar or competing service" or distributing them "in packs or otherwise" |
+| CocoMaterial | The creator's announcement forbids compiling the illustrations to replicate the service (same trap as unDraw); its licence page could not be read |
+| DrawKit | Own non-transferable licence, not an open licence |
+| IRA Design | Claims MIT but is governed by Creative Tim's EULA: "You can't redistribute or resell our products source files as they are" |
+| illlustrations.co | Newer and premium assets are under a licence that forbids redistribution and competing libraries |
+| Noto Emoji `3D/`, Fluent Emoji 3D | PNG only |
+| SVG Repo, Flaticon, Iconscout, Icons8 (Ouch!), Storyset, Freepik, Blush, other stock sites | Per-file or proprietary licences, attribution traps, or no redistribution |
 
 Do not use other sources (Reactome, SciDraw, Lottie, GSAP, 3D model sites, raster galleries such as Blausen or OpenStax, stock sites, Noun Project, Freepik) unless the user approves. They either do not fit the cards or their licence is unsafe for a paid app. If no approved source has the structure you need, draw it yourself with the style kit; never trace a textbook figure.
 
