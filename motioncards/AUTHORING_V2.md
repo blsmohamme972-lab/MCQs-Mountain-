@@ -231,7 +231,7 @@ python3 tools/motioncards_smart.py extract SMART-Risk-Factors.pptx 13 "Group 135
 python3 tools/motioncards.py import-svg cyclist.svg --scene … --id cyclist --box 20,20,300,260 --credit "Cyclist: Servier Medical Art (smart.servier.com), CC BY 4.0"
 ```
 
-Tested: cyclist, man lifting a box, patient with raised legs, day/sun and a clothed woman each import at 9–103 KB and render cleanly next to `lib:heart`. Each drawing comes out as many separate paths without names: move or fade it whole, or cross-fade two drawings. Do not try to animate limbs. If a slide has two groups with the same name, `extract` keeps both. Then crop the scene box, or pick another slide.
+Tested: cyclist, man lifting a box, patient with raised legs, day/sun and a clothed woman each import at 9–103 KB and render cleanly next to `lib:heart`. Each drawing comes out as many separate paths without names: move or fade it whole, or cross-fade two drawings. Do not try to animate limbs. If a slide has two groups with the same name, `extract` keeps both. Clothes are often separate groups drawn over a body: add them with `--also "Group 824"` (repeatable). Then crop the scene box, or pick another slide.
 
 **Still missing from Servier: houses, rivers, landscapes and vehicles other than a bicycle and an ambulance.** No source we found is both permissive and drawn as finely as Servier. The best-looking one, the IAN/UMCES symbol library (3,000+ SVG landscapes, rivers, animals, buildings), is **CC BY-SA 4.0**, so it is excluded until the owner decides otherwise. Until then, draw a simple setting yourself with the style kit, or use a small prop from the emoji sets below. Never make an emoji the main picture.
 

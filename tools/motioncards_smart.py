@@ -6,6 +6,7 @@ as vector shapes inside .pptx sets, not as SVG files. Each drawing on a slide is
 
   python3 tools/motioncards_smart.py list SMART-People.pptx            # slide titles and group names
   python3 tools/motioncards_smart.py extract SMART-People.pptx 14 "Group 903" woman.svg
+  python3 tools/motioncards_smart.py extract SMART-Risk-Factors.pptx 7 "Group 3" woman.svg --also "Group 824"   # body + clothes
   python3 tools/motioncards.py import-svg woman.svg --scene … --id woman --box … \\
     --credit "Woman: Servier Medical Art (smart.servier.com), CC BY 4.0"
 
@@ -42,7 +43,7 @@ def cmd_extract(a):
                     for c in list(tree):
                         if c.tag.endswith(("}sp","}pic","}grpSp","}graphicFrame","}cxnSp")):
                             nv=c.find(f".//{{{P}}}cNvPr")
-                            if c.tag.endswith("}grpSp") and nv is not None and nv.get("name")==a.group:found=True
+                            if c.tag.endswith("}grpSp") and nv is not None and nv.get("name") in [a.group]+a.also:found=True
                             else:tree.remove(c)
                     if not found:sys.exit(f"no top-level group named {a.group!r} on slide {a.slide}; run: list")
                     root.set("showMasterSp","0")                     # hide the slide master (background, logo, footer)
@@ -65,6 +66,6 @@ def cmd_extract(a):
 def main():
     ap=argparse.ArgumentParser(description=__doc__,formatter_class=argparse.RawDescriptionHelpFormatter);sub=ap.add_subparsers(dest="cmd",required=True)
     l=sub.add_parser("list");l.add_argument("deck");l.set_defaults(f=cmd_list)
-    e=sub.add_parser("extract");e.add_argument("deck");e.add_argument("slide",type=int);e.add_argument("group");e.add_argument("out");e.set_defaults(f=cmd_extract)
+    e=sub.add_parser("extract");e.add_argument("deck");e.add_argument("slide",type=int);e.add_argument("group");e.add_argument("out");e.add_argument("--also",action="append",default=[],metavar="GROUP",help="keep another group too (e.g. clothes drawn over a body)");e.set_defaults(f=cmd_extract)
     a=ap.parse_args();a.f(a)
 if __name__=="__main__":main()
