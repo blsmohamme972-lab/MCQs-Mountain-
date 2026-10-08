@@ -49,7 +49,9 @@
    "cholecystectomy": "kˌoʊləsɪstˈɛktəmi",
    "hepatomegaly": "hˌɛpətoʊmˈɛɡəli",
    "bilirubin": "bˌɪlɪɹˈuːbɪn",
-   "creatinine": "kɹiːˈætɪniːn"
+   "creatinine": "kɹiːˈætɪniːn",
+   "baroreflex": "bˌæɹoʊɹˈiːflɛks",
+   "anticholinergic": "ˌæntikˌoʊlɪnˈɜːdʒɪk"
   },
   "en-gb": {
    "ketoacidosis": "kˌiːtəʊˌæsɪdˈəʊsɪs",
@@ -57,7 +59,9 @@
    "ketone": "kˈiːtəʊn",
    "prothrombin": "pɹəʊθɹˈɒmbɪn",
    "caecum": "sˈiːkəm",
-   "bilirubin": "bˌɪlɪɹˈuːbɪn"
+   "bilirubin": "bˌɪlɪɹˈuːbɪn",
+   "baroreflex": "bˌæɹəʊɹˈiːflɛks",
+   "anticholinergic": "ˌæntikˌəʊlɪnˈɜːdʒɪk"
   }
  }
 }
