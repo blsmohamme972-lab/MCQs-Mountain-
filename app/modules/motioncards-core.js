@@ -22,7 +22,7 @@ function validRecord(r,q,entry){
   return !!r&&r.qid===q.id&&QID.test(r.qid)&&String(r.book_id)===String(entry.b)&&Number(r.book_version)===Number(q.version)&&String(r.chapter_id)===String(entry.ch)&&HEX64.test(String(r.content_hash||""))&&Number.isInteger(r.duration_ms)&&r.duration_ms>=2000&&r.duration_ms<=30000&&typeof r.entry_url==="string"&&r.entry_url.startsWith(API.CONTENT_BASE+"/assets/")&&HEX64.test(String(r.entry_sha256||""));
 }
 function validMessage(m,active){
-  return !!m&&m.protocol===API.PROTOCOL&&m.channel_id===active.channel&&m.qid===active.qid&&["ready","state","ended","error"].includes(m.type);
+  return !!m&&m.protocol===API.PROTOCOL&&m.channel_id===active.channel&&m.qid===active.qid&&["ready","state","ended","error","voice"].includes(m.type);
 }
 API.core={canonicalJson,sha256Hex,questionHash,validRecord,validMessage,HEX64,QID};
 })(globalThis);

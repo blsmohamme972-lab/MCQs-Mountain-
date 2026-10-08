@@ -232,7 +232,8 @@
   background: var(--kafu-motioncards-primary);
   color: var(--kafu-motioncards-on-primary);
 }
-.kafu-motioncards-controls [data-motioncards-host='restart'] {
+.kafu-motioncards-controls [data-motioncards-host='restart'],
+.kafu-motioncards-controls [data-motioncards-host='mute'] {
   padding-inline: 8px;
   border-color: transparent;
   background: transparent;

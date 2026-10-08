@@ -99,6 +99,7 @@ def build_indexes(state:dict,site:Path):
                 "book_id","book_version","chapter_id","qid","content_hash","publisher_fingerprint",
                 "duration_ms","entry_url","entry_sha256","final_panel","package_id","package_revision"
             ]}
+            if row.get("voice"):public[qid]["voice"]=row["voice"]   # host verifies the card's voice bytes against this
         payload={"schema":1,"runtime_version":1,"protocol_version":1,"book_id":book_id,"book_version":version,"animations":public}
         (target/"index.json").write_text(json.dumps(payload,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8")
 
@@ -186,6 +187,7 @@ def _public_record(row:dict,manifest:dict,target:Path,site:Path):
     public=dict(row)
     public.update(package_id=manifest["package_id"],package_revision=manifest["package_revision"],entry_url=PUBLIC_BASE+"/"+target.relative_to(site).as_posix())
     for drop in ["entry_path","scene_path","scene_sha256","source_record_path","source_record_sha256","replace"]:public.pop(drop,None)
+    if isinstance(public.get("voice"),dict):public["voice"]={k:public["voice"][k] for k in ("mime","bytes","sha256","track_ms")}
     return public
 
 def _management_snapshot(state:dict,rows:list[dict])->list[dict]:

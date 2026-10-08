@@ -208,10 +208,66 @@ def removal_refresh_case(browser,origin,pack,helpers):
     assert not errors,errors;ctx.close()
     return "soft-remove propagation: an already-open question loses its button on the bounded refresh cycle (35s production window)"
 
+VOICE=Path(__file__).resolve().parents[3]/"voiceover"/"samples"/"ch10"/"Q000009379.opus"
+
+def voice_fixture(pack,origin,tamper=False):
+    """A schema-v2 card with an embedded voice track (voiceover/), and its index record."""
+    q=pack["questions"][0];duration=8000;data=VOICE.read_bytes()
+    scene={"schema_version":2,"qid":q["id"],"duration_ms":duration,"takeaway":"Voice explains the key relationship.",
+           "stage":{"width":640,"height":560,"background":"#f4f8f8"},
+           "layers":[{"type":"text","text":"Voiced MotionCard","x":320,"y":60,"size":26,"weight":800,"fixed":True},
+                     {"type":"circle","cx":320,"cy":280,"r":90,"fill":"#dbeef4","stroke":"#16606A","stroke_width":4,"keys":[{"t":0,"scale":0.8},{"t":8000,"scale":1.1}]}]}
+    html=compile_scene(scene,[origin],voice=data);raw=html.encode();entry_sha=hashlib.sha256(raw).hexdigest()
+    url=f"{BASE}/assets/FIXTURE/r2/{q['id']}.{entry_sha[:12]}.html"
+    sha=hashlib.sha256(data).hexdigest()
+    record={"book_id":q["book_id"],"book_version":q["version"],"chapter_id":q["chapter_id"],"qid":q["id"],
+            "content_hash":content_hash(q),"publisher_fingerprint":"a"*64,"duration_ms":duration,
+            "entry_url":url,"entry_sha256":entry_sha,"package_id":"FIXTURE","package_revision":2,
+            "final_panel":{"takeaway":scene["takeaway"],"correct_answer_statements":[q["options"][0]]},
+            "voice":{"mime":"audio/ogg; codecs=opus","bytes":len(data),"sha256":"0"*64 if tamper else sha,"track_ms":7241}}
+    index={"schema":1,"runtime_version":1,"protocol_version":1,"book_id":q["book_id"],"book_version":q["version"],"animations":{q["id"]:record}}
+    return q,index,html
+
+def voice_case(browser,origin,pack,helpers):
+    """Golden rule 7 in the real app: verified voice plays on Play, follows pause/seek, mute persists; a wrong voice is never played."""
+    results=[]
+    for tamper in (False,True):
+        ctx=helpers["phone_context"](browser,origin,390,"light");q,index,html=voice_fixture(pack,origin,tamper)
+        def serve(body,ctype):return lambda route:route.fulfill(status=200,content_type=ctype,body=body)
+        ctx.route(f"{BASE}/indexes/**",serve(json.dumps(index),"application/json"))
+        ctx.route(f"{BASE}/assets/**",serve(html,"text/html"))
+        page,errors=helpers["open_app"](ctx,origin,pack);start(page,[q["id"]])
+        page.locator("[data-a='motioncards-open']").click();page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
+        if tamper:
+            page.wait_for_timeout(600)
+            assert page.locator("[data-motioncards-host='mute']").is_hidden() and page.evaluate("!KafuMotionCards.player.active.voice")
+            page.locator("[data-motioncards-host='play']").click();page.wait_for_timeout(400)
+            assert float(page.locator("[data-motioncards-host='seek']").input_value())>100   # the card still plays, silently
+            assert not errors,errors;ctx.close();results.append("voice whose bytes do not match the index SHA-256 is never played; the card still plays");continue
+        page.wait_for_selector("[data-motioncards-host='mute']:not([hidden])",timeout=5000)
+        page.evaluate("localStorage.removeItem('kafu.motioncards.voice.muted')")
+        page.locator("[data-motioncards-host='play']").click();page.wait_for_timeout(1500)
+        s=page.evaluate("({t:KafuMotionCards.player.active.time,a:KafuMotionCards.player.active.voice.position,p:KafuMotionCards.player.active.voice.paused})")
+        assert not s["p"] and s["a"]>800 and abs(s["t"]-s["a"])<150,s
+        page.locator("[data-motioncards-host='play']").click();page.wait_for_timeout(200)
+        assert page.evaluate("KafuMotionCards.player.active.voice.paused")
+        page.locator("[data-motioncards-host='seek']").evaluate("(el)=>{el.value='5000';el.dispatchEvent(new Event('input',{bubbles:true}))}")
+        assert abs(page.evaluate("KafuMotionCards.player.active.voice.position")-5000)<60
+        page.locator("[data-motioncards-host='mute']").click()
+        assert page.locator("[data-motioncards-host='mute']").get_attribute("aria-pressed")=="true"
+        assert page.evaluate("localStorage.getItem('kafu.motioncards.voice.muted')")=="1"
+        assert_overlay_geometry(page,"390 light voiced")
+        page.locator("[data-motioncards-host='close']").click();page.wait_for_function("!KafuMotionCards.player.active")
+        page.evaluate("localStorage.removeItem('kafu.motioncards.voice.muted')")
+        assert not errors,errors;ctx.close()
+        results.append("verified voice plays on the Play tap, picture follows the voice within 150 ms, pause/seek move it, mute persists")
+    return results
+
 def run(browser,origin,pack,out,helpers):
     passed=full_player(browser,origin,pack,out,helpers)
     passed.extend(variants(browser,origin,pack,out,helpers))
     passed.append(timeout_case(browser,origin,pack,helpers))
     passed.append(account_switch_case(browser,origin,pack,helpers))
     passed.append(removal_refresh_case(browser,origin,pack,helpers))
+    passed.extend(voice_case(browser,origin,pack,helpers))
     return {"passed":passed}

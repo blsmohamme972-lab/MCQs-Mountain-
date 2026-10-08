@@ -2,7 +2,7 @@
 
 Every MotionCard gets a short spoken explanation, made entirely by Claude Code. Each chapter of 8 cards arrives as one ZIP for the owner to upload to the Telegram bot.
 
-> **Status (8 Oct 2026):** the voice pipeline is built and proven on chapter 10 (8 cards). Every word passes the listen-back check, and every beat starts within 0–40 ms of its animation. Students cannot hear it yet: the app and the card format need the owner-approved changes in [PLATFORM_PLAN.md](PLATFORM_PLAN.md).
+> **Status (8 Oct 2026):** voice is the default. `motioncards.py package` puts `voice/<QID>.opus` in every card ZIP, the validator checks it, the card hands it to the app, and the app plays it in sync with a mute button. Card views are served as free, unlimited static assets. Students hear it once this platform PR is merged and the app and MotionCards Workers are deployed (see [PLATFORM_PLAN.md](PLATFORM_PLAN.md)).
 
 ## The Golden 8 Rules
 
@@ -49,8 +49,8 @@ The single steps (`setup`, `draft`, `synth`, `check`, `review`) still exist for 
 | `NARRATION_GUIDE.md` | How to write the spoken lines: word budgets, style, what never to say |
 | `DESIGN.md` | Every decision with its evidence: voice, codec, bitrate, sync, delivery, free-plan maths, scaling to 300 books |
 | `AUDIT.md` | Checklist for re-checking this work against the Golden 8 Rules, with how to measure each one |
-| `PLATFORM_PLAN.md` | The exact app, compiler, validator and Worker changes still needed, for the owner to approve |
-| `host/voice-sync.js` | Drop-in sync controller for the app's player (audio-led clock), tested in Chromium |
+| `PLATFORM_PLAN.md` | The app, compiler, validator and Worker changes, what is done and what is left (shards for 300+ books) |
+| `app/modules/motioncards-voice.js` | The app's sync controller (audio-led clock), tested in Chromium |
 | `samples/ch10/` | The real chapter 10 voice: 8 Opus tracks (101 KB total), scripts, timing and check report |
 | `tests/` | Unit tests, plus a real-browser sync test |
 | `requirements.txt` | Pinned versions |

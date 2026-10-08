@@ -110,7 +110,16 @@ python tools/motioncards.py preview --workspace work/my-batch --port 8767
 
 The preview command serves a **trusted loopback host player** with the real MessageChannel/timeline contract, host-owned controls, and the source-derived final panel. Open the host page listed by the preview index; do not treat a raw child `.html` entry as a functioning preview. Loopback HTTP is permitted only in this explicit preview mode. Production entries remain HTTPS-host restricted.
 
-Package:
+Voice-over (required: every new card ships with voice; see `voiceover/README.md`, the Golden 8 Rules):
+
+```bash
+voiceover/bootstrap.sh                                                        # once per machine
+~/.venvs/kafu-voice/bin/python voiceover/voiceover.py make --workspace work/my-batch
+```
+
+`make` reads each card's numbered captions aloud, fits every line inside its animation beat, and checks pronunciation and sync by listening back. Shorten the lines it lists, then run it again until it says DONE. Keep captions short and speakable (about 6 / 5 / 6 words on an 8 s card) so no edits are needed.
+
+Package (refuses a card without voice; `--no-voice` exists only for re-packaging old silent cards):
 
 ```bash
 python tools/motioncards.py package exported.json \

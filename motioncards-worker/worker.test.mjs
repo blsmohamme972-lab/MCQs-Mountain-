@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import worker from "./worker.mjs";
+import {readFileSync} from "node:fs";
 
 function env(body="<html>ok</html>",type="text/html"){
   return {ASSETS:{fetch:async request=>new Response(body,{status:200,headers:{"content-type":type}})}};
@@ -38,4 +39,25 @@ test("unapproved paths are never served",async()=>{
 test("write methods are rejected",async()=>{
   const r=await worker.fetch(new Request("https://cards.test/build-info.json",{method:"POST"}),env("{}","application/json"));
   assert.equal(r.status,405);
+});
+
+// Cards and indexes are served by the static asset layer with these headers (wrangler.jsonc has no
+// run_worker_first, so requests stay free and unlimited). They must say exactly what worker.mjs says.
+test("_headers matches the Worker's security and cache headers",async()=>{
+  const file=readFileSync(new URL("./_headers",import.meta.url),"utf8");
+  const rules={};let cur=null;
+  for(const line of file.split("\n")){
+    if(!line.trim()||line.trim().startsWith("#"))continue;
+    if(!/^\s/.test(line)){cur=line.trim();rules[cur]={};continue;}
+    const t=line.trim();if(t.startsWith("!"))continue;const i=t.indexOf(":");rules[cur][t.slice(0,i).trim().toLowerCase()]=t.slice(i+1).trim();
+  }
+  const entry=await worker.fetch(new Request("https://cards.test/assets/DEMO/r1/Q000000001."+("a".repeat(12))+".html"),env());
+  const index=await worker.fetch(new Request("https://cards.test/indexes/BOOK/v2/index.json"),env("{}","application/json"));
+  for(const [rule,res] of [["/assets/*",entry],["/indexes/*",index]]){
+    const want={...rules["/*"],...rules[rule]};
+    for(const [k,v] of Object.entries(want))assert.equal(v,res.headers.get(k),rule+" "+k);
+  }
+  assert.ok(rules["/assets/*"]["content-security-policy"].includes("sandbox allow-scripts"));
+  const cfg=readFileSync(new URL("./wrangler.jsonc",import.meta.url),"utf8");
+  assert.ok(!/run_worker_first/.test(cfg),"run_worker_first would put every card view on the 100k/day Worker quota");
 });

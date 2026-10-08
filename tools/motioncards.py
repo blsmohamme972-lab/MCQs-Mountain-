@@ -50,6 +50,7 @@ def main():
     p.add_argument("exports",nargs="+")
     p.add_argument("--workspace",type=Path,required=True)
     p.add_argument("--out",type=Path,required=True)
+    p.add_argument("--no-voice",action="store_true",help="Package without voice-over (only for re-packaging old silent cards; new cards always get voice)")
 
     v=sub.add_parser("validate");v.add_argument("zip",type=Path)
     f=sub.add_parser("filename");f.add_argument("name")
@@ -153,7 +154,7 @@ def main():
         for path,scene in scene_targets([],a.workspace):
             if scene.get("schema_version")==2:
                 for w in lint_scene_v2(scene):print(f"warning: {path.name}: {w}",file=sys.stderr)
-        b=load(a.exports);paths=build_package_set(b,a.workspace,a.out)
+        b=load(a.exports);paths=build_package_set(b,a.workspace,a.out,require_voice=not a.no_voice)
         total=sum(len(validate_package_part(p)["animations"]) for p in paths)
         print(json.dumps({"zips":[str(p) for p in paths],"animations":total},indent=2));return
     if a.cmd=="validate":

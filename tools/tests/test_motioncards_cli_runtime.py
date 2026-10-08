@@ -50,7 +50,11 @@ class MotionCardsCliRuntimeTests(unittest.TestCase):
                 proc.terminate()
                 try:proc.wait(timeout=3)
                 except subprocess.TimeoutExpired:proc.kill()
+            # New cards carry voice by default (voiceover/): packaging a silent card must be refused with a clear fix.
             p=run_clean(["tools/motioncards.py","package","exported.json","--workspace","work/batch","--out","MCARDS_FRESH_r1.zip"],kit)
+            self.assertNotEqual(p.returncode,0);self.assertIn("voice_missing:Q",p.stdout+p.stderr);self.assertIn("voiceover.py make",p.stdout+p.stderr)
+            # The offline kit has no voice model, so it packages explicitly silent.
+            p=run_clean(["tools/motioncards.py","package","exported.json","--workspace","work/batch","--out","MCARDS_FRESH_r1.zip","--no-voice"],kit)
             self.assertEqual(p.returncode,0,p.stdout+p.stderr)
             p=run_clean(["tools/motioncards.py","validate","MCARDS_FRESH_r1.zip"],kit)
             self.assertEqual(p.returncode,0,p.stdout+p.stderr);self.assertIn('"status": "PASS"',p.stdout)

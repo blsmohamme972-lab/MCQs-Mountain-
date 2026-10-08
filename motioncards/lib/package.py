@@ -4,6 +4,7 @@ from urllib.parse import urlsplit
 from pathlib import Path
 from .core import AdaptedExport,select_questions,resolve_answer,content_hash
 from .compiler import compile_scene,validate_scene
+from .voice import validate_voice
 from .spec import *
 
 def sha256_bytes(data:bytes)->str:return hashlib.sha256(data).hexdigest()
@@ -77,7 +78,14 @@ def scaffold_workspace(bundle:AdaptedExport,out:Path,package_id:str,revision:int
         (out/"scenes"/f"{item['qid']}.scene.json").write_text(json.dumps(scene,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     return selection
 
-def build_package(bundle:AdaptedExport,workspace:Path,out_zip:Path):
+def workspace_voice(workspace:Path,qid:str):
+    """The card's voice from voiceover/voiceover.py (work/<batch>/voice/<QID>.opus + .track.json), or None."""
+    audio=workspace/"voice"/f"{qid}.opus";track=workspace/"voice"/f"{qid}.track.json"
+    if not audio.exists() and not track.exists():return None
+    if not (audio.exists() and track.exists()):raise ValueError("voice_incomplete:"+qid)
+    return audio.read_bytes(),json.loads(track.read_text(encoding="utf-8"))
+
+def build_package(bundle:AdaptedExport,workspace:Path,out_zip:Path,require_voice:bool=False):
     selection=json.loads((workspace/"selection.json").read_text(encoding="utf-8"))
     selected_ids=[x["qid"] for x in selection["selected"]];by_id={q["id"]:q for q in bundle.questions}
     records=[];files={}
@@ -88,8 +96,12 @@ def build_package(bundle:AdaptedExport,workspace:Path,out_zip:Path):
         if integ["content_hash"]!=sel["content_hash"]:raise ValueError("selection_hash_changed:"+qid)
         scene=json.loads((workspace/"scenes"/f"{qid}.scene.json").read_text(encoding="utf-8"))
         validate_scene(scene,qid,int(sel["duration_ms"]))
-        entry=compile_scene(scene)
+        voice=workspace_voice(workspace,qid)
+        if voice is None and require_voice:raise ValueError("voice_missing:"+qid+" (run voiceover/voiceover.py make, or package with --no-voice)")
+        voice_block=validate_voice(voice[0],voice[1],int(sel["duration_ms"])) if voice else None
+        entry=compile_scene(scene,voice=voice[0] if voice else None)
         entry_path=f"entries/{qid}.html";scene_path=f"scenes/{qid}.scene.json";source_path=f"source/questions/{qid}.json"
+        if voice:voice_block={"path":f"voice/{qid}.opus",**voice_block};files[voice_block["path"]]=voice[0]
         source_obj={"question":q,"integrity":integ,"provenance":bundle.provenance}
         source_bytes=(json.dumps(source_obj,ensure_ascii=False,indent=2)+"\n").encode()
         scene_bytes=(json.dumps(scene,ensure_ascii=False,indent=2)+"\n").encode();entry_bytes=entry.encode()
@@ -105,6 +117,7 @@ def build_package(bundle:AdaptedExport,workspace:Path,out_zip:Path):
             "final_panel":{"takeaway":scene["takeaway"],"correct_answer_kind":answer["kind"],"correct_answer_statements":answer["statements"]},
             "replace":bool(scene.get("replace",False))
         })
+        if voice_block:records[-1]["voice"]=voice_block
     manifest={
         "package_type":PACKAGE_TYPE,"schema_version":SCHEMA_VERSION,"package_id":selection["package_id"],"package_revision":selection["package_revision"],
         "runtime_version":RUNTIME_VERSION,"protocol_version":PROTOCOL_VERSION,"source":bundle.provenance,
@@ -202,12 +215,21 @@ def validate_package(path:Path):
                 raise ValueError("source_binding_mismatch:"+qid)
             if str(integ.get("publisher_fingerprint","")).lower()!=row["publisher_fingerprint"].lower():raise ValueError("source_fingerprint_mismatch:"+qid)
             validate_scene(scene,qid,row["duration_ms"])
+            voice=None
+            if "voice" in row:
+                v=row["voice"]
+                if not isinstance(v,dict) or safe_path(v.get("path") or "")!=f"voice/{qid}.opus":raise ValueError("manifest_voice_path_invalid:"+qid)
+                if v["path"] in paths:raise ValueError("manifest_path_duplicate")
+                if v["path"] not in names:raise ValueError("manifest_asset_missing:"+v["path"])
+                paths.add(v["path"]);voice=z.read(v["path"])
+                expected={"path":v["path"],**validate_voice(voice,{"track_ms":v.get("track_ms"),"cues":v.get("cues")},row["duration_ms"])}
+                if v!=expected:raise ValueError("manifest_voice_mismatch:"+qid)
             if bool(scene.get("replace",False))!=row["replace"]:raise ValueError("replace_intent_scene_manifest_mismatch:"+qid)
             if scene["takeaway"]!=row["final_panel"]["takeaway"]:raise ValueError("takeaway_scene_manifest_mismatch:"+qid)
             resolved=resolve_answer(q)
             if resolved["kind"]!=row["final_panel"].get("correct_answer_kind") or resolved["statements"]!=row["final_panel"].get("correct_answer_statements"):
                 raise ValueError("final_answer_not_source_derived:"+qid)
-            rebuilt=compile_scene(scene).encode()
+            rebuilt=compile_scene(scene,voice=voice).encode()
             if rebuilt!=z.read(row["entry_path"]):raise ValueError("compiled_entry_scene_mismatch:"+qid)
             if sha256_bytes(rebuilt)!=row["entry_sha256"].lower():raise ValueError("compiled_entry_hash_mismatch:"+qid)
         if selection["qids"]!=ordered or selection["count"]!=len(ordered):raise ValueError("selection_manifest_mismatch")

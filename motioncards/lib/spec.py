@@ -18,7 +18,11 @@ PACKAGE_ID_RE=re.compile(r"^[A-Z0-9][A-Z0-9-]{0,63}$")
 ZIP_NAME_RE=re.compile(r"^MCARDS_([A-Z0-9][A-Z0-9-]{0,63})_r([1-9]\d*)(?:_part([1-9]\d*)of([1-9]\d*))?\.zip$",re.I)
 FORBIDDEN_BASENAMES={"_worker.js","_headers","_redirects","package.json","package-lock.json","pnpm-lock.yaml","yarn.lock"}
 FORBIDDEN_EXTENSIONS={".exe",".dll",".so",".dylib",".sh",".bash",".bat",".cmd",".ps1",".py",".pyc",".mjs",".cjs",".wasm"}
-PUBLIC_PREFIXES=("entries/","indexes/")
+PUBLIC_PREFIXES=("entries/","indexes/","voice/")
+# Voice-over (voiceover/): one Ogg Opus track per card, embedded in the compiled entry and handed to the host.
+VOICE_MIME="audio/ogg; codecs=opus"
+MAX_VOICE_BYTES=64*1024
+MAX_VOICE_CUES=12
 SOURCE_PREFIXES=("source/","scenes/","reports/")
 ALLOWED_ROOT_FILES={MANIFEST_NAME,"validation-report.json"}
 

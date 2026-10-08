@@ -1,0 +1,26 @@
+# MotionCards static asset headers (Cloudflare Workers static assets `_headers`).
+# Served by the asset layer itself, so card and index requests never invoke the Worker script:
+# free and unlimited on the Workers Free plan (no 100,000/day request quota, no 429s).
+# Must match worker.mjs (kept for non-asset requests); motioncards-worker/worker.test.mjs checks they agree.
+# The publish workflow copies this file into dist/ and refuses to deploy without it.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), clipboard-read=(), clipboard-write=()
+  Cross-Origin-Resource-Policy: cross-origin
+
+/assets/*
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: https://kafu.blsmohamme97.workers.dev
+  Content-Security-Policy: default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src 'none'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; form-action 'none'; base-uri 'none'; frame-ancestors https://kafu.blsmohamme97.workers.dev; sandbox allow-scripts
+
+/indexes/*
+  ! Cache-Control
+  Cache-Control: public, max-age=30, must-revalidate
+  Access-Control-Allow-Origin: https://kafu.blsmohamme97.workers.dev
+
+/build-info.json
+  ! Cache-Control
+  Cache-Control: public, max-age=60

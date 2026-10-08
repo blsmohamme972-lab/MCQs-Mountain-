@@ -25,6 +25,7 @@ on:
       - "Animations and illustrations/**"
       - "motioncards/**"
       - "motioncards-worker/**"
+      - "voiceover/**"
 
 # Paths keep documentation-only pull requests and main commits from starting CI.
 # One run per pull request (or main) prevents outdated work from consuming minutes.
@@ -146,7 +147,7 @@ jobs:
       - name: Render every engine feature through the sandboxed host protocol
         env:
           MOTIONCARDS_BROWSER_TESTS: "1"
-        run: python -m unittest tools.tests.test_motioncards_engine_v2 -v
+        run: python -m unittest tools.tests.test_motioncards_engine_v2 tools.tests.test_motioncards_voice -v
 
   medical_illustrations:
     name: Medical illustration library
