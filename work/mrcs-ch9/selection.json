@@ -1,0 +1,68 @@
+{
+  "package_id": "MRCS-PARTA-550-2E-CH9",
+  "package_revision": 1,
+  "source": {
+    "kind": "published",
+    "catalog_url": "https://kafu-content-1.blsmohamme97.workers.dev/catalog.json",
+    "catalog_sha256": "2c167ba71d13637ebb8b6b90a6d6f20a19ea3f6a378e80c5548843b074603d00",
+    "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/MRCS-PARTA-550-2E/v1/index.json",
+    "index_sha256": "510617f54ca807f9a37ce07bf2c40d83c7600153ceadea4b9b6453b1e8f9395b",
+    "snapshot_pinned": true
+  },
+  "scope": {
+    "type": "records",
+    "book_id": "MRCS-PARTA-550-2E",
+    "book_version": 1,
+    "chapter_ids": [
+      "9"
+    ],
+    "question_count": 7,
+    "qids": [
+      "Q000009371",
+      "Q000009372",
+      "Q000009373",
+      "Q000009374",
+      "Q000009375",
+      "Q000009376",
+      "Q000009377"
+    ]
+  },
+  "warnings": [],
+  "selected": [
+    {
+      "qid": "Q000009371",
+      "duration_ms": 12000,
+      "content_hash": "919a4046d319dd9c544bc67d875ed19e2957e7eb9b4d262dd528ba926a07638d"
+    },
+    {
+      "qid": "Q000009372",
+      "duration_ms": 12000,
+      "content_hash": "288bc0577a23ba59cec6d4c6c6e0e3c949bc1d493a8af0b2e293a790cb60c03d"
+    },
+    {
+      "qid": "Q000009373",
+      "duration_ms": 12000,
+      "content_hash": "63eb5fb31b2754c5be67aefa8b1a3b20c06523fbd6dbe430bbc86787bdd6922a"
+    },
+    {
+      "qid": "Q000009374",
+      "duration_ms": 12000,
+      "content_hash": "0bc33898d8da9b74e3a599050b75df1732d805cacac25bc30b8f4a1c5a284f25"
+    },
+    {
+      "qid": "Q000009375",
+      "duration_ms": 12000,
+      "content_hash": "e395b586514285d20fd216050fcd567476befcfead325359edb4ca7534a18232"
+    },
+    {
+      "qid": "Q000009376",
+      "duration_ms": 12000,
+      "content_hash": "3019943ef4301d329dce11377aa6cc612da17f796d14fe4bfb8a7eacab4c967c"
+    },
+    {
+      "qid": "Q000009377",
+      "duration_ms": 12000,
+      "content_hash": "5fbf878f152bb9c31d49ce5eba83003a1b93f14d7b63a1240016a1fc5d0acf5e"
+    }
+  ]
+}
