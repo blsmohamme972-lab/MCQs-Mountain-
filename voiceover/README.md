@@ -48,6 +48,7 @@ The single steps (`setup`, `draft`, `synth`, `check`, `review`) still exist for 
 | `lexicon.json` | Pronunciation fixes: abbreviations to spoken words, and exact IPA for medical words the voice got wrong (found by the check) |
 | `NARRATION_GUIDE.md` | How to write the spoken lines: word budgets, style, what never to say |
 | `DESIGN.md` | Every decision with its evidence: voice, codec, bitrate, sync, delivery, free-plan maths, scaling to 300 books |
+| `AUDIT.md` | Checklist for re-checking this work against the Golden 8 Rules, with how to measure each one |
 | `PLATFORM_PLAN.md` | The exact app, compiler, validator and Worker changes still needed, for the owner to approve |
 | `host/voice-sync.js` | Drop-in sync controller for the app's player (audio-led clock), tested in Chromium |
 | `samples/ch10/` | The real chapter 10 voice: 8 Opus tracks (101 KB total), scripts, timing and check report |
