@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009408",
+ "file": "Q000009408.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 13714,
+ "sha256": "8625eeb6da53821514f08d23cdf3cde1920984a6e5cc173c45a1320b9c6b95da",
+ "track_ms": 7308,
+ "card_ms": 8000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2297,
+   "text": "Systole stretches the elastic aorta",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2820,
+   "end_ms": 4659,
+   "text": "In diastole, the wall recoils",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 5320,
+   "end_ms": 7208,
+   "text": "Recoil keeps blood flowing forward",
+   "speed": 1.05
+  }
+ ]
+}

@@ -1,0 +1,163 @@
+[
+ {
+  "qid": "Q000009405",
+  "beats": [
+   {
+    "say": "Fluid fills the ventricle",
+    "heard": "Fluid fills the ventricle.",
+    "score": 1.0,
+    "onset_error_ms": 30
+   },
+   {
+    "say": "Each muscle cell is stretched",
+    "heard": "Each muscle cell is stretched.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Preload is myocyte length",
+    "heard": "Preload is myocyte length.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000009406",
+  "beats": [
+   {
+    "say": "Blood flows down a coronary artery",
+    "heard": "Blood flows down a coronary artery.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Halve the radius: resistance soars",
+    "heard": "Have the radius, resistance sores.",
+    "score": 0.947,
+    "onset_error_ms": 20
+   },
+   {
+    "say": "Diameter sets coronary flow",
+    "heard": "Diameter sets coronary flow. attend the room. or contact",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009407",
+  "beats": [
+   {
+    "say": "Several levers change cardiac output",
+    "heard": "Several levers change cardiac output.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Each one costs the heart oxygen",
+    "heard": "Each one costs the heart oxygen.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Preload costs the least oxygen",
+    "heard": "Preload costs the least oxygen.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000009408",
+  "beats": [
+   {
+    "say": "Systole stretches the elastic aorta",
+    "heard": "systole stretches the elastic aorta.",
+    "score": 1.0,
+    "onset_error_ms": 20
+   },
+   {
+    "say": "In diastole, the wall recoils",
+    "heard": "In diastole, the wall recoils.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Recoil keeps blood flowing forward",
+    "heard": "Recoil keeps blood flowing forward.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009409",
+  "beats": [
+   {
+    "say": "At rest, output is shared out",
+    "heard": "At rest, output is shared out.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Arterioles set each organ's share",
+    "heard": "Arterials set each organ's share.",
+    "score": 0.945,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "The liver gets the largest share",
+    "heard": "The liver gets the largest share.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009410",
+  "beats": [
+   {
+    "say": "Adrenaline reaches the arteriole wall",
+    "heard": "Adrenaline reaches the arterial wall.",
+    "score": 0.954,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "It binds alpha one receptors",
+    "heard": "It binds alpha -1 receptors.",
+    "score": 0.913,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Muscle contracts: the vessel narrows",
+    "heard": "Muscle contracts, the vessel narrows.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009411",
+  "beats": [
+   {
+    "say": "Carotid sinus walls sense stretch",
+    "heard": "carotid sinus walls sense stretch.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Blood loss: less stretch, fewer signals",
+    "heard": "Blood loss, less stretch fewer signals.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "The glossopharyngeal nerve carries them",
+    "heard": "The glossopharyngeal nerve carries them.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ }
+]

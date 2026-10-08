@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009407",
+ "file": "Q000009407.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 13601,
+ "sha256": "a24e53779786a3739b7457646ad521ff39a3db9f42a6eca8108f34716a2ec44b",
+ "track_ms": 7287,
+ "card_ms": 8000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2437,
+   "text": "Several levers change cardiac output",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2820,
+   "end_ms": 4623,
+   "text": "Each one costs the heart oxygen",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 5320,
+   "end_ms": 7187,
+   "text": "Preload costs the least oxygen",
+   "speed": 1.05
+  }
+ ]
+}

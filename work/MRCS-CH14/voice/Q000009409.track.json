@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009409",
+ "file": "Q000009409.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12431,
+ "sha256": "4f8b8502c1621a1223ad77f75d13b8e1a654414aa8f770890d0b9ad1149ac8df",
+ "track_ms": 7095,
+ "card_ms": 8000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1989,
+   "text": "At rest, output is shared out",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2820,
+   "end_ms": 4460,
+   "text": "Arterioles set each organ's share",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 5320,
+   "end_ms": 6995,
+   "text": "The liver gets the largest share",
+   "speed": 1.05
+  }
+ ]
+}

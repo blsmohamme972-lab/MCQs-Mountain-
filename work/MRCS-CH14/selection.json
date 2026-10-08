@@ -1,0 +1,68 @@
+{
+  "package_id": "MRCS-CH14",
+  "package_revision": 1,
+  "source": {
+    "kind": "published",
+    "catalog_url": "https://kafu-content-1.blsmohamme97.workers.dev/catalog.json",
+    "catalog_sha256": "2c167ba71d13637ebb8b6b90a6d6f20a19ea3f6a378e80c5548843b074603d00",
+    "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/MRCS-PARTA-550-2E/v1/index.json",
+    "index_sha256": "510617f54ca807f9a37ce07bf2c40d83c7600153ceadea4b9b6453b1e8f9395b",
+    "snapshot_pinned": true
+  },
+  "scope": {
+    "type": "records",
+    "book_id": "MRCS-PARTA-550-2E",
+    "book_version": 1,
+    "chapter_ids": [
+      "14"
+    ],
+    "question_count": 7,
+    "qids": [
+      "Q000009405",
+      "Q000009406",
+      "Q000009407",
+      "Q000009408",
+      "Q000009409",
+      "Q000009410",
+      "Q000009411"
+    ]
+  },
+  "warnings": [],
+  "selected": [
+    {
+      "qid": "Q000009405",
+      "duration_ms": 8000,
+      "content_hash": "27f5f38e0dda6854b0e97e85f8870834e5c525a9d6332ae9f9c6fcc2c12d789c"
+    },
+    {
+      "qid": "Q000009406",
+      "duration_ms": 8000,
+      "content_hash": "be0b96ced7470f700d03974efd08c983b50993a420fb576d32662c9fdc4c85c6"
+    },
+    {
+      "qid": "Q000009407",
+      "duration_ms": 8000,
+      "content_hash": "872b73b3e3b2502948b68576ba30ab1203f0aae2b44ee8ae1d00d0e7602e3ce4"
+    },
+    {
+      "qid": "Q000009408",
+      "duration_ms": 8000,
+      "content_hash": "8edccd9644f05c050f1a3b26d8852ed33338ab99cbf84c098beba59916cda8fc"
+    },
+    {
+      "qid": "Q000009409",
+      "duration_ms": 8000,
+      "content_hash": "2bf1012315bf4822f76a28dc3d69406117318cc3470ebdbe09ea8cba1ced847b"
+    },
+    {
+      "qid": "Q000009410",
+      "duration_ms": 8000,
+      "content_hash": "91ecafb0072183ef3b3ce42a5733cf5ecc449c61c06406760fd21fc8ea1eb66a"
+    },
+    {
+      "qid": "Q000009411",
+      "duration_ms": 8000,
+      "content_hash": "6898662a2b7be1138c4fb0d30bc5116feebab493df837d881ad36eb46191f763"
+    }
+  ]
+}

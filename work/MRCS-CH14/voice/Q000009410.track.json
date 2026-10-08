@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009410",
+ "file": "Q000009410.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 14174,
+ "sha256": "cc19178ee197f3d31403392891add9951760d6e20b4f044269e2dd6e452e0405",
+ "track_ms": 7618,
+ "card_ms": 8000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2473,
+   "text": "Adrenaline reaches the arteriole wall",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2820,
+   "end_ms": 4441,
+   "text": "It binds alpha one receptors",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 5320,
+   "end_ms": 7518,
+   "text": "Muscle contracts: the vessel narrows",
+   "speed": 1.05
+  }
+ ]
+}

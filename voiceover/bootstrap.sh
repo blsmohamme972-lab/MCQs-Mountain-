@@ -4,7 +4,7 @@
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"; venv="${KAFU_VOICE_VENV:-$HOME/.venvs/kafu-voice}"
 command -v ffmpeg >/dev/null || { echo "ffmpeg (with libopus) is required"; exit 1; }
-ffmpeg -hide_banner -encoders 2>/dev/null | grep -q libopus || { echo "this ffmpeg has no libopus"; exit 1; }
+ffmpeg -hide_banner -encoders 2>/dev/null | grep -c libopus >/dev/null || { echo "this ffmpeg has no libopus"; exit 1; }
 [ -x "$venv/bin/python" ] || python3 -m venv "$venv"
 "$venv/bin/pip" install -q -r "$here/requirements.txt"
 "$venv/bin/python" "$here/voiceover.py" setup

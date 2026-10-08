@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009405",
+ "file": "Q000009405.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11553,
+ "sha256": "b22dfd5d3d986c9b8cba3bbb834e55b567d2f26b5642b990f949d97376778584",
+ "track_ms": 6988,
+ "card_ms": 8000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1696,
+   "text": "Fluid fills the ventricle",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2820,
+   "end_ms": 4286,
+   "text": "Each muscle cell is stretched",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 5320,
+   "end_ms": 6888,
+   "text": "Preload is myocyte length",
+   "speed": 1.05
+  }
+ ]
+}
