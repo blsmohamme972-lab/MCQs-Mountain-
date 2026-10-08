@@ -60,6 +60,8 @@ def main():
     im.add_argument("--template",action="store_true",help="reusable symbol: --box is width,height centred on 0,0; draw copies with <use href=#id>")
     im.add_argument("--fit",default="contain",choices=["contain","cover","stretch"]);im.add_argument("--decimals",type=int,default=None,help="override the automatic precision (default: fewest decimals that stay under 0.05 stage px error)")
     im.add_argument("--credit",help='licence attribution shown on the card, e.g. "Heart: Servier Medical Art, CC BY 3.0"')
+    lg=sub.add_parser("library-check",help="Gate a proposed library change: PASS only if it is purely additive and every addition proves itself")
+    lg.add_argument("--base",default="origin/main");lg.add_argument("--report",type=Path);lg.add_argument("--no-render",action="store_true")
     sub.add_parser("library",help="List the bundled professional art (import with import-svg lib:<name>)")
     rc=sub.add_parser("recipes",help="Add the tested animation recipes (R.flow, R.bleed, R.impulses, R.lump, R.travel, R.callout, ...) to scenes' script");rc.add_argument("scenes",type=Path,nargs="+")
     sk=sub.add_parser("style-kit",help="Add the shading kit (kit-volume, kit-tissue, kit-nerve, ...) to scenes' svg");sk.add_argument("scenes",type=Path,nargs="+")
@@ -76,6 +78,14 @@ def main():
         b=load(a.exports)
         result=scaffold_workspace(b,a.out,a.package_id.upper(),a.revision,a.qids,a.count,a.duration_ms,overrides(a.duration),set(a.inspected_image_qid),set(a.replace),a.schema)
         print(json.dumps(result,indent=2));return
+    if a.cmd=="library-check":
+        from motioncards.lib.library_gate import check
+        try:rep=check(a.base,render=not a.no_render);md=rep.markdown()
+        except Exception as exc:   # an unexpected error is never a pass
+            rep=None;md=f"## MotionCards library gate: FAIL\n\n- ❌ gate crashed: {type(exc).__name__}: {exc}"
+        print(md)
+        if a.report:a.report.write_text(md+"\n",encoding="utf-8")
+        sys.exit(1 if rep is None else (0 if rep.passed else (2 if not rep.fail else 1)))
     if a.cmd=="library":
         from motioncards.lib.assets import library_index
         idx=library_index()

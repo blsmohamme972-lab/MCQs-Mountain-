@@ -214,6 +214,37 @@ Quality rules:
 - Animate the teaching relationship (flow, change, sequence) on top of the art; do not just show a static picture.
 - Move imported art with rigid changes: position, rotation, scale, opacity, colour, `<use>` copies and drawn-on paths. Language models are reliably weak at non-rigid deformation of organic shapes, so **do not morph complex organic outlines**. Swap or cross-fade between two drawings instead (as the sickle example does).
 
+## Improving the library (trusted automatic process)
+
+When a card needs something genuinely new and reusable, such as a drawing the library lacks or an animation you had to write that other cards will need, propose it. The owner approved automatic merging for proposals that pass the gate. Propose only what makes future cards **better or easier**, never something that adds choice without value.
+
+**Propose when all of these hold:**
+- You used it in a real card (list the QIDs in `used_in`), and it worked in the render.
+- Nothing in the library already covers it. Check `motioncards.py library` and the recipes table first.
+- It is general: another card on a different question could use it unchanged.
+- For art: an approved source and licence (CC0, public domain, CC BY 3.0/4.0, MIT), in the same style family as the library (`servier`, `togo` or `other`).
+
+**Do not propose:** card-specific code, tweaks to existing entries or recipes, near-copies of existing art, unlicensed or NC/ND/SA art, or anything you are not sure improves the result. When in doubt, don't propose.
+
+**How (Claude Code sessions):**
+1. `git checkout -b library/<short-name> origin/main`
+2. Add the drawing to `motioncards/library/art/` and its entry in `library.json` with **every** field: `file`, `view`, `use`, `license`, `source` (https URL of the original), `credit`, `style`, `reason` (why it is an improvement), `used_in` (QIDs). For an animation: add the member to `const R` in `recipes.js` (append; never edit an existing one) and a demo `motioncards/library/demos/<name>.js` that uses it.
+3. Run `python tools/motioncards.py library-check --base origin/main`. Fix every ❌ until it says PASS.
+4. Commit, push, and open a PR to `main` titled `library: <what>`.
+
+The **MotionCards library auto-merge** workflow then reruns the gate and the MotionCards test suite. It merges only if both pass; otherwise it comments with the reasons and leaves the PR for the owner.
+
+**What the gate enforces:**
+- Only library files change.
+- Existing entries, recipes and the style kit stay byte-for-byte identical.
+- At most 6 drawings and 3 recipes per proposal.
+- Licence, credit, source, reason and `used_in` are all present.
+- Each drawing imports cleanly, stays under 150 KB, validates and lint-checks clean, renders, and is not a near-duplicate of existing art.
+- Each recipe has a demo that renders on phone and tablet with deterministic seeking.
+- `recipes.js` stays under 40 KB.
+
+**claude.ai sessions (no git):** put the same files under `work/<batch>/library-proposal/` (`art/…`, `entry.json`, `demos/…`) and mention it in your reply. The owner passes it to a Claude Code session, which runs the steps above.
+
 ## 3D (possible, rarely worth it)
 
 three.js runs inside a card (tested: WebGL works in the sandbox under the production CSP). It costs about 640 KB per card, because each card is self-contained. It is heavier on phones and offline storage. The `render` determinism check covers SVG, not canvas pixels. Use 3D only when depth is the point (e.g. a spatial relationship), and get the geometry from a trusted model, not invented shapes.
