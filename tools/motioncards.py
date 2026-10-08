@@ -55,11 +55,14 @@ def main():
     f=sub.add_parser("filename");f.add_argument("name")
     pr=sub.add_parser("preview");pr.add_argument("--workspace",type=Path,required=True);pr.add_argument("--port",type=int,default=8767)
     im=sub.add_parser("import-svg",help="Clean, fit and add an SVG illustration (file or URL) to a scene; the model only references it by id")
-    im.add_argument("source",help="local .svg path or https URL");im.add_argument("--scene",type=Path,required=True)
+    im.add_argument("source",help="local .svg path, https URL, or lib:<name> from the bundled art library (see: library)");im.add_argument("--scene",type=Path,required=True)
     im.add_argument("--id",required=True);im.add_argument("--box",required=True,help="x,y,width,height in stage pixels")
     im.add_argument("--template",action="store_true",help="reusable symbol: --box is width,height centred on 0,0; draw copies with <use href=#id>")
-    im.add_argument("--fit",default="contain",choices=["contain","cover","stretch"]);im.add_argument("--decimals",type=int,default=2)
+    im.add_argument("--fit",default="contain",choices=["contain","cover","stretch"]);im.add_argument("--decimals",type=int,default=None,help="override the automatic precision (default: fewest decimals that stay under 0.05 stage px error)")
     im.add_argument("--credit",help='licence attribution shown on the card, e.g. "Heart: Servier Medical Art, CC BY 3.0"')
+    sub.add_parser("library",help="List the bundled professional art (import with import-svg lib:<name>)")
+    rc=sub.add_parser("recipes",help="Add the tested animation recipes (R.flow, R.bleed, R.impulses, R.lump, R.travel, R.callout, ...) to scenes' script");rc.add_argument("scenes",type=Path,nargs="+")
+    sk=sub.add_parser("style-kit",help="Add the shading kit (kit-volume, kit-tissue, kit-nerve, ...) to scenes' svg");sk.add_argument("scenes",type=Path,nargs="+")
     li=sub.add_parser("lint",help="Validate scenes and print layout warnings")
     li.add_argument("targets",nargs="*",type=Path,help="scene .json files");li.add_argument("--workspace",type=Path)
     rn=sub.add_parser("render",help="Render scenes to PNG frames + contact sheet (needs playwright + Chromium)")
@@ -73,9 +76,36 @@ def main():
         b=load(a.exports)
         result=scaffold_workspace(b,a.out,a.package_id.upper(),a.revision,a.qids,a.count,a.duration_ms,overrides(a.duration),set(a.inspected_image_qid),set(a.replace),a.schema)
         print(json.dumps(result,indent=2));return
+    if a.cmd=="library":
+        from motioncards.lib.assets import library_index
+        idx=library_index()
+        for name,item in idx["art"].items():print(f"lib:{name:22} {item['view']}  [use: {item['use']}]")
+        print("credit added automatically: "+idx["credit"]);return
+    if a.cmd=="recipes":
+        from motioncards.lib.assets import add_recipes,add_style_kit
+        for path in a.scenes:
+            scene=json.loads(path.read_text(encoding="utf-8"))
+            added=add_recipes(scene);add_style_kit(scene)   # recipes draw with the kit's fills and filters
+            if scene.get("schema_version")==2:validate_scene(scene,str(scene.get("qid")),scene.get("duration_ms"))
+            path.write_text(json.dumps(scene,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+            print(f"{path}: {'recipes added' if added else 'recipes already present'}")
+        return
+    if a.cmd=="style-kit":
+        from motioncards.lib.assets import add_style_kit
+        for path in a.scenes:
+            scene=json.loads(path.read_text(encoding="utf-8"))
+            added=add_style_kit(scene)
+            if scene.get("schema_version")==2:validate_scene(scene,str(scene.get("qid")),scene.get("duration_ms"))
+            path.write_text(json.dumps(scene,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+            print(f"{path}: {'kit added' if added else 'kit already present'}")
+        return
     if a.cmd=="import-svg":
         from motioncards.lib.assets import prepare_svg,add_to_scene
-        if a.source.startswith(("http://","https://")):
+        if a.source.startswith("lib:"):
+            from motioncards.lib.assets import library_art
+            text,lib_credit=library_art(a.source[4:])
+            if not a.credit:a.credit=lib_credit
+        elif a.source.startswith(("http://","https://")):
             import urllib.request
             with urllib.request.urlopen(a.source,timeout=30) as r:raw=r.read(5_000_001)
             if len(raw)>5_000_000:raise SystemExit("downloaded file is larger than 5 MB")

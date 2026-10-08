@@ -23,6 +23,14 @@ class MotionCardsCliRuntimeTests(unittest.TestCase):
             cmd=["tools/motioncards.py","scaffold","exported.json","--out","work/batch","--package-id","FRESH","--revision","1","--qids","Q000000001","--duration-ms","4000"]
             p=run_clean(cmd,kit);self.assertEqual(p.returncode,0,p.stdout+p.stderr)
             scene=kit/"work/batch/scenes/Q000000001.scene.json";data=json.loads(scene.read_text());data["takeaway"]="Pressure moves from higher toward lower pressure.";scene.write_text(json.dumps(data))
+            # The unpacked kit alone must run the art library, style kit and recipes (no repo checkout).
+            for cmd in (["tools/motioncards.py","library"],["tools/motioncards.py","style-kit",str(scene)],["tools/motioncards.py","recipes",str(scene)],
+                        ["tools/motioncards.py","import-svg","lib:heart","--scene",str(scene),"--id","heart","--box","40,110,300,320"],
+                        ["tools/motioncards.py","lint","--workspace","work/batch"]):
+                p=run_clean(cmd,kit);self.assertEqual(p.returncode,0,cmd[1]+": "+p.stdout+p.stderr)
+            data=json.loads(scene.read_text())
+            self.assertIn('id="kit"',data["svg"]);self.assertIn('id="heart"',data["svg"]);self.assertIn("// @recipes v1 begin",data["script"])
+            self.assertIn("Servier Medical Art",data["credits"][0])
             port=free_port();env=os.environ.copy();env.pop("PYTHONPATH",None)
             proc=subprocess.Popen([sys.executable,"tools/motioncards.py","preview","--workspace","work/batch","--port",str(port)],cwd=kit,env=env,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
             try:

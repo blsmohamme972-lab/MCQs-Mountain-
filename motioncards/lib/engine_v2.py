@@ -559,6 +559,7 @@ def lint_scene_v2(scene:dict)->list[str]:
         warnings.append("first frame (t=0) is empty: the app shows this frame before Play, so keep the main structure visible at t=0 (no enter effect)")
     for aid in (scene.get("assets") or {}):
         if aid not in used:warnings.append(f"assets.{aid}: declared but never used (adds size)")
+    if re.search(r"\bR\.grid\(",str(scene.get("script") or "")):warnings.append("script: R.grid(api) is a layout aid; remove it before packaging")
     return warnings
 
 RUNTIME_V2_JS=r"""(()=>{"use strict";

@@ -112,6 +112,33 @@ Common fields: `id`, `fixed` (top level only; ignores the camera, use it for tit
 | `spotlight` | dims everything except a circle (`cx cy r`) or box (`x y width height rx`); `dim` (default 0.6), `color`. Key the geometry to walk the eye through steps |
 | `image` | `asset` (id from `assets`), `x y width height`, `fit` (`contain`/`cover`/`stretch`) |
 
+## Start from the bundled art library (best results, fewest tokens)
+
+Hand-drawn anatomy from a language model looks flat and amateur however carefully it is coded. The cards that look professional start from real medical illustrations. The repo ships a licence-checked library in `motioncards/library/` that works offline:
+
+```bash
+python tools/motioncards.py library                      # list: lib:healthy-lung, lib:heart, lib:stomach, ...
+python tools/motioncards.py style-kit work/b/scenes/Q….scene.json
+python tools/motioncards.py import-svg lib:healthy-lung --scene work/b/scenes/Q….scene.json --id lungs --box 100,96,440,450
+```
+
+`lib:` imports add the Servier credit automatically. Render once with a grid (draw lines every 20 px in `setup`) to read where the organs landed, then place your additions on that art.
+
+**Style kit:** `style-kit` adds `<defs id="kit">` to the scene, once. Use it on everything you draw yourself, so your shapes look like they belong next to the art instead of flat clip-art:
+
+| id | use |
+|---|---|
+| `filter="url(#kit-volume)"` | soft 3D shading for organs, tumours and large shapes (`kit-volume-sm` for thin vessels, nerves and bands) |
+| `filter="url(#kit-gloss)"` | wet, glossy highlight (mucosa, muscle) |
+| `filter="url(#kit-shadow)"` | soft drop shadow (label chips, a lifted organ) |
+| `filter="url(#kit-glow)"` | glowing signal or highlight (nerve impulses, danger halo) |
+| `fill="url(#kit-tissue)"` `kit-muscle` `kit-lung` `kit-tumour` `kit-bone` | radial organ fills, lit from the upper left |
+| `stroke`/`fill="url(#kit-nerve)"` `kit-vein` `kit-artery` | cylindrical gradients for vertical nerves and vessels |
+
+**Never put a kit filter or a kit gradient on a perfectly horizontal or vertical line.** Kit filters and gradients are sized to the element's bounding box. A flat line has zero height (or width), so it vanishes or is clipped to a sliver. Draw a band as a `rect` with `rx`, or use a solid colour.
+
+Filters re-render whenever the element changes, so put them on static shapes or on shapes that only move, fade or scale. Never put one on an element that changes shape every frame and covers half the stage. In free mode, append your elements to the art's parent (`const P = api.$("#lungs").parentNode`) so they stack above the art. To put something behind the art, use `P.insertBefore(el, api.$("#lungs"))`.
+
 ## Professional illustrations from the internet (import, never paste)
 
 Never paste a downloaded SVG into your reply: one medical illustration is 8k–25k tokens. Import it with the tool. The model then only references it by id.
@@ -129,26 +156,57 @@ The tool:
 - rejects external links;
 - scales the art into the box;
 - makes every internal id and CSS class unique, so two files can never break each other's gradients;
-- rounds coordinates to 2 decimals;
+- rewrites path data in its shortest form: absolute points are rounded first, then each segment is written absolute or relative (whichever is shorter), so rounding errors never add up;
+- picks the precision automatically from the placement scale (worst-case error 0.1 stage px, invisible on phones and tablets). Offsets, stroke widths and radii keep 2 decimals. Override with `--decimals N`, but never use `0` on detailed art: thin vessels break;
+- shortens colours (`#ffcc00` → `#fc0`);
 - records the credit, which the card shows small in the corner.
 
 Then animate it from `script`: `api.$('#heart')` (transform, opacity, filters, or parts by id), or `<use href="#rbc">` copies moved along paths.
 
-Sources and licences (checked October 2026; the licence on each individual file always wins):
+## Recipes: tested animations (use them instead of writing your own)
 
-| Source | Licence | Notes |
+`python tools/motioncards.py recipes work/b/scenes/Q….scene.json` adds `const R = {...}` to the scene script once, and adds the style kit too. Each recipe is a pure function of `t`, so pause and seek work, and each is covered by a browser test. The 9342 and 9343 cards dropped from about 3.0 KB to 1.4 KB of card code with the same result.
+
+| Recipe (create in `setup`) | Animate in `render(t, api)` | Use for |
 |---|---|---|
-| **NIH BioArt Source** (bioart.niaid.nih.gov) | Mostly public domain, **set per entry** | Some entries are CC BY, BY-SA, BY-NC or BY-ND. Read each entry's licence |
-| **Servier Medical Art** (smart.servier.com) | CC BY 4.0 on the official site | Credit required; the official site gives the wording. Copies mirrored in the `bioicons` GitHub repo (`static/icons/cc-by-3.0/`) carry CC BY 3.0; credit them as such |
-| **Reactome Icon Library** | CC BY 4.0 | Credit Reactome (CSHL, OICR, EBI); cells, proteins, organelles |
-| **Health Icons** | CC0 | Simple pictograms. The icons are CC0; the site's code is MIT |
-| **Bioicons** | Varies per icon (CC0, CC BY, MIT) | The licence is in the folder name |
-| **Wikimedia Commons** | Varies per file | CC BY-SA makes the card share-alike too |
+| `st = R.wrap(api, api.$("#st"))` | `R.seeThrough(api, st, f, 0.45)` | Fade imported art to reveal what lies behind it |
+| `v = R.tube(api, P, d, "artery"\|"vein"\|"nerve"\|"bile"\|"gut", w, {behind: st})` | `R.drawOn(api, v, f)`, `R.squeeze(api, v, f, w0, w1)`; `v.p` is the centre path, `v.fill` its normal paint | Vessels, nerves, ducts, bowel |
+| `fl = R.flow(api, P, v.p, {n, color, period, reverse, behind})` | `fl.update(t, on)` | Blood, bile, air or food moving along a tube |
+| `im = R.impulses(api, P, nerve.p, {reverse})` | `im.update(t, on)` | Nerve signals, referred pain |
+| `b = R.bleed(api, P, x, y, {angle, spread, reach, gravity})` | `b.update(t, on)` | Pulsatile arterial bleeding, with a pulsing ring |
+| `dr = R.drip(api, P, x, y)` | `dr.update(t, on)` | Oozing or venous bleeding |
+| `l = R.lump(api, P, cx, cy, "tumour"\|"cyst"\|"mass"\|"artery", {behind})` | `l.update(t, f, rx, ry, pulse)` | Tumours, cysts, masses, aneurysms |
+| `u = R.ulcer(api, P, x, y, {rx, ry})` | `u.update(t, f)` | Ulcers, craters, perforations |
+| `gl = R.glow(api, P, x, y, {r, color})` | `gl.update(t, on)` | Pain, inflammation, danger |
+| `tr = R.travel(api, P, d, {width})` | `tr.update(t, f)` | Hernia sac, catheter, bolus, stone travelling a route |
+| `L = R.callout(api, P, "text", x, y, color, [toX, toY])` | `R.fade(api, L, t, in0, in1, out0, out1)` | Label chip with a leader line |
+| `R.scaleAbout(api, el, s)` | | Grow or pulse a shape about its own centre |
+
+`P` is the art's parent (`R.layer(api, "#st")`), so new elements stack above the art; pass `{behind: st}` to put them behind it. `R.grid(api)` draws a 20 px layout grid; `lint` warns until you remove it. Write your own code only for what no recipe covers.
+
+### Approved art sources (use only these, in this order)
+
+Checked October 2026 for Kafu's goals: MRCS clinical anatomy, vector art whose parts can be animated, one consistent style, and commercial use with modification allowed. The licence on each individual file always wins.
+
+| # | Source | Use it for | Licence: what you may take | Credit to pass to `--credit` |
+|---|---|---|---|---|
+| 0 | **Bundled library**: `motioncards.py library`, then `import-svg lib:<name>` | First choice: thorax, heart, lungs, upper GI. Works offline | CC BY 3.0 (Servier) | added automatically |
+| 1 | **Servier Medical Art** via bioicons: `https://raw.githubusercontent.com/duerrsimon/bioicons/main/static/icons/cc-by-3.0/<Category>/Servier/<name>.svg` (categories include `Human_physiology`, `Oncology`, `Blood_Immunology`) | Any organ or system not in the library. **Default style for every card** | CC BY 3.0 (these copies) | `"<What>: Servier Medical Art, CC BY 3.0"` |
+| 2 | **Togo Picture Gallery (DBCLS)**: archive with the bulk SVG zip and English tag CSV at `https://dbarchive.biosciencedbc.jp/data/togo-pic/` (read `LATEST/README_e.html`); single pictures at `https://togotv.dbcls.jp/en/togopic.<year>.<number>.html` | Anatomical sections and regions Servier lacks. Flatter style: **never mix it with Servier in one card** | CC BY 4.0 (whole database) | `"<What>: Togo Picture Gallery © DBCLS, CC BY 4.0"` |
+| 3 | **NIH BioArt Source (NIAID)**: `https://bioart.niaid.nih.gov/` | Pathology, microbiology, immunology, cells | **Only entries marked Public Domain or CC BY.** Never BY-NC, BY-ND or BY-SA | `"<What>: NIAID NIH BioArt Source (bioart.niaid.nih.gov/bioart/<id>), <licence>"` |
+| 4 | **Gray's Anatomy (1918) SVG redraws** on Wikimedia Commons (search `Gray<plate number> svg`) | Fine surgical anatomy: inguinal canal, rectus sheath, nerve courses. Old line art: shade it with the style kit | Public domain (US); check that the file page says so | `"<What>: Gray's Anatomy 1918 (H. V. Carter), public domain; vector by <Commons author>"` |
+| 5 | **Mikael Häggström diagrams** on Wikimedia Commons (gallery: `https://en.wikiversity.org/wiki/WikiJournal_of_Medicine/Medical_gallery_of_Mikael_H%C3%A4ggstr%C3%B6m_2014`) | Whole-body maps: symptoms, organ positions | CC0 for the 2014 gallery; check newer files | `"<What>: Mikael Häggström, CC0"` |
+| 6 | **Health Icons**: `https://raw.githubusercontent.com/resolvetosavelives/healthicons/main/public/icons/svg/{outline,filled}/<category>/<name>.svg` (categories include `body`, `symbols`, `medications`, `devices`, `conditions`) | Small symbols only (warning, drug, device). Never the main picture | CC0 | none needed |
+| 7 | **Tabler Icons**: `https://raw.githubusercontent.com/tabler/tabler-icons/main/icons/outline/<name>.svg` | UI marks only: arrows, ticks, crosses | MIT | none needed |
+
+Do not use other sources (Reactome, SciDraw, Lottie, GSAP, 3D model sites, raster galleries such as Blausen or OpenStax, stock sites, Noun Project, Freepik) unless the user approves. They either do not fit the cards or their licence is unsafe for a paid app. If no approved source has the structure you need, draw it yourself with the style kit; never trace a textbook figure.
+
+If the network cannot reach a source, say so and use the bundled library or the style kit. Do not substitute an unapproved site.
 
 Rules:
 - **Never use NC (non-commercial) or ND (no-derivatives) material.** Cards are modified, and the app may be paid. `import-svg` refuses a credit containing NC or ND.
 - Never use images whose licence you cannot name. Never trace copyrighted textbook figures.
-- Write the credit as `"<what>: <author/source>, <licence>"`, e.g. `"Heart: Servier Medical Art, CC BY 4.0"`.
+- Write the credit as `"<what>: <author/source>, <licence>"`, using the exact form in the table above.
 
 Quality rules:
 - Keep one art style per card; do not mix flat icons with detailed illustrations.
@@ -191,6 +249,7 @@ Gradients: `{"id":"g1","kind":"linear","angle":90,"stops":[{"offset":0,"color":"
 - **Text is legible on phones.** Use size ≥ 18 (titles 26–32) with `max_width` + `fit`, and keep it 30 px from the stage edges.
 - **Use a consistent colour meaning** (e.g. `@good` for normal or physiological, `@bad` or `@accent` for pathology) and no more than 5 hues.
 - **Hold the final state** for the last 1.5–2 s so the takeaway sinks in. The host then shows the Takeaway and the Correct answer.
+- **Start from library art** (`lib:`) when an organ is shown; for an organ shown small, prefer the lighter drawing (e.g. `heart-front` 22 KB vs `heart` 62 KB), and draw only what changes (nerve, tumour, flow, wrap) with the style kit.
 - **Accuracy beats decoration.** If you are unsure of a fact, simplify the drawing; never invent anatomy.
 - **Morph only simple geometry** (a narrowing wall, a curve computed from an equation). For organic shapes, cross-fade between two real drawings.
 

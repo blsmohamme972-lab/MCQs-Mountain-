@@ -123,7 +123,7 @@ python tools/motioncards.py validate dist/MCARDS_MY-BATCH_r1.zip
 
 Edit only `work/<batch>/scenes/Q#########.scene.json`.
 
-**Author new cards with schema v2: read `AUTHORING_V2.md` (compact reference) and the `examples/v2-*.scene.json` gold examples.** For professional or precise cards use v2 *free mode*: plain SVG plus a JavaScript `render(t, api)` with full DOM access inside the sandbox. v2 adds:
+**Author new cards with schema v2: read `AUTHORING_V2.md` (compact reference) and the `examples/v2-*.scene.json` gold examples.** **Build anatomy on the bundled art library (`python tools/motioncards.py library`, then `import-svg lib:<name>`) and shade anything you draw with the style kit (`style-kit`); do not hand-draw organs.** **Take outside art only from the approved sources table in `AUTHORING_V2.md` (in its order), with the credit form given there.** **Animate with the tested recipes (`motioncards.py recipes`, table in `AUTHORING_V2.md`) before writing custom animation code.** For professional or precise cards use v2 *free mode*: plain SVG plus a JavaScript `render(t, api)` with full DOM access inside the sandbox. v2 adds:
 - easing;
 - separate visibility (`show`) and motion (`keys`);
 - enter/exit presets;
