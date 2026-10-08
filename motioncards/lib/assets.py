@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 SVG="http://www.w3.org/2000/svg"
 XLINK="http://www.w3.org/1999/xlink"
 EDITOR_NS=("inkscape","sodipodi","sketch","illustrator","adobe","serif","figma","bx")
-DROP_TAGS={"metadata","title","desc","script","namedview"}
+DROP_TAGS={"metadata","title","desc","script","namedview","foreignObject"}
 REF_RE=re.compile(r"url\(\s*(['\"]?)#([^)'\"]+)\1\s*\)")
 NUM_RE=re.compile(r"-?(?:\d+\.\d+|\d+\.|\.\d+|\d+)(?:[eE][-+]?\d+)?")
 
@@ -132,9 +132,25 @@ def _viewbox(root)->tuple[float,float,float,float]:
 def prepare_svg(source:str,asset_id:str,box:tuple[float,float,float,float],decimals:int|None=None,fit:str="contain")->str:
     """Return a cleaned ``<g id=asset_id ...>`` fragment scaled into box=(x,y,w,h) stage pixels."""
     if not re.fullmatch(r"[a-z][a-z0-9_-]{0,31}",asset_id):raise AssetImportError("id must match ^[a-z][a-z0-9_-]{0,31}$")
+    # Illustrator exports declare its namespace URIs as entities (<!ENTITY ns_ai "http://ns.adobe.com/...">)
+    # and use them only as whole attribute values (xmlns:i="&ns_ai;", requiredExtensions="&ns_ai;"). Accept exactly
+    # that: plain URL literals used as a complete attribute value. Any other entity (external, parameter, markup,
+    # or referenced in text) is still refused.
+    doctype=re.search(r"<!DOCTYPE[^>\[]*(\[([^\]]*)\])?\s*>",source,flags=re.I|re.S)
+    ns_entities={}
+    if doctype and doctype.group(2):
+        subset=re.sub(r"<!--.*?-->","",doctype.group(2),flags=re.S)
+        decls=re.findall(r"<!ENTITY[^>]*>",subset,flags=re.I)
+        for d in decls:
+            m=re.fullmatch(r'<!ENTITY\s+([A-Za-z_][\w.-]*)\s+"(https?://[^"\s<>&%]+)"\s*>',d.strip())
+            if not m:raise AssetImportError("SVG declares entities; refusing to import")
+            ns_entities[m.group(1)]=m.group(2)
+        if re.sub(r"<!ENTITY[^>]*>","",subset,flags=re.I).strip():raise AssetImportError("SVG doctype has unsupported declarations")
     text=re.sub(r"<!DOCTYPE[^>\[]*(\[[^\]]*\])?\s*>","",source,flags=re.I|re.S)
     text=re.sub(r"<\?xml[^>]*\?>","",text)
     if re.search(r"<!ENTITY",text,re.I):raise AssetImportError("SVG declares entities; refusing to import")
+    if ns_entities:
+        text=re.sub(r'(\s[\w:.-]+=")&([A-Za-z_][\w.-]*);(")',lambda m:m.group(1)+ns_entities[m.group(2)]+m.group(3) if m.group(2) in ns_entities else m.group(0),text)
     try:root=ET.fromstring(text)
     except ET.ParseError as exc:raise AssetImportError(f"not well-formed SVG: {exc}") from None
     if _local(root.tag)!="svg":raise AssetImportError("root element is not <svg>")
@@ -233,7 +249,7 @@ def library_art(name:str)->tuple[str,str]:
     """Return (svg text, credit) for a bundled illustration (``lib:<name>``)."""
     idx=library_index();item=idx["art"].get(name)
     if not item:raise AssetImportError(f"no library art {name!r}; run: motioncards.py library")
-    return (LIBRARY_DIR/item["file"]).read_text(encoding="utf-8"),idx["credit"]
+    return (LIBRARY_DIR/item["file"]).read_text(encoding="utf-8"),item.get("credit") or idx["credit"]
 
 def add_style_kit(scene:dict)->bool:
     """Put the shared shading kit (<defs id="kit">: kit-volume, kit-tissue, ...) into scene['svg'] once.
