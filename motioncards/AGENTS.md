@@ -8,6 +8,7 @@
 - Keep all new MotionCards namespaced as documented.
 - Update `HANDOFF.md` after every meaningful milestone and before risky/long operations.
 - Keep visual/infrastructure PRs open for owner review. Do not merge, apply production migrations, create production services or deploy without this project's owner approval.
+- Exception approved by the owner: a **library proposal** (branch `library/…`, only `motioncards/library/` changed) merges automatically when `motioncards.py library-check` and the MotionCards tests pass in the `MotionCards library auto-merge` workflow. See "Improving the library" in `AUTHORING_V2.md`. Never try to get anything else merged through that path.
 - Never test by operating the real book publish queue.
 - Do not weaken existing book/export/download/sync/leaderboard/legacy tests.
 
@@ -19,6 +20,9 @@
 - Do not hand-type hashes or checksums; tooling generates them.
 - If a figure is essential and its bytes were not inspected through the approved workflow, mark the item blocked.
 - A blocked explicit QID is never silently substituted.
+
+## Library improvement
+- When you create a reusable drawing or animation that the library lacks and you used it in a real card, propose it as described in `AUTHORING_V2.md` ("Improving the library"). Propose only clear improvements; when in doubt, don't.
 
 ## Runtime rules
 - Scene code is deterministic against one host-controlled timeline.

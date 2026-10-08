@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### MotionCards trusted library improvement
+- Added `motioncards.py library-check` (`motioncards/lib/library_gate.py`) and the `MotionCards library auto-merge` workflow. A PR from a `library/…` branch by the repository owner merges automatically only when it is purely additive inside `motioncards/library/` and the MotionCards tests pass. Each new drawing must have a safe licence, a source, a reason and the QIDs that use it, and must import, validate, render and not duplicate existing art. Each new recipe needs a demo that renders deterministically. Everything else is left for the owner.
+
 ### MotionCards publisher retention
 - Each card now keeps its active version plus its 2 most recent previous versions; a removed card keeps 3. Older versions leave the restore history, and their entry files are deleted from the published site after the new state is saved. A failed publish deletes nothing, and files of other live cards are never touched. This keeps the Worker's static-asset file count at no more than 3 files per card. Restoring a version older than those kept now fails with `motioncards_restore_target_missing`, and the live card stays as it was.
 
