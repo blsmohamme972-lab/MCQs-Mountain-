@@ -2,60 +2,88 @@
   "schema_version": 2,
   "qid": "Q000009403",
   "duration_ms": 8000,
-  "takeaway": "EDIT: one short teaching takeaway",
+  "takeaway": "In chronic hypertension the whole autoregulation curve shifts to the right; with treatment, over time, it returns towards normal.",
   "stage": {
     "width": 640,
-    "height": 560
+    "height": 560,
+    "background": "#f4f8f8"
   },
   "layers": [
     {
       "type": "text",
-      "text": "A 64-year-old woman presents to the emergency department with a 2-week history of…",
+      "text": "Autoregulation in chronic hypertension",
       "x": 320,
-      "y": 64,
+      "y": 44,
       "size": 26,
       "weight": 800,
-      "max_width": 580,
+      "max_width": 590,
       "fit": true,
-      "max_lines": 2,
+      "color": "@ink",
       "fixed": true
     },
     {
-      "type": "circle",
-      "cx": 180,
-      "cy": 300,
-      "r": 70,
-      "fill": "@surface",
-      "stroke": "@ink",
-      "stroke_width": 3
+      "type": "text",
+      "text": "1 · Normal: flow steady from MAP 50 to 150",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
+      "show": [
+        0,
+        2700
+      ],
+      "enter": "fade",
+      "exit": "fade"
     },
     {
-      "type": "circle",
-      "cx": 460,
-      "cy": 300,
-      "r": 70,
-      "fill": "@surface",
-      "stroke": "@ink",
-      "stroke_width": 3,
+      "type": "text",
+      "text": "2 · Chronic hypertension: curve shifts right",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
       "show": [
-        1200,
-        8000
+        2700,
+        5000
       ],
-      "enter": "pop"
+      "enter": "type",
+      "exit": "fade"
     },
     {
-      "type": "arrow",
-      "x1": 265,
-      "y1": 300,
-      "x2": 375,
-      "y2": 300,
-      "stroke": "@accent",
-      "stroke_width": 8,
+      "type": "text",
+      "text": "3 · Treated: it returns towards normal",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
       "show": [
-        2400,
+        5000,
         8000
       ],
-      "enter": "draw"
+      "enter": "type"
     }
-  ]
+  ],
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <filter id=\"panelShadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"125%\"><feDropShadow dx=\"0\" dy=\"3\" stdDeviation=\"5\" flood-color=\"#0b1b26\" flood-opacity=\"0.16\"/></filter>\n  </defs>\n  <rect x=\"24\" y=\"128\" width=\"592\" height=\"410\" rx=\"22\" fill=\"#ffffff\" filter=\"url(#panelShadow)\"/>\n  <g id=\"grid\" stroke=\"#e6eeee\" stroke-width=\"1.5\"></g>\n  <g id=\"band\"></g>\n  <g id=\"axes\" stroke=\"@ink\" stroke-width=\"2.5\" stroke-linecap=\"round\" fill=\"none\">\n    <line x1=\"100\" y1=\"460\" x2=\"590\" y2=\"460\"/>\n    <line x1=\"100\" y1=\"460\" x2=\"100\" y2=\"154\"/>\n    <path d=\"M 93 166 L 100 154 L 107 166\" stroke-linejoin=\"round\"/>\n  </g>\n  <g id=\"ticks\" fill=\"@muted\" font-size=\"16\" font-weight=\"600\" font-family=\"system-ui,sans-serif\"></g>\n  <text x=\"342\" y=\"520\" text-anchor=\"middle\" fill=\"@ink\" font-size=\"18\" font-weight=\"700\" font-family=\"system-ui,sans-serif\">Mean arterial pressure (mmHg)</text>\n  <text x=\"72\" y=\"307\" text-anchor=\"middle\" fill=\"@ink\" font-size=\"18\" font-weight=\"700\" font-family=\"system-ui,sans-serif\" transform=\"rotate(-90 72 307)\">Cerebral blood flow</text>\n  <g id=\"plot\"></g>\n</svg>\n",
+  "script": "// Qualitative cerebral autoregulation curve: CBF against MAP (0..200 mmHg).\n// f(m) = 1 for L <= m <= U; m < L: max(0.12, 1 - ((L - m)/(L - 10))^1.15 * 0.88); m > U: 1 + 0.9*((m - U)/50)^1.4.\n// Normal: L = 50, U = 150. Shifted curve = the same shape with L and U both raised by s: f(m - s).\nconst L0 = 50, U0 = 150, S_HTN = 40, S_TX = 15;\nconst X0 = 100, X1 = 584, YB = 460, YT = 164, VMAX = 2;   // plot box, CBF 0..2 (plateau = 1)\nconst sx = m => X0 + (X1 - X0) * m / 200;\nconst sy = v => YB - (YB - YT) * v / VMAX;\nconst TEAL = \"#2a9d8f\", TEAL_D = \"#1d6f66\", RED = \"#c0392b\", AMBER = \"#d68a0c\", AMBER_D = \"#9a5d00\";\nconst YP = sy(1);                                             // plateau height\nfunction f(m) {\n  if (m < L0) return Math.max(0.12, 1 - Math.pow((L0 - m) / (L0 - 10), 1.15) * 0.88);\n  if (m > U0) return 1 + 0.9 * Math.pow((m - U0) / 50, 1.4);\n  return 1;\n}\nfunction curve(s) {\n  let d = \"\";\n  for (let m = 0; m <= 200; m += 1) d += (m ? \" L \" : \"M \") + sx(m).toFixed(1) + \" \" + sy(f(m - s)).toFixed(1);\n  return d;\n}\nfunction arrowD(xa, xb, y, h) {                               // horizontal arrow, head at xb\n  const dir = xb >= xa ? 1 : -1, hx = xb - dir * h;\n  return \"M \" + xa.toFixed(1) + \" \" + y + \" L \" + hx.toFixed(1) + \" \" + y +\n    \" M \" + hx.toFixed(1) + \" \" + (y - h * 0.62).toFixed(1) + \" L \" + xb.toFixed(1) + \" \" + y + \" L \" + hx.toFixed(1) + \" \" + (y + h * 0.62).toFixed(1);\n}\nlet el = {};\nfunction txt(api, parent, s, attrs) {\n  const t = api.el(\"text\", Object.assign({\"font-family\": \"system-ui,sans-serif\", \"font-weight\": 700, \"font-size\": 18,\n    stroke: \"#ffffff\", \"stroke-width\": 5, \"stroke-linejoin\": \"round\", \"paint-order\": \"stroke\"}, attrs), parent);\n  t.textContent = s; return t;\n}\nfunction setup(api) {\n  const grid = api.$(\"#grid\"), ticks = api.$(\"#ticks\"), band = api.$(\"#band\"), plot = api.$(\"#plot\");\n  for (let m = 0; m <= 200; m += 50) {\n    if (m > 0) api.el(\"line\", {x1: sx(m), y1: YB, x2: sx(m), y2: YT}, grid);\n    api.el(\"line\", {x1: sx(m), y1: YB, x2: sx(m), y2: YB + 7, stroke: \"@ink\", \"stroke-width\": 2.5}, ticks);\n    const lim = m === L0 || m === U0;\n    const t = api.el(\"text\", {x: sx(m), y: YB + 27, \"text-anchor\": \"middle\", fill: lim ? TEAL_D : \"@muted\", \"font-weight\": lim ? 800 : 600}, ticks);\n    t.textContent = String(m);\n  }\n  // Normal autoregulation range: light band, dashed guides from the limits down to the axis.\n  el.band = api.el(\"g\", {}, band);\n  api.el(\"rect\", {x: sx(L0), y: YT, width: sx(U0) - sx(L0), height: YB - YT, fill: TEAL, \"fill-opacity\": 0.09}, el.band);\n  [L0, U0].forEach(m => api.el(\"line\", {x1: sx(m), y1: YB, x2: sx(m), y2: YP, stroke: TEAL, \"stroke-width\": 2.5, \"stroke-dasharray\": \"6 6\"}, el.band));\n  el.autoLabel = txt(api, plot, \"autoregulation\", {x: sx(100), y: YP - 16, \"text-anchor\": \"middle\", fill: TEAL_D});\n  // Curves: faint hypertensive ghost (beat 3), normal (teal), moving copy (red solid / amber dashed).\n  el.ghost = api.el(\"path\", {d: curve(S_HTN), fill: \"none\", stroke: RED, \"stroke-width\": 3.5, \"stroke-linecap\": \"round\", \"stroke-linejoin\": \"round\"}, plot);\n  el.normal = api.el(\"path\", {d: curve(0), fill: \"none\", stroke: TEAL, \"stroke-width\": 6, \"stroke-linecap\": \"round\", \"stroke-linejoin\": \"round\", pathLength: 1}, plot);\n  el.red = api.el(\"path\", {fill: \"none\", stroke: RED, \"stroke-width\": 6, \"stroke-linecap\": \"round\", \"stroke-linejoin\": \"round\"}, plot);\n  el.amber = api.el(\"path\", {fill: \"none\", stroke: AMBER, \"stroke-width\": 5, \"stroke-linecap\": \"round\", \"stroke-linejoin\": \"round\", \"stroke-dasharray\": \"12 9\"}, plot);\n  // Beat 2: red right-arrow over the plateau + label.\n  el.redArrow = api.el(\"path\", {fill: \"none\", stroke: RED, \"stroke-width\": 5, \"stroke-linecap\": \"round\", \"stroke-linejoin\": \"round\"}, plot);\n  el.redLabel = txt(api, plot, \"chronic hypertension\", {x: sx(120), y: YP - 84, \"text-anchor\": \"middle\", fill: RED});\n  // Beat 3: small amber left-arrow + label.\n  el.amberArrow = api.el(\"path\", {fill: \"none\", stroke: AMBER, \"stroke-width\": 5, \"stroke-linecap\": \"round\", \"stroke-linejoin\": \"round\"}, plot);\n  el.amberLabel = txt(api, plot, \"treated, with time\", {x: sx(115), y: YP + 56, \"text-anchor\": \"middle\", fill: AMBER_D});\n}\nfunction fade(api, node, k) { api.set(node, {opacity: k, display: k > 0.001 ? \"inline\" : \"none\"}); }\nfunction render(t, api) {\n  // Beat 1 (0-2700): range band + label fade in, normal curve draws on.\n  fade(api, el.band, api.seg(t, 250, 900, \"ease_out\"));\n  fade(api, el.autoLabel, api.seg(t, 300, 1000, \"ease_out\"));\n  const draw = api.seg(t, 200, 2200, \"ease_in_out\");\n  const thin = api.seg(t, 2800, 3400, \"ease_in_out\");\n  api.set(el.normal, {\"stroke-dasharray\": draw.toFixed(4) + \" 1.001\", \"stroke-opacity\": draw > 0 ? 1 : 0,\n    \"stroke-width\": 6 - 2.5 * thin, opacity: 1 - 0.4 * thin});\n  // Beat 2 (2700-5000): red copy slides right, s 0 -> 40.\n  const k2 = api.seg(t, 2800, 4300, \"ease_in_out\");\n  const k3 = api.seg(t, 5100, 6400, \"ease_in_out\");          // beat 3: back part-way, s 40 -> 15\n  const s = S_HTN * k2 - (S_HTN - S_TX) * k3;\n  const swap = api.seg(t, 5100, 5600, \"ease_in_out\");         // red solid -> amber dashed\n  const d = curve(s);\n  api.set(el.red, {d: d}); fade(api, el.red, api.seg(t, 2800, 3000) * (1 - swap));\n  api.set(el.amber, {d: d}); fade(api, el.amber, swap);\n  fade(api, el.ghost, 0.4 * api.seg(t, 5100, 5500, \"ease_out\"));\n  const ra = api.seg(t, 2800, 3000);\n  api.set(el.redArrow, {d: arrowD(sx(100), sx(100) + Math.max(14, sx(S_HTN * k2) - sx(0)), YP - 46, 14)});\n  fade(api, el.redArrow, ra * (1 - 0.3 * swap));\n  fade(api, el.redLabel, api.seg(t, 2900, 3500, \"ease_out\") * (1 - 0.3 * swap));\n  // Beat 3 (5000-8000): small amber left-arrow + label; hold from 6400.\n  const xa = sx(115 + (S_HTN - S_TX) / 2), xb = xa - (sx(S_HTN - S_TX) - sx(0)) * k3;   // 25 mmHg long, centred over its label\n  api.set(el.amberArrow, {d: arrowD(xa, Math.min(xa - 14, xb), YP + 26, 12)});\n  fade(api, el.amberArrow, api.seg(t, 5100, 5300));\n  fade(api, el.amberLabel, api.seg(t, 5200, 5800, \"ease_out\"));\n}\n"
 }

@@ -2,60 +2,91 @@
   "schema_version": 2,
   "qid": "Q000009399",
   "duration_ms": 8000,
-  "takeaway": "EDIT: one short teaching takeaway",
+  "takeaway": "Normal CSF opening pressure is 7–18 cmH₂O; 22 mmHg (about 30 cmH₂O) is abnormally high.",
   "stage": {
     "width": 640,
-    "height": 560
+    "height": 560,
+    "background": "#f4f8f8"
   },
   "layers": [
     {
       "type": "text",
-      "text": "An 18-year-old woman with a ventriculoperitoneal shunt, which was inserted in childhood…",
+      "text": "CSF opening pressure",
       "x": 320,
-      "y": 64,
+      "y": 44,
       "size": 26,
       "weight": 800,
-      "max_width": 580,
+      "max_width": 590,
       "fit": true,
-      "max_lines": 2,
+      "color": "@ink",
       "fixed": true
     },
     {
-      "type": "circle",
-      "cx": 180,
-      "cy": 300,
-      "r": 70,
-      "fill": "@surface",
-      "stroke": "@ink",
-      "stroke_width": 3
-    },
-    {
-      "type": "circle",
-      "cx": 460,
-      "cy": 300,
-      "r": 70,
-      "fill": "@surface",
-      "stroke": "@ink",
-      "stroke_width": 3,
+      "type": "text",
+      "text": "1 · Glucose, protein, cells: normal",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "color": "@ink",
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
       "show": [
-        1200,
-        8000
+        0,
+        2400
       ],
-      "enter": "pop"
+      "enter": "fade",
+      "exit": "fade"
     },
     {
-      "type": "arrow",
-      "x1": 265,
-      "y1": 300,
-      "x2": 375,
-      "y2": 300,
-      "stroke": "@accent",
-      "stroke_width": 8,
+      "type": "text",
+      "text": "2 · 22 mmHg ≈ 30 cmH₂O",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "color": "@ink",
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
       "show": [
         2400,
+        5200
+      ],
+      "enter": "type",
+      "exit": "fade"
+    },
+    {
+      "type": "text",
+      "text": "3 · Normal is 7–18 cmH₂O: raised",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "color": "@ink",
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
+      "show": [
+        5200,
         8000
       ],
-      "enter": "draw"
+      "enter": "type"
     }
-  ]
+  ],
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\">\n<defs>\n<filter id=\"soft\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\"><feDropShadow dx=\"0\" dy=\"3\" stdDeviation=\"4\" flood-color=\"#0b1b26\" flood-opacity=\"0.16\"/></filter>\n<linearGradient id=\"glass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#d9e5e8\"/><stop offset=\"0.3\" stop-color=\"#ffffff\"/><stop offset=\"1\" stop-color=\"#dfeaec\"/></linearGradient>\n<linearGradient id=\"csf\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#a9d8ee\"/><stop offset=\"0.4\" stop-color=\"#dcf1fa\"/><stop offset=\"1\" stop-color=\"#9fd2ea\"/></linearGradient>\n<clipPath id=\"bore\"><rect x=\"383\" y=\"211\" width=\"22\" height=\"286\" rx=\"11\"/></clipPath>\n</defs>\n<rect x=\"24\" y=\"134\" width=\"270\" height=\"386\" rx=\"20\" fill=\"#ffffff\" filter=\"url(#soft)\"/>\n<rect x=\"306\" y=\"134\" width=\"310\" height=\"386\" rx=\"20\" fill=\"#ffffff\" filter=\"url(#soft)\"/>\n<g id=\"lab\" font-family=\"system-ui,sans-serif\">\n<text x=\"46\" y=\"158\" font-size=\"16\" font-weight=\"800\" fill=\"@muted\" letter-spacing=\"0.6\" dominant-baseline=\"central\">CSF results</text>\n<line x1=\"40\" y1=\"176\" x2=\"278\" y2=\"176\" stroke=\"#d9e5e6\" stroke-width=\"2\"/>\n<text x=\"46\" y=\"199\" font-size=\"18\" font-weight=\"700\" fill=\"@muted\" dominant-baseline=\"central\">Glucose</text><text x=\"46\" y=\"223\" font-size=\"22\" font-weight=\"800\" fill=\"@ink\" dominant-baseline=\"central\">4.4 mmol/L</text><circle cx=\"262\" cy=\"211\" r=\"15\" fill=\"#ffffff\" stroke=\"#d3dfe0\" stroke-width=\"2\"/><line x1=\"40\" y1=\"240\" x2=\"278\" y2=\"240\" stroke=\"#e6eeee\" stroke-width=\"1.5\"/><text x=\"46\" y=\"259\" font-size=\"18\" font-weight=\"700\" fill=\"@muted\" dominant-baseline=\"central\">Protein</text><text x=\"46\" y=\"283\" font-size=\"22\" font-weight=\"800\" fill=\"@ink\" dominant-baseline=\"central\">0.3 g/L</text><circle cx=\"262\" cy=\"271\" r=\"15\" fill=\"#ffffff\" stroke=\"#d3dfe0\" stroke-width=\"2\"/><line x1=\"40\" y1=\"300\" x2=\"278\" y2=\"300\" stroke=\"#e6eeee\" stroke-width=\"1.5\"/><text x=\"46\" y=\"319\" font-size=\"18\" font-weight=\"700\" fill=\"@muted\" dominant-baseline=\"central\">RBC</text><text x=\"46\" y=\"343\" font-size=\"22\" font-weight=\"800\" fill=\"@ink\" dominant-baseline=\"central\">2 × 10⁶/L</text><circle cx=\"262\" cy=\"331\" r=\"15\" fill=\"#ffffff\" stroke=\"#d3dfe0\" stroke-width=\"2\"/><line x1=\"40\" y1=\"360\" x2=\"278\" y2=\"360\" stroke=\"#e6eeee\" stroke-width=\"1.5\"/><text x=\"46\" y=\"379\" font-size=\"18\" font-weight=\"700\" fill=\"@muted\" dominant-baseline=\"central\">WCC</text><text x=\"46\" y=\"403\" font-size=\"22\" font-weight=\"800\" fill=\"@ink\" dominant-baseline=\"central\">2 × 10⁶/L</text><circle cx=\"262\" cy=\"391\" r=\"15\" fill=\"#ffffff\" stroke=\"#d3dfe0\" stroke-width=\"2\"/>\n<rect id=\"opBox\" x=\"36\" y=\"428\" width=\"246\" height=\"80\" rx=\"14\" fill=\"#fff5f0\" stroke=\"@accent\" stroke-width=\"2\"/>\n<text x=\"52\" y=\"451\" font-size=\"18\" font-weight=\"800\" fill=\"@ink\" dominant-baseline=\"central\">Opening pressure</text>\n<text id=\"opVal\" x=\"52\" y=\"485\" font-size=\"24\" font-weight=\"800\" fill=\"@ink\" dominant-baseline=\"central\">22 mmHg</text>\n<g id=\"qMark\"><circle cx=\"262\" cy=\"484\" r=\"15\" fill=\"#eef2f3\" stroke=\"#c3cfd1\" stroke-width=\"2\"/><text x=\"262\" y=\"485\" font-size=\"19\" font-weight=\"800\" fill=\"#8b9b9f\" text-anchor=\"middle\" dominant-baseline=\"central\">?</text></g>\n<g id=\"ticks\"></g>\n</g>\n<g id=\"mano\" font-family=\"system-ui,sans-serif\">\n<text x=\"394\" y=\"186\" font-size=\"16\" font-weight=\"800\" fill=\"@muted\" text-anchor=\"middle\" dominant-baseline=\"central\">cmH₂O</text>\n<rect id=\"band\" x=\"356\" y=\"0\" width=\"76\" height=\"0\" rx=\"6\" fill=\"#2a9d8f\" fill-opacity=\"0.16\" stroke=\"#2a9d8f\" stroke-width=\"2\"/>\n<g id=\"scale\" stroke=\"@muted\" stroke-width=\"2\" stroke-linecap=\"round\"></g>\n<g id=\"scaleTxt\" font-size=\"17\" font-weight=\"700\" fill=\"@muted\" text-anchor=\"end\"></g>\n<rect x=\"378\" y=\"206\" width=\"32\" height=\"296\" rx=\"16\" fill=\"url(#glass)\" fill-opacity=\"0.85\" stroke=\"#9fb3b7\" stroke-width=\"2.5\"/>\n<g clip-path=\"url(#bore)\"><rect id=\"fluid\" x=\"383\" y=\"478\" width=\"22\" height=\"40\" fill=\"url(#csf)\"/><rect id=\"fluidRed\" x=\"383\" y=\"0\" width=\"22\" height=\"0\" fill=\"#c0392b\" opacity=\"0\"/></g>\n<path id=\"meniscus\" d=\"M 383 478 Q 394 482 405 478\" fill=\"none\" stroke=\"#5aa6c9\" stroke-width=\"2.5\" stroke-linecap=\"round\"/>\n<rect x=\"384\" y=\"216\" width=\"4\" height=\"252\" rx=\"2\" fill=\"#ffffff\" opacity=\"0.7\"/>\n<text id=\"bandTxt\" x=\"442\" y=\"0\" font-size=\"18\" font-weight=\"800\" fill=\"#1d7a70\" dominant-baseline=\"central\">normal 7–18</text>\n<text x=\"418\" y=\"470\" font-size=\"16\" font-weight=\"800\" fill=\"#3a8fb7\" dominant-baseline=\"central\">CSF</text>\n<g id=\"marker\"></g>\n<g id=\"chip\"></g>\n</g>\n</svg>",
+  "script": "// Manometer: 0 cmH2O at y=478, 7.2 px per cmH2O. 1 mmHg ~ 1.36 cmH2O, so 22 mmHg ~ 29.9 cmH2O.\nconst TX = 394, Y0 = 478, PX = 7.2, LO = 7, HI = 18, OP = 22 * 1.36;\nconst Y = v => Y0 - PX * v;\nconst RED = \"#c0392b\", GOOD = \"#2a9d8f\", ACC = \"#e76f51\";\nconst ROW0 = 180, ROWH = 60;\nlet E = {};\nfunction txt(api, parent, s, a) {\n  const t = api.el(\"text\", Object.assign({\"dominant-baseline\": \"central\"}, a), parent);\n  t.textContent = s; return t;\n}\nfunction setup(api) {\n  // scale: ticks every 5 cmH2O, labels at 0, 10, 20, 30\n  const S = api.$(\"#scale\"), ST = api.$(\"#scaleTxt\");\n  for (let v = 0; v <= 35; v += 5) {\n    const major = v % 10 === 0;\n    api.el(\"line\", {x1: major ? 358 : 366, x2: 375, y1: Y(v), y2: Y(v)}, S);\n    if (major && v <= 30) txt(api, ST, String(v), {x: 352, y: Y(v)});\n  }\n  // normal band 7-18 cmH2O\n  api.set(api.$(\"#band\"), {y: Y(HI), height: Y(LO) - Y(HI)});\n  api.set(api.$(\"#bandTxt\"), {y: (Y(LO) + Y(HI)) / 2});\n  // green ticks for the four unremarkable rows\n  E.ticks = [0, 1, 2, 3].map(i => {\n    const g = api.el(\"g\", {opacity: 0}, api.$(\"#ticks\"));\n    api.el(\"circle\", {cx: 0, cy: 0, r: 15, fill: GOOD}, g);\n    api.el(\"path\", {d: \"M -6.5 0.5 L -2 5 L 7 -5\", fill: \"none\", stroke: \"#ffffff\", \"stroke-width\": 3.2, \"stroke-linecap\": \"round\", \"stroke-linejoin\": \"round\"}, g);\n    return {g, x: 262, y: ROW0 + ROWH * i + 31};\n  });\n  // red \"raised\" pill (replaces the grey ?)\n  E.raised = api.el(\"g\", {opacity: 0}, api.$(\"#ticks\"));\n  api.el(\"rect\", {x: -44, y: -15, width: 88, height: 30, rx: 15, fill: RED}, E.raised);\n  txt(api, E.raised, \"↑ raised\", {x: 0, y: 1, \"text-anchor\": \"middle\", fill: \"#ffffff\", \"font-size\": 17, \"font-weight\": 800});\n  // level marker at 30\n  E.marker = api.$(\"#marker\");\n  api.set(E.marker, {opacity: 0});\n  const my = Y(30);\n  api.el(\"line\", {x1: 405, x2: 418, y1: my, y2: my, stroke: ACC, \"stroke-width\": 2.5, \"stroke-dasharray\": \"3 3\"}, E.marker);\n  E.mPath = api.el(\"path\", {d: \"M 418 \" + my + \" L 427 \" + (my - 8) + \" L 427 \" + (my + 8) + \" Z\", fill: ACC}, E.marker);\n  E.mRect = api.el(\"rect\", {x: 426, y: my - 14, width: 44, height: 28, rx: 9, fill: ACC}, E.marker);\n  txt(api, E.marker, \"30\", {x: 448, y: my + 1, \"text-anchor\": \"middle\", fill: \"#ffffff\", \"font-size\": 17, \"font-weight\": 800});\n  // conversion chip near the tube top, sized to its text\n  E.chip = api.$(\"#chip\");\n  const bg = api.el(\"rect\", {rx: 14, fill: \"#fff1ec\", stroke: \"#f2b8a6\", \"stroke-width\": 1.5}, E.chip);\n  const a = txt(api, E.chip, \"22 mmHg × 1.36\", {\"text-anchor\": \"middle\", fill: \"#b23a1e\", \"font-size\": 16, \"font-weight\": 800});\n  const b = txt(api, E.chip, \"≈ 30 cmH₂O\", {\"text-anchor\": \"middle\", fill: \"#b23a1e\", \"font-size\": 16, \"font-weight\": 800});\n  const w = Math.ceil(Math.max(a.getBBox().width, b.getBBox().width)) + 26;\n  const cx = Math.min(430 + w / 2, 600 - w / 2), cy = 200;\n  api.set(bg, {x: cx - w / 2, y: cy - 28, width: w, height: 56});\n  api.set(a, {x: cx, y: cy - 11}); api.set(b, {x: cx, y: cy + 12});\n  api.set(E.chip, {opacity: 0});\n  E.fluid = api.$(\"#fluid\"); E.red = api.$(\"#fluidRed\"); E.men = api.$(\"#meniscus\");\n  E.band = api.$(\"#band\"); E.box = api.$(\"#opBox\"); E.val = api.$(\"#opVal\"); E.q = api.$(\"#qMark\");\n}\nfunction render(t, api) {\n  // Beat 1 (0-2400): green ticks pop in one after another from 300 ms\n  E.ticks.forEach((k, i) => {\n    const p = api.seg(t, 300 + 400 * i, 650 + 400 * i, \"back_out\");\n    api.set(k.g, {opacity: Math.min(1, p * 2), transform: \"translate(\" + k.x + \" \" + k.y + \") scale(\" + Math.max(0.01, p) + \")\"});\n  });\n  // Beat 2 (2400-5200): chip + marker at 2500, column rises to 22 x 1.36 cmH2O\n  const c = api.seg(t, 2500, 2950, \"ease_out\");\n  api.set(E.chip, {opacity: c, transform: \"translate(\" + (1 - c) * 18 + \" 0)\"});\n  api.set(E.marker, {opacity: api.seg(t, 2600, 3000, \"ease_out\")});\n  const lvl = OP * api.seg(t, 2550, 4400, \"ease_in_out\");\n  const yl = Y(lvl);\n  api.set(E.fluid, {y: yl, height: 500 - yl});\n  api.set(E.men, {d: \"M 383 \" + yl.toFixed(1) + \" Q 394 \" + (yl + 4).toFixed(1) + \" 405 \" + yl.toFixed(1)});\n  const hi = api.seg(t, 2500, 2800, \"ease_out\");\n  // Beat 3 (5200-8000): part above 18 turns red, band pulses once, row marked raised\n  const r = api.seg(t, 5200, 5700, \"ease_out\");\n  const top = Math.min(yl, Y(HI));\n  api.set(E.red, {y: top, height: Y(HI) - top, opacity: 0.78 * r});\n  api.set(E.men, {stroke: api.mixColor(\"#5aa6c9\", RED, r)});\n  const pulse = Math.sin(Math.PI * api.seg(t, 5200, 6100, \"ease_in_out\"));\n  api.set(E.band, {\"stroke-width\": 2 + 3.5 * pulse, \"fill-opacity\": 0.16 + 0.14 * pulse});\n  api.set(E.box, {\"stroke-width\": 2 + 1.5 * hi, stroke: api.mixColor(ACC, RED, r), fill: api.mixColor(\"#fff5f0\", \"#fdebea\", r)});\n  api.set(E.val, {fill: api.mixColor(api.mixColor(\"#16323a\", \"#b23a1e\", hi), RED, r)});\n  api.set(E.mPath, {fill: api.mixColor(ACC, RED, r)}); api.set(E.mRect, {fill: api.mixColor(ACC, RED, r)});\n  api.set(E.q, {opacity: 1 - api.seg(t, 5200, 5400, \"ease_out\")});\n  const p = api.seg(t, 5250, 5700, \"back_out\");\n  api.set(E.raised, {opacity: Math.min(1, p * 2), transform: \"translate(228 484) scale(\" + Math.max(0.01, p) + \")\"});\n}\n"
 }

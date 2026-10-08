@@ -2,60 +2,88 @@
   "schema_version": 2,
   "qid": "Q000009398",
   "duration_ms": 8000,
-  "takeaway": "EDIT: one short teaching takeaway",
+  "takeaway": "Hypoxia (PaO₂ 6.7 kPa) dilates cerebral arterioles and increases cerebral blood flow; a low PaCO₂ does the opposite.",
   "stage": {
     "width": 640,
-    "height": 560
+    "height": 560,
+    "background": "#f4f8f8"
   },
   "layers": [
     {
       "type": "text",
-      "text": "A 34-year-old man is admitted to the intensive care unit. He has been assaulted and…",
+      "text": "Hypoxia and cerebral blood flow",
       "x": 320,
-      "y": 64,
+      "y": 44,
       "size": 26,
       "weight": 800,
-      "max_width": 580,
+      "max_width": 590,
       "fit": true,
-      "max_lines": 2,
+      "color": "@ink",
       "fixed": true
     },
     {
-      "type": "circle",
-      "cx": 180,
-      "cy": 300,
-      "r": 70,
-      "fill": "@surface",
-      "stroke": "@ink",
-      "stroke_width": 3
+      "type": "text",
+      "text": "1 · Hypoxia: PaO₂ falls to 6.7 kPa",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
+      "show": [
+        0,
+        2700
+      ],
+      "enter": "fade",
+      "exit": "fade"
     },
     {
-      "type": "circle",
-      "cx": 460,
-      "cy": 300,
-      "r": 70,
-      "fill": "@surface",
-      "stroke": "@ink",
-      "stroke_width": 3,
+      "type": "text",
+      "text": "2 · Cerebral arterioles dilate",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
       "show": [
-        1200,
-        8000
+        2700,
+        5000
       ],
-      "enter": "pop"
+      "enter": "type",
+      "exit": "fade"
     },
     {
-      "type": "arrow",
-      "x1": 265,
-      "y1": 300,
-      "x2": 375,
-      "y2": 300,
-      "stroke": "@accent",
-      "stroke_width": 8,
+      "type": "text",
+      "text": "3 · Cerebral blood flow rises",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
       "show": [
-        2400,
+        5000,
         8000
       ],
-      "enter": "draw"
+      "enter": "type"
     }
-  ]
+  ],
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <filter id=\"panelShadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"125%\"><feDropShadow dx=\"0\" dy=\"3\" stdDeviation=\"5\" flood-color=\"#0b1b26\" flood-opacity=\"0.16\"/></filter>\n    <filter id=\"chipShadow\" x=\"-20%\" y=\"-30%\" width=\"140%\" height=\"180%\"><feDropShadow dx=\"0\" dy=\"2\" stdDeviation=\"2.5\" flood-color=\"#0b1b26\" flood-opacity=\"0.16\"/></filter>\n    <linearGradient id=\"limbStroke\" gradientUnits=\"userSpaceOnUse\" x1=\"355\" y1=\"0\" x2=\"205\" y2=\"0\"><stop offset=\"0\" stop-color=\"#2a9d8f\"/><stop offset=\"0.06\" stop-color=\"#2a9d8f\"/><stop offset=\"0.22\" stop-color=\"#c0392b\"/><stop offset=\"1\" stop-color=\"#a93226\"/></linearGradient>\n    <radialGradient id=\"wallFill\" cx=\"0.5\" cy=\"0.5\" r=\"0.5\"><stop offset=\"0.45\" stop-color=\"#f6cfc6\"/><stop offset=\"0.8\" stop-color=\"#eba79c\"/><stop offset=\"1\" stop-color=\"#d88a7e\"/></radialGradient>\n    <radialGradient id=\"lumenFill\" cx=\"0.4\" cy=\"0.36\" r=\"0.7\"><stop offset=\"0\" stop-color=\"#e2554b\"/><stop offset=\"0.7\" stop-color=\"#c0392b\"/><stop offset=\"1\" stop-color=\"#96241f\"/></radialGradient>\n  </defs>\n  <rect x=\"24\" y=\"128\" width=\"592\" height=\"410\" rx=\"22\" fill=\"#ffffff\" filter=\"url(#panelShadow)\"/>\n  <g id=\"grid\" stroke=\"#e6eeee\" stroke-width=\"1.5\"></g>\n  <rect x=\"404\" y=\"146\" width=\"184\" height=\"200\" rx=\"16\" fill=\"#f7fbfb\" stroke=\"@line\" stroke-width=\"1.5\"/>\n  <g id=\"axes\" stroke=\"@ink\" stroke-width=\"2.5\" stroke-linecap=\"round\" fill=\"none\">\n    <line x1=\"100\" y1=\"468\" x2=\"584\" y2=\"468\"/>\n    <line x1=\"100\" y1=\"468\" x2=\"100\" y2=\"146\"/>\n    <path d=\"M 93 156 L 100 144 L 107 156\" stroke-linejoin=\"round\"/>\n  </g>\n  <g id=\"ticks\" fill=\"@muted\" font-size=\"16\" font-weight=\"600\" font-family=\"system-ui,sans-serif\"></g>\n  <text x=\"340\" y=\"520\" text-anchor=\"middle\" fill=\"@ink\" font-size=\"18\" font-weight=\"700\" font-family=\"system-ui,sans-serif\">PaO₂ (kPa)</text>\n  <text x=\"74\" y=\"307\" text-anchor=\"middle\" fill=\"@ink\" font-size=\"18\" font-weight=\"700\" font-family=\"system-ui,sans-serif\" transform=\"rotate(-90 74 307)\">Cerebral blood flow</text>\n  <g id=\"plot\"></g>\n  <g id=\"inset\"></g>\n</svg>\n",
+  "script": "// Qualitative CBF vs PaO2: CBF(P) = 1 for P >= 8.5 kPa, else 1 + 0.08*(8.5 - P)^2.\nconst X0 = 100, X1 = 580, YB = 468, YT = 150;            // plot box: PaO2 0..16 kPa, CBF 0.8..3.1\nconst VB = 0.8, VT = 3.1, KNEE = 8.5, P0 = 13, PT = 6.7;\nconst sx = p => X0 + (X1 - X0) * p / 16;\nconst sy = v => YB - (YB - YT) * (v - VB) / (VT - VB);\nconst cbf = p => p >= KNEE ? 1 : 1 + 0.08 * (KNEE - p) * (KNEE - p);\nconst TEAL = \"#2a9d8f\", RED = \"#c0392b\";\nconst YN = sy(1), YP = sy(cbf(PT));                       // normal level, patient's point on the curve\nconst CX = 496, CY = 232;                                 // arteriole inset centre\nconst CHIP_H = 32, PAD = 14;\nlet el = {};\nfunction txt(api, parent, s, attrs) {\n  const t = api.el(\"text\", Object.assign({\"font-family\": \"system-ui,sans-serif\", \"font-weight\": 700}, attrs), parent);\n  t.textContent = s; return t;\n}\nfunction setup(api) {\n  const grid = api.$(\"#grid\"), ticks = api.$(\"#ticks\"), plot = api.$(\"#plot\"), inset = api.$(\"#inset\");\n  for (let p = 0; p <= 16; p += 4) {\n    if (p > 0) api.el(\"line\", {x1: sx(p), y1: YB, x2: sx(p), y2: YT}, grid);\n    api.el(\"line\", {x1: sx(p), y1: YB, x2: sx(p), y2: YB + 7, stroke: \"@ink\", \"stroke-width\": 2.5}, ticks);\n    txt(api, ticks, String(p), {x: sx(p), y: YB + 27, \"text-anchor\": \"middle\", \"font-weight\": 600});\n  }\n  // Normal reference level, then the flat limb (16 -> 8.5 kPa) on top of it.\n  api.el(\"line\", {x1: X0, y1: YN, x2: X1, y2: YN, stroke: \"@muted\", \"stroke-width\": 2, \"stroke-dasharray\": \"7 7\", opacity: 0.85}, plot);\n  txt(api, plot, \"normal\", {x: X1, y: YN - 14, \"text-anchor\": \"end\", fill: \"@muted\", \"font-size\": 18});\n  api.el(\"path\", {d: \"M \" + sx(16) + \" \" + YN + \" L \" + sx(KNEE) + \" \" + YN, fill: \"none\", stroke: TEAL, \"stroke-width\": 6, \"stroke-linecap\": \"round\"}, plot);\n  // Rising limb (8.5 -> 3.5 kPa), computed from the formula, drawn on in beat 3.\n  let d = \"\";\n  for (let i = 0; i <= 100; i++) { const p = KNEE - 5 * i / 100; d += (i ? \" L \" : \"M \") + sx(p).toFixed(2) + \" \" + sy(cbf(p)).toFixed(2); }\n  el.limb = api.el(\"path\", {d: d, fill: \"none\", stroke: \"url(#limbStroke)\", \"stroke-width\": 6, \"stroke-linecap\": \"round\", \"stroke-linejoin\": \"round\", pathLength: 1}, plot);\n  // Patient marker, dashed guide to the axis, PaO2 chip.\n  el.guide = api.el(\"line\", {stroke: \"@muted\", \"stroke-width\": 2, \"stroke-dasharray\": \"4 5\"}, plot);\n  el.chip = api.el(\"g\", {}, plot);\n  // The chip reads \"PaO₂\" while the marker slides and widens to \"PaO₂ 6.7 kPa\" as it arrives (never mislabels the marker).\n  el.chipBox = api.el(\"rect\", {x: 0, y: 0, height: CHIP_H, rx: 16, fill: \"#fdeeec\", stroke: \"#efb3aa\", \"stroke-width\": 1.5, filter: \"url(#chipShadow)\"}, el.chip);\n  const clip = api.el(\"clipPath\", {id: \"chipClip\"}, el.chip);\n  el.chipClip = api.el(\"rect\", {x: 3, y: 0, height: CHIP_H}, clip);\n  const label = api.el(\"text\", {x: PAD, y: CHIP_H / 2 + 1, \"dominant-baseline\": \"central\", \"clip-path\": \"url(#chipClip)\", fill: \"#b03024\", \"font-size\": 17, \"font-weight\": 700, \"font-family\": \"system-ui,sans-serif\"}, el.chip);\n  const t1 = api.el(\"tspan\", {}, label); t1.textContent = \"PaO₂ \";\n  el.value = api.el(\"tspan\", {}, label); el.value.textContent = \"6.7 kPa\";\n  const w1 = t1.getComputedTextLength() || 46, wf = label.getComputedTextLength() || 104;\n  el.wSmall = PAD + w1 + PAD - 4; el.wFull = PAD + wf + PAD;\n  el.haloN = api.el(\"circle\", {r: 17, fill: TEAL}, plot);\n  el.haloH = api.el(\"circle\", {r: 17, fill: RED}, plot);\n  el.dot = api.el(\"circle\", {r: 9, fill: TEAL, stroke: \"#ffffff\", \"stroke-width\": 3}, plot);\n  el.core = api.el(\"circle\", {fill: RED}, plot);\n  // Beat 3: red up-arrow and label beside the marker.\n  el.upLine = api.el(\"line\", {stroke: RED, \"stroke-width\": 6, \"stroke-linecap\": \"round\"}, plot);\n  el.upHead = api.el(\"path\", {fill: RED, \"stroke-linejoin\": \"round\"}, plot);\n  el.cbfLabel = txt(api, plot, \"CBF ↑\", {x: 350, y: 383, fill: RED, \"font-size\": 20, stroke: \"#ffffff\", \"stroke-width\": 5, \"stroke-linejoin\": \"round\", \"paint-order\": \"stroke\"});\n  // Arteriole cross-section: muscular wall, endothelium, red lumen, smooth-muscle nuclei.\n  el.wall = api.el(\"circle\", {cx: CX, cy: CY, fill: \"url(#wallFill)\", stroke: \"#c9786c\", \"stroke-width\": 2}, inset);\n  el.nuclei = [];\n  for (let i = 0; i < 14; i++) el.nuclei.push(api.el(\"ellipse\", {fill: \"#a8453c\", \"fill-opacity\": 0.55}, inset));\n  el.endo = api.el(\"circle\", {cx: CX, cy: CY, fill: \"#fbe7e2\", stroke: \"#e9b9b0\", \"stroke-width\": 1}, inset);\n  el.lumen = api.el(\"circle\", {cx: CX, cy: CY, fill: \"url(#lumenFill)\"}, inset);\n  el.shine = api.el(\"ellipse\", {fill: \"#ffffff\", \"fill-opacity\": 0.22}, inset);\n  el.push = [];\n  for (let i = 0; i < 4; i++) {\n    const g = api.el(\"g\", {}, inset);\n    api.el(\"line\", {x1: 0, y1: 0, x2: 12, y2: 0, stroke: \"@accent\", \"stroke-width\": 4, \"stroke-linecap\": \"round\"}, g);\n    api.el(\"path\", {d: \"M 10 -6 L 19 0 L 10 6 Z\", fill: \"@accent\", stroke: \"@accent\", \"stroke-width\": 1.5, \"stroke-linejoin\": \"round\"}, g);\n    el.push.push(g);\n  }\n  el.dilLabel = txt(api, inset, \"arteriole dilates\", {x: CX, y: 324, \"text-anchor\": \"middle\", fill: \"@ink\", \"font-size\": 18});\n}\nfunction fade(api, node, k) { api.set(node, {opacity: k, display: k > 0 ? \"inline\" : \"none\"}); }\nfunction render(t, api) {\n  // Beat 1: PaO2 falls from 13 to 6.7 kPa; the marker slides along the normal level and turns red.\n  const s = api.seg(t, 200, 2200, \"ease_in_out\");\n  const mx = sx(P0 + (PT - P0) * s);\n  // Beat 3: the marker climbs from the normal line onto the curve.\n  const c = api.seg(t, 5150, 5750, \"ease_in_out\");\n  const my = YN + (YP - YN) * c;\n  const h = api.ease(\"ease_in_out\", (s - 0.45) / 0.4);      // marker turns red as PaO2 falls (red core grows, no muddy blend)\n  api.set(el.haloN, {cx: mx, cy: my, \"fill-opacity\": 0.2 * (1 - h)});\n  api.set(el.haloH, {cx: mx, cy: my, \"fill-opacity\": 0.2 * h});\n  api.set(el.dot, {cx: mx, cy: my});\n  api.set(el.core, {cx: mx, cy: my, r: 7.5 * h});\n  api.set(el.guide, {x1: mx, y1: my + 11, x2: mx, y2: YB - 2});\n  const v = api.seg(t, 1700, 2200, \"ease_in_out\");\n  const w = el.wSmall + (el.wFull - el.wSmall) * v;\n  api.set(el.chipBox, {width: w}); api.set(el.chipClip, {width: w - 6});\n  api.set(el.value, {\"fill-opacity\": api.seg(t, 1750, 2200)});\n  api.set(el.chip, {transform: \"translate(\" + (mx - 18 - w).toFixed(1) + \" \" + (YN - 27 - CHIP_H / 2).toFixed(1) + \")\"});\n  // Beat 2: the arteriole dilates (lumen radius +35 %, wall thins).\n  const k = api.seg(t, 2800, 4000, \"ease_in_out\");\n  const rl = 26 + 9 * k, ro = 56 + 2 * k, re = rl + 3;\n  api.set(el.wall, {r: ro}); api.set(el.endo, {r: re}); api.set(el.lumen, {r: rl});\n  api.set(el.shine, {cx: CX - rl * 0.32, cy: CY - rl * 0.38, rx: rl * 0.42, ry: rl * 0.24, transform: \"rotate(-30 \" + (CX - rl * 0.32).toFixed(1) + \" \" + (CY - rl * 0.38).toFixed(1) + \")\"});\n  const rm = (re + ro) / 2;\n  el.nuclei.forEach((n, i) => {\n    const a = (i + 0.5) * 2 * Math.PI / el.nuclei.length, x = CX + rm * Math.cos(a), y = CY + rm * Math.sin(a);\n    api.set(n, {cx: x, cy: y, rx: 6.5 + 1.8 * k, ry: 2.8 - 0.7 * k, transform: \"rotate(\" + (a * 180 / Math.PI + 90).toFixed(1) + \" \" + x.toFixed(1) + \" \" + y.toFixed(1) + \")\"});\n  });\n  const pk = api.seg(t, 2800, 3300, \"ease_out\") * (1 - api.seg(t, 4400, 4900));\n  el.push.forEach((g, i) => {\n    const a = 45 + 90 * i, r = ro + 6 + 8 * k;\n    api.set(g, {transform: \"rotate(\" + a + \" \" + CX + \" \" + CY + \") translate(\" + (CX + r).toFixed(1) + \" \" + CY + \")\"});\n    fade(api, g, pk);\n  });\n  const lk = api.seg(t, 2900, 3400, \"ease_out\");\n  fade(api, el.dilLabel, lk);\n  api.set(el.dilLabel, {transform: \"translate(0 \" + ((1 - lk) * 8).toFixed(1) + \")\"});\n  // Beat 3: the rising limb draws on from 8.5 down to 3.5 kPa; arrow and label appear.\n  const dr = api.seg(t, 5000, 6300, \"ease_in_out\");\n  api.set(el.limb, {\"stroke-dasharray\": dr.toFixed(4) + \" 1.001\"});\n  fade(api, el.limb, dr > 0 ? 1 : 0);\n  const ak = api.seg(t, 5250, 5900, \"ease_out\");\n  const ax = 334, ay0 = YN - 18, ay1 = ay0 - 62 * ak;\n  api.set(el.upLine, {x1: ax, y1: ay0, x2: ax, y2: ay1 + 6});\n  api.set(el.upHead, {d: \"M \" + (ax - 9) + \" \" + (ay1 + 10).toFixed(1) + \" L \" + ax + \" \" + (ay1 - 4).toFixed(1) + \" L \" + (ax + 9) + \" \" + (ay1 + 10).toFixed(1) + \" Z\"});\n  fade(api, el.upLine, ak); fade(api, el.upHead, ak);\n  const bk = api.seg(t, 5300, 5800, \"ease_out\");\n  fade(api, el.cbfLabel, bk);\n  api.set(el.cbfLabel, {transform: \"translate(\" + ((1 - bk) * -10).toFixed(1) + \" 0)\"});\n}\n"
 }
