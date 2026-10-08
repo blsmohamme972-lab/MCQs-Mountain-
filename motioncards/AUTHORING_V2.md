@@ -112,6 +112,31 @@ Common fields: `id`, `fixed` (top level only; ignores the camera, use it for tit
 | `spotlight` | dims everything except a circle (`cx cy r`) or box (`x y width height rx`); `dim` (default 0.6), `color`. Key the geometry to walk the eye through steps |
 | `image` | `asset` (id from `assets`), `x y width height`, `fit` (`contain`/`cover`/`stretch`) |
 
+## Start from the bundled art library (best results, fewest tokens)
+
+Hand-drawn anatomy from a language model looks flat and amateur however carefully it is coded. The cards that look professional start from real medical illustrations. The repo ships a licence-checked library in `motioncards/library/` that works offline:
+
+```bash
+python tools/motioncards.py library                      # list: lib:healthy-lung, lib:heart, lib:stomach, ...
+python tools/motioncards.py style-kit work/b/scenes/Q….scene.json
+python tools/motioncards.py import-svg lib:healthy-lung --scene work/b/scenes/Q….scene.json --id lungs --box 100,96,440,450
+```
+
+`lib:` imports add the Servier credit automatically. Render once with a grid (draw lines every 20 px in `setup`) to read where the organs landed, then place your additions on that art.
+
+**Style kit:** `style-kit` adds `<defs id="kit">` to the scene, once. Use it on everything you draw yourself, so your shapes look like they belong next to the art instead of flat clip-art:
+
+| id | use |
+|---|---|
+| `filter="url(#kit-volume)"` | soft 3D shading for organs, tumours and large shapes (`kit-volume-sm` for thin vessels, nerves and bands) |
+| `filter="url(#kit-gloss)"` | wet, glossy highlight (mucosa, muscle) |
+| `filter="url(#kit-shadow)"` | soft drop shadow (label chips, a lifted organ) |
+| `filter="url(#kit-glow)"` | glowing signal or highlight (nerve impulses, danger halo) |
+| `fill="url(#kit-tissue)"` `kit-muscle` `kit-lung` `kit-tumour` `kit-bone` | radial organ fills, lit from the upper left |
+| `stroke`/`fill="url(#kit-nerve)"` `kit-vein` `kit-artery` | cylindrical gradients for vertical nerves and vessels |
+
+Filters re-render whenever the element changes, so put them on static shapes or on shapes that only move, fade or scale. Never put one on an element that changes shape every frame and covers half the stage. In free mode, append your elements to the art's parent (`const P = api.$("#lungs").parentNode`) so they stack above the art. To put something behind the art, use `P.insertBefore(el, api.$("#lungs"))`.
+
 ## Professional illustrations from the internet (import, never paste)
 
 Never paste a downloaded SVG into your reply: one medical illustration is 8k–25k tokens. Import it with the tool. The model then only references it by id.
@@ -191,6 +216,7 @@ Gradients: `{"id":"g1","kind":"linear","angle":90,"stops":[{"offset":0,"color":"
 - **Text is legible on phones.** Use size ≥ 18 (titles 26–32) with `max_width` + `fit`, and keep it 30 px from the stage edges.
 - **Use a consistent colour meaning** (e.g. `@good` for normal or physiological, `@bad` or `@accent` for pathology) and no more than 5 hues.
 - **Hold the final state** for the last 1.5–2 s so the takeaway sinks in. The host then shows the Takeaway and the Correct answer.
+- **Start from library art** (`lib:`) when an organ is shown, and draw only what changes (nerve, tumour, flow, wrap) with the style kit.
 - **Accuracy beats decoration.** If you are unsure of a fact, simplify the drawing; never invent anatomy.
 - **Morph only simple geometry** (a narrowing wall, a curve computed from an equation). For organic shapes, cross-fade between two real drawings.
 

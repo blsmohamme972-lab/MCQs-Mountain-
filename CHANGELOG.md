@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### MotionCards art library and style kit
+- Added `motioncards/library/`: 14 licence-checked Servier Medical Art illustrations (CC BY 3.0) of the thorax and upper GI tract, usable offline via `import-svg lib:<name>`, which adds the credit automatically; `motioncards.py library` lists them.
+- Added `motioncards.py style-kit`: shared SVG shading filters and organ gradients (`kit-volume`, `kit-gloss`, `kit-shadow`, `kit-glow`, `kit-tissue`, `kit-nerve`, ...) inserted into a scene's own SVG. The runtime is unchanged, so previously built ZIPs still validate byte-for-byte.
+
 ### MotionCards scene engine v2
 - Added opt-in schema v2 scenes:
   - easing, keyframes, and visibility separate from motion;

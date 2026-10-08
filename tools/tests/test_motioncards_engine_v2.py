@@ -269,6 +269,30 @@ class AssetImportTests(unittest.TestCase):
         self.assertTrue(any("cross-fade" in w for w in lint_scene_v2(s)))
         self.assertFalse(any("cross-fade" in w for w in lint_scene_v2(json.loads((EXAMPLES/"v2-stenosis-flow.scene.json").read_text()))))
 
+    def test_bundled_art_library_imports_and_validates(self):
+        from motioncards.lib.assets import library_index,library_art,prepare_svg,add_to_scene,LIBRARY_DIR
+        idx=library_index()
+        self.assertTrue(idx["art"])
+        for name,item in idx["art"].items():
+            self.assertTrue((LIBRARY_DIR/item["file"]).is_file(),name)
+            text,credit=library_art(name)
+            scene={"schema_version":2,"qid":"Q000000001","duration_ms":3000,"takeaway":"x","script":"function render(t,api){}"}
+            add_to_scene(scene,prepare_svg(text,"art",(0,0,300,300)),credit)
+            validate_scene(scene,"Q000000001",3000)
+            self.assertEqual(lint_scene_v2(scene),[],name)
+
+    def test_style_kit_is_added_once_and_needs_no_runtime_change(self):
+        from motioncards.lib.assets import add_style_kit
+        scene={"schema_version":2,"qid":"Q000000001","duration_ms":3000,"takeaway":"x",
+               "svg":'<svg xmlns="http://www.w3.org/2000/svg"><circle r="5" fill="url(#kit-tissue)" filter="url(#kit-volume)"/></svg>',
+               "script":"function render(t,api){}"}
+        self.assertTrue(add_style_kit(scene));self.assertFalse(add_style_kit(scene))
+        self.assertEqual(scene["svg"].count('id="kit"'),1)
+        self.assertTrue(scene["svg"].startswith('<svg xmlns="http://www.w3.org/2000/svg"><defs id="kit">'))
+        for kid in ("kit-volume","kit-volume-sm","kit-gloss","kit-shadow","kit-glow","kit-tissue","kit-muscle","kit-nerve"):self.assertIn(f'id="{kid}"',scene["svg"])
+        validate_scene(scene,"Q000000001",3000)
+        self.assertIn('id=\\"kit-volume\\"',compile_scene(scene))
+
     def test_import_rejects_external_resources_and_entities(self):
         from motioncards.lib.assets import prepare_svg,AssetImportError
         for bad in ['<svg viewBox="0 0 1 1"><image href="https://x.com/a.png"/></svg>',

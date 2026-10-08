@@ -1,0 +1,20 @@
+{
+  "about": "Professional, licence-checked medical art stored in the repo so cards start from real illustrations instead of hand-drawn shapes. Import with: python3 tools/motioncards.py import-svg lib:<name> --scene <scene.json> --id <id> --box x,y,w,h (the credit is added automatically). Source: Servier Medical Art (smart.servier.com) via the bioicons repository (github.com/duerrsimon/bioicons), CC BY 3.0: attribution is required and modifying the art is allowed.",
+  "art": {
+    "healthy-lung":         {"file": "art/healthy-lung.svg",         "view": "coronal thorax: both lungs with lobes and fissures, trachea, larynx, rib ends, diaphragm floor", "use": "pleura, lungs, diaphragm, phrenic nerve, mediastinum"},
+    "lung":                 {"file": "art/lung.svg",                 "view": "both lungs with trachea and main bronchi, no ribs", "use": "lobes, bronchi, tumours"},
+    "pneumothorax":         {"file": "art/pneumothorax.svg",         "view": "thorax like healthy-lung with the left lung collapsed and air shaded blue", "use": "pneumothorax, collapse"},
+    "lung-cancer":          {"file": "art/lung-cancer.svg",          "view": "smoker's lung with a tumour beside a healthy lung (has small text labels; hide or cover them)", "use": "bronchial carcinoma"},
+    "trachea-bronchi":      {"file": "art/trachea-bronchi.svg",      "view": "trachea and branching bronchial tree", "use": "airways, foreign body, carina"},
+    "heart":                {"file": "art/heart.svg",                "view": "anterior heart with great vessels, SVC/IVC in blue, coronary arteries", "use": "heart, SVC, aorta, coronaries"},
+    "heart-front":          {"file": "art/heart-front.svg",          "view": "anterior heart, cropped, larger chambers", "use": "heart surface anatomy"},
+    "heart-valves":         {"file": "art/heart-valves.svg",         "view": "heart opened to show the valves", "use": "valves, murmurs"},
+    "aorta":                {"file": "art/aorta.svg",                "view": "whole aorta from arch to bifurcation with branches", "use": "aortic branches, aneurysm, dissection"},
+    "stomach":              {"file": "art/stomach.svg",              "view": "simple stomach with distal oesophagus and duodenum, no labels", "use": "stomach, fundoplication, GOJ"},
+    "hiatal-hernia":        {"file": "art/hiatal-hernia.svg",        "view": "sliding hiatus hernia: oesophagus, diaphragm band, stomach above and below", "use": "hiatus hernia, GOJ, diaphragm"},
+    "paraesophagal-hernia": {"file": "art/paraesophagal-hernia.svg", "view": "rolling (para-oesophageal) hernia through the hiatus", "use": "para-oesophageal hernia"},
+    "liver":                {"file": "art/liver.svg",                "view": "liver silhouette, anterior", "use": "liver, right upper quadrant"},
+    "lymphatic-system":     {"file": "art/lymphatic-system.svg",     "view": "stomach with lymphatics and green lymph nodes along the curvatures", "use": "gastric lymph drainage, nodes"}
+  },
+  "credit": "Servier Medical Art (smart.servier.com), CC BY 3.0"
+}

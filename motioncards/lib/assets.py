@@ -140,3 +140,31 @@ def add_to_scene(scene:dict,fragment:str,credit:str|None=None)->dict:
         if credit not in credits:credits.append(credit)
         scene["credits"]=credits
     return scene
+
+LIBRARY_DIR=__import__("pathlib").Path(__file__).resolve().parent.parent/"library"
+
+def library_index()->dict:
+    import json
+    return json.loads((LIBRARY_DIR/"library.json").read_text(encoding="utf-8"))
+
+def library_art(name:str)->tuple[str,str]:
+    """Return (svg text, credit) for a bundled illustration (``lib:<name>``)."""
+    idx=library_index();item=idx["art"].get(name)
+    if not item:raise AssetImportError(f"no library art {name!r}; run: motioncards.py library")
+    return (LIBRARY_DIR/item["file"]).read_text(encoding="utf-8"),idx["credit"]
+
+def add_style_kit(scene:dict)->bool:
+    """Put the shared shading kit (<defs id="kit">: kit-volume, kit-tissue, ...) into scene['svg'] once.
+
+    Returns False when the scene already has it. The kit is plain SVG inside the scene, so it is
+    validated and compiled like any other markup and needs nothing new in the runtime.
+    """
+    svg=scene.get("svg") or '<svg xmlns="http://www.w3.org/2000/svg"></svg>'
+    if 'id="kit"' in svg:return False
+    if "</svg>" not in svg:raise AssetImportError("scene svg has no closing </svg>")
+    kit=(LIBRARY_DIR/"style_kit.svg").read_text(encoding="utf-8")
+    defs=re.search(r"<defs id=\"kit\">.*</defs>",kit,re.S).group(0)
+    defs=re.sub(r">\s+<","><",defs)
+    m=re.match(r"(<svg[^>]*>)",svg)
+    scene["svg"]=svg[:m.end()]+defs+svg[m.end():] if m else svg
+    return True
