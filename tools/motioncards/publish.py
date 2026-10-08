@@ -102,6 +102,45 @@ def build_indexes(state:dict,site:Path):
         payload={"schema":1,"runtime_version":1,"protocol_version":1,"book_id":book_id,"book_version":version,"animations":public}
         (target/"index.json").write_text(json.dumps(payload,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8")
 
+# Retention: per card, the active version plus this many previous versions stay restorable.
+# Older versions leave the restore history and their entry files are deleted from the site, so the
+# Worker's static-asset file count stays bounded (at most KEEP_PREVIOUS+1 files per card).
+KEEP_PREVIOUS=2
+
+def _entry_rel(record:dict)->str|None:
+    url=str(record.get("entry_url") or "")
+    if not url.startswith(PUBLIC_BASE+"/assets/"):return None
+    return url[len(PUBLIC_BASE)+1:]
+
+def _ident(r:dict)->tuple:
+    return (str(r.get("entry_sha256") or ""),str(r.get("package_id") or ""),int(r.get("package_revision") or 0))
+
+def prune_versions(state:dict,site:Path,keep_previous:int=KEEP_PREVIOUS)->list[Path]:
+    """Trim each card's restore history to its active version plus `keep_previous` others (a removed card
+    keeps keep_previous+1), and return the entry files under site/assets that nothing references any more.
+    Only the state is changed here; call delete_unreferenced() after the new state is saved."""
+    for key,rows in list(state["history"].items()):
+        active=state["animations"].get(key);actid=_ident(active) if active else None
+        others=[r for r in rows if _ident(r)!=actid]
+        n=keep_previous if active else keep_previous+1
+        kept={_ident(r) for r in (others[-n:] if n>0 else [])}
+        state["history"][key]=[r for r in rows if _ident(r)==actid or _ident(r) in kept]
+    referenced={_entry_rel(r) for r in state["animations"].values()}
+    for rows in state["history"].values():referenced.update(_entry_rel(r) for r in rows)
+    assets=site/"assets"
+    if not assets.is_dir():return []
+    return [f for f in sorted(assets.rglob("*")) if f.is_file() and f.relative_to(site).as_posix() not in referenced]
+
+def delete_unreferenced(site:Path,files:list[Path])->list[str]:
+    removed=[]
+    for f in files:
+        if f.is_file():f.unlink();removed.append(f.relative_to(site).as_posix())
+    assets=site/"assets"
+    if assets.is_dir():
+        for d in sorted((x for x in assets.rglob("*") if x.is_dir()),key=lambda x:len(x.parts),reverse=True):
+            if not any(d.iterdir()):d.rmdir()
+    return removed
+
 def _write_build(state:dict,site:Path):
     build_indexes(state,site)
     (site/"build-info.json").write_text(json.dumps({"schema":1,"state_sha256":state_digest(state),"packages":len(state["packages"]),"animations":len(state["animations"])})+"\n")
@@ -194,12 +233,14 @@ def apply_packages(zip_paths:list[Path],state_path:Path,site:Path,fetch_json=liv
             public=_public_record(row,manifest,target,site)
             next_state["animations"][key]=public;_append_history(next_state,key,public)
         next_state["packages"][identity]={"sha256":package_sha,"package_id":manifest["package_id"],"revision":manifest["package_revision"],"animations":[r["qid"] for r in manifest["animations"]]}
+        stale=prune_versions(next_state,site)
         _write_build(next_state,site);save_state(state_path,next_state)
     except Exception:
         shutil.rmtree(assets,ignore_errors=True);raise
     finally:
         for z in handles.values():z.close()
-    return {"duplicate":False,"changed":True,"package_id":manifest["package_id"],"revision":manifest["package_revision"],"animations":len(manifest["animations"]),"verified":plan["verified"],"package_sha256":package_sha,"affected":[next_state["animations"][key_for(row)] for row in manifest["animations"]]}
+    pruned=delete_unreferenced(site,stale)   # only after the new state is saved; a failed publish deletes nothing
+    return {"duplicate":False,"changed":True,"package_id":manifest["package_id"],"revision":manifest["package_revision"],"animations":len(manifest["animations"]),"verified":plan["verified"],"package_sha256":package_sha,"pruned":pruned,"affected":[next_state["animations"][key_for(row)] for row in manifest["animations"]]}
 
 def apply_package(zip_path:Path,state_path:Path,site:Path,fetch_json=live_json,replacement_authorizations:dict|None=None):
     return apply_packages([zip_path],state_path,site,fetch_json,replacement_authorizations)
@@ -241,7 +282,9 @@ def apply_management(operation:dict,state_path:Path,site:Path,fetch_json=live_js
         verify_published_records([target],fetch_json)
         next_state["animations"][key]=copy.deepcopy(target);affected=[{**target,"active":True}]
     next_state["operations"][op_id]={"kind":operation["kind"],"qid":identity["qid"],"expected_active_digest":expected,"target_digest":operation.get("target_digest"),"affected":affected}
+    stale=prune_versions(next_state,site)
     _write_build(next_state,site);save_state(state_path,next_state)
+    delete_unreferenced(site,stale)
     return {"duplicate":False,"changed":True,"operation_id":op_id,"kind":operation["kind"],"affected":affected}
 
 def main():

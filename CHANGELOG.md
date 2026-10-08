@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### MotionCards publisher retention
+- Each card now keeps its active version plus its 2 most recent previous versions; a removed card keeps 3. Older versions leave the restore history, and their entry files are deleted from the published site after the new state is saved. A failed publish deletes nothing, and files of other live cards are never touched. This keeps the Worker's static-asset file count at no more than 3 files per card. Restoring a version older than those kept now fails with `motioncards_restore_target_missing`, and the live card stays as it was.
+
 ### MotionCards art library and style kit
 - Added `motioncards/library/recipes.js` and `motioncards.py recipes`: tested, seekable animation building blocks (flow, impulses, pulsatile bleeding, drip, growing lumps, ulcers, glow, travelling sac, see-through art, tubes, callouts) injected into the scene script. No runtime change; the 9342 and 9343 cards needed less than half the code with the same result. `lint` warns if the `R.grid` layout aid is left in.
 - Added `motioncards/library/`: 14 licence-checked Servier Medical Art illustrations (CC BY 3.0) of the thorax and upper GI tract, usable offline via `import-svg lib:<name>`, which adds the credit automatically; `motioncards.py library` lists them.

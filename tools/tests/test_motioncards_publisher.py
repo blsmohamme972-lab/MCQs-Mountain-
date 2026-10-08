@@ -25,11 +25,12 @@ def fetcher(qs):
         raise AssertionError(url)
     return get
 
-def make(root:Path,package_id,revision,qs,selected,replace=False):
+def make(root:Path,package_id,revision,qs,selected,replace=False,variant=None):
     b=adapt_exports([env(qs)]);ws=root/(package_id+str(revision));out=root/f"MCARDS_{package_id}_r{revision}.zip"
     scaffold_workspace(b,ws,package_id,revision,selected,None,6000)
     for p in (ws/"scenes").glob("*.json"):
         s=json.loads(p.read_text());s["takeaway"]="A focused takeaway."
+        if variant:s.setdefault("layers",[]).append({"type":"text","text":variant,"x":20,"y":20,"size":16})
         if replace:s["replace"]=True
         p.write_text(json.dumps(s))
     build_package(b,ws,out);return out
@@ -153,5 +154,43 @@ class MotioncardsPublisherTests(unittest.TestCase):
                 if url.endswith("catalog.json"):return {"books":[{"id":"BOOK","version":2,"questions":1,"chapters":[]}]}
                 raise AssertionError
             with self.assertRaisesRegex(ValueError,"version_stale"):apply_package(z,root/"state.json",root/"site",stale)
+
+    def test_old_versions_are_pruned_but_recent_ones_stay_restorable(self):
+        from tools.motioncards.publish import KEEP_PREVIOUS
+        qs=[q("Q000000001"),q("Q000000002")]
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);state=root/"state.json";site=root/"site"
+            apply_package(make(root,"KEEP",1,qs,["Q000000002"]),state,site,fetcher(qs))       # an unrelated live card
+            for rev in range(1,7):                                                               # six uploads of one card
+                z=make(root,"A",rev,qs,["Q000000001"],replace=rev>1,variant=f"Revision {rev}")
+                auth={x["qid"]:x for x in plan_packages([z],state,fetcher(qs))["replacements"]}
+                result=apply_package(z,state,site,fetcher(qs),auth)
+            files=sorted(p.relative_to(site).as_posix() for p in (site/"assets").rglob("*.html"))
+            self.assertEqual(len([f for f in files if f.startswith("assets/A/")]),KEEP_PREVIOUS+1)
+            self.assertTrue(any(f.startswith("assets/KEEP/r1/") for f in files))                 # never touch other live cards
+            self.assertEqual(sorted(d.name for d in (site/"assets/A").iterdir()),["r4","r5","r6"])  # empty folders removed
+            self.assertEqual(len(result["pruned"]),1)
+            data=load_state(state);hist=data["history"]["BOOK|1|Q000000001"]
+            self.assertEqual([r["package_revision"] for r in hist],[4,5,6])
+            for r in list(data["animations"].values())+hist:                                     # every record still has its file
+                self.assertTrue((site/r["entry_url"].split(".dev/",1)[1]).is_file())
+            old=next(r for r in hist if r["package_revision"]==4)
+            active=data["animations"]["BOOK|1|Q000000001"]["entry_sha256"]
+            restored=apply_management({"operation_id":"r-4","kind":"restore","book_id":"BOOK","book_version":1,"chapter_id":1,"qid":"Q000000001",
+                                       "expected_active_digest":active,"target_digest":old["entry_sha256"]},state,site,fetcher(qs))
+            self.assertTrue(restored["changed"]);self.assertEqual(load_state(state)["animations"]["BOOK|1|Q000000001"]["package_revision"],4)
+            self.assertTrue((site/"assets/A/r4").is_dir())
+
+    def test_failed_publish_deletes_nothing(self):
+        qs=[q("Q000000001")]
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);state=root/"state.json";site=root/"site"
+            for rev in range(1,5):
+                z=make(root,"A",rev,qs,["Q000000001"],replace=rev>1)
+                apply_package(z,state,site,fetcher(qs),{x["qid"]:x for x in plan_packages([z],state,fetcher(qs))["replacements"]})
+            before=sorted(p.relative_to(site).as_posix() for p in site.rglob("*") if p.is_file())
+            z=make(root,"A",5,qs,["Q000000001"],replace=True)
+            with self.assertRaisesRegex(ValueError,"confirmation_required"):apply_package(z,state,site,fetcher(qs))
+            self.assertEqual(before,sorted(p.relative_to(site).as_posix() for p in site.rglob("*") if p.is_file()))
 
 if __name__=="__main__":unittest.main()
