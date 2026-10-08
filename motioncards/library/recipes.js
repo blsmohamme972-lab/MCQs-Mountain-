@@ -112,5 +112,30 @@ const R = {
   // Debug only: a 20 px grid with labels, to read where imported art landed. Remove before packaging.
   grid(api) { for (let x = 0; x <= api.W; x += 20) api.el("path", {d: `M${x} 0V${api.H}`, stroke: x % 100 ? "#0a0" : "#f00", "stroke-width": x % 100 ? 0.3 : 0.8}, api.svg);
     for (let y = 0; y <= api.H; y += 20) api.el("path", {d: `M0 ${y}H${api.W}`, stroke: y % 100 ? "#0a0" : "#f00", "stroke-width": y % 100 ? 0.3 : 0.8}, api.svg); },
+  // ---- Temperature, sweat, arrows (added with the temperature-regulation cards) ----
+  // Vertical thermometer: tube top at y0, bulb at y1, scale lo..hi °C with optional ticks. .update(v, color) every frame.
+  thermometer(api, g, x, y0, y1, lo, hi, o) { o = o || {}; const grp = api.el("g", {}, g), Y = (v) => y1 - (v - lo) / (hi - lo) * (y1 - y0);
+    api.el("rect", {x: x - 10, y: y0 - 10, width: 20, height: y1 - y0 + 12, rx: 10, fill: "#fff", stroke: "#8aa0ad", "stroke-width": 2}, grp);
+    api.el("circle", {cx: x, cy: y1 + 10, r: 16, fill: "#fff", stroke: "#8aa0ad", "stroke-width": 2}, grp);
+    const col = api.el("rect", {x: x - 5, y: y1, width: 10, height: 1, rx: 5, fill: "#e53935"}, grp), bulb = api.el("circle", {cx: x, cy: y1 + 10, r: 11, fill: "#e53935"}, grp);
+    (o.ticks || []).forEach((v) => { api.el("path", {d: `M${x + 11} ${Y(v)}h7`, stroke: "#8aa0ad", "stroke-width": 2}, grp); R.text(api, grp, v + "°", x + 21, Y(v) + 5, {size: 13, color: "#58707c", weight: 700}); });
+    const lab = o.label === false ? null : R.text(api, grp, "", x, y1 + 50, {anchor: "middle", size: 19});
+    return {g: grp, Y, update(v, c) { c = c || "#e53935"; const yy = Y(Math.max(lo, Math.min(hi, v))); api.set(col, {y: yy, height: y1 - yy + 6, fill: c}); api.set(bulb, {fill: c});
+      if (lab) { lab.textContent = v.toFixed(o.decimals || 0) + "°C"; api.set(lab, {fill: c}); } }};
+  },
+  // Sweat (or any liquid) droplets at points [[x, y, size], ...] that bead up one after another. .update(t, f): f 0..1 = how wet.
+  sweat(api, g, pts, o) { o = o || {}; const drops = pts.map(([x, y, s]) => { s = s || 1; const d = api.el("g", {opacity: 0}, g);
+      api.el("path", {d: `M${x} ${y - 9 * s}C${x + 6 * s} ${y - 2 * s} ${x + 6 * s} ${y + 6 * s} ${x} ${y + 6 * s}C${x - 6 * s} ${y + 6 * s} ${x - 6 * s} ${y - 2 * s} ${x} ${y - 9 * s}Z`, fill: o.color || "#7cc4f0", stroke: o.edge || "#2b7bb9", "stroke-width": 1.2}, d);
+      api.el("circle", {cx: x - 2 * s, cy: y + s, r: 1.6 * s, fill: "#fff", opacity: 0.85}, d); return d; });
+    return {drops, update(t, f) { drops.forEach((d, i) => { const on = Math.max(0, Math.min(1, (f * drops.length - i * 0.75) / 2));
+      api.set(d, {opacity: on.toFixed(3)}); R.scaleAbout(api, d, 0.4 + 0.6 * on + 0.05 * Math.sin(t / 300 + i)); }); }};
+  },
+  // Arrow along any path d that grows from its start: f 0..1. For heat loss, flow direction, cause -> effect.
+  arrowGrow(api, g, d, color, w) { w = w || 5; const grp = api.el("g", {opacity: 0}, g);
+    const p = api.el("path", {d, fill: "none", stroke: color || "#ef6c00", "stroke-width": w, "stroke-linecap": "round"}, grp), L = p.getTotalLength();
+    const head = api.el("path", {d: `M0 0L${-w * 2.6} ${-w * 1.3}L${-w * 2.6} ${w * 1.3}Z`, fill: color || "#ef6c00"}, grp);
+    return {g: grp, update(t, f) { f = Math.max(0, Math.min(1, f)); api.set(grp, {opacity: f > 0 ? 1 : 0}); api.set(p, {"stroke-dasharray": `${(L * f).toFixed(1)} ${(L + 10).toFixed(1)}`});
+      const q = api.pointAt(p, Math.max(0.001, f)); api.set(head, {transform: `translate(${q.x.toFixed(1)} ${q.y.toFixed(1)}) rotate(${q.angle.toFixed(1)})`}); }};
+  },
 };
 // @recipes v1 end
