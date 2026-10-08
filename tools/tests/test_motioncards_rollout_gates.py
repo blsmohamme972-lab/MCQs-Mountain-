@@ -58,6 +58,18 @@ class MotionCardsRolloutGateTests(unittest.TestCase):
         self.assertIn("exit 1",segment)
         self.assertLess(verify,activate)
 
+    def test_motioncards_production_playback_smoke_retries_after_promotion_but_still_fails_closed(self):
+        text=(ROOT/".github/workflows/publish-motioncards-queue.yml").read_text(encoding="utf-8")
+        start=text.index("Exercise every affected production MotionCard in sandbox")
+        activate=text.index("Advance durable active state pointer")
+        segment=text[start:activate]
+        self.assertIn("for attempt in 1 2 3 4 5 6",segment)
+        self.assertIn("python -m tools.motioncards.browser_smoke --url \"$MOTIONCARDS_URL\"",segment)
+        self.assertIn("sleep 10",segment)
+        self.assertIn("MotionCards production playback smoke did not converge after promotion.",segment)
+        self.assertIn("exit 1",segment)
+        self.assertNotIn("continue-on-error",segment)
+
     def test_ui_main_push_does_not_expect_production_sha_before_authorized_deploy(self):
         text=(ROOT/".github/workflows/ui.yml").read_text(encoding="utf-8")
         self.assertIn("Main journeys, offline persistence, budgets and approved screenshots",text)

@@ -193,7 +193,19 @@ jobs:
           BOT_TOKEN: ""
           CLOUDFLARE_API_TOKEN: ""
           CLOUDFLARE_ACCOUNT_ID: ""
-        run: python -m tools.motioncards.browser_smoke --url "$MOTIONCARDS_URL" --result /tmp/kafu-motioncards/result.json
+        run: |
+          set -euo pipefail
+          # Edge caches can still serve the previous version for a few seconds after promotion.
+          for attempt in 1 2 3 4 5 6; do
+            if python -m tools.motioncards.browser_smoke --url "$MOTIONCARDS_URL" --result /tmp/kafu-motioncards/result.json; then
+              exit 0
+            fi
+            if [[ "$attempt" -eq 6 ]]; then
+              echo "::error::MotionCards production playback smoke did not converge after promotion."
+              exit 1
+            fi
+            sleep 10
+          done
 
       - name: Advance durable active state pointer
         if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
