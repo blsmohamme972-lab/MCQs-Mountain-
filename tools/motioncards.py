@@ -58,7 +58,7 @@ def main():
     im.add_argument("source",help="local .svg path, https URL, or lib:<name> from the bundled art library (see: library)");im.add_argument("--scene",type=Path,required=True)
     im.add_argument("--id",required=True);im.add_argument("--box",required=True,help="x,y,width,height in stage pixels")
     im.add_argument("--template",action="store_true",help="reusable symbol: --box is width,height centred on 0,0; draw copies with <use href=#id>")
-    im.add_argument("--fit",default="contain",choices=["contain","cover","stretch"]);im.add_argument("--decimals",type=int,default=2)
+    im.add_argument("--fit",default="contain",choices=["contain","cover","stretch"]);im.add_argument("--decimals",type=int,default=None,help="override the automatic precision (default: fewest decimals that stay under 0.05 stage px error)")
     im.add_argument("--credit",help='licence attribution shown on the card, e.g. "Heart: Servier Medical Art, CC BY 3.0"')
     sub.add_parser("library",help="List the bundled professional art (import with import-svg lib:<name>)")
     sk=sub.add_parser("style-kit",help="Add the shading kit (kit-volume, kit-tissue, kit-nerve, ...) to scenes' svg");sk.add_argument("scenes",type=Path,nargs="+")

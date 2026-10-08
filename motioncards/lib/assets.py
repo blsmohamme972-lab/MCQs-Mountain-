@@ -41,6 +41,82 @@ def _round_numbers(text:str,decimals:int)->str:
     out.append(text[pos:])
     return "".join(out)
 
+COLOUR_ATTRS={"fill","stroke","stop-color","flood-color","lighting-color","color","style"}
+HEX6_RE=re.compile(r"(?<![(\w])#([0-9a-fA-F])\1([0-9a-fA-F])\2([0-9a-fA-F])\3(?![0-9a-fA-F])")
+PATH_TOKEN=re.compile(r"[MmLlHhVvCcSsQqTtAaZz]|[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
+PATH_ARGS={"M":2,"L":2,"H":1,"V":1,"C":6,"S":4,"Q":4,"T":2,"A":7,"Z":0}
+
+def _fmt(v:float,decimals:int)->str:
+    s=f"{round(v,decimals):.{decimals}f}"
+    if "." in s:s=s.rstrip("0").rstrip(".")
+    if s in ("-0",""):s="0"
+    if s.startswith("0."):s=s[1:]
+    elif s.startswith("-0."):s="-"+s[2:]
+    return s
+
+def _join(nums:list[str])->str:
+    """Join numbers with the fewest separators that still parse back unambiguously."""
+    out="";last=""
+    for n in nums:
+        if out and not (n[0]=="-" or (n[0]=="." and "." in last)):out+=" "
+        out+=n;last=n
+    return out
+
+def optimize_path(d:str,decimals:int)->str:
+    """Rewrite path data at a fixed precision without accumulated rounding drift.
+
+    Every point is converted to absolute coordinates and rounded there; each segment is then
+    written either absolute or relative to the *rounded* current point, whichever is shorter.
+    Relative values are differences of rounded numbers, so errors never add up along a path.
+    """
+    toks=PATH_TOKEN.findall(d)
+    if not toks or toks[0] not in "Mm":return _round_numbers(d,decimals)
+    q=10**decimals;R=lambda v:round(v*q)/q
+    out=[];cx=cy=sx=sy=0.0;rx=ry=rsx=rsy=0.0;prev="";i=0;cmd=""
+    def emit(letter,abs_nums,rel_nums):
+        nonlocal prev
+        a=[_fmt(v,decimals) for v in abs_nums];r=[_fmt(v,decimals) for v in rel_nums]
+        A=letter.upper(),_join(a);Rl=letter.lower(),_join(r)
+        best=min((A,Rl),key=lambda x:len(x[1])+(0 if x[0]==prev else 1))
+        if best[0]==prev and prev not in "Mm":
+            tail=re.findall(r"-?[\d.]+$",out[-1]);lastnum=tail[0] if tail else ""
+            out.append(("" if best[1][0]=="-" or (best[1][0]=="." and "." in lastnum) else " ")+best[1])
+        else:out.append(best[0]+best[1])
+        prev=best[0]
+    while i<len(toks):
+        t=toks[i]
+        if t.isalpha():cmd=t;i+=1
+        elif not cmd:raise AssetImportError("path data starts with a number")
+        U=cmd.upper();rel=cmd.islower();n=PATH_ARGS[U]
+        if U=="Z":
+            out.append("z");prev="z";cx,cy,rx,ry=sx,sy,rsx,rsy;cmd="";continue
+        if i+n>len(toks):raise AssetImportError("truncated path data")
+        args=[float(x) for x in toks[i:i+n]];i+=n
+        if U=="A":
+            ex,ey=(cx+args[5],cy+args[6]) if rel else (args[5],args[6])
+            Ex,Ey=R(ex),R(ey);fl=[args[0],args[1],args[2],1.0 if args[3] else 0.0,1.0 if args[4] else 0.0]
+            a=[_fmt(v,decimals) for v in fl[:3]]+[str(int(fl[3])),str(int(fl[4]))]
+            ab=" ".join(a+[_fmt(Ex,decimals),_fmt(Ey,decimals)]);rl=" ".join(a+[_fmt(Ex-rx,decimals),_fmt(Ey-ry,decimals)])
+            best=("A",ab) if len(ab)<=len(rl) else ("a",rl);out.append(best[0]+best[1]);prev=best[0]
+            cx,cy,rx,ry=ex,ey,Ex,Ey
+        elif U=="H":
+            ex=cx+args[0] if rel else args[0];Ex=R(ex);emit("H",[Ex],[Ex-rx]);cx,rx=ex,Ex
+        elif U=="V":
+            ey=cy+args[0] if rel else args[0];Ey=R(ey);emit("V",[Ey],[Ey-ry]);cy,ry=ey,Ey
+        else:
+            pts=[(cx+args[k],cy+args[k+1]) if rel else (args[k],args[k+1]) for k in range(0,n,2)]
+            P=[(R(x),R(y)) for x,y in pts]
+            emit(U,[v for p in P for v in p],[v for x,y in P for v in (x-rx,y-ry)])
+            cx,cy=pts[-1];rx,ry=P[-1]
+            if U=="M":sx,sy,rsx,rsy=cx,cy,rx,ry;cmd="l" if rel else "L"
+    return "".join(out)
+
+def auto_decimals(scale:float,tolerance:float=0.1)->int:
+    """Fewest decimals whose worst-case rounding error stays under `tolerance` stage pixels."""
+    for d in range(0,4):
+        if 0.5*10**-d*scale<=tolerance:return d
+    return 4
+
 def _viewbox(root)->tuple[float,float,float,float]:
     vb=root.get("viewBox")
     if vb:
@@ -53,7 +129,7 @@ def _viewbox(root)->tuple[float,float,float,float]:
     if w>0 and h>0:return (0.0,0.0,w,h)
     raise AssetImportError("the SVG has no usable viewBox or width/height")
 
-def prepare_svg(source:str,asset_id:str,box:tuple[float,float,float,float],decimals:int=2,fit:str="contain")->str:
+def prepare_svg(source:str,asset_id:str,box:tuple[float,float,float,float],decimals:int|None=None,fit:str="contain")->str:
     """Return a cleaned ``<g id=asset_id ...>`` fragment scaled into box=(x,y,w,h) stage pixels."""
     if not re.fullmatch(r"[a-z][a-z0-9_-]{0,31}",asset_id):raise AssetImportError("id must match ^[a-z][a-z0-9_-]{0,31}$")
     text=re.sub(r"<!DOCTYPE[^>\[]*(\[[^\]]*\])?\s*>","",source,flags=re.I|re.S)
@@ -63,6 +139,15 @@ def prepare_svg(source:str,asset_id:str,box:tuple[float,float,float,float],decim
     except ET.ParseError as exc:raise AssetImportError(f"not well-formed SVG: {exc}") from None
     if _local(root.tag)!="svg":raise AssetImportError("root element is not <svg>")
     vx,vy,vw,vh=_viewbox(root)
+    x,y,w,h=box
+    sx,sy=w/vw,h/vh
+    if fit=="contain":s=min(sx,sy);sx=sy=s
+    elif fit=="cover":s=max(sx,sy);sx=sy=s
+    elif fit!="stretch":raise AssetImportError("fit must be contain, cover or stretch")
+    if decimals is None:
+        decimals=auto_decimals(max(sx,sy))
+        # Inner scale/matrix transforms change the effective scale; keep one extra decimal for them.
+        if any(re.search(r"scale|matrix",el.get("transform","")) for el in root.iter()):decimals+=1
     # Collect ids first so every internal reference can be rewritten consistently.
     ids={el.get("id") for el in root.iter() if el.get("id")}
     rename={old:f"{asset_id}-{i}" for i,old in enumerate(sorted(ids))}
@@ -88,8 +173,10 @@ def prepare_svg(source:str,asset_id:str,box:tuple[float,float,float,float],decim
                 continue
             if re.search(r"url\(\s*['\"]?\s*(?:https?:)?//",val,re.I):raise AssetImportError("SVG references an external url()")
             val=fix_refs(val)
-            if lname in {"d","points","transform","x","y","x1","y1","x2","y2","cx","cy","r","rx","ry","width","height","stroke-width","offset","fx","fy","gradientTransform","stdDeviation"}:
-                val=_round_numbers(val,decimals)
+            if lname in COLOUR_ATTRS:val=HEX6_RE.sub(r"#\1\2\3",val)
+            if lname=="d":val=optimize_path(val,decimals)
+            elif lname in {"points","transform","x","y","x1","y1","x2","y2","cx","cy","r","rx","ry","width","height","stroke-width","offset","fx","fy","gradientTransform","stdDeviation"}:
+                val=_round_numbers(val,max(decimals,2))   # offsets, widths and radii keep 2 decimals
             el.attrib[name]=val
         if _local(el.tag)=="style" and el.text:
             if re.search(r"@import|url\(\s*['\"]?\s*(?:https?:)?//",el.text,re.I):raise AssetImportError("<style> imports external CSS")
@@ -101,11 +188,6 @@ def prepare_svg(source:str,asset_id:str,box:tuple[float,float,float,float],decim
         cls=el.get("class")
         if cls:el.set("class"," ".join(f"{asset_id}-{c}" for c in cls.split()))
     clean(root)
-    x,y,w,h=box
-    sx,sy=w/vw,h/vh
-    if fit=="contain":s=min(sx,sy);sx=sy=s
-    elif fit=="cover":s=max(sx,sy);sx=sy=s
-    elif fit!="stretch":raise AssetImportError("fit must be contain, cover or stretch")
     tx=x+(w-vw*sx)/2-vx*sx;ty=y+(h-vh*sy)/2-vy*sy
     ET.register_namespace("",SVG);ET.register_namespace("xlink",XLINK)
     inner="".join(ET.tostring(child,encoding="unicode") for child in root)
@@ -115,7 +197,7 @@ def prepare_svg(source:str,asset_id:str,box:tuple[float,float,float,float],decim
     t=lambda v:("%.3f"%v).rstrip("0").rstrip(".")
     return f'<g id="{asset_id}" transform="translate({t(tx)} {t(ty)}) scale({t(sx)} {t(sy)})">{inner}</g>'
 
-def prepare_template(source:str,asset_id:str,width:float,height:float,decimals:int=2)->str:
+def prepare_template(source:str,asset_id:str,width:float,height:float,decimals:int|None=None)->str:
     """A reusable symbol centred on (0,0), placed in <defs>: draw copies with <use href="#id" x= y=>."""
     return "<defs>"+prepare_svg(source,asset_id,(-width/2,-height/2,width,height),decimals,"contain")+"</defs>"
 

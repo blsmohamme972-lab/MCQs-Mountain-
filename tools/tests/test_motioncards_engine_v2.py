@@ -235,8 +235,47 @@ class AssetImportTests(unittest.TestCase):
         for gone in ("metadata","<title","inkscape","onclick","DOCTYPE"):self.assertNotIn(gone,g)
         self.assertIn('id="heart-0"',g);self.assertIn("url(#heart-0)",g);self.assertIn('href="#heart-0"',g)
         self.assertIn(".heart-a{",g);self.assertIn('class="heart-a"',g)
-        self.assertIn('d="M1 0.5l2-3"',g)          # rounded numbers never merge
-        self.assertIn('offset="0.12"',g)
+        self.assertIn('d="M1 .5l2-3"',g)           # rounded numbers never merge
+        self.assertIn('offset="0.12"',g)           # offsets keep 2 decimals even when paths use fewer
+        self.assertIn('d="M1 0L3-2"',prepare_svg(self.SRC,"heart",(0,0,400,400),0))
+
+    def test_path_optimizer_has_no_drift_and_parses_back(self):
+        import random,re as _re
+        from motioncards.lib.assets import optimize_path,PATH_TOKEN
+        def ends(d):                                # absolute end point of every segment
+            toks=PATH_TOKEN.findall(d);out=[];x=y=sx=sy=0.0;i=0;cmd=""
+            n={"M":2,"L":2,"H":1,"V":1,"C":6,"S":4,"Q":4,"T":2,"A":7,"Z":0}
+            while i<len(toks):
+                if toks[i].isalpha():cmd=toks[i];i+=1
+                U=cmd.upper();r=cmd.islower();a=[float(v) for v in toks[i:i+n[U]]];i+=n[U]
+                if U=="Z":x,y=sx,sy;cmd=""
+                elif U=="H":x=x+a[0] if r else a[0]
+                elif U=="V":y=y+a[0] if r else a[0]
+                else:
+                    x,y=(x+a[-2],y+a[-1]) if r else (a[-2],a[-1])
+                    if U=="M":sx,sy=x,y;cmd="l" if r else "L"
+                out.append((round(x,6),round(y,6)))
+            return out
+        rnd=random.Random(7)
+        parts=["m%.3f %.3f"%(rnd.uniform(0,300),rnd.uniform(0,300))]
+        for k in range(400):
+            c=rnd.choice("clhvsz");f=lambda:"%.3f"%rnd.uniform(-9,9)
+            parts.append(c+" ".join(f() for _ in range({"c":6,"l":2,"h":1,"v":1,"s":4,"z":0}[c])))
+            if c=="z":parts.append("m%s %s"%(f(),f()))
+        d="".join(parts)
+        for dec in (0,1,2):
+            o=optimize_path(d,dec)
+            self.assertLess(len(o),len(d))
+            for (x0,y0),(x1,y1) in zip(ends(d),ends(o)):
+                self.assertLessEqual(max(abs(x0-x1),abs(y0-y1)),0.5*10**-dec+1e-9)   # error never accumulates
+        self.assertEqual(optimize_path("M0 0A5 5 0 0 1 10 0z",2),"M0 0A5 5 0 0 1 10 0z")
+        self.assertEqual(optimize_path("M.5.5l.25.25",2),"M.5.5L.75.75")
+
+    def test_auto_precision_and_colour_shortening(self):
+        from motioncards.lib.assets import auto_decimals,prepare_svg
+        self.assertEqual(auto_decimals(0.45),1);self.assertEqual(auto_decimals(1.2),1);self.assertEqual(auto_decimals(2.5),2)
+        g=prepare_svg('<svg viewBox="0 0 10 10"><path d="M1.23456 1L2 2" fill="#ffcc00" stroke="#12ab34"/></svg>',"c",(0,0,10,10))
+        self.assertIn('fill="#fc0"',g);self.assertIn('stroke="#12ab34"',g);self.assertIn('d="M1.2 1L2 2"',g)
 
     def test_two_imports_validate_together_and_template_goes_to_defs(self):
         from motioncards.lib.assets import prepare_svg,prepare_template,add_to_scene,AssetImportError

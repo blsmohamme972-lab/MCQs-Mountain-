@@ -154,7 +154,9 @@ The tool:
 - rejects external links;
 - scales the art into the box;
 - makes every internal id and CSS class unique, so two files can never break each other's gradients;
-- rounds coordinates to 2 decimals;
+- rewrites path data in its shortest form: absolute points are rounded first, then each segment is written absolute or relative (whichever is shorter), so rounding errors never add up;
+- picks the precision automatically from the placement scale (worst-case error 0.1 stage px, invisible on phones and tablets). Offsets, stroke widths and radii keep 2 decimals. Override with `--decimals N`, but never use `0` on detailed art: thin vessels break;
+- shortens colours (`#ffcc00` → `#fc0`);
 - records the credit, which the card shows small in the corner.
 
 Then animate it from `script`: `api.$('#heart')` (transform, opacity, filters, or parts by id), or `<use href="#rbc">` copies moved along paths.
@@ -216,7 +218,7 @@ Gradients: `{"id":"g1","kind":"linear","angle":90,"stops":[{"offset":0,"color":"
 - **Text is legible on phones.** Use size ≥ 18 (titles 26–32) with `max_width` + `fit`, and keep it 30 px from the stage edges.
 - **Use a consistent colour meaning** (e.g. `@good` for normal or physiological, `@bad` or `@accent` for pathology) and no more than 5 hues.
 - **Hold the final state** for the last 1.5–2 s so the takeaway sinks in. The host then shows the Takeaway and the Correct answer.
-- **Start from library art** (`lib:`) when an organ is shown, and draw only what changes (nerve, tumour, flow, wrap) with the style kit.
+- **Start from library art** (`lib:`) when an organ is shown; for an organ shown small, prefer the lighter drawing (e.g. `heart-front` 22 KB vs `heart` 62 KB), and draw only what changes (nerve, tumour, flow, wrap) with the style kit.
 - **Accuracy beats decoration.** If you are unsure of a fact, simplify the drawing; never invent anatomy.
 - **Morph only simple geometry** (a narrowing wall, a curve computed from an equation). For organic shapes, cross-fade between two real drawings.
 
