@@ -571,3 +571,10 @@ Web research findings and what was changed:
 - Found: `import-svg` drops attributes on the root `<svg>`, so Figma exports with root `fill="none"` (Fluent Emoji) render black blobs. The doc gives a wrap-in-`<g fill="none">` workaround; fixing the importer is a separate change.
 - The three temperature recipes (`R.thermometer`, `R.sweat`, `R.arrowGrow`) were added to the Recipes table.
 - No library art was added: library entries need `used_in` card QIDs.
+
+### Voice-over on by default, free unlimited card delivery (2026-10-08)
+
+- **Delivery:** `motioncards-worker/_headers` replaces `run_worker_first`, so card and index views are static-asset requests: free, unlimited, and off the shared 100k/day Worker quota. Headers are byte-identical (real Wrangler runtime PASS). The publish workflow refuses to deploy without `_headers`.
+- **Package:** `motioncards.py package` requires `work/<batch>/voice/<QID>.opus` (from `voiceover/voiceover.py make`) unless `--no-voice`. The validator checks the voice strictly (Ogg Opus, ≤64 KB, SHA-256, real length, cues). The v2 compiler embeds it; the card hands the exact bytes to the host after `ready`. The index carries `voice {mime,bytes,sha256,track_ms}`.
+- **App:** `modules/motioncards-voice.js` plus player wiring. The verified voice plays on the Play tap and is the master clock, with a mute button (remembered). A mismatched voice is never played.
+- **Left:** shard Workers before about 20,000 published cards; an optional WASM decoder for iOS before 18.4 (those phones play the card silently today). See `voiceover/PLATFORM_PLAN.md`.

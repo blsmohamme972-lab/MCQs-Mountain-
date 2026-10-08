@@ -1,54 +1,42 @@
-# Platform changes needed before students hear the voice
+# Platform changes for voice-over: what is done, what is left
 
-Everything in `voiceover/` runs without touching the platform. Playing the voice in the app needs the changes below. Per `motioncards/AGENTS.md`, these are infrastructure changes: each one goes in its own PR for the owner to review. Nothing is deployed without the owner's approval.
+## Done (one owner-reviewed PR, three commits)
 
-Suggested order: **PR 1 → PR 2 → PR 3**, with PR 4 when the card count nears 20,000.
+### 1. Card delivery is free and unlimited (Golden rules 4–6)
+- **What changed:**
+  - `motioncards-worker/_headers` carries the CSP sandbox, CORS, cache and security headers.
+  - `run_worker_first` is removed from `wrangler.jsonc`.
+- **Effect:** card and index requests are served by Cloudflare's static asset layer without running Worker code. They no longer count toward the Workers Free plan's 100,000 requests/day, which the whole account shares, so they can't hit 429 errors.
+- **Proof:**
+  - The real Wrangler runtime test (`tools/ui/motioncards_worker_runtime.py`) passes, including the sandbox handshake in a browser.
+  - The headers are byte-identical to before.
+  - `worker.test.mjs` checks that `_headers` matches `worker.mjs` and that `run_worker_first` stays off.
+- **Deploy safety:** the publish workflow copies `_headers` into `dist/` and refuses to deploy unless the CSP sandbox is in it.
 
-## PR 1: free-plan safety for card delivery (needed with or without voice; Golden rules 4–6)
+### 2. Voice in the package (Golden rules 2, 3)
+- **Packaging:**
+  - `motioncards.py package` reads `work/<batch>/voice/<QID>.opus` and `.track.json` (made by `voiceover.py make`).
+  - It packages them as `voice/<QID>.opus` with a manifest `voice` block.
+  - It **refuses a card without voice**; `--no-voice` exists only for re-packaging old silent cards.
+- **Validator:** exact path, Ogg Opus magic, at most 64 KB, SHA-256, and the real stream length (read from the Ogg granule) must fit the card and match `track_ms`. Cues must be ordered and inside the card; no other audio is allowed. The entry is rebuilt byte for byte, voice included.
+- **Compiler** (v2 cards only; v1 output is frozen and unchanged): embeds the track as base64, plus a small script that hands the exact bytes to the app over the card's verified MessageChannel right after `ready`. The card's CSP stays `media-src 'none'`.
+- **Publisher index:** carries `voice {mime, bytes, sha256, track_ms}`, so the app can verify the bytes it receives.
+- **Tests:** `tools/tests/test_motioncards_voice.py` covers packaging, 8 tampering cases, the index, and a real-browser hand-over (exact bytes after `ready`).
 
-- `motioncards-worker/dist/_headers`: move the CSP, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, CORS (indexes and assets) and cache headers here, by path pattern.
-- `motioncards-worker/wrangler.jsonc`: remove `run_worker_first: true`. Card and index requests are then served as static assets: free, unlimited, and not counted toward the 100,000/day Worker requests shared by the whole account.
-- Keep the Worker script only if something truly dynamic remains; otherwise make it assets-only.
-- Tests: the existing Wrangler static-asset acceptance must still prove the exact headers, the `.html` route without redirect, the CSP sandbox and Kafu-only CORS.
+### 3. The app plays the voice (Golden rule 7)
+- `app/modules/motioncards-voice.js` (the audio-led clock) is loaded before the player.
+- **`motioncards-player.js`:**
+  - Accepts the `voice` message only if mime, size and SHA-256 match the index exactly.
+  - Plays on the student's own Play tap.
+  - Uses the voice as the master clock while it plays.
+  - Pause, seek, restart, close and retry all move or release the voice.
+- **Mute button:** shown only when a verified voice is present; the choice is remembered.
+- **App flow test** (`tools/ui/flows/11_motioncards.py`, `voice_case`):
+  - The verified voice plays and the picture follows it within 150 ms.
+  - Pause and seek move the voice, and mute persists.
+  - A voice whose bytes don't match the index is never played, and the card still plays.
 
-## PR 2: voice in the package, compiler and validator (Golden rules 2, 3)
-
-- **Workspace:** `work/<batch>/voice/<QID>.opus` and `<QID>.track.json`, both produced by `voiceover.py synth`.
-- **`motioncards/lib/package.py`:**
-  - Package `voice/<QID>.opus` in the ZIP.
-  - Add `voice` to each animation row of the manifest: `{path, mime:"audio/ogg; codecs=opus", bytes, sha256, track_ms, cues:[{t_ms,end_ms,text}], voice, engine}`.
-  - `package` refuses a new card without voice (Golden rule: voice is required). `--no-voice` exists only for re-packaging old cards.
-- **Validator:** the path is allowed only as `voice/Q#########.opus`. The file must start with `OggS` and contain `OpusHead`, be at most 64 KB, and match its SHA-256. `track_ms` must be at most the card's `duration_ms` and the cues must lie inside it. One voice per animation; no other audio paths.
-- **Compiler** (deterministic, so the validator's byte-exact rebuild still works): embed `<script type="application/octet-stream" id="kafu-voice">BASE64</script>` in the entry. The child runtime, after `ready`, posts `{type:"voice", mime, sha256, data:ArrayBuffer}` on the existing MessageChannel, transferring the buffer. The card's CSP stays `media-src 'none'`: the card never plays sound itself.
-- **Publisher index:** add `voice: {sha256, bytes, mime}` to each QID's record, so the host can verify what the card sends.
-- **Docs:** add the voice step to `MASTER_PROMPT.md` and `AUTHORING_V2.md`, and add `voiceover/` to the bundle file list.
-- **Tests:**
-  - package/validate with voice: tampered bytes, wrong magic, oversize, extra audio path and missing voice must all fail
-  - compiler determinism with voice
-  - the existing authoring tests must still pass
-
-## PR 3: host player (Golden rule 7)
-
-- Add `voiceover/host/voice-sync.js` to `app/modules/` (it is already written and browser-tested).
-- `motioncards-core.js`: accept `"voice"` in `validMessage`.
-- `motioncards-player.js`:
-  - **On `voice` message:** check the bytes against the index SHA-256 (`crypto.subtle`), then `KafuMotionCards.voice.create(bytes)`.
-  - **`play()`** (already inside the click handler, so the user gesture holds): call `voice.play(active.time)`.
-  - **`frame(now)`:** use `t = voice.clock(now - anchor)` and re-anchor to it (the audio-led clock).
-  - **`pause()`, `seek()`, `restart()`, `closePlayer()`:** call `voice.pause`, `voice.seek`, `voice.seek(0)` and `voice.destroy` respectively.
-  - **Mute button:** add a 🔊/🔇 button next to Play/Restart, with an `aria-label` and the choice remembered (`kafu.motioncards.voice.muted`).
-- **Old iPhones (Safari before 18.4, no Ogg Opus):**
-  - If `voice.supported()` is false, lazy-load a small WASM Opus decoder hosted on the app's own origin (candidate: `ogg-opus-decoder` from *wasm-audio-decoders*; **verify its licence and size at integration**).
-  - Decode to PCM and play through WebAudio, clocked by `AudioContext.currentTime`.
-  - The decoder is downloaded only by those phones, so it costs nothing for everyone else.
-- **Tests:**
-  - extend `tools/motioncards/browser_smoke.py` with a voiced card: play, seek, pause; picture and voice stay within 60 ms
-  - mute persists across cards
-  - no sound before the user taps Play
-
-## PR 4: shards for 300+ books (Golden rule 6)
-
-- The free plan allows 20,000 files per Worker version, about 75 books at one file per card.
-- Publish to `kafu-motioncards-1 … N` by book (a deterministic book → shard map stored in state).
-- The index records the shard base URL for each card; the app already loads cards from the index URL.
-- Each shard is an assets-only Worker after PR 1, so every shard stays free and unlimited.
+## Left to do
+- **Shards for 300+ books (Golden rule 6):** the free plan allows 20,000 files per Worker version, about 75 books at one file per card. Before the published card count nears 20,000, publish by book to `kafu-motioncards-1 … N`. The free plan allows 100 Workers, and each one is assets-only, so each stays free and unlimited. The index records each card's URL, so the app needs no change.
+- **iPhones older than iOS 18.4** (no Ogg Opus): today the card plays silently there (no error, and the mute button stays hidden). Optional upgrade: lazy-load a small WASM Opus decoder on those phones only; check its licence and size first.
+- **Deploy:** after this PR is merged, the app deploy workflow ships the player, and the next MotionCards publish ships `_headers` with the new Worker config. Voiced ZIPs then work end to end.

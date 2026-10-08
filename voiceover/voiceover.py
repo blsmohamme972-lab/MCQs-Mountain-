@@ -334,7 +334,7 @@ def cmd_make(a):
     cmd_draft(a); cmd_synth(a); cmd_check(a)
     if not a.no_review: cmd_review(a)
     d = ws_voice(Path(a.workspace))
-    print(f"DONE: voice for {len(list(d.glob('Q*.track.json')))} cards in {d} — package it with the cards (PLATFORM_PLAN.md PR 2)")
+    print(f"DONE: voice for {len(list(d.glob('Q*.track.json')))} cards in {d} — now run: python tools/motioncards.py package … (it embeds the voice)")
 
 
 def main():

@@ -98,26 +98,28 @@ function sendTime(type="tick"){
 function stopClock(a=active){if(a?.raf)cancelAnimationFrame(a.raf);if(a)a.raf=0;}
 function frame(now){
   if(!active||!active.playing)return;
-  active.time=Math.min(active.duration,Math.max(0,now-active.anchor));sendTime("tick");
-  if(active.time>=active.duration){active.playing=false;active.play.textContent="Replay";active.play.setAttribute("aria-pressed","false");active.raf=0;return;}
+  let t=now-active.anchor;
+  if(active.voice){t=active.voice.clock(t);active.anchor=now-t;}   // voice is the master clock while it plays
+  active.time=Math.min(active.duration,Math.max(0,t));sendTime("tick");
+  if(active.time>=active.duration){active.playing=false;active.voice?.pause(active.duration);active.play.textContent="Replay";active.play.setAttribute("aria-pressed","false");active.raf=0;return;}
   active.raf=requestAnimationFrame(frame);
 }
 function play(){
   if(!active||!active.connected)return;
   if(active.time>=active.duration){active.time=0;setFinal(false);post("restart",{time_ms:0});}
   active.playing=true;active.anchor=performance.now()-active.time;active.play.textContent="Pause";active.play.setAttribute("aria-pressed","true");
-  post("play",{time_ms:active.time});stopClock();active.raf=requestAnimationFrame(frame);
+  post("play",{time_ms:active.time});active.voice?.play(active.time);stopClock();active.raf=requestAnimationFrame(frame);
 }
 function pause(){
   if(!active)return;
   if(active.playing)active.time=Math.min(active.duration,Math.max(0,performance.now()-active.anchor));
   active.playing=false;stopClock();active.play.textContent=active.time>=active.duration?"Replay":"Play";active.play.setAttribute("aria-pressed","false");
-  post("pause",{time_ms:active.time});sendTime("seek");
+  post("pause",{time_ms:active.time});active.voice?.pause(active.time);sendTime("seek");
 }
 function restart(){
-  if(!active)return;active.playing=false;stopClock();active.time=0;active.play.textContent="Play";active.play.setAttribute("aria-pressed","false");setFinal(false);post("restart",{time_ms:0});sendTime("seek");
+  if(!active)return;active.playing=false;stopClock();active.time=0;active.play.textContent="Play";active.play.setAttribute("aria-pressed","false");setFinal(false);post("restart",{time_ms:0});active.voice?.pause(0);sendTime("seek");
 }
-function seek(value){if(!active)return;active.time=Math.max(0,Math.min(active.duration,Number(value)||0));if(active.playing)active.anchor=performance.now()-active.time;sendTime("seek");}
+function seek(value){if(!active)return;active.time=Math.max(0,Math.min(active.duration,Number(value)||0));if(active.playing)active.anchor=performance.now()-active.time;active.voice?.seek(active.time,active.playing);sendTime("seek");}
 function restoreTelegram(a){
   try{
     if(!IN_TG)return;
@@ -127,7 +129,7 @@ function restoreTelegram(a){
 }
 function closePlayer(restore=true){
   if(!active)return;
-  const a=active;stopClock(a);clearTimeout(a.readyTimer);
+  const a=active;stopClock(a);clearTimeout(a.readyTimer);dropVoice(a);
   try{a.port?.postMessage({type:"destroy",protocol:MC.PROTOCOL,channel_id:a.channel,qid:a.qid});a.port?.close();}catch(_){}
   window.removeEventListener("message",a.messageHandler);try{a.frame.src="about:blank";}catch(_){}active=null;lookupSerial++;
   a.root.replaceChildren();a.root.hidden=true;document.body.classList.remove("kafu-motioncards-open");
@@ -141,6 +143,20 @@ function fail(message){
   const box=active.root.querySelector(".kafu-motioncards-error"),text=box.querySelector("[data-motioncards-error-text]");
   text.textContent=message;box.hidden=false;active.root.querySelector("[data-motioncards-host='retry']").hidden=false;
 }
+// Voice-over (voiceover/): the card hands over its Opus bytes; play them only if they match the index exactly.
+function dropVoice(a){if(a?.voice){try{a.voice.destroy();}catch(_){}a.voice=null;}const b=a?.root?.querySelector("[data-motioncards-host='mute']");if(b)b.hidden=true;}
+function muteButton(){return active?.root.querySelector("[data-motioncards-host='mute']");}
+function paintMute(){const b=muteButton();if(!b||!active?.voice)return;const m=active.voice.muted;b.hidden=false;b.setAttribute("aria-pressed",m?"true":"false");b.textContent=m?"Unmute voice":"Mute voice";}
+function toggleMute(){if(!active?.voice)return;active.voice.setMuted(!active.voice.muted);paintMute();}
+async function acceptVoice(x,channel){
+  const want=active?.record?.voice,V=MC.voice;
+  if(!want||!V||active.voice||!(x.data instanceof ArrayBuffer)||x.mime!==want.mime||x.data.byteLength!==Number(want.bytes)||!V.supported(want.mime))return;
+  let hex="";
+  try{const d=await crypto.subtle.digest("SHA-256",x.data);hex=[...new Uint8Array(d)].map(v=>v.toString(16).padStart(2,"0")).join("");}catch(_){return;}
+  if(!active||active.channel!==channel||active.voice||hex!==String(want.sha256).toLowerCase())return;
+  try{active.voice=V.create(x.data,{mime:want.mime});}catch(_){active.voice=null;return;}
+  paintMute();if(active.playing)active.voice.play(active.time);
+}
 function connectFromReady(event){
   if(!active||event.source!==active.frame.contentWindow)return;
   const m=event.data;if(!m||m.type!=="kafu-motioncards-ready"||m.protocol!==MC.PROTOCOL||m.qid!==active.qid||m.channel_id!==active.channel)return;
@@ -151,6 +167,7 @@ function connectFromReady(event){
     const x=e.data;if(!Core.validMessage(x,active))return;
     if(x.type==="ready"){clearTimeout(active.readyTimer);active.connected=true;active.root.querySelector(".kafu-motioncards-loading").hidden=true;active.root.querySelector(".kafu-motioncards-error").hidden=true;active.play.disabled=false;active.restart.disabled=false;active.range.disabled=false;sendTime("seek");}
     else if(x.type==="error")fail("This MotionCard could not render. Retry or close it and continue studying.");
+    else if(x.type==="voice")acceptVoice(x,expectedChannel);
   };
   active.port.start();
   active.frame.contentWindow.postMessage({type:"connect",protocol:MC.PROTOCOL,channel_id:active.channel,qid:active.qid},"*",[channel.port2]);
@@ -158,7 +175,7 @@ function connectFromReady(event){
 function loadFrame(){
   if(!active)return;
   clearTimeout(active.readyTimer);try{active.port?.close();}catch(_){}
-  active.port=null;active.connected=false;active.channel=randomChannel();active.loadAttempt=(active.loadAttempt||0)+1;active.play.disabled=true;active.restart.disabled=true;active.range.disabled=true;
+  dropVoice(active);active.port=null;active.connected=false;active.channel=randomChannel();active.loadAttempt=(active.loadAttempt||0)+1;active.play.disabled=true;active.restart.disabled=true;active.range.disabled=true;
   active.root.querySelector(".kafu-motioncards-loading").hidden=false;active.root.querySelector(".kafu-motioncards-error").hidden=true;
   active.readyTimer=setTimeout(()=>fail("The animation did not become ready. Retry or close it and continue studying."),READY_TIMEOUT);
   const target=new URL(active.record.entry_url);
@@ -176,7 +193,7 @@ function openPlayer(qid,record,providedSnapshot=null,standalone=false){
     '<div class="kafu-motioncards-scroll"><div class="kafu-motioncards-main">'+
       '<section class="kafu-motioncards-stage"><iframe title="Kafu MotionCards animation" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe></section>'+
       '<div class="kafu-motioncards-status"><div class="kafu-motioncards-error" role="alert" hidden><span data-motioncards-error-text></span><button type="button" data-motioncards-host="retry">Retry</button></div><div class="kafu-motioncards-loading" role="status">Loading animation…</div></div>'+
-      '<footer class="kafu-motioncards-controls"><button type="button" data-motioncards-host="play" disabled aria-pressed="false">Play</button><button type="button" data-motioncards-host="restart" disabled>Restart</button><label><span class="sr-only">Animation position</span><input data-motioncards-host="seek" type="range" min="0" step="50" disabled></label><output data-motioncards-host="time" aria-live="off"></output></footer>'+
+      '<footer class="kafu-motioncards-controls"><button type="button" data-motioncards-host="play" disabled aria-pressed="false">Play</button><button type="button" data-motioncards-host="restart" disabled>Restart</button><button type="button" data-motioncards-host="mute" hidden aria-pressed="false">Mute voice</button><label><span class="sr-only">Animation position</span><input data-motioncards-host="seek" type="range" min="0" step="50" disabled></label><output data-motioncards-host="time" aria-live="off"></output></footer>'+
     '</div><div class="kafu-motioncards-final-slot" aria-live="polite" aria-atomic="true"><section class="kafu-motioncards-final" hidden><strong>Takeaway</strong><p class="kafu-motioncards-takeaway"></p><strong>Correct answer</strong><div class="kafu-motioncards-answer"></div></section><div class="kafu-motioncards-final-placeholder" aria-hidden="true"><strong>Takeaway</strong><p>Your takeaway and correct answer appear here when the animation finishes.</p></div></div></div></div>';
   const frameEl=root.querySelector("iframe"),playEl=root.querySelector("[data-motioncards-host='play']"),range=root.querySelector("[data-motioncards-host='seek']"),restartEl=root.querySelector("[data-motioncards-host='restart']"),timeLabel=root.querySelector("[data-motioncards-host='time']");
   range.max=String(record.duration_ms);root.querySelector(".kafu-motioncards-takeaway").textContent=String(record.final_panel?.takeaway||"");
@@ -219,7 +236,7 @@ const oldRender=render;render=function(...args){
 document.addEventListener("click",event=>{
   if(!active)return;const el=event.target.closest("[data-motioncards-host]");if(!el)return;
   const a=el.dataset.motioncardsHost;
-  if(a==="close")closePlayer();else if(a==="play")(active.playing?pause:play)();else if(a==="restart")restart();else if(a==="retry"){restart();loadFrame();}
+  if(a==="close")closePlayer();else if(a==="mute")toggleMute();else if(a==="play")(active.playing?pause:play)();else if(a==="restart")restart();else if(a==="retry"){restart();loadFrame();}
 },true);
 document.addEventListener("input",event=>{if(active&&event.target.matches("[data-motioncards-host='seek']"))seek(event.target.value);},true);
 document.addEventListener("keydown",event=>{

@@ -1,4 +1,4 @@
-"""Real-browser test of voiceover/host/voice-sync.js with a real Opus track.
+"""Real-browser test of app/modules/motioncards-voice.js with a real Opus track.
 
 Drives the controller the way motioncards-player.js would (anchor clock + requestAnimationFrame)
 and checks Golden rule 7: picture time and voice time stay within 60 ms through play, seek and pause.
@@ -27,7 +27,7 @@ window.api={
 class VoiceSyncBrowser(unittest.TestCase):
     def test_sync_through_play_seek_pause(self):
         from playwright.sync_api import sync_playwright
-        js = (HERE / "host" / "voice-sync.js").read_text()
+        js = (HERE.parent / "app" / "modules" / "motioncards-voice.js").read_text()
         # expose the audio element so the test can read its clock
         js = js.replace('const a=(opts.audio||(()=>root.document.createElement("audio")))();',
                         'const a=(opts.audio||(()=>root.document.createElement("audio")))();root.__a=a;')
