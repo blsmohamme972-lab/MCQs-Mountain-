@@ -157,6 +157,7 @@ def timeout_case(browser,origin,pack,helpers):
     q,record,index,html=fixture(pack,origin);attempt={"n":0}
     ctx.route(f"{BASE}/indexes/**",lambda route:route.fulfill(status=200,content_type="application/json",body=json.dumps(index)))
     def asset(route):
+        if not route.request.is_navigation_request():return route.abort()   # no device copy: the card loads from the network
         attempt["n"]+=1
         route.fulfill(status=200,content_type="text/html",body="<!doctype html><title>Broken fixture</title>" if attempt["n"]==1 else html)
     ctx.route(f"{BASE}/assets/**",asset)
@@ -275,6 +276,31 @@ def voice_case(browser,origin,pack,helpers):
     results.append("voice still arrives when the card's voice script runs after its ready message (slow phones)")
     return results
 
+def offline_case(browser,origin,pack,helpers):
+    """A saved chapter keeps its MotionCards (voice inside) on the device; they play offline and leave with the chapter."""
+    ctx=helpers["phone_context"](browser,origin,390,"light");q,index,html=voice_fixture(pack,origin,False);state={"up":True,"hits":0}
+    def idx(route):
+        if not state["up"]:return route.abort()
+        route.fulfill(status=200,content_type="application/json",body=json.dumps(index),headers={"access-control-allow-origin":origin})
+    def card(route):
+        if not state["up"]:return route.abort()
+        state["hits"]+=1;route.fulfill(status=200,content_type="text/html",body=html,headers={"access-control-allow-origin":origin})
+    ctx.route(f"{BASE}/indexes/**",idx);ctx.route(f"{BASE}/assets/**",card)
+    page,errors=helpers["open_app"](ctx,origin,pack);start(page,[q["id"]])
+    key=page.evaluate("(()=>{const e=QI[%s];return e.b+':'+e.ch})()"%json.dumps(q["id"]))
+    page.evaluate("k=>KafuMotionCards.player.saveCards(k,PACKS[k])",key)
+    assert state["hits"]==1,state
+    state["up"]=False
+    page.locator("[data-a='motioncards-open']").click();page.wait_for_selector("[data-motioncards-host='mute']:not([hidden])",timeout=9000)
+    assert page.evaluate("KafuMotionCards.player.active.frame.src.startsWith('blob:')")
+    page.locator("[data-motioncards-host='play']").click();page.wait_for_timeout(1200)
+    assert page.evaluate("KafuMotionCards.player.active.voice.position")>500 and state["hits"]==1
+    page.locator("[data-motioncards-host='close']").click();page.wait_for_function("!KafuMotionCards.player.active")
+    page.evaluate("k=>deleteChapter(k)",key)
+    assert page.evaluate("caches.open('kafu-motioncards-v1').then(c=>c.keys()).then(k=>k.length)")==0
+    assert not errors,errors;ctx.close()
+    return "a saved chapter stores its MotionCards (voice inside, SHA-256 checked); they play offline from the device and are removed with the chapter"
+
 def run(browser,origin,pack,out,helpers):
     passed=full_player(browser,origin,pack,out,helpers)
     passed.extend(variants(browser,origin,pack,out,helpers))
@@ -282,4 +308,5 @@ def run(browser,origin,pack,out,helpers):
     passed.append(account_switch_case(browser,origin,pack,helpers))
     passed.append(removal_refresh_case(browser,origin,pack,helpers))
     passed.extend(voice_case(browser,origin,pack,helpers))
+    passed.append(offline_case(browser,origin,pack,helpers))
     return {"passed":passed}

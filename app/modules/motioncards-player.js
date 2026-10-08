@@ -28,11 +28,37 @@ async function indexFor(entry,q){
   if(hit&&hit.until>now)return hit.value;
   try{
     const r=await fetch(indexUrl(entry,q),{cache:"no-cache",credentials:"omit",referrerPolicy:"no-referrer"});
-    if(!r.ok){cache.set(key,{until:now+NEGATIVE_TTL,value:undefined});return undefined;}
-    const data=await r.json();
-    if(!data||data.schema!==1||String(data.book_id)!==String(entry.b)||Number(data.book_version)!==Number(q.version)||data.runtime_version!==MC.VERSION||data.protocol_version!==MC.PROTOCOL||!data.animations||typeof data.animations!=="object")throw new Error("motioncards_index_invalid");
+    if(!r.ok)throw new Error("motioncards_index_http");
+    const data=await r.json();if(!okIndex(data,entry,q))throw new Error("motioncards_index_invalid");
     cache.set(key,{until:now+POSITIVE_TTL,value:data});return data;
-  }catch(_){cache.set(key,{until:now+NEGATIVE_TTL,value:undefined});return undefined;}
+  }catch(_){
+    let saved;try{const hit=await(await store()).match(indexUrl(entry,q));saved=hit&&await hit.json();}catch(_){}   // offline: the copy saved with the chapter
+    saved=okIndex(saved,entry,q)?saved:undefined;cache.set(key,{until:now+NEGATIVE_TTL,value:saved});return saved;
+  }
+}
+const okIndex=(d,entry,q)=>!!d&&d.schema===1&&String(d.book_id)===String(entry.b)&&Number(d.book_version)===Number(q.version)&&d.runtime_version===MC.VERSION&&d.protocol_version===MC.PROTOCOL&&!!d.animations&&typeof d.animations==="object";
+// Cards on the device (voice is inside each card): saved with the chapter or on first play, used only if the bytes match the index SHA-256.
+const STORE="kafu-motioncards-v1",HEAD='<!doctype html><html><head><meta charset="utf-8">';
+const CSP='<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'unsafe-inline\'; style-src \'unsafe-inline\'; img-src data:; font-src \'none\'; connect-src \'none\'; media-src \'none\'; object-src \'none\'; frame-src \'none\'; worker-src \'none\'; form-action \'none\'; base-uri \'none\'">';
+const store=()=>typeof caches==="object"?caches.open(STORE):Promise.reject(new Error("no_cache_storage"));
+const hexOf=async b=>[...new Uint8Array(await crypto.subtle.digest("SHA-256",b))].map(x=>x.toString(16).padStart(2,"0")).join("");
+async function cardBytes(record,chapter){
+  const c=await store(),url=record.entry_url,want=String(record.entry_sha256).toLowerCase(),hit=await c.match(url);
+  let b=hit&&await hit.arrayBuffer();if(b&&await hexOf(b)===want)return b;
+  const r=await fetch(url,{credentials:"omit",referrerPolicy:"no-referrer"});if(!r.ok)throw new Error("card_http");
+  b=await r.arrayBuffer();if(b.byteLength>4194304||await hexOf(b)!==want)throw new Error("card_sha256");
+  await c.put(url,new Response(b,{headers:{"content-type":"text/html","x-kafu-chapter":chapter}}));return b;
+}
+async function dropCards(chapter,keep=new Set()){
+  const c=await store();for(const req of await c.keys()){const m=await c.match(req);if(m?.headers.get("x-kafu-chapter")===chapter&&!keep.has(req.url))await c.delete(req);}
+}
+async function saveCards(key,pack){
+  const q=pack?.questions?.[0];if(!q)return;
+  const entry={b:pack.book_id,ch:pack.chapter_id},data=await indexFor(entry,q);if(!data)return;
+  const qs=new Map(pack.questions.map(x=>[x.id,x])),keep=new Set();
+  for(const r of Object.values(data.animations))if(qs.has(r?.qid)&&Core.validRecord(r,qs.get(r.qid),entry)){keep.add(r.entry_url);try{await cardBytes(r,key);}catch(_){}}
+  const c=await store();await c.put(indexUrl(entry,q),new Response(JSON.stringify(data),{headers:{"content-type":"application/json","x-kafu-chapter":key}}));keep.add(new URL(indexUrl(entry,q)).href);
+  await dropCards(key,keep);
 }
 async function resolveMatch(snapshot){
   const data=await indexFor(snapshot.entry,snapshot.q);if(!data)return data;   // undefined: index unreachable right now
@@ -130,7 +156,7 @@ function restoreTelegram(a){
 }
 function closePlayer(restore=true){
   if(!active)return;
-  const a=active;stopClock(a);clearTimeout(a.readyTimer);clearTimeout(a.loadWait);a.pending=0;dropVoice(a);
+  const a=active;stopClock(a);clearTimeout(a.readyTimer);clearTimeout(a.loadWait);a.pending=0;dropVoice(a);dropBlob(a);
   try{a.port?.postMessage({type:"destroy",protocol:MC.PROTOCOL,channel_id:a.channel,qid:a.qid});a.port?.close();}catch(_){}
   window.removeEventListener("message",a.messageHandler);try{a.frame.src="about:blank";}catch(_){}active=null;lookupSerial++;
   a.root.replaceChildren();a.root.hidden=true;document.body.classList.remove("kafu-motioncards-open");
@@ -178,6 +204,7 @@ function connectPort(){
   active.port.start();
   active.frame.contentWindow.postMessage({type:"connect",protocol:MC.PROTOCOL,channel_id:active.channel,qid:active.qid},"*",[channel.port2]);
 }
+function dropBlob(a){if(a?.blob){URL.revokeObjectURL(a.blob);a.blob=null;}}
 function loadFrame(){
   if(!active)return;
   clearTimeout(active.readyTimer);try{active.port?.close();}catch(_){}
@@ -187,7 +214,11 @@ function loadFrame(){
   const target=new URL(active.record.entry_url);
   if(active.loadAttempt>1)target.searchParams.set("motioncards_retry",active.channel);
   const a=active,c=a.channel;a.loaded=false;a.pending=0;clearTimeout(a.loadWait);a.frame.onload=()=>{if(active===a&&a.channel===c){a.loaded=true;if(a.pending)a.pending();}};
-  target.hash=active.channel;active.frame.src=target.href;
+  target.hash=active.channel;dropBlob(a);
+  cardBytes(a.record,a.book_id+":"+a.chapter_id).then(b=>{
+    const html=new TextDecoder().decode(b);if(!html.startsWith(HEAD))throw new Error("card_head");
+    if(active!==a||a.channel!==c)return;a.blob=URL.createObjectURL(new Blob([HEAD+CSP+html.slice(HEAD.length)],{type:"text/html"}));a.frame.src=a.blob+"#"+c;
+  }).catch(()=>{if(active===a&&a.channel===c)a.frame.src=target.href;});
 }
 function openPlayer(qid,record,providedSnapshot=null,standalone=false){
   const snapshot=providedSnapshot||current();
@@ -262,7 +293,10 @@ document.addEventListener("keydown",event=>{
 },true);
 document.addEventListener("visibilitychange",()=>{if(document.hidden&&active?.playing)pause();});
 window.addEventListener("pagehide",()=>{if(active?.playing)pause();});
-MC.player={get active(){return active;},refresh:refreshAvailability,close:closePlayer,play,pause,seek,restart,retry:loadFrame,openTrustedPreview,productionRefreshWindowMs:REFRESH_AFTER};
+const D=globalThis.KafuDownloads?.manager?.io;
+if(D){const show=D.show;D.show=(key,pack)=>{show(key,pack);if(pack?._offline_complete)saveCards(key,pack).catch(()=>{});};}
+if(typeof deleteChapter==="function"){const del=deleteChapter;deleteChapter=async key=>{const out=await del(key);await dropCards(key).catch(()=>{});return out;};}
+MC.player={get active(){return active;},saveCards,refresh:refreshAvailability,close:closePlayer,play,pause,seek,restart,retry:loadFrame,openTrustedPreview,productionRefreshWindowMs:REFRESH_AFTER};
 scheduleAvailability();refreshAvailability();
 const previewQid=typeof location!=="undefined"&&location?.href?new URL(location.href).searchParams.get("motioncards_preview"):null;
 if(Core.QID.test(String(previewQid||"")))setTimeout(()=>openTrustedPreview(String(previewQid)),0);
