@@ -161,21 +161,29 @@ The tool:
 
 Then animate it from `script`: `api.$('#heart')` (transform, opacity, filters, or parts by id), or `<use href="#rbc">` copies moved along paths.
 
-Sources and licences (checked October 2026; the licence on each individual file always wins):
+### Approved art sources (use only these, in this order)
 
-| Source | Licence | Notes |
-|---|---|---|
-| **NIH BioArt Source** (bioart.niaid.nih.gov) | Mostly public domain, **set per entry** | Some entries are CC BY, BY-SA, BY-NC or BY-ND. Read each entry's licence |
-| **Servier Medical Art** (smart.servier.com) | CC BY 4.0 on the official site | Credit required; the official site gives the wording. Copies mirrored in the `bioicons` GitHub repo (`static/icons/cc-by-3.0/`) carry CC BY 3.0; credit them as such |
-| **Reactome Icon Library** | CC BY 4.0 | Credit Reactome (CSHL, OICR, EBI); cells, proteins, organelles |
-| **Health Icons** | CC0 | Simple pictograms. The icons are CC0; the site's code is MIT |
-| **Bioicons** | Varies per icon (CC0, CC BY, MIT) | The licence is in the folder name |
-| **Wikimedia Commons** | Varies per file | CC BY-SA makes the card share-alike too |
+Checked October 2026 for Kafu's goals: MRCS clinical anatomy, vector art whose parts can be animated, one consistent style, and commercial use with modification allowed. The licence on each individual file always wins.
+
+| # | Source | Use it for | Licence: what you may take | Credit to pass to `--credit` |
+|---|---|---|---|---|
+| 0 | **Bundled library**: `motioncards.py library`, then `import-svg lib:<name>` | First choice: thorax, heart, lungs, upper GI. Works offline | CC BY 3.0 (Servier) | added automatically |
+| 1 | **Servier Medical Art** via bioicons: `https://raw.githubusercontent.com/duerrsimon/bioicons/main/static/icons/cc-by-3.0/<Category>/Servier/<name>.svg` (categories include `Human_physiology`, `Oncology`, `Blood_Immunology`) | Any organ or system not in the library. **Default style for every card** | CC BY 3.0 (these copies) | `"<What>: Servier Medical Art, CC BY 3.0"` |
+| 2 | **Togo Picture Gallery (DBCLS)**: archive with the bulk SVG zip and English tag CSV at `https://dbarchive.biosciencedbc.jp/data/togo-pic/` (read `LATEST/README_e.html`); single pictures at `https://togotv.dbcls.jp/en/togopic.<year>.<number>.html` | Anatomical sections and regions Servier lacks. Flatter style: **never mix it with Servier in one card** | CC BY 4.0 (whole database) | `"<What>: Togo Picture Gallery © DBCLS, CC BY 4.0"` |
+| 3 | **NIH BioArt Source (NIAID)**: `https://bioart.niaid.nih.gov/` | Pathology, microbiology, immunology, cells | **Only entries marked Public Domain or CC BY.** Never BY-NC, BY-ND or BY-SA | `"<What>: NIAID NIH BioArt Source (bioart.niaid.nih.gov/bioart/<id>), <licence>"` |
+| 4 | **Gray's Anatomy (1918) SVG redraws** on Wikimedia Commons (search `Gray<plate number> svg`) | Fine surgical anatomy: inguinal canal, rectus sheath, nerve courses. Old line art: shade it with the style kit | Public domain (US); check that the file page says so | `"<What>: Gray's Anatomy 1918 (H. V. Carter), public domain; vector by <Commons author>"` |
+| 5 | **Mikael Häggström diagrams** on Wikimedia Commons (gallery: `https://en.wikiversity.org/wiki/WikiJournal_of_Medicine/Medical_gallery_of_Mikael_H%C3%A4ggstr%C3%B6m_2014`) | Whole-body maps: symptoms, organ positions | CC0 for the 2014 gallery; check newer files | `"<What>: Mikael Häggström, CC0"` |
+| 6 | **Health Icons**: `https://raw.githubusercontent.com/resolvetosavelives/healthicons/main/public/icons/svg/{outline,filled}/<category>/<name>.svg` (categories include `body`, `symbols`, `medications`, `devices`, `conditions`) | Small symbols only (warning, drug, device). Never the main picture | CC0 | none needed |
+| 7 | **Tabler Icons**: `https://raw.githubusercontent.com/tabler/tabler-icons/main/icons/outline/<name>.svg` | UI marks only: arrows, ticks, crosses | MIT | none needed |
+
+Do not use other sources (Reactome, SciDraw, Lottie, GSAP, 3D model sites, raster galleries such as Blausen or OpenStax, stock sites, Noun Project, Freepik) unless the user approves. They either do not fit the cards or their licence is unsafe for a paid app. If no approved source has the structure you need, draw it yourself with the style kit; never trace a textbook figure.
+
+If the network cannot reach a source, say so and use the bundled library or the style kit. Do not substitute an unapproved site.
 
 Rules:
 - **Never use NC (non-commercial) or ND (no-derivatives) material.** Cards are modified, and the app may be paid. `import-svg` refuses a credit containing NC or ND.
 - Never use images whose licence you cannot name. Never trace copyrighted textbook figures.
-- Write the credit as `"<what>: <author/source>, <licence>"`, e.g. `"Heart: Servier Medical Art, CC BY 4.0"`.
+- Write the credit as `"<what>: <author/source>, <licence>"`, using the exact form in the table above.
 
 Quality rules:
 - Keep one art style per card; do not mix flat icons with detailed illustrations.
