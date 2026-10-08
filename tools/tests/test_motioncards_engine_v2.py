@@ -332,6 +332,17 @@ class AssetImportTests(unittest.TestCase):
         validate_scene(scene,"Q000000001",3000)
         self.assertIn('id=\\"kit-volume\\"',compile_scene(scene))
 
+    def test_recipes_are_added_once_and_validate(self):
+        from motioncards.lib.assets import add_recipes,add_style_kit,RECIPES_BEGIN
+        scene={"schema_version":2,"qid":"Q000000001","duration_ms":3000,"takeaway":"x","script":"function render(t,api){}"}
+        self.assertTrue(add_recipes(scene));self.assertFalse(add_recipes(scene))
+        self.assertEqual(scene["script"].count(RECIPES_BEGIN),1)
+        self.assertTrue(scene["script"].endswith("function render(t,api){}"))
+        add_style_kit(scene);validate_scene(scene,"Q000000001",3000)
+        self.assertEqual(lint_scene_v2(scene),[])
+        scene["script"]+="\nfunction setup(api){R.grid(api);}"
+        self.assertTrue(any("R.grid" in w for w in lint_scene_v2(scene)))
+
     def test_import_rejects_external_resources_and_entities(self):
         from motioncards.lib.assets import prepare_svg,AssetImportError
         for bad in ['<svg viewBox="0 0 1 1"><image href="https://x.com/a.png"/></svg>',
@@ -351,6 +362,26 @@ class EngineV2BrowserTests(unittest.TestCase):
             reports=render_scenes(scenes,Path(td),frames=7,sizes=["phone","tablet"],sheet=False)
             self.assertEqual(len(reports),len(scenes))
             for r in reports:self.assertEqual(len(r["frames"]),14)
+
+    def test_every_recipe_runs_and_seeks_deterministically(self):
+        try:import playwright  # noqa: F401
+        except ImportError:self.skipTest("playwright not installed")
+        from motioncards.lib.render import render_scenes
+        from motioncards.lib.assets import add_recipes,add_style_kit
+        script="""let a,b,c,d,e,f,g,h,k,m,n,st,L;
+function setup(api){const P=api.svg;st=api.el("rect",{x:20,y:20,width:200,height:120,fill:"#ddd"},P);st=R.wrap(api,st);
+ a=R.tube(api,P,"M40 200C120 160 220 240 300 200","artery",8,{behind:st});b=R.tube(api,P,"M40 260C120 240 220 280 300 250","nerve",5);
+ c=R.flow(api,P,a.p,{n:5});d=R.impulses(api,P,b.p,{reverse:true});e=R.bleed(api,P,320,120,{gravity:30});f=R.drip(api,P,360,60);
+ g=R.lump(api,P,450,300,"cyst");h=R.lump(api,P,520,200,"tumour");k=R.ulcer(api,P,250,90);m=R.glow(api,P,100,320);
+ n=R.travel(api,P,"M380 360C420 400 480 420 560 430",{width:20});L=R.callout(api,P,"Label\\ntwo lines",400,60,"#b3202a",[320,120]);}
+function render(t,api){const s=t/3000;R.seeThrough(api,st,s);R.drawOn(api,b,s);R.squeeze(api,a,s,8,3);c.update(t,1);d.update(t,1);e.update(t,s);f.update(t,1-s);
+ g.update(t,s,60,40,true);h.update(t,s,30);k.update(t,s);m.update(t,1);n.update(t,s);R.fade(api,L,t,0,500,2500,3000);R.scaleAbout(api,h.el,1+0.1*s);}"""
+        scene={"schema_version":2,"qid":"Q000000007","duration_ms":3000,"takeaway":"Recipes test.","script":script}
+        add_recipes(scene);add_style_kit(scene)
+        validate_scene(scene,"Q000000007",3000)
+        with tempfile.TemporaryDirectory() as td:
+            r=render_scenes([scene],Path(td),frames=5,sizes=["phone","tablet"],sheet=False)
+            self.assertEqual(len(r[0]["frames"]),10)
 
     def _bare(self,script,svg=None,qid="Q000000006"):
         s={"schema_version":2,"qid":qid,"duration_ms":2000,"takeaway":"Free mode test.","script":script}

@@ -250,3 +250,15 @@ def add_style_kit(scene:dict)->bool:
     m=re.match(r"(<svg[^>]*>)",svg)
     scene["svg"]=svg[:m.end()]+defs+svg[m.end():] if m else svg
     return True
+
+RECIPES_BEGIN="// @recipes v1 begin"
+
+def add_recipes(scene:dict)->bool:
+    """Prepend the tested animation recipes (const R = {...}) to scene['script'] once.
+
+    Plain author code inside the scene: validated and compiled like any script, no runtime change.
+    """
+    script=str(scene.get("script") or "")
+    if RECIPES_BEGIN in script:return False
+    scene["script"]=(LIBRARY_DIR/"recipes.js").read_text(encoding="utf-8").rstrip("\n")+"\n"+script
+    return True

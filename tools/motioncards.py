@@ -61,6 +61,7 @@ def main():
     im.add_argument("--fit",default="contain",choices=["contain","cover","stretch"]);im.add_argument("--decimals",type=int,default=None,help="override the automatic precision (default: fewest decimals that stay under 0.05 stage px error)")
     im.add_argument("--credit",help='licence attribution shown on the card, e.g. "Heart: Servier Medical Art, CC BY 3.0"')
     sub.add_parser("library",help="List the bundled professional art (import with import-svg lib:<name>)")
+    rc=sub.add_parser("recipes",help="Add the tested animation recipes (R.flow, R.bleed, R.impulses, R.lump, R.travel, R.callout, ...) to scenes' script");rc.add_argument("scenes",type=Path,nargs="+")
     sk=sub.add_parser("style-kit",help="Add the shading kit (kit-volume, kit-tissue, kit-nerve, ...) to scenes' svg");sk.add_argument("scenes",type=Path,nargs="+")
     li=sub.add_parser("lint",help="Validate scenes and print layout warnings")
     li.add_argument("targets",nargs="*",type=Path,help="scene .json files");li.add_argument("--workspace",type=Path)
@@ -80,6 +81,15 @@ def main():
         idx=library_index()
         for name,item in idx["art"].items():print(f"lib:{name:22} {item['view']}  [use: {item['use']}]")
         print("credit added automatically: "+idx["credit"]);return
+    if a.cmd=="recipes":
+        from motioncards.lib.assets import add_recipes,add_style_kit
+        for path in a.scenes:
+            scene=json.loads(path.read_text(encoding="utf-8"))
+            added=add_recipes(scene);add_style_kit(scene)   # recipes draw with the kit's fills and filters
+            if scene.get("schema_version")==2:validate_scene(scene,str(scene.get("qid")),scene.get("duration_ms"))
+            path.write_text(json.dumps(scene,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+            print(f"{path}: {'recipes added' if added else 'recipes already present'}")
+        return
     if a.cmd=="style-kit":
         from motioncards.lib.assets import add_style_kit
         for path in a.scenes:

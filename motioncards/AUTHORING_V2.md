@@ -163,6 +163,27 @@ The tool:
 
 Then animate it from `script`: `api.$('#heart')` (transform, opacity, filters, or parts by id), or `<use href="#rbc">` copies moved along paths.
 
+## Recipes: tested animations (use them instead of writing your own)
+
+`python tools/motioncards.py recipes work/b/scenes/Q….scene.json` adds `const R = {...}` to the scene script once, and adds the style kit too. Each recipe is a pure function of `t`, so pause and seek work, and each is covered by a browser test. The 9342 and 9343 cards dropped from about 3.0 KB to 1.4 KB of card code with the same result.
+
+| Recipe (create in `setup`) | Animate in `render(t, api)` | Use for |
+|---|---|---|
+| `st = R.wrap(api, api.$("#st"))` | `R.seeThrough(api, st, f, 0.45)` | Fade imported art to reveal what lies behind it |
+| `v = R.tube(api, P, d, "artery"\|"vein"\|"nerve"\|"bile"\|"gut", w, {behind: st})` | `R.drawOn(api, v, f)`, `R.squeeze(api, v, f, w0, w1)`; `v.p` is the centre path, `v.fill` its normal paint | Vessels, nerves, ducts, bowel |
+| `fl = R.flow(api, P, v.p, {n, color, period, reverse, behind})` | `fl.update(t, on)` | Blood, bile, air or food moving along a tube |
+| `im = R.impulses(api, P, nerve.p, {reverse})` | `im.update(t, on)` | Nerve signals, referred pain |
+| `b = R.bleed(api, P, x, y, {angle, spread, reach, gravity})` | `b.update(t, on)` | Pulsatile arterial bleeding, with a pulsing ring |
+| `dr = R.drip(api, P, x, y)` | `dr.update(t, on)` | Oozing or venous bleeding |
+| `l = R.lump(api, P, cx, cy, "tumour"\|"cyst"\|"mass"\|"artery", {behind})` | `l.update(t, f, rx, ry, pulse)` | Tumours, cysts, masses, aneurysms |
+| `u = R.ulcer(api, P, x, y, {rx, ry})` | `u.update(t, f)` | Ulcers, craters, perforations |
+| `gl = R.glow(api, P, x, y, {r, color})` | `gl.update(t, on)` | Pain, inflammation, danger |
+| `tr = R.travel(api, P, d, {width})` | `tr.update(t, f)` | Hernia sac, catheter, bolus, stone travelling a route |
+| `L = R.callout(api, P, "text", x, y, color, [toX, toY])` | `R.fade(api, L, t, in0, in1, out0, out1)` | Label chip with a leader line |
+| `R.scaleAbout(api, el, s)` | | Grow or pulse a shape about its own centre |
+
+`P` is the art's parent (`R.layer(api, "#st")`), so new elements stack above the art; pass `{behind: st}` to put them behind it. `R.grid(api)` draws a 20 px layout grid; `lint` warns until you remove it. Write your own code only for what no recipe covers.
+
 ### Approved art sources (use only these, in this order)
 
 Checked October 2026 for Kafu's goals: MRCS clinical anatomy, vector art whose parts can be animated, one consistent style, and commercial use with modification allowed. The licence on each individual file always wins.
