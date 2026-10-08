@@ -154,6 +154,84 @@
       "use": "pudendal nerve, sacral roots in women",
       "credit": "Togo Picture Gallery © DBCLS, CC BY 4.0",
       "style": "togo"
+    },
+    "platelet": {
+      "file": "art/platetelet-1.svg",
+      "view": "single resting platelet (disc), small",
+      "use": "platelets, haemostasis, ITP, antiplatelet drugs; reuse as a <use> template",
+      "license": "CC BY 3.0",
+      "source": "https://raw.githubusercontent.com/duerrsimon/bioicons/main/static/icons/cc-by-3.0/Blood_Immunology/Servier/platetelet-1.svg",
+      "credit": "Platelet: Servier Medical Art, CC BY 3.0",
+      "style": "servier",
+      "reason": "The library has no blood cells; haemostasis and bleeding-disorder cards need a real platelet instead of a drawn dot.",
+      "used_in": [
+        "Q000009366"
+      ]
+    },
+    "platelet-activated": {
+      "file": "art/platetelet-6.svg",
+      "view": "single activated, flattened platelet with spread pseudopods",
+      "use": "platelet adhesion and plug formation; cross-fade from 'platelet'",
+      "license": "CC BY 3.0",
+      "source": "https://raw.githubusercontent.com/duerrsimon/bioicons/main/static/icons/cc-by-3.0/Blood_Immunology/Servier/platetelet-6.svg",
+      "credit": "Activated platelet: Servier Medical Art, CC BY 3.0",
+      "style": "servier",
+      "reason": "Pairs with 'platelet' to show adhesion/activation by cross-fading two real drawings (the doc forbids morphing organic shapes).",
+      "used_in": [
+        "Q000009366"
+      ]
+    },
+    "red-cell": {
+      "file": "art/erythrocyte-1.svg",
+      "view": "single red blood cell (biconcave disc), small",
+      "use": "blood flow inside vessels, anaemia, haemorrhage; reuse as a <use> template",
+      "license": "CC BY 3.0",
+      "source": "https://raw.githubusercontent.com/duerrsimon/bioicons/main/static/icons/cc-by-3.0/Blood_Immunology/Servier/erythrocyte-1.svg",
+      "credit": "Red blood cell: Servier Medical Art, CC BY 3.0",
+      "style": "servier",
+      "reason": "Blood-flow cards repeatedly need a red-cell sprite; the library has none.",
+      "used_in": [
+        "Q000009366"
+      ]
+    },
+    "capillary-bed": {
+      "file": "art/capillaries.svg",
+      "view": "capillary network between an arteriole (red, left) and a venule (blue, right)",
+      "use": "microcirculation, DIC microthrombi, sepsis, shock, emboli, oedema",
+      "license": "CC BY 3.0",
+      "source": "https://raw.githubusercontent.com/duerrsimon/bioicons/main/static/icons/cc-by-3.0/Human_physiology/Servier/capillaries.svg",
+      "credit": "Capillary bed: Servier Medical Art, CC BY 3.0",
+      "style": "servier",
+      "reason": "No microcirculation art exists in the library; DIC, sepsis and shock questions all happen at capillary level.",
+      "used_in": [
+        "Q000009368"
+      ]
+    },
+    "iv-bag": {
+      "file": "art/perfusion-bag.svg",
+      "view": "IV infusion bag hanging on a drip stand with giving set",
+      "use": "IV fluids, transfusion, drug infusions, reversal agents",
+      "license": "CC BY 3.0",
+      "source": "https://raw.githubusercontent.com/duerrsimon/bioicons/main/static/icons/cc-by-3.0/Human_physiology/Servier/perfusion-bag.svg",
+      "credit": "IV infusion bag: Servier Medical Art, CC BY 3.0",
+      "style": "servier",
+      "reason": "Fluid, transfusion and drug-reversal questions are common in MRCS; a consistent Servier drip avoids clip-art icons.",
+      "used_in": [
+        "Q000009367"
+      ]
+    },
+    "leg-back": {
+      "file": "art/leg-behin.svg",
+      "view": "right lower limb from behind, thigh to foot (skin outline)",
+      "use": "calf DVT, varicose veins, popliteal fossa, lower-limb nerves and dermatomes",
+      "license": "CC BY 3.0",
+      "source": "https://raw.githubusercontent.com/duerrsimon/bioicons/main/static/icons/cc-by-3.0/Human_physiology/Servier/leg-behin.svg",
+      "credit": "Leg: Servier Medical Art, CC BY 3.0",
+      "style": "servier",
+      "reason": "The library has no limb drawings; lower-limb DVT and vascular cards need one.",
+      "used_in": [
+        "Q000009370"
+      ]
     }
   },
   "credit": "Servier Medical Art (smart.servier.com), CC BY 3.0",
