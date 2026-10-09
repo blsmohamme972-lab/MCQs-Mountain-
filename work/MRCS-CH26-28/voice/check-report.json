@@ -1,0 +1,439 @@
+[
+ {
+  "qid": "Q000009491",
+  "beats": [
+   {
+    "say": "Dead foot tissue lacks oxygen",
+    "heard": "Deadfoot tissue lacks oxygen.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Clostridia can cause gas gangrene",
+    "heard": "Clostridia can cause gas gangrene.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Give benzylpenicillin at induction",
+    "heard": "Give benzylpenicillin at induction.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009492",
+  "beats": [
+   {
+    "say": "CT shows necrosis",
+    "heard": "C .T. shows necrosis.",
+    "score": 1.0,
+    "onset_error_ms": 80
+   },
+   {
+    "say": "A fine needle samples it",
+    "heard": "A fine needle samples it.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Infected? Culture, then treat",
+    "heard": "Infected, culture then treat.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009493",
+  "beats": [
+   {
+    "say": "Macrophages clear bacteria",
+    "heard": "Macrophages clear bacteria.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "The injured spleen is removed",
+    "heard": "The injured spleen is removed.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Encapsulated bacteria cause sepsis",
+    "heard": "Encapsulated bacteria cause sepsis.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009494",
+  "beats": [
+   {
+    "say": "Open fracture on a fixator",
+    "heard": "Open fracture on a fixator.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Bacteria seed the broken bone",
+    "heard": "Bacteria seed the broken bone.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Mostly Staphylococcus aureus",
+    "heard": "Mostly staphylococcus aureus.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000009495",
+  "beats": [
+   {
+    "say": "Groin wound grows MRSA",
+    "heard": "Grine wound grows MRSA.",
+    "score": 0.947,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "The usual prophylaxis fails",
+    "heard": "The usual prophylaxis fails.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Glycopeptide: vancomycin",
+    "heard": "Glycoptide vancomycin.",
+    "score": 0.952,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000009496",
+  "beats": [
+   {
+    "say": "Fever and a fast heart rate",
+    "heard": "Fever and a fast heart rate.",
+    "score": 1.0,
+    "onset_error_ms": 50
+   },
+   {
+    "say": "Fast breathing, low white cells",
+    "heard": "Fast breathing, low white cells.",
+    "score": 1.0,
+    "onset_error_ms": 30
+   },
+   {
+    "say": "Together these mean SIRS",
+    "heard": "Together these mean sars. We'll see you in the next couple of years.",
+    "score": 0.952,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000009497",
+  "beats": [
+   {
+    "say": "Many different bacteria invade",
+    "heard": "Many different bacteria invade.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Together they spread along fascia",
+    "heard": "Together they spread along fascia.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Skin dies: Fournier's gangrene",
+    "heard": "Skin dies, forniers gangren.",
+    "score": 0.958,
+    "onset_error_ms": 20
+   }
+  ]
+ },
+ {
+  "qid": "Q000009498",
+  "beats": [
+   {
+    "say": "TPN through a central line",
+    "heard": "TPN through a central line,",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Bacteria colonise the catheter",
+    "heard": "bacteria colonize the catheter,",
+    "score": 0.963,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Fever: suspect the line first",
+    "heard": "fever suspect the line first.",
+    "score": 1.0,
+    "onset_error_ms": 30
+   }
+  ]
+ },
+ {
+  "qid": "Q000009499",
+  "beats": [
+   {
+    "say": "Heavy periods drain iron stores",
+    "heard": "Heavy periods drain iron stores.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Less iron, less haemoglobin",
+    "heard": "Less iron, less hemoglobin.",
+    "score": 0.978,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Red cells become small and pale",
+    "heard": "Red cells become small in pale.",
+    "score": 0.941,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000009500",
+  "beats": [
+   {
+    "say": "Swollen neck node is biopsied",
+    "heard": "Swollen neck node is biopsied.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Reed-Sternberg cells: owl eyes",
+    "heard": "Reed Sternberg cells, owl eyes.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "This means Hodgkin's lymphoma",
+    "heard": "This means Hodgkin's lymphoma.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009501",
+  "beats": [
+   {
+    "say": "Red cells break down early",
+    "heard": "Red cells break down early.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Extra bilirubin floods the bile",
+    "heard": "Extra bilirubin floods the bile.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Pigment stones form",
+    "heard": "Pigment stones form.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009502",
+  "beats": [
+   {
+    "say": "Red cells sickle and stiffen",
+    "heard": "Red cells sickle and stiffen.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Sickled cells pool in the spleen",
+    "heard": "Sickled cells pool in the spleen.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Spleen swells, anaemia deepens",
+    "heard": "Spleen swells anemia deepens.",
+    "score": 0.98,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009503",
+  "beats": [
+   {
+    "say": "Trauma triggers clots everywhere",
+    "heard": "Trauma triggers clots everywhere.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Clots use up platelets and fibrinogen",
+    "heard": "Clots use up platelets and fibrinogen.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Then he bleeds: DIC",
+    "heard": "Then he bleeds DIC.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009504",
+  "beats": [
+   {
+    "say": "Give carbohydrate and fat",
+    "heard": "Give carbohydrate and fat.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Fat: 9 kilocalories per gram",
+    "heard": "Fat, 9 kilocalories per gram.",
+    "score": 1.0,
+    "onset_error_ms": 80
+   },
+   {
+    "say": "Together they meet daily energy",
+    "heard": "Together they meet daily energy.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009505",
+  "beats": [
+   {
+    "say": "Blocked outlet: acid vomited",
+    "heard": "Blocked outlet, acid vomited.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Losing acid causes alkalosis",
+    "heard": "Losing acid causes alkalosis.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Tetany: Chvostek's sign",
+    "heard": "Tetney, C .H. Vostex sign.",
+    "score": 0.865,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000009506",
+  "beats": [
+   {
+    "say": "Fat burns into ketoacids",
+    "heard": "Fat burns into keto -sids.",
+    "score": 0.927,
+    "onset_error_ms": 30
+   },
+   {
+    "say": "Their acid uses up bicarbonate",
+    "heard": "Their acid uses up bicarbonate.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Low bicarbonate, wide gap",
+    "heard": "Low bicarbonate, wide gap.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009507",
+  "beats": [
+   {
+    "say": "Antral cancer blocks the outlet",
+    "heard": "Antrual cancer blocks the outlet.",
+    "score": 0.982,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Dextrose and lipid give energy",
+    "heard": "Dextrose and lipid give energy.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Amino acids restore protein",
+    "heard": "Amino acids restore protein.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009508",
+  "beats": [
+   {
+    "say": "Many injuries activate clotting",
+    "heard": "Many injuries activate clotting.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Clots consume fibrinogen everywhere",
+    "heard": "Clots consume fibrinogen everywhere.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Fibrinogen used up: DIC",
+    "heard": "Fibrinogen used up, DIC.",
+    "score": 1.0,
+    "onset_error_ms": 30
+   }
+  ]
+ },
+ {
+  "qid": "Q000009509",
+  "beats": [
+   {
+    "say": "Fast breathing raises pH",
+    "heard": "Fast breathing raises pH.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Proteins bind more calcium",
+    "heard": "Proteins bind more calcium.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Low free calcium: spasm",
+    "heard": "Low -free calcium, spasm.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ }
+]

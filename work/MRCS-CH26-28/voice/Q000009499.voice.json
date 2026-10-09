@@ -1,0 +1,27 @@
+{
+ "qid": "Q000009499",
+ "duration_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "speed": 1.05,
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "Heavy periods drain iron stores",
+   "say": "Heavy periods drain iron stores"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "Less iron, less haemoglobin",
+   "say": "Less iron, less haemoglobin"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "Red cells become small and pale",
+   "say": "Red cells become small and pale"
+  }
+ ]
+}

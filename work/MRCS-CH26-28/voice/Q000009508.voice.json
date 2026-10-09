@@ -1,0 +1,27 @@
+{
+ "qid": "Q000009508",
+ "duration_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "speed": 1.05,
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "Many injuries activate clotting",
+   "say": "Many injuries activate clotting"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "Clots consume fibrinogen everywhere",
+   "say": "Clots consume fibrinogen everywhere"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "Fibrinogen used up: DIC",
+   "say": "Fibrinogen used up: DIC"
+  }
+ ]
+}
