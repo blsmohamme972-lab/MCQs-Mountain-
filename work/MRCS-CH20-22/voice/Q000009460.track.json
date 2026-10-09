@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009460",
+ "file": "Q000009460.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11413,
+ "sha256": "d78c58718e88938e425171059f851f5a2afd0fb8e217874bdc79e39a7dfb90b7",
+ "track_ms": 6286,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2169,
+   "text": "Skin bacteria settle on the graft.",
+   "speed": 1.095
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3717,
+   "text": "They build a biofilm.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6186,
+   "text": "Antibiotics can't get in.",
+   "speed": 1.05
+  }
+ ]
+}

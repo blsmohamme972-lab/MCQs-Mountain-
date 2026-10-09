@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009466",
+ "file": "Q000009466.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12038,
+ "sha256": "1224855fd04c251c20e9c1eed33e61e245cb2d1d8c5ca54d8b105233b40d77c2",
+ "track_ms": 6703,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1854,
+   "text": "Dirty: skin left open.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3950,
+   "text": "Dressed daily until clean.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6603,
+   "text": "Then closed: delayed primary.",
+   "speed": 1.05
+  }
+ ]
+}

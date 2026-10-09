@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009450",
+ "file": "Q000009450.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11287,
+ "sha256": "8f57b70eb8394f1cc6ecedf0d1513abeea7d1aa27ea7405caacdbb36fc511ea4",
+ "track_ms": 6181,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2153,
+   "text": "Graft cells carry donor M H C.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3801,
+   "text": "T cells see it as foreign.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6081,
+   "text": "They infiltrate the graft.",
+   "speed": 1.05
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009448",
+ "file": "Q000009448.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 13076,
+ "sha256": "58bde4a48b44fdee846d00940ce203474da973caa5111bc2c6d60b1e752a50b8",
+ "track_ms": 6703,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2058,
+   "text": "Antigens sit on thyroid cells.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4441,
+   "text": "Antibodies bind those antigens.",
+   "speed": 1.073
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6603,
+   "text": "Gland enlarges: hyperplasia.",
+   "speed": 1.166
+  }
+ ]
+}

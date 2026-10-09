@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009456",
+ "file": "Q000009456.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 13193,
+ "sha256": "a9aba8e63268c6cb9c823c10a60d1308b3f57be1ac267904d5f6c38a21c2b219",
+ "track_ms": 6702,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2164,
+   "text": "Normal cells mature as they rise.",
+   "speed": 1.101
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4472,
+   "text": "Under stress, cells divide faster.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6602,
+   "text": "Dysplasia: they fail to mature.",
+   "speed": 1.05
+  }
+ ]
+}

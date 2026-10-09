@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009451",
+ "file": "Q000009451.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12467,
+ "sha256": "5da2cd341959ddd2351aa15ccaa1988a1b000586e809e234c334ac8626793827",
+ "track_ms": 6526,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2041,
+   "text": "Allergen cross-links I G E.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4398,
+   "text": "Anaphylactoid: a direct trigger.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6426,
+   "text": "Same release, no immune step.",
+   "speed": 1.05
+  }
+ ]
+}
