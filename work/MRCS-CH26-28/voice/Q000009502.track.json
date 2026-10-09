@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009502",
+ "file": "Q000009502.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12119,
+ "sha256": "e579f0738d5c6921b1f5b03fa9a74580743b4ef570566fecf14ab841f997cc13",
+ "track_ms": 6682,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1728,
+   "text": "Red cells sickle and stiffen",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4159,
+   "text": "Sickled cells pool in the spleen",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6582,
+   "text": "Spleen swells, anaemia deepens",
+   "speed": 1.05
+  }
+ ]
+}

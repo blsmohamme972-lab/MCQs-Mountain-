@@ -243,6 +243,8 @@ The validator also rebuilds deterministic compiled entries from the validated sc
 
 ## Handoff for a content batch
 
+Review videos (MP4) are for the owner to watch: send them in the conversation and never commit them (`.gitignore` excludes `*.mp4`).
+
 Record:
 - requested QIDs/count
 - selected QIDs

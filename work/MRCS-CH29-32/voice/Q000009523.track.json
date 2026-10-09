@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009523",
+ "file": "Q000009523.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11900,
+ "sha256": "4d059c4dc907e203b60801c24194cbc152d950a4ab8066a3fed7203e4d46748c",
+ "track_ms": 6737,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1930,
+   "text": "A mass squeezes the vena cava",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3684,
+   "text": "Blood backs up from the head",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6637,
+   "text": "Face swells, chest veins distend",
+   "speed": 1.115
+  }
+ ]
+}

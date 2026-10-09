@@ -26,11 +26,22 @@
 - `voice`: `af_heart` (default, best rated) or `bf_emma` with `"lang": "en-gb"` for a British voice. Use one voice per book.
 - `speed`: 1.05 by default. `synth` raises it up to 1.2 when a line runs long. A beat can set its own `speed`.
 
+## Scenes without numbered captions
+
+A script-drawn card often has no `1 · …` caption layers:
+- **If its script declares captions as `caps(api, P, [[start_ms, end_ms, "text", colour], …])`**, `draft` reads the beats from it. An `end_ms` of 0 means "to the end of the card".
+- **If not, `draft` writes even, guessed beats**, each marked `"timing": "guess"`, and `synth` refuses the card until you fix them:
+  1. Set each beat's `start_ms` and `end_ms` to when that step of the animation starts and ends (read the scene's `script`).
+  2. Write its `say` line.
+  3. Delete `"timing": "guess"`.
+  4. Run `make` again.
+
 ## After `synth`
 
-`check` must say **CHECK PASS**:
-- If a word "sounds like" something else, add the word to `lexicon.json`:
-  - `say` for abbreviations
-  - `ipa` for words the voice mispronounces (copy the pattern of the existing entries)
-- Then run `synth` and `check` again.
-- Watch at least one `review` MP4 per batch with sound.
+`make` (or `check`) must say **CHECK PASS**:
+- **A word that "sounds like" something else:**
+  1. Add the word to `lexicon.json`: `say` for an abbreviation or symbol, `ipa` for a word the voice mispronounces (copy the pattern of the existing entries).
+  2. Run `make` again.
+  3. If the word still fails, reword the line.
+- **"Heard more" or "sound outside the spoken lines":** run `synth` again. If it repeats, listen to the review video.
+- **Listen:** watch at least one `review` MP4 per batch with sound.

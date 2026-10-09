@@ -4,6 +4,8 @@ The owner approved the cards for chapters 20–22 and the rebuilt cards for chap
 new batch. The owner rejected the first version of chapters 23–25 ("not beautiful, confusing"), which used simple drawn shapes, tiny
 cells and captions at the bottom. Do not repeat that.
 
+Example videos (the look and pace to copy; the only MP4s kept in the repo): `motioncards/gold-standard-examples/`.
+
 Reference scenes to open and copy from:
 - `work/MRCS-CH20-22/scenes/*.scene.json`
 - `work/MRCS-CH23-25/scenes/*.scene.json`

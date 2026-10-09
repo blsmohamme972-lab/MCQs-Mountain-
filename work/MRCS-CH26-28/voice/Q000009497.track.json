@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009497",
+ "file": "Q000009497.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12446,
+ "sha256": "72f6a87b248f5e468180148e6906526adb690594b93a3dae18df3548757d7126",
+ "track_ms": 6718,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2000,
+   "text": "Many different bacteria invade",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4036,
+   "text": "Together they spread along fascia",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6618,
+   "text": "Skin dies: Fournier's gangrene",
+   "speed": 1.119
+  }
+ ]
+}

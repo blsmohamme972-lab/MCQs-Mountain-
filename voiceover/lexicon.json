@@ -32,7 +32,9 @@
   "&": "and",
   "=": "equals",
   "≈": "about",
-  "%": "percent"
+  "%": "percent",
+  "DIC": "D I C",
+  "ST": "S T"
  },
  "ipa": {
   "en-us": {
@@ -55,6 +57,9 @@
    "anaphylactoid": "ˌænɐfɪlˈæktɔɪd",
    "keloid": "kˈiːlɔɪd",
    "tuberculin": "tuːbˈɝːkjəlɪn",
+   "atelectasis": "ˌætəlˈɛktəsɪs",
+   "venous": "vˈiːnəs",
+   "cholinergic": "kˌoʊlɪnˈɜːdʒɪk",
    "ulnar": "ˈʌlnɚ"
   },
   "en-gb": {
@@ -68,7 +73,10 @@
    "anticholinergic": "ˌæntikˌəʊlɪnˈɜːdʒɪk",
    "anaphylactoid": "ˌænəfɪlˈæktɔɪd",
    "keloid": "kˈiːlɔɪd",
-   "tuberculin": "tjuːbˈɜːkjʊlɪn"
+   "tuberculin": "tjuːbˈɜːkjʊlɪn",
+   "atelectasis": "ˌætəlˈɛktəsɪs",
+   "venous": "vˈiːnəs",
+   "cholinergic": "kˌəʊlɪnˈɜːdʒɪk"
   }
  }
 }

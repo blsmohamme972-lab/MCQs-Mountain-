@@ -45,6 +45,14 @@ class MotionCardsRolloutGateTests(unittest.TestCase):
         self.assertIn('sandbox="allow-scripts"',text)
         self.assertNotIn('service_workers="block"',text)
 
+    def test_motioncards_browser_smoke_retries_each_card_but_still_fails_closed(self):
+        text=(ROOT/"tools/motioncards/browser_smoke.py").read_text(encoding="utf-8")
+        self.assertIn('"--attempts",type=int,default=4',text)
+        self.assertIn('"--retry-delay",type=float,default=5.0',text)
+        self.assertIn('"motioncards_browser_smoke":"FAIL"',text)
+        self.assertIn("sys.exit(1)",text)
+        self.assertIn('card[\'qid\']',text)
+
     def test_motioncards_production_smoke_retries_after_promotion_but_still_fails_closed(self):
         text=(ROOT/".github/workflows/publish-motioncards-queue.yml").read_text(encoding="utf-8")
         promote=text.index("Promote staged MotionCards version to 100%")

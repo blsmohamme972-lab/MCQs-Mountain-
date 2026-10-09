@@ -1,0 +1,27 @@
+{
+ "qid": "Q000009497",
+ "duration_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "speed": 1.05,
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "Many different bacteria invade",
+   "say": "Many different bacteria invade"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "Together they spread along fascia",
+   "say": "Together they spread along fascia"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "Skin dies: Fournier's gangrene",
+   "say": "Skin dies: Fournier's gangrene"
+  }
+ ]
+}

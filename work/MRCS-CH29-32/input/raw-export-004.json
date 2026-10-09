@@ -1,0 +1,1624 @@
+{
+  "export_type": "kafu_mcq_text_export",
+  "schema_version": 1,
+  "exported_at": "2026-10-09T14:41:26.309Z",
+  "source": {
+    "kind": "published",
+    "source_worker": "content-worker",
+    "catalog_url": "https://kafu-content-1.blsmohamme97.workers.dev/catalog.json",
+    "catalog_sha256": "cb718009bbfee5a7cd261ce93057d77719c72cd2679766c60cb1da41bec82997",
+    "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/MRCS-PARTA-550-2E/v1/index.json",
+    "index_sha256": "510617f54ca807f9a37ce07bf2c40d83c7600153ceadea4b9b6453b1e8f9395b",
+    "snapshot_pinned": true,
+    "chapters": [
+      {
+        "chapter_id": 32,
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-32.v1.170c08329b48.json",
+        "image_url": null,
+        "sha256": "170c08329b48703a8fdce96468ae7eaf5ddaf6ce42bdd95568318ddf02aa98f9"
+      }
+    ]
+  },
+  "scope": {
+    "type": "chapter",
+    "book_id": "MRCS-PARTA-550-2E",
+    "book_title": "MRCS Part A: 550 SBAs and EMQs",
+    "book_version": 1,
+    "chapter_id": "32",
+    "chapter_title": "Gastrointestinal system"
+  },
+  "book": {
+    "id": "MRCS-PARTA-550-2E",
+    "title": "MRCS Part A: 550 SBAs and EMQs",
+    "authors": [
+      "Pradip K Datta",
+      "Sherif Elsobky"
+    ],
+    "field": "medicine",
+    "specialty": "General Surgery",
+    "collection_type": "textbook",
+    "version": 1,
+    "questions": 263,
+    "cover_url": "https://kafu-content-1.blsmohamme97.workers.dev/covers/MRCS-PARTA-550-2E-v1.webp",
+    "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/MRCS-PARTA-550-2E/v1/index.json",
+    "chapters": [
+      {
+        "id": 1,
+        "title": "Skull and brain",
+        "questions": 8,
+        "qids": [
+          "Q000009309",
+          "Q000009310",
+          "Q000009311",
+          "Q000009312",
+          "Q000009313",
+          "Q000009314",
+          "Q000009315",
+          "Q000009316"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-1.v1.e6abb6815502.json",
+        "image_url": null,
+        "bytes": 7904
+      },
+      {
+        "id": 2,
+        "title": "Head and neck",
+        "questions": 8,
+        "qids": [
+          "Q000009317",
+          "Q000009318",
+          "Q000009319",
+          "Q000009320",
+          "Q000009321",
+          "Q000009322",
+          "Q000009323",
+          "Q000009324"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-2.v1.a36e841e4475.json",
+        "image_url": null,
+        "bytes": 7646
+      },
+      {
+        "id": 3,
+        "title": "Upper limb and breast",
+        "questions": 8,
+        "qids": [
+          "Q000009325",
+          "Q000009326",
+          "Q000009327",
+          "Q000009328",
+          "Q000009329",
+          "Q000009330",
+          "Q000009331",
+          "Q000009332"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-3.v1.f4e3ad2ffad5.json",
+        "image_url": null,
+        "bytes": 7236
+      },
+      {
+        "id": 4,
+        "title": "Thoracic cavity",
+        "questions": 8,
+        "qids": [
+          "Q000009333",
+          "Q000009334",
+          "Q000009335",
+          "Q000009336",
+          "Q000009337",
+          "Q000009338",
+          "Q000009339",
+          "Q000009340"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-4.v1.8e2d94c4f825.json",
+        "image_url": null,
+        "bytes": 7181
+      },
+      {
+        "id": 5,
+        "title": "Abdomen",
+        "questions": 8,
+        "qids": [
+          "Q000009341",
+          "Q000009342",
+          "Q000009343",
+          "Q000009344",
+          "Q000009345",
+          "Q000009346",
+          "Q000009347",
+          "Q000009348"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-5.v1.40cffd49270a.json",
+        "image_url": null,
+        "bytes": 8154
+      },
+      {
+        "id": 6,
+        "title": "Pelvis",
+        "questions": 8,
+        "qids": [
+          "Q000009349",
+          "Q000009350",
+          "Q000009351",
+          "Q000009352",
+          "Q000009353",
+          "Q000009354",
+          "Q000009355",
+          "Q000009356"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-6.v1.080ec66fc45b.json",
+        "image_url": null,
+        "bytes": 7540
+      },
+      {
+        "id": 7,
+        "title": "Lower limb",
+        "questions": 6,
+        "qids": [
+          "Q000009357",
+          "Q000009358",
+          "Q000009359",
+          "Q000009360",
+          "Q000009361",
+          "Q000009362"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-7.v1.5f2e309eb198.json",
+        "image_url": null,
+        "bytes": 6075
+      },
+      {
+        "id": 8,
+        "title": "Homeostasis, coagulation and bleeding",
+        "questions": 8,
+        "qids": [
+          "Q000009363",
+          "Q000009364",
+          "Q000009365",
+          "Q000009366",
+          "Q000009367",
+          "Q000009368",
+          "Q000009369",
+          "Q000009370"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-8.v1.1f0fb9d9c23e.json",
+        "image_url": null,
+        "bytes": 9547
+      },
+      {
+        "id": 9,
+        "title": "Temperature regulation",
+        "questions": 7,
+        "qids": [
+          "Q000009371",
+          "Q000009372",
+          "Q000009373",
+          "Q000009374",
+          "Q000009375",
+          "Q000009376",
+          "Q000009377"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-9.v1.b766ae2ce478.json",
+        "image_url": null,
+        "bytes": 7413
+      },
+      {
+        "id": 10,
+        "title": "Metabolic pathways and abnormalities",
+        "questions": 8,
+        "qids": [
+          "Q000009378",
+          "Q000009379",
+          "Q000009380",
+          "Q000009381",
+          "Q000009382",
+          "Q000009383",
+          "Q000009384",
+          "Q000009385"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-10.v1.426c15db7e9e.json",
+        "image_url": null,
+        "bytes": 8507
+      },
+      {
+        "id": 11,
+        "title": "Fluid balance",
+        "questions": 6,
+        "qids": [
+          "Q000009386",
+          "Q000009387",
+          "Q000009388",
+          "Q000009389",
+          "Q000009390",
+          "Q000009391"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-11.v1.59594938138c.json",
+        "image_url": null,
+        "bytes": 6385
+      },
+      {
+        "id": 12,
+        "title": "Sepsis and shock",
+        "questions": 6,
+        "qids": [
+          "Q000009392",
+          "Q000009393",
+          "Q000009394",
+          "Q000009395",
+          "Q000009396",
+          "Q000009397"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-12.v1.37316f296206.json",
+        "image_url": null,
+        "bytes": 7364
+      },
+      {
+        "id": 13,
+        "title": "Central nervous system",
+        "questions": 7,
+        "qids": [
+          "Q000009398",
+          "Q000009399",
+          "Q000009400",
+          "Q000009401",
+          "Q000009402",
+          "Q000009403",
+          "Q000009404"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-13.v1.1d60447c2346.json",
+        "image_url": null,
+        "bytes": 8098
+      },
+      {
+        "id": 14,
+        "title": "Cardiovascular system",
+        "questions": 7,
+        "qids": [
+          "Q000009405",
+          "Q000009406",
+          "Q000009407",
+          "Q000009408",
+          "Q000009409",
+          "Q000009410",
+          "Q000009411"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-14.v1.969424f3086d.json",
+        "image_url": null,
+        "bytes": 7318
+      },
+      {
+        "id": 15,
+        "title": "Respiratory system",
+        "questions": 6,
+        "qids": [
+          "Q000009412",
+          "Q000009413",
+          "Q000009414",
+          "Q000009415",
+          "Q000009416",
+          "Q000009417"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-15.v1.eb00defe76f8.json",
+        "image_url": null,
+        "bytes": 6453
+      },
+      {
+        "id": 16,
+        "title": "Gastrointestinal system",
+        "questions": 8,
+        "qids": [
+          "Q000009418",
+          "Q000009419",
+          "Q000009420",
+          "Q000009421",
+          "Q000009422",
+          "Q000009423",
+          "Q000009424",
+          "Q000009425"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-16.v1.d577b3241417.json",
+        "image_url": null,
+        "bytes": 10403
+      },
+      {
+        "id": 17,
+        "title": "Genitourinary system",
+        "questions": 8,
+        "qids": [
+          "Q000009426",
+          "Q000009427",
+          "Q000009428",
+          "Q000009429",
+          "Q000009430",
+          "Q000009431",
+          "Q000009432",
+          "Q000009433"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-17.v1.fd2f2b9b871e.json",
+        "image_url": null,
+        "bytes": 10102
+      },
+      {
+        "id": 18,
+        "title": "Endocrine system",
+        "questions": 9,
+        "qids": [
+          "Q000009434",
+          "Q000009435",
+          "Q000009436",
+          "Q000009437",
+          "Q000009438",
+          "Q000009439",
+          "Q000009440",
+          "Q000009441",
+          "Q000009442"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-18.v1.15e4bb6b5466.json",
+        "image_url": null,
+        "bytes": 12434
+      },
+      {
+        "id": 19,
+        "title": "The liver",
+        "questions": 5,
+        "qids": [
+          "Q000009443",
+          "Q000009444",
+          "Q000009445",
+          "Q000009446",
+          "Q000009447"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-19.v1.04151461721f.json",
+        "image_url": null,
+        "bytes": 6168
+      },
+      {
+        "id": 20,
+        "title": "Inflammation",
+        "questions": 7,
+        "qids": [
+          "Q000009448",
+          "Q000009449",
+          "Q000009450",
+          "Q000009451",
+          "Q000009452",
+          "Q000009453",
+          "Q000009454"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-20.v1.bb4d718e2215.json",
+        "image_url": null,
+        "bytes": 9099
+      },
+      {
+        "id": 21,
+        "title": "Cellular injury and infection",
+        "questions": 8,
+        "qids": [
+          "Q000009455",
+          "Q000009456",
+          "Q000009457",
+          "Q000009458",
+          "Q000009459",
+          "Q000009460",
+          "Q000009461",
+          "Q000009462"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-21.v1.4e3d2568c5d2.json",
+        "image_url": null,
+        "bytes": 8787
+      },
+      {
+        "id": 22,
+        "title": "Wounds and wound healing",
+        "questions": 6,
+        "qids": [
+          "Q000009463",
+          "Q000009464",
+          "Q000009465",
+          "Q000009466",
+          "Q000009467",
+          "Q000009468"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-22.v1.fec7c49a0c49.json",
+        "image_url": null,
+        "bytes": 7329
+      },
+      {
+        "id": 23,
+        "title": "Disorders of growth and differentiation",
+        "questions": 8,
+        "qids": [
+          "Q000009469",
+          "Q000009470",
+          "Q000009471",
+          "Q000009472",
+          "Q000009473",
+          "Q000009474",
+          "Q000009475",
+          "Q000009476"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-23.v1.e9b8268e43dd.json",
+        "image_url": null,
+        "bytes": 8485
+      },
+      {
+        "id": 24,
+        "title": "Neoplasia",
+        "questions": 7,
+        "qids": [
+          "Q000009477",
+          "Q000009478",
+          "Q000009479",
+          "Q000009480",
+          "Q000009481",
+          "Q000009482",
+          "Q000009483"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-24.v1.e94bf95594d9.json",
+        "image_url": null,
+        "bytes": 7340
+      },
+      {
+        "id": 25,
+        "title": "Surgical immunology",
+        "questions": 7,
+        "qids": [
+          "Q000009484",
+          "Q000009485",
+          "Q000009486",
+          "Q000009487",
+          "Q000009488",
+          "Q000009489",
+          "Q000009490"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-25.v1.591b4e18ba9c.json",
+        "image_url": null,
+        "bytes": 8356
+      },
+      {
+        "id": 26,
+        "title": "Surgical microbiology",
+        "questions": 8,
+        "qids": [
+          "Q000009491",
+          "Q000009492",
+          "Q000009493",
+          "Q000009494",
+          "Q000009495",
+          "Q000009496",
+          "Q000009497",
+          "Q000009498"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-26.v1.03b8d43c0b62.json",
+        "image_url": null,
+        "bytes": 9216
+      },
+      {
+        "id": 27,
+        "title": "Surgical haematology",
+        "questions": 5,
+        "qids": [
+          "Q000009499",
+          "Q000009500",
+          "Q000009501",
+          "Q000009502",
+          "Q000009503"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-27.v1.c4d5cc565803.json",
+        "image_url": null,
+        "bytes": 7161
+      },
+      {
+        "id": 28,
+        "title": "Surgical biochemistry",
+        "questions": 6,
+        "qids": [
+          "Q000009504",
+          "Q000009505",
+          "Q000009506",
+          "Q000009507",
+          "Q000009508",
+          "Q000009509"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-28.v1.49dc2ec9e92b.json",
+        "image_url": null,
+        "bytes": 7516
+      },
+      {
+        "id": 29,
+        "title": "Central nervous system",
+        "questions": 5,
+        "qids": [
+          "Q000009510",
+          "Q000009511",
+          "Q000009512",
+          "Q000009513",
+          "Q000009514"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-29.v1.31a3a0bc7741.json",
+        "image_url": null,
+        "bytes": 5930
+      },
+      {
+        "id": 30,
+        "title": "Cardiovascular system",
+        "questions": 5,
+        "qids": [
+          "Q000009515",
+          "Q000009516",
+          "Q000009517",
+          "Q000009518",
+          "Q000009519"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-30.v1.223accb4ed43.json",
+        "image_url": null,
+        "bytes": 5641
+      },
+      {
+        "id": 31,
+        "title": "Respiratory system",
+        "questions": 6,
+        "qids": [
+          "Q000009520",
+          "Q000009521",
+          "Q000009522",
+          "Q000009523",
+          "Q000009524",
+          "Q000009525"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-31.v1.a77ac0cfd4ba.json",
+        "image_url": null,
+        "bytes": 7275
+      },
+      {
+        "id": 32,
+        "title": "Gastrointestinal system",
+        "questions": 5,
+        "qids": [
+          "Q000009526",
+          "Q000009527",
+          "Q000009528",
+          "Q000009529",
+          "Q000009530"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-32.v1.170c08329b48.json",
+        "image_url": null,
+        "bytes": 6258
+      },
+      {
+        "id": 33,
+        "title": "Genitourinary system",
+        "questions": 7,
+        "qids": [
+          "Q000009531",
+          "Q000009532",
+          "Q000009533",
+          "Q000009534",
+          "Q000009535",
+          "Q000009536",
+          "Q000009537"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-33.v1.04757e332419.json",
+        "image_url": null,
+        "bytes": 8489
+      },
+      {
+        "id": 34,
+        "title": "Endocrine system",
+        "questions": 6,
+        "qids": [
+          "Q000009538",
+          "Q000009539",
+          "Q000009540",
+          "Q000009541",
+          "Q000009542",
+          "Q000009543"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-34.v1.38e51affeb00.json",
+        "image_url": null,
+        "bytes": 6852
+      },
+      {
+        "id": 35,
+        "title": "Breast disorders",
+        "questions": 6,
+        "qids": [
+          "Q000009544",
+          "Q000009545",
+          "Q000009546",
+          "Q000009547",
+          "Q000009548",
+          "Q000009549"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-35.v1.941caa5ce284.json",
+        "image_url": null,
+        "bytes": 6830
+      },
+      {
+        "id": 36,
+        "title": "Musculoskeletal system",
+        "questions": 8,
+        "qids": [
+          "Q000009550",
+          "Q000009551",
+          "Q000009552",
+          "Q000009553",
+          "Q000009554",
+          "Q000009555",
+          "Q000009556",
+          "Q000009557"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-36.v1.bb01fa2bd5ff.json",
+        "image_url": null,
+        "bytes": 9251
+      },
+      {
+        "id": 37,
+        "title": "Lymphoreticular system and liver",
+        "questions": 5,
+        "qids": [
+          "Q000009558",
+          "Q000009559",
+          "Q000009560",
+          "Q000009561",
+          "Q000009562"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-37.v1.58ee3c82f389.json",
+        "image_url": null,
+        "bytes": 5838
+      },
+      {
+        "id": 38,
+        "title": "Orthopaedic pathology",
+        "questions": 9,
+        "qids": [
+          "Q000009563",
+          "Q000009564",
+          "Q000009565",
+          "Q000009566",
+          "Q000009567",
+          "Q000009568",
+          "Q000009569",
+          "Q000009570",
+          "Q000009571"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-38.v1.8396ace81ab7.json",
+        "image_url": null,
+        "bytes": 10408
+      }
+    ]
+  },
+  "book_index": {
+    "schema": 1,
+    "book_id": "MRCS-PARTA-550-2E",
+    "version": 1,
+    "title": "MRCS Part A: 550 SBAs and EMQs",
+    "authors": [
+      "Pradip K Datta",
+      "Sherif Elsobky"
+    ],
+    "field": "medicine",
+    "specialty": "General Surgery",
+    "collection_type": "textbook",
+    "language": "en",
+    "question_count": 263,
+    "cover_url": "https://kafu-content-1.blsmohamme97.workers.dev/covers/MRCS-PARTA-550-2E-v1.webp",
+    "chapters": [
+      {
+        "id": 1,
+        "title": "Skull and brain",
+        "questions": 8,
+        "qids": [
+          "Q000009309",
+          "Q000009310",
+          "Q000009311",
+          "Q000009312",
+          "Q000009313",
+          "Q000009314",
+          "Q000009315",
+          "Q000009316"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-1.v1.e6abb6815502.json",
+        "image_url": null,
+        "bytes": 7904
+      },
+      {
+        "id": 2,
+        "title": "Head and neck",
+        "questions": 8,
+        "qids": [
+          "Q000009317",
+          "Q000009318",
+          "Q000009319",
+          "Q000009320",
+          "Q000009321",
+          "Q000009322",
+          "Q000009323",
+          "Q000009324"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-2.v1.a36e841e4475.json",
+        "image_url": null,
+        "bytes": 7646
+      },
+      {
+        "id": 3,
+        "title": "Upper limb and breast",
+        "questions": 8,
+        "qids": [
+          "Q000009325",
+          "Q000009326",
+          "Q000009327",
+          "Q000009328",
+          "Q000009329",
+          "Q000009330",
+          "Q000009331",
+          "Q000009332"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-3.v1.f4e3ad2ffad5.json",
+        "image_url": null,
+        "bytes": 7236
+      },
+      {
+        "id": 4,
+        "title": "Thoracic cavity",
+        "questions": 8,
+        "qids": [
+          "Q000009333",
+          "Q000009334",
+          "Q000009335",
+          "Q000009336",
+          "Q000009337",
+          "Q000009338",
+          "Q000009339",
+          "Q000009340"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-4.v1.8e2d94c4f825.json",
+        "image_url": null,
+        "bytes": 7181
+      },
+      {
+        "id": 5,
+        "title": "Abdomen",
+        "questions": 8,
+        "qids": [
+          "Q000009341",
+          "Q000009342",
+          "Q000009343",
+          "Q000009344",
+          "Q000009345",
+          "Q000009346",
+          "Q000009347",
+          "Q000009348"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-5.v1.40cffd49270a.json",
+        "image_url": null,
+        "bytes": 8154
+      },
+      {
+        "id": 6,
+        "title": "Pelvis",
+        "questions": 8,
+        "qids": [
+          "Q000009349",
+          "Q000009350",
+          "Q000009351",
+          "Q000009352",
+          "Q000009353",
+          "Q000009354",
+          "Q000009355",
+          "Q000009356"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-6.v1.080ec66fc45b.json",
+        "image_url": null,
+        "bytes": 7540
+      },
+      {
+        "id": 7,
+        "title": "Lower limb",
+        "questions": 6,
+        "qids": [
+          "Q000009357",
+          "Q000009358",
+          "Q000009359",
+          "Q000009360",
+          "Q000009361",
+          "Q000009362"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-7.v1.5f2e309eb198.json",
+        "image_url": null,
+        "bytes": 6075
+      },
+      {
+        "id": 8,
+        "title": "Homeostasis, coagulation and bleeding",
+        "questions": 8,
+        "qids": [
+          "Q000009363",
+          "Q000009364",
+          "Q000009365",
+          "Q000009366",
+          "Q000009367",
+          "Q000009368",
+          "Q000009369",
+          "Q000009370"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-8.v1.1f0fb9d9c23e.json",
+        "image_url": null,
+        "bytes": 9547
+      },
+      {
+        "id": 9,
+        "title": "Temperature regulation",
+        "questions": 7,
+        "qids": [
+          "Q000009371",
+          "Q000009372",
+          "Q000009373",
+          "Q000009374",
+          "Q000009375",
+          "Q000009376",
+          "Q000009377"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-9.v1.b766ae2ce478.json",
+        "image_url": null,
+        "bytes": 7413
+      },
+      {
+        "id": 10,
+        "title": "Metabolic pathways and abnormalities",
+        "questions": 8,
+        "qids": [
+          "Q000009378",
+          "Q000009379",
+          "Q000009380",
+          "Q000009381",
+          "Q000009382",
+          "Q000009383",
+          "Q000009384",
+          "Q000009385"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-10.v1.426c15db7e9e.json",
+        "image_url": null,
+        "bytes": 8507
+      },
+      {
+        "id": 11,
+        "title": "Fluid balance",
+        "questions": 6,
+        "qids": [
+          "Q000009386",
+          "Q000009387",
+          "Q000009388",
+          "Q000009389",
+          "Q000009390",
+          "Q000009391"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-11.v1.59594938138c.json",
+        "image_url": null,
+        "bytes": 6385
+      },
+      {
+        "id": 12,
+        "title": "Sepsis and shock",
+        "questions": 6,
+        "qids": [
+          "Q000009392",
+          "Q000009393",
+          "Q000009394",
+          "Q000009395",
+          "Q000009396",
+          "Q000009397"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-12.v1.37316f296206.json",
+        "image_url": null,
+        "bytes": 7364
+      },
+      {
+        "id": 13,
+        "title": "Central nervous system",
+        "questions": 7,
+        "qids": [
+          "Q000009398",
+          "Q000009399",
+          "Q000009400",
+          "Q000009401",
+          "Q000009402",
+          "Q000009403",
+          "Q000009404"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-13.v1.1d60447c2346.json",
+        "image_url": null,
+        "bytes": 8098
+      },
+      {
+        "id": 14,
+        "title": "Cardiovascular system",
+        "questions": 7,
+        "qids": [
+          "Q000009405",
+          "Q000009406",
+          "Q000009407",
+          "Q000009408",
+          "Q000009409",
+          "Q000009410",
+          "Q000009411"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-14.v1.969424f3086d.json",
+        "image_url": null,
+        "bytes": 7318
+      },
+      {
+        "id": 15,
+        "title": "Respiratory system",
+        "questions": 6,
+        "qids": [
+          "Q000009412",
+          "Q000009413",
+          "Q000009414",
+          "Q000009415",
+          "Q000009416",
+          "Q000009417"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-15.v1.eb00defe76f8.json",
+        "image_url": null,
+        "bytes": 6453
+      },
+      {
+        "id": 16,
+        "title": "Gastrointestinal system",
+        "questions": 8,
+        "qids": [
+          "Q000009418",
+          "Q000009419",
+          "Q000009420",
+          "Q000009421",
+          "Q000009422",
+          "Q000009423",
+          "Q000009424",
+          "Q000009425"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-16.v1.d577b3241417.json",
+        "image_url": null,
+        "bytes": 10403
+      },
+      {
+        "id": 17,
+        "title": "Genitourinary system",
+        "questions": 8,
+        "qids": [
+          "Q000009426",
+          "Q000009427",
+          "Q000009428",
+          "Q000009429",
+          "Q000009430",
+          "Q000009431",
+          "Q000009432",
+          "Q000009433"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-17.v1.fd2f2b9b871e.json",
+        "image_url": null,
+        "bytes": 10102
+      },
+      {
+        "id": 18,
+        "title": "Endocrine system",
+        "questions": 9,
+        "qids": [
+          "Q000009434",
+          "Q000009435",
+          "Q000009436",
+          "Q000009437",
+          "Q000009438",
+          "Q000009439",
+          "Q000009440",
+          "Q000009441",
+          "Q000009442"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-18.v1.15e4bb6b5466.json",
+        "image_url": null,
+        "bytes": 12434
+      },
+      {
+        "id": 19,
+        "title": "The liver",
+        "questions": 5,
+        "qids": [
+          "Q000009443",
+          "Q000009444",
+          "Q000009445",
+          "Q000009446",
+          "Q000009447"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-19.v1.04151461721f.json",
+        "image_url": null,
+        "bytes": 6168
+      },
+      {
+        "id": 20,
+        "title": "Inflammation",
+        "questions": 7,
+        "qids": [
+          "Q000009448",
+          "Q000009449",
+          "Q000009450",
+          "Q000009451",
+          "Q000009452",
+          "Q000009453",
+          "Q000009454"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-20.v1.bb4d718e2215.json",
+        "image_url": null,
+        "bytes": 9099
+      },
+      {
+        "id": 21,
+        "title": "Cellular injury and infection",
+        "questions": 8,
+        "qids": [
+          "Q000009455",
+          "Q000009456",
+          "Q000009457",
+          "Q000009458",
+          "Q000009459",
+          "Q000009460",
+          "Q000009461",
+          "Q000009462"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-21.v1.4e3d2568c5d2.json",
+        "image_url": null,
+        "bytes": 8787
+      },
+      {
+        "id": 22,
+        "title": "Wounds and wound healing",
+        "questions": 6,
+        "qids": [
+          "Q000009463",
+          "Q000009464",
+          "Q000009465",
+          "Q000009466",
+          "Q000009467",
+          "Q000009468"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-22.v1.fec7c49a0c49.json",
+        "image_url": null,
+        "bytes": 7329
+      },
+      {
+        "id": 23,
+        "title": "Disorders of growth and differentiation",
+        "questions": 8,
+        "qids": [
+          "Q000009469",
+          "Q000009470",
+          "Q000009471",
+          "Q000009472",
+          "Q000009473",
+          "Q000009474",
+          "Q000009475",
+          "Q000009476"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-23.v1.e9b8268e43dd.json",
+        "image_url": null,
+        "bytes": 8485
+      },
+      {
+        "id": 24,
+        "title": "Neoplasia",
+        "questions": 7,
+        "qids": [
+          "Q000009477",
+          "Q000009478",
+          "Q000009479",
+          "Q000009480",
+          "Q000009481",
+          "Q000009482",
+          "Q000009483"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-24.v1.e94bf95594d9.json",
+        "image_url": null,
+        "bytes": 7340
+      },
+      {
+        "id": 25,
+        "title": "Surgical immunology",
+        "questions": 7,
+        "qids": [
+          "Q000009484",
+          "Q000009485",
+          "Q000009486",
+          "Q000009487",
+          "Q000009488",
+          "Q000009489",
+          "Q000009490"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-25.v1.591b4e18ba9c.json",
+        "image_url": null,
+        "bytes": 8356
+      },
+      {
+        "id": 26,
+        "title": "Surgical microbiology",
+        "questions": 8,
+        "qids": [
+          "Q000009491",
+          "Q000009492",
+          "Q000009493",
+          "Q000009494",
+          "Q000009495",
+          "Q000009496",
+          "Q000009497",
+          "Q000009498"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-26.v1.03b8d43c0b62.json",
+        "image_url": null,
+        "bytes": 9216
+      },
+      {
+        "id": 27,
+        "title": "Surgical haematology",
+        "questions": 5,
+        "qids": [
+          "Q000009499",
+          "Q000009500",
+          "Q000009501",
+          "Q000009502",
+          "Q000009503"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-27.v1.c4d5cc565803.json",
+        "image_url": null,
+        "bytes": 7161
+      },
+      {
+        "id": 28,
+        "title": "Surgical biochemistry",
+        "questions": 6,
+        "qids": [
+          "Q000009504",
+          "Q000009505",
+          "Q000009506",
+          "Q000009507",
+          "Q000009508",
+          "Q000009509"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-28.v1.49dc2ec9e92b.json",
+        "image_url": null,
+        "bytes": 7516
+      },
+      {
+        "id": 29,
+        "title": "Central nervous system",
+        "questions": 5,
+        "qids": [
+          "Q000009510",
+          "Q000009511",
+          "Q000009512",
+          "Q000009513",
+          "Q000009514"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-29.v1.31a3a0bc7741.json",
+        "image_url": null,
+        "bytes": 5930
+      },
+      {
+        "id": 30,
+        "title": "Cardiovascular system",
+        "questions": 5,
+        "qids": [
+          "Q000009515",
+          "Q000009516",
+          "Q000009517",
+          "Q000009518",
+          "Q000009519"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-30.v1.223accb4ed43.json",
+        "image_url": null,
+        "bytes": 5641
+      },
+      {
+        "id": 31,
+        "title": "Respiratory system",
+        "questions": 6,
+        "qids": [
+          "Q000009520",
+          "Q000009521",
+          "Q000009522",
+          "Q000009523",
+          "Q000009524",
+          "Q000009525"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-31.v1.a77ac0cfd4ba.json",
+        "image_url": null,
+        "bytes": 7275
+      },
+      {
+        "id": 32,
+        "title": "Gastrointestinal system",
+        "questions": 5,
+        "qids": [
+          "Q000009526",
+          "Q000009527",
+          "Q000009528",
+          "Q000009529",
+          "Q000009530"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-32.v1.170c08329b48.json",
+        "image_url": null,
+        "bytes": 6258
+      },
+      {
+        "id": 33,
+        "title": "Genitourinary system",
+        "questions": 7,
+        "qids": [
+          "Q000009531",
+          "Q000009532",
+          "Q000009533",
+          "Q000009534",
+          "Q000009535",
+          "Q000009536",
+          "Q000009537"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-33.v1.04757e332419.json",
+        "image_url": null,
+        "bytes": 8489
+      },
+      {
+        "id": 34,
+        "title": "Endocrine system",
+        "questions": 6,
+        "qids": [
+          "Q000009538",
+          "Q000009539",
+          "Q000009540",
+          "Q000009541",
+          "Q000009542",
+          "Q000009543"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-34.v1.38e51affeb00.json",
+        "image_url": null,
+        "bytes": 6852
+      },
+      {
+        "id": 35,
+        "title": "Breast disorders",
+        "questions": 6,
+        "qids": [
+          "Q000009544",
+          "Q000009545",
+          "Q000009546",
+          "Q000009547",
+          "Q000009548",
+          "Q000009549"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-35.v1.941caa5ce284.json",
+        "image_url": null,
+        "bytes": 6830
+      },
+      {
+        "id": 36,
+        "title": "Musculoskeletal system",
+        "questions": 8,
+        "qids": [
+          "Q000009550",
+          "Q000009551",
+          "Q000009552",
+          "Q000009553",
+          "Q000009554",
+          "Q000009555",
+          "Q000009556",
+          "Q000009557"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-36.v1.bb01fa2bd5ff.json",
+        "image_url": null,
+        "bytes": 9251
+      },
+      {
+        "id": 37,
+        "title": "Lymphoreticular system and liver",
+        "questions": 5,
+        "qids": [
+          "Q000009558",
+          "Q000009559",
+          "Q000009560",
+          "Q000009561",
+          "Q000009562"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-37.v1.58ee3c82f389.json",
+        "image_url": null,
+        "bytes": 5838
+      },
+      {
+        "id": 38,
+        "title": "Orthopaedic pathology",
+        "questions": 9,
+        "qids": [
+          "Q000009563",
+          "Q000009564",
+          "Q000009565",
+          "Q000009566",
+          "Q000009567",
+          "Q000009568",
+          "Q000009569",
+          "Q000009570",
+          "Q000009571"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-38.v1.8396ace81ab7.json",
+        "image_url": null,
+        "bytes": 10408
+      }
+    ],
+    "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/MRCS-PARTA-550-2E/v1/index.json"
+  },
+  "chapters": [
+    {
+      "id": 32,
+      "title": "Gastrointestinal system",
+      "questions": 5,
+      "qids": [
+        "Q000009526",
+        "Q000009527",
+        "Q000009528",
+        "Q000009529",
+        "Q000009530"
+      ],
+      "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-32.v1.170c08329b48.json",
+      "image_url": null,
+      "bytes": 6258
+    }
+  ],
+  "expected_question_count": 5,
+  "exported_question_count": 5,
+  "part": null,
+  "questions": [
+    {
+      "local_id": 218,
+      "chapter_id": 32,
+      "topic": "",
+      "type": "sba",
+      "source_number": "001",
+      "lead_in": "",
+      "stem": "A 65-year-old woman complains of left iliac fossa pain associated with occasional passage of dark red blood per rectum. She is habitually constipated and takes regular laxatives for a satisfactory bowel action. She has had these symptoms for almost a year. She is overweight and is tender in the left iliac fossa. What is the most likely diagnosis?",
+      "options": [
+        "Colorectal carcinoma",
+        "Crohn’s disease",
+        "Diverticular disease",
+        "Ischaemic colitis",
+        "Ulcerative colitis"
+      ],
+      "answer": "C",
+      "answer_source": "book_key",
+      "explanation": "An overweight woman who is constipated and has pain and tenderness in the left iliac fossa is most likely to be suffering from diverticular disease of the sigmoid colon (Figure 32.2). Diverticula are mucosal herniations that occur through the wall of the sigmoid colon at the point of maximum weakness which is the site of entry of the blood vessel.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 247,
+      "source_pages": [
+        247
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009526",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 219,
+      "chapter_id": 32,
+      "topic": "",
+      "type": "sba",
+      "source_number": "002",
+      "lead_in": "",
+      "stem": "A 70-year-old man complains of waking in the morning and having to rush to the lavatory to have a motion. He then finds that he only passes mucous, blood and watery stool. He has tenesmus and a continuous feeling of insufficient evacuation. This has been going on for the last 3 months during which time he has lost 10 kg in weight. What is the most likely diagnosis?",
+      "options": [
+        "Acute fissure-in-ano",
+        "Fistula-in-ano",
+        "Prolapse of rectum",
+        "Rectal carcinoma",
+        "Thrombosed piles"
+      ],
+      "answer": "D",
+      "answer_source": "book_key",
+      "explanation": "The most likely diagnosis is a rectal carcinoma. Colorectal cancers are the second most common cause of cancer death in the United Kingdom, rectal cancers accounting for more than a third of them. The macroscopic types of rectal cancers are ulcerating (Figure 48.9), polypoid, tubular and annular (Figure 48.10), the latter two causing stenosing lesions.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 247,
+      "source_pages": [
+        247
+      ],
+      "flag": "OCR match score 0.64",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009527",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 220,
+      "chapter_id": 32,
+      "topic": "",
+      "type": "sba",
+      "source_number": "003",
+      "lead_in": "",
+      "stem": "A 46-year-old man presents with a 6-month history of dyspeptic symptoms despite regular use of pantoprazole. On upper gastrointestinal endoscopy and biopsy and a rapid urease test, he is found to have a Helicobacter pylori infection. If left untreated over the long term, which one of the following conditions is most likely to develop?",
+      "options": [
+        "Acute gastric ulcer",
+        "Acute duodenal ulcer",
+        "Gastric lymphoma",
+        "Hiatus hernia",
+        "Oesophageal carcinoma"
+      ],
+      "answer": "C",
+      "answer_source": "book_key",
+      "explanation": "This patient might develop a gastric lymphoma if left untreated. Gastric mucosa-associated lymphoid tumour (MALToma) occurs in long-standing Helicobacter pylori chronic gastritis which provides the immunological stimulus for B cell proliferation. There are several causes of gastritis (Figure 46.5) of which H. pylori is one.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 124,
+      "source_pages": [
+        124
+      ],
+      "flag": "OCR match score 0.58",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009528",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 221,
+      "chapter_id": 32,
+      "topic": "",
+      "type": "sba",
+      "source_number": "004",
+      "lead_in": "",
+      "stem": "A 55-year-old man presents as an emergency with sudden onset of severe acute epigastric pain radiating to the back, of 4 hours’ duration. He also complains of pain in the right shoulder tip, which he has had for a couple of hours. On examination, his pulse rate is 120 bpm and his blood pressure is 120/80 mmHg; his abdominal wall does not move with respiration and he has board-like rigidity. A chest X-ray shows free gas under the right dome of the diaphragm (Figure 32.1). What is the most likely diagnosis?",
+      "options": [
+        "Acute appendicitis",
+        "Acute pancreatitis",
+        "Intestinal obstruction from acute intussusception",
+        "Perforated duodenal ulcer",
+        "Ureteric colic"
+      ],
+      "answer": "D",
+      "answer_source": "book_key",
+      "explanation": "This patient has the hallmarks of a perforated intra-abdominal hollow viscus, the most common cause of which is a perforated duodenal ulcer.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 211,
+      "source_pages": [
+        211
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009529",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 222,
+      "chapter_id": 32,
+      "topic": "",
+      "type": "sba",
+      "source_number": "005",
+      "lead_in": "",
+      "stem": "A 19-year-old man is admitted with a 2-day history of right-sided abdominal pain, tenderness in the right iliac fossa and raised inflammatory markers. Following a clinical diagnosis of acute appendicitis, he is laparoscoped prior to his proposed appendicectomy. At laparoscopy, a 10 cm segment of the terminal ileum appears red, inflamed and thickened with free blood-stained fluid in the pelvis. What is the most likely diagnosis?",
+      "options": [
+        "Acute appendicitis",
+        "Acute intestinal ischaemia",
+        "Crohn’s disease",
+        "Intussusception",
+        "Primary intestinal lymphoma"
+      ],
+      "answer": "C",
+      "answer_source": "book_key",
+      "explanation": "The most likely cause of this appearance is Crohn’s disease, also called regional enteritis. The condition is a chronic transmural inflammatory disease that can affect any part of the gastrointestinal tract.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 211,
+      "source_pages": [
+        211
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009530",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    }
+  ],
+  "export_metadata": {
+    "question_integrity": [
+      {
+        "qid": "Q000009526",
+        "publisher_fingerprint": "adae2ab02dd2fa09a89c2efc978aa1e3b4beac56a6fa4b2140f10f807eb96d24",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "d7a53bb8f7b9299619e5c3b86caefe1d104c0349a19aa5e23d07d06d0dbd33fe",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009527",
+        "publisher_fingerprint": "a03cd2318b0b2c414dfb96d70bbee3c7b049fe1546977c9ab26a0e4a0b6e6bc3",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "ef12f4d03766f5446053b4be0b8f860acf5b4bc4d75eee4916f41fe527741b59",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009528",
+        "publisher_fingerprint": "0ae367dc2054d2e94921c812633c3978cb76f154d799c77d6bed1db7997a0f0d",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "e17b300c82bef590fe5b53704b9caef5f665df936ebcae6230bb9bf697a5ad48",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009529",
+        "publisher_fingerprint": "b46fdb0d709885e541764f0227ae2677972fea159c20d6f73564b846bc6bc9b0",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "c84aafd39d7c9713a4483a12fb78f5083608feda5e2c4d6e201b0bb6b12b66a1",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009530",
+        "publisher_fingerprint": "c668011cc1a951f7fd9801ddd77e98bcdb88bad5409b19c102876b3194279e60",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "f72c2dd9c3d492bd93fbb002dfdae8dc075417f0644cb7b740ff9b160115f3cb",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      }
+    ],
+    "image_bytes_embedded": false,
+    "image_hash_scope": "question_json_only",
+    "image_packs": [
+      {
+        "chapter_id": 32,
+        "url": null,
+        "entry_filenames": [],
+        "checksums_available": false,
+        "entry_checksums": {},
+        "bytes_embedded": false
+      }
+    ],
+    "unavailable_metadata": {
+      "image_entry_checksums": "not published in the chapter manifest",
+      "book_index": null
+    },
+    "content_hash": {
+      "algorithm": "SHA-256",
+      "canonicalization": "kafu-question-canonical-json-v1",
+      "covers": "complete original published question object",
+      "excludes": "export_metadata",
+      "verifies_image_bytes": false
+    },
+    "partition_policy": {
+      "max_part_bytes": 900000,
+      "split_boundary": "question_record",
+      "oversized_single_question": "kept as one record in its own part"
+    }
+  },
+  "ai_instructions": {
+    "retain_fields": [
+      "book_id",
+      "book_version",
+      "chapter_id",
+      "qid",
+      "publisher_fingerprint",
+      "content_hash"
+    ],
+    "image_dependent_content_requires_actual_images": true,
+    "do_not_guess_image_content": true,
+    "image_bytes_embedded": false
+  }
+}

@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009506",
+ "file": "Q000009506.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12481,
+ "sha256": "0019248b8f6622aeb8b7471b9ea6cc6a9195de9d166521e6a2cd72495e8ffe0b",
+ "track_ms": 6692,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1730,
+   "text": "Fat burns into ketoacids",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4378,
+   "text": "Their acid uses up bicarbonate",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6592,
+   "text": "Low bicarbonate, wide gap",
+   "speed": 1.05
+  }
+ ]
+}
