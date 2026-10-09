@@ -1,5 +1,7 @@
 # Agent instructions — Kafu MotionCards
 
+> **GOLD STANDARD (read first):** follow [`GOLD_STANDARD.md`](GOLD_STANDARD.md), the owner-approved workflow, card format and visual method from MRCS chapters 20–25.
+
 > **SEPARATION WARNING:** Never modify, import, copy, rebrand, or depend on `Animations and illustrations/` (Medical Motion), DNAgens, or unrelated projects. MotionCards is a clean independent implementation.
 
 ## Development agents

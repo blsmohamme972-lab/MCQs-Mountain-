@@ -1,5 +1,7 @@
 # Kafu MotionCards — scene authoring v2 (compact reference)
 
+> **GOLD STANDARD (read first):** follow [`GOLD_STANDARD.md`](GOLD_STANDARD.md), the owner-approved workflow, card format and visual method from MRCS chapters 20–25.
+
 Read this file instead of the long docs when you only author scenes. Edit only `work/<batch>/scenes/Q#########.scene.json`. The tooling does selection, hashes and packaging (see `MASTER_PROMPT.md` for the commands).
 
 v2 is opt-in per scene (`"schema_version": 2`). v1 scenes still work unchanged. New scaffolds are v2.

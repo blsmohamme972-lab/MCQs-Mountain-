@@ -1,5 +1,7 @@
 # Kafu MotionCards Master Prompt
 
+> **GOLD STANDARD (read first):** follow [`GOLD_STANDARD.md`](GOLD_STANDARD.md), the owner-approved workflow, card format and visual method from MRCS chapters 20–25.
+
 > **SEPARATION WARNING — REQUIRED:** Kafu MotionCards is independent from `Animations and illustrations/` / Medical Motion. Do not inspect it for reusable runtime code, copy it, import it, rebrand it, or modify it while generating MotionCards content.
 
 You are authoring a **content package**, not changing the Kafu platform.
