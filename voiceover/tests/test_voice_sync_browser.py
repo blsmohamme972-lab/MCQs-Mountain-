@@ -2,9 +2,9 @@
 
 Drives the controller the way motioncards-player.js would (anchor clock + requestAnimationFrame)
 and checks Golden rule 7: picture time and voice time stay within 60 ms through play, seek and pause.
-Needs playwright + Chromium (MOTIONCARDS_CHROMIUM) and a sample track (voiceover/samples/*.opus).
+Needs playwright + Chromium (run voiceover/bootstrap.sh, or set MOTIONCARDS_CHROMIUM) and a sample track (voiceover/samples/*.opus).
 """
-import base64, json, os, unittest
+import base64, importlib.util, json, os, unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parents[1]
@@ -32,7 +32,9 @@ class VoiceSyncBrowser(unittest.TestCase):
         js = js.replace('const a=(opts.audio||(()=>root.document.createElement("audio")))();',
                         'const a=(opts.audio||(()=>root.document.createElement("audio")))();root.__a=a;')
         html = PAGE % (js, base64.b64encode(SAMPLE.read_bytes()).decode())
-        exe = os.environ.get("MOTIONCARDS_CHROMIUM")
+        spec = importlib.util.spec_from_file_location("voiceover_tool", HERE / "voiceover.py")
+        V = importlib.util.module_from_spec(spec); spec.loader.exec_module(V)
+        exe = V.chromium()   # MOTIONCARDS_CHROMIUM, else the Chromium `voiceover.py setup` found
         with sync_playwright() as p:
             b = p.chromium.launch(args=["--autoplay-policy=no-user-gesture-required"], **({"executable_path": exe} if exe else {}))
             pg = b.new_page(); pg.set_content(html)

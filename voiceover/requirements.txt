@@ -7,4 +7,4 @@ soundfile==0.14.0
 numpy==2.5.3
 faster-whisper==1.2.1     # listen-back check (MIT); model base.en downloaded on first use
 ctranslate2==4.8.2
-playwright                # review videos reuse motioncards render (Chromium via MOTIONCARDS_CHROMIUM)
+playwright==1.57.0        # same pin as the repo CI; review videos reuse motioncards render (Chromium via MOTIONCARDS_CHROMIUM)
