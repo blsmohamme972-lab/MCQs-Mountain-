@@ -340,6 +340,8 @@ class AssetImportTests(unittest.TestCase):
         self.assertTrue(scene["script"].endswith("function render(t,api){}"))
         add_style_kit(scene);validate_scene(scene,"Q000000001",3000)
         self.assertEqual(lint_scene_v2(scene),[])
+        scene["script"]+="\nfunction setup(api){R.grid(api);}"
+        self.assertTrue(any("R.grid" in w for w in lint_scene_v2(scene)))
 
     def test_illustrator_exports_import_but_other_entities_are_refused(self):
         from motioncards.lib.assets import prepare_svg,AssetImportError

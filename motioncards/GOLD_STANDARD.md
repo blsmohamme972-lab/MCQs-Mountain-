@@ -39,7 +39,6 @@ Good examples by type:
    python3 tools/motioncards.py render <scene> --out <dir> --times 300,1500,3500,5800,6900
    ```
    Look at the phone and tablet frames. Fix anything that overlaps, is cut off, or does not explain itself.
-   Do not draw layout grids or other debug overlays: judge the placement by looking at the rendered frames.
 6. **Add voice** (rules in `voiceover/README.md`):
    ```bash
    ~/.venvs/kafu-voice/bin/python voiceover/voiceover.py make --workspace "$PWD/work/<batch>"
