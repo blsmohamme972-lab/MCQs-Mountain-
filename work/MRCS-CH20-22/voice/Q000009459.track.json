@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009459",
+ "file": "Q000009459.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12643,
+ "sha256": "f18b957919c7f3d0d679d55596ca879fad4a6912538cf0b76f878f0da366deab",
+ "track_ms": 6734,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2074,
+   "text": "Tuberculosis infects the lung.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4111,
+   "text": "The centre dies: cheese-like.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6634,
+   "text": "Caseous necrosis, walled off.",
+   "speed": 1.05
+  }
+ ]
+}

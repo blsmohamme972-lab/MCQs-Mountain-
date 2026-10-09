@@ -1,0 +1,485 @@
+[
+ {
+  "qid": "Q000009448",
+  "beats": [
+   {
+    "say": "Antigens sit on thyroid cells.",
+    "heard": "Antigens sit on thyroid cells,",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Antibodies bind those antigens.",
+    "heard": "antibodies bind those antigens,",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Gland enlarges: hyperplasia.",
+    "heard": "gland enlarges, hyperplasia.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009449",
+  "beats": [
+   {
+    "say": "The wall sheds endotoxin.",
+    "heard": "The wall sheds endotoxin.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Lipid A activates macrophages.",
+    "heard": "Lipida activates macrophages.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "The cytokine cascade begins.",
+    "heard": "The cytokine cascade begins.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000009450",
+  "beats": [
+   {
+    "say": "Graft cells carry donor M H C.",
+    "heard": "Graph cells carry donor MHC.",
+    "score": 0.913,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "T cells see it as foreign.",
+    "heard": "T cells see it as foreign.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "They infiltrate the graft.",
+    "heard": "They infiltrate the graft.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009451",
+  "beats": [
+   {
+    "say": "Allergen cross-links I G E.",
+    "heard": "Allergen Crosslink's IGE,",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Anaphylactoid: a direct trigger.",
+    "heard": "Anaphylactoid, a direct trigger,",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Same release, no immune step.",
+    "heard": "same release, no immune step.",
+    "score": 1.0,
+    "onset_error_ms": 20
+   }
+  ]
+ },
+ {
+  "qid": "Q000009452",
+  "beats": [
+   {
+    "say": "It recognises the bacterium.",
+    "heard": "It recognizes the bacterium,",
+    "score": 0.958,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "It engulfs the bacterium.",
+    "heard": "it engulfs the bacterium,",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "And kills it inside.",
+    "heard": "and kills it inside.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009453",
+  "beats": [
+   {
+    "say": "Lupus makes immune complexes.",
+    "heard": "Lupus makes immune complexes.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "They overwhelm normal clearance.",
+    "heard": "They overwhelm normal clearance.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "They deposit in the kidney.",
+    "heard": "They deposit in the kidney.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009454",
+  "beats": [
+   {
+    "say": "Bacteria activate complement.",
+    "heard": "Bacteria activate complement.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "C3b coats them.",
+    "heard": "C3B coats them.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Fragments trigger mast cells.",
+    "heard": "Fragments trigger mass cells.",
+    "score": 0.96,
+    "onset_error_ms": 40
+   }
+  ]
+ },
+ {
+  "qid": "Q000009455",
+  "beats": [
+   {
+    "say": "Hormones make breast cells multiply.",
+    "heard": "Hormones make breast cells multiply,",
+    "score": 1.0,
+    "onset_error_ms": 30
+   },
+   {
+    "say": "Then cells die by apoptosis.",
+    "heard": "then cells die by apoptosis.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Quiet death, little inflammation.",
+    "heard": "Quiet death, little inflammation.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009456",
+  "beats": [
+   {
+    "say": "Normal cells mature as they rise.",
+    "heard": "Normal cells mature as they rise.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Under stress, cells divide faster.",
+    "heard": "Under stress, cells divide faster.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Dysplasia: they fail to mature.",
+    "heard": "Displasia, they fail to mature.",
+    "score": 0.96,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000009457",
+  "beats": [
+   {
+    "say": "The injured cell swells.",
+    "heard": "The injured cell swells.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Clear vacuoles fill the cytoplasm.",
+    "heard": "Clear vacuoles fill the cytoplasm.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Fat builds up: reversible.",
+    "heard": "Fat builds up, reversible.",
+    "score": 1.0,
+    "onset_error_ms": 70
+   }
+  ]
+ },
+ {
+  "qid": "Q000009458",
+  "beats": [
+   {
+    "say": "Acid refluxes onto squamous cells.",
+    "heard": "Acid refluxes on a squamous cells.",
+    "score": 0.947,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "It turns columnar.",
+    "heard": "It turns columnar.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Metaplasia, with goblet cells.",
+    "heard": "Metoplasia with goblet cells.",
+    "score": 0.96,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009459",
+  "beats": [
+   {
+    "say": "Tuberculosis infects the lung.",
+    "heard": "Tuberculosis infects the lung.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "The centre dies: cheese-like.",
+    "heard": "The center dies, cheese -like.",
+    "score": 0.957,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Caseous necrosis, walled off.",
+    "heard": "Cassius necrosis, walled off.",
+    "score": 0.917,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000009460",
+  "beats": [
+   {
+    "say": "Skin bacteria settle on the graft.",
+    "heard": "Skin bacteria settle on the graft.",
+    "score": 1.0,
+    "onset_error_ms": 40
+   },
+   {
+    "say": "They build a biofilm.",
+    "heard": "They build a biofilm.",
+    "score": 1.0,
+    "onset_error_ms": 20
+   },
+   {
+    "say": "Antibiotics can't get in.",
+    "heard": "Antibiotics can't get in.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000009461",
+  "beats": [
+   {
+    "say": "Gel kills most microbes.",
+    "heard": "Gel kills most microbes.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "C diff spores survive it.",
+    "heard": "C. diff spores survive it.",
+    "score": 1.0,
+    "onset_error_ms": 80
+   },
+   {
+    "say": "So wash your hands instead.",
+    "heard": "So wash your hands instead.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009462",
+  "beats": [
+   {
+    "say": "First, a manual clean.",
+    "heard": "First, a manual clean.",
+    "score": 1.0,
+    "onset_error_ms": 50
+   },
+   {
+    "say": "Then 2% glutaraldehyde.",
+    "heard": "Then 2 % glutaraldehyde,",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "The usual endoscope agent.",
+    "heard": "the usual endoscope agent.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009463",
+  "beats": [
+   {
+    "say": "A splinter lies deep inside.",
+    "heard": "A splinter lies deep inside.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Healing stalls around it.",
+    "heard": "Healing stalls around it.",
+    "score": 1.0,
+    "onset_error_ms": 20
+   },
+   {
+    "say": "A local cause of delay.",
+    "heard": "A local cause of delay.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009464",
+  "beats": [
+   {
+    "say": "Red, painful, oozing wound.",
+    "heard": "Red painful oozing wound.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "A swinging fever: infection.",
+    "heard": "A swinging fever, infection.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Open the wound, send pus.",
+    "heard": "Open the wound, send pus.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009465",
+  "beats": [
+   {
+    "say": "Surgery enters the bile tract.",
+    "heard": "Surgery enters the bile tract.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Controlled, no significant spill.",
+    "heard": "Controlled, no significant spill.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Class two: clean contaminated.",
+    "heard": "Class 2, clean contaminated. terminated.",
+    "score": 0.917,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009466",
+  "beats": [
+   {
+    "say": "Dirty: skin left open.",
+    "heard": "Dirty skin left open,",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Dressed daily until clean.",
+    "heard": "dress daily until clean,",
+    "score": 0.952,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Then closed: delayed primary.",
+    "heard": "then closed, delayed primary.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000009467",
+  "beats": [
+   {
+    "say": "The scar rises above the skin.",
+    "heard": "The scar rises above the skin.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "It spreads beyond the incision.",
+    "heard": "It spreads beyond the incision.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Beyond the incision: keloid.",
+    "heard": "Beyond the incision, cheloid.",
+    "score": 0.936,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009468",
+  "beats": [
+   {
+    "say": "Full-thickness skin loss.",
+    "heard": "Full thickness skin loss,",
+    "score": 1.0,
+    "onset_error_ms": 20
+   },
+   {
+    "say": "Down through fat and muscle.",
+    "heard": "down through fat and muscle,",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Bone exposed: stage four.",
+    "heard": "bone -exposed Stage 4.",
+    "score": 0.889,
+    "onset_error_ms": 10
+   }
+  ]
+ }
+]

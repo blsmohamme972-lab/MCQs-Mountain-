@@ -1,0 +1,96 @@
+{
+  "schema_version": 2,
+  "qid": "Q000009463",
+  "duration_ms": 7000,
+  "takeaway": "A retained foreign body is a local factor that delays wound healing (others: clot, dead tissue, infection, hypoxia, poor blood supply).",
+  "stage": {
+    "width": 640,
+    "height": 560,
+    "background": "#f4f8f8"
+  },
+  "layers": [
+    {
+      "type": "text",
+      "text": "Foreign body delays healing",
+      "x": 320,
+      "y": 44,
+      "size": 26,
+      "weight": 800,
+      "max_width": 590,
+      "fit": true,
+      "color": "@ink",
+      "fixed": true,
+      "font": "sans"
+    },
+    {
+      "type": "text",
+      "text": "1 · A splinter lies deep in the wound",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "color": "@ink",
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
+      "show": [
+        0,
+        2300
+      ],
+      "enter": "fade",
+      "exit": "fade"
+    },
+    {
+      "type": "text",
+      "text": "2 · Healing stalls around it",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "color": "@ink",
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
+      "show": [
+        2300,
+        4600
+      ],
+      "enter": "type",
+      "exit": "fade"
+    },
+    {
+      "type": "text",
+      "text": "3 · Foreign body: a local factor",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "color": "@ink",
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
+      "show": [
+        4600,
+        7000
+      ],
+      "enter": "type"
+    }
+  ],
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"><defs id=\"kit\"><filter id=\"kit-volume\" x=\"-5%\" y=\"-5%\" width=\"110%\" height=\"110%\" color-interpolation-filters=\"sRGB\"><feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"7\" result=\"b\"/><feOffset in=\"b\" dx=\"-5\" dy=\"-7\" result=\"o1\"/><feComposite in=\"SourceAlpha\" in2=\"o1\" operator=\"out\" result=\"e1\"/><feFlood flood-color=\"#3a0d12\" flood-opacity=\".30\"/><feComposite in2=\"e1\" operator=\"in\" result=\"shade\"/><feOffset in=\"b\" dx=\"5\" dy=\"7\" result=\"o2\"/><feComposite in=\"SourceAlpha\" in2=\"o2\" operator=\"out\" result=\"e2\"/><feFlood flood-color=\"#fff\" flood-opacity=\".45\"/><feComposite in2=\"e2\" operator=\"in\" result=\"hi\"/><feMerge><feMergeNode in=\"SourceGraphic\"/><feMergeNode in=\"shade\"/><feMergeNode in=\"hi\"/></feMerge><feComposite in2=\"SourceAlpha\" operator=\"in\"/></filter><filter id=\"kit-volume-sm\" x=\"-5%\" y=\"-5%\" width=\"110%\" height=\"110%\" color-interpolation-filters=\"sRGB\"><feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"3\" result=\"b\"/><feOffset in=\"b\" dx=\"-2\" dy=\"-3\" result=\"o1\"/><feComposite in=\"SourceAlpha\" in2=\"o1\" operator=\"out\" result=\"e1\"/><feFlood flood-color=\"#3a0d12\" flood-opacity=\".32\"/><feComposite in2=\"e1\" operator=\"in\" result=\"shade\"/><feOffset in=\"b\" dx=\"2\" dy=\"3\" result=\"o2\"/><feComposite in=\"SourceAlpha\" in2=\"o2\" operator=\"out\" result=\"e2\"/><feFlood flood-color=\"#fff\" flood-opacity=\".5\"/><feComposite in2=\"e2\" operator=\"in\" result=\"hi\"/><feMerge><feMergeNode in=\"SourceGraphic\"/><feMergeNode in=\"shade\"/><feMergeNode in=\"hi\"/></feMerge><feComposite in2=\"SourceAlpha\" operator=\"in\"/></filter><filter id=\"kit-gloss\" x=\"-5%\" y=\"-5%\" width=\"110%\" height=\"110%\" color-interpolation-filters=\"sRGB\"><feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"4\" result=\"b\"/><feSpecularLighting in=\"b\" surfaceScale=\"4\" specularConstant=\".7\" specularExponent=\"22\" lighting-color=\"#fff\" result=\"s\"><feDistantLight azimuth=\"235\" elevation=\"48\"/></feSpecularLighting><feComposite in=\"s\" in2=\"SourceAlpha\" operator=\"in\" result=\"s2\"/><feComposite in=\"SourceGraphic\" in2=\"s2\" operator=\"arithmetic\" k1=\"0\" k2=\"1\" k3=\".55\" k4=\"0\"/></filter><filter id=\"kit-shadow\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\" color-interpolation-filters=\"sRGB\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"5\" flood-color=\"#2b1a1f\" flood-opacity=\".22\"/></filter><filter id=\"kit-glow\" x=\"-50%\" y=\"-50%\" width=\"200%\" height=\"200%\" color-interpolation-filters=\"sRGB\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"4\" result=\"g\"/><feMerge><feMergeNode in=\"g\"/><feMergeNode in=\"SourceGraphic\"/></feMerge></filter><radialGradient id=\"kit-tissue\" cx=\".38\" cy=\".32\" r=\".75\"><stop offset=\"0\" stop-color=\"#fbd3cd\"/><stop offset=\".55\" stop-color=\"#ec9f97\"/><stop offset=\"1\" stop-color=\"#c96a64\"/></radialGradient><radialGradient id=\"kit-muscle\" cx=\".4\" cy=\".3\" r=\".8\"><stop offset=\"0\" stop-color=\"#e98a7f\"/><stop offset=\".6\" stop-color=\"#c2483f\"/><stop offset=\"1\" stop-color=\"#8e2a27\"/></radialGradient><radialGradient id=\"kit-lung\" cx=\".4\" cy=\".3\" r=\".8\"><stop offset=\"0\" stop-color=\"#fde3e6\"/><stop offset=\".6\" stop-color=\"#f4b6be\"/><stop offset=\"1\" stop-color=\"#d98793\"/></radialGradient><radialGradient id=\"kit-tumour\" cx=\".35\" cy=\".3\" r=\".8\"><stop offset=\"0\" stop-color=\"#c9a6d8\"/><stop offset=\".6\" stop-color=\"#8a5aa6\"/><stop offset=\"1\" stop-color=\"#5b3473\"/></radialGradient><radialGradient id=\"kit-bone\" cx=\".4\" cy=\".3\" r=\".8\"><stop offset=\"0\" stop-color=\"#fffaf0\"/><stop offset=\".7\" stop-color=\"#efe3c8\"/><stop offset=\"1\" stop-color=\"#cdbb94\"/></radialGradient><linearGradient id=\"kit-nerve\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#c99a10\"/><stop offset=\".45\" stop-color=\"#ffe27a\"/><stop offset=\"1\" stop-color=\"#b8860b\"/></linearGradient><linearGradient id=\"kit-vein\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#3b5fa0\"/><stop offset=\".4\" stop-color=\"#7fa3dd\"/><stop offset=\"1\" stop-color=\"#2c4a85\"/></linearGradient><linearGradient id=\"kit-artery\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#a5232b\"/><stop offset=\".4\" stop-color=\"#e5606a\"/><stop offset=\"1\" stop-color=\"#8c1c23\"/></linearGradient></defs>\n<defs>\n <clipPath id=\"secClip\"><rect x=\"44\" y=\"150\" width=\"356\" height=\"356\" rx=\"16\"/></clipPath>\n <radialGradient id=\"hot\" cx=\"0.5\" cy=\"0.5\" r=\"0.5\"><stop offset=\"0\" stop-color=\"#c0392b\" stop-opacity=\"0.75\"/><stop offset=\"0.6\" stop-color=\"#c0392b\" stop-opacity=\"0.35\"/><stop offset=\"1\" stop-color=\"#c0392b\" stop-opacity=\"0\"/></radialGradient>\n <pattern id=\"gran\" width=\"14\" height=\"14\" patternUnits=\"userSpaceOnUse\"><rect width=\"14\" height=\"14\" fill=\"#ec8d93\"/><circle cx=\"4\" cy=\"4\" r=\"3.2\" fill=\"#e06f79\"/><circle cx=\"11\" cy=\"10\" r=\"3.2\" fill=\"#e06f79\"/><circle cx=\"3.2\" cy=\"3.2\" r=\"1.1\" fill=\"#f6b5b9\"/><circle cx=\"10.2\" cy=\"9.2\" r=\"1.1\" fill=\"#f6b5b9\"/></pattern>\n</defs>\n<rect x=\"24\" y=\"128\" width=\"592\" height=\"404\" rx=\"22\" fill=\"#ffffff\" filter=\"url(#kit-shadow)\"/>\n<g id=\"sec\" clip-path=\"url(#secClip)\">\n <rect x=\"44\" y=\"150\" width=\"356\" height=\"356\" fill=\"#fbe7a9\"/>\n <g id=\"fatLobules\" fill=\"#fde9b0\" stroke=\"#eccd73\" stroke-width=\"2\"></g>\n <rect x=\"44\" y=\"410\" width=\"356\" height=\"96\" fill=\"#c8655a\"/>\n <g stroke=\"#a94a42\" stroke-width=\"2\" opacity=\"0.7\"><path d=\"M44 432 H400 M44 456 H400 M44 480 H400\"/></g>\n <rect x=\"44\" y=\"190\" width=\"356\" height=\"62\" fill=\"#f6d2c2\"/>\n <rect x=\"44\" y=\"172\" width=\"356\" height=\"18\" fill=\"#e8b195\"/>\n <rect x=\"44\" y=\"150\" width=\"356\" height=\"22\" fill=\"#f4f8f8\"/>\n <path id=\"cavity\" fill=\"url(#gran)\" stroke=\"#a8323a\" stroke-width=\"2.5\"/>\n <path id=\"open\" fill=\"#fff6f3\" stroke=\"#b5434c\" stroke-width=\"2\"/>\n <ellipse id=\"hotzone\" cx=\"232\" cy=\"398\" rx=\"78\" ry=\"46\" fill=\"url(#hot)\" opacity=\"0\"/>\n <g id=\"splinter\">\n  <path d=\"M168 384 L296 402 L300 408 L292 414 L172 398 L160 392 Z\" fill=\"#d9a35c\" stroke=\"#7a4b1e\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/>\n  <path d=\"M182 392 L278 405 M200 389 L262 398 M196 397 L250 404\" stroke=\"#9c6630\" stroke-width=\"1.6\" fill=\"none\" stroke-linecap=\"round\"/>\n </g>\n</g>\n<rect x=\"44\" y=\"150\" width=\"356\" height=\"356\" rx=\"16\" fill=\"none\" stroke=\"#c9dadb\" stroke-width=\"2\"/>\n<g font-family=\"system-ui,sans-serif\" font-weight=\"700\" font-size=\"16\" fill=\"#5f7a80\" stroke=\"#fff\" stroke-width=\"4\" paint-order=\"stroke\">\n <text x=\"56\" y=\"222\">Skin</text><text x=\"56\" y=\"336\">Fat</text><text x=\"56\" y=\"466\">Muscle</text>\n</g>\n<g id=\"ui\"></g>\n<g id=\"leg\" transform=\"translate(474.502 146) scale(0.679 0.679)\"><defs><clipPath clipPathUnits=\"userSpaceOnUse\" id=\"leg-0\"><path d=\"M-.2-.2H118.9v545H-.2z\" /></clipPath></defs><path clip-path=\"url(#leg-0)\" d=\"M9.1.8S.8 51 13.5 72.1c1.2 1.9-.3 42.8 4.1 64.3 4.4 21.6 7.5 64.8 5.6 80.3-2.1 15.7-2.9 34.1 0 44.9 2.7 10.7 12.5 37.5 10 47.1-2.3 9.6-9.3 59.7-7.3 68.1 2.1 8.2 6.9 27.1 6.6 41.1-.4 14-.8 46.7-5.3 51.5-4.4 4.8-5.2 13.7-4 19.2 1.1 5.8 2.9 22.8 2.3 26.8-.4 4.1-4.1 28.2 15.8 28.2S60.1 523.3 64.7 516c4.8-7.3 7.9-16.5 5.2-20.3-2.5-3.6-1.9-5.2-2.1-6.3-.2-1.2 0-2.7-1.9-2.9-2.1 0-5.1-1.4-5.1-1.4s6.2-46.2 12.4-59.2c6.2-13 22-51.4 17-110.1-1-10.7-2.7-32.9-1.5-41 1.1-8 .3-31.1-.8-36.1-1.2-4.9-3.9-30.2 1.9-42.9 5.8-12.7 8.9-26.1 12.8-46 3.8-20 20.8-92.8 13.1-148.8L9.1.8z\" fill=\"#fef3ed\" fill-rule=\"evenodd\" /><path clip-path=\"url(#leg-0)\" d=\"M30.1 526.9c.4-4.1 6.8-26.1 5.4-31.7-1.2-5.5-4.4-24.9 0-29.9 4.4-4.8 4.1-35.8 4.4-49.8.4-14 4.3-30.5 2.2-38.7-2-8.5 5-58.5 7.3-68.1 2.5-9.6-7.3-36.4-10-47.2-2.9-10.7-2.1-29.1 0-44.8 1.9-15.6-1.2-58.7-5.6-80.4-4.5-21.5-14.2-57.1-15.1-59.2C.3 27.1 25.1 1.6 25.3 1L9 .8S.7 51 13.5 72.1c1.1 1.9-.4 42.8 4 64.2 4.4 21.7 7.6 64.8 5.6 80.4-2.1 15.7-2.9 34.1 0 44.8 2.7 10.8 12.6 37.6 10.1 47.2-2.3 9.6-9.3 59.6-7.4 68.1 2.1 8.2 7 27 6.6 41-.4 14-.8 46.8-5.2 51.6-4.5 4.8-5.3 13.6-4.1 19.1 1.2 5.8 2.9 22.8 2.4 26.9-.4 4-4.1 28.2 15.8 28.2 3.5 0 6.2-.6 8.5-1.6-17.6 3.1-20.1-11.7-19.7-15.1z\" fill=\"#fce2d7\" fill-rule=\"evenodd\" /><path clip-path=\"url(#leg-0)\" d=\"M9.1.8S.8 51 13.5 72.1c1.2 1.9-.3 42.8 4.1 64.3 4.4 21.6 7.5 64.8 5.6 80.3-2.1 15.7-2.9 34.1 0 44.9 2.7 10.7 12.5 37.5 10 47.1-2.3 9.6-9.3 59.7-7.3 68.1 2.1 8.2 6.9 27.1 6.6 41.1-.4 14-.8 46.7-5.3 51.5-4.4 4.8-5.2 13.7-4 19.2 1.1 5.8 2.9 22.8 2.3 26.8-.4 4.1-4.1 28.2 15.8 28.2S60.1 523.3 64.7 516c4.8-7.3 7.9-16.5 5.2-20.3-2.5-3.6-1.9-5.2-2.1-6.3-.2-1.2 0-2.7-1.9-2.9-2.1 0-5.1-1.4-5.1-1.4s6.2-46.2 12.4-59.2c6.2-13 22-51.4 17-110.1-1-10.7-2.7-32.9-1.5-41 1.1-8 .3-31.1-.8-36.1-1.2-4.9-3.9-30.2 1.9-42.9 5.8-12.7 8.9-26.1 12.8-46 3.8-20 20.8-92.8 13.1-148.8\" fill=\"none\" stroke=\"#343434\" stroke-width=\"0.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /><path d=\"M13.8 72.6s2.6 4.4 7.7 6m9.4 1.5s28.5 6.1 47.8-10.7M51.4 242.6c-1.2 5.2-.8 10.6-.6 16 .2 3.8-.2 10.5 1.8 14m25.5-41.8c.2 2.7-.6 5.6-.8 8.3 0 3.6.2 7.2.8 10.7.9 5 1.7 10 2.5 15M60.8 484.9c.8 2.2.2 4.7.2 6.8-.2 1.7.6 4 0 5.7-1.1 4.2-4.6 6.5-4.2 11.5-.4.6-.2-.2-.4-.4M34.5 469.1c.2 8.9 1.8 17.5 1.2 26.5-.2 3.4-.6 6.7-1.2 10.1-.4 2.5-.4 7.9-1.9 9.2\" fill=\"none\" stroke=\"#343434\" stroke-width=\"0.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /><path d=\"M17.8 77.2s7.9 6.7 36.3 4.2c0 0-31.3 3.7-25.5 32.1 0 0-12.2-31.1-10.8-36.3zM40.1 268.3c2.5.8 4.1 7.9 7.2 9.8 3.7 2.1 7.2-1.8 7.7-5.2-.7 8.2-1.3 16.7-2.5 24.9-.9 5.4-2.5 12.7-5.2 17.2-.6-6.6.4-14.7-2.3-21zM79 394s-10.7 6.3-16-2.8c0 0 3.6 14.8 16 2.8z\" fill=\"#fce2d7\" fill-rule=\"evenodd\" /><path clip-path=\"url(#leg-0)\" d=\"M114 4.9s10.2 65-22.6 180.5c0 0 21.9-74.9 22.6-180.5z\" fill=\"#fff\" fill-rule=\"evenodd\" /><path d=\"M27.6 77.8S58 86.4 79 67.2c0 0-16.2 14.6-51.4 10.6zM88.1 321.4s5.2 57.5-7.3 68.6c-12.8 11.3-17-6.3-17-6.3s8.7 16.3 15.6 2.1c6.9-14.2 10.4-49.3 8.7-64.4zM59.6 480.9c.9 2.7-.4 6.3-.2 9.2.2 2.1 1.3 4.4.4 6.3-1.8 3.4-6.8 9-4.1 13.6-1.7-1.7-1.7-5.8-1.1-8.1.8-2.4 2.5-4.2 3.6-6.3 1.2-2.5 0-4.6.2-7.1 0-2.6 1-5.3 1.4-8.2zm4.9 7.1c1.9.8 1.9 0 2.1 2.3 0 1.5-.2 2.5.8 3.8 1.4 2.5 2.5 3.7 2.2 6.8-.4 3.4-2 6.8-3.8 9.9-.9 1.9-2.1 3.6-2.9 5.6-1.1 2.1-1.3 4.8-2.3 6.8.4-4.7 1.7-9.2 3.5-13.7 1.3-3.5 3.5-7.1 3.3-11 0-2.6-2.2-2.2-1.8-5.1.2-1.4 1.2-4.6-.4-5.2z\" fill=\"#fff\" fill-rule=\"evenodd\" /></g></svg>\n",
+  "script": "// Laceration (wound cavity) with walls L(y), R(y); granulation grows inward from the walls,\n// but stalls in the deep part where the splinter lies.\nconst TOP = 172, BOT = 396, CX = 232;\nconst half = y => { const f = (y - TOP) / (BOT - TOP); return 64 * Math.sqrt(Math.max(0, 1 - f)) * (1 - 0.25 * f) + 4; };\nfunction wall(k, stall) {             // k: 0 = open wound, 1 = filled; stall: depth where filling stops\n  const L = [], Rr = [];\n  for (let y = TOP; y <= BOT; y += 4) {\n    const s = 1 - api_clamp((y - (stall - 40)) / 50);            // 1 above the stall zone, 0 near splinter\n    const w = half(y) * (1 - 0.94 * k * s);\n    const wob = Math.sin(y * 0.11) * 2.2 * k * s;\n    L.push((CX - w + wob).toFixed(1) + \" \" + y); Rr.push((CX + w + wob).toFixed(1) + \" \" + y);\n  }\n  return \"M\" + L.join(\" L\") + \" L\" + Rr.reverse().join(\" L\") + \" Z\";\n}\nfunction api_clamp(v) { return Math.max(0, Math.min(1, v)); }\nlet el = {};\nfunction chip(api, g, txt, x, y, w, o) {\n  const grp = api.el(\"g\", {}, g);\n  el.rects = el.rects || [];\n  const r = api.el(\"rect\", {x: x, y: y - 18, width: w, height: 36, rx: 10, fill: o.fill, stroke: o.stroke, \"stroke-width\": o.sw || 2}, grp);\n  const t = api.el(\"text\", {x: x + w / 2, y: y + 1, \"text-anchor\": \"middle\", \"dominant-baseline\": \"central\", \"font-size\": o.size || 17, \"font-weight\": 700, fill: o.color, \"font-family\": \"system-ui,sans-serif\"}, grp);\n  t.textContent = txt; return grp;\n}\nfunction label(api, g, txt, x, y, color, anchor) {\n  const t = api.el(\"text\", {x, y, \"text-anchor\": anchor || \"start\", \"dominant-baseline\": \"central\", \"font-size\": 18, \"font-weight\": 800, fill: color, stroke: \"#fff\", \"stroke-width\": 5, \"paint-order\": \"stroke\", \"stroke-linejoin\": \"round\", \"font-family\": \"system-ui,sans-serif\"}, g);\n  t.textContent = txt; return t;\n}\nfunction setup(api) {\n  const lob = api.$(\"#fatLobules\"), rnd = api.random(7);\n  for (let y = 270; y < 420; y += 30) for (let x = 40 + (y % 60 ? 15 : 0); x < 410; x += 34)\n    api.el(\"ellipse\", {cx: x + rnd() * 6, cy: y + rnd() * 6, rx: 15, ry: 12}, lob);\n  el.cavity = api.$(\"#cavity\"); el.open = api.$(\"#open\");\n  api.set(el.cavity, {d: wall(0, BOT)});\n  const ui = api.$(\"#ui\");\n  // beat 1: splinter callout\n  el.splG = api.el(\"g\", {}, ui);\n  el.ring = api.el(\"ellipse\", {cx: 230, cy: 399, rx: 82, ry: 26, fill: \"none\", stroke: \"@accent\", \"stroke-width\": 3.5, \"stroke-dasharray\": \"8 6\"}, el.splG);\n  api.el(\"path\", {d: \"M262 424 L300 458\", stroke: \"@accent\", \"stroke-width\": 2.5, fill: \"none\"}, el.splG);\n  el.splLab = label(api, el.splG, \"Wood splinter\", 306, 466, \"#c4512f\");\n  // beat 2: granulation label + stall label\n  el.granG = api.el(\"g\", {}, ui);\n  api.el(\"path\", {d: \"M262 244 L300 222\", stroke: \"@good\", \"stroke-width\": 2.5, fill: \"none\"}, el.granG);\n  api.el(\"circle\", {cx: 262, cy: 244, r: 4, fill: \"@good\", stroke: \"#fff\", \"stroke-width\": 1.5}, el.granG);\n  label(api, el.granG, \"Healing tissue\", 304, 216, \"#1d6f66\");\n  el.stallG = api.el(\"g\", {}, ui);\n  label(api, el.stallG, \"Stalls here\", 306, 356, \"#c0392b\");\n  api.el(\"path\", {d: \"M302 362 L276 380\", stroke: \"#c0392b\", \"stroke-width\": 2.5, fill: \"none\"}, el.stallG);\n  // beat 3: local factors list\n  // context: thigh from behind with the laceration on its outer side\n  const leg = api.$(\"#leg\"); el.legG = api.el(\"g\", {}, leg.parentNode); leg.parentNode.insertBefore(el.legG, leg); el.legG.appendChild(leg);\n  el.lac = api.el(\"g\", {}, el.legG);\n  api.el(\"circle\", {cx: 545, cy: 236, r: 20, fill: \"none\", stroke: \"@accent\", \"stroke-width\": 3}, el.lac);\n  api.el(\"path\", {d: \"M538 226 L550 246\", stroke: \"#a8323a\", \"stroke-width\": 5, \"stroke-linecap\": \"round\"}, el.lac);\n  label(api, el.lac, \"Thigh wound\", 545, 278, \"#c4512f\", \"middle\");\n  el.list = api.el(\"g\", {}, ui);\n  const head = api.el(\"text\", {x: 512, y: 176, \"text-anchor\": \"middle\", \"dominant-baseline\": \"central\", \"font-size\": 18, \"font-weight\": 800, fill: \"@ink\", \"font-family\": \"system-ui,sans-serif\"}, el.list);\n  head.textContent = \"Local factors\";\n  const items = [\"Foreign body\", \"Blood clot\", \"Dead tissue\", \"Infection\", \"Hypoxia\", \"Poor blood supply\"];\n  el.chips = items.map((s, i) => chip(api, el.list, s, 420, 220 + i * 48, 184,\n    i === 0 ? {fill: \"#fff1ec\", stroke: \"@accent\", color: \"#b23a1e\", sw: 3, size: 18} : {fill: \"#f3f7f7\", stroke: \"#dbe6e7\", color: \"#5f7a80\", size: 17}));\n  el.link = api.el(\"path\", {d: \"M418 220 C 360 230, 330 300, 300 392\", fill: \"none\", stroke: \"@accent\", \"stroke-width\": 3, \"stroke-dasharray\": \"7 6\", \"stroke-linecap\": \"round\"}, ui);\n}\nfunction vis(api, node, o) { api.set(node, {opacity: o.toFixed(3), display: o > 0.001 ? \"inline\" : \"none\"}); }\nfunction render(t, api) {\n  // 1. splinter flagged\n  const a = api.seg(t, 150, 700, \"ease_out\") * (1 - api.seg(t, 4600, 4900));\n  vis(api, el.splG, a);\n  // 2. granulation fills in from the walls, but not around the splinter\n  const k = api.seg(t, 2400, 4300, \"ease_in_out\");\n  api.set(el.open, {d: wall(k, 372)});\n  const hot = api.seg(t, 2600, 3400, \"ease_out\");\n  const pulse = 0.85 + 0.15 * Math.sin(t / 260);\n  api.set(api.$(\"#hotzone\"), {opacity: (hot * (t < 3400 ? 1 : pulse)).toFixed(3)});\n  vis(api, el.granG, api.seg(t, 2900, 3400) * (1 - api.seg(t, 4600, 4800)));\n  vis(api, el.stallG, api.seg(t, 3500, 3900) * (1 - api.seg(t, 4600, 4800)));\n  // 3. local factors list, foreign body highlighted\n  vis(api, el.legG, 1 - api.seg(t, 4600, 4800));\n  vis(api, el.list, api.seg(t, 4650, 5000));\n  el.chips.forEach((c, i) => { const f = api.seg(t, 4700 + i * 110, 5050 + i * 110, \"ease_out\");\n    vis(api, c, f); api.set(c, {transform: \"translate(\" + ((1 - f) * 20).toFixed(1) + \" 0)\"}); });\n  const d = api.seg(t, 5100, 5600, \"ease_out\");\n  api.set(el.link, {\"stroke-dashoffset\": 0, opacity: d.toFixed(3), display: d > 0 ? \"inline\" : \"none\"});\n}\n",
+  "credits": [
+    "Leg: Servier Medical Art, CC BY 3.0"
+  ]
+}

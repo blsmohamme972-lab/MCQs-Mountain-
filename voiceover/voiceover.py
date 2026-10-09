@@ -307,7 +307,7 @@ def cmd_check(a):
 def cmd_review(a):
     sys.path.insert(0, str(ROOT))
     from motioncards.lib.render import render_scenes
-    ws = Path(a.workspace); d = ws_voice(ws); out = d / "review"; out.mkdir(exist_ok=True)
+    ws = Path(a.workspace).resolve(); d = ws_voice(ws); out = d / "review"; out.mkdir(exist_ok=True)  # absolute: ffmpeg resolves concat paths against the list file
     for s in scenes(ws, a.qids):
         tr = d / f"{s['qid']}.track.json"
         if not tr.exists(): continue

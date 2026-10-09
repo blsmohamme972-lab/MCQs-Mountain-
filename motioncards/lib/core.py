@@ -111,8 +111,11 @@ def adapt_exports(envelopes:list[dict])->AdaptedExport:
             questions.append(q)
     book=dict(first.get("book") or {})
     if str(book.get("id"))!=identity[0] or int(book.get("version") or 0)!=identity[1]:raise ValueError("book_identity_conflict")
-    chapters=list(first.get("chapters") or book.get("chapters") or [])
-    chapter_by_id={str(ch.get("id")):ch for ch in chapters if isinstance(ch,dict)}
+    # Several chapter exports of one book snapshot may be packaged together: merge their chapter metadata.
+    chapters=[];chapter_by_id={}
+    for e in envelopes:
+        for ch in list(e.get("chapters") or (e.get("book") or {}).get("chapters") or []):
+            if isinstance(ch,dict) and str(ch.get("id")) not in chapter_by_id:chapter_by_id[str(ch.get("id"))]=ch;chapters.append(ch)
     for q in questions:
         ch=chapter_by_id.get(str(q.get("chapter_id")))
         if not ch:raise ValueError(f"chapter_missing:{q['id']}")

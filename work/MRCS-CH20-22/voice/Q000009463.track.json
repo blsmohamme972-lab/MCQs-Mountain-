@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009463",
+ "file": "Q000009463.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 10936,
+ "sha256": "757ff9880debdc1b8ac2fa8b1a6265ee5e3ed2e3be2ccd30e0baff008e210b0c",
+ "track_ms": 6209,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1925,
+   "text": "A splinter lies deep inside.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3791,
+   "text": "Healing stalls around it.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6109,
+   "text": "A local cause of delay.",
+   "speed": 1.05
+  }
+ ]
+}

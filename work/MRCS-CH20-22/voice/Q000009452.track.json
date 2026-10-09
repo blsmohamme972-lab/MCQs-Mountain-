@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009452",
+ "file": "Q000009452.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 10645,
+ "sha256": "73c76a7d327244adaf3e9977fa8aa2af3f04e583b57a90b6269063164f4afe30",
+ "track_ms": 5945,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1982,
+   "text": "It recognises the bacterium.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3850,
+   "text": "It engulfs the bacterium.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 5845,
+   "text": "And kills it inside.",
+   "speed": 1.05
+  }
+ ]
+}
