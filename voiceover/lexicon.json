@@ -33,7 +33,8 @@
   "=": "equals",
   "≈": "about",
   "%": "percent",
-  "DIC": "D I C"
+  "DIC": "D I C",
+  "ST": "S T"
  },
  "ipa": {
   "en-us": {
@@ -55,7 +56,8 @@
    "anticholinergic": "ˌæntikˌoʊlɪnˈɜːdʒɪk",
    "anaphylactoid": "ˌænɐfɪlˈæktɔɪd",
    "keloid": "kˈiːlɔɪd",
-   "tuberculin": "tuːbˈɝːkjəlɪn"
+   "tuberculin": "tuːbˈɝːkjəlɪn",
+   "atelectasis": "ˌætəlˈɛktəsɪs"
   },
   "en-gb": {
    "ketoacidosis": "kˌiːtəʊˌæsɪdˈəʊsɪs",
@@ -68,7 +70,8 @@
    "anticholinergic": "ˌæntikˌəʊlɪnˈɜːdʒɪk",
    "anaphylactoid": "ˌænəfɪlˈæktɔɪd",
    "keloid": "kˈiːlɔɪd",
-   "tuberculin": "tjuːbˈɜːkjʊlɪn"
+   "tuberculin": "tjuːbˈɜːkjʊlɪn",
+   "atelectasis": "ˌætəlˈɛktəsɪs"
   }
  }
 }

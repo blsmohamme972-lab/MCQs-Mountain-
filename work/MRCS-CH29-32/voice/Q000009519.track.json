@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009519",
+ "file": "Q000009519.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11797,
+ "sha256": "d412fec72049851a8663a252d6cf65f4001145ea763d34dc8f9178c89ffa03f0",
+ "track_ms": 6529,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1913,
+   "text": "The infarct killed the whole wall",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3884,
+   "text": "Thin scar bulges outward",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6429,
+   "text": "Ventricular aneurysm forms",
+   "speed": 1.05
+  }
+ ]
+}

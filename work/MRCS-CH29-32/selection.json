@@ -1,0 +1,155 @@
+{
+  "package_id": "MRCS-PARTA-550-2E-CH29-32",
+  "package_revision": 1,
+  "source": {
+    "kind": "published",
+    "catalog_url": "https://kafu-content-1.blsmohamme97.workers.dev/catalog.json",
+    "catalog_sha256": "cb718009bbfee5a7cd261ce93057d77719c72cd2679766c60cb1da41bec82997",
+    "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/MRCS-PARTA-550-2E/v1/index.json",
+    "index_sha256": "510617f54ca807f9a37ce07bf2c40d83c7600153ceadea4b9b6453b1e8f9395b",
+    "snapshot_pinned": true
+  },
+  "scope": {
+    "type": "records",
+    "book_id": "MRCS-PARTA-550-2E",
+    "book_version": 1,
+    "chapter_ids": [
+      "29",
+      "30",
+      "31",
+      "32"
+    ],
+    "question_count": 21,
+    "qids": [
+      "Q000009510",
+      "Q000009511",
+      "Q000009512",
+      "Q000009513",
+      "Q000009514",
+      "Q000009515",
+      "Q000009516",
+      "Q000009517",
+      "Q000009518",
+      "Q000009519",
+      "Q000009520",
+      "Q000009521",
+      "Q000009522",
+      "Q000009523",
+      "Q000009524",
+      "Q000009525",
+      "Q000009526",
+      "Q000009527",
+      "Q000009528",
+      "Q000009529",
+      "Q000009530"
+    ]
+  },
+  "warnings": [],
+  "selected": [
+    {
+      "qid": "Q000009510",
+      "duration_ms": 7000,
+      "content_hash": "43423a08fe0d9ed1e272caff25895f560bb42c3674618ebcbf8ca64d9b02fdc0"
+    },
+    {
+      "qid": "Q000009511",
+      "duration_ms": 7000,
+      "content_hash": "e61248f1f9872ee527f8c60bf0cbc34de18dd119b62d168568678ec3ed55ac9b"
+    },
+    {
+      "qid": "Q000009512",
+      "duration_ms": 7000,
+      "content_hash": "e191fe2e8459e573d19f5a08180237fa6610db6668c2b8d7c03576d7d8a22e35"
+    },
+    {
+      "qid": "Q000009513",
+      "duration_ms": 7000,
+      "content_hash": "ec2bd5982be32f194a04f57f5570a30e861f1efb18ab7b6fe866c9febfb532f9"
+    },
+    {
+      "qid": "Q000009514",
+      "duration_ms": 7000,
+      "content_hash": "3965ef8d4868d977d74b02f933645fb6110592d8fe52a8cb6f0c1e621ecbab64"
+    },
+    {
+      "qid": "Q000009515",
+      "duration_ms": 7000,
+      "content_hash": "25e4649a4c48f218ae15249bf267518914cca3a56ecabb3b693882d84c48422c"
+    },
+    {
+      "qid": "Q000009516",
+      "duration_ms": 7000,
+      "content_hash": "38b29db7aabf48ea6dd26776067c7fb67094702640af4e0f27aef6bac8b54a5d"
+    },
+    {
+      "qid": "Q000009517",
+      "duration_ms": 7000,
+      "content_hash": "a100f5b773aa00af9cae193a29886bb8c26223a73bffebb70741aa837f1809f8"
+    },
+    {
+      "qid": "Q000009518",
+      "duration_ms": 7000,
+      "content_hash": "2a4e82b5bf11f2bb9f3e37d0941cd8b0221297db0a5a9bfea3f5555773d27998"
+    },
+    {
+      "qid": "Q000009519",
+      "duration_ms": 7000,
+      "content_hash": "a5b98b44280bd47e61cdc7aed5dddbe28d3116648447e30eb780d1f7342e28c9"
+    },
+    {
+      "qid": "Q000009520",
+      "duration_ms": 7000,
+      "content_hash": "3698dec99d5a9f0c52af77e673d03b72fb1d3105926c84251d1adbac45486ac5"
+    },
+    {
+      "qid": "Q000009521",
+      "duration_ms": 7000,
+      "content_hash": "a80ec1e1d0efc70069999c46e7bab8824eb80593d3b771d341bb1e7d9a7b71f0"
+    },
+    {
+      "qid": "Q000009522",
+      "duration_ms": 7000,
+      "content_hash": "b0d47b23863bdd888a08b0e85b73bb936f86c4a95aca01977638e86504ca4c2a"
+    },
+    {
+      "qid": "Q000009523",
+      "duration_ms": 7000,
+      "content_hash": "160a94613651f99f98dbd555402a41613d607af08d26b4e5680a2f633ecc65b4"
+    },
+    {
+      "qid": "Q000009524",
+      "duration_ms": 7000,
+      "content_hash": "58f728c46d0f136a3836a09657f46f755be97a848705df6c9742e2bd7171ab07"
+    },
+    {
+      "qid": "Q000009525",
+      "duration_ms": 7000,
+      "content_hash": "34841d8ff401ef647dca394ae29e50f25777e5274a53263247a86122c99c34f9"
+    },
+    {
+      "qid": "Q000009526",
+      "duration_ms": 7000,
+      "content_hash": "d7a53bb8f7b9299619e5c3b86caefe1d104c0349a19aa5e23d07d06d0dbd33fe"
+    },
+    {
+      "qid": "Q000009527",
+      "duration_ms": 7000,
+      "content_hash": "ef12f4d03766f5446053b4be0b8f860acf5b4bc4d75eee4916f41fe527741b59"
+    },
+    {
+      "qid": "Q000009528",
+      "duration_ms": 7000,
+      "content_hash": "e17b300c82bef590fe5b53704b9caef5f665df936ebcae6230bb9bf697a5ad48"
+    },
+    {
+      "qid": "Q000009529",
+      "duration_ms": 7000,
+      "content_hash": "c84aafd39d7c9713a4483a12fb78f5083608feda5e2c4d6e201b0bb6b12b66a1"
+    },
+    {
+      "qid": "Q000009530",
+      "duration_ms": 7000,
+      "content_hash": "f72c2dd9c3d492bd93fbb002dfdae8dc075417f0644cb7b740ff9b160115f3cb"
+    }
+  ]
+}

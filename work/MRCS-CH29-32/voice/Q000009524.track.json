@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009524",
+ "file": "Q000009524.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12222,
+ "sha256": "f59c8ac4ee449b265a4038b7cacc517b53242d4e00131d47c5a0c09d418e7c67",
+ "track_ms": 6737,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1994,
+   "text": "A smooth tumour blocks a bronchus",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3855,
+   "text": "The lower lobe collapses",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6637,
+   "text": "Hormones cause Cushingoid features",
+   "speed": 1.087
+  }
+ ]
+}

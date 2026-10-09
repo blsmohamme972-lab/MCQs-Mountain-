@@ -1,0 +1,27 @@
+{
+ "qid": "Q000009513",
+ "duration_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "speed": 1.05,
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "A pituitary tumour grows upward",
+   "say": "A pituitary tumour grows upward"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "It presses on the optic chiasm",
+   "say": "It presses on the optic chiasm"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "Both outer visual fields go",
+   "say": "Both outer visual fields go"
+  }
+ ]
+}
