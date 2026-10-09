@@ -1,0 +1,27 @@
+{
+ "qid": "Q000009474",
+ "duration_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "speed": 1.05,
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "Bilharzia eggs lodge in bladder",
+   "say": "Bilharzia eggs lodge in bladder"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "Lining switches to glandular cells",
+   "say": "Lining switches to glandular cells"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "Metaplasia, not carcinoma",
+   "say": "Metaplasia, not carcinoma"
+  }
+ ]
+}

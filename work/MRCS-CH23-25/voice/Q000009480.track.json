@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009480",
+ "file": "Q000009480.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11003,
+ "sha256": "f9f5d39bd88c1306bd997a6a2dad25fb9cb7a02851081bd5a3a745abc6e66656",
+ "track_ms": 6062,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1857,
+   "text": "Burkitt's lymphoma of the jaw",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4073,
+   "text": "EBV infects B cells.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 5962,
+   "text": "The cause is a virus",
+   "speed": 1.05
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009478",
+ "file": "Q000009478.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11314,
+ "sha256": "d556989680c09c2b0a6a8ee436d3c7b144dd39e6c8023083d9ac971992105989",
+ "track_ms": 6347,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1769,
+   "text": "Cancer grows within the wall",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4062,
+   "text": "It breaks into perirectal fat",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6247,
+   "text": "Dukes B: beyond the wall",
+   "speed": 1.05
+  }
+ ]
+}

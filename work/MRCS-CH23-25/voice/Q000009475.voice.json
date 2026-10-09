@@ -1,0 +1,27 @@
+{
+ "qid": "Q000009475",
+ "duration_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "speed": 1.05,
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "Ten years of ulcerative colitis",
+   "say": "Ten years of ulcerative colitis"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "Yearly random colonoscopic biopsies",
+   "say": "Yearly random biopsies."
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "Pathologist looks for dysplasia",
+   "say": "Pathologist looks for dysplasia"
+  }
+ ]
+}

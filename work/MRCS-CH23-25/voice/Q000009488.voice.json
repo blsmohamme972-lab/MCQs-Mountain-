@@ -1,0 +1,27 @@
+{
+ "qid": "Q000009488",
+ "duration_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "speed": 1.05,
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "Infection starts, B cells respond",
+   "say": "Infection: B cells respond."
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "IgM rises first, then falls",
+   "say": "IgM rises first, then falls"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "IgM: early and short-lived",
+   "say": "IgM: early and short-lived"
+  }
+ ]
+}

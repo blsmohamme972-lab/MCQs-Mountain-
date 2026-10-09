@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009488",
+ "file": "Q000009488.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12580,
+ "sha256": "eafa6474d5c49c464c81c0b5acf81fea8e196b3fff18831f7b945476086b6bbe",
+ "track_ms": 6511,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2133,
+   "text": "Infection: B cells respond.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4410,
+   "text": "IgM rises first, then falls",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6411,
+   "text": "IgM: early and short-lived",
+   "speed": 1.05
+  }
+ ]
+}

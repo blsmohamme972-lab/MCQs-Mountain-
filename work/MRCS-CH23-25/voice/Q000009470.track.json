@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009470",
+ "file": "Q000009470.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12466,
+ "sha256": "ef61d186a5f2cee009d494d0543bf6c40ad3a99797407d637d24b3aa2225cf80",
+ "track_ms": 6741,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1610,
+   "text": "Kidneys fail for years",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4446,
+   "text": "Chief cells multiply, same size",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6641,
+   "text": "Hyperplasia: all four enlarge.",
+   "speed": 1.101
+  }
+ ]
+}

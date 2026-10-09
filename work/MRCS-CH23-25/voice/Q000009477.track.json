@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009477",
+ "file": "Q000009477.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11813,
+ "sha256": "2c93f1786fa9e8648f37804ac4a01cad16dc1feaa369ae1cff3ebd2e3a529717",
+ "track_ms": 6729,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1925,
+   "text": "Slow, painless lump in thigh",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3642,
+   "text": "It slips under the finger",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6629,
+   "text": "Lipoma: benign fatty tumour",
+   "speed": 1.05
+  }
+ ]
+}

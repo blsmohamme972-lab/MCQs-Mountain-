@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009482",
+ "file": "Q000009482.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11449,
+ "sha256": "b67ed2df797e55ae3191feef7a2b12bcb0633d9f68d4474e46a391c3b99e466a",
+ "track_ms": 6111,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2084,
+   "text": "AIDS: the immune defence falls",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4206,
+   "text": "Reddish-brown patch grows on foot",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6011,
+   "text": "Kaposi's sarcoma.",
+   "speed": 1.05
+  }
+ ]
+}

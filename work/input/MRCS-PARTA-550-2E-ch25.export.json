@@ -1,0 +1,420 @@
+{
+ "export_type": "kafu_mcq_text_export",
+ "schema_version": 1,
+ "exported_at": "2026-10-09T09:05:58.463Z",
+ "source": {
+  "kind": "published",
+  "source_worker": "content-worker",
+  "catalog_url": "https://kafu-content-1.blsmohamme97.workers.dev/catalog.json",
+  "catalog_sha256": "2c167ba71d13637ebb8b6b90a6d6f20a19ea3f6a378e80c5548843b074603d00",
+  "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/MRCS-PARTA-550-2E/v1/index.json",
+  "index_sha256": "510617f54ca807f9a37ce07bf2c40d83c7600153ceadea4b9b6453b1e8f9395b",
+  "snapshot_pinned": true,
+  "chapters": [
+   {
+    "chapter_id": 25,
+    "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-25.v1.591b4e18ba9c.json",
+    "image_url": null,
+    "sha256": "591b4e18ba9ccc001b208b791938d5f63a139d6ad26ed507824c783ab5f220e0"
+   }
+  ]
+ },
+ "scope": {
+  "type": "chapter",
+  "book_id": "MRCS-PARTA-550-2E",
+  "book_title": "MRCS Part A: 550 SBAs and EMQs",
+  "book_version": 1,
+  "chapter_id": "25",
+  "chapter_title": "Surgical immunology"
+ },
+ "book": {
+  "id": "MRCS-PARTA-550-2E",
+  "title": "MRCS Part A: 550 SBAs and EMQs",
+  "authors": [
+   "Pradip K Datta",
+   "Sherif Elsobky"
+  ],
+  "field": "medicine",
+  "specialty": "General Surgery",
+  "collection_type": "textbook",
+  "version": 1,
+  "questions": 263,
+  "cover_url": "https://kafu-content-1.blsmohamme97.workers.dev/covers/MRCS-PARTA-550-2E-v1.webp",
+  "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/MRCS-PARTA-550-2E/v1/index.json",
+  "chapters": [
+   {
+    "id": 25,
+    "title": "Surgical immunology",
+    "questions": 7,
+    "qids": [
+     "Q000009484",
+     "Q000009485",
+     "Q000009486",
+     "Q000009487",
+     "Q000009488",
+     "Q000009489",
+     "Q000009490"
+    ],
+    "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-25.v1.591b4e18ba9c.json",
+    "image_url": null,
+    "bytes": 8356
+   }
+  ]
+ },
+ "chapters": [
+  {
+   "id": 25,
+   "title": "Surgical immunology",
+   "questions": 7,
+   "qids": [
+    "Q000009484",
+    "Q000009485",
+    "Q000009486",
+    "Q000009487",
+    "Q000009488",
+    "Q000009489",
+    "Q000009490"
+   ],
+   "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-25.v1.591b4e18ba9c.json",
+   "image_url": null,
+   "bytes": 8356
+  }
+ ],
+ "expected_question_count": 7,
+ "exported_question_count": 7,
+ "part": null,
+ "questions": [
+  {
+   "local_id": 176,
+   "chapter_id": 25,
+   "topic": "",
+   "type": "sba",
+   "source_number": "001",
+   "lead_in": "",
+   "stem": "A 17-year-old man is admitted to hospital following a road accident. His spleen is removed because it is ruptured. Which role of the spleen will be lost with its removal that may affect the patient's future health?",
+   "options": [
+    "Deletion of immature autoreactive T cells",
+    "Major site of insulin producing cells",
+    "Primary lymphoid organ where immature lymphocytes arise",
+    "Removal of encapsulated bacteria by phagocytic mechanisms",
+    "Responds to the pituitary gland to produce thyroxine"
+   ],
+   "answer": "D",
+   "answer_source": "book_key",
+   "explanation": "The spleen is a secondary lymphoid organ composed of red pulp and white pulp and a marginal zone. It has a unique role in the phagocytic removal of encapsulated bacteria.",
+   "images": [],
+   "explanation_images": [],
+   "group_id": "",
+   "no_shuffle": false,
+   "source_page": 174,
+   "source_pages": [
+    174
+   ],
+   "flag": "",
+   "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+   "id": "Q000009484",
+   "book_id": "MRCS-PARTA-550-2E",
+   "status": "source_verified",
+   "version": 1
+  },
+  {
+   "local_id": 177,
+   "chapter_id": 25,
+   "topic": "",
+   "type": "sba",
+   "source_number": "002",
+   "lead_in": "",
+   "stem": "A 55-year-old man scheduled for surgery was found to be HIV positive at pre-assessment. What is the most likely effect of this infection on his immune response to infection?",
+   "options": [
+    "His ability to phagocytose and kill bacteria will be lost",
+    "Activation of an effective adaptive immune response will be impaired",
+    "Activation of the alternative complement pathway will be prevented",
+    "None; HIV infection does not affect the immune response",
+    "Innate immune defences will be impaired"
+   ],
+   "answer": "B",
+   "answer_source": "book_key",
+   "explanation": "Human immunodeficiency virus (HIV) selectively targets and kills CD4+ T lymphocytes. Activated CD4+ T cells provide help to CD8+ cytotoxic T-cells and B-cells in activating an adaptive immune response.",
+   "images": [],
+   "explanation_images": [],
+   "group_id": "",
+   "no_shuffle": false,
+   "source_page": 175,
+   "source_pages": [
+    175
+   ],
+   "flag": "",
+   "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+   "id": "Q000009485",
+   "book_id": "MRCS-PARTA-550-2E",
+   "status": "source_verified",
+   "version": 1
+  },
+  {
+   "local_id": 178,
+   "chapter_id": 25,
+   "topic": "",
+   "type": "sba",
+   "source_number": "003",
+   "lead_in": "",
+   "stem": "A 60-year-old man with septicaemia due to an antibiotic resistant infection was admitted to hospital. In septicaemia, uncontrolled activation of inflammatory cytokines can lead to acute respiratory distress syndrome and multiorgan failure. What are cytokines?",
+   "options": [
+    "Antigen-specific molecules produced by B lymphocytes",
+    "Part of an enzyme cascade activated by immune complexes",
+    "Small signalling proteins that regulate immune activation",
+    "Subtype of cytotoxic T cells",
+    "Ultracellular enzymes which kill bacteria within phagocytic cells"
+   ],
+   "answer": "C",
+   "answer_source": "book_key",
+   "explanation": "Cytokines are small soluble signalling molecules that enable all immune cells to regulate themselves, each other and any cell that expresses the requisite cytokine receptor.",
+   "images": [],
+   "explanation_images": [],
+   "group_id": "",
+   "no_shuffle": false,
+   "source_page": 174,
+   "source_pages": [
+    174
+   ],
+   "flag": "",
+   "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+   "id": "Q000009486",
+   "book_id": "MRCS-PARTA-550-2E",
+   "status": "source_verified",
+   "version": 1
+  },
+  {
+   "local_id": 179,
+   "chapter_id": 25,
+   "topic": "",
+   "type": "sba",
+   "source_number": "004",
+   "lead_in": "",
+   "stem": "A 70-year-old woman is admitted for hip replacement. She had suffered for many years from chronic rheumatoid arthritis, an autoimmune disease with progressive joint destruction. What is the most likely mechanism causing autoimmune disease?",
+   "options": [
+    "The body mounts an immune response against itself",
+    "Chronic activation of allergen specific IgE sensitised mast cells initiates the disease",
+    "A deficient immune response due to the actions of an external agent",
+    "A genetic defect causing a deranged immune response",
+    "T cell activation is inhibited"
+   ],
+   "answer": "A",
+   "answer_source": "book_key",
+   "explanation": "Autoimmune disease occurs when a genetically susceptible individual comes in contact with an environmental trigger. Immune tolerance mechanisms, which prevent recognition of self proteins by the immune system, are bypassed by a number of mechanisms and an autoimmune response occurs.",
+   "images": [],
+   "explanation_images": [],
+   "group_id": "",
+   "no_shuffle": false,
+   "source_page": 175,
+   "source_pages": [
+    175
+   ],
+   "flag": "",
+   "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+   "id": "Q000009487",
+   "book_id": "MRCS-PARTA-550-2E",
+   "status": "source_verified",
+   "version": 1
+  },
+  {
+   "local_id": 180,
+   "chapter_id": 25,
+   "topic": "",
+   "type": "sba",
+   "source_number": "005",
+   "lead_in": "",
+   "stem": "A 21-year-old woman is admitted to hospital for the removal of her wisdom teeth. Investigations reveal that she has high levels of circulating IgM antibody. What statement below best describes IgM antibodies?",
+   "options": [
+    "Antibodies that can survive on mucosal surfaces",
+    "Antibodies which bind to mast cells during allergic reactions",
+    "Antibodies which can confer protection to newborn infants",
+    "Long-lived antibodies that provide long-term protection against infection",
+    "Short-lived antibodies produced during the early stages of ongoing infection"
+   ],
+   "answer": "E",
+   "answer_source": "book_key",
+   "explanation": "Five classes of antibody are produced by activated B cells namely IgG, IgA, IgM, IgE and IgD. IgM is the first antibody produced during the early stages of ongoing infection.",
+   "images": [],
+   "explanation_images": [],
+   "group_id": "",
+   "no_shuffle": false,
+   "source_page": 175,
+   "source_pages": [
+    175
+   ],
+   "flag": "",
+   "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+   "id": "Q000009488",
+   "book_id": "MRCS-PARTA-550-2E",
+   "status": "source_verified",
+   "version": 1
+  },
+  {
+   "local_id": 181,
+   "chapter_id": 25,
+   "topic": "",
+   "type": "sba",
+   "source_number": "006",
+   "lead_in": "",
+   "stem": "A 30-year-old man is going to work in Uganda for 6 months. As a precaution he has a Heaf (six-needle) test, and this gives a positive reaction. What is the most likely immunological significance of this result?",
+   "options": [
+    "Determines exposure to Lyme disease",
+    "Determines protective antibody responses to vector-borne infections",
+    "Determines T-cell responses to the tubercle bacillus",
+    "Measures allergic responses to grass and flower pollens",
+    "No immunological significance"
+   ],
+   "answer": "C",
+   "answer_source": "book_key",
+   "explanation": "Type IV delayed type hypersensitivity reactions come in three variants - contact, tuberculin and granulomatous all mediated by T cells. The Heaf test employs the tuberculin reaction and can be used to determine previous exposure to Mycobacterium tuberculosis and efficacy of vaccination.",
+   "images": [],
+   "explanation_images": [],
+   "group_id": "",
+   "no_shuffle": false,
+   "source_page": 175,
+   "source_pages": [
+    175
+   ],
+   "flag": "",
+   "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+   "id": "Q000009489",
+   "book_id": "MRCS-PARTA-550-2E",
+   "status": "source_verified",
+   "version": 1
+  },
+  {
+   "local_id": 182,
+   "chapter_id": 25,
+   "topic": "",
+   "type": "sba",
+   "source_number": "007",
+   "lead_in": "",
+   "stem": "A 70-year-old woman, admitted for a corneal graft, will not require immunosuppressive therapy after surgery because the anterior chamber of the eye is considered to be 'immunologically privileged'. What is the most likely immunological mechanism involved?",
+   "options": [
+    "Adaptive immune responses do not occur there",
+    "All immune cells are destroyed immediately upon arrival",
+    "Beneficial responses are promoted while damaging ones are suppressed",
+    "Immune cells arrive but are prevented from entering",
+    "Immune cells become functionally inactive on entering the site"
+   ],
+   "answer": "C",
+   "answer_source": "book_key",
+   "explanation": "'Privileged sites' were thought to be locations where immune responses did not occur. More extensive tests have revealed that these sites are not immunologically impaired but have differences in their self-regenerative capacity. Extracted MCQs - Chapters 26-30 Source: A 550 (26-30).pdf Note: Answer lines are transcribed as printed in the source.",
+   "images": [],
+   "explanation_images": [],
+   "group_id": "",
+   "no_shuffle": false,
+   "source_page": 175,
+   "source_pages": [
+    175
+   ],
+   "flag": "",
+   "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+   "id": "Q000009490",
+   "book_id": "MRCS-PARTA-550-2E",
+   "status": "source_verified",
+   "version": 1
+  }
+ ],
+ "export_metadata": {
+  "question_integrity": [
+   {
+    "qid": "Q000009484",
+    "publisher_fingerprint": "b04242e64ed661cc5d286ea7cccdcbd87af1cb4910613c40c96da62edeb04f5d",
+    "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+    "content_hash": "1b396ba4e1be84db5e712710483115dc82ccf56da15627ae1b6747558daf90ad",
+    "content_hash_algorithm": "SHA-256",
+    "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+   },
+   {
+    "qid": "Q000009485",
+    "publisher_fingerprint": "48ef3830617ac216ff85d6bc0111a502633d8f3029c9a3056b4813429c14f94c",
+    "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+    "content_hash": "1cebc76bc7e76451309c46bc71d9d556e4d7590c3286f2c68fa28963cae56c13",
+    "content_hash_algorithm": "SHA-256",
+    "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+   },
+   {
+    "qid": "Q000009486",
+    "publisher_fingerprint": "4e61a4a8877efd8f312d7b6865f80820e88236f8ffdd4236657dc87275e59039",
+    "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+    "content_hash": "1d443cffc3564abcd4dcf7c91a5b31926f41cfdf282836faf271f1d1c250cfe7",
+    "content_hash_algorithm": "SHA-256",
+    "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+   },
+   {
+    "qid": "Q000009487",
+    "publisher_fingerprint": "9d2ecc2e4252e9e284b9fb059eeb785da1d96aba33a779b2047899ae7aff052a",
+    "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+    "content_hash": "3629e7fa029ff005fbde213c5a86775070748f2882b731fbc3151a81f5cf1884",
+    "content_hash_algorithm": "SHA-256",
+    "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+   },
+   {
+    "qid": "Q000009488",
+    "publisher_fingerprint": "58d84ae5f1ea0d303c154fea1634cddf39439a04dc43a8b39b799159702c2421",
+    "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+    "content_hash": "12615458c11afbaf23698684e4d0d405182d832f9e9494ce3dbf3c4c31528809",
+    "content_hash_algorithm": "SHA-256",
+    "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+   },
+   {
+    "qid": "Q000009489",
+    "publisher_fingerprint": "eb5acc803e661c2139d2055661f340816dba7fe7ad26643858b364e5338ae0f4",
+    "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+    "content_hash": "9516fca97877394012e050da413032334e3d3890184adfbd61909e72061c09c3",
+    "content_hash_algorithm": "SHA-256",
+    "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+   },
+   {
+    "qid": "Q000009490",
+    "publisher_fingerprint": "eb25a7469f111803c54a1a8540479fba15cc79edb98cb42fa386166644d6ce03",
+    "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+    "content_hash": "9ef4521223781c9c5d8d1bde2d2bd7eb4aa2d36e073ad64e1f7ab79db3b545c4",
+    "content_hash_algorithm": "SHA-256",
+    "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+   }
+  ],
+  "image_bytes_embedded": false,
+  "image_hash_scope": "question_json_only",
+  "image_packs": [
+   {
+    "chapter_id": 25,
+    "url": null,
+    "entry_filenames": [],
+    "checksums_available": false,
+    "entry_checksums": {},
+    "bytes_embedded": false
+   }
+  ],
+  "unavailable_metadata": {
+   "image_entry_checksums": "not published in the chapter manifest",
+   "book_index": null
+  },
+  "content_hash": {
+   "algorithm": "SHA-256",
+   "canonicalization": "kafu-question-canonical-json-v1",
+   "covers": "complete original published question object",
+   "excludes": "export_metadata",
+   "verifies_image_bytes": false
+  },
+  "partition_policy": {
+   "max_part_bytes": 900000,
+   "split_boundary": "question_record",
+   "oversized_single_question": "kept as one record in its own part"
+  }
+ },
+ "ai_instructions": {
+  "retain_fields": [
+   "book_id",
+   "book_version",
+   "chapter_id",
+   "qid",
+   "publisher_fingerprint",
+   "content_hash"
+  ],
+  "image_dependent_content_requires_actual_images": true,
+  "do_not_guess_image_content": true,
+  "image_bytes_embedded": false
+ }
+}

@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009487",
+ "file": "Q000009487.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12003,
+ "sha256": "5d28fc6493521cfb6d9428f13e9b3097f3572b203a6a5c585178c26d45c4e58a",
+ "track_ms": 6270,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2148,
+   "text": "Tolerance: T cells ignore self",
+   "speed": 1.11
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4297,
+   "text": "Genes plus trigger break tolerance",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6170,
+   "text": "Immune attack on own joint",
+   "speed": 1.05
+  }
+ ]
+}
