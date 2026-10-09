@@ -1,0 +1,33 @@
+{
+ "qid": "Q000000062",
+ "file": "Q000000062.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11335,
+ "sha256": "98d9ba6b2fe9dbff80b37cd05896952ebd7714ef24580a628821b5a93dbc90ef",
+ "track_ms": 6473,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1733,
+   "text": "Each pouch has its own nerve",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3861,
+   "text": "First, third, fourth shown",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6373,
+   "text": "Second pouch: facial nerve",
+   "speed": 1.05
+  }
+ ]
+}

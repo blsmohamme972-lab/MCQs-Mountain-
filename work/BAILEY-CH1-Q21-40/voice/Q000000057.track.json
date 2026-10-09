@@ -1,0 +1,33 @@
+{
+ "qid": "Q000000057",
+ "file": "Q000000057.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11925,
+ "sha256": "6c5f4878d02d0d593d5418be4c3ed232d483d7c8d8a855c58d4cd3a1caa70309",
+ "track_ms": 6309,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1856,
+   "text": "Guillain-Barré weakens breathing",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4415,
+   "text": "Poor breathing traps carbon dioxide",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6209,
+   "text": "Respiratory acidosis",
+   "speed": 1.05
+  }
+ ]
+}
