@@ -2,60 +2,88 @@
   "schema_version": 2,
   "qid": "Q000009468",
   "duration_ms": 7000,
-  "takeaway": "EDIT: one short teaching takeaway",
+  "takeaway": "A pressure ulcer with full-thickness loss extending to muscle, tendon, bone or joint is stage 4.",
   "stage": {
     "width": 640,
-    "height": 560
+    "height": 560,
+    "background": "#f4f8f8"
   },
   "layers": [
     {
       "type": "text",
-      "text": "A 66-year-old diabetic man sustained an unstable pelvic fracture after a fall from…",
+      "text": "Pressure ulcer staging",
       "x": 320,
-      "y": 64,
+      "y": 44,
       "size": 26,
       "weight": 800,
-      "max_width": 580,
+      "max_width": 590,
       "fit": true,
-      "max_lines": 2,
+      "color": "@ink",
       "fixed": true
     },
     {
-      "type": "circle",
-      "cx": 180,
-      "cy": 300,
-      "r": 70,
-      "fill": "@surface",
-      "stroke": "@ink",
-      "stroke_width": 3
+      "type": "text",
+      "text": "1 · Full-thickness skin loss",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
+      "show": [
+        0,
+        2300
+      ],
+      "enter": "fade",
+      "exit": "fade"
     },
     {
-      "type": "circle",
-      "cx": 460,
-      "cy": 300,
-      "r": 70,
-      "fill": "@surface",
-      "stroke": "@ink",
-      "stroke_width": 3,
+      "type": "text",
+      "text": "2 · Down through fat and muscle",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
       "show": [
-        1050,
-        7000
+        2300,
+        4600
       ],
-      "enter": "pop"
+      "enter": "type",
+      "exit": "fade"
     },
     {
-      "type": "arrow",
-      "x1": 265,
-      "y1": 300,
-      "x2": 375,
-      "y2": 300,
-      "stroke": "@accent",
-      "stroke_width": 8,
+      "type": "text",
+      "text": "3 · Bone exposed: stage 4",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
       "show": [
-        2100,
+        4600,
         7000
       ],
-      "enter": "draw"
+      "enter": "type"
     }
-  ]
+  ],
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"><defs id=\"kit\"><filter id=\"kit-volume\" x=\"-5%\" y=\"-5%\" width=\"110%\" height=\"110%\" color-interpolation-filters=\"sRGB\"><feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"7\" result=\"b\"/><feOffset in=\"b\" dx=\"-5\" dy=\"-7\" result=\"o1\"/><feComposite in=\"SourceAlpha\" in2=\"o1\" operator=\"out\" result=\"e1\"/><feFlood flood-color=\"#3a0d12\" flood-opacity=\".30\"/><feComposite in2=\"e1\" operator=\"in\" result=\"shade\"/><feOffset in=\"b\" dx=\"5\" dy=\"7\" result=\"o2\"/><feComposite in=\"SourceAlpha\" in2=\"o2\" operator=\"out\" result=\"e2\"/><feFlood flood-color=\"#fff\" flood-opacity=\".45\"/><feComposite in2=\"e2\" operator=\"in\" result=\"hi\"/><feMerge><feMergeNode in=\"SourceGraphic\"/><feMergeNode in=\"shade\"/><feMergeNode in=\"hi\"/></feMerge><feComposite in2=\"SourceAlpha\" operator=\"in\"/></filter><filter id=\"kit-volume-sm\" x=\"-5%\" y=\"-5%\" width=\"110%\" height=\"110%\" color-interpolation-filters=\"sRGB\"><feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"3\" result=\"b\"/><feOffset in=\"b\" dx=\"-2\" dy=\"-3\" result=\"o1\"/><feComposite in=\"SourceAlpha\" in2=\"o1\" operator=\"out\" result=\"e1\"/><feFlood flood-color=\"#3a0d12\" flood-opacity=\".32\"/><feComposite in2=\"e1\" operator=\"in\" result=\"shade\"/><feOffset in=\"b\" dx=\"2\" dy=\"3\" result=\"o2\"/><feComposite in=\"SourceAlpha\" in2=\"o2\" operator=\"out\" result=\"e2\"/><feFlood flood-color=\"#fff\" flood-opacity=\".5\"/><feComposite in2=\"e2\" operator=\"in\" result=\"hi\"/><feMerge><feMergeNode in=\"SourceGraphic\"/><feMergeNode in=\"shade\"/><feMergeNode in=\"hi\"/></feMerge><feComposite in2=\"SourceAlpha\" operator=\"in\"/></filter><filter id=\"kit-gloss\" x=\"-5%\" y=\"-5%\" width=\"110%\" height=\"110%\" color-interpolation-filters=\"sRGB\"><feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"4\" result=\"b\"/><feSpecularLighting in=\"b\" surfaceScale=\"4\" specularConstant=\".7\" specularExponent=\"22\" lighting-color=\"#fff\" result=\"s\"><feDistantLight azimuth=\"235\" elevation=\"48\"/></feSpecularLighting><feComposite in=\"s\" in2=\"SourceAlpha\" operator=\"in\" result=\"s2\"/><feComposite in=\"SourceGraphic\" in2=\"s2\" operator=\"arithmetic\" k1=\"0\" k2=\"1\" k3=\".55\" k4=\"0\"/></filter><filter id=\"kit-shadow\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\" color-interpolation-filters=\"sRGB\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"5\" flood-color=\"#2b1a1f\" flood-opacity=\".22\"/></filter><filter id=\"kit-glow\" x=\"-50%\" y=\"-50%\" width=\"200%\" height=\"200%\" color-interpolation-filters=\"sRGB\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"4\" result=\"g\"/><feMerge><feMergeNode in=\"g\"/><feMergeNode in=\"SourceGraphic\"/></feMerge></filter><radialGradient id=\"kit-tissue\" cx=\".38\" cy=\".32\" r=\".75\"><stop offset=\"0\" stop-color=\"#fbd3cd\"/><stop offset=\".55\" stop-color=\"#ec9f97\"/><stop offset=\"1\" stop-color=\"#c96a64\"/></radialGradient><radialGradient id=\"kit-muscle\" cx=\".4\" cy=\".3\" r=\".8\"><stop offset=\"0\" stop-color=\"#e98a7f\"/><stop offset=\".6\" stop-color=\"#c2483f\"/><stop offset=\"1\" stop-color=\"#8e2a27\"/></radialGradient><radialGradient id=\"kit-lung\" cx=\".4\" cy=\".3\" r=\".8\"><stop offset=\"0\" stop-color=\"#fde3e6\"/><stop offset=\".6\" stop-color=\"#f4b6be\"/><stop offset=\"1\" stop-color=\"#d98793\"/></radialGradient><radialGradient id=\"kit-tumour\" cx=\".35\" cy=\".3\" r=\".8\"><stop offset=\"0\" stop-color=\"#c9a6d8\"/><stop offset=\".6\" stop-color=\"#8a5aa6\"/><stop offset=\"1\" stop-color=\"#5b3473\"/></radialGradient><radialGradient id=\"kit-bone\" cx=\".4\" cy=\".3\" r=\".8\"><stop offset=\"0\" stop-color=\"#fffaf0\"/><stop offset=\".7\" stop-color=\"#efe3c8\"/><stop offset=\"1\" stop-color=\"#cdbb94\"/></radialGradient><linearGradient id=\"kit-nerve\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#c99a10\"/><stop offset=\".45\" stop-color=\"#ffe27a\"/><stop offset=\"1\" stop-color=\"#b8860b\"/></linearGradient><linearGradient id=\"kit-vein\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#3b5fa0\"/><stop offset=\".4\" stop-color=\"#7fa3dd\"/><stop offset=\"1\" stop-color=\"#2c4a85\"/></linearGradient><linearGradient id=\"kit-artery\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#a5232b\"/><stop offset=\".4\" stop-color=\"#e5606a\"/><stop offset=\"1\" stop-color=\"#8c1c23\"/></linearGradient></defs>\n  <defs>\n    <filter id=\"panelShadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"125%\"><feDropShadow dx=\"0\" dy=\"3\" stdDeviation=\"5\" flood-color=\"#0b1b26\" flood-opacity=\"0.16\"/></filter>\n    <filter id=\"chipShadow\" x=\"-20%\" y=\"-30%\" width=\"140%\" height=\"180%\"><feDropShadow dx=\"0\" dy=\"2\" stdDeviation=\"2.5\" flood-color=\"#0b1b26\" flood-opacity=\"0.18\"/></filter>\n    <clipPath id=\"secClip\"><rect x=\"48\" y=\"150\" width=\"500\" height=\"352\" rx=\"16\"/></clipPath>\n    <linearGradient id=\"skinG\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#d9957a\"/><stop offset=\"0.18\" stop-color=\"#f1c7a8\"/><stop offset=\"1\" stop-color=\"#eebc9a\"/></linearGradient>\n    <linearGradient id=\"fatG\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#fbe7a1\"/><stop offset=\"1\" stop-color=\"#f4d77a\"/></linearGradient>\n    <linearGradient id=\"musG\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#d4664d\"/><stop offset=\"1\" stop-color=\"#b8462f\"/></linearGradient>\n    <linearGradient id=\"boneG\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#f7f0df\"/><stop offset=\"0.12\" stop-color=\"#efe6d2\"/><stop offset=\"1\" stop-color=\"#e2d4b4\"/></linearGradient>\n  </defs>\n  <rect x=\"24\" y=\"128\" width=\"592\" height=\"408\" rx=\"22\" fill=\"#ffffff\" filter=\"url(#panelShadow)\"/>\n  <g clip-path=\"url(#secClip)\">\n    <rect x=\"48\" y=\"150\" width=\"500\" height=\"352\" fill=\"#ffffff\"/>\n    <rect x=\"48\" y=\"196\" width=\"500\" height=\"36\" fill=\"url(#skinG)\"/>\n    <rect x=\"48\" y=\"232\" width=\"500\" height=\"70\" fill=\"url(#fatG)\"/>\n    <g id=\"lob\" fill=\"none\" stroke=\"#e6c766\" stroke-width=\"1.4\"></g>\n    <rect x=\"48\" y=\"302\" width=\"500\" height=\"78\" fill=\"url(#musG)\"/>\n    <g id=\"fib\" stroke=\"#e58a72\" stroke-width=\"2\" opacity=\"0.55\"></g>\n    <rect x=\"48\" y=\"380\" width=\"500\" height=\"122\" fill=\"url(#boneG)\"/>\n    <g id=\"trab\" fill=\"none\" stroke=\"#d6c59f\" stroke-width=\"2\"></g>\n    <rect x=\"48\" y=\"380\" width=\"500\" height=\"10\" fill=\"#f9f4e8\"/>\n    <g id=\"sec\"></g>\n  </g>\n  <g id=\"top\"></g>\n</svg>",
+  "script": "// Sacral section: skin, fat, muscle, bone. The ulcer crater deepens layer by layer.\nconst S = 196, SKB = 232, FATB = 302, MUSB = 380, BOT = 502, CX = 290;\nconst RED = \"#c0392b\", RAW = \"#c9475a\", TEAL = \"#2a9d8f\";\nconst RX = 566, RW = 14;                        // depth ruler\nlet el = {};\nfunction txt(api, parent, s, attrs) {\n  const t = api.el(\"text\", Object.assign({\"font-family\": \"system-ui,sans-serif\", \"font-weight\": 700, \"font-size\": 18}, attrs), parent);\n  t.textContent = s; return t;\n}\nfunction crater(D) {\n  const h = D - S, wt = 46 + 0.56 * h, wb = 16 + 0.26 * h;\n  const c = \"M \" + (CX - wt) + \" \" + S + \" C \" + (CX - wt + 6) + \" \" + (S + h * 0.55) + \" \" + (CX - wb - 14) + \" \" + D + \" \" + (CX - wb) + \" \" + D;\n  const cR = \" L \" + (CX + wb) + \" \" + D + \" C \" + (CX + wb + 14) + \" \" + D + \" \" + (CX + wt - 6) + \" \" + (S + h * 0.55) + \" \" + (CX + wt) + \" \" + S;\n  return {fill: c + cR + \" Z\", wb: wb};\n}\nfunction setup(api) {\n  const r = api.random(3), lob = api.$(\"#lob\"), fib = api.$(\"#fib\"), trab = api.$(\"#trab\");\n  for (let i = 0; i < 24; i++) api.el(\"circle\", {cx: 60 + r() * 480, cy: 246 + r() * 46, r: 8 + r() * 6}, lob);\n  for (let y = 312; y < 378; y += 10) api.el(\"path\", {d: \"M 48 \" + y + \" C 200 \" + (y - 4) + \" 360 \" + (y + 4) + \" 548 \" + y, fill: \"none\"}, fib);\n  for (let i = 0; i < 30; i++) {\n    const x = 60 + r() * 480, y = 404 + r() * 90;\n    api.el(\"ellipse\", {cx: x, cy: y, rx: 10 + r() * 10, ry: 5 + r() * 5}, trab);\n  }\n  const sec = api.$(\"#sec\"), top = api.$(\"#top\");\n  el.hole = api.el(\"path\", {fill: \"#ffffff\"}, sec);\n  el.wall = api.el(\"path\", {fill: \"none\", stroke: RAW, \"stroke-width\": 6, \"stroke-linejoin\": \"round\", \"stroke-linecap\": \"round\"}, sec);\n  el.boneBase = api.el(\"line\", {stroke: \"#fffaf0\", \"stroke-width\": 7, \"stroke-linecap\": \"round\"}, sec);\n  el.boneGlow = api.el(\"ellipse\", {fill: \"none\", stroke: \"#ffd166\", \"stroke-width\": 4, filter: \"url(#kit-glow)\"}, sec);\n  // layer labels\n  const lab = {stroke: \"#ffffff\", \"stroke-width\": 5, \"stroke-linejoin\": \"round\", \"paint-order\": \"stroke\", fill: \"@ink\"};\n  [[\"Skin\", 214], [\"Fat\", 268], [\"Muscle\", 342], [\"Bone\", 446]].forEach(a => txt(api, top, a[0], Object.assign({x: 66, y: a[1] + 6}, lab)));\n  // depth ruler\n  api.el(\"rect\", {x: RX - RW / 2, y: S, width: RW, height: BOT - 22 - S, rx: 7, fill: \"#eef3f3\", stroke: \"@line\", \"stroke-width\": 1.5}, top);\n  el.rFill = api.el(\"rect\", {x: RX - RW / 2, y: S, width: RW, rx: 7, fill: RED}, top);\n  [SKB, FATB, MUSB].forEach(y => api.el(\"line\", {x1: 548, y1: y, x2: RX - RW / 2 - 2, y2: y, stroke: \"@muted\", \"stroke-width\": 2}, top));\n  el.mark = api.el(\"path\", {fill: RED, stroke: \"#ffffff\", \"stroke-width\": 2}, top);\n  el.boneTxt = txt(api, top, \"Bone exposed\", {x: CX, y: 420, \"text-anchor\": \"middle\", fill: RED, stroke: \"#ffffff\", \"stroke-width\": 5, \"stroke-linejoin\": \"round\", \"paint-order\": \"stroke\"});\n  el.stage = api.el(\"g\", {}, top);\n  api.el(\"rect\", {x: 442, y: 440, width: 116, height: 40, rx: 20, fill: RED, filter: \"url(#chipShadow)\"}, el.stage);\n  txt(api, el.stage, \"Stage 4\", {x: 500, y: 461, \"text-anchor\": \"middle\", \"dominant-baseline\": \"central\", fill: \"#ffffff\", \"font-size\": 20, \"font-weight\": 800});\n}\nfunction vis(api, node, k) { api.set(node, {opacity: k, display: k > 0.001 ? \"inline\" : \"none\"}); }\nfunction render(t, api) {\n  const k1 = api.seg(t, 150, 1700, \"ease_in_out\"), k2 = api.seg(t, 2400, 4300, \"ease_in_out\"), k3 = api.seg(t, 4650, 5150, \"ease_out\");\n  const D = S + 4 + (SKB + 6 - S - 4) * k1 + (MUSB - SKB - 6) * k2 + 8 * k3;\n  const c = crater(D);\n  api.set(el.hole, {d: c.fill});\n  api.set(el.wall, {d: c.fill.replace(\" Z\", \"\")});\n  const exposed = k3 > 0;\n  api.set(el.boneBase, {x1: CX - c.wb + 4, y1: D, x2: CX + c.wb - 4, y2: D});\n  vis(api, el.boneBase, k3);\n  api.set(el.boneGlow, {cx: CX, cy: D, rx: c.wb + 10, ry: 10});\n  vis(api, el.boneGlow, api.seg(t, 4800, 5200) * (0.75 + 0.25 * Math.sin(t / 160)));\n  vis(api, el.boneTxt, api.seg(t, 5000, 5350));\n  // ruler follows the depth\n  api.set(el.rFill, {height: Math.max(0, D - S)});\n  vis(api, el.rFill, D - S > 1 ? 1 : 0);\n  api.set(el.mark, {d: \"M \" + (RX + 9) + \" \" + D + \" l 14 -9 l 0 18 Z\"});\n  const sk = api.seg(t, 5100, 5500, \"back_out\");\n  vis(api, el.stage, api.seg(t, 5100, 5300));\n  api.set(el.stage, {transform: \"translate(500 460) scale(\" + (0.8 + 0.2 * sk).toFixed(3) + \") translate(-500 -460)\"});\n}\n"
 }
