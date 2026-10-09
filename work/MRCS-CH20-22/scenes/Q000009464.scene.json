@@ -1,0 +1,93 @@
+{
+  "schema_version": 2,
+  "qid": "Q000009464",
+  "duration_ms": 7000,
+  "takeaway": "A surgical site infection (pain, redness, discharge, swinging pyrexia) is managed by opening the wound and sending the discharge for Gram stain and culture.",
+  "stage": {
+    "width": 640,
+    "height": 560,
+    "background": "#f4f8f8"
+  },
+  "layers": [
+    {
+      "type": "text",
+      "text": "Surgical site infection",
+      "x": 320,
+      "y": 44,
+      "size": 26,
+      "weight": 800,
+      "max_width": 590,
+      "fit": true,
+      "color": "@ink",
+      "fixed": true,
+      "font": "sans"
+    },
+    {
+      "type": "text",
+      "text": "1 · Red, painful, discharging wound",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "color": "@ink",
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
+      "show": [
+        0,
+        2300
+      ],
+      "enter": "fade",
+      "exit": "fade"
+    },
+    {
+      "type": "text",
+      "text": "2 · Swinging fever: wound infection",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "color": "@ink",
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
+      "show": [
+        2300,
+        4600
+      ],
+      "enter": "type",
+      "exit": "fade"
+    },
+    {
+      "type": "text",
+      "text": "3 · Open the wound, send pus",
+      "x": 320,
+      "y": 98,
+      "size": 20,
+      "weight": 700,
+      "color": "@ink",
+      "max_width": 560,
+      "fit": true,
+      "box": {
+        "fill": "#ffffff",
+        "stroke": "@line"
+      },
+      "fixed": true,
+      "show": [
+        4600,
+        7000
+      ],
+      "enter": "type"
+    }
+  ],
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"><defs id=\"kit\"><filter id=\"kit-volume\" x=\"-5%\" y=\"-5%\" width=\"110%\" height=\"110%\" color-interpolation-filters=\"sRGB\"><feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"7\" result=\"b\"/><feOffset in=\"b\" dx=\"-5\" dy=\"-7\" result=\"o1\"/><feComposite in=\"SourceAlpha\" in2=\"o1\" operator=\"out\" result=\"e1\"/><feFlood flood-color=\"#3a0d12\" flood-opacity=\".30\"/><feComposite in2=\"e1\" operator=\"in\" result=\"shade\"/><feOffset in=\"b\" dx=\"5\" dy=\"7\" result=\"o2\"/><feComposite in=\"SourceAlpha\" in2=\"o2\" operator=\"out\" result=\"e2\"/><feFlood flood-color=\"#fff\" flood-opacity=\".45\"/><feComposite in2=\"e2\" operator=\"in\" result=\"hi\"/><feMerge><feMergeNode in=\"SourceGraphic\"/><feMergeNode in=\"shade\"/><feMergeNode in=\"hi\"/></feMerge><feComposite in2=\"SourceAlpha\" operator=\"in\"/></filter><filter id=\"kit-volume-sm\" x=\"-5%\" y=\"-5%\" width=\"110%\" height=\"110%\" color-interpolation-filters=\"sRGB\"><feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"3\" result=\"b\"/><feOffset in=\"b\" dx=\"-2\" dy=\"-3\" result=\"o1\"/><feComposite in=\"SourceAlpha\" in2=\"o1\" operator=\"out\" result=\"e1\"/><feFlood flood-color=\"#3a0d12\" flood-opacity=\".32\"/><feComposite in2=\"e1\" operator=\"in\" result=\"shade\"/><feOffset in=\"b\" dx=\"2\" dy=\"3\" result=\"o2\"/><feComposite in=\"SourceAlpha\" in2=\"o2\" operator=\"out\" result=\"e2\"/><feFlood flood-color=\"#fff\" flood-opacity=\".5\"/><feComposite in2=\"e2\" operator=\"in\" result=\"hi\"/><feMerge><feMergeNode in=\"SourceGraphic\"/><feMergeNode in=\"shade\"/><feMergeNode in=\"hi\"/></feMerge><feComposite in2=\"SourceAlpha\" operator=\"in\"/></filter><filter id=\"kit-gloss\" x=\"-5%\" y=\"-5%\" width=\"110%\" height=\"110%\" color-interpolation-filters=\"sRGB\"><feGaussianBlur in=\"SourceAlpha\" stdDeviation=\"4\" result=\"b\"/><feSpecularLighting in=\"b\" surfaceScale=\"4\" specularConstant=\".7\" specularExponent=\"22\" lighting-color=\"#fff\" result=\"s\"><feDistantLight azimuth=\"235\" elevation=\"48\"/></feSpecularLighting><feComposite in=\"s\" in2=\"SourceAlpha\" operator=\"in\" result=\"s2\"/><feComposite in=\"SourceGraphic\" in2=\"s2\" operator=\"arithmetic\" k1=\"0\" k2=\"1\" k3=\".55\" k4=\"0\"/></filter><filter id=\"kit-shadow\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\" color-interpolation-filters=\"sRGB\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"5\" flood-color=\"#2b1a1f\" flood-opacity=\".22\"/></filter><filter id=\"kit-glow\" x=\"-50%\" y=\"-50%\" width=\"200%\" height=\"200%\" color-interpolation-filters=\"sRGB\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"4\" result=\"g\"/><feMerge><feMergeNode in=\"g\"/><feMergeNode in=\"SourceGraphic\"/></feMerge></filter><radialGradient id=\"kit-tissue\" cx=\".38\" cy=\".32\" r=\".75\"><stop offset=\"0\" stop-color=\"#fbd3cd\"/><stop offset=\".55\" stop-color=\"#ec9f97\"/><stop offset=\"1\" stop-color=\"#c96a64\"/></radialGradient><radialGradient id=\"kit-muscle\" cx=\".4\" cy=\".3\" r=\".8\"><stop offset=\"0\" stop-color=\"#e98a7f\"/><stop offset=\".6\" stop-color=\"#c2483f\"/><stop offset=\"1\" stop-color=\"#8e2a27\"/></radialGradient><radialGradient id=\"kit-lung\" cx=\".4\" cy=\".3\" r=\".8\"><stop offset=\"0\" stop-color=\"#fde3e6\"/><stop offset=\".6\" stop-color=\"#f4b6be\"/><stop offset=\"1\" stop-color=\"#d98793\"/></radialGradient><radialGradient id=\"kit-tumour\" cx=\".35\" cy=\".3\" r=\".8\"><stop offset=\"0\" stop-color=\"#c9a6d8\"/><stop offset=\".6\" stop-color=\"#8a5aa6\"/><stop offset=\"1\" stop-color=\"#5b3473\"/></radialGradient><radialGradient id=\"kit-bone\" cx=\".4\" cy=\".3\" r=\".8\"><stop offset=\"0\" stop-color=\"#fffaf0\"/><stop offset=\".7\" stop-color=\"#efe3c8\"/><stop offset=\"1\" stop-color=\"#cdbb94\"/></radialGradient><linearGradient id=\"kit-nerve\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#c99a10\"/><stop offset=\".45\" stop-color=\"#ffe27a\"/><stop offset=\"1\" stop-color=\"#b8860b\"/></linearGradient><linearGradient id=\"kit-vein\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#3b5fa0\"/><stop offset=\".4\" stop-color=\"#7fa3dd\"/><stop offset=\"1\" stop-color=\"#2c4a85\"/></linearGradient><linearGradient id=\"kit-artery\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#a5232b\"/><stop offset=\".4\" stop-color=\"#e5606a\"/><stop offset=\"1\" stop-color=\"#8c1c23\"/></linearGradient></defs>\n<defs>\n <radialGradient id=\"skinG\" cx=\"0.35\" cy=\"0.3\" r=\"0.9\"><stop offset=\"0\" stop-color=\"#f6d6bf\"/><stop offset=\"1\" stop-color=\"#e6b394\"/></radialGradient>\n <radialGradient id=\"red\" cx=\"0.5\" cy=\"0.5\" r=\"0.5\"><stop offset=\"0\" stop-color=\"#d23b2f\" stop-opacity=\"0.9\"/><stop offset=\"0.55\" stop-color=\"#d9473a\" stop-opacity=\"0.55\"/><stop offset=\"1\" stop-color=\"#e35b4c\" stop-opacity=\"0\"/></radialGradient>\n <linearGradient id=\"bed\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#b8323d\"/><stop offset=\"1\" stop-color=\"#8f1f2b\"/></linearGradient>\n <clipPath id=\"jarClip\"><rect x=\"436\" y=\"372\" width=\"138\" height=\"116\" rx=\"14\"/></clipPath>\n</defs>\n<rect x=\"24\" y=\"128\" width=\"592\" height=\"404\" rx=\"22\" fill=\"#ffffff\" filter=\"url(#kit-shadow)\"/>\n<rect x=\"44\" y=\"148\" width=\"330\" height=\"364\" rx=\"18\" fill=\"url(#skinG)\" stroke=\"#d9a283\" stroke-width=\"2\"/>\n<g fill=\"none\" stroke=\"#d29b7c\" stroke-width=\"2\" opacity=\"0.6\"><path d=\"M70 230 C 140 214, 220 214, 300 236\"/><path d=\"M60 480 C 140 470, 250 470, 360 484\"/></g>\n<ellipse cx=\"322\" cy=\"196\" rx=\"10\" ry=\"13\" fill=\"#c98a6b\"/><path d=\"M314 192 Q 322 202 330 192\" stroke=\"#a96b4f\" stroke-width=\"2.5\" fill=\"none\"/>\n<text x=\"322\" y=\"230\" text-anchor=\"middle\" font-family=\"system-ui,sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#8a5a42\">Navel</text>\n<ellipse id=\"redness\" cx=\"183\" cy=\"375\" rx=\"128\" ry=\"62\" fill=\"url(#red)\" transform=\"rotate(29.7 183 375)\" opacity=\"0\"/>\n<g id=\"woundG\"></g>\n<g id=\"chart\">\n <rect x=\"392\" y=\"148\" width=\"204\" height=\"196\" rx=\"14\" fill=\"#f8fbfb\" stroke=\"#dbe6e7\" stroke-width=\"2\"/>\n <text x=\"494\" y=\"172\" text-anchor=\"middle\" font-family=\"system-ui,sans-serif\" font-size=\"18\" font-weight=\"800\" fill=\"#16323a\">Temperature</text>\n <path d=\"M412 190 V318 H584\" fill=\"none\" stroke=\"#5f7a80\" stroke-width=\"2.5\" stroke-linecap=\"round\"/>\n <text x=\"498\" y=\"334\" text-anchor=\"middle\" font-family=\"system-ui,sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#5f7a80\">Days</text>\n <path id=\"flat\" d=\"M414 288 L452 286\" fill=\"none\" stroke=\"#2a9d8f\" stroke-width=\"4\" stroke-linecap=\"round\"/>\n <path id=\"swing\" fill=\"none\" stroke=\"#c0392b\" stroke-width=\"4\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>\n</g>\n<g id=\"potG\">\n <g clip-path=\"url(#jarClip)\"><rect id=\"pusLevel\" x=\"436\" y=\"488\" width=\"138\" height=\"0\" fill=\"#e5c13f\"/></g>\n <rect x=\"436\" y=\"372\" width=\"138\" height=\"116\" rx=\"14\" fill=\"#ffffff\" fill-opacity=\"0.25\" stroke=\"#8fa9ae\" stroke-width=\"3\"/>\n <rect x=\"432\" y=\"368\" width=\"146\" height=\"8\" rx=\"4\" fill=\"#cfdfe1\" stroke=\"#8fa9ae\" stroke-width=\"2\"/>\n <rect x=\"446\" y=\"396\" width=\"118\" height=\"54\" rx=\"8\" fill=\"#ffffff\" stroke=\"#c9dadb\" stroke-width=\"2\"/>\n <text x=\"505\" y=\"415\" text-anchor=\"middle\" font-family=\"system-ui,sans-serif\" font-size=\"16\" font-weight=\"800\" fill=\"#16323a\">Gram stain,</text>\n <text x=\"505\" y=\"436\" text-anchor=\"middle\" font-family=\"system-ui,sans-serif\" font-size=\"16\" font-weight=\"800\" fill=\"#16323a\">culture</text>\n</g>\n<g id=\"ui\"></g>\n</svg>\n",
+  "script": "// Oblique right-lower-quadrant incision from A to B (patient's right = viewer's left).\nconst A = [104, 330], B = [262, 420], C = [(A[0] + B[0]) / 2, (A[1] + B[1]) / 2];\nconst L = Math.hypot(B[0] - A[0], B[1] - A[1]), U = [(B[0] - A[0]) / L, (B[1] - A[1]) / L], N = [-U[1], U[0]];\nconst lens = w => \"M\" + A[0] + \" \" + A[1] + \" Q\" + (C[0] + N[0] * 2 * w).toFixed(1) + \" \" + (C[1] + N[1] * 2 * w).toFixed(1) + \" \" + B[0] + \" \" + B[1] +\n  \" Q\" + (C[0] - N[0] * 2 * w).toFixed(1) + \" \" + (C[1] - N[1] * 2 * w).toFixed(1) + \" \" + A[0] + \" \" + A[1] + \" Z\";\nconst at = f => [A[0] + (B[0] - A[0]) * f, A[1] + (B[1] - A[1]) * f];\nlet el = {};\nfunction label(api, g, txt, x, y, color, anchor) {\n  const t = api.el(\"text\", {x, y, \"text-anchor\": anchor || \"start\", \"dominant-baseline\": \"central\", \"font-size\": 18, \"font-weight\": 800, fill: color, stroke: \"#fff\", \"stroke-width\": 5, \"paint-order\": \"stroke\", \"stroke-linejoin\": \"round\", \"font-family\": \"system-ui,sans-serif\"}, g);\n  t.textContent = txt; return t;\n}\nfunction vis(api, node, o) { api.set(node, {opacity: o.toFixed(3), display: o > 0.001 ? \"inline\" : \"none\"}); }\nfunction setup(api) {\n  const g = api.$(\"#woundG\");\n  el.gap = api.el(\"path\", {d: lens(1.5), fill: \"url(#bed)\", stroke: \"#7a2a2a\", \"stroke-width\": 2, \"stroke-linejoin\": \"round\"}, g);\n  el.pool = api.el(\"ellipse\", {cx: C[0], cy: C[1], rx: 50, ry: 7, fill: \"#e5c13f\", transform: \"rotate(29.7 \" + C[0] + \" \" + C[1] + \")\"}, g);\n  el.shine = api.el(\"g\", {fill: \"#ffffff\"}, g);\n  [[0.25, -26], [0.6, -30], [0.45, 30]].forEach(([f, o]) => { const p = at(f);\n    api.el(\"ellipse\", {cx: p[0] + N[0] * o, cy: p[1] + N[1] * o, rx: 16, ry: 4, transform: \"rotate(29.7 \" + (p[0] + N[0] * o) + \" \" + (p[1] + N[1] * o) + \")\", opacity: 0.55}, el.shine); });\n  el.beads = [0.18, 0.38, 0.55, 0.72, 0.86].map((f, i) => { const p = at(f);\n    return api.el(\"circle\", {cx: p[0] + N[0] * 3, cy: p[1] + N[1] * 3 + 3, r: i % 2 ? 6 : 7.5, fill: \"#ecc94b\", stroke: \"#b8901c\", \"stroke-width\": 1.5}, g); });\n  el.stitches = [0.1, 0.26, 0.42, 0.58, 0.74, 0.9].map(f => { const p = at(f), s = api.el(\"g\", {}, g);\n    api.el(\"path\", {d: \"M\" + (p[0] + N[0] * 13).toFixed(1) + \" \" + (p[1] + N[1] * 13).toFixed(1) + \" L\" + (p[0] - N[0] * 13).toFixed(1) + \" \" + (p[1] - N[1] * 13).toFixed(1),\n      stroke: \"#1f3a6e\", \"stroke-width\": 3.5, \"stroke-linecap\": \"round\"}, s);\n    api.el(\"circle\", {cx: p[0] + N[0] * 13, cy: p[1] + N[1] * 13, r: 3.5, fill: \"#1f3a6e\"}, s); return s; });\n  // fever chart: swinging spikes after a normal start\n  let d = \"M452 286\", x = 452;\n  const pts = [[466, 230], [478, 282], [492, 224], [504, 288], [518, 228], [530, 280], [544, 222], [556, 286], [570, 226], [582, 280]];\n  pts.forEach(p => d += \" L\" + p[0] + \" \" + p[1]);\n  el.swing = api.$(\"#swing\"); api.set(el.swing, {d: d, pathLength: 1});\n  el.swTag = label(api, api.$(\"#ui\"), \"Swinging\", 588, 200, \"#c0392b\", \"end\");\n  // beat 1 labels\n  const ui = api.$(\"#ui\");\n  el.lab1 = api.el(\"g\", {}, ui);\n  api.el(\"path\", {d: \"M150 300 L128 262\", stroke: \"#c0392b\", \"stroke-width\": 2.5, fill: \"none\"}, el.lab1);\n  label(api, el.lab1, \"Red, shiny skin\", 70, 250, \"#c0392b\");\n  el.lab2 = api.el(\"g\", {}, ui);\n  api.el(\"path\", {d: \"M232 408 L262 452\", stroke: \"#a17a10\", \"stroke-width\": 2.5, fill: \"none\"}, el.lab2);\n  label(api, el.lab2, \"Discharge\", 220, 466, \"#8a6a08\");\n  // beat 3: pus collected\n  el.drops = [0, 1, 2, 3, 4, 5].map(i => api.el(\"ellipse\", {rx: 6, ry: 7.5, fill: \"#e5c13f\", stroke: \"#b8901c\", \"stroke-width\": 1.2}, ui));\n  el.track = api.el(\"path\", {d: \"M200 392 C 290 300, 440 300, 505 384\", fill: \"none\", stroke: \"none\"}, ui);\n  el.lab3 = api.el(\"g\", {}, ui);\n  label(api, el.lab3, \"Wound opened\", 128, 452, \"#16323a\");\n  el.pot = api.$(\"#potG\"); el.lvl = api.$(\"#pusLevel\"); el.chart = api.$(\"#chart\");\n}\nfunction render(t, api) {\n  // 1. infection signs\n  const inf = api.seg(t, 200, 1400, \"ease_out\");\n  vis(api, api.$(\"#redness\"), inf * (0.9 + 0.1 * Math.sin(t / 300)));\n  vis(api, el.shine, api.seg(t, 600, 1300) * (1 - api.seg(t, 4700, 5000)));\n  el.beads.forEach((b, i) => { const f = api.seg(t, 900 + i * 160, 1300 + i * 160, \"back_out\");\n    api.set(b, {transform: \"translate(0 \" + (f * 6).toFixed(1) + \")\"}); vis(api, b, Math.min(1, f * 1.5) * (1 - api.seg(t, 4800, 5100))); });\n  vis(api, el.lab1, api.seg(t, 700, 1100) * (1 - api.seg(t, 4600, 4800)));\n  vis(api, el.lab2, api.seg(t, 1400, 1800) * (1 - api.seg(t, 4600, 4800)));\n  // 2. swinging pyrexia draws on\n  const sw = api.seg(t, 2400, 4200, \"linear\");\n  api.set(el.swing, {\"stroke-dasharray\": sw.toFixed(4) + \" 1.001\", opacity: sw > 0 ? 1 : 0});\n  vis(api, el.swTag, api.seg(t, 3900, 4300));\n  // 3. sutures out, wound opened, pus to the specimen pot\n  el.stitches.forEach((s, i) => { const f = api.seg(t, 4650 + i * 50, 4950 + i * 50);\n    vis(api, s, 1 - f); api.set(s, {transform: \"translate(0 \" + (-f * 14).toFixed(1) + \")\"}); });\n  const op = api.seg(t, 4800, 5300, \"ease_out\");\n  api.set(el.gap, {d: lens(1.5 + op * 17)});\n  vis(api, el.pool, op);\n  api.set(el.pool, {rx: (14 + op * 30).toFixed(1), ry: (2 + op * 4).toFixed(1)});\n  vis(api, el.pot, api.seg(t, 4650, 5000));\n  vis(api, el.lab3, api.seg(t, 5200, 5500));\n  el.drops.forEach((d, i) => { const f = api.seg(t, 5000 + i * 110, 5500 + i * 110, \"ease_in\");\n    const p = api.pointAt(el.track, f); api.set(d, {cx: p.x.toFixed(1), cy: p.y.toFixed(1)}); vis(api, d, f > 0 && f < 1 ? 1 : 0); });\n  const lv = api.seg(t, 5300, 5900, \"ease_out\") * 46;\n  api.set(el.lvl, {y: (488 - lv).toFixed(1), height: lv.toFixed(1)});\n}\n"
+}

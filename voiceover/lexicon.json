@@ -51,7 +51,9 @@
    "bilirubin": "bˌɪlɪɹˈuːbɪn",
    "creatinine": "kɹiːˈætɪniːn",
    "baroreflex": "bˌæɹoʊɹˈiːflɛks",
-   "anticholinergic": "ˌæntikˌoʊlɪnˈɜːdʒɪk"
+   "anticholinergic": "ˌæntikˌoʊlɪnˈɜːdʒɪk",
+   "anaphylactoid": "ˌænɐfɪlˈæktɔɪd",
+   "keloid": "kˈiːlɔɪd"
   },
   "en-gb": {
    "ketoacidosis": "kˌiːtəʊˌæsɪdˈəʊsɪs",
@@ -61,7 +63,9 @@
    "caecum": "sˈiːkəm",
    "bilirubin": "bˌɪlɪɹˈuːbɪn",
    "baroreflex": "bˌæɹəʊɹˈiːflɛks",
-   "anticholinergic": "ˌæntikˌəʊlɪnˈɜːdʒɪk"
+   "anticholinergic": "ˌæntikˌəʊlɪnˈɜːdʒɪk",
+   "anaphylactoid": "ˌænəfɪlˈæktɔɪd",
+   "keloid": "kˈiːlɔɪd"
   }
  }
 }

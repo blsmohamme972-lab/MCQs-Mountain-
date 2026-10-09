@@ -54,6 +54,16 @@ class MotionCardsAuthoringTests(unittest.TestCase):
         e2=json.loads(json.dumps(e));e2["source"]["catalog_sha256"]="c"*64
         with self.assertRaisesRegex(ValueError,"inconsistent_export_snapshots"):adapt_exports([e,e2])
 
+    def test_several_chapter_exports_of_one_snapshot_package_together(self):
+        a=envelope([question("Q000007341")])
+        q2=question("Q000007400",chapter=24);b=envelope([q2])
+        b["chapters"]=[{"id":24,"title":"Lower Limb","questions":1,"qids":["Q000007400"]}]
+        bundle=adapt_exports([a,b])
+        self.assertEqual(bundle.effective_scope["chapter_ids"],["23","24"])
+        self.assertEqual([c["id"] for c in bundle.chapters],[23,24])
+        b["chapters"]=[{"id":24,"title":"Lower Limb","questions":1,"qids":["Q000007999"]}]
+        with self.assertRaisesRegex(ValueError,"qid_not_in_chapter_manifest:Q000007400"):adapt_exports([a,b])
+
     def test_answer_resolution_before_shuffle(self):
         self.assertEqual(resolve_answer(question("Q000007341",qtype="sba",answer="B"))["statements"],["Beta"])
         self.assertEqual(resolve_answer(question("Q000007342",qtype="emq",answer="C"))["statements"],["Gamma"])
