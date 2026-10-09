@@ -1,0 +1,27 @@
+{
+ "qid": "Q000009493",
+ "duration_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "speed": 1.05,
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "Macrophages clear bacteria",
+   "say": "Macrophages clear bacteria"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "The injured spleen is removed",
+   "say": "The injured spleen is removed"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "Encapsulated bacteria cause sepsis",
+   "say": "Encapsulated bacteria cause sepsis"
+  }
+ ]
+}

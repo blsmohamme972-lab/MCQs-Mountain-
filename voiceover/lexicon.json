@@ -32,7 +32,8 @@
   "&": "and",
   "=": "equals",
   "≈": "about",
-  "%": "percent"
+  "%": "percent",
+  "DIC": "D I C"
  },
  "ipa": {
   "en-us": {

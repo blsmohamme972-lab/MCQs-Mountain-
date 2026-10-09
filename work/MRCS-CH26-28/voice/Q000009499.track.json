@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009499",
+ "file": "Q000009499.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12428,
+ "sha256": "5b5e13426983f6eb4d2c1f8e0e34675c76dedee3fe7d6ea53205c63214f3bf65",
+ "track_ms": 6544,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2149,
+   "text": "Heavy periods drain iron stores",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4096,
+   "text": "Less iron, less haemoglobin",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6444,
+   "text": "Red cells become small and pale",
+   "speed": 1.05
+  }
+ ]
+}

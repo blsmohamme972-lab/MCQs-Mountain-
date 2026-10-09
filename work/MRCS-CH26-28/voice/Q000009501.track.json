@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009501",
+ "file": "Q000009501.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 10974,
+ "sha256": "4609ac2baacb4f1c58219c006853e20458f14458458adcb6ace3b9f5a08b256f",
+ "track_ms": 6025,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1765,
+   "text": "Red cells break down early",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4201,
+   "text": "Extra bilirubin floods the bile",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 5925,
+   "text": "Pigment stones form",
+   "speed": 1.05
+  }
+ ]
+}

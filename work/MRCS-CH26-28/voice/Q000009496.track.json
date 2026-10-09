@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009496",
+ "file": "Q000009496.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11436,
+ "sha256": "b80487ffb0343fcab9ba43a1bf71e9393afa78547847377bfacc1cd96de94c22",
+ "track_ms": 6201,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1841,
+   "text": "Fever and a fast heart rate",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4225,
+   "text": "Fast breathing, low white cells",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6101,
+   "text": "Together these mean SIRS",
+   "speed": 1.05
+  }
+ ]
+}
