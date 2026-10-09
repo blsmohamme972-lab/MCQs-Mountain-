@@ -23,7 +23,7 @@ Voice is a required part of every new card, not an add-on. Students can mute it,
 
 1. Ask Claude Code: *"Make chapter N with voice-over"* (or *"add voice to package X"*).
 2. Claude Code builds the cards and their voice, then runs every check.
-3. You get **one ZIP** and, optionally, review videos (MP4s that play in Telegram) to watch on your phone.
+3. You get **one ZIP** and, optionally, review videos (MP4s that play in Telegram) to watch on your phone. The videos are sent in the conversation only and are never committed to the repository.
 4. Upload the ZIP to the bot. Nothing else.
 
 ## How Claude Code makes it (Golden rule 8)

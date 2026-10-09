@@ -10,3 +10,6 @@ __pycache__/
 /tmp/
 /local-backups/
 /app/vendor/
+
+# MotionCards review videos are sent to the owner in chat only, never committed.
+*.mp4
