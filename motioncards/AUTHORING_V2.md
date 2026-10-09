@@ -134,6 +134,13 @@ python tools/motioncards.py import-svg lib:healthy-lung --scene work/b/scenes/Q�
 | Food, drink, weather, seasons, day/night, animals, everyday objects | Servier SVGs on [bioicons.com](https://bioicons.com/) (`General_items`, `Animals`, `Plants_Algae`) | SMART Food or Risk-Factors sets |
 | Small symbols (warning, drug, device) | [Health Icons](https://healthicons.org/) | [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) as a small prop only |
 | House, river, landscape, vehicles | No approved source matches Servier quality yet. Draw a simple setting with the style kit | A small [Noto](https://github.com/googlefonts/noto-emoji/tree/main/2D/svg) or Fluent emoji, or a [Kenney](https://kenney.nl/assets) vector pack |
+| Real ECG or rhythm strip | [PTB-XL](https://physionet.org/content/ptb-xl/): a real 12-lead ECG drawn as an SVG path (row M5) | Draw a stylised trace with the style kit |
+| Drug or molecule structure | [RDKit](https://www.rdkit.org/), drawn from the [PubChem](https://pubchem.ncbi.nlm.nih.gov/) SMILES (row M6) | Health Icons `medications` for a simple pill or syringe |
+| Receptors, channels, molecules, cell types | Servier (`Receptors_channels`, `Cell_membrane`, `Intracellular_components`, `Blood_Immunology`) | [Reactome icons](https://reactome.org/icon-lib) (row M3) |
+| Parasites, vectors (mosquito, tick, flea), animal silhouettes | Servier `Parasites` (62 drawings) | [PhyloPic](https://www.phylopic.org/) (row M4) |
+| Detailed heart, brain or skull, or how organs sit together | Servier `Human_physiology` (362 drawings) | [Wikimedia Commons](https://commons.wikimedia.org/) (row M1): Patrick J. Lynch, LadyofHats or NCI SEER |
+| Neuroscience drawings (brain sections, neurons) | Servier | [SciDraw on Zenodo](https://zenodo.org/search?q=scidraw) (row M7) |
+| Any icon or emoji, found by name | [Iconify](https://icon-sets.iconify.design/) (row M2): one URL per icon | The raw GitHub patterns in rows 6, 7 and E1–E3 |
 
 `lib:` imports add the Servier credit automatically. Render once with a grid (draw lines every 20 px in `setup`) to read where the organs landed, then place your additions on that art.
 
@@ -215,6 +222,51 @@ Checked October 2026 for Kafu's goals: MRCS clinical anatomy, vector art whose p
 | 6 | **Health Icons**: `https://raw.githubusercontent.com/resolvetosavelives/healthicons/main/public/icons/svg/{outline,filled}/<category>/<name>.svg` (categories include `body`, `symbols`, `medications`, `devices`, `conditions`) | Small symbols only (warning, drug, device). Never the main picture | CC0 | none needed |
 | 7 | **Tabler Icons**: `https://raw.githubusercontent.com/tabler/tabler-icons/main/icons/outline/<name>.svg` | UI marks only: arrows, ticks, crosses | MIT | none needed |
 
+#### More medical sources (M1–M7: when Servier has nothing)
+
+Tested on 9 October 2026 from a Claude Code cloud container: each source was downloaded and imported with `import-svg`. Licences were read from each source's own page or API. The licence on each individual file still wins. Accept only public domain, CC0 or CC BY; never NC, ND or SA.
+
+| # | Source and URL pattern | Use it for | Licence | Credit to pass to `--credit` |
+|---|---|---|---|---|
+| M1 | **Wikimedia Commons**, direct file: `https://upload.wikimedia.org/wikipedia/commons/<a>/<ab>/<File_name>`, where `<ab>` is the first 2 hex characters of the MD5 of the file name (underscores, not spaces) and `<a>` is the first one (recipe below). Best authors: **Patrick J. Lynch** (heart, brain, skull), **LadyofHats / Mariana Ruiz** (skeleton, cells, organs), **NCI SEER Training** (organ relations) | Detailed line art and anatomy that Servier lacks | Per file: read `LicenseShortName` from the API (recipe below). Lynch: CC BY 2.5. LadyofHats and SEER: public domain | Lynch: `"<What>: Patrick J. Lynch, medical illustrator; C. Carl Jaffe, MD, cardiologist, CC BY 2.5"`. Others: `"<What>: <Artist> (Wikimedia Commons), <licence>"` |
+| M2 | **Iconify**: `https://api.iconify.design/<set>/<name>.svg`; find names with `https://api.iconify.design/search?query=<word>&prefixes=healthicons,material-symbols` | Small icons and emoji, found by name. Sets: `healthicons` (2,042), `material-symbols` (15,728, e.g. `ecg-heart`), `fluent-emoji-flat` (3,145), `noto` (3,729), `twemoji` (3,988). **Never `openmoji`** (CC BY-SA) | Health Icons CC0; Material Symbols and Noto Apache 2.0; Fluent MIT; Twemoji CC BY 4.0 | Same as rows 6 and E1–E3; Material Symbols: `"<What>: Material Symbols (Google), Apache 2.0"` |
+| M3 | **Reactome icon library**: `https://reactome.org/icon/R-ICO-<number>.svg`; browse and search at `https://reactome.org/icon-lib` | 1,500+ receptors, channels, molecules, cell types and tissues. Flat style: keep it small next to Servier | CC BY 4.0 (`reactome.org/license`) | `"<What>: Reactome (reactome.org), CC BY 4.0"` |
+| M4 | **PhyloPic**: `https://images.phylopic.org/images/<uuid>/vector.svg`; find the uuid on `https://www.phylopic.org/` | One-colour silhouettes: mosquito, tick, flea, worms, animals | Per image (shown on the image page): use only CC0, Public Domain Mark or CC BY | `"<What>: <contributor>, PhyloPic, <licence>"` (none needed for CC0 or public domain) |
+| M5 | **PTB-XL ECG database** (PhysioNet): `https://physionet.org/files/ptb-xl/1.0.3/records100/<NNNNN>/<NNNNN>_lr.{hea,dat}`. Find a rhythm in `ptbxl_database.csv` (column `scp_codes`, e.g. `NORM`, `AFIB`, `CLBBB`; column `filename_lr` gives the path) | Real ECG traces, 21,799 12-lead recordings of 10 s each. Draw one lead as a path and reveal it with `R.draw` or a moving clip | CC BY 4.0 | `"ECG: PTB-XL (PhysioNet), CC BY 4.0"` |
+| M6 | **RDKit** (`pip install rdkit`, BSD) with a SMILES from PubChem: `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/<drug>/property/SMILES/TXT` | Drug and molecule structures for pharmacology cards | Chemical structures are facts; RDKit is BSD | `"<Drug> structure: drawn with RDKit"` |
+| M7 | **SciDraw** drawings on Zenodo: `https://zenodo.org/api/records/<id>` (gives `metadata.license` and `files[].links.self`) | Brain sections, neurons, lab animals | CC BY 4.0 (check `metadata.license`) | `"<What>: <creator>, SciDraw (Zenodo <id>), CC BY 4.0"` |
+
+Recipes (copy and edit):
+
+```bash
+UA="KafuMotionCards/1.0"   # Wikimedia and PubChem refuse requests without a User-Agent and rate-limit (429): one request at a time, -f + --retry
+# M1: download File:<name> from Wikimedia Commons, then read its licence and author
+name="Skull_and_brain_normal_human.svg"; h=$(printf %s "$name" | md5sum | cut -c1-32)
+curl -sLf --retry 3 --retry-delay 5 --max-time 60 -A "$UA" -o brain.svg "https://upload.wikimedia.org/wikipedia/commons/${h:0:1}/${h:0:2}/$name"
+curl -sf --retry 3 --retry-delay 5 --max-time 60 -A "$UA" "https://commons.wikimedia.org/w/api.php?action=query&titles=File:$name&prop=imageinfo&iiprop=extmetadata&iiextmetadatafilter=LicenseShortName|Artist&format=json"
+# M6: a drug structure as SVG
+smiles=$(curl -sf --retry 3 --retry-delay 5 --max-time 60 -A "$UA" https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/aspirin/property/SMILES/TXT)
+python3 -c "import sys;from rdkit import Chem;from rdkit.Chem.Draw import rdMolDraw2D as D;d=D.MolDraw2DSVG(300,200);D.PrepareAndDrawMolecule(d,Chem.MolFromSmiles(sys.argv[1]));d.FinishDrawing();open('aspirin.svg','w').write(d.GetDrawingText())" "$smiles"
+```
+
+```python
+# M5: one lead of a PTB-XL record as an SVG path (100 Hz file: 10 s = 1,000 samples per lead, 12 leads)
+import numpy as np, urllib.request as u
+base = "https://physionet.org/files/ptb-xl/1.0.3/records100/00000/00001_lr"   # from filename_lr in ptbxl_database.csv
+for ext in ("hea", "dat"): u.urlretrieve(f"{base}.{ext}", f"rec.{ext}")
+hea = open("rec.hea").read().split("\n"); nsig, n = int(hea[0].split()[1]), int(hea[0].split()[3])
+gain = float(hea[1].split()[2].split("(")[0].split("/")[0])                  # ADC units per mV
+mv = np.fromfile("rec.dat", "<i2").reshape(n, nsig)[:, 1] / gain              # column 1 = lead II
+pts = " ".join(f"{i * 600 / n:.1f},{100 - v * 60:.1f}" for i, v in enumerate(mv))
+open("ecg.svg", "w").write(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200"><polyline fill="none" stroke="#c62828" stroke-width="2" points="{pts}"/></svg>')
+```
+
+Notes for agents:
+- **Check the size after every import.** If one drawing adds more than about 100 KB to the scene, choose another file. The NCI SEER pancreas SVG is 886 KB and still added 560 KB, because it is 1,701 traced paths.
+- **Wikimedia rate limits.** From cloud containers, its search API and `Special:FilePath` often answer 429 (too many requests). The direct `upload.wikimedia.org` URL above worked. Find file names with a web search, send a User-Agent, and go slowly.
+- **NIAID BioArt (row 3)** has no direct file URL or API an agent can use. Use it only when the owner supplies the file.
+- **Not usable by agents today:** Blausen and OpenStax figures (PNG only; `import-svg` takes SVG), LUMC/AnatomyTOOL drawings marked NC or SA, and Radiopaedia (NC).
+
 #### Everyday art (non-medical: people, lifestyle, food, animals, weather, equipment)
 
 Checked 8 October 2026: each licence was read from the project's own licence file or page, and samples were imported with `import-svg` and rendered next to `lib:heart`.
@@ -283,7 +335,7 @@ Rules for everyday art:
 | Noto Emoji `3D/`, Fluent Emoji 3D | PNG only |
 | SVG Repo, Flaticon, Iconscout, Icons8 (Ouch!), Storyset, Freepik, Blush, other stock sites | Per-file or proprietary licences, attribution traps, or no redistribution |
 
-Do not use other sources (Reactome, SciDraw, Lottie, GSAP, 3D model sites, raster galleries such as Blausen or OpenStax, stock sites, Noun Project, Freepik) unless the user approves. They either do not fit the cards or their licence is unsafe for a paid app. If no approved source has the structure you need, draw it yourself with the style kit; never trace a textbook figure.
+Do not use other sources (Lottie, GSAP, 3D model sites, raster galleries such as Blausen or OpenStax, stock sites, Noun Project, Freepik) unless the user approves. They either do not fit the cards or their licence is unsafe for a paid app. If no approved source has the structure you need, draw it yourself with the style kit; never trace a textbook figure.
 
 If the network cannot reach a source, say so and use the bundled library or the style kit. Do not substitute an unapproved site.
 
