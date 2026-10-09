@@ -181,7 +181,8 @@ async function acceptVoice(x,channel){
   let hex="";
   try{const d=await crypto.subtle.digest("SHA-256",x.data);hex=[...new Uint8Array(d)].map(v=>v.toString(16).padStart(2,"0")).join("");}catch(_){return;}
   if(!active||active.channel!==channel||active.voice||hex!==String(want.sha256).toLowerCase())return;
-  try{active.voice=V.create(x.data,{mime:want.mime});}catch(_){active.voice=null;return;}
+  const card=active;   // an outside pause of the voice (call, headset, lock screen) pauses this card's picture too
+  try{active.voice=V.create(x.data,{mime:want.mime,onInterrupt:()=>{if(active===card&&card.playing)pause();}});}catch(_){active.voice=null;return;}
   paintMute();if(active.playing)active.voice.play(active.time);
 }
 function connectFromReady(event){
