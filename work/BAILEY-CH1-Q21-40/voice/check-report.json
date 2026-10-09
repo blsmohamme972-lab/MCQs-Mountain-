@@ -1,0 +1,439 @@
+[
+ {
+  "qid": "Q000000053",
+  "beats": [
+   {
+    "say": "Pain, bloody diarrhoea, anaemia",
+    "heard": "pain, bloody diarrhea, anemia,",
+    "score": 0.96,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Colon and rectum inflamed",
+    "heard": "colon and rectum inflamed.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Ulcerative colitis",
+    "heard": "ulcerative colitis",
+    "score": 1.0,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000000054",
+  "beats": [
+   {
+    "say": "Severe pain on NSAIDs",
+    "heard": "Severe pain on NSAID.",
+    "score": 0.971,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "NSAIDs: bowel pouches form",
+    "heard": "NSAID bowel pouches form.",
+    "score": 0.977,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Inflamed pouches",
+    "heard": "Inflamed pouches.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000000055",
+  "beats": [
+   {
+    "say": "Thiazide diuretics act on kidney",
+    "heard": "Thiazideoretics act on kidney.",
+    "score": 0.926,
+    "onset_error_ms": 20
+   },
+   {
+    "say": "Blocks tubule, loses acid",
+    "heard": "Block's tubule loses acid.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Metabolic alkalosis",
+    "heard": "Metabolic alkalosis.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000000056",
+  "beats": [
+   {
+    "say": "Renal failure weakens kidneys",
+    "heard": "Renal failure weakens kidneys.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Kidneys cannot clear acid",
+    "heard": "Kidneys cannot clear acid.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Metabolic acidosis",
+    "heard": "Metabolic acidosis.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000000057",
+  "beats": [
+   {
+    "say": "Guillain-Barré weakens breathing",
+    "heard": "Guillain -Barre weakens breathing.",
+    "score": 0.982,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Poor breathing traps carbon dioxide",
+    "heard": "Poor breathing traps carbon dioxide.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Respiratory acidosis",
+    "heard": "Respiratory acidosis.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000000058",
+  "beats": [
+   {
+    "say": "Three openings in diaphragm",
+    "heard": "3 openings in diaphragm,",
+    "score": 0.884,
+    "onset_error_ms": 30
+   },
+   {
+    "say": "Duct runs beside the aorta",
+    "heard": "duct runs beside the aorta,",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "T12, aortic opening",
+    "heard": "T12 aortic opening,",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000000059",
+  "beats": [
+   {
+    "say": "Three openings in diaphragm",
+    "heard": "3 openings in diaphragm,",
+    "score": 0.884,
+    "onset_error_ms": 20
+   },
+   {
+    "say": "Oesophagus passes through one",
+    "heard": "esophagus passes through 1,",
+    "score": 0.917,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "T10, oesophageal opening",
+    "heard": "T10 esophageal opening.",
+    "score": 0.976,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000000060",
+  "beats": [
+   {
+    "say": "Three openings in diaphragm",
+    "heard": "Three openings in diaphragm.",
+    "score": 1.0,
+    "onset_error_ms": 30
+   },
+   {
+    "say": "Aorta passes through one",
+    "heard": "Aorta passes through one.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "T12, aortic opening",
+    "heard": "T -12 Aortic opening.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000000061",
+  "beats": [
+   {
+    "say": "Four pharyngeal pouches",
+    "heard": "Four pharyngeal pouches.",
+    "score": 1.0,
+    "onset_error_ms": 40
+   },
+   {
+    "say": "First pouch grows outward",
+    "heard": "First pouch grows outward.",
+    "score": 1.0,
+    "onset_error_ms": 50
+   },
+   {
+    "say": "Becomes the Eustachian tube",
+    "heard": "Becomes the eustachian tube.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000000062",
+  "beats": [
+   {
+    "say": "Each pouch has its own nerve",
+    "heard": "Each pouch has its own nerve.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "First, third, fourth shown",
+    "heard": "First, third, fourth, shown.",
+    "score": 1.0,
+    "onset_error_ms": 50
+   },
+   {
+    "say": "Second pouch: facial nerve",
+    "heard": "Second pouch, facial nerve.",
+    "score": 1.0,
+    "onset_error_ms": 20
+   }
+  ]
+ },
+ {
+  "qid": "Q000000063",
+  "beats": [
+   {
+    "say": "Plaster, then painful swelling",
+    "heard": "Plaster than painful swelling.",
+    "score": 0.962,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Swelling squeezed by plaster",
+    "heard": "Swelling squeezed by plaster.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Remove the plaster first",
+    "heard": "Remove the plaster first.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000000065",
+  "beats": [
+   {
+    "say": "Prostate cancer, then cough",
+    "heard": "prostate cancer, then cough.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Spread by blood or lymph",
+    "heard": "spread by blood or lymph.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Cannonball secondaries",
+    "heard": "cannonball secondaries",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000000066",
+  "beats": [
+   {
+    "say": "Worsening cough with blood",
+    "heard": "Worsening cough with blood.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Fast growth, early spread",
+    "heard": "Fast growth early spread.",
+    "score": 1.0,
+    "onset_error_ms": 40
+   },
+   {
+    "say": "Small cell carcinoma",
+    "heard": "Small cell carcinoma.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000000067",
+  "beats": [
+   {
+    "say": "Adrenal gland above kidney",
+    "heard": "Adrenal gland above kidney.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Zona fasciculata layer",
+    "heard": "Zona fasciculata layer.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Cortisol is the answer",
+    "heard": "Cortisol is the answer.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000000068",
+  "beats": [
+   {
+    "say": "Allergen exposure",
+    "heard": "Allergen exposure",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "B cells make antibodies",
+    "heard": "B cells make antibodies Ig",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "IgE is the mediator",
+    "heard": "E is the mediator",
+    "score": 0.933,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000000069",
+  "beats": [
+   {
+    "say": "Own cells carry antigens",
+    "heard": "own cells carry antigens.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Antibodies bind own cells",
+    "heard": "Antibodies bind own cells.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "IgG is the mediator",
+    "heard": "Egg G is the mediator.",
+    "score": 0.933,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000000070",
+  "beats": [
+   {
+    "say": "Antigen meets antibody",
+    "heard": "Antigen meets antibody,",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Immune complexes form",
+    "heard": "immune complexes form,",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "IgG is the mediator",
+    "heard": "egg G is the mediator.",
+    "score": 0.933,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000000071",
+  "beats": [
+   {
+    "say": "A cell presents antigen",
+    "heard": "A cell presence antigen.",
+    "score": 0.9,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Days later, T cell docks",
+    "heard": "Days later, T cell docs.",
+    "score": 0.973,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Helper T cells",
+    "heard": "Helper T cells.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000000072",
+  "beats": [
+   {
+    "say": "Canal has four walls",
+    "heard": "Canal his four walls.",
+    "score": 0.941,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Look at the roof",
+    "heard": "Look at the roof.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Internal oblique, transversus",
+    "heard": "Internal oblique transversus.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ }
+]

@@ -13,3 +13,5 @@ __pycache__/
 
 # MotionCards review videos are sent to the owner in chat only, never committed.
 *.mp4
+# ...except the two gold-standard example videos (chapters 20–25), kept as the look to copy.
+!motioncards/gold-standard-examples/*.mp4

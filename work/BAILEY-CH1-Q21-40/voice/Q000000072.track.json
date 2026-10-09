@@ -1,0 +1,33 @@
+{
+ "qid": "Q000000072",
+ "file": "Q000000072.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 10877,
+ "sha256": "363b3053182c12f40e0be19a9c17831def0f8c13dfd57f9623cf17337b7accd7",
+ "track_ms": 6739,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1546,
+   "text": "Canal has four walls",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3359,
+   "text": "Look at the roof",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6639,
+   "text": "Internal oblique, transversus",
+   "speed": 1.05
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "qid": "Q000000055",
+ "file": "Q000000055.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11923,
+ "sha256": "3ba62613c204c3b3bd7413309b36643790c84cda41c64a99362230c185677c46",
+ "track_ms": 6260,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2163,
+   "text": "Thiazide diuretics act on kidney",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4185,
+   "text": "Blocks tubule, loses acid",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6160,
+   "text": "Metabolic alkalosis",
+   "speed": 1.05
+  }
+ ]
+}

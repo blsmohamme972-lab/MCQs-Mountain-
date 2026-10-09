@@ -1,0 +1,33 @@
+{
+ "qid": "Q000000039",
+ "file": "Q000000039.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11358,
+ "sha256": "cf38554be4b603dbdd679bd620631bc45ecf141348abafb205df7e5daba8bb0e",
+ "track_ms": 6521,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1705,
+   "text": "Count down the lumbar spine",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3817,
+   "text": "Two iliac veins join",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6421,
+   "text": "L5, IVC forms",
+   "speed": 1.05
+  }
+ ]
+}

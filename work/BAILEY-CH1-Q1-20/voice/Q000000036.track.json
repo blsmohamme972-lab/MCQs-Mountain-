@@ -1,0 +1,33 @@
+{
+ "qid": "Q000000036",
+ "file": "Q000000036.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 9644,
+ "sha256": "d4cab2e4b36c163971a0e279ff2b594016f17a77ced2a07b218b0c0c7d6422bd",
+ "track_ms": 5823,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1511,
+   "text": "Fall breaks the humerus",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3834,
+   "text": "Radial nerve is injured",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 5723,
+   "text": "The wrist drops",
+   "speed": 1.05
+  }
+ ]
+}

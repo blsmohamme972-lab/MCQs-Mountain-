@@ -224,6 +224,8 @@ Checked October 2026 for Kafu's goals: MRCS clinical anatomy, vector art whose p
 
 #### More medical sources (M1–M7: when Servier has nothing)
 
+> **Gold-standard cards do not use M1–M7.** `GOLD_STANDARD.md` stays Servier-only (bioicons, SMART, `lib:`), with the style kit for the rest. Use these rows only when the owner asks for them for a batch.
+
 Tested on 9 October 2026 from a Claude Code cloud container: each source was downloaded and imported with `import-svg`. Licences were read from each source's own page or API. The licence on each individual file still wins. Accept only public domain, CC0 or CC BY; never NC, ND or SA.
 
 | # | Source and URL pattern | Use it for | Licence | Credit to pass to `--credit` |
