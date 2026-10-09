@@ -1,61 +1,96 @@
 {
-  "schema_version": 2,
-  "qid": "Q000000066",
-  "duration_ms": 7000,
-  "takeaway": "EDIT: one short teaching takeaway",
-  "stage": {
-    "width": 640,
-    "height": 560
+ "schema_version": 2,
+ "qid": "Q000000066",
+ "duration_ms": 7000,
+ "takeaway": "x",
+ "stage": {
+  "width": 640,
+  "height": 560,
+  "background": "#f4f8f8"
+ },
+ "layers": [
+  {
+   "type": "text",
+   "text": "T",
+   "x": 320,
+   "y": 44,
+   "size": 26,
+   "weight": 800,
+   "max_width": 590,
+   "fit": true,
+   "color": "@ink",
+   "fixed": true
   },
-  "layers": [
-    {
-      "type": "text",
-      "text": "A 52-year-old woman presents with a rapidly worsening cough, haemoptysis, and shortness…",
-      "x": 320,
-      "y": 64,
-      "size": 26,
-      "weight": 800,
-      "max_width": 580,
-      "fit": true,
-      "max_lines": 2,
-      "fixed": true
-    },
-    {
-      "type": "circle",
-      "cx": 180,
-      "cy": 300,
-      "r": 70,
-      "fill": "@surface",
-      "stroke": "@ink",
-      "stroke_width": 3
-    },
-    {
-      "type": "circle",
-      "cx": 460,
-      "cy": 300,
-      "r": 70,
-      "fill": "@surface",
-      "stroke": "@ink",
-      "stroke_width": 3,
-      "show": [
-        1050,
-        7000
-      ],
-      "enter": "pop"
-    },
-    {
-      "type": "arrow",
-      "x1": 265,
-      "y1": 300,
-      "x2": 375,
-      "y2": 300,
-      "stroke": "@accent",
-      "stroke_width": 8,
-      "show": [
-        2100,
-        7000
-      ],
-      "enter": "draw"
-    }
-  ]
+  {
+   "type": "text",
+   "text": "1 · a",
+   "x": 320,
+   "y": 98,
+   "size": 20,
+   "weight": 700,
+   "color": "@ink",
+   "max_width": 560,
+   "fit": true,
+   "box": {
+    "fill": "#ffffff",
+    "stroke": "@line"
+   },
+   "fixed": true,
+   "show": [
+    0,
+    2300
+   ],
+   "enter": "fade",
+   "exit": "fade"
+  },
+  {
+   "type": "text",
+   "text": "2 · b",
+   "x": 320,
+   "y": 98,
+   "size": 20,
+   "weight": 700,
+   "color": "@ink",
+   "max_width": 560,
+   "fit": true,
+   "box": {
+    "fill": "#ffffff",
+    "stroke": "@line"
+   },
+   "fixed": true,
+   "show": [
+    2300,
+    4600
+   ],
+   "enter": "fade",
+   "exit": "fade"
+  },
+  {
+   "type": "text",
+   "text": "3 · c",
+   "x": 320,
+   "y": 98,
+   "size": 20,
+   "weight": 700,
+   "color": "@ink",
+   "max_width": 560,
+   "fit": true,
+   "box": {
+    "fill": "#ffffff",
+    "stroke": "@line"
+   },
+   "fixed": true,
+   "show": [
+    4600,
+    7000
+   ],
+   "enter": "fade",
+   "exit": "fade"
+  }
+ ],
+ "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"><defs>\n<filter id=\"soft\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"125%\"><feDropShadow dx=\"0\" dy=\"3\" stdDeviation=\"5\" flood-color=\"#0b1b26\" flood-opacity=\"0.16\"/></filter>\n<clipPath id=\"panelClip\"><rect x=\"30\" y=\"128\" width=\"580\" height=\"392\" rx=\"22\"/></clipPath>\n<radialGradient id=\"metal\" cx=\".35\" cy=\".3\" r=\".8\"><stop offset=\"0\" stop-color=\"#f4f7f9\"/><stop offset=\".55\" stop-color=\"#a9b6c0\"/><stop offset=\"1\" stop-color=\"#6b7a86\"/></radialGradient>\n<linearGradient id=\"pvc\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#ffffff\"/><stop offset=\".45\" stop-color=\"#e3e8ee\"/><stop offset=\"1\" stop-color=\"#a9b4c2\"/></linearGradient>\n<radialGradient id=\"virusG\" cx=\".38\" cy=\".3\" r=\".8\"><stop offset=\"0\" stop-color=\"#e2a7e8\"/><stop offset=\".6\" stop-color=\"#a64bb4\"/><stop offset=\"1\" stop-color=\"#6d2a7b\"/></radialGradient>\n<radialGradient id=\"bloodG\" cx=\".38\" cy=\".3\" r=\".8\"><stop offset=\"0\" stop-color=\"#ff7b7b\"/><stop offset=\".6\" stop-color=\"#d32f2f\"/><stop offset=\"1\" stop-color=\"#8e1414\"/></radialGradient>\n</defs>\n<rect x=\"30\" y=\"128\" width=\"580\" height=\"392\" rx=\"22\" fill=\"#ffffff\" filter=\"url(#soft)\"/>\n<g id=\"back\"></g>\n<g id=\"art\"></g>\n<g id=\"labels\"></g>\n</svg>",
+ "script": "\nconst AMB = \"#d9822b\", RED = \"#c62828\", MUT = \"#5d7880\", TEAL = \"#2a9d8f\";\nlet E = {};\nfunction seg(api, t, a, b) { return api.seg(t, a, b, \"ease_in_out\"); }\nfunction moveArt(api, id, parent) { const a = api.$(id); parent.appendChild(a); return a; }\nfunction tag(api, g, txt, x, y, color) { return R.text(api, g, txt, x, y, {anchor: \"middle\", size: 16, weight: 800, color, halo: false}); }\nfunction tile(api, g) {\n  api.el(\"rect\", {x: 46, y: 182, width: 164, height: 200, rx: 20, fill: \"#fff6ea\", stroke: AMB, \"stroke-width\": 3, \"stroke-dasharray\": \"9 7\"}, g);\n}\nfunction setup(api){R.grid(api);}\nfunction render(t,api){}",
+ "credits": [
+  "x"
+ ]
 }
