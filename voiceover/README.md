@@ -8,13 +8,13 @@ Every MotionCard gets a short spoken explanation, made entirely by Claude Code. 
 
 | # | Rule | How this folder meets it |
 |---|---|---|
-| 1 | **Best voice quality at the lowest file size, and free** | Kokoro-82M voice model (Apache-2.0, free, runs offline), voice `af_heart` (the model's top-rated voice). Opus 16 kbps mono: about **12.6 KB per 8 s card**. A speech recogniser understood every word, even at 12 kbps. |
+| 1 | **Best voice quality at the lowest file size, and free** | Kokoro-82M voice model (Apache-2.0, free, runs offline), voice `af_heart` (the model's top-rated voice). Opus 16 kbps mono: about **12.6 KB per 8 s card**. The listen-back check hears each line on its own and fails any long word that was not heard clearly; a second, larger recogniser must agree first. The track must be silent between lines. |
 | 2 | **Voice is added as a ZIP through the Telegram bot** (e.g. every 8 MotionCards with their voice-over) | The voice travels inside the normal `MCARDS_<PKG>_r<N>.zip`: `voice/<QID>.opus` next to each card, checksummed in the manifest. Same bot, same validation, same replace confirmation. |
 | 3 | **Claude Code does all the work; the owner only uploads the ZIP** | One command per step: `draft → synth → check → review`. The pipeline writes, speaks, checks the voice by listening back, and makes a review video. No accounts, keys or manual audio editing. |
 | 4 | **Cloudflare stays free; the whole project stays free** | No paid service anywhere: local model, local encoder, no API. The voice is embedded in the card file, so it adds **zero requests and zero files** on Cloudflare. |
-| 5 | **Thousands of students can use it daily on the free plan** | Zero extra requests per card view. About 13 KB more per card download, compressed. Playback happens on the student's phone. See the free-plan maths in [DESIGN.md](DESIGN.md#free-plan-maths). |
+| 5 | **Thousands of students can use it daily on the free plan** | Zero extra requests per card view. About 13 KB more per 8 s card download, compressed. `synth` caps every card at **20 KB** (it re-encodes a long card at 12 kbps, and refuses it if it is still too big). Playback happens on the student's phone. See the free-plan maths in [DESIGN.md](DESIGN.md#free-plan-maths). |
 | 6 | **More than 300 books, free** | About 79,000 cards × 12.6 KB ≈ **1 GB of voice** in total, with no storage charge for Worker assets. Two existing limits (unrelated to voice) must be fixed first for 300 books; see [DESIGN.md](DESIGN.md#300-books-two-existing-limits-to-fix-first). |
-| 7 | **The voice is synced with the animation as closely as possible** | (a) Each line is written for its beat and must fit inside it (`synth` refuses lines that don't). (b) Each line starts exactly when its caption and animation start. The check measures it from the waveform: **0–40 ms** on chapter 10. (c) In the app, the voice is the master clock, so picture and sound cannot drift (browser test: under 60 ms through play, seek and pause). |
+| 7 | **The voice is synced with the animation as closely as possible** | (a) Each line is written for its beat and must fit inside it (`synth` refuses lines that don't). (b) Each line starts 250 ms (first beat) or 120 ms (later beats) after its caption appears, while that animation step is under way. The check measures it from the waveform: **0–40 ms** on chapter 10. (c) In the app, the voice is the master clock, so picture and sound cannot drift (browser test: under 60 ms through play, seek and pause). |
 | 8 | **A Claude Code agent can generate the voice easily: least effort, highest quality** | **One-time setup:** `voiceover/bootstrap.sh`. **Then one command:** `voiceover.py make --workspace work/<batch>`. `make` installs what's missing (model pinned by SHA-256) and pre-fills every spoken line from the card's captions. It then speaks, fits, encodes, checks by listening back, and makes review videos. It stops with **one list of everything to fix**, and each fix says how many words to cut. Quality is built in: the top-rated voice, loudness-normalised, a pronunciation dictionary, and a pass/fail listen-back check. |
 
 Voice is a required part of every new card, not an add-on. Students can mute it, and the mute choice is remembered.
@@ -33,7 +33,14 @@ voiceover/bootstrap.sh                                                   # once 
 ~/.venvs/kafu-voice/bin/python voiceover/voiceover.py make --workspace work/<batch>
 ```
 
-`make` does everything, then either says **DONE** or prints one list of lines to shorten. Edit those `say` lines in `work/<batch>/voice/<QID>.voice.json` and run `make` again. Existing scripts are kept.
+`make` does everything, then either says **DONE** or prints **one FIX list for every card at once**. Each line says what to change:
+- **A line too long:** cut it to the number of words shown. Edit `say` in `work/<batch>/voice/<QID>.voice.json`.
+- **A word that sounds wrong:** add it to `voiceover/lexicon.json` (`ipa` for a mispronounced word, `say` for an abbreviation), or reword the line.
+- **Beats guessed:** set their times (see [NARRATION_GUIDE.md](NARRATION_GUIDE.md#scenes-without-numbered-captions)).
+
+Then run `make` again. Existing scripts are kept. When a card's captions move, its beats move with them and the lines are kept.
+
+Beats come from the card's numbered captions (`1 · …` text layers with `show:[a,b]`). If a script-drawn card has none, they come from its `caps(api, P, [[start, end, "text"], …])` call. If it has neither, `make` guesses even beats and refuses the card until their times are set.
 
 **Least effort:** write each card's numbered captions short and speakable (no arrows or symbols, within the word budget) when the card is made. `make` then needs **no edits at all**, because it reads the captions aloud.
 
