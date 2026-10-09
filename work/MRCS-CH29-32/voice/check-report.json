@@ -1,0 +1,485 @@
+[
+ {
+  "qid": "Q000009510",
+  "beats": [
+   {
+    "say": "Blow tears the meningeal artery",
+    "heard": "Blow tears the meningial artery,",
+    "score": 0.963,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Blood pools outside the dura",
+    "heard": "blood pools outside the dura.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Lucid, then rapid decline",
+    "heard": "Lucid, then rapid decline.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009511",
+  "beats": [
+   {
+    "say": "Lung cancer spreads to brain",
+    "heard": "Lung cancer spreads to brain.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "A mass fills the closed skull",
+    "heard": "A mass fills the closed skull.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Headache and vomiting",
+    "heard": "Headache and vomiting.",
+    "score": 1.0,
+    "onset_error_ms": 20
+   }
+  ]
+ },
+ {
+  "qid": "Q000009512",
+  "beats": [
+   {
+    "say": "Berry aneurysm at a bifurcation",
+    "heard": "Very aneurysm at a bifurcation,",
+    "score": 0.943,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "The weak wall bulges and bursts",
+    "heard": "the weak wall bulges and bursts.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Subarachnoid haemorrhage",
+    "heard": "Subirachnoid hemorrhage.",
+    "score": 0.933,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009513",
+  "beats": [
+   {
+    "say": "A pituitary tumour grows upward",
+    "heard": "A pituitary tumor grows upward.",
+    "score": 0.981,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "It presses on the optic chiasm",
+    "heard": "It presses on the optic chiasm.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Both outer visual fields go",
+    "heard": "Both outer visual fields go.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009514",
+  "beats": [
+   {
+    "say": "Minor fall on warfarin",
+    "heard": "Minor fall on Warfarin.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Bridging veins ooze slowly",
+    "heard": "Bridging vans oo slowly.",
+    "score": 0.884,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Crescent clot: chronic subdural",
+    "heard": "Crescent clot, chronic subjural.",
+    "score": 0.963,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000009515",
+  "beats": [
+   {
+    "say": "Plaque narrows the leg artery",
+    "heard": "Plack narrows the leg artery.",
+    "score": 0.898,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Walking: calf muscles starve",
+    "heard": "Walking, calf muscles starve.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Rest relieves it: claudication",
+    "heard": "Rest relieves it, claudication.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009516",
+  "beats": [
+   {
+    "say": "Narrowed renal artery: a bruit",
+    "heard": "Narrowed renal artery, a brute,",
+    "score": 0.96,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "The kidney senses low flow",
+    "heard": "the kidney senses low flow.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Blood pressure rises",
+    "heard": "Blood pressure rises.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009517",
+  "beats": [
+   {
+    "say": "Long flight: blood pools",
+    "heard": "Long flight, blood pools.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "A clot blocks the deep vein",
+    "heard": "A clot blocks the deep vein.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "The whole leg swells: DVT",
+    "heard": "The whole leg swells DVT.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009518",
+  "beats": [
+   {
+    "say": "Circulating volume falls",
+    "heard": "Circulating volume falls.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Pressure falls, the heart races",
+    "heard": "Pressure falls, the heart races.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Hypovolaemic shock follows",
+    "heard": "Hypovolemic shock follows.",
+    "score": 0.979,
+    "onset_error_ms": 20
+   }
+  ]
+ },
+ {
+  "qid": "Q000009519",
+  "beats": [
+   {
+    "say": "The infarct killed the whole wall",
+    "heard": "The infarct killed the whole wall,",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Thin scar bulges outward",
+    "heard": "thin scar bulges outward,",
+    "score": 1.0,
+    "onset_error_ms": 20
+   },
+   {
+    "say": "Ventricular aneurysm forms",
+    "heard": "ventricular aneurysm forms.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009520",
+  "beats": [
+   {
+    "say": "Painful wound, shallow breaths",
+    "heard": "Painful wound, shallow breaths,",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Basal air sacs collapse",
+    "heard": "basal air sacs collapse.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Day one fever: atelectasis",
+    "heard": "Day one fever, atelectasis.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009521",
+  "beats": [
+   {
+    "say": "A lung bleb bursts",
+    "heard": "A lung bled bursts.",
+    "score": 0.933,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Air leaks into the pleura",
+    "heard": "Air leaks into the pleura.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Lung collapses: pneumothorax",
+    "heard": "Lung collapses, pneumothorax.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009522",
+  "beats": [
+   {
+    "say": "An apical lung tumour grows",
+    "heard": "An apical lung tumor grows.",
+    "score": 0.978,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "It invades nerves at the apex",
+    "heard": "It invades nerves at the apex.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Horner's syndrome and shoulder pain",
+    "heard": "Horner's syndrome and shoulder pain.",
+    "score": 1.0,
+    "onset_error_ms": 40
+   }
+  ]
+ },
+ {
+  "qid": "Q000009523",
+  "beats": [
+   {
+    "say": "A mass squeezes the vena cava",
+    "heard": "A mass squeezes the vena cava.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Blood backs up from the head",
+    "heard": "Blood backs up from the head.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Face swells, chest veins distend",
+    "heard": "Face swells, chest veins distend.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009524",
+  "beats": [
+   {
+    "say": "A smooth tumour blocks a bronchus",
+    "heard": "A smooth tumor blocks a bronchus.",
+    "score": 0.982,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "The lower lobe collapses",
+    "heard": "The lower lobe collapses.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Hormones cause Cushingoid features",
+    "heard": "Hormones cause Cushingoid features.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009525",
+  "beats": [
+   {
+    "say": "Asbestos fibres reach the pleura",
+    "heard": "As best as fibers reach the pleura,",
+    "score": 0.929,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Tumour encases the lung",
+    "heard": "tumor encases the lung.",
+    "score": 0.974,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Bloody effusion: mesothelioma",
+    "heard": "Bloody effusion, mesothelioma.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   }
+  ]
+ },
+ {
+  "qid": "Q000009526",
+  "beats": [
+   {
+    "say": "Constipation raises pressure",
+    "heard": "Constipation raises pressure,",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Pouches push through weak points",
+    "heard": "pouches push through weak points,",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Inflamed diverticula bleed",
+    "heard": "inflamed diverticula bleed.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009527",
+  "beats": [
+   {
+    "say": "A tumour grows in the rectum",
+    "heard": "A tumor grows in the rectum.",
+    "score": 0.978,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Blood, mucus and tenesmus",
+    "heard": "Blood, mucus, and tennis miss.",
+    "score": 0.864,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Weight loss: rectal carcinoma",
+    "heard": "Weight loss, rectal carcinoma.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009528",
+  "beats": [
+   {
+    "say": "Helicobacter inflames the stomach",
+    "heard": "Helicobacter inflames the stomach.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Gastritis stimulates B cells",
+    "heard": "Gastritis stimulates B cells.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "B cells become gastric lymphoma",
+    "heard": "B cells become gastric lymphoma.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009529",
+  "beats": [
+   {
+    "say": "A duodenal ulcer perforates",
+    "heard": "A duodenol ulcer perforates.",
+    "score": 0.958,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Free gas under the diaphragm",
+    "heard": "Free gas under the diaphragm.",
+    "score": 1.0,
+    "onset_error_ms": 60
+   },
+   {
+    "say": "Rigid abdomen, shoulder pain",
+    "heard": "Rigid abdomen, shoulder pain.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ },
+ {
+  "qid": "Q000009530",
+  "beats": [
+   {
+    "say": "The terminal ileum is inflamed",
+    "heard": "The terminal ileum is inflamed.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Inflammation spans the whole wall",
+    "heard": "Inflammation spans the whole wall.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Crohn's, not appendicitis",
+    "heard": "Crohn's not appendicitis.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ]
+ }
+]

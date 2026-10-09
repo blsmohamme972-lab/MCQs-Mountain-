@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009512",
+ "file": "Q000009512.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11916,
+ "sha256": "0b8fdc1f746dc1a7329dc0b3176ed99836fa35ae68a6b0d3559dacbcf3547e07",
+ "track_ms": 6249,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2138,
+   "text": "Berry aneurysm at a bifurcation",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4191,
+   "text": "The weak wall bulges and bursts",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6149,
+   "text": "Subarachnoid haemorrhage",
+   "speed": 1.05
+  }
+ ]
+}

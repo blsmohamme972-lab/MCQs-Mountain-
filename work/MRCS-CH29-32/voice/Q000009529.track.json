@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009529",
+ "file": "Q000009529.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11893,
+ "sha256": "92b5f1e7e7eb4ac29452d8e6ed6a4dbf4e1ac02e3f31b1dd00bbff99797cab3c",
+ "track_ms": 6537,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1882,
+   "text": "A duodenal ulcer perforates",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3963,
+   "text": "Free gas under the diaphragm",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6437,
+   "text": "Rigid abdomen, shoulder pain",
+   "speed": 1.05
+  }
+ ]
+}

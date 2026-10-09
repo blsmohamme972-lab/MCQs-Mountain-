@@ -1,0 +1,27 @@
+{
+ "qid": "Q000009511",
+ "duration_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "speed": 1.05,
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "Lung cancer spreads to brain",
+   "say": "Lung cancer spreads to brain"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "A mass fills the closed skull",
+   "say": "A mass fills the closed skull"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "Headache and vomiting",
+   "say": "Headache and vomiting"
+  }
+ ]
+}
