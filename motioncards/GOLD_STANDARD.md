@@ -51,9 +51,10 @@ Good examples by type:
    python3 tools/motioncards.py package <exports…> --workspace work/<batch> --out dist/MCARDS_<ID>_r<N>.zip
    python3 tools/motioncards.py validate dist/MCARDS_<ID>_r<N>.zip
    ```
-8. **Review video.** Join `work/<batch>/voice/review/*.mp4` with ffmpeg into `dist/REVIEW_<batch>_….mp4`, then delete `voice/review/`.
+8. **Review video.** Join `work/<batch>/voice/review/*.mp4` with ffmpeg into one `REVIEW_<batch>_….mp4` **outside the repository**
+   (for example the session's scratch directory), then delete `voice/review/`. Never commit an MP4 (`.gitignore` excludes `*.mp4`).
 9. **Commit and deliver.** Commit the workspace, which is `input/`, `scenes/`, `selection.json`, and `voice/*.opus|*.json`. Commit the
-   ZIP and the review video to `dist/`. Open a PR. Send the owner the ZIP and the video.
+   ZIP to `dist/`. Open a PR. Send the owner the ZIP and the review video in the conversation; the video is never kept in the repository.
 10. **Rebuild or fix after delivery.** Raise `package_revision` in `selection.json`, set `"replace": true` in every changed scene,
     repackage as `_r<N+1>`, and delete the old ZIP from `dist/`.
 
