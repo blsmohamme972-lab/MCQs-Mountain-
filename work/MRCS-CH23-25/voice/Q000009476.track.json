@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009476",
+ "file": "Q000009476.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12016,
+ "sha256": "7beed77a1ec5bb1d2cca6477adf0d905288885e8fb03aab67080fccb317927b8",
+ "track_ms": 6450,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1829,
+   "text": "Steering wheel strikes the breast",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4303,
+   "text": "Damaged fat cells spill their fat",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6350,
+   "text": "Fat necrosis mimics cancer.",
+   "speed": 1.05
+  }
+ ]
+}

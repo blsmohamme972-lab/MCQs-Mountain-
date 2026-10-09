@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009472",
+ "file": "Q000009472.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11374,
+ "sha256": "8e5bd3544b3921fe52172109a15e67c0ecf8846f98eadd0818b4ad121197376c",
+ "track_ms": 6340,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1802,
+   "text": "Benign fibrocystic change.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4021,
+   "text": "Duct lining cells multiply",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6240,
+   "text": "Epithelial hyperplasia.",
+   "speed": 1.05
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009474",
+ "file": "Q000009474.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12642,
+ "sha256": "6c2b0040755def4e99987f0fcca0f1b7a98686fdcaa887a8ccbdde7da7e7ac23",
+ "track_ms": 6660,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2036,
+   "text": "Schistosoma eggs in the wall.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4303,
+   "text": "Lining switches to another cell type",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6560,
+   "text": "Metaplasia, not carcinoma",
+   "speed": 1.05
+  }
+ ]
+}

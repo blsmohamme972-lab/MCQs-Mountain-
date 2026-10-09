@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009477",
+ "file": "Q000009477.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12169,
+ "sha256": "8e37589471b8d80de8deed8122781c43fe18ee1d812b8bceeba1f96338857290",
+ "track_ms": 6729,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1871,
+   "text": "Slow, painless, soft lump.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3960,
+   "text": "It slips away under the finger",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6629,
+   "text": "Lipoma: benign fatty tumour",
+   "speed": 1.05
+  }
+ ]
+}

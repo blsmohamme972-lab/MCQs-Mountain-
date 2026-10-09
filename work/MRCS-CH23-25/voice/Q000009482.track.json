@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009482",
+ "file": "Q000009482.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11506,
+ "sha256": "c9c20b94cb697a87acdbef39bb78560575c85b8c635a33b59ce647b8c08e7a45",
+ "track_ms": 6089,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2148,
+   "text": "AIDS: the immune system is weak",
+   "speed": 1.077
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4239,
+   "text": "Reddish-brown vascular foot lesion",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 5989,
+   "text": "Kaposi's sarcoma",
+   "speed": 1.05
+  }
+ ]
+}

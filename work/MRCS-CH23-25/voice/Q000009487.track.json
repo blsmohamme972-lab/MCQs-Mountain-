@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009487",
+ "file": "Q000009487.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11701,
+ "sha256": "01fe7b318dc2399cc04a31defc26543ed826dbf028c84de957f72bcfa1bb561b",
+ "track_ms": 6542,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1556,
+   "text": "Tolerance spares self.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4216,
+   "text": "Trigger in a susceptible person",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6442,
+   "text": "Immune attack on the body itself",
+   "speed": 1.05
+  }
+ ]
+}

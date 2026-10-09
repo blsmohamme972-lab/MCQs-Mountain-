@@ -1,0 +1,420 @@
+{
+  "export_type": "kafu_mcq_text_export",
+  "schema_version": 1,
+  "exported_at": "2026-10-09T09:05:44.241Z",
+  "source": {
+    "kind": "published",
+    "source_worker": "content-worker",
+    "catalog_url": "https://kafu-content-1.blsmohamme97.workers.dev/catalog.json",
+    "catalog_sha256": "2c167ba71d13637ebb8b6b90a6d6f20a19ea3f6a378e80c5548843b074603d00",
+    "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/MRCS-PARTA-550-2E/v1/index.json",
+    "index_sha256": "510617f54ca807f9a37ce07bf2c40d83c7600153ceadea4b9b6453b1e8f9395b",
+    "snapshot_pinned": true,
+    "chapters": [
+      {
+        "chapter_id": 24,
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-24.v1.e94bf95594d9.json",
+        "image_url": null,
+        "sha256": "e94bf95594d99f7f9ebe9f117001147d1667852e6b0b3c1d27f11c4a91758fe6"
+      }
+    ]
+  },
+  "scope": {
+    "type": "chapter",
+    "book_id": "MRCS-PARTA-550-2E",
+    "book_title": "MRCS Part A: 550 SBAs and EMQs",
+    "book_version": 1,
+    "chapter_id": "24",
+    "chapter_title": "Neoplasia"
+  },
+  "book": {
+    "id": "MRCS-PARTA-550-2E",
+    "title": "MRCS Part A: 550 SBAs and EMQs",
+    "authors": [
+      "Pradip K Datta",
+      "Sherif Elsobky"
+    ],
+    "field": "medicine",
+    "specialty": "General Surgery",
+    "collection_type": "textbook",
+    "version": 1,
+    "questions": 263,
+    "cover_url": "https://kafu-content-1.blsmohamme97.workers.dev/covers/MRCS-PARTA-550-2E-v1.webp",
+    "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/MRCS-PARTA-550-2E/v1/index.json",
+    "chapters": [
+      {
+        "id": 24,
+        "title": "Neoplasia",
+        "questions": 7,
+        "qids": [
+          "Q000009477",
+          "Q000009478",
+          "Q000009479",
+          "Q000009480",
+          "Q000009481",
+          "Q000009482",
+          "Q000009483"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-24.v1.e94bf95594d9.json",
+        "image_url": null,
+        "bytes": 7340
+      }
+    ]
+  },
+  "chapters": [
+    {
+      "id": 24,
+      "title": "Neoplasia",
+      "questions": 7,
+      "qids": [
+        "Q000009477",
+        "Q000009478",
+        "Q000009479",
+        "Q000009480",
+        "Q000009481",
+        "Q000009482",
+        "Q000009483"
+      ],
+      "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-24.v1.e94bf95594d9.json",
+      "image_url": null,
+      "bytes": 7340
+    }
+  ],
+  "expected_question_count": 7,
+  "exported_question_count": 7,
+  "part": null,
+  "questions": [
+    {
+      "local_id": 169,
+      "chapter_id": 24,
+      "topic": "",
+      "type": "sba",
+      "source_number": "001",
+      "lead_in": "",
+      "stem": "A 35-year-old woman presents with a lump in the region of her right femoral triangle. This has gradually been growing in size over 2 years. It is 8 cm in diameter, neither painful nor tender, easily mobile and slips under the finger. What is the most likely diagnosis?",
+      "options": [
+        "Aneurysm of femoral artery",
+        "Secondary metastasis",
+        "Lipoma",
+        "Lymphoma",
+        "Soft tissue sarcoma"
+      ],
+      "answer": "C",
+      "answer_source": "book_key",
+      "explanation": "This patient has a lipoma on the front of her thigh, a benign tumour arising from the subcutaneous fat. The classical clinical features of the condition are: a slow-growing painless lump, non-tender, mobile and easily slips under the finger; referred to as the 'slipping' sign.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 168,
+      "source_pages": [
+        168
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009477",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 170,
+      "chapter_id": 24,
+      "topic": "",
+      "type": "sba",
+      "source_number": "002",
+      "lead_in": "",
+      "stem": "A 70-year-old man undergoes an anterior resection for rectal cancer. The histology from the specimen is reported as Dukes' stage B cancer. Which statement describes this stage?",
+      "options": [
+        "Confined to the bowel wall",
+        "Metastasised to liver",
+        "Metastasised to regional lymph nodes",
+        "Penetrating mucosa",
+        "Spread to perirectal (extra-rectal) tissues"
+      ],
+      "answer": "E",
+      "answer_source": "book_key",
+      "explanation": "Dukes' stage B denotes the spread of cancer to perirectal tissues beyond the rectal wall. In 1932 Cuthbert Dukes described the post-operative staging of rectal carcinoma in three stages (A to C) according to the spread.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 168,
+      "source_pages": [
+        168
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009478",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 171,
+      "chapter_id": 24,
+      "topic": "",
+      "type": "sba",
+      "source_number": "003",
+      "lead_in": "",
+      "stem": "A 60-year-old man underwent a total gastrectomy for carcinoma of the stomach. The histology of the surgical specimen shows a well-differentiated adenocarcinoma. Which of the following does this pathological feature indicate?",
+      "options": [
+        "Anaplastic growth",
+        "Fibrous infiltration",
+        "Increased mitosis",
+        "Marked nuclear pleomorphism",
+        "Original intestinal type epithelium"
+      ],
+      "answer": "E",
+      "answer_source": "book_key",
+      "explanation": "When a carcinoma is reported as being well differentiated, it signifies that the cells have a strong resemblance to the parent structure. Differentiation is a term used to mean the degree to which the tumour histologically resembles its cell of origin.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 168,
+      "source_pages": [
+        168
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009479",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 172,
+      "chapter_id": 24,
+      "topic": "",
+      "type": "sba",
+      "source_number": "004",
+      "lead_in": "",
+      "stem": "A 16-year-old boy has recently arrived in the UK for treatment of a Burkitt's lymphoma which is affecting the jaws. Which of the following is most likely aetiology of this malignant neoplasm?",
+      "options": [
+        "Aromatic amines",
+        "Bacteria",
+        "Genetically inherited",
+        "Ultraviolet radiation",
+        "Virus"
+      ],
+      "answer": "E",
+      "answer_source": "book_key",
+      "explanation": "The carcinogen in Burkitt's lymphoma is a virus discovered in 1964 by Michael Epstein, a pathologist, and Yvonne Barr, a virologist, and hence called Epstein-Barr virus (EBV).",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 169,
+      "source_pages": [
+        169
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009480",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 173,
+      "chapter_id": 24,
+      "topic": "",
+      "type": "sba",
+      "source_number": "005",
+      "lead_in": "",
+      "stem": "A 60-year-old man, who had a malignant tumour excised 5 years ago, presents with a painful, warm, pulsatile lump in the middle of his upper thigh. An X-ray of his femur shows a solitary lytic lesion on the upper shaft of the femur. Which of the following is the most likely malignant tumour that was resected 5 years ago?",
+      "options": [
+        "Colorectal carcinoma",
+        "Gastric carcinoma",
+        "Prostatic carcinoma",
+        "Renal cell carcinoma",
+        "Testicular teratoma"
+      ],
+      "answer": "D",
+      "answer_source": "book_key",
+      "explanation": "The primary tumour would have been a renal cell carcinoma (adenocarcinoma of the kidney). It is also known as Grawitz's tumour, hypernephroma or clear cell carcinoma.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 169,
+      "source_pages": [
+        169
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009481",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 174,
+      "chapter_id": 24,
+      "topic": "",
+      "type": "sba",
+      "source_number": "006",
+      "lead_in": "",
+      "stem": "A 56-year-old man, who has tested positive for AIDS, presents with a slightly painful, non-itchy, reddish-brown ulcerative skin lesion, 4 cm in diameter, on the dorsum of his left foot. This has been gradually increasing in size over 6 months. There is marked swelling of the foot and distal leg. What is the most likely diagnosis?",
+      "options": [
+        "Angiosarcoma",
+        "Kaposi's sarcoma",
+        "Lymphangiosarcoma",
+        "Secondary skin metastasis",
+        "Soft tissue sarcoma"
+      ],
+      "answer": "B",
+      "answer_source": "book_key",
+      "explanation": "As this patient is known to have AIDS, a vascular, ulcerative skin lesion in a limb is likely to be Kaposi's sarcoma which occurs in immunocompromised patients.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 169,
+      "source_pages": [
+        169
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009482",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 175,
+      "chapter_id": 24,
+      "topic": "",
+      "type": "sba",
+      "source_number": "007",
+      "lead_in": "",
+      "stem": "A 3-year-old boy is brought to the emergency department by his mother, who says that while bathing her son she noticed asymmetry of her child's abdomen, with the right side looking much larger. He also had three episodes of haematuria over the previous 4 months. On examination, there is a mass in the right side of the abdomen and loin. The right iris is absent. What is the most likely diagnosis?",
+      "options": [
+        "Ganglioneuroma",
+        "Hepatoblastoma",
+        "Neuroblastoma",
+        "Rhabdomyosarcoma of the urinary bladder",
+        "Wilms' tumour (nephroblastoma)"
+      ],
+      "answer": "E",
+      "answer_source": "book_key",
+      "explanation": "This child has a right Wilms' tumour, the most common abdominal solid tumour in children. Haematuria, a rare symptom, denotes that the growth has invaded the renal pelvis and is therefore at a locally advanced stage.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 169,
+      "source_pages": [
+        169
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009483",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    }
+  ],
+  "export_metadata": {
+    "question_integrity": [
+      {
+        "qid": "Q000009477",
+        "publisher_fingerprint": "8601b9873cbd5337adb26a53977261f6be05e07436a7b7622a8ba67a68cf62ae",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "8e5048e04d40e39ba0ab4a2eecad77973126a401d3c2c622513dc5b198e6f5fb",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009478",
+        "publisher_fingerprint": "287dd88d9a8cf44b3475e8970cf53d1cace6586a33a9dd067f063bde66267b5a",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "d41c68e189e6c9034491a48290b64a19b84e9042b882e1c309825eb4c402b50c",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009479",
+        "publisher_fingerprint": "d5ded764b23ef0868d3957f2deaecf8dc20b1e2bda45e0417f7e2d25e2611942",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "8652727f150bd096466d77ce444292b559bd8edbd45f383886dffe9f2f4d3d74",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009480",
+        "publisher_fingerprint": "705dc1e694674cbc1dfcc36b65e8887eed12157a7e9aabc3590a3dda8426110b",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "3b0c3b2de6f0a5c736c4ef7d57ec497d530908ad53245a1d28ddd90189e663b0",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009481",
+        "publisher_fingerprint": "bcbdd8989ac01df16397af6de1f8aa36113c9b3a8f03bf0e64811a15ed0d00c5",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "3bada8fdaadcaf9f5b3679aa6e8cef28ca1242818e0c0b647cc92b635adc91c9",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009482",
+        "publisher_fingerprint": "dba7bf4d27b91c3e14c8e2cae71d72420bfcddbb11ccbb66d5789294cca7a440",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "4a858b39f52201ed767e951977be580fe0ccec5dc00a90d605b07b59e94be3d6",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009483",
+        "publisher_fingerprint": "d96b7321b49a435d56e9dca77197275827568fc652efa77e1f5b25f2b2b3093f",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "813a8e297492f5a626f347e905b96330d43667184f3121673897cb92e757ac7d",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      }
+    ],
+    "image_bytes_embedded": false,
+    "image_hash_scope": "question_json_only",
+    "image_packs": [
+      {
+        "chapter_id": 24,
+        "url": null,
+        "entry_filenames": [],
+        "checksums_available": false,
+        "entry_checksums": {},
+        "bytes_embedded": false
+      }
+    ],
+    "unavailable_metadata": {
+      "image_entry_checksums": "not published in the chapter manifest",
+      "book_index": null
+    },
+    "content_hash": {
+      "algorithm": "SHA-256",
+      "canonicalization": "kafu-question-canonical-json-v1",
+      "covers": "complete original published question object",
+      "excludes": "export_metadata",
+      "verifies_image_bytes": false
+    },
+    "partition_policy": {
+      "max_part_bytes": 900000,
+      "split_boundary": "question_record",
+      "oversized_single_question": "kept as one record in its own part"
+    }
+  },
+  "ai_instructions": {
+    "retain_fields": [
+      "book_id",
+      "book_version",
+      "chapter_id",
+      "qid",
+      "publisher_fingerprint",
+      "content_hash"
+    ],
+    "image_dependent_content_requires_actual_images": true,
+    "do_not_guess_image_content": true,
+    "image_bytes_embedded": false
+  }
+}

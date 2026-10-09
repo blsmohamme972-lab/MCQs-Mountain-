@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009481",
+ "file": "Q000009481.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12094,
+ "sha256": "f447f49c15f34ba6416f634e235661565ba1668c3857f25561aa359159c589db",
+ "track_ms": 6749,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1780,
+   "text": "Kidney cancer, removed.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3935,
+   "text": "Cells spread in blood to bone",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6649,
+   "text": "Pulsatile secondary: renal.",
+   "speed": 1.05
+  }
+ ]
+}

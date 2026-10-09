@@ -1,0 +1,463 @@
+{
+  "export_type": "kafu_mcq_text_export",
+  "schema_version": 1,
+  "exported_at": "2026-10-09T09:05:29.954Z",
+  "source": {
+    "kind": "published",
+    "source_worker": "content-worker",
+    "catalog_url": "https://kafu-content-1.blsmohamme97.workers.dev/catalog.json",
+    "catalog_sha256": "2c167ba71d13637ebb8b6b90a6d6f20a19ea3f6a378e80c5548843b074603d00",
+    "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/MRCS-PARTA-550-2E/v1/index.json",
+    "index_sha256": "510617f54ca807f9a37ce07bf2c40d83c7600153ceadea4b9b6453b1e8f9395b",
+    "snapshot_pinned": true,
+    "chapters": [
+      {
+        "chapter_id": 23,
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-23.v1.e9b8268e43dd.json",
+        "image_url": null,
+        "sha256": "e9b8268e43dd33f65f0484103ef0e65ef9cb135a3639065fbe8cb15057e1b8ef"
+      }
+    ]
+  },
+  "scope": {
+    "type": "chapter",
+    "book_id": "MRCS-PARTA-550-2E",
+    "book_title": "MRCS Part A: 550 SBAs and EMQs",
+    "book_version": 1,
+    "chapter_id": "23",
+    "chapter_title": "Disorders of growth and differentiation"
+  },
+  "book": {
+    "id": "MRCS-PARTA-550-2E",
+    "title": "MRCS Part A: 550 SBAs and EMQs",
+    "authors": [
+      "Pradip K Datta",
+      "Sherif Elsobky"
+    ],
+    "field": "medicine",
+    "specialty": "General Surgery",
+    "collection_type": "textbook",
+    "version": 1,
+    "questions": 263,
+    "cover_url": "https://kafu-content-1.blsmohamme97.workers.dev/covers/MRCS-PARTA-550-2E-v1.webp",
+    "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/MRCS-PARTA-550-2E/v1/index.json",
+    "chapters": [
+      {
+        "id": 23,
+        "title": "Disorders of growth and differentiation",
+        "questions": 8,
+        "qids": [
+          "Q000009469",
+          "Q000009470",
+          "Q000009471",
+          "Q000009472",
+          "Q000009473",
+          "Q000009474",
+          "Q000009475",
+          "Q000009476"
+        ],
+        "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-23.v1.e9b8268e43dd.json",
+        "image_url": null,
+        "bytes": 8485
+      }
+    ]
+  },
+  "chapters": [
+    {
+      "id": 23,
+      "title": "Disorders of growth and differentiation",
+      "questions": 8,
+      "qids": [
+        "Q000009469",
+        "Q000009470",
+        "Q000009471",
+        "Q000009472",
+        "Q000009473",
+        "Q000009474",
+        "Q000009475",
+        "Q000009476"
+      ],
+      "url": "https://kafu-content-1.blsmohamme97.workers.dev/packs/MRCS-PARTA-550-2E/v1/chapter-23.v1.e9b8268e43dd.json",
+      "image_url": null,
+      "bytes": 8485
+    }
+  ],
+  "expected_question_count": 8,
+  "exported_question_count": 8,
+  "part": null,
+  "questions": [
+    {
+      "local_id": 161,
+      "chapter_id": 23,
+      "topic": "",
+      "type": "sba",
+      "source_number": "001",
+      "lead_in": "",
+      "stem": "A 72-year-old man presents with symptoms of bladder outflow obstruction. Ultrasound of the bladder shows a bladder diverticulum. Which of the following is most likely to have caused the formation of the diverticulum?",
+      "options": [
+        "Apoptosis of prostatic cells",
+        "Hyperplasia of bladder musculature",
+        "Hypertrophy of bladder musculature",
+        "Inflammatory response in bladder neck",
+        "Regeneration of transitional bladder epithelium"
+      ],
+      "answer": "C",
+      "answer_source": "book_key",
+      "explanation": "In this patient, there is hypertrophy of the urinary bladder musculature resulting in thickening. The stimulus to workload on the bladder muscle results in increased cellular size without cell replication, and the bladder muscle hypertrophies.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 160,
+      "source_pages": [
+        160
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009469",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 162,
+      "chapter_id": 23,
+      "topic": "",
+      "type": "sba",
+      "source_number": "002",
+      "lead_in": "",
+      "stem": "A 55-year-old woman has suffered from chronic renal failure for 10 years and has been on haemodialysis over the same period. During this 10-year period, she has developed renal osteodystrophy from secondary hyperparathyroidism. Which of the following is most likely to have caused the hyperparathyroidism?",
+      "options": [
+        "Carcinoma of parathyroid glands",
+        "Combined pattern growth of parathyroid glands",
+        "Hyperplasia of parathyroid glands",
+        "Multiplicative growth of parathyroid glands",
+        "Parathyroid adenoma"
+      ],
+      "answer": "C",
+      "answer_source": "book_key",
+      "explanation": "This patient has parathyroid hyperplasia where all four parathyroid glands are enlarged. The increase in size of the glands is due to proliferation of the chief cells (specialised parathyroid C-cells) in response to the renal failure.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 160,
+      "source_pages": [
+        160
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009470",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 163,
+      "chapter_id": 23,
+      "topic": "",
+      "type": "sba",
+      "source_number": "003",
+      "lead_in": "",
+      "stem": "A 52-year-old man underwent an emergency left hemicolectomy for an annular carcinoma of the upper descending colon. The resected specimen showed huge dilatation and thickening of the bowel proximal to the growth. Which of the following is most likely to have caused this change in the macroscopic appearance of the proximal large bowel?",
+      "options": [
+        "Hyperplasia of the bowel musculature",
+        "Hypertrophy of the bowel musculature",
+        "Inflammatory response from the carcinoma",
+        "Pseudomalignant epithelial hyperplasia",
+        "Regeneration of columnar intestinal epithelium"
+      ],
+      "answer": "B",
+      "answer_source": "book_key",
+      "explanation": "The growth disorder here is classical hypertrophy of the proximal large bowel. The stimulus here is mechanical, caused by prolonged obstruction from the annular colonic carcinoma.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 160,
+      "source_pages": [
+        160
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009471",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 164,
+      "chapter_id": 23,
+      "topic": "",
+      "type": "sba",
+      "source_number": "004",
+      "lead_in": "",
+      "stem": "A 45-year-old woman complained of a breast lump. After formal triple assessment she underwent surgical removal of the lump. Histology showed no malignancy with fibrocystic changes. Which of the following is most likely to have caused these changes?",
+      "options": [
+        "Apoptosis",
+        "Breast duct hypertrophy",
+        "Dystrophic calcification",
+        "Granulomatous mastitis",
+        "Hyperplasia of breast epithelium"
+      ],
+      "answer": "E",
+      "answer_source": "book_key",
+      "explanation": "The underlying pathology here is hyperplasia of the breast epithelium, aptly called epithelial hyperplasia (epitheliosis). Fibrocystic (non-proliferative) breast change may represent an exaggerated physiological response.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 161,
+      "source_pages": [
+        161
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009472",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 165,
+      "chapter_id": 23,
+      "topic": "",
+      "type": "sba",
+      "source_number": "005",
+      "lead_in": "",
+      "stem": "A 50-year-old man, a heavy smoker, suffers from long-standing gastro-oesophageal reflux disease. Histology of the lower one-third of the oesophagus shows Barrett's oesophagus with an associated mucosal abnormality. Which of the following is the most likely abnormality?",
+      "options": [
+        "Acceleration growth",
+        "Differentiation",
+        "Dysplasia",
+        "Heterotopia",
+        "Metaplasia"
+      ],
+      "answer": "C",
+      "answer_source": "book_key",
+      "explanation": "The abnormality here is dysplasia, a pre-malignant change occurring in the presence of Barrett's oesophagus which is columnar-lined lower oesophagus.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 161,
+      "source_pages": [
+        161
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009473",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 166,
+      "chapter_id": 23,
+      "topic": "",
+      "type": "sba",
+      "source_number": "006",
+      "lead_in": "",
+      "stem": "A 30-year-old man who recently arrived in the UK from North Africa presents with haematuria. Cystoscopy reveals the presence of bilharzial nodules with papillomas. Histology does not show a carcinoma but does show a mucosal abnormality. Which of the following is the most likely abnormality in the mucosa?",
+      "options": [
+        "Dysplasia",
+        "Granuloma",
+        "Metaplasia",
+        "Multiplicative growth",
+        "Pseudotubercle"
+      ],
+      "answer": "C",
+      "answer_source": "book_key",
+      "explanation": "This patient has metaplasia of the bladder from long-standing bilharzial infestation with Schistosoma haematobium. Presence of ova in the bladder submucosa results in cystitis glandularis and cystitis cystica.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 161,
+      "source_pages": [
+        161
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009474",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 167,
+      "chapter_id": 23,
+      "topic": "",
+      "type": "sba",
+      "source_number": "007",
+      "lead_in": "",
+      "stem": "A 65-year-old woman, on medical treatment for ulcerative colitis for 10 years, has been on annual colonoscopic surveillance. This is combined with random colonic biopsies. Which of the following changes is the pathologist looking for in the biopsies?",
+      "options": [
+        "Auxetic growth",
+        "Dysplasia",
+        "Hyperplasia",
+        "Metaplasia",
+        "Regeneration"
+      ],
+      "answer": "B",
+      "answer_source": "book_key",
+      "explanation": "In this instance, dysplasia is the change that the pathologist is particularly looking for. Ulcerative colitis is a diffuse mucosal disease with acute and chronic inflammatory cells.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 161,
+      "source_pages": [
+        161
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009475",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    },
+    {
+      "local_id": 168,
+      "chapter_id": 23,
+      "topic": "",
+      "type": "sba",
+      "source_number": "008",
+      "lead_in": "",
+      "stem": "A 40-year-old woman sustained a blunt injury to her breast as a result of a road traffic accident where the steering wheel struck her chest wall. Two weeks later she presents in the breast clinic with a breast lump at the site of the injury. Which of the following is the most likely diagnosis?",
+      "options": [
+        "Breast carcinoma",
+        "Duct ectasia",
+        "Fibroadenoma",
+        "Fat necrosis",
+        "Granulomatous mastitis"
+      ],
+      "answer": "D",
+      "answer_source": "book_key",
+      "explanation": "This woman classically developed fat necrosis, a condition that can easily be confused with breast carcinoma. The condition results from direct trauma to adipose tissue resulting in extracellular liberation of fat.",
+      "images": [],
+      "explanation_images": [],
+      "group_id": "",
+      "no_shuffle": false,
+      "source_page": 162,
+      "source_pages": [
+        162
+      ],
+      "flag": "",
+      "source_label": "MRCS Part A: 550 SBAs and EMQs || 2nd Edition",
+      "id": "Q000009476",
+      "book_id": "MRCS-PARTA-550-2E",
+      "status": "source_verified",
+      "version": 1
+    }
+  ],
+  "export_metadata": {
+    "question_integrity": [
+      {
+        "qid": "Q000009469",
+        "publisher_fingerprint": "78e77ecaeb77ac03c7e1b462c53d81b991bc1695b1b6ada99e3521140af00172",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "3213761e63dbf595b9e3c9dee89fcf97e551c482b9966c85875912f41bbb4ac2",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009470",
+        "publisher_fingerprint": "c3f9adc4ecb16b3fa2b5d2ea083f0a60f8d04605767f91e4d650750ac05ea98f",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "6a331539812957ee498e9f47d0299bfc0bda548b0c7f1381fc0c70803ed4930a",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009471",
+        "publisher_fingerprint": "6b7a785c82b4b1013434c5a517936d90d26b9bb57a2141cd6f9d79151e1aae8b",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "155ccbdcbb6233208ad10535588ff8f4452ed7ee26bf132f133665e37fa1ed2d",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009472",
+        "publisher_fingerprint": "3adc032794c45696c6351a9a726788294cd96e707a4ade5c1b800b0e99e37146",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "0ab43ca8ff87cf601b26edf9ce306d9df5ceb8c4c1fe4b70dbdeda37480cffe9",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009473",
+        "publisher_fingerprint": "8a3927e45f7f0f1cecaa8c25657685d2b3ee4cfef6bfe9fd4535b4a206386546",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "2315708dec5958ccf40e1686f4b0e9a419a0800a8396d641216255736493e209",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009474",
+        "publisher_fingerprint": "0944a558fa70568b5003a4368c9c30e9f9a6a35a3ca7e98fa4fb732b543b25ac",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "313a6d47b27cdaab1fa21d7371a3ed6aad7b84979a0578f2552be608accfb02a",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009475",
+        "publisher_fingerprint": "2e5c6084a82ab1d299f2c1b01df6f500534c193651cd875735c9641b019b2c93",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "57fd025c18395829079f480d0bf391c725a124aa91d35205d3208a80613bc97e",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      },
+      {
+        "qid": "Q000009476",
+        "publisher_fingerprint": "ca5919d6065d7ab4d000cf6e8671d09826b9e0d40696bbe1457cfef6dc7aaccc",
+        "publisher_fingerprint_source": "recomputed_from_publish_py_fingerprint_v1",
+        "content_hash": "c2edb36de11e51f62e0235f98841990f3747891aaf48324a8423446a6a9ab760",
+        "content_hash_algorithm": "SHA-256",
+        "content_hash_canonicalization": "kafu-question-canonical-json-v1"
+      }
+    ],
+    "image_bytes_embedded": false,
+    "image_hash_scope": "question_json_only",
+    "image_packs": [
+      {
+        "chapter_id": 23,
+        "url": null,
+        "entry_filenames": [],
+        "checksums_available": false,
+        "entry_checksums": {},
+        "bytes_embedded": false
+      }
+    ],
+    "unavailable_metadata": {
+      "image_entry_checksums": "not published in the chapter manifest",
+      "book_index": null
+    },
+    "content_hash": {
+      "algorithm": "SHA-256",
+      "canonicalization": "kafu-question-canonical-json-v1",
+      "covers": "complete original published question object",
+      "excludes": "export_metadata",
+      "verifies_image_bytes": false
+    },
+    "partition_policy": {
+      "max_part_bytes": 900000,
+      "split_boundary": "question_record",
+      "oversized_single_question": "kept as one record in its own part"
+    }
+  },
+  "ai_instructions": {
+    "retain_fields": [
+      "book_id",
+      "book_version",
+      "chapter_id",
+      "qid",
+      "publisher_fingerprint",
+      "content_hash"
+    ],
+    "image_dependent_content_requires_actual_images": true,
+    "do_not_guess_image_content": true,
+    "image_bytes_embedded": false
+  }
+}

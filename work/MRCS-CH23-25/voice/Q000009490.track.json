@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009490",
+ "file": "Q000009490.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12078,
+ "sha256": "40ad09c6729c86ad3de8460c630df00204e8b6fded7e7b0edf96875d3960b404",
+ "track_ms": 6638,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2122,
+   "text": "Corneal graft: privileged site.",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3785,
+   "text": "Immune cells still arrive",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6538,
+   "text": "Damaging responses are suppressed",
+   "speed": 1.05
+  }
+ ]
+}

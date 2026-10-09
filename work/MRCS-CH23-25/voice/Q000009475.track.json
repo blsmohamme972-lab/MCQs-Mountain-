@@ -1,0 +1,33 @@
+{
+ "qid": "Q000009475",
+ "file": "Q000009475.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 13198,
+ "sha256": "d407a78e69bfa47e021447acdfac0fdf148b01353dd0f97ea3d76ae280e3f0b8",
+ "track_ms": 6746,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2169,
+   "text": "Ten years of ulcerative colitis",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4436,
+   "text": "Colonoscopy, random biopsies.",
+   "speed": 1.117
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6646,
+   "text": "The pathologist looks for dysplasia",
+   "speed": 1.05
+  }
+ ]
+}
