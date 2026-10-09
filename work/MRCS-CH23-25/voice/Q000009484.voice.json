@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Spleen clears encapsulated bacteria",
-   "say": "Spleen clears bacteria."
+   "caption": "Spleen macrophages eat bacteria",
+   "say": "Spleen macrophages eat bacteria"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Ruptured spleen is removed",
-   "say": "Ruptured spleen is removed"
+   "caption": "The ruptured spleen is removed",
+   "say": "The ruptured spleen is removed"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "That defence is lost",
-   "say": "That defence is lost"
+   "caption": "Encapsulated bacteria now survive",
+   "say": "Encapsulated bacteria now survive"
   }
  ]
 }

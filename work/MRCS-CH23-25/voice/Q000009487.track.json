@@ -2,9 +2,9 @@
  "qid": "Q000009487",
  "file": "Q000009487.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 11701,
- "sha256": "01fe7b318dc2399cc04a31defc26543ed826dbf028c84de957f72bcfa1bb561b",
- "track_ms": 6542,
+ "bytes": 12003,
+ "sha256": "5d28fc6493521cfb6d9428f13e9b3097f3572b203a6a5c585178c26d45c4e58a",
+ "track_ms": 6270,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
@@ -13,20 +13,20 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1556,
-   "text": "Tolerance spares self.",
-   "speed": 1.05
+   "end_ms": 2148,
+   "text": "Tolerance: T cells ignore self",
+   "speed": 1.11
   },
   {
    "t_ms": 2420,
-   "end_ms": 4216,
-   "text": "Trigger in a susceptible person",
+   "end_ms": 4297,
+   "text": "Genes plus trigger break tolerance",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6442,
-   "text": "Immune attack on the body itself",
+   "end_ms": 6170,
+   "text": "Immune attack on own joint",
    "speed": 1.05
   }
  ]

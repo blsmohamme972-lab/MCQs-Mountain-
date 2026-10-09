@@ -2,9 +2,9 @@
  "qid": "Q000009488",
  "file": "Q000009488.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 11748,
- "sha256": "3d22141dda5f698d1ea1ca52effea8a9e4c2169d75791198f5000a2e7a6020f5",
- "track_ms": 6554,
+ "bytes": 12580,
+ "sha256": "eafa6474d5c49c464c81c0b5acf81fea8e196b3fff18831f7b945476086b6bbe",
+ "track_ms": 6511,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
@@ -13,20 +13,20 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1354,
-   "text": "Infection begins",
+   "end_ms": 2133,
+   "text": "Infection: B cells respond.",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 4398,
-   "text": "IgM: the first antibody made",
+   "end_ms": 4410,
+   "text": "IgM rises first, then falls",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6454,
-   "text": "Short-lived, early antibody",
+   "end_ms": 6411,
+   "text": "IgM: early and short-lived",
    "speed": 1.05
   }
  ]

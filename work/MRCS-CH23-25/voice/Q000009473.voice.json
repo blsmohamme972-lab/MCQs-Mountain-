@@ -8,14 +8,14 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Reflux: Barrett's columnar lining",
-   "say": "Reflux: Barrett's columnar lining"
+   "caption": "Acid reflux, Barrett's lining",
+   "say": "Acid reflux, Barrett's lining"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Cells disorganise, nuclei enlarge",
-   "say": "Cells disorganise, nuclei grow."
+   "caption": "Cells disorder, nuclei enlarge",
+   "say": "Cells disorder, nuclei enlarge"
   },
   {
    "start_ms": 4600,

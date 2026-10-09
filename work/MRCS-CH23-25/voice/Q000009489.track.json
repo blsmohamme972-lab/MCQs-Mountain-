@@ -2,9 +2,9 @@
  "qid": "Q000009489",
  "file": "Q000009489.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 11294,
- "sha256": "2a99c10c4cf437406b8738be20fa9c9fab174bb0e40b0e778888b395458417b8",
- "track_ms": 6457,
+ "bytes": 12978,
+ "sha256": "6ffac6afd25b5d95d8d52e822f9d2764311701d136f777f13c55705df653e075",
+ "track_ms": 6719,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
@@ -13,21 +13,21 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1700,
-   "text": "Tuberculin into the skin.",
+   "end_ms": 2079,
+   "text": "Six needles prick in tuberculin",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 3908,
-   "text": "T cells gather at the site",
+   "end_ms": 4361,
+   "text": "T cells gather around tuberculin",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6357,
-   "text": "T-cell response to TB.",
-   "speed": 1.05
+   "end_ms": 6619,
+   "text": "Raised ring: T-cell response.",
+   "speed": 1.095
   }
  ]
 }

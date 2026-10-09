@@ -2,9 +2,9 @@
  "qid": "Q000009483",
  "file": "Q000009483.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 12424,
- "sha256": "26cc015f19be0b0a5f53663aa10e21a4ff255ab408cb02dce03be06eaf796244",
- "track_ms": 6692,
+ "bytes": 12698,
+ "sha256": "afd433058f0c5f5e3fa34a98f25659223ad814eee24a081a8aa7ee13a137761c",
+ "track_ms": 6654,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
@@ -13,20 +13,20 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1876,
-   "text": "Child with a right loin mass",
+   "end_ms": 1941,
+   "text": "Young boy: right flank mass.",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 4154,
-   "text": "Haematuria, and no iris.",
+   "end_ms": 4436,
+   "text": "Pelvis invaded: blood in urine",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6592,
-   "text": "Wilms' tumour (nephroblastoma)",
+   "end_ms": 6554,
+   "text": "Absent iris: Wilms' tumour",
    "speed": 1.05
   }
  ]

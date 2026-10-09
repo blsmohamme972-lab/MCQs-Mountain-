@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Heaf test: tuberculin into the skin",
-   "say": "Tuberculin into the skin."
+   "caption": "Six needles prick in tuberculin",
+   "say": "Six needles prick in tuberculin"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "T cells gather at the site",
-   "say": "T cells gather at the site"
+   "caption": "T cells gather around tuberculin",
+   "say": "T cells gather around tuberculin"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "T-cell response to the TB bacillus",
-   "say": "T-cell response to TB."
+   "caption": "Raised ring: a T-cell response",
+   "say": "Raised ring: T-cell response."
   }
  ]
 }

@@ -8,14 +8,14 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Renal failure drives the parathyroids",
-   "say": "Kidney failure drives them."
+   "caption": "Kidneys fail for years",
+   "say": "Kidneys fail for years"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Chief cells multiply: more cells",
-   "say": "Chief cells multiply."
+   "caption": "Chief cells multiply, same size",
+   "say": "Chief cells multiply, same size"
   },
   {
    "start_ms": 4600,

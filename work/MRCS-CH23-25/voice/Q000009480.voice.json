@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Burkitt's lymphoma in the jaw",
-   "say": "Burkitt's lymphoma in the jaw"
+   "caption": "Burkitt's lymphoma of the jaw",
+   "say": "Burkitt's lymphoma of the jaw"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Its cause: Epstein-Barr virus",
-   "say": "Its cause: Epstein-Barr virus"
+   "caption": "Epstein-Barr virus infects B cells",
+   "say": "EBV infects B cells."
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "A virus is the carcinogen",
-   "say": "A virus is the carcinogen"
+   "caption": "The cause is a virus",
+   "say": "The cause is a virus"
   }
  ]
 }

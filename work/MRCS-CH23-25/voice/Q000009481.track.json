@@ -2,9 +2,9 @@
  "qid": "Q000009481",
  "file": "Q000009481.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 12094,
- "sha256": "f447f49c15f34ba6416f634e235661565ba1668c3857f25561aa359159c589db",
- "track_ms": 6749,
+ "bytes": 12527,
+ "sha256": "9189a059d0fa6788a4912aa09249528fdef681ef76c9d28a49dacd17c8105641",
+ "track_ms": 6664,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
@@ -13,20 +13,20 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1780,
-   "text": "Kidney cancer, removed.",
+   "end_ms": 2138,
+   "text": "Kidney cancer removed years ago",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 3935,
-   "text": "Cells spread in blood to bone",
+   "end_ms": 4041,
+   "text": "Cancer cells spread through blood",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6649,
-   "text": "Pulsatile secondary: renal.",
+   "end_ms": 6564,
+   "text": "Pulsatile deposit: renal.",
    "speed": 1.05
   }
  ]

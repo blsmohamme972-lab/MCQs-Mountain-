@@ -2,9 +2,9 @@
  "qid": "Q000009471",
  "file": "Q000009471.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 12461,
- "sha256": "b1c9add7087743c4018cf8c78e4b69ed0e1e1276982b1c22ff1bd61f881a853d",
- "track_ms": 6399,
+ "bytes": 11842,
+ "sha256": "5698c23c1cf1389aa005204f69e71ea738d21f9d6dcca1f8635927dbce5f6c5b",
+ "track_ms": 6708,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
@@ -13,21 +13,21 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 2164,
-   "text": "Annular cancer narrows the colon",
+   "end_ms": 1833,
+   "text": "Tumour ring blocks the colon",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 4314,
-   "text": "Bowel above pushes against the block",
+   "end_ms": 3801,
+   "text": "Same cells, just bigger",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6299,
-   "text": "Hypertrophy: thick wall.",
-   "speed": 1.05
+   "end_ms": 6608,
+   "text": "Hypertrophy: thick, wide bowel.",
+   "speed": 1.125
   }
  ]
 }

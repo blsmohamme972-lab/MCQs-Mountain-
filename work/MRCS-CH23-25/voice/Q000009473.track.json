@@ -2,8 +2,8 @@
  "qid": "Q000009473",
  "file": "Q000009473.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 13253,
- "sha256": "6a5b2d975cae63162247003c2d548bbf3c09add4605c1245b1e45eb9e3d2d58c",
+ "bytes": 13168,
+ "sha256": "ff9c486cf3d9b90d1e5e6a2c334651a55517e35468ccfde5f0a009d7d121894b",
  "track_ms": 6744,
  "card_ms": 7000,
  "voice": "af_heart",
@@ -13,15 +13,15 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 2171,
-   "text": "Reflux: Barrett's columnar lining",
-   "speed": 1.187
+   "end_ms": 2117,
+   "text": "Acid reflux, Barrett's lining",
+   "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 4457,
-   "text": "Cells disorganise, nuclei grow.",
-   "speed": 1.081
+   "end_ms": 4393,
+   "text": "Cells disorder, nuclei enlarge",
+   "speed": 1.05
   },
   {
    "t_ms": 4720,

@@ -2,9 +2,9 @@
  "qid": "Q000009484",
  "file": "Q000009484.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 10544,
- "sha256": "67ed51c35331a3dd71404e7318ea9ffd948ddeb07eb6cbc3bf447b104271ce58",
- "track_ms": 6035,
+ "bytes": 12765,
+ "sha256": "2454e222e3eef02d6bfc67d4b81d3a8f43797f30ef6deea4621004e5f84ec75a",
+ "track_ms": 6744,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
@@ -13,21 +13,21 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1716,
-   "text": "Spleen clears bacteria.",
-   "speed": 1.05
+   "end_ms": 2169,
+   "text": "Spleen macrophages eat bacteria",
+   "speed": 1.095
   },
   {
    "t_ms": 2420,
-   "end_ms": 3993,
-   "text": "Ruptured spleen is removed",
+   "end_ms": 4073,
+   "text": "The ruptured spleen is removed",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 5935,
-   "text": "That defence is lost",
-   "speed": 1.05
+   "end_ms": 6644,
+   "text": "Encapsulated bacteria now survive",
+   "speed": 1.2
   }
  ]
 }

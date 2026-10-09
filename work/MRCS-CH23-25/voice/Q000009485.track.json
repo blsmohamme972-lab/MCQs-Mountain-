@@ -2,9 +2,9 @@
  "qid": "Q000009485",
  "file": "Q000009485.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 12698,
- "sha256": "1f6fef14c4bd0b86c389d6b1809000018c7ad9c31567f744e9cac35eb5094c86",
- "track_ms": 6574,
+ "bytes": 11811,
+ "sha256": "20d587bc54f8f4452122f52feaeb22baa1ce3e7236f3ca299d9ab4df9787ad31",
+ "track_ms": 6552,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
@@ -13,20 +13,20 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1940,
-   "text": "HIV kills helper cells.",
+   "end_ms": 1685,
+   "text": "Helper T cells give help",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 4447,
-   "text": "Helpers activate CD8 and B.",
-   "speed": 1.076
+   "end_ms": 4110,
+   "text": "HIV kills helper cells.",
+   "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6474,
-   "text": "Adaptive immunity is impaired",
+   "end_ms": 6452,
+   "text": "Adaptive response is impaired",
    "speed": 1.05
   }
  ]

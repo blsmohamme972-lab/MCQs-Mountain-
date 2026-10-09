@@ -2,9 +2,9 @@
  "qid": "Q000009469",
  "file": "Q000009469.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 13234,
- "sha256": "92148299ded1d418d60f3ef4ee7735c146472bd254bd603323377a73dd374776",
- "track_ms": 6719,
+ "bytes": 11607,
+ "sha256": "8d69160b707f80e9f62593c99f84563d1d8e4547681f20d4cf1d6cecab585314",
+ "track_ms": 6463,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
@@ -13,20 +13,20 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 2177,
-   "text": "Outflow blocked: bladder strains.",
+   "end_ms": 2064,
+   "text": "Outflow blocked, bladder strains",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 4388,
-   "text": "Muscle cells grow bigger, not more",
+   "end_ms": 3801,
+   "text": "Same cells, just bigger",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6619,
-   "text": "Hypertrophy: thick wall, pouch.",
+   "end_ms": 6363,
+   "text": "Hypertrophy: then a pouch.",
    "speed": 1.05
   }
  ]

@@ -2,9 +2,9 @@
  "qid": "Q000009472",
  "file": "Q000009472.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 11374,
- "sha256": "8e5bd3544b3921fe52172109a15e67c0ecf8846f98eadd0818b4ad121197376c",
- "track_ms": 6340,
+ "bytes": 11312,
+ "sha256": "780af25f65ac12caad4cd6125609d454f58660121061dbd4afb34a7e0fd760c2",
+ "track_ms": 6687,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
@@ -13,21 +13,21 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1802,
-   "text": "Benign fibrocystic change.",
+   "end_ms": 1403,
+   "text": "A lump in the breast",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 4021,
-   "text": "Duct lining cells multiply",
+   "end_ms": 3866,
+   "text": "Lining cells multiply.",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6240,
-   "text": "Epithelial hyperplasia.",
-   "speed": 1.05
+   "end_ms": 6587,
+   "text": "Hyperplasia, cysts, no cancer",
+   "speed": 1.148
   }
  ]
 }

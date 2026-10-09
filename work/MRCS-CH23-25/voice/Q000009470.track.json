@@ -2,8 +2,8 @@
  "qid": "Q000009470",
  "file": "Q000009470.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 11814,
- "sha256": "5d88c302b5bf0b47bb76b8121971753f51fb1bc11100c4a99dec18c69f098261",
+ "bytes": 12466,
+ "sha256": "ef61d186a5f2cee009d494d0543bf6c40ad3a99797407d637d24b3aa2225cf80",
  "track_ms": 6741,
  "card_ms": 7000,
  "voice": "af_heart",
@@ -13,14 +13,14 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1759,
-   "text": "Kidney failure drives them.",
+   "end_ms": 1610,
+   "text": "Kidneys fail for years",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 3816,
-   "text": "Chief cells multiply.",
+   "end_ms": 4446,
+   "text": "Chief cells multiply, same size",
    "speed": 1.05
   },
   {

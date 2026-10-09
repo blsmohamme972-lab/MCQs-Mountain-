@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Tolerance normally spares self tissue",
-   "say": "Tolerance spares self."
+   "caption": "Tolerance: T cells ignore self",
+   "say": "Tolerance: T cells ignore self"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Trigger in a susceptible person",
-   "say": "Trigger in a susceptible person"
+   "caption": "Genes plus trigger break tolerance",
+   "say": "Genes plus trigger break tolerance"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Immune attack on the body itself",
-   "say": "Immune attack on the body itself"
+   "caption": "Immune attack on own joint",
+   "say": "Immune attack on own joint"
   }
  ]
 }

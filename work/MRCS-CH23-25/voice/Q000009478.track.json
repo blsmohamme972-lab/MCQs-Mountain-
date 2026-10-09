@@ -2,9 +2,9 @@
  "qid": "Q000009478",
  "file": "Q000009478.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 11804,
- "sha256": "8d83b2a8a16d7bb271115b6feaad4362592a1daced9ccad6798a42937dca6ec9",
- "track_ms": 6276,
+ "bytes": 11314,
+ "sha256": "d556989680c09c2b0a6a8ee436d3c7b144dd39e6c8023083d9ac971992105989",
+ "track_ms": 6347,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
@@ -13,20 +13,20 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 2026,
-   "text": "Stage A: confined to the wall",
+   "end_ms": 1769,
+   "text": "Cancer grows within the wall",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 4372,
-   "text": "Stage B: perirectal tissue.",
+   "end_ms": 4062,
+   "text": "It breaks into perirectal fat",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6176,
-   "text": "Nodes would make it stage C",
+   "end_ms": 6247,
+   "text": "Dukes B: beyond the wall",
    "speed": 1.05
   }
  ]

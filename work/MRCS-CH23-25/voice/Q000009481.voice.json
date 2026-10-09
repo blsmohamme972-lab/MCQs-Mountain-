@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Kidney cancer removed 5 years ago",
-   "say": "Kidney cancer, removed."
+   "caption": "Kidney cancer removed years ago",
+   "say": "Kidney cancer removed years ago"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Cells spread in blood to bone",
-   "say": "Cells spread in blood to bone"
+   "caption": "Cancer cells spread through blood",
+   "say": "Cancer cells spread through blood"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Pulsatile lytic secondary: renal",
-   "say": "Pulsatile secondary: renal."
+   "caption": "Pulsatile lytic deposit: renal cancer",
+   "say": "Pulsatile deposit: renal."
   }
  ]
 }

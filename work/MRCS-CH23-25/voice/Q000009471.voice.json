@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Annular cancer narrows the colon",
-   "say": "Annular cancer narrows the colon"
+   "caption": "Tumour ring blocks the colon",
+   "say": "Tumour ring blocks the colon"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Bowel above pushes against the block",
-   "say": "Bowel above pushes against the block"
+   "caption": "Same cells, just bigger",
+   "say": "Same cells, just bigger"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Hypertrophy: dilated, thick-walled bowel",
-   "say": "Hypertrophy: thick wall."
+   "caption": "Hypertrophy: dilated, thick bowel",
+   "say": "Hypertrophy: thick, wide bowel."
   }
  ]
 }

@@ -2,8 +2,8 @@
  "qid": "Q000009476",
  "file": "Q000009476.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 12016,
- "sha256": "7beed77a1ec5bb1d2cca6477adf0d905288885e8fb03aab67080fccb317927b8",
+ "bytes": 11685,
+ "sha256": "4c333511271b88c5f0a074dd0ac07655b7f763ead44211f3de1549592ac106aa",
  "track_ms": 6450,
  "card_ms": 7000,
  "voice": "af_heart",
@@ -13,14 +13,14 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1829,
-   "text": "Steering wheel strikes the breast",
+   "end_ms": 1685,
+   "text": "Steering wheel hits breast",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 4303,
-   "text": "Damaged fat cells spill their fat",
+   "end_ms": 4258,
+   "text": "Fat cells burst, fat spills",
    "speed": 1.05
   },
   {

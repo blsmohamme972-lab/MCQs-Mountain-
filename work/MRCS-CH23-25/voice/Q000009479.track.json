@@ -2,9 +2,9 @@
  "qid": "Q000009479",
  "file": "Q000009479.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 12884,
- "sha256": "f5c24888a3acb16a91876bfe965acc1341f3d4b2a7454f3b77ff0696b37f2ab3",
- "track_ms": 6739,
+ "bytes": 11732,
+ "sha256": "3a0b8a584d69c8f24e5ddffb4dfde32dd95206723c35501da46e0e77bec89fe1",
+ "track_ms": 6314,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
@@ -13,20 +13,20 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 2058,
-   "text": "Origin: intestinal glands.",
+   "end_ms": 2031,
+   "text": "The cell of origin: glands",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 4297,
-   "text": "Well differentiated: similar.",
+   "end_ms": 4057,
+   "text": "Tumour cells still form glands",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6639,
-   "text": "It resembles its parent epithelium",
+   "end_ms": 6214,
+   "text": "It resembles its origin.",
    "speed": 1.05
   }
  ]

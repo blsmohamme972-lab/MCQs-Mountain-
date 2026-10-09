@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Origin: intestinal-type glands",
-   "say": "Origin: intestinal glands."
+   "caption": "The cell of origin: glands",
+   "say": "The cell of origin: glands"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Well differentiated: still looks similar",
-   "say": "Well differentiated: similar."
+   "caption": "Tumour cells still form glands",
+   "say": "Tumour cells still form glands"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "It resembles its parent epithelium",
-   "say": "It resembles its parent epithelium"
+   "caption": "Well differentiated resembles its origin",
+   "say": "It resembles its origin."
   }
  ]
 }

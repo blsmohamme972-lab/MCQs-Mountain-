@@ -2,9 +2,9 @@
  "qid": "Q000009480",
  "file": "Q000009480.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 12104,
- "sha256": "a7849152bd1c9538e5fecf056fbf972ad03d1421aff29a9c763d5dcf85bb5c63",
- "track_ms": 6527,
+ "bytes": 11003,
+ "sha256": "f9f5d39bd88c1306bd997a6a2dad25fb9cb7a02851081bd5a3a745abc6e66656",
+ "track_ms": 6062,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
@@ -13,20 +13,20 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1814,
-   "text": "Burkitt's lymphoma in the jaw",
+   "end_ms": 1857,
+   "text": "Burkitt's lymphoma of the jaw",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 4292,
-   "text": "Its cause: Epstein-Barr virus",
+   "end_ms": 4073,
+   "text": "EBV infects B cells.",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6427,
-   "text": "A virus is the carcinogen",
+   "end_ms": 5962,
+   "text": "The cause is a virus",
    "speed": 1.05
   }
  ]

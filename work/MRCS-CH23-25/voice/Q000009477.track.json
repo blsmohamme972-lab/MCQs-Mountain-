@@ -2,8 +2,8 @@
  "qid": "Q000009477",
  "file": "Q000009477.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 12169,
- "sha256": "8e37589471b8d80de8deed8122781c43fe18ee1d812b8bceeba1f96338857290",
+ "bytes": 11813,
+ "sha256": "2c93f1786fa9e8648f37804ac4a01cad16dc1feaa369ae1cff3ebd2e3a529717",
  "track_ms": 6729,
  "card_ms": 7000,
  "voice": "af_heart",
@@ -13,14 +13,14 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1871,
-   "text": "Slow, painless, soft lump.",
+   "end_ms": 1925,
+   "text": "Slow, painless lump in thigh",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 3960,
-   "text": "It slips away under the finger",
+   "end_ms": 3642,
+   "text": "It slips under the finger",
    "speed": 1.05
   },
   {

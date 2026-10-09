@@ -8,19 +8,19 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Steering wheel strikes the breast",
-   "say": "Steering wheel strikes the breast"
+   "caption": "Steering wheel hits breast",
+   "say": "Steering wheel hits breast"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Damaged fat cells spill their fat",
-   "say": "Damaged fat cells spill their fat"
+   "caption": "Fat cells burst, fat spills",
+   "say": "Fat cells burst, fat spills"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Fat necrosis: a lump mimicking cancer",
+   "caption": "Fat necrosis: lump mimics cancer",
    "say": "Fat necrosis mimics cancer."
   }
  ]

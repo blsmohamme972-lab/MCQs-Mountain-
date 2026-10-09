@@ -3,20 +3,20 @@
   "qid": "Q000009469",
   "beats": [
    {
-    "say": "Outflow blocked: bladder strains.",
-    "heard": "Outflow blocked, bladder strains,",
+    "say": "Outflow blocked, bladder strains",
+    "heard": "Outflow -blocked bladder strains.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 0
    },
    {
-    "say": "Muscle cells grow bigger, not more",
-    "heard": "muscle cells grow bigger, not more.",
+    "say": "Same cells, just bigger",
+    "heard": "Same cells, just bigger.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 20
    },
    {
-    "say": "Hypertrophy: thick wall, pouch.",
-    "heard": "Hypertrophy, thick wall pouch.",
+    "say": "Hypertrophy: then a pouch.",
+    "heard": "Hypertrophy, then a pouch.",
     "score": 1.0,
     "onset_error_ms": 20
    }
@@ -26,20 +26,20 @@
   "qid": "Q000009470",
   "beats": [
    {
-    "say": "Kidney failure drives them.",
-    "heard": "kidney failure drives them.",
+    "say": "Kidneys fail for years",
+    "heard": "Kidneys fail for years.",
     "score": 1.0,
     "onset_error_ms": 0
    },
    {
-    "say": "Chief cells multiply.",
-    "heard": "Chief cells multiply.",
+    "say": "Chief cells multiply, same size",
+    "heard": "Chief cells multiply, same size,",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
     "say": "Hyperplasia: all four enlarge.",
-    "heard": "Hyperplasia, all four in large.",
+    "heard": "hyperplasia, all four in large.",
     "score": 0.96,
     "onset_error_ms": 20
    }
@@ -49,20 +49,20 @@
   "qid": "Q000009471",
   "beats": [
    {
-    "say": "Annular cancer narrows the colon",
-    "heard": "Annular cancer narrows the colon.",
-    "score": 1.0,
+    "say": "Tumour ring blocks the colon",
+    "heard": "Tumor ring blocks the colon.",
+    "score": 0.979,
     "onset_error_ms": 10
    },
    {
-    "say": "Bowel above pushes against the block",
-    "heard": "Bowel above pushes against the block.",
+    "say": "Same cells, just bigger",
+    "heard": "Same cells, just bigger.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 20
    },
    {
-    "say": "Hypertrophy: thick wall.",
-    "heard": "Hypertrophy, thick wall. Well.",
+    "say": "Hypertrophy: thick, wide bowel.",
+    "heard": "Hypertrophy, thick wide bowel.",
     "score": 1.0,
     "onset_error_ms": 10
    }
@@ -72,22 +72,22 @@
   "qid": "Q000009472",
   "beats": [
    {
-    "say": "Benign fibrocystic change.",
-    "heard": "benign fibrocystic change.",
+    "say": "A lump in the breast",
+    "heard": "Alump in the breast.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Duct lining cells multiply",
-    "heard": "Duck lining cells multiply.",
-    "score": 0.957,
+    "say": "Lining cells multiply.",
+    "heard": "Lining cells multiply.",
+    "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Epithelial hyperplasia.",
-    "heard": "Epithelial hyperplasia",
-    "score": 1.0,
-    "onset_error_ms": 10
+    "say": "Hyperplasia, cysts, no cancer",
+    "heard": "Hyperplasia assists no cancer.",
+    "score": 0.88,
+    "onset_error_ms": 20
    }
   ]
  },
@@ -95,21 +95,21 @@
   "qid": "Q000009473",
   "beats": [
    {
-    "say": "Reflux: Barrett's columnar lining",
-    "heard": "Reflex Barrett's columnar lining.",
-    "score": 0.964,
+    "say": "Acid reflux, Barrett's lining",
+    "heard": "Acid reflux, barots lining,",
+    "score": 0.913,
     "onset_error_ms": 10
    },
    {
-    "say": "Cells disorganise, nuclei grow.",
-    "heard": "Cells disorganize, nuclei grow.",
-    "score": 0.962,
+    "say": "Cells disorder, nuclei enlarge",
+    "heard": "cells disorder, nuclei and large.",
+    "score": 0.943,
     "onset_error_ms": 20
    },
    {
     "say": "Dysplasia: a pre-malignant change",
-    "heard": "Displasia, a premolignant change.",
-    "score": 0.929,
+    "heard": "Displasia, a premalignant change.",
+    "score": 0.964,
     "onset_error_ms": 0
    }
   ]
@@ -118,14 +118,14 @@
   "qid": "Q000009474",
   "beats": [
    {
-    "say": "Schistosoma eggs in the wall.",
-    "heard": "Schistosoma eggs in the wall,",
-    "score": 1.0,
-    "onset_error_ms": 20
+    "say": "Bilharzia eggs lodge in bladder",
+    "heard": "Bilharsia, eggs, lodge, and bladder,",
+    "score": 0.909,
+    "onset_error_ms": 0
    },
    {
-    "say": "Lining switches to another cell type",
-    "heard": "lining switches to another cell type.",
+    "say": "Lining switches to glandular cells",
+    "heard": "lining switches to glandular cells.",
     "score": 1.0,
     "onset_error_ms": 10
    },
@@ -147,14 +147,14 @@
     "onset_error_ms": 10
    },
    {
-    "say": "Colonoscopy, random biopsies.",
-    "heard": "colonoscopy, random biopsies.",
+    "say": "Yearly random biopsies.",
+    "heard": "yearly random biopsies.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "The pathologist looks for dysplasia",
-    "heard": "The pathologist looks for dysplasia.",
+    "say": "Pathologist looks for dysplasia",
+    "heard": "Pathologist looks for dysplasia.",
     "score": 1.0,
     "onset_error_ms": 10
    }
@@ -164,20 +164,20 @@
   "qid": "Q000009476",
   "beats": [
    {
-    "say": "Steering wheel strikes the breast",
-    "heard": "Steering wheel strikes the breast.",
-    "score": 1.0,
-    "onset_error_ms": 20
-   },
-   {
-    "say": "Damaged fat cells spill their fat",
-    "heard": "Damaged fat cells spill their fat.",
+    "say": "Steering wheel hits breast",
+    "heard": "Steering wheel hits breast.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
+    "say": "Fat cells burst, fat spills",
+    "heard": "Fat cells burst, fat spills.",
+    "score": 1.0,
+    "onset_error_ms": 20
+   },
+   {
     "say": "Fat necrosis mimics cancer.",
-    "heard": "Fat necrosis mimics cancer. answer.",
+    "heard": "Fat necrosis mimics cancer. Answer.",
     "score": 1.0,
     "onset_error_ms": 30
    }
@@ -187,16 +187,16 @@
   "qid": "Q000009477",
   "beats": [
    {
-    "say": "Slow, painless, soft lump.",
-    "heard": "Slow, painless, soft lump.",
-    "score": 1.0,
+    "say": "Slow, painless lump in thigh",
+    "heard": "Slow, painless lump and thigh.",
+    "score": 0.936,
     "onset_error_ms": 10
    },
    {
-    "say": "It slips away under the finger",
-    "heard": "It slips away under the finger.",
+    "say": "It slips under the finger",
+    "heard": "It slips under the finger.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 0
    },
    {
     "say": "Lipoma: benign fatty tumour",
@@ -210,21 +210,21 @@
   "qid": "Q000009478",
   "beats": [
    {
-    "say": "Stage A: confined to the wall",
-    "heard": "Stage A confined to the wall.",
+    "say": "Cancer grows within the wall",
+    "heard": "Cancer grows within the wall.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Stage B: perirectal tissue.",
-    "heard": "Stage B, parietal tissue.",
-    "score": 0.905,
-    "onset_error_ms": 40
+    "say": "It breaks into perirectal fat",
+    "heard": "It breaks into parietal fat.",
+    "score": 0.917,
+    "onset_error_ms": 10
    },
    {
-    "say": "Nodes would make it stage C",
-    "heard": "Nodes would make it stage C.",
-    "score": 1.0,
+    "say": "Dukes B: beyond the wall",
+    "heard": "Dukes be beyond the wall.",
+    "score": 0.974,
     "onset_error_ms": 10
    }
   ]
@@ -233,22 +233,22 @@
   "qid": "Q000009479",
   "beats": [
    {
-    "say": "Origin: intestinal glands.",
-    "heard": "Origin, intestinal glands,",
+    "say": "The cell of origin: glands",
+    "heard": "The cell of origin, glands.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Well differentiated: similar.",
-    "heard": "well differentiated, similar.",
-    "score": 1.0,
-    "onset_error_ms": 10
+    "say": "Tumour cells still form glands",
+    "heard": "Tumor cells still form glands.",
+    "score": 0.98,
+    "onset_error_ms": 0
    },
    {
-    "say": "It resembles its parent epithelium",
-    "heard": "It resembles its parent epithelium.",
+    "say": "It resembles its origin.",
+    "heard": "It resembles its origin.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 0
    }
   ]
  },
@@ -256,20 +256,20 @@
   "qid": "Q000009480",
   "beats": [
    {
-    "say": "Burkitt's lymphoma in the jaw",
-    "heard": "Burkett's lymphoma in the jaw.",
+    "say": "Burkitt's lymphoma of the jaw",
+    "heard": "Burkett's lymphoma of the jaw.",
     "score": 0.958,
     "onset_error_ms": 10
    },
    {
-    "say": "Its cause: Epstein-Barr virus",
-    "heard": "It's cause, Epstein -Barr virus.",
+    "say": "EBV infects B cells.",
+    "heard": "EBV infects B cells.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "A virus is the carcinogen",
-    "heard": "A virus is the carcinogen.",
+    "say": "The cause is a virus",
+    "heard": "The cause is a virus.",
     "score": 1.0,
     "onset_error_ms": 10
    }
@@ -279,20 +279,20 @@
   "qid": "Q000009481",
   "beats": [
    {
-    "say": "Kidney cancer, removed.",
-    "heard": "Kidney cancer removed.",
+    "say": "Kidney cancer removed years ago",
+    "heard": "Kidney cancer removed years ago.",
     "score": 1.0,
     "onset_error_ms": 0
    },
    {
-    "say": "Cells spread in blood to bone",
-    "heard": "Cells spread in blood to bone.",
+    "say": "Cancer cells spread through blood",
+    "heard": "Cancer cells spread through blood.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 0
    },
    {
-    "say": "Pulsatile secondary: renal.",
-    "heard": "Pulsatile secondary, renal.",
+    "say": "Pulsatile deposit: renal.",
+    "heard": "Pulsatile deposit, renal.",
     "score": 1.0,
     "onset_error_ms": 10
    }
@@ -302,21 +302,21 @@
   "qid": "Q000009482",
   "beats": [
    {
-    "say": "AIDS: the immune system is weak",
-    "heard": "Aids, the immune system is weak,",
-    "score": 1.0,
+    "say": "AIDS: the immune defence falls",
+    "heard": "Aids, the immune defense falls.",
+    "score": 0.96,
     "onset_error_ms": 10
    },
    {
-    "say": "Reddish-brown vascular foot lesion",
-    "heard": "reddish -brown vascular foot lesion,",
-    "score": 1.0,
+    "say": "Reddish-brown patch grows on foot",
+    "heard": "Redish brown patch grows on foot.",
+    "score": 0.982,
     "onset_error_ms": 10
    },
    {
-    "say": "Kaposi's sarcoma",
-    "heard": "caposi sarcoma.",
-    "score": 0.889,
+    "say": "Kaposi's sarcoma.",
+    "heard": "Kaposi Sarcoma",
+    "score": 0.963,
     "onset_error_ms": 10
    }
   ]
@@ -325,21 +325,21 @@
   "qid": "Q000009483",
   "beats": [
    {
-    "say": "Child with a right loin mass",
-    "heard": "child with a right loin mass,",
+    "say": "Young boy: right flank mass.",
+    "heard": "Young boy, right flank mass.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Haematuria, and no iris.",
-    "heard": "hematuria and no iris,",
-    "score": 0.973,
-    "onset_error_ms": 30
+    "say": "Pelvis invaded: blood in urine",
+    "heard": "Pelvis invaded, blood in urine.",
+    "score": 1.0,
+    "onset_error_ms": 10
    },
    {
-    "say": "Wilms' tumour (nephroblastoma)",
-    "heard": "Wilms tumor nephroblastoma.",
-    "score": 0.98,
+    "say": "Absent iris: Wilms' tumour",
+    "heard": "Absynn Iris, Wilms tumor.",
+    "score": 0.878,
     "onset_error_ms": 10
    }
   ]
@@ -348,21 +348,21 @@
   "qid": "Q000009484",
   "beats": [
    {
-    "say": "Spleen clears bacteria.",
-    "heard": "spleen clears bacteria.",
+    "say": "Spleen macrophages eat bacteria",
+    "heard": "spleen macrophages eat bacteria the",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Ruptured spleen is removed",
-    "heard": "ruptured spleen is removed.",
-    "score": 1.0,
+    "say": "The ruptured spleen is removed",
+    "heard": "ruptured spleen is removed",
+    "score": 0.939,
     "onset_error_ms": 10
    },
    {
-    "say": "That defence is lost",
-    "heard": "that defense is lost.",
-    "score": 0.941,
+    "say": "Encapsulated bacteria now survive",
+    "heard": "encapsulated bacteria now survive",
+    "score": 1.0,
     "onset_error_ms": 10
    }
   ]
@@ -371,20 +371,20 @@
   "qid": "Q000009485",
   "beats": [
    {
-    "say": "HIV kills helper cells.",
-    "heard": "HIV kills helper cells,",
+    "say": "Helper T cells give help",
+    "heard": "Helper T cells give help.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Helpers activate CD8 and B.",
-    "heard": "helpers activate CD8 and B.",
+    "say": "HIV kills helper cells.",
+    "heard": "HIV kills helper cells.",
     "score": 1.0,
-    "onset_error_ms": 20
+    "onset_error_ms": 10
    },
    {
-    "say": "Adaptive immunity is impaired",
-    "heard": "Adaptive immunity is impaired.",
+    "say": "Adaptive response is impaired",
+    "heard": "Adaptive response is impaired. Paired.",
     "score": 1.0,
     "onset_error_ms": 10
    }
@@ -394,22 +394,22 @@
   "qid": "Q000009486",
   "beats": [
    {
-    "say": "Cytokines: signalling proteins.",
-    "heard": "cytokines, signaling proteins,",
-    "score": 0.981,
-    "onset_error_ms": 10
-   },
-   {
-    "say": "They carry messages between cells",
-    "heard": "they carry messages between cells.",
+    "say": "A macrophage releases cytokines",
+    "heard": "A macrophage releases cytokines,",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "They regulate immune activation",
-    "heard": "They regulate immune activation.",
+    "say": "They bind matching receptors",
+    "heard": "they bind matching receptors.",
     "score": 1.0,
     "onset_error_ms": 10
+   },
+   {
+    "say": "Small signalling proteins",
+    "heard": "Small signaling proteins",
+    "score": 0.978,
+    "onset_error_ms": 20
    }
   ]
  },
@@ -417,22 +417,22 @@
   "qid": "Q000009487",
   "beats": [
    {
-    "say": "Tolerance spares self.",
-    "heard": "Tolerance spares self,",
+    "say": "Tolerance: T cells ignore self",
+    "heard": "Tolerance, T -cells ignore self,",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Trigger in a susceptible person",
-    "heard": "trigger in a susceptible person,",
+    "say": "Genes plus trigger break tolerance",
+    "heard": "genes plus trigger -break tolerance,",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Immune attack on the body itself",
-    "heard": "immune attack on the body itself.",
+    "say": "Immune attack on own joint",
+    "heard": "immune attack on own joint.",
     "score": 1.0,
-    "onset_error_ms": 0
+    "onset_error_ms": 10
    }
   ]
  },
@@ -440,20 +440,20 @@
   "qid": "Q000009488",
   "beats": [
    {
-    "say": "Infection begins",
-    "heard": "Infection begins.",
+    "say": "Infection: B cells respond.",
+    "heard": "Infection, B cells respond.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "IgM: the first antibody made",
-    "heard": "Igam, the first antibody made.",
-    "score": 0.979,
+    "say": "IgM rises first, then falls",
+    "heard": "IgM rises first, then falls.",
+    "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Short-lived, early antibody",
-    "heard": "Short -lived, early antibody.",
+    "say": "IgM: early and short-lived",
+    "heard": "IgM, early and short -lived.",
     "score": 1.0,
     "onset_error_ms": 10
    }
@@ -463,21 +463,21 @@
   "qid": "Q000009489",
   "beats": [
    {
-    "say": "Tuberculin into the skin.",
-    "heard": "tuberculin into the skin.",
-    "score": 1.0,
-    "onset_error_ms": 10
-   },
-   {
-    "say": "T cells gather at the site",
-    "heard": "T -cells gather at the site.",
-    "score": 1.0,
-    "onset_error_ms": 10
-   },
-   {
-    "say": "T-cell response to TB.",
-    "heard": "T -cell responds to TB.",
+    "say": "Six needles prick in tuberculin",
+    "heard": "6 needles prick in tuberculin T",
     "score": 0.941,
+    "onset_error_ms": 20
+   },
+   {
+    "say": "T cells gather around tuberculin",
+    "heard": "cells gather around tuberculin",
+    "score": 0.982,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Raised ring: T-cell response.",
+    "heard": "Raised ring T cell response",
+    "score": 1.0,
     "onset_error_ms": 10
    }
   ]
@@ -486,22 +486,22 @@
   "qid": "Q000009490",
   "beats": [
    {
-    "say": "Corneal graft: privileged site.",
-    "heard": "Corneal graft -privileged site.",
+    "say": "Corneal graft, no drugs.",
+    "heard": "Corneal graft, no drugs.",
     "score": 1.0,
-    "onset_error_ms": 0
+    "onset_error_ms": 10
    },
    {
     "say": "Immune cells still arrive",
     "heard": "Immune cells still arrive.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 0
    },
    {
-    "say": "Damaging responses are suppressed",
-    "heard": "Damaging responses are suppressed.",
+    "say": "Harmful suppressed, helpful promoted",
+    "heard": "Harmful suppressed, helpful promoted.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 20
    }
   ]
  }

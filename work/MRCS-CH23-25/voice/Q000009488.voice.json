@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Infection begins",
-   "say": "Infection begins"
+   "caption": "Infection starts, B cells respond",
+   "say": "Infection: B cells respond."
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "IgM: the first antibody made",
-   "say": "IgM: the first antibody made"
+   "caption": "IgM rises first, then falls",
+   "say": "IgM rises first, then falls"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Short-lived, early antibody",
-   "say": "Short-lived, early antibody"
+   "caption": "IgM: early and short-lived",
+   "say": "IgM: early and short-lived"
   }
  ]
 }

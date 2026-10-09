@@ -2,9 +2,9 @@
  "qid": "Q000009490",
  "file": "Q000009490.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 12078,
- "sha256": "40ad09c6729c86ad3de8460c630df00204e8b6fded7e7b0edf96875d3960b404",
- "track_ms": 6638,
+ "bytes": 12024,
+ "sha256": "cbd11dc03c489418d93555c6e5b14df8ce4f9a4cfabe30717fd81c43fe331193",
+ "track_ms": 6708,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
@@ -13,8 +13,8 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 2122,
-   "text": "Corneal graft: privileged site.",
+   "end_ms": 1908,
+   "text": "Corneal graft, no drugs.",
    "speed": 1.05
   },
   {
@@ -25,9 +25,9 @@
   },
   {
    "t_ms": 4720,
-   "end_ms": 6538,
-   "text": "Damaging responses are suppressed",
-   "speed": 1.05
+   "end_ms": 6608,
+   "text": "Harmful suppressed, helpful promoted",
+   "speed": 1.2
   }
  ]
 }

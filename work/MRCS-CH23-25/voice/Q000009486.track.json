@@ -2,9 +2,9 @@
  "qid": "Q000009486",
  "file": "Q000009486.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 12884,
- "sha256": "6f89ee0c10960e56db53cd6855e28ed3ccb9b71f4b02add95b80a1412dcc616b",
- "track_ms": 6708,
+ "bytes": 11824,
+ "sha256": "59db286a0b8658d64e9af82b3ce4797be1cd14b377738402e9284625af022ff7",
+ "track_ms": 6303,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
@@ -13,20 +13,20 @@
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 2148,
-   "text": "Cytokines: signalling proteins.",
-   "speed": 1.19
+   "end_ms": 2176,
+   "text": "A macrophage releases cytokines",
+   "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 4270,
-   "text": "They carry messages between cells",
+   "end_ms": 3988,
+   "text": "They bind matching receptors",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6608,
-   "text": "They regulate immune activation",
+   "end_ms": 6203,
+   "text": "Small signalling proteins",
    "speed": 1.05
   }
  ]
