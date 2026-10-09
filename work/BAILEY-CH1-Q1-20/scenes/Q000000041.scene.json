@@ -93,5 +93,6 @@
   "Heart: Servier Medical Art, CC BY 3.0",
   "Brain: Servier Medical Art, CC BY 3.0",
   "Kidney: Servier Medical Art, CC BY 3.0"
- ]
+ ],
+ "replace": true
 }

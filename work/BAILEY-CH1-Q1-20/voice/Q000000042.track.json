@@ -1,0 +1,33 @@
+{
+ "qid": "Q000000042",
+ "file": "Q000000042.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 10043,
+ "sha256": "e113a5fd3d13e1fb7c5f066382cdfcc02569022704c66acfb1c40eed6d098dba",
+ "track_ms": 6163,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1455,
+   "text": "Heart pumps out blood",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3642,
+   "text": "Share it across the beats",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6063,
+   "text": "Output of a single beat",
+   "speed": 1.05
+  }
+ ]
+}
