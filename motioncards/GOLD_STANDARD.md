@@ -74,14 +74,31 @@ Good examples by type:
 
 1. **One story per card.** Show a recognisable organ or person on the left. When the answer is microscopic, put a round magnifier lens
    on the right, joined to the organ by dashed tangent connectors and clipped with a `clipPath`. The lens shows the cells at work.
-2. **Real Servier art only.**
+2. **Real Servier art first.**
    - Servier SVGs from bioicons (CC BY 3.0). The local clone path and categories are in "Approved art sources" in `AUTHORING_V2.md`.
    - SMART people (CC BY 4.0).
    - `lib:` library art.
    - Repeat cells with `import-svg --template` and `<use>`.
-   - Only draw by hand what Servier lacks, such as a femur, a joint section, cytokines or receptors. Use the style-kit gradients
+   - **When Servier has nothing**, use these, in this order. The URL patterns, recipes and credits are rows M1–M7 of
+     "Approved art sources" in `AUTHORING_V2.md`. All of them were import-tested on 9 October 2026.
+
+     | Need | Use |
+     |---|---|
+     | A real ECG or rhythm strip | A real PTB-XL ECG, drawn as a path (M5) |
+     | A drug or molecule structure | RDKit, drawn from the PubChem SMILES (M6) |
+     | Receptors, channels, molecules, cell types | Reactome icons (M3) |
+     | Parasites, vectors, animals | Servier `Parasites` first, then PhyloPic silhouettes (M4) |
+     | A detailed heart, brain or skull, or how organs sit together | Wikimedia Commons: Patrick J. Lynch (CC BY 2.5), LadyofHats or NCI SEER (public domain) (M1) |
+     | Neuroscience drawings | SciDraw on Zenodo (M7) |
+     | A small icon or emoji, by name | Iconify (M2) |
+
+   - **Licence:** public domain, CC0 or CC BY only. Never NC, ND or SA. For example, the LUMC/AnatomyTOOL pancreas is
+     CC BY-NC-SA, so it cannot be used. Servier stays the main picture, with one art style per card.
+   - Only draw by hand what none of these has, such as a femur, a joint section, cytokines or receptors. Use the style-kit gradients
      (`url(#kit-bone)`, `kit-tissue`, …) and add `cellG` and `nuc` gradients as the references do.
-   - Very large SVGs bloat the card (for example `hiv-virus` is about 400 KB). Redraw those in Servier style instead.
+   - Very large SVGs bloat the card (for example `hiv-virus` is about 400 KB). Redraw those in Servier style instead. If one
+     imported drawing adds more than about 100 KB to the scene, choose another file. The NCI SEER pancreas SVG added 560 KB
+     because it is 1,701 traced paths.
 3. **Normal next to changed.** Show a dashed teal "ghost" of the normal state, or put normal cells on the left of the lens and changed
    cells on the right, so the change is obvious.
 4. **One visual meaning per term, the same on every card:**
