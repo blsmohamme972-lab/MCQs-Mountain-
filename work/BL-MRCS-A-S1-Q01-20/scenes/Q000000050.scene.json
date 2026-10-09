@@ -1,0 +1,61 @@
+{
+  "schema_version": 2,
+  "qid": "Q000000050",
+  "duration_ms": 7000,
+  "takeaway": "EDIT: one short teaching takeaway",
+  "stage": {
+    "width": 640,
+    "height": 560
+  },
+  "layers": [
+    {
+      "type": "text",
+      "text": "What carcinogen is associated with transitional cell carcinoma of the urinary tract?",
+      "x": 320,
+      "y": 64,
+      "size": 26,
+      "weight": 800,
+      "max_width": 580,
+      "fit": true,
+      "max_lines": 2,
+      "fixed": true
+    },
+    {
+      "type": "circle",
+      "cx": 180,
+      "cy": 300,
+      "r": 70,
+      "fill": "@surface",
+      "stroke": "@ink",
+      "stroke_width": 3
+    },
+    {
+      "type": "circle",
+      "cx": 460,
+      "cy": 300,
+      "r": 70,
+      "fill": "@surface",
+      "stroke": "@ink",
+      "stroke_width": 3,
+      "show": [
+        1050,
+        7000
+      ],
+      "enter": "pop"
+    },
+    {
+      "type": "arrow",
+      "x1": 265,
+      "y1": 300,
+      "x2": 375,
+      "y2": 300,
+      "stroke": "@accent",
+      "stroke_width": 8,
+      "show": [
+        2100,
+        7000
+      ],
+      "enter": "draw"
+    }
+  ]
+}
