@@ -142,7 +142,7 @@ python tools/motioncards.py import-svg lib:healthy-lung --scene work/b/scenes/Q�
 | Neuroscience drawings (brain sections, neurons) | Servier | [SciDraw on Zenodo](https://zenodo.org/search?q=scidraw) (row M7) |
 | Any icon or emoji, found by name | [Iconify](https://icon-sets.iconify.design/) (row M2): one URL per icon | The raw GitHub patterns in rows 6, 7 and E1–E3 |
 
-`lib:` imports add the Servier credit automatically. Render once with a grid (draw lines every 20 px in `setup`) to read where the organs landed, then place your additions on that art.
+`lib:` imports add the Servier credit automatically. Render the card and look at the frames to see where the organs landed, then place your additions on that art.
 
 **Style kit:** `style-kit` adds `<defs id="kit">` to the scene, once. Use it on everything you draw yourself, so your shapes look like they belong next to the art instead of flat clip-art:
 
@@ -205,7 +205,7 @@ Then animate it from `script`: `api.$('#heart')` (transform, opacity, filters, o
 | `a = R.arrowGrow(api, P, d, color, w)` | `a.update(t, f)` | Arrow that grows along any path `d`: heat loss, flow direction, cause → effect |
 | `R.scaleAbout(api, el, s)` | | Grow or pulse a shape about its own centre |
 
-`P` is the art's parent (`R.layer(api, "#st")`), so new elements stack above the art; pass `{behind: st}` to put them behind it. `R.grid(api)` draws a 20 px layout grid; `lint` warns until you remove it. Write your own code only for what no recipe covers.
+`P` is the art's parent (`R.layer(api, "#st")`), so new elements stack above the art; pass `{behind: st}` to put them behind it. Write your own code only for what no recipe covers.
 
 ### Approved art sources (use only these, in this order)
 

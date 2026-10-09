@@ -109,9 +109,6 @@ const R = {
   },
   // Make imported art see-through (to reveal what lies behind it): f in 0..1 -> opacity 1..min.
   seeThrough(api, el, f, min) { api.set(el, {opacity: (1 - (1 - (min === undefined ? 0.45 : min)) * f).toFixed(3)}); },
-  // Debug only: a 20 px grid with labels, to read where imported art landed. Remove before packaging.
-  grid(api) { for (let x = 0; x <= api.W; x += 20) api.el("path", {d: `M${x} 0V${api.H}`, stroke: x % 100 ? "#0a0" : "#f00", "stroke-width": x % 100 ? 0.3 : 0.8}, api.svg);
-    for (let y = 0; y <= api.H; y += 20) api.el("path", {d: `M0 ${y}H${api.W}`, stroke: y % 100 ? "#0a0" : "#f00", "stroke-width": y % 100 ? 0.3 : 0.8}, api.svg); },
   // ---- Temperature, sweat, arrows (added with the temperature-regulation cards) ----
   // Vertical thermometer: tube top at y0, bulb at y1, scale lo..hi °C with optional ticks. .update(v, color) every frame.
   thermometer(api, g, x, y0, y1, lo, hi, o) { o = o || {}; const grp = api.el("g", {}, g), Y = (v) => y1 - (v - lo) / (hi - lo) * (y1 - y0);
