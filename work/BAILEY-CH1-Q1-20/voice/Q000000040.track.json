@@ -1,0 +1,33 @@
+{
+ "qid": "Q000000040",
+ "file": "Q000000040.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12498,
+ "sha256": "225c19483df3973a39aec49a3db8beffed433d6056db56f3d94314a772590456",
+ "track_ms": 6713,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1872,
+   "text": "Aorta runs beside the spine",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4260,
+   "text": "SMA branches off the aorta",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6613,
+   "text": "At L1, transpyloric plane",
+   "speed": 1.05
+  }
+ ]
+}

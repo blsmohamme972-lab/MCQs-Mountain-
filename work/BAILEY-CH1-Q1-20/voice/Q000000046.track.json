@@ -1,0 +1,33 @@
+{
+ "qid": "Q000000046",
+ "file": "Q000000046.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 10870,
+ "sha256": "422e077c7d25a295adbac0a754e0e71a1e2bd9b7051d85c7312ec2261c17f623",
+ "track_ms": 6324,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1536,
+   "text": "Blood pushes into the brain",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3881,
+   "text": "Skull pressure pushes back",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6224,
+   "text": "The difference perfuses the brain",
+   "speed": 1.05
+  }
+ ]
+}
