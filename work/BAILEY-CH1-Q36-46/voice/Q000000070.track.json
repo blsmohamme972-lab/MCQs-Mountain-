@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000070",
+ "file": "Q000000070.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11892,
+ "sha256": "c20038db1726a196a1edb011887ec81b2d57696d6bad491a212d8b2befd4554e",
+ "track_ms": 6403,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "9808993d18a2780df553e08d6b62e53717e133593b6dc6f2a180b66d19c9efb6",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2132,
+   "text": "Antibody meets soluble antigen",
+   "speed": 1.2
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3988,
+   "text": "They lodge and inflame tissue",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6303,
+   "text": "IgG immune complexes",
+   "speed": 1.05
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "qid": "Q000000072",
+ "duration_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "speed": 1.05,
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "The inguinal canal",
+   "say": "The inguinal canal"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "Arching fibres form the roof",
+   "say": "Arching muscle forms the roof"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "Internal oblique and transversus",
+   "say": "Internal oblique and transversus"
+  }
+ ]
+}

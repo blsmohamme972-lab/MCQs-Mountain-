@@ -35,6 +35,10 @@ MAX_SPEED = 1.2                 # never speed a voice up more than this to fit a
 LEAD_MS, FIRST_LEAD_MS, TAIL_MS, END_HOLD_MS = 120, 250, 120, 350
 MIN_WINDOW_MS = 500             # a beat shorter than this cannot hold even one spoken word
 MAX_VOICE_BYTES = 20 * 1024     # Golden rule 5: at most 20 KB more per card download (an 8 s card is ~13 KB at 16 kbps)
+# Owner's "high" quality (asked for after hearing 16 kbps ElevenLabs): full-band Opus at 48 kbps in music mode, about 42 KB
+# for a 7 s card. Still inside the package validator's 64 KB per-card voice limit (motioncards/lib/spec.py).
+QUALITY = {"standard": {"bitrate": BITRATE, "small": SMALL_BITRATE, "app": "voip", "frame": "60", "max": MAX_VOICE_BYTES},
+           "high": {"bitrate": "48k", "small": "40k", "app": "audio", "frame": "20", "max": 60 * 1024}}
 ONSET_LIMIT_MS = 80             # Golden rule 7: each line starts within this of its animation beat
 SILENCE_DB = -50.0              # outside its lines a track must stay this far below its peak (chapter 10: -91 dB)
 GUESS = "guess"                 # beat timing that `draft` could not read from the scene; the agent must set it
@@ -51,6 +55,23 @@ ENGINES = {                     # the owner picks one per batch; the agent must 
     "elevenlabs": {"voice": "Xb7hH8MSUJpSbSDYk0k2", "label": f"ElevenLabs {ELEVEN_MODEL} (paid API)"},   # "Alice", clear educator
 }
 DEFAULT_ENGINE = "kokoro"       # scripts written before engines existed are Kokoro
+# Owner's ElevenLabs standard (Oct 2026): a different voice per question, women and men taking turns, chosen from the
+# QID number so a card keeps its voice on every run. Premade English voices only (never the owner's cloned voices).
+ELEVEN_VOICES = [("Jessica", "cgSgspJ2msm6clMCkdW9", "woman"), ("Brian", "nPczCjzI2devNBz1zQrb", "man"),
+                 ("Lily", "pFZP5JQG7iQjIQuC4Bku", "woman"), ("George", "JBFqnCBsd6RMkjVDRZzb", "man"),
+                 ("Sarah", "EXAVITQu4vr4xnSDxMaL", "woman"), ("Daniel", "onwK4e9ZLuTAKqWW03F9", "man")]
+ENGINE_QUALITY = {"kokoro": "standard", "elevenlabs": "high"}   # ElevenLabs is always made at high quality
+
+
+def engine_voice(engine: str, qid: str = "") -> str:
+    """The voice a new or switched script gets: ElevenLabs rotates through ELEVEN_VOICES by QID, Kokoro keeps its one voice."""
+    digits = re.sub(r"\D", "", qid or "")
+    if engine == "elevenlabs" and digits: return ELEVEN_VOICES[int(digits) % len(ELEVEN_VOICES)][1]
+    return ENGINES[engine]["voice"]
+
+
+def doc_quality(doc: dict) -> str:
+    return doc.get("quality") or ENGINE_QUALITY.get(doc.get("engine", DEFAULT_ENGINE), "standard")
 DEFAULT_VOICE, DEFAULT_LANG, DEFAULT_SPEED = ENGINES[DEFAULT_ENGINE]["voice"], "en-us", 1.05
 SAMPLE_TEXT = "The femur is the longest bone in the body. It joins the hip to the knee and carries your weight."
 CAPTION = re.compile(r"^\s*(\d+)\s*·\s*(.+)$", re.S)
@@ -108,6 +129,7 @@ def guess_beats(duration_ms: int) -> list[dict]:
 def draft_doc(scene: dict, voice=DEFAULT_VOICE, lang=DEFAULT_LANG, engine=DEFAULT_ENGINE) -> dict:
     beats = beats_from_scene(scene)
     return {"qid": scene["qid"], "duration_ms": int(scene["duration_ms"]), "engine": engine, "voice": voice, "lang": lang, "speed": DEFAULT_SPEED,
+            "quality": ENGINE_QUALITY[engine],
             "beats": [{"start_ms": b["start_ms"], "end_ms": b["end_ms"], "caption": b["caption"],
                        "say": b["caption"]} for b in beats] or guess_beats(int(scene["duration_ms"]))}   # say pre-filled: synth says if too long
 
@@ -372,12 +394,15 @@ def run_draft(a) -> list[str]:
         if p.exists() and not a.force:
             doc = json.loads(p.read_text(encoding="utf-8")); moved, problem = retime(doc, s)
             switched = set_engine(doc, a.engine, a.voice)
+            if getattr(a, "quality", None) and doc_quality(doc) != a.quality: doc["quality"] = a.quality; switched = True
             if problem: problems.append(f"{s['qid']}: {problem}")
             elif moved or switched: write_doc(p, doc); print("retime" if moved else "engine", p.name, f"(lines kept; voice {doc.get('engine', DEFAULT_ENGINE)} {doc['voice']})")
             else: print("keep", p.name)
             continue
         engine = a.engine or DEFAULT_ENGINE
-        doc = draft_doc(s, a.voice or ENGINES[engine]["voice"], a.lang, engine); write_doc(p, doc)
+        doc = draft_doc(s, a.voice or engine_voice(engine, s["qid"]), a.lang, engine)
+        if getattr(a, "quality", None): doc["quality"] = a.quality
+        write_doc(p, doc)
         if any(b.get("timing") == GUESS for b in doc["beats"]): print("draft", p.name, "beats GUESSED: no numbered captions in the scene")
         else: print("draft", p.name, "budgets (words):", [max_words(doc, i) for i in range(len(doc["beats"]))])
     if not (ws / "scenes").is_dir(): problems.append(f"no scenes folder in {ws}: the workspace needs scenes/Q*.scene.json")
@@ -387,18 +412,19 @@ def run_draft(a) -> list[str]:
 def set_engine(doc: dict, engine: str | None, voice: str | None) -> bool:
     """Point a kept script at the engine (and voice) the owner chose; its lines and timing stay. True if it changed."""
     old = (doc.get("engine", DEFAULT_ENGINE), doc["voice"])
-    if engine and engine != old[0]: doc["engine"], doc["voice"] = engine, voice or ENGINES[engine]["voice"]
+    if engine and engine != old[0]:
+        doc["engine"], doc["voice"], doc["quality"] = engine, voice or engine_voice(engine, doc.get("qid", "")), ENGINE_QUALITY[engine]
     elif voice: doc["voice"] = voice
     doc.setdefault("engine", old[0])
     return (doc["engine"], doc["voice"]) != old
 
 
-def encode_opus(pcm, out: Path, bitrate: str = BITRATE):
+def encode_opus(pcm, out: Path, bitrate: str = BITRATE, app: str = "voip", frame: str = "60"):
     """Loudness-normalise to −16 LUFS and encode Opus mono (16 kbps by default), bit-exact (same input → same bytes)."""
     import numpy as np
     r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", "-",
                         "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-ar", str(SR), "-ac", "1",
-                        "-c:a", "libopus", "-b:a", bitrate, "-vbr", "on", "-application", "voip", "-frame_duration", "60",
+                        "-c:a", "libopus", "-b:a", bitrate, "-vbr", "on", "-application", app, "-frame_duration", frame,
                         "-map_metadata", "-1", "-fflags", "+bitexact", "-flags:a", "+bitexact", str(out)],
                        input=np.asarray(pcm, np.float32).tobytes(), capture_output=True)
     if r.returncode: raise ValueError(f"{out.stem}: ffmpeg failed: " + r.stderr.decode()[-400:])
@@ -430,13 +456,14 @@ def synth_one(doc: dict, d: Path, lex: dict) -> dict:
     total = max(at * SR // 1000 + len(c) for at, c in clips) + SR // 10
     track = np.zeros(total, np.float32)
     for at, c in clips: s0 = at * SR // 1000; track[s0:s0 + len(c)] += c
-    out = d / f"{qid}.opus"; rate = BITRATE; encode_opus(track, out, rate)
-    if out.stat().st_size > MAX_VOICE_BYTES: rate = SMALL_BITRATE; encode_opus(track, out, rate)   # long card: keep rule 5
+    Q = QUALITY[doc_quality(doc)]
+    out = d / f"{qid}.opus"; rate = Q["bitrate"]; encode_opus(track, out, rate, Q["app"], Q["frame"])
+    if out.stat().st_size > Q["max"]: rate = Q["small"]; encode_opus(track, out, rate, Q["app"], Q["frame"])   # long card: keep rule 5
     size = out.stat().st_size
-    if size > MAX_VOICE_BYTES:
+    if size > Q["max"]:
         out.unlink(); words = sum(len(c["text"].split()) for c in cues)
-        raise ValueError(f"{qid}: voice is {size/1024:.1f} KB even at {SMALL_BITRATE}bps, over the {MAX_VOICE_BYTES//1024} KB per-card "
-                         f"budget (Golden rule 5): cut about {math.ceil(words * (1 - MAX_VOICE_BYTES / size))} of its {words} words")
+        raise ValueError(f"{qid}: voice is {size/1024:.1f} KB even at {rate}bps, over the {Q['max']//1024} KB per-card "
+                         f"budget (Golden rule 5): cut about {math.ceil(words * (1 - Q['max'] / size))} of its {words} words")
     info = {"qid": qid, "file": out.name, "mime": "audio/ogg; codecs=opus", "bytes": size, "sha256": sha256(out),
             "track_ms": round(total * 1000 / SR), "card_ms": doc["duration_ms"], "voice": doc["voice"], "lang": doc["lang"],
             "engine": ENGINES[engine]["label"], "bitrate": rate, "script_sha256": script_sha(doc), "cues": cues}
@@ -585,7 +612,7 @@ def run_review(a) -> list[str]:
         mp4 = out / f"{s['qid']}.mp4"
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst), "-i", str(d / f"{s['qid']}.opus"),
                         "-vf", "scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p", "-r", str(a.fps), "-c:v", "libx264", "-crf", "28",
-                        "-preset", "veryfast", "-af", "apad", "-c:a", "aac", "-b:a", "48k", "-shortest", str(mp4)], check=True)
+                        "-preset", "veryfast", "-af", "apad", "-c:a", "aac", "-b:a", "128k", "-shortest", str(mp4)], check=True)
         shutil.rmtree(fdir, ignore_errors=True)
         print("review", mp4, f"{mp4.stat().st_size/1024:.0f} KB")
     return fails
@@ -656,11 +683,12 @@ def main():
         p = sub.add_parser(name); p.set_defaults(f=f)
         p.add_argument("--workspace", required=True); p.add_argument("--qids", nargs="*")
         p.add_argument("--engine", choices=list(ENGINES), help="make: required, ask the owner; draft: engine for new or switched scripts")
-        p.add_argument("--voice", help="default: the engine's voice (kokoro af_heart, elevenlabs Alice)"); p.add_argument("--lang", default=DEFAULT_LANG)
+        p.add_argument("--voice", help="default: kokoro af_heart; elevenlabs a different woman or man per question (ELEVEN_VOICES)"); p.add_argument("--lang", default=DEFAULT_LANG)
         p.add_argument("--force", action="store_true"); p.add_argument("--asr", default="base.en")
         p.add_argument("--asr2", default="small.en", help="check: second recogniser asked before a long word fails ('' = off)")
         p.add_argument("--min-score", type=float, default=0.85); p.add_argument("--fps", type=int, default=15)
         p.add_argument("--no-review", action="store_true", help="make: skip the review videos")
+        p.add_argument("--quality", choices=list(QUALITY), help="make/draft: override the engine's quality (kokoro standard = 16 kbps, elevenlabs high = 48 kbps full-band Opus); saved in voice.json")
     a = ap.parse_args(); a.f(a)
 
 

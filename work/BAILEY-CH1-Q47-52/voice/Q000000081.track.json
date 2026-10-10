@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000081",
+ "file": "Q000000081.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 31356,
+ "sha256": "b9f353d17bede657882a28b9a92d60277314b0f301f6f229b2eb21ae9e489a94",
+ "track_ms": 6078,
+ "card_ms": 7000,
+ "voice": "pFZP5JQG7iQjIQuC4Bku",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "369b56d05fb15eed3cfcbfc1834782dee8112803dc0559e6b3f4b237a4b0e2b8",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1850,
+   "text": "Fracture inside the capsule",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3957,
+   "text": "Rheumatoid socket is worn",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 5978,
+   "text": "Total hip replacement",
+   "speed": 1.05
+  }
+ ]
+}

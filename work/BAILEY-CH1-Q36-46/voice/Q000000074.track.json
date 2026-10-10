@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000074",
+ "file": "Q000000074.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12551,
+ "sha256": "635b4faa97902196964d345d8b6149946d7191f5a2884aba9b46439cbd096b11",
+ "track_ms": 6639,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "69d0c6b8d4ae318301b5477dbf810d992b2fcd75c89bc54ecb69a97cac9b552f",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2176,
+   "text": "Negative mum, positive baby",
+   "speed": 1.119
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4154,
+   "text": "Baby cells could sensitise her",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6539,
+   "text": "Give anti-D immunoglobulin",
+   "speed": 1.05
+  }
+ ]
+}

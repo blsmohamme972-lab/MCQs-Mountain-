@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000078",
+ "file": "Q000000078.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 9898,
+ "sha256": "627a12496ca15913743a6b4f18a1c9f39a417bd08307002cfa02be7fa23b3c31",
+ "track_ms": 5956,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "316248835cd48852ed8d747705f9051b746ea859c709e8e3ea0e8cd6a94c3e81",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1488,
+   "text": "Firm lump below jaw",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3934,
+   "text": "Skin tethered, with punctum",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 5856,
+   "text": "Epidermal cyst",
+   "speed": 1.05
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000082",
+ "file": "Q000000082.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 32749,
+ "sha256": "4adb759d271f69419345fad07225745411ef19169ba5833db972fdc778c4e78b",
+ "track_ms": 6208,
+ "card_ms": 7000,
+ "voice": "JBFqnCBsd6RMkjVDRZzb",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "0b3d7c9ba05020d59a3d5fb2b595a6681e573bc3da574c069d4f343a53c34f5c",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2024,
+   "text": "Young woman, neck fracture",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4183,
+   "text": "Save her own femoral head",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6108,
+   "text": "Cannulated screws",
+   "speed": 1.05
+  }
+ ]
+}

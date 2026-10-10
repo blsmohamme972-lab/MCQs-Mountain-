@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000069",
+ "file": "Q000000069.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11886,
+ "sha256": "fb578930d3548d69d0a348951190ec606c986f965ce6ebda8d83b4dbbc1968f9",
+ "track_ms": 6388,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "62cecdf25fb01ace6b2bd24e726bd69b7ee2e349fdfff509d1e29098be727ec7",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2069,
+   "text": "Antibodies target cell surfaces",
+   "speed": 1.2
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4024,
+   "text": "Complement destroys the cell",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6288,
+   "text": "IgG is the mediator",
+   "speed": 1.05
+  }
+ ]
+}
