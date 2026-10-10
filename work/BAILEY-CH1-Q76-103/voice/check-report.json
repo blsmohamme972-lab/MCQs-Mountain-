@@ -1,0 +1,494 @@
+[
+ {
+  "qid": "Q000000108",
+  "beats": [
+   {
+    "say": "Glands of the stomach lining",
+    "heard": "Glens of the stomach lining.",
+    "score": 0.936,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Parietal cells release acid",
+    "heard": "Parietal cells release acid.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "And intrinsic factor too",
+    "heard": "An intrinsic factor too.",
+    "score": 0.976,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": [],
+  "second_opinion": {
+   "1": "glans of the stomach lining"
+  }
+ },
+ {
+  "qid": "Q000000110",
+  "beats": [
+   {
+    "say": "Standing up from lying",
+    "heard": "Standing up from lying.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Blood pools in leg veins",
+    "heard": "Blood pools and leg veins.",
+    "score": 0.927,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Less return, output falls",
+    "heard": "Let's return output falls.",
+    "score": 0.952,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000111",
+  "beats": [
+   {
+    "say": "Flow through a tube",
+    "heard": "Flow through a tube.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Double the radius",
+    "heard": "Double the radius.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Flow rises sixteen times",
+    "heard": "Flow rises 16 times.",
+    "score": 1.0,
+    "onset_error_ms": 30
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000113",
+  "beats": [
+   {
+    "say": "Stretch per pressure",
+    "heard": "stretch per pressure",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Emphysema breaks elastic walls",
+    "heard": "emphysema breaks elastic walls.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Floppy lungs stretch more",
+    "heard": "Floppy lungs stretch more.",
+    "score": 1.0,
+    "onset_error_ms": 30
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000114",
+  "beats": [
+   {
+    "say": "Front lobe of the pituitary",
+    "heard": "Front lobe of the pituitary.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Its hormone reaches the thyroid",
+    "heard": "Its hormone reaches the thyroid.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Thyroid follicles switch on",
+    "heard": "Thyroid follicles switch on.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000116",
+  "beats": [
+   {
+    "say": "An infected body cell",
+    "heard": "an infected body cell.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Killer T cell attaches",
+    "heard": "Killer T -cell attaches.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Its pores kill the cell",
+    "heard": "Its paws kill the cell.",
+    "score": 0.865,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": [],
+  "second_opinion": {
+   "3": "Its pores kill the cell."
+  }
+ },
+ {
+  "qid": "Q000000117",
+  "beats": [
+   {
+    "say": "Thick pylorus, forceful vomiting",
+    "heard": "Thick pylorus, forceful vomiting.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Acid and chloride lost",
+    "heard": "Acid and chloride lost.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Kidney swaps out acid",
+    "heard": "Kidney swaps out acid.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000118",
+  "beats": [
+   {
+    "say": "Potassium leaves to reset",
+    "heard": "Potassium leaves to reset.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Amiodarone blocks the channel",
+    "heard": "Amiodaroni blocks the channel.",
+    "score": 0.962,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Action potential lasts longer",
+    "heard": "Action potential lasts longer.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000119",
+  "beats": [
+   {
+    "say": "Arches and clefts in the neck",
+    "heard": "arches and clefs in the neck.",
+    "score": 0.979,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Second arch grows down",
+    "heard": "Second arch grows down",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "It covers the lower clefts",
+    "heard": "It covers the lower clefs.",
+    "score": 0.977,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000120",
+  "beats": [
+   {
+    "say": "Ions inside and outside",
+    "heard": "I am inside and outside.",
+    "score": 0.889,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "The ratio sets the voltage",
+    "heard": "The ratio sets the voltage.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Its equilibrium potential",
+    "heard": "It's equilibrium potential.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000121",
+  "beats": [
+   {
+    "say": "Antibody binds a red cell",
+    "heard": "Antibody binds a red cell.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "C one binds first",
+    "heard": "See one binds first.",
+    "score": 0.957,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Classical pathway switched on",
+    "heard": "Classical Pathway switched on.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000122",
+  "beats": [
+   {
+    "say": "The cardiac action potential",
+    "heard": "The cardiac action potential.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Phase two: the plateau",
+    "heard": "Phase 2, the plateau.",
+    "score": 1.0,
+    "onset_error_ms": 70
+   },
+   {
+    "say": "Calcium flows into the cell",
+    "heard": "Calcium flows into the cell.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000123",
+  "beats": [
+   {
+    "say": "Ectoderm above the notochord",
+    "heard": "Ectoderm above the nota cord.",
+    "score": 0.939,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "The notochord sends signals",
+    "heard": "The notocord sends signals.",
+    "score": 0.979,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "The neural tube closes",
+    "heard": "The neural tube closes.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": [],
+  "second_opinion": {
+   "1": "ectoderm above the notochord"
+  }
+ },
+ {
+  "qid": "Q000000124",
+  "beats": [
+   {
+    "say": "Spindle shaped smooth muscle",
+    "heard": "Spindle -shaped smooth muscle.",
+    "score": 1.0,
+    "onset_error_ms": 20
+   },
+   {
+    "say": "Calcium enters from outside",
+    "heard": "Calcium enters from outside.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "The cell contracts",
+    "heard": "The cell contracts.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000125",
+  "beats": [
+   {
+    "say": "Swallowed in dirty water",
+    "heard": "Swallowed in dirty water.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Virus multiplies in the gut",
+    "heard": "Virus multiplies in the gut.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Fifteen to 40 days",
+    "heard": "15 to 40 days",
+    "score": 1.0,
+    "onset_error_ms": 40
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000126",
+  "beats": [
+   {
+    "say": "Asthma squeezes the airway",
+    "heard": "Asma squeezes the airway.",
+    "score": 0.955,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "The inhaler stimulates beta two",
+    "heard": "The inhaler stimulates beta -2.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Airway muscle relaxes",
+    "heard": "Airway muscle relaxes.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": [],
+  "second_opinion": {
+   "1": "Asthma squeezes the airway."
+  }
+ },
+ {
+  "qid": "Q000000129",
+  "beats": [
+   {
+    "say": "Bacterial endotoxin arrives",
+    "heard": "Bacterial endotoxin arrives.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Macrophages release cytokines",
+    "heard": "Macrophages release cytokines.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Liver makes acute phase proteins",
+    "heard": "Liver makes acute phase proteins.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000132",
+  "beats": [
+   {
+    "say": "The cytokines reach the brain",
+    "heard": "The cytokines reach the brain.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Hypothalamus makes prostaglandins",
+    "heard": "hypothalamus makes prostaglandins.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Set point rises: fever",
+    "heard": "Setpoint rises, fever.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000133",
+  "beats": [
+   {
+    "say": "Medial collateral ligament",
+    "heard": "Media collateral ligament.",
+    "score": 0.979,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "The ligament tears",
+    "heard": "The ligament tears.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Knee opens when abducted",
+    "heard": "Knee opens when abducted.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000135",
+  "beats": [
+   {
+    "say": "Vocal cords seen from above",
+    "heard": "Vocal chords seen from above.",
+    "score": 0.979,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Back muscle pulls cartilages",
+    "heard": "Back muscle pulls cartilages.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Only muscle opening the cords",
+    "heard": "only muscle opening the cords.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ }
+]

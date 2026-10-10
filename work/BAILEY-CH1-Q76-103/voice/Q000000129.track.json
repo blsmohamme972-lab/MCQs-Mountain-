@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000129",
+ "file": "Q000000129.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 37827,
+ "sha256": "905548d17e731aab8689ea8d5a0c234c1a569ae646616896c4d1182aae224ce4",
+ "track_ms": 6692,
+ "card_ms": 7000,
+ "voice": "JBFqnCBsd6RMkjVDRZzb",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "b13ed45bea634664030ddce97b3ec015e31b4fc0b46025c4acc71765c37085ba",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2097,
+   "text": "Bacterial endotoxin arrives",
+   "speed": 1.094
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4246,
+   "text": "Macrophages release cytokines",
+   "speed": 1.15
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6592,
+   "text": "Liver makes acute phase proteins",
+   "speed": 1.2
+  }
+ ]
+}

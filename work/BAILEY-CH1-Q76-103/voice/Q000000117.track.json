@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000117",
+ "file": "Q000000117.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 35002,
+ "sha256": "7e7a2d144b940e099551250493d298a8bbe4eefdc7fd29981955f8279f152153",
+ "track_ms": 6383,
+ "card_ms": 7000,
+ "voice": "JBFqnCBsd6RMkjVDRZzb",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "5a17fb851871086b9eda6c96647c1ecb665d1a20e0fd9cb2124ab8123d3b47d1",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2117,
+   "text": "Thick pylorus, forceful vomiting",
+   "speed": 1.2
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4121,
+   "text": "Acid and chloride lost",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6283,
+   "text": "Kidney swaps out acid",
+   "speed": 1.05
+  }
+ ]
+}

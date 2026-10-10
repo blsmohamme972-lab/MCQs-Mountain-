@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000120",
+ "file": "Q000000120.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 34189,
+ "sha256": "41f5462c58ed81317728920cfaa94b4756a998ca260210c1bdfdf7acc18031db",
+ "track_ms": 6440,
+ "card_ms": 7000,
+ "voice": "cgSgspJ2msm6clMCkdW9",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "3684a0658bbf8fc8d4d11173ce4e2e0a8af5d3d6ecac560e132ab5c78cd94a87",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1920,
+   "text": "Ions inside and outside",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4025,
+   "text": "The ratio sets the voltage",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6340,
+   "text": "Its equilibrium potential",
+   "speed": 1.05
+  }
+ ]
+}

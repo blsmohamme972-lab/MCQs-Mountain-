@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000118",
+ "file": "Q000000118.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 34709,
+ "sha256": "41cd271bc471d2fc97b778dd3f0bd39acffd5d501bd963814c823cd6779b777a",
+ "track_ms": 6480,
+ "card_ms": 7000,
+ "voice": "EXAVITQu4vr4xnSDxMaL",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "01481c60002240f50d43fd2cec66f5b91190a17152a464c1879aee8898c5342a",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1756,
+   "text": "Potassium leaves to reset",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4348,
+   "text": "Amiodarone blocks the channel",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6380,
+   "text": "Action potential lasts longer",
+   "speed": 1.05
+  }
+ ]
+}

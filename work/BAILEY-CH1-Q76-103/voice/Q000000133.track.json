@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000133",
+ "file": "Q000000133.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 32802,
+ "sha256": "724a9d567358288aad48943530cde443464bcfd273bf886d5cebbf74ff68c9e6",
+ "track_ms": 6203,
+ "card_ms": 7000,
+ "voice": "nPczCjzI2devNBz1zQrb",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "eba7c833e26d4d59ff6f8cebdef37b1406563f6a70a513b09e89855800dcd024",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1776,
+   "text": "Medial collateral ligament",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3726,
+   "text": "The ligament tears",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6103,
+   "text": "Knee opens when abducted",
+   "speed": 1.05
+  }
+ ]
+}

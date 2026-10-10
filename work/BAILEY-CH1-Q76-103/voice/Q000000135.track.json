@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000135",
+ "file": "Q000000135.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 36433,
+ "sha256": "6f5e3de84b4df6cdfd18b4b6b581f79d11674249e049d729d0438c5f30b6403a",
+ "track_ms": 6656,
+ "card_ms": 7000,
+ "voice": "JBFqnCBsd6RMkjVDRZzb",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "fa533d65049b82c99c76bb270ce920a6c078713affcfecc2ba5e63b289084946",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1863,
+   "text": "Vocal cords seen from above",
+   "speed": 1.2
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4317,
+   "text": "Back muscle pulls cartilages",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6556,
+   "text": "Only muscle opening the cords",
+   "speed": 1.073
+  }
+ ]
+}

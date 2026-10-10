@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000124",
+ "file": "Q000000124.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 32322,
+ "sha256": "6ed74637b61775420b68f2b97be4c4678f42bf8478d0045908d14057034a5631",
+ "track_ms": 6103,
+ "card_ms": 7000,
+ "voice": "EXAVITQu4vr4xnSDxMaL",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "3dd000059d925b80ea21b40cba52330cf8c9031008d2aaae505107c033fb64a5",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2012,
+   "text": "Spindle shaped smooth muscle",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4050,
+   "text": "Calcium enters from outside",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6003,
+   "text": "The cell contracts",
+   "speed": 1.05
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000122",
+ "file": "Q000000122.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 35507,
+ "sha256": "b272107eb78213f49fe2f1eea40351acfd3d9858203e80d1f5c5d7e05a2d2228",
+ "track_ms": 6528,
+ "card_ms": 7000,
+ "voice": "pFZP5JQG7iQjIQuC4Bku",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "6f1724cae92b049a78d59c7fec18a8f66bc13833331b73db03498fc372fe5ab1",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1979,
+   "text": "The cardiac action potential",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4302,
+   "text": "Phase two: the plateau",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6428,
+   "text": "Calcium flows into the cell",
+   "speed": 1.05
+  }
+ ]
+}

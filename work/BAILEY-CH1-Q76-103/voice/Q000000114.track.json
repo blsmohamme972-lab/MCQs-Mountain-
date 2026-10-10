@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000114",
+ "file": "Q000000114.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 35916,
+ "sha256": "41bf1987354f60c4896fd6ef97fa64fd3cad66005e734cf017f3291ba12e20dd",
+ "track_ms": 6549,
+ "card_ms": 7000,
+ "voice": "cgSgspJ2msm6clMCkdW9",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "add121eae1decdd61884a011d398f6a82fd2faef5edfde55782d5325b3d67071",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2175,
+   "text": "Front lobe of the pituitary",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4375,
+   "text": "Its hormone reaches the thyroid",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6449,
+   "text": "Thyroid follicles switch on",
+   "speed": 1.05
+  }
+ ]
+}

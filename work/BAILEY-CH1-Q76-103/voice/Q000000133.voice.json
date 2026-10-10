@@ -1,0 +1,29 @@
+{
+ "qid": "Q000000133",
+ "duration_ms": 7000,
+ "engine": "elevenlabs",
+ "voice": "nPczCjzI2devNBz1zQrb",
+ "lang": "en-us",
+ "speed": 1.05,
+ "quality": "high",
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "Medial collateral ligament",
+   "say": "Medial collateral ligament"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "The ligament tears",
+   "say": "The ligament tears"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "Knee opens when abducted",
+   "say": "Knee opens when abducted"
+  }
+ ]
+}
