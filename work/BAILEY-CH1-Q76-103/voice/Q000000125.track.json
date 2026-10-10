@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000125",
+ "file": "Q000000125.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 36025,
+ "sha256": "a0b1dead78cfaf9343115d12c250f84da5daed64320f2af2e597ecedd0137689",
+ "track_ms": 6548,
+ "card_ms": 7000,
+ "voice": "onwK4e9ZLuTAKqWW03F9",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "812b36d31e1d52e2f00759823acae72c07cc69469b525c928dba559ad73b4b0e",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1956,
+   "text": "Swallowed in dirty water",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4297,
+   "text": "Virus multiplies in the gut",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6448,
+   "text": "Fifteen to 40 days",
+   "speed": 1.05
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000126",
+ "file": "Q000000126.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 34593,
+ "sha256": "6b4cbbfe9754078b8d6c38755c49377002549e8415a12c1229298f16f290d9aa",
+ "track_ms": 6403,
+ "card_ms": 7000,
+ "voice": "cgSgspJ2msm6clMCkdW9",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "965743bd78d2485613891f53692f5ece8f43f33b02f77d8e2d2f6d77b07ac3d4",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1868,
+   "text": "Asthma squeezes the airway",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4375,
+   "text": "The inhaler stimulates beta two",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6303,
+   "text": "Airway muscle relaxes",
+   "speed": 1.05
+  }
+ ]
+}

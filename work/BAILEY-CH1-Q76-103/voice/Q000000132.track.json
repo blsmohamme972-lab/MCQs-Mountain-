@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000132",
+ "file": "Q000000132.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 36814,
+ "sha256": "e3b361f4039ca4081dbb808402da1563fb0ecc9a1cb250957b0996e30edd13b6",
+ "track_ms": 6609,
+ "card_ms": 7000,
+ "voice": "cgSgspJ2msm6clMCkdW9",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "a56d74937c54491f7c871076be4ae9f7d2163ca9718c2735fab76fd729fccca8",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2046,
+   "text": "The cytokines reach the brain",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4328,
+   "text": "Hypothalamus makes prostaglandins",
+   "speed": 1.121
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6509,
+   "text": "Set point rises: fever",
+   "speed": 1.05
+  }
+ ]
+}

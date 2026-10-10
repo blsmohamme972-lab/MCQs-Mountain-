@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000116",
+ "file": "Q000000116.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 32415,
+ "sha256": "08b91a4f59657d08bbb1c8a5f24b0df6fc3353e088f74ae4ae237fd4d89611ce",
+ "track_ms": 6362,
+ "card_ms": 7000,
+ "voice": "pFZP5JQG7iQjIQuC4Bku",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "8098acd09052b234e2271192c5d68981cca607fa06cd89fbc595b5728de0173d",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1777,
+   "text": "An infected body cell",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3932,
+   "text": "Killer T cell attaches",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6262,
+   "text": "Its pores kill the cell",
+   "speed": 1.05
+  }
+ ]
+}

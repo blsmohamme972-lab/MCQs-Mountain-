@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000119",
+ "file": "Q000000119.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 37641,
+ "sha256": "bcc2aed13bfe4db1878cb8c1bd13277846d6c33582aee262e04cdf2f5ca0c9d1",
+ "track_ms": 6651,
+ "card_ms": 7000,
+ "voice": "onwK4e9ZLuTAKqWW03F9",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "7848d1ad6abe5a109025b6b766eff782a3347699a68506ab34a1df20e6c0441e",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1873,
+   "text": "Arches and clefts in the neck",
+   "speed": 1.2
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4121,
+   "text": "Second arch grows down",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6551,
+   "text": "It covers the lower clefts",
+   "speed": 1.05
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000110",
+ "file": "Q000000110.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 32251,
+ "sha256": "093af73b6e323265f45bb1ed45b55d1d1570fe54ba30e08f9908f621bafbceec",
+ "track_ms": 6393,
+ "card_ms": 7000,
+ "voice": "pFZP5JQG7iQjIQuC4Bku",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "f304a64281f404e1ee384b627a8d14db274581411250a783e1cf7ad374b0fa2f",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1736,
+   "text": "Standing up from lying",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3917,
+   "text": "Blood pools in leg veins",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6293,
+   "text": "Less return, output falls",
+   "speed": 1.05
+  }
+ ]
+}

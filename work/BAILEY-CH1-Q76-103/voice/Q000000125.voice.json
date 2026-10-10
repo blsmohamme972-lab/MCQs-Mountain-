@@ -1,0 +1,29 @@
+{
+ "qid": "Q000000125",
+ "duration_ms": 7000,
+ "engine": "elevenlabs",
+ "voice": "onwK4e9ZLuTAKqWW03F9",
+ "lang": "en-us",
+ "speed": 1.05,
+ "quality": "high",
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "Swallowed in dirty water",
+   "say": "Swallowed in dirty water"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "Virus multiplies in the gut",
+   "say": "Virus multiplies in the gut"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "Fifteen to forty days",
+   "say": "Fifteen to 40 days"
+  }
+ ]
+}

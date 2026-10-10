@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000108",
+ "file": "Q000000108.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 34470,
+ "sha256": "c68044e0f746a8e707d9d6eae9c10be48656a623e0cf352e16d85a586f57bf9c",
+ "track_ms": 6465,
+ "card_ms": 7000,
+ "voice": "cgSgspJ2msm6clMCkdW9",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "64361c286542b255e0b93e3c06ccc9f5902cadb3b5177b60c60941eb976b91eb",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1855,
+   "text": "Glands of the stomach lining",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4257,
+   "text": "Parietal cells release acid",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6365,
+   "text": "And intrinsic factor too",
+   "speed": 1.05
+  }
+ ]
+}

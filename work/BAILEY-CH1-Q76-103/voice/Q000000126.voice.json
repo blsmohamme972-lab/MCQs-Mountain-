@@ -1,0 +1,29 @@
+{
+ "qid": "Q000000126",
+ "duration_ms": 7000,
+ "engine": "elevenlabs",
+ "voice": "cgSgspJ2msm6clMCkdW9",
+ "lang": "en-us",
+ "speed": 1.05,
+ "quality": "high",
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "Asthma squeezes the airway",
+   "say": "Asthma squeezes the airway"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "Salbutamol stimulates beta two",
+   "say": "The inhaler stimulates beta two"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "Muscle relaxes, airway opens",
+   "say": "Airway muscle relaxes"
+  }
+ ]
+}

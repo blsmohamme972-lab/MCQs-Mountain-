@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000123",
+ "file": "Q000000123.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 40006,
+ "sha256": "98df55ff5d8dc1036fc9761a05ca996e83731360eb37d8c94c9273660fc3ea35",
+ "track_ms": 6446,
+ "card_ms": 7000,
+ "voice": "JBFqnCBsd6RMkjVDRZzb",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "2ff26eed55bd6d37bd54d8f2a324e4f41dc7d52970e0abde55efaa2e8a50618b",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2137,
+   "text": "Ectoderm above the notochord",
+   "speed": 1.073
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4390,
+   "text": "The notochord sends signals",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6346,
+   "text": "The neural tube closes",
+   "speed": 1.05
+  }
+ ]
+}

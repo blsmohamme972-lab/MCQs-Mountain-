@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000113",
+ "file": "Q000000113.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 34451,
+ "sha256": "546c028ab55d088e90c7f725624bdf4fce21569113ef52df141d1142b42d5e5b",
+ "track_ms": 6378,
+ "card_ms": 7000,
+ "voice": "onwK4e9ZLuTAKqWW03F9",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "5710b8e239b54fa43829aa674e956db2b885d9add0f920ab3f7116e5012efad6",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1690,
+   "text": "Stretch per pressure",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4436,
+   "text": "Emphysema breaks elastic walls",
+   "speed": 1.2
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6278,
+   "text": "Floppy lungs stretch more",
+   "speed": 1.108
+  }
+ ]
+}

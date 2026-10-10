@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000111",
+ "file": "Q000000111.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 32379,
+ "sha256": "db48a23cf7cf7d8b9920a01ca3481b2668e1be6880171180a43b5f1ccf37be1c",
+ "track_ms": 6661,
+ "card_ms": 7000,
+ "voice": "JBFqnCBsd6RMkjVDRZzb",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "d25d53d6be5f58cb805665c558b8c6057dacfdfcc4582a7daff344f0a7acf3be",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1597,
+   "text": "Flow through a tube",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3657,
+   "text": "Double the radius",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6561,
+   "text": "Flow rises sixteen times",
+   "speed": 1.104
+  }
+ ]
+}
