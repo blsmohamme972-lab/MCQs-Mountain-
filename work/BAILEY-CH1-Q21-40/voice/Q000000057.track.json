@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000057",
+ "file": "Q000000057.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12206,
+ "sha256": "a932e2ed1fe99faac147091c02bd8007bcd7d71fc6b7eb38a35a8131ec2d2940",
+ "track_ms": 6309,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "6ce691df6daf4a564f003e722fdb62a0452a1fc64ee034a9930cb82decd5e2b5",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2176,
+   "text": "Nerves fail, breathing muscles weaken",
+   "speed": 1.134
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4346,
+   "text": "Shallow breaths trap carbon dioxide",
+   "speed": 1.2
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6209,
+   "text": "Respiratory acidosis",
+   "speed": 1.05
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000059",
+ "file": "Q000000059.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12019,
+ "sha256": "26077ec4c5823d217ec24af02c1faa93b8450a128656fba1d6bfb298cfe9530f",
+ "track_ms": 6697,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "b66d5d0fd8ee08a9c709740dcbfa423d900b96ccee02593d82bd8c510066bbec",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1762,
+   "text": "Three holes in the diaphragm",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4041,
+   "text": "Oesophagus heads to the stomach",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6597,
+   "text": "T10: the oesophageal opening",
+   "speed": 1.2
+  }
+ ]
+}

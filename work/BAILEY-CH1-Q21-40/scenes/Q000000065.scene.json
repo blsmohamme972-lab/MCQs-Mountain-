@@ -93,5 +93,6 @@
   "Servier Medical Art (smart.servier.com), CC BY 3.0",
   "Cancer cell: Servier Medical Art, CC BY 3.0",
   "X-ray: Fluent Emoji (Microsoft), MIT"
- ]
+ ],
+ "replace": true
 }

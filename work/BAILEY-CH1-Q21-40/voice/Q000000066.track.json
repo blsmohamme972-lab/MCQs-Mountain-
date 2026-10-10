@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000066",
+ "file": "Q000000066.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11334,
+ "sha256": "81899fca09b0afbbd55912b6704d5f3992866ec74be612d61fd05e247832f5fb",
+ "track_ms": 6158,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "7e18f1c8dc53997812c30535fd2b34f9bd772942956fa34afa715eda75ce0270",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1906,
+   "text": "Fast worsening cough with blood",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4180,
+   "text": "Small cells grow and spread early",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6058,
+   "text": "Small cell carcinoma",
+   "speed": 1.05
+  }
+ ]
+}

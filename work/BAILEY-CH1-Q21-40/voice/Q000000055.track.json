@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000055",
+ "file": "Q000000055.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11651,
+ "sha256": "4d9971b369b2d0296512ddbf1ae674e2994e28c4d668b9faacba41499dafd620",
+ "track_ms": 6303,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "de03b9eea9ca875f879aad64a163119c126c1c86e1b8f54d2eb60508439c4891",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2136,
+   "text": "Thiazide acts on the distal tubule",
+   "speed": 1.129
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3945,
+   "text": "Pump blocked, acid lost",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6203,
+   "text": "Metabolic alkalosis",
+   "speed": 1.05
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000065",
+ "file": "Q000000065.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 10829,
+ "sha256": "09e9553323a66bad7c50b31a609c4c36fed9824fdfe5a893fc0c7ca055e5f51d",
+ "track_ms": 6158,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "a78d96fff30b9db92cfc93592c09ddfcb9fb6f952073671c3e32e32cbf86b257",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1940,
+   "text": "Prostate cancer, now a cough",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3758,
+   "text": "Cells spread through the blood",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6058,
+   "text": "Secondary lung tumour",
+   "speed": 1.05
+  }
+ ]
+}

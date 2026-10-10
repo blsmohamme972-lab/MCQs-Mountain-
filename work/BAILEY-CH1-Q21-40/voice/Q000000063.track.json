@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000063",
+ "file": "Q000000063.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11627,
+ "sha256": "d0602d7a1087a4dcac4cbd1280e08da0acf694ff0cc21686a9e1c8ef23496456",
+ "track_ms": 6245,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "85cec213b9e3f0263baba097730bc46dbb61c832b25090c0cfa052021d6103ea",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2031,
+   "text": "A swollen leg in a tight plaster",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4110,
+   "text": "Pressure builds in the compartments",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6145,
+   "text": "Remove the plaster first",
+   "speed": 1.05
+  }
+ ]
+}

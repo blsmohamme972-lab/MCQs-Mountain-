@@ -92,5 +92,6 @@
  "credits": [
   "Colon: Servier Medical Art, CC BY 3.0",
   "Pill: Fluent Emoji (Microsoft), MIT"
- ]
+ ],
+ "replace": true
 }

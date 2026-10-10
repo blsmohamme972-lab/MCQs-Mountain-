@@ -92,5 +92,6 @@
  "credits": [
   "Servier Medical Art (smart.servier.com), CC BY 3.0",
   "Blood drop: Fluent Emoji (Microsoft), MIT"
- ]
+ ],
+ "replace": true
 }
