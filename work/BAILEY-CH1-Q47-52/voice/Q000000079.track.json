@@ -2,31 +2,31 @@
  "qid": "Q000000079",
  "file": "Q000000079.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 11194,
- "sha256": "e2b10b628801957d534919f2eee97452b42a3ff095e084fe6df43d3bb79a069b",
- "track_ms": 6167,
+ "bytes": 29759,
+ "sha256": "73748da66b31690c4800eaebcbf7836268768fce195bc96a04a81a94024cf3bc",
+ "track_ms": 5995,
  "card_ms": 7000,
- "voice": "Xb7hH8MSUJpSbSDYk0k2",
+ "voice": "cgSgspJ2msm6clMCkdW9",
  "lang": "en-us",
  "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
- "bitrate": "16k",
- "script_sha256": "9ca2a083aa01de6ad99cc297d1aae9bf84acadab211c468b5526d992482f849f",
+ "bitrate": "48k",
+ "script_sha256": "23608bed7e68e3f88921ac07c0f5907e75bddaa95aac80157451de621a05b13d",
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1968,
+   "end_ms": 1890,
    "text": "Soft neck lump, teenager",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 4045,
+   "end_ms": 3710,
    "text": "Light shines through it",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6067,
+   "end_ms": 5895,
    "text": "Cystic hygroma",
    "speed": 1.05
   }

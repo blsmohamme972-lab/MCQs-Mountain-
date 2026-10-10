@@ -35,6 +35,10 @@ MAX_SPEED = 1.2                 # never speed a voice up more than this to fit a
 LEAD_MS, FIRST_LEAD_MS, TAIL_MS, END_HOLD_MS = 120, 250, 120, 350
 MIN_WINDOW_MS = 500             # a beat shorter than this cannot hold even one spoken word
 MAX_VOICE_BYTES = 20 * 1024     # Golden rule 5: at most 20 KB more per card download (an 8 s card is ~13 KB at 16 kbps)
+# Owner's "high" quality (asked for after hearing 16 kbps ElevenLabs): full-band Opus at 48 kbps in music mode, about 42 KB
+# for a 7 s card. Still inside the package validator's 64 KB per-card voice limit (motioncards/lib/spec.py).
+QUALITY = {"standard": {"bitrate": BITRATE, "small": SMALL_BITRATE, "app": "voip", "frame": "60", "max": MAX_VOICE_BYTES},
+           "high": {"bitrate": "48k", "small": "40k", "app": "audio", "frame": "20", "max": 60 * 1024}}
 ONSET_LIMIT_MS = 80             # Golden rule 7: each line starts within this of its animation beat
 SILENCE_DB = -50.0              # outside its lines a track must stay this far below its peak (chapter 10: -91 dB)
 GUESS = "guess"                 # beat timing that `draft` could not read from the scene; the agent must set it
@@ -372,12 +376,15 @@ def run_draft(a) -> list[str]:
         if p.exists() and not a.force:
             doc = json.loads(p.read_text(encoding="utf-8")); moved, problem = retime(doc, s)
             switched = set_engine(doc, a.engine, a.voice)
+            if getattr(a, "quality", None) and doc.get("quality", "standard") != a.quality: doc["quality"] = a.quality; switched = True
             if problem: problems.append(f"{s['qid']}: {problem}")
             elif moved or switched: write_doc(p, doc); print("retime" if moved else "engine", p.name, f"(lines kept; voice {doc.get('engine', DEFAULT_ENGINE)} {doc['voice']})")
             else: print("keep", p.name)
             continue
         engine = a.engine or DEFAULT_ENGINE
-        doc = draft_doc(s, a.voice or ENGINES[engine]["voice"], a.lang, engine); write_doc(p, doc)
+        doc = draft_doc(s, a.voice or ENGINES[engine]["voice"], a.lang, engine)
+        if getattr(a, "quality", None) and a.quality != "standard": doc["quality"] = a.quality
+        write_doc(p, doc)
         if any(b.get("timing") == GUESS for b in doc["beats"]): print("draft", p.name, "beats GUESSED: no numbered captions in the scene")
         else: print("draft", p.name, "budgets (words):", [max_words(doc, i) for i in range(len(doc["beats"]))])
     if not (ws / "scenes").is_dir(): problems.append(f"no scenes folder in {ws}: the workspace needs scenes/Q*.scene.json")
@@ -393,12 +400,12 @@ def set_engine(doc: dict, engine: str | None, voice: str | None) -> bool:
     return (doc["engine"], doc["voice"]) != old
 
 
-def encode_opus(pcm, out: Path, bitrate: str = BITRATE):
+def encode_opus(pcm, out: Path, bitrate: str = BITRATE, app: str = "voip", frame: str = "60"):
     """Loudness-normalise to −16 LUFS and encode Opus mono (16 kbps by default), bit-exact (same input → same bytes)."""
     import numpy as np
     r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", "-",
                         "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-ar", str(SR), "-ac", "1",
-                        "-c:a", "libopus", "-b:a", bitrate, "-vbr", "on", "-application", "voip", "-frame_duration", "60",
+                        "-c:a", "libopus", "-b:a", bitrate, "-vbr", "on", "-application", app, "-frame_duration", frame,
                         "-map_metadata", "-1", "-fflags", "+bitexact", "-flags:a", "+bitexact", str(out)],
                        input=np.asarray(pcm, np.float32).tobytes(), capture_output=True)
     if r.returncode: raise ValueError(f"{out.stem}: ffmpeg failed: " + r.stderr.decode()[-400:])
@@ -430,13 +437,14 @@ def synth_one(doc: dict, d: Path, lex: dict) -> dict:
     total = max(at * SR // 1000 + len(c) for at, c in clips) + SR // 10
     track = np.zeros(total, np.float32)
     for at, c in clips: s0 = at * SR // 1000; track[s0:s0 + len(c)] += c
-    out = d / f"{qid}.opus"; rate = BITRATE; encode_opus(track, out, rate)
-    if out.stat().st_size > MAX_VOICE_BYTES: rate = SMALL_BITRATE; encode_opus(track, out, rate)   # long card: keep rule 5
+    Q = QUALITY[doc.get("quality", "standard")]
+    out = d / f"{qid}.opus"; rate = Q["bitrate"]; encode_opus(track, out, rate, Q["app"], Q["frame"])
+    if out.stat().st_size > Q["max"]: rate = Q["small"]; encode_opus(track, out, rate, Q["app"], Q["frame"])   # long card: keep rule 5
     size = out.stat().st_size
-    if size > MAX_VOICE_BYTES:
+    if size > Q["max"]:
         out.unlink(); words = sum(len(c["text"].split()) for c in cues)
-        raise ValueError(f"{qid}: voice is {size/1024:.1f} KB even at {SMALL_BITRATE}bps, over the {MAX_VOICE_BYTES//1024} KB per-card "
-                         f"budget (Golden rule 5): cut about {math.ceil(words * (1 - MAX_VOICE_BYTES / size))} of its {words} words")
+        raise ValueError(f"{qid}: voice is {size/1024:.1f} KB even at {rate}bps, over the {Q['max']//1024} KB per-card "
+                         f"budget (Golden rule 5): cut about {math.ceil(words * (1 - Q['max'] / size))} of its {words} words")
     info = {"qid": qid, "file": out.name, "mime": "audio/ogg; codecs=opus", "bytes": size, "sha256": sha256(out),
             "track_ms": round(total * 1000 / SR), "card_ms": doc["duration_ms"], "voice": doc["voice"], "lang": doc["lang"],
             "engine": ENGINES[engine]["label"], "bitrate": rate, "script_sha256": script_sha(doc), "cues": cues}
@@ -585,7 +593,7 @@ def run_review(a) -> list[str]:
         mp4 = out / f"{s['qid']}.mp4"
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst), "-i", str(d / f"{s['qid']}.opus"),
                         "-vf", "scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p", "-r", str(a.fps), "-c:v", "libx264", "-crf", "28",
-                        "-preset", "veryfast", "-af", "apad", "-c:a", "aac", "-b:a", "48k", "-shortest", str(mp4)], check=True)
+                        "-preset", "veryfast", "-af", "apad", "-c:a", "aac", "-b:a", "128k", "-shortest", str(mp4)], check=True)
         shutil.rmtree(fdir, ignore_errors=True)
         print("review", mp4, f"{mp4.stat().st_size/1024:.0f} KB")
     return fails
@@ -661,6 +669,7 @@ def main():
         p.add_argument("--asr2", default="small.en", help="check: second recogniser asked before a long word fails ('' = off)")
         p.add_argument("--min-score", type=float, default=0.85); p.add_argument("--fps", type=int, default=15)
         p.add_argument("--no-review", action="store_true", help="make: skip the review videos")
+        p.add_argument("--quality", choices=list(QUALITY), help="make/draft: 'high' = 48 kbps full-band Opus (~42 KB per 7 s card); saved in voice.json")
     a = ap.parse_args(); a.f(a)
 
 

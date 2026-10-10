@@ -4,21 +4,21 @@
   "beats": [
    {
     "say": "Soft neck lump, teenager",
-    "heard": "Soft necklump teenager",
+    "heard": "Soft necklump, teenager.",
     "score": 1.0,
-    "onset_error_ms": 0
+    "onset_error_ms": 10
    },
    {
     "say": "Light shines through it",
     "heard": "Light shines through it.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 0
    },
    {
     "say": "Cystic hygroma",
-    "heard": "cystic hygroma",
+    "heard": "Cystic Hygroma.",
     "score": 1.0,
-    "onset_error_ms": 0
+    "onset_error_ms": 20
    }
   ],
   "stray_sound_ms": []
@@ -28,26 +28,26 @@
   "beats": [
    {
     "say": "Known gallstones, now vomiting",
-    "heard": "Nungal stones now vomiting.",
-    "score": 0.898,
-    "onset_error_ms": 0
+    "heard": "Known Galstones now vomiting.",
+    "score": 0.98,
+    "onset_error_ms": 10
    },
    {
     "say": "A gallstone blocks the bowel",
-    "heard": "A gallstone blocks the bowel.",
-    "score": 1.0,
+    "heard": "A gallstone blocks the bow.",
+    "score": 0.957,
     "onset_error_ms": 10
    },
    {
     "say": "Plain abdominal X-ray",
-    "heard": "Plain abdominal x -ray",
+    "heard": "Plain abdominal x -ray.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 0
    }
   ],
   "stray_sound_ms": [],
   "second_opinion": {
-   "1": "Known gallstones, now vomiting."
+   "2": "A gallstone blocks the bowel."
   }
  },
  {
@@ -57,7 +57,7 @@
     "say": "Fracture inside the capsule",
     "heard": "Fracture inside the capsule.",
     "score": 1.0,
-    "onset_error_ms": 60
+    "onset_error_ms": 30
    },
    {
     "say": "Rheumatoid socket is worn",
@@ -87,12 +87,12 @@
     "say": "Save her own femoral head",
     "heard": "Save her own femoral head.",
     "score": 1.0,
-    "onset_error_ms": 0
+    "onset_error_ms": 10
    },
    {
     "say": "Cannulated screws",
-    "heard": "Canulated screws.",
-    "score": 0.968,
+    "heard": "Cannulated screws.",
+    "score": 1.0,
     "onset_error_ms": 10
    }
   ],
@@ -103,7 +103,7 @@
   "beats": [
    {
     "say": "Elderly man, hip fracture",
-    "heard": "Elderlyman hip fracture",
+    "heard": "Elderly Man hip fracture.",
     "score": 1.0,
     "onset_error_ms": 10
    },
@@ -127,19 +127,19 @@
   "beats": [
    {
     "say": "Two thirds is inside cells",
-    "heard": "2 thirds is inside cells.",
+    "heard": "Two thirds is inside cells.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Potassium and protein inside",
-    "heard": "Potassium and protein inside.",
+    "say": "Potassium, protein inside",
+    "heard": "Potassium protein inside.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
     "say": "Less protein outside cells",
-    "heard": "Less protein outside cells",
+    "heard": "Less protein outside cells.",
     "score": 1.0,
     "onset_error_ms": 10
    }

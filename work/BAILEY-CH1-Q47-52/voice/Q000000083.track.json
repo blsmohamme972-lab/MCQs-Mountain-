@@ -2,31 +2,31 @@
  "qid": "Q000000083",
  "file": "Q000000083.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 11087,
- "sha256": "69f8d1e112cedfbaa0d2cdea637168fd39f3f46c11b672548bfc73af9f52eabd",
- "track_ms": 6193,
+ "bytes": 31617,
+ "sha256": "4cd7516b18991ca08260ed7f2d2a0921f11735be77dad486e92ea97229d0699d",
+ "track_ms": 6103,
  "card_ms": 7000,
- "voice": "Xb7hH8MSUJpSbSDYk0k2",
+ "voice": "EXAVITQu4vr4xnSDxMaL",
  "lang": "en-us",
  "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
- "bitrate": "16k",
- "script_sha256": "f7285d94b3bc86ab62a336c1cdc9eda91e9b9e8a76238fdfa7be3e5edb1e7e72",
+ "bitrate": "48k",
+ "script_sha256": "3f2f3b47189ba1fdc66dc5e853a2308508aaafaa7e75ecfaa8048753d9839873",
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 2091,
+   "end_ms": 1905,
    "text": "Elderly man, hip fracture",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 3866,
+   "end_ms": 3750,
    "text": "Break outside the capsule",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6093,
+   "end_ms": 6003,
    "text": "Dynamic hip screw",
    "speed": 1.05
   }

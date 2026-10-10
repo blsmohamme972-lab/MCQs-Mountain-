@@ -2,31 +2,31 @@
  "qid": "Q000000080",
  "file": "Q000000080.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 11817,
- "sha256": "8305e7658756626e5c488a7a973400c7c2ef67214116fcddd8f9022d0a88d6c5",
- "track_ms": 6198,
+ "bytes": 36266,
+ "sha256": "7a21b11629816f2303d6617b0a66ed64fd1b6604ba03b0c949a74e59d46f7bb2",
+ "track_ms": 6296,
  "card_ms": 7000,
- "voice": "Xb7hH8MSUJpSbSDYk0k2",
+ "voice": "nPczCjzI2devNBz1zQrb",
  "lang": "en-us",
  "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
- "bitrate": "16k",
- "script_sha256": "22d985ac7b00c999f1fa469d31b419cc0e7e854935af141f210bc276164103ac",
+ "bitrate": "48k",
+ "script_sha256": "7b65069fa8d024970545dbd74c3372fcebf8514a7bf80dae54148d55400cb727",
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1973,
+   "end_ms": 2071,
    "text": "Known gallstones, now vomiting",
-   "speed": 1.2
+   "speed": 1.102
   },
   {
    "t_ms": 2420,
-   "end_ms": 4390,
+   "end_ms": 4297,
    "text": "A gallstone blocks the bowel",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6098,
+   "end_ms": 6196,
    "text": "Plain abdominal X-ray",
    "speed": 1.05
   }
