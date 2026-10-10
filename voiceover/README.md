@@ -33,7 +33,7 @@ Before making any voice, the agent **asks the owner which engine to use**, once 
 | Engine | `--engine` | Cost | Voice | Notes |
 |---|---|---|---|---|
 | **Kokoro-82M** | `kokoro` | Free, offline | `af_heart` | The project default. Meets every Golden rule. Uses the IPA fixes in `lexicon.json`. |
-| **ElevenLabs** | `elevenlabs` | Paid per character (API credits) | `Alice` (`Xb7hH8MSUJpSbSDYk0k2`) | Needs `ELEVENLABS_API_KEY`. Model `eleven_multilingual_v2`. Not free, so it is an owner's exception to Golden rules 1 and 4. Uses the `say` rewrites in `lexicon.json` but not its IPA entries. Replies are cached in `~/.cache/kafu-voiceover/elevenlabs/`, so re-running `make` costs nothing extra. |
+| **ElevenLabs** | `elevenlabs` | Paid per character (API credits) | A different voice per question, women and men taking turns: Jessica, Brian, Lily, George, Sarah, Daniel (`ELEVEN_VOICES`, picked from the QID number so a card keeps its voice) | Owner's standard (Oct 2026): always **high quality**, 48 kbps full-band Opus (about 30–35 KB per 7 s card, inside the package's 64 KB voice limit; review videos at 128 kbps AAC). Needs `ELEVENLABS_API_KEY`. Model `eleven_multilingual_v2`. Not free, so it is an owner's exception to Golden rules 1 and 4. Uses the `say` rewrites in `lexicon.json` but not its IPA entries. Replies are cached in `~/.cache/kafu-voiceover/elevenlabs/`, so re-running `make` costs nothing extra. |
 
 If the owner wants to hear both first, run `voiceover.py sample` (7 s of the same anatomy line from each engine, same loudness, in `work/voice-sample/`) and send them the two MP3s. `--text "…"` and `--seconds N` change the test.
 

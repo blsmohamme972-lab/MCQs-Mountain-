@@ -234,8 +234,22 @@ class Engines(unittest.TestCase):
         self.assertEqual((doc["engine"], doc["voice"]), ("kokoro", "af_heart"))
         doc["beats"][0]["say"] = "Kept line."; p.write_text(json.dumps(doc), encoding="utf-8")
         a.engine = "elevenlabs"; V.run_draft(a); doc = json.loads(p.read_text())
-        self.assertEqual((doc["engine"], doc["voice"], doc["beats"][0]["say"]), ("elevenlabs", V.ENGINES["elevenlabs"]["voice"], "Kept line."))
+        self.assertEqual((doc["engine"], doc["voice"], doc["beats"][0]["say"]), ("elevenlabs", V.engine_voice("elevenlabs", doc["qid"]), "Kept line."))
         a.engine = None; V.run_draft(a); self.assertEqual(json.loads(p.read_text())["engine"], "elevenlabs")
+
+    def test_elevenlabs_rotates_women_and_men_and_is_high_quality(self):
+        ids = [V.engine_voice("elevenlabs", f"Q{n:09d}") for n in range(79, 85)]
+        self.assertEqual(len(set(ids)), 6)
+        sexes = [next(g for _, v, g in V.ELEVEN_VOICES if v == i) for i in ids]
+        self.assertTrue(all(a != b for a, b in zip(sexes, sexes[1:])))
+        self.assertEqual(V.engine_voice("elevenlabs", "Q000000079"), V.engine_voice("elevenlabs", "Q000000079"))
+        self.assertEqual(V.engine_voice("kokoro", "Q000000079"), "af_heart")
+        self.assertEqual(V.doc_quality({"engine": "elevenlabs"}), "high")
+        self.assertEqual(V.doc_quality({"engine": "kokoro"}), "standard")
+        self.assertEqual(V.doc_quality({}), "standard")
+        doc = {"qid": "Q000000080", "engine": "kokoro", "voice": "af_heart"}
+        self.assertTrue(V.set_engine(doc, "elevenlabs", None))
+        self.assertEqual((doc["voice"], doc["quality"]), (V.engine_voice("elevenlabs", "Q000000080"), "high"))
 
     def test_old_scripts_without_an_engine_are_kokoro(self):
         doc = {"voice": "af_heart"}

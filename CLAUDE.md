@@ -7,6 +7,6 @@ Start with `HANDOFF.md`. MotionCards: `motioncards/MASTER_PROMPT.md`. Voice-over
 Before generating any voice (a test clip or a batch), ask the owner which engine to use, and wait for the answer:
 
 - **Kokoro**: free, offline, the project default (`--engine kokoro`).
-- **ElevenLabs**: paid API credits, needs `ELEVENLABS_API_KEY` (`--engine elevenlabs`).
+- **ElevenLabs**: paid API credits, needs `ELEVENLABS_API_KEY` (`--engine elevenlabs`). The owner's ElevenLabs standard is automatic: high quality (48 kbps full-band Opus) and a different voice per question, women and men taking turns (`ELEVEN_VOICES` in `voiceover/voiceover.py`). Do not pass `--voice` or `--quality` unless the owner asks for something else.
 
 Offer to send a 7-second test of each first: `~/.venvs/kafu-voice/bin/python voiceover/voiceover.py sample`, then send both MP3s from `work/voice-sample/`. Then run `voiceover.py make --engine <their choice> --workspace work/<batch>`. Never choose the engine yourself; `make` refuses to run without `--engine`.

@@ -55,6 +55,23 @@ ENGINES = {                     # the owner picks one per batch; the agent must 
     "elevenlabs": {"voice": "Xb7hH8MSUJpSbSDYk0k2", "label": f"ElevenLabs {ELEVEN_MODEL} (paid API)"},   # "Alice", clear educator
 }
 DEFAULT_ENGINE = "kokoro"       # scripts written before engines existed are Kokoro
+# Owner's ElevenLabs standard (Oct 2026): a different voice per question, women and men taking turns, chosen from the
+# QID number so a card keeps its voice on every run. Premade English voices only (never the owner's cloned voices).
+ELEVEN_VOICES = [("Jessica", "cgSgspJ2msm6clMCkdW9", "woman"), ("Brian", "nPczCjzI2devNBz1zQrb", "man"),
+                 ("Lily", "pFZP5JQG7iQjIQuC4Bku", "woman"), ("George", "JBFqnCBsd6RMkjVDRZzb", "man"),
+                 ("Sarah", "EXAVITQu4vr4xnSDxMaL", "woman"), ("Daniel", "onwK4e9ZLuTAKqWW03F9", "man")]
+ENGINE_QUALITY = {"kokoro": "standard", "elevenlabs": "high"}   # ElevenLabs is always made at high quality
+
+
+def engine_voice(engine: str, qid: str = "") -> str:
+    """The voice a new or switched script gets: ElevenLabs rotates through ELEVEN_VOICES by QID, Kokoro keeps its one voice."""
+    digits = re.sub(r"\D", "", qid or "")
+    if engine == "elevenlabs" and digits: return ELEVEN_VOICES[int(digits) % len(ELEVEN_VOICES)][1]
+    return ENGINES[engine]["voice"]
+
+
+def doc_quality(doc: dict) -> str:
+    return doc.get("quality") or ENGINE_QUALITY.get(doc.get("engine", DEFAULT_ENGINE), "standard")
 DEFAULT_VOICE, DEFAULT_LANG, DEFAULT_SPEED = ENGINES[DEFAULT_ENGINE]["voice"], "en-us", 1.05
 SAMPLE_TEXT = "The femur is the longest bone in the body. It joins the hip to the knee and carries your weight."
 CAPTION = re.compile(r"^\s*(\d+)\s*·\s*(.+)$", re.S)
@@ -112,6 +129,7 @@ def guess_beats(duration_ms: int) -> list[dict]:
 def draft_doc(scene: dict, voice=DEFAULT_VOICE, lang=DEFAULT_LANG, engine=DEFAULT_ENGINE) -> dict:
     beats = beats_from_scene(scene)
     return {"qid": scene["qid"], "duration_ms": int(scene["duration_ms"]), "engine": engine, "voice": voice, "lang": lang, "speed": DEFAULT_SPEED,
+            "quality": ENGINE_QUALITY[engine],
             "beats": [{"start_ms": b["start_ms"], "end_ms": b["end_ms"], "caption": b["caption"],
                        "say": b["caption"]} for b in beats] or guess_beats(int(scene["duration_ms"]))}   # say pre-filled: synth says if too long
 
@@ -376,14 +394,14 @@ def run_draft(a) -> list[str]:
         if p.exists() and not a.force:
             doc = json.loads(p.read_text(encoding="utf-8")); moved, problem = retime(doc, s)
             switched = set_engine(doc, a.engine, a.voice)
-            if getattr(a, "quality", None) and doc.get("quality", "standard") != a.quality: doc["quality"] = a.quality; switched = True
+            if getattr(a, "quality", None) and doc_quality(doc) != a.quality: doc["quality"] = a.quality; switched = True
             if problem: problems.append(f"{s['qid']}: {problem}")
             elif moved or switched: write_doc(p, doc); print("retime" if moved else "engine", p.name, f"(lines kept; voice {doc.get('engine', DEFAULT_ENGINE)} {doc['voice']})")
             else: print("keep", p.name)
             continue
         engine = a.engine or DEFAULT_ENGINE
-        doc = draft_doc(s, a.voice or ENGINES[engine]["voice"], a.lang, engine)
-        if getattr(a, "quality", None) and a.quality != "standard": doc["quality"] = a.quality
+        doc = draft_doc(s, a.voice or engine_voice(engine, s["qid"]), a.lang, engine)
+        if getattr(a, "quality", None): doc["quality"] = a.quality
         write_doc(p, doc)
         if any(b.get("timing") == GUESS for b in doc["beats"]): print("draft", p.name, "beats GUESSED: no numbered captions in the scene")
         else: print("draft", p.name, "budgets (words):", [max_words(doc, i) for i in range(len(doc["beats"]))])
@@ -394,7 +412,8 @@ def run_draft(a) -> list[str]:
 def set_engine(doc: dict, engine: str | None, voice: str | None) -> bool:
     """Point a kept script at the engine (and voice) the owner chose; its lines and timing stay. True if it changed."""
     old = (doc.get("engine", DEFAULT_ENGINE), doc["voice"])
-    if engine and engine != old[0]: doc["engine"], doc["voice"] = engine, voice or ENGINES[engine]["voice"]
+    if engine and engine != old[0]:
+        doc["engine"], doc["voice"], doc["quality"] = engine, voice or engine_voice(engine, doc.get("qid", "")), ENGINE_QUALITY[engine]
     elif voice: doc["voice"] = voice
     doc.setdefault("engine", old[0])
     return (doc["engine"], doc["voice"]) != old
@@ -437,7 +456,7 @@ def synth_one(doc: dict, d: Path, lex: dict) -> dict:
     total = max(at * SR // 1000 + len(c) for at, c in clips) + SR // 10
     track = np.zeros(total, np.float32)
     for at, c in clips: s0 = at * SR // 1000; track[s0:s0 + len(c)] += c
-    Q = QUALITY[doc.get("quality", "standard")]
+    Q = QUALITY[doc_quality(doc)]
     out = d / f"{qid}.opus"; rate = Q["bitrate"]; encode_opus(track, out, rate, Q["app"], Q["frame"])
     if out.stat().st_size > Q["max"]: rate = Q["small"]; encode_opus(track, out, rate, Q["app"], Q["frame"])   # long card: keep rule 5
     size = out.stat().st_size
@@ -664,12 +683,12 @@ def main():
         p = sub.add_parser(name); p.set_defaults(f=f)
         p.add_argument("--workspace", required=True); p.add_argument("--qids", nargs="*")
         p.add_argument("--engine", choices=list(ENGINES), help="make: required, ask the owner; draft: engine for new or switched scripts")
-        p.add_argument("--voice", help="default: the engine's voice (kokoro af_heart, elevenlabs Alice)"); p.add_argument("--lang", default=DEFAULT_LANG)
+        p.add_argument("--voice", help="default: kokoro af_heart; elevenlabs a different woman or man per question (ELEVEN_VOICES)"); p.add_argument("--lang", default=DEFAULT_LANG)
         p.add_argument("--force", action="store_true"); p.add_argument("--asr", default="base.en")
         p.add_argument("--asr2", default="small.en", help="check: second recogniser asked before a long word fails ('' = off)")
         p.add_argument("--min-score", type=float, default=0.85); p.add_argument("--fps", type=int, default=15)
         p.add_argument("--no-review", action="store_true", help="make: skip the review videos")
-        p.add_argument("--quality", choices=list(QUALITY), help="make/draft: 'high' = 48 kbps full-band Opus (~42 KB per 7 s card); saved in voice.json")
+        p.add_argument("--quality", choices=list(QUALITY), help="make/draft: override the engine's quality (kokoro standard = 16 kbps, elevenlabs high = 48 kbps full-band Opus); saved in voice.json")
     a = ap.parse_args(); a.f(a)
 
 
