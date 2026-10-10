@@ -158,7 +158,7 @@ class Synth(unittest.TestCase):
     def setUp(self):
         import numpy as np
         self.tmp = Path(tempfile.mkdtemp()); self.d = self.tmp / "voice"; self.d.mkdir()
-        def speak(text, voice, lang, speed, lex):
+        def speak(text, voice, lang, speed, lex, engine="kokoro"):
             n = int(V.SR * len(text.split()) / 2.6 / speed); t = np.arange(n) / V.SR
             return (0.3 * np.sin(2 * np.pi * 220 * t) * (0.6 + 0.4 * np.sin(2 * np.pi * 3 * t))).astype(np.float32)
         self._speak, V.speak = V.speak, speak
@@ -171,12 +171,12 @@ class Synth(unittest.TestCase):
 
     def test_a_line_that_fits_only_at_the_speed_cap_is_kept(self):
         import numpy as np
-        V.speak = lambda text, voice, lang, speed, lex: np.full(int(V.SR * (2.6 if speed < 1.2 else 1.9)), 0.2, np.float32)  # not 1/speed
+        V.speak = lambda text, voice, lang, speed, lex, engine="kokoro": np.full(int(V.SR * (2.6 if speed < 1.2 else 1.9)), 0.2, np.float32)  # not 1/speed
         doc = V.draft_doc(SCENE); doc["beats"][1]["say"] = "Liver disease means less prothrombin."
         for b in (0, 2): doc["beats"][b]["say"] = "Short."
         info = V.synth_one(doc, self.d, {})
         self.assertEqual(info["cues"][1]["speed"], V.MAX_SPEED)
-        V.speak = lambda text, voice, lang, speed, lex: np.full(int(V.SR * 2.6), 0.2, np.float32)
+        V.speak = lambda text, voice, lang, speed, lex, engine="kokoro": np.full(int(V.SR * 2.6), 0.2, np.float32)
         with self.assertRaises(ValueError) as e: V.synth_one(doc, self.d, {})
         self.assertIn("(5 words) needs 2600 ms even at 1.2x, the beat allows 2060 ms: cut it to about 3 words", str(e.exception))
 
@@ -214,6 +214,57 @@ class Synth(unittest.TestCase):
         self.assertEqual([c["t_ms"] for c in info["cues"]], [250, 2820, 5120])
         first = info["sha256"]; V.run_synth(types.SimpleNamespace(workspace=str(self.tmp), qids=["Q000000001"]))
         self.assertEqual(json.loads((self.d / "Q000000001.track.json").read_text())["sha256"], first, "encoding must be bit-exact")
+
+
+class Engines(unittest.TestCase):
+    """The owner chooses the voice engine; the agent must ask, and the choice is kept in each script."""
+    def setUp(self): self.tmp = Path(tempfile.mkdtemp())
+    def tearDown(self): shutil.rmtree(self.tmp)
+
+    def test_make_refuses_to_guess_the_engine(self):
+        with self.assertRaises(SystemExit) as e: V.need_engine(types.SimpleNamespace(engine=None))
+        self.assertIn("ASK THE OWNER", str(e.exception))
+        V.need_engine(types.SimpleNamespace(engine="elevenlabs"))
+
+    def test_draft_records_and_switches_the_engine_keeping_lines(self):
+        ws = self.tmp; (ws / "scenes").mkdir()
+        (ws / "scenes" / "Q000000001.scene.json").write_text(json.dumps(SCENE), encoding="utf-8")
+        a = types.SimpleNamespace(workspace=str(ws), qids=None, force=False, engine="kokoro", voice=None, lang="en-us")
+        V.run_draft(a); p = ws / "voice" / "Q000000001.voice.json"; doc = json.loads(p.read_text())
+        self.assertEqual((doc["engine"], doc["voice"]), ("kokoro", "af_heart"))
+        doc["beats"][0]["say"] = "Kept line."; p.write_text(json.dumps(doc), encoding="utf-8")
+        a.engine = "elevenlabs"; V.run_draft(a); doc = json.loads(p.read_text())
+        self.assertEqual((doc["engine"], doc["voice"], doc["beats"][0]["say"]), ("elevenlabs", V.ENGINES["elevenlabs"]["voice"], "Kept line."))
+        a.engine = None; V.run_draft(a); self.assertEqual(json.loads(p.read_text())["engine"], "elevenlabs")
+
+    def test_old_scripts_without_an_engine_are_kokoro(self):
+        doc = {"voice": "af_heart"}
+        self.assertFalse(V.set_engine(doc, None, None)); self.assertEqual(doc["engine"], "kokoro")
+
+    def test_elevenlabs_is_cached_and_needs_a_key(self):
+        import numpy as np
+        old_cache, old_key = V.CACHE, os.environ.pop("ELEVENLABS_API_KEY", None); V.CACHE = self.tmp
+        try:
+            with self.assertRaises(ValueError) as e: V.eleven_pcm("Hello.", "v", 1.0)
+            self.assertIn("ELEVENLABS_API_KEY", str(e.exception))
+            calls = []
+            class R:
+                def __enter__(s): return s
+                def __exit__(s, *x): pass
+                def read(s): return (np.ones(2400, "<i2") * 1000).tobytes()
+            real, V.urllib.request.urlopen = V.urllib.request.urlopen, lambda req, timeout: calls.append(req) or R()
+            os.environ["ELEVENLABS_API_KEY"] = "test"
+            try:
+                a = V.speak("INR rises.", "v", "en-us", 1.0, {"say": {"INR": "I N R"}}, "elevenlabs")
+                b = V.speak("INR rises.", "v", "en-us", 1.0, {"say": {"INR": "I N R"}}, "elevenlabs")
+            finally: V.urllib.request.urlopen = real
+            self.assertEqual(len(calls), 1, "the second call must come from the cache")
+            self.assertIn("pcm_24000", calls[0].full_url); self.assertIn(b'"I N R rises."', calls[0].data)
+            self.assertTrue(np.array_equal(a, b)); self.assertEqual(a.dtype, np.float32)
+            with self.assertRaises(ValueError): V.speak("x", "v", "en-us", 1.0, {}, "nope")
+        finally:
+            V.CACHE = old_cache; os.environ.pop("ELEVENLABS_API_KEY", None)
+            if old_key is not None: os.environ["ELEVENLABS_API_KEY"] = old_key
 
 
 if __name__ == "__main__":

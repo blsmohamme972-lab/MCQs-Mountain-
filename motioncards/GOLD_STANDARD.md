@@ -41,7 +41,7 @@ Good examples by type:
    Look at the phone and tablet frames. Fix anything that overlaps, is cut off, or does not explain itself.
 6. **Add voice** (rules in `voiceover/README.md`):
    ```bash
-   ~/.venvs/kafu-voice/bin/python voiceover/voiceover.py make --workspace "$PWD/work/<batch>"
+   ~/.venvs/kafu-voice/bin/python voiceover/voiceover.py make --engine <kokoro|elevenlabs> --workspace "$PWD/work/<batch>"   # ask the owner which engine first
    ```
    - Use an absolute workspace path.
    - If a line is too long for its beat, shorten only its `say` line in `voice/<QID>.voice.json`. The caption can stay.

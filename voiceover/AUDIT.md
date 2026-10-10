@@ -8,7 +8,7 @@ Use this to re-check `voiceover/` against the Golden 8 Rules in `README.md`. Mea
 2. Set up and run everything:
    - `voiceover/bootstrap.sh`
    - `~/.venvs/kafu-voice/bin/python -m unittest voiceover/tests/test_voiceover.py voiceover/tests/test_voice_sync_browser.py`
-   - `voiceover.py make` on a copy of a real batch workspace (or the chapter 10 scenes)
+   - `voiceover.py make --engine kokoro` on a copy of a real batch workspace (or the chapter 10 scenes)
 3. Fill the table below with **PASS / PARTIAL / FAIL**, the evidence, and the fix.
 4. Fix every FAIL and PARTIAL that can be fixed inside `voiceover/` (or the docs), re-run the checks, then report.
 5. Anything that needs platform code (app, Workers, compiler, validator, bot): do **not** change it. Add it to `PLATFORM_PLAN.md` and list it in the report for the owner.
