@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000046",
+ "file": "Q000000046.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12105,
+ "sha256": "d5cd8af8d66a516acf204aac73653f6311577bbbe8e8d23809da676a6593ad72",
+ "track_ms": 6537,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "d31d744bdf65014fe2e19e3dccf473ce82a302f599ec41e460152889add4c03c",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2095,
+   "text": "Arterial pressure pushes blood in",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3881,
+   "text": "Skull pressure pushes back",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6437,
+   "text": "The difference: perfusion pressure",
+   "speed": 1.05
+  }
+ ]
+}

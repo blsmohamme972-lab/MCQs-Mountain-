@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000041",
+ "file": "Q000000041.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11676,
+ "sha256": "e832728c65c737052582b2f8d9335e019796a1a405a770f93366bda031276fdb",
+ "track_ms": 6426,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "630233f81a1319450c7c4da35608e08d05fcacb214e591dafb261aef32ca518b",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1918,
+   "text": "Pressure rises, then falls",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3984,
+   "text": "Diastole lasts two thirds",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6326,
+   "text": "The mean is near diastolic",
+   "speed": 1.05
+  }
+ ]
+}

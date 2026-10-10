@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000043",
+ "file": "Q000000043.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11591,
+ "sha256": "ffd10e670e486699bce129cbe28e7366c7cd7e0beecf82e8251db88d088a1b4d",
+ "track_ms": 6616,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "135e146270dd6d8abcaae60dd91996e0e07b7bdc06b8eda1b01931c3548659d8",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1552,
+   "text": "Blood pumped into the lungs",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3962,
+   "text": "Pressure falls across the lung",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6516,
+   "text": "Pulmonary vascular resistance",
+   "speed": 1.05
+  }
+ ]
+}

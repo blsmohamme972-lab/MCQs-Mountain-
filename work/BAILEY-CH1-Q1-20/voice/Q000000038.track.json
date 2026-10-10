@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000038",
+ "file": "Q000000038.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 10121,
+ "sha256": "3c05b69f9eed491ec06ba22777d32dfee7f7f9e4b981cc72c159a2290931c508",
+ "track_ms": 6073,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "757451d94b09bffccb09f7937bc147ce6a5902e3fdb8ffc8ccd4dac5b0bad33c",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1620,
+   "text": "Tap the biceps tendon",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3727,
+   "text": "Signal runs to the neck",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 5973,
+   "text": "C5 and C6",
+   "speed": 1.05
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000037",
+ "file": "Q000000037.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 10327,
+ "sha256": "13fccb8c9907f99e154ad766a7b9facf224d6fe4ea290277e3df6260db9fd352",
+ "track_ms": 6084,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "7d4db73140f3015274ed72ed0e10bd5e20f0158b1a294b9eae617b637fc19e27",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1424,
+   "text": "Deep cut at the wrist",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4006,
+   "text": "Little and ring finger go numb",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 5984,
+   "text": "The ulnar nerve is cut",
+   "speed": 1.05
+  }
+ ]
+}

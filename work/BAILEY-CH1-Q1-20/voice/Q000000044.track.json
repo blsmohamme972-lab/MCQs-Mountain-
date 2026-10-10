@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000044",
+ "file": "Q000000044.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 9828,
+ "sha256": "9e98ead7d949e338b5651b720b8e95e8068d2f4ea68f7f73c39b08737f4b8a36",
+ "track_ms": 6106,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "f8177dfde36f7c3b9ece5552b54f71ea52997767a697fcba40a30358c30aef86",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1327,
+   "text": "Pressure pushes blood in",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3760,
+   "text": "Narrow vessels cut the flow",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6006,
+   "text": "Push over resistance",
+   "speed": 1.05
+  }
+ ]
+}
