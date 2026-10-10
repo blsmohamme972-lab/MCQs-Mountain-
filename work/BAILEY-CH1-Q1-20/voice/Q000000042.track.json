@@ -2,31 +2,32 @@
  "qid": "Q000000042",
  "file": "Q000000042.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 10043,
- "sha256": "e113a5fd3d13e1fb7c5f066382cdfcc02569022704c66acfb1c40eed6d098dba",
- "track_ms": 6163,
+ "bytes": 10751,
+ "sha256": "df0acae784cd04cef947def3df3470e4f9a808197750e9b7e1fe129fe6fdd494",
+ "track_ms": 6319,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
  "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
  "bitrate": "16k",
+ "script_sha256": "8f39a5f7d746cc94ea67b9cd6428a05d63210e39775b61d03555dcfe5fa46120",
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1455,
-   "text": "Heart pumps out blood",
+   "end_ms": 1563,
+   "text": "The heart pumps out blood",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 3642,
-   "text": "Share it across the beats",
+   "end_ms": 3785,
+   "text": "Each beat ejects a share",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6063,
-   "text": "Output of a single beat",
+   "end_ms": 6219,
+   "text": "Stroke volume, one beat",
    "speed": 1.05
   }
  ]

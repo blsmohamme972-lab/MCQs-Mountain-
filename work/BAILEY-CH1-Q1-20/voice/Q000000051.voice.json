@@ -15,13 +15,13 @@
    "start_ms": 2300,
    "end_ms": 4600,
    "caption": "Hepatitis and cirrhosis cause most",
-   "say": "Hepatitis and cirrhosis"
+   "say": "Hepatitis and cirrhosis cause most"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Key carcinogen: polyvinyl chloride",
-   "say": "Polyvinyl chloride"
+   "caption": "Book key: polyvinyl chloride",
+   "say": "Book key: polyvinyl chloride"
   }
  ]
 }

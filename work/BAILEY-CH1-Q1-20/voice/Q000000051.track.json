@@ -2,14 +2,15 @@
  "qid": "Q000000051",
  "file": "Q000000051.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 10687,
- "sha256": "1974ec798984468bfedb9ecc39ee8ef21b2f0114a012135617f1d84617ccd0b2",
- "track_ms": 6068,
+ "bytes": 12239,
+ "sha256": "8a5311046f8a5db4f440d77aa02a89fa2baf713b546e7fb1630c98e2c2e743c8",
+ "track_ms": 6619,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
  "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
  "bitrate": "16k",
+ "script_sha256": "1a0900fac98fecd8fc59b873fa6e1cc2eaf9ba494822452812757482c77bdd97",
  "cues": [
   {
    "t_ms": 250,
@@ -19,14 +20,14 @@
   },
   {
    "t_ms": 2420,
-   "end_ms": 4037,
-   "text": "Hepatitis and cirrhosis",
-   "speed": 1.05
+   "end_ms": 4346,
+   "text": "Hepatitis and cirrhosis cause most",
+   "speed": 1.2
   },
   {
    "t_ms": 4720,
-   "end_ms": 5968,
-   "text": "Polyvinyl chloride",
+   "end_ms": 6519,
+   "text": "Book key: polyvinyl chloride",
    "speed": 1.05
   }
  ]

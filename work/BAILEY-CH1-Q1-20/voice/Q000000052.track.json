@@ -2,25 +2,26 @@
  "qid": "Q000000052",
  "file": "Q000000052.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 11530,
- "sha256": "3c69972c4568dfd959e385878785d918cecf2d1f0e68041b0edcbae8a4d2f6a3",
+ "bytes": 10963,
+ "sha256": "6166a10ec067ea1f4d543a9271b5f524d1cc5699a8a202f6cabfccc1bc453053",
  "track_ms": 6047,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
  "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
  "bitrate": "16k",
+ "script_sha256": "55ab60dee458105f1ea85d0229e3db7b4db7e544fb6c7bf78875d881082b6abb",
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 2176,
-   "text": "Man, 63, unwell one month",
-   "speed": 1.146
+   "end_ms": 2107,
+   "text": "Man, 63, with diarrhoea",
+   "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 4288,
-   "text": "Diarrhoea, blood, no appetite",
+   "end_ms": 3814,
+   "text": "A rectal growth bleeds",
    "speed": 1.05
   },
   {

@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Fall breaks the humerus",
-   "say": "Fall breaks the humerus"
+   "caption": "Fall breaks the humerus midshaft",
+   "say": "A fall breaks the upper arm"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Radial nerve is injured",
-   "say": "Radial nerve is injured"
+   "caption": "Nerve injured: the wrist drops",
+   "say": "Nerve injured: the wrist drops"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Wrist drop",
-   "say": "The wrist drops"
+   "caption": "Radial nerve: wrist drop",
+   "say": "Radial nerve: wrist drop"
   }
  ]
 }

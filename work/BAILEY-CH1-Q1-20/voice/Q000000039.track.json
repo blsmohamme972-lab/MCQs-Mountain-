@@ -2,31 +2,32 @@
  "qid": "Q000000039",
  "file": "Q000000039.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 11358,
- "sha256": "cf38554be4b603dbdd679bd620631bc45ecf141348abafb205df7e5daba8bb0e",
- "track_ms": 6521,
+ "bytes": 11377,
+ "sha256": "5cb5bc4082529e8e7910bcb1796ef464ebaa7e82d62be98b3f0631067166692e",
+ "track_ms": 6585,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
  "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
  "bitrate": "16k",
+ "script_sha256": "37eb50ff0a51c0034f1552dca6fc00eac67c750515ae11a1ecb19409275d6b93",
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1705,
-   "text": "Count down the lumbar spine",
+   "end_ms": 1662,
+   "text": "Two common iliac veins",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 3817,
-   "text": "Two iliac veins join",
+   "end_ms": 3702,
+   "text": "They join at L5",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6421,
-   "text": "L5, IVC forms",
+   "end_ms": 6485,
+   "text": "L5: the IVC begins",
    "speed": 1.05
   }
  ]

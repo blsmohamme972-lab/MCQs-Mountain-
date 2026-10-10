@@ -2,14 +2,15 @@
  "qid": "Q000000050",
  "file": "Q000000050.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 11116,
- "sha256": "faa27308e7e231f5c659e37415b2d5dbd1d4ec24f4017823edc658dcd9326263",
- "track_ms": 6271,
+ "bytes": 12030,
+ "sha256": "24093150ec459d375c436d97d06c0e2d332bcbbf79157d9a5fa470ccf193e1d6",
+ "track_ms": 6585,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
  "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
  "bitrate": "16k",
+ "script_sha256": "18201cfe4db4386e856efc908e04fc512456889059b5000839ef216e967953c6",
  "cues": [
   {
    "t_ms": 250,
@@ -19,15 +20,15 @@
   },
   {
    "t_ms": 2420,
-   "end_ms": 3891,
-   "text": "Smoking causes about half",
+   "end_ms": 4090,
+   "text": "Dye chemicals reach the lining",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6171,
-   "text": "Aniline dyes are the key",
-   "speed": 1.05
+   "end_ms": 6485,
+   "text": "Aniline dyes are the carcinogen",
+   "speed": 1.2
   }
  ]
 }

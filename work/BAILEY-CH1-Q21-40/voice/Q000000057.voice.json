@@ -8,14 +8,14 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Guillain-Barré weakens breathing",
-   "say": "Guillain-Barré weakens breathing"
+   "caption": "Nerves fail, breathing muscles weaken",
+   "say": "Nerves fail, breathing muscles weaken"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Poor breathing traps carbon dioxide",
-   "say": "Poor breathing traps carbon dioxide"
+   "caption": "Shallow breaths trap carbon dioxide",
+   "say": "Shallow breaths trap carbon dioxide"
   },
   {
    "start_ms": 4600,

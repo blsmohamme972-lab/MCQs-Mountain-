@@ -2,14 +2,15 @@
  "qid": "Q000000041",
  "file": "Q000000041.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 11353,
- "sha256": "456870ba7bf2c87a8b20b46c863746ee9a010c51286ddb6e01a1147ed48c4246",
- "track_ms": 6239,
+ "bytes": 11676,
+ "sha256": "e832728c65c737052582b2f8d9335e019796a1a405a770f93366bda031276fdb",
+ "track_ms": 6426,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
  "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
  "bitrate": "16k",
+ "script_sha256": "630233f81a1319450c7c4da35608e08d05fcacb214e591dafb261aef32ca518b",
  "cues": [
   {
    "t_ms": 250,
@@ -25,8 +26,8 @@
   },
   {
    "t_ms": 4720,
-   "end_ms": 6139,
-   "text": "Weighted average of the wave",
+   "end_ms": 6326,
+   "text": "The mean is near diastolic",
    "speed": 1.05
   }
  ]

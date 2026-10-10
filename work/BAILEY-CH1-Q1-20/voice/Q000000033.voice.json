@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Two groups compared",
-   "say": "Two groups compared"
+   "caption": "Drug group versus placebo group",
+   "say": "Drug group versus placebo group"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Results come out equal",
-   "say": "Results come out equal"
+   "caption": "Both groups do equally well",
+   "say": "Both groups do equally well"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Null: no difference",
-   "say": "Null: no difference"
+   "caption": "Null hypothesis: no difference",
+   "say": "Null hypothesis: no difference"
   }
  ]
 }

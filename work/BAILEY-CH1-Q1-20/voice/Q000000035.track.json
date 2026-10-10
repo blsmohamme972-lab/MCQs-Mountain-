@@ -2,31 +2,32 @@
  "qid": "Q000000035",
  "file": "Q000000035.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 9422,
- "sha256": "bf68ebbdedcb832bb9c95c05eddd40bdc05addfe2d7cc4f3a98fe946298db8b6",
- "track_ms": 5551,
+ "bytes": 11920,
+ "sha256": "0097c44c3e790ec5f3742c9b87f6f6c6a01eb5a2e063f4b65f69b7b983768164",
+ "track_ms": 6724,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
  "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
  "bitrate": "16k",
+ "script_sha256": "500326c4d77a889b8b572a7be429244d8b0ad4e13ae5c152a6f09f55e523dc05",
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1787,
-   "text": "Wrist broken, fingers numb",
+   "end_ms": 2068,
+   "text": "Distal radius fracture at wrist",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 3765,
-   "text": "Nerve injured at the wrist",
+   "end_ms": 3540,
+   "text": "The nerve is squeezed",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 5451,
-   "text": "The median nerve",
+   "end_ms": 6624,
+   "text": "Median nerve: thumb to middle numb",
    "speed": 1.05
   }
  ]

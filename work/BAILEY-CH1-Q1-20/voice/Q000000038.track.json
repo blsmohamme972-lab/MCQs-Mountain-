@@ -2,14 +2,15 @@
  "qid": "Q000000038",
  "file": "Q000000038.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 10436,
- "sha256": "56ad7276391902747bbd899402527f3116130b7f369fd9ad840a8487944e1217",
+ "bytes": 10121,
+ "sha256": "3c05b69f9eed491ec06ba22777d32dfee7f7f9e4b981cc72c159a2290931c508",
  "track_ms": 6073,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
  "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
  "bitrate": "16k",
+ "script_sha256": "757451d94b09bffccb09f7937bc147ce6a5902e3fdb8ffc8ccd4dac5b0bad33c",
  "cues": [
   {
    "t_ms": 250,
@@ -19,8 +20,8 @@
   },
   {
    "t_ms": 2420,
-   "end_ms": 3977,
-   "text": "Signal travels from the neck",
+   "end_ms": 3727,
+   "text": "Signal runs to the neck",
    "speed": 1.05
   },
   {

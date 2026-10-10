@@ -2,31 +2,32 @@
  "qid": "Q000000067",
  "file": "Q000000067.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 11313,
- "sha256": "f5e93c706f5497e0b616e0243803c7a6151824d17894102d9a7b1a1537885b81",
- "track_ms": 6286,
+ "bytes": 11381,
+ "sha256": "889564a0e37ae3af885abb415924534a035c028216696f2b5ac403ca9016cfe0",
+ "track_ms": 5956,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
  "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
  "bitrate": "16k",
+ "script_sha256": "25503576acaa6a54b5070ee6609782af4219aeb2f7cf59851307554351f97f61",
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1920,
-   "text": "Adrenal gland above kidney",
+   "end_ms": 1918,
+   "text": "Adrenal gland on the kidney",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 3929,
-   "text": "Zona fasciculata layer",
-   "speed": 1.05
+   "end_ms": 4459,
+   "text": "Middle layer: zona fasciculata",
+   "speed": 1.079
   },
   {
    "t_ms": 4720,
-   "end_ms": 6186,
-   "text": "Cortisol is the answer",
+   "end_ms": 5856,
+   "text": "It makes cortisol",
    "speed": 1.05
   }
  ]

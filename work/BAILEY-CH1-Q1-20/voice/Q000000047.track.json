@@ -2,31 +2,32 @@
  "qid": "Q000000047",
  "file": "Q000000047.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 12539,
- "sha256": "b7f2ec09adf9701d4b6ef31e3828c9cb84c80975a76231b52e233cca3d1527b4",
- "track_ms": 6680,
+ "bytes": 11748,
+ "sha256": "8de8ad4f01639cf20db73db3b337958ae6fbf3c5189f5e19bd9ef74e77f12dd6",
+ "track_ms": 6606,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
  "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
  "bitrate": "16k",
+ "script_sha256": "130103081207d3abb0f74c5f7f235c0a8712df8ef2ff32bf86c2f4baf8c14bf9",
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1897,
-   "text": "Pressure falls across the body",
+   "end_ms": 1563,
+   "text": "The heart pumps blood out",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 4268,
-   "text": "Then divide by cardiac output",
+   "end_ms": 4110,
+   "text": "Pressure falls across the vessels",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6580,
-   "text": "The systemic vascular resistance",
+   "end_ms": 6506,
+   "text": "Systemic vascular resistance",
    "speed": 1.05
   }
  ]

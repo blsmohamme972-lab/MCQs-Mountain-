@@ -3,116 +3,124 @@
   "qid": "Q000000033",
   "beats": [
    {
-    "say": "Two groups compared",
-    "heard": "Two groups compared.",
+    "say": "Drug group versus placebo group",
+    "heard": "Drug group versus placebo group.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Results come out equal",
-    "heard": "Results come out equal.",
+    "say": "Both groups do equally well",
+    "heard": "Both groups do equally well.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Null: no difference",
-    "heard": "No, no difference.",
-    "score": 0.867,
+    "say": "Null hypothesis: no difference",
+    "heard": "Null hypothesis, no difference.",
+    "score": 1.0,
     "onset_error_ms": 10
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000034",
   "beats": [
    {
-    "say": "Sudden twisting, groin pain",
-    "heard": "Sudden twisting, grind pain.",
-    "score": 0.957,
-    "onset_error_ms": 10
-   },
-   {
-    "say": "Deep groin pain",
-    "heard": "Deep grind pain.",
-    "score": 0.923,
+    "say": "Sudden twisting in sport",
+    "heard": "Sudden Twisting in Sport",
+    "score": 1.0,
     "onset_error_ms": 20
    },
    {
-    "say": "Gilmore's groin",
-    "heard": "Gilmore's grind.",
-    "score": 0.923,
+    "say": "Tissues strain, chronic pain",
+    "heard": "Tissue strain chronic pain.",
+    "score": 0.979,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Sportsman's hernia, no lump",
+    "heard": "Sportsman's Hernia, no lump.",
+    "score": 1.0,
     "onset_error_ms": 10
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000035",
   "beats": [
    {
-    "say": "Wrist broken, fingers numb",
-    "heard": "wristbroken fingers numb nerve",
+    "say": "Distal radius fracture at wrist",
+    "heard": "Distile radius fracture at wrist.",
+    "score": 0.945,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "The nerve is squeezed",
+    "heard": "The nerve is squeezed.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Nerve injured at the wrist",
-    "heard": "injured at the wrist the",
-    "score": 0.872,
-    "onset_error_ms": 10
-   },
-   {
-    "say": "The median nerve",
-    "heard": "median nerve",
-    "score": 0.88,
+    "say": "Median nerve: thumb to middle numb",
+    "heard": "Median nerve, thumb to middle numb.",
+    "score": 1.0,
     "onset_error_ms": 10
    }
-  ]
+  ],
+  "stray_sound_ms": [],
+  "second_opinion": {
+   "1": "Distal radius fracture at wrist."
+  }
  },
  {
   "qid": "Q000000036",
   "beats": [
    {
-    "say": "Fall breaks the humerus",
-    "heard": "Fall breaks the humerus.",
+    "say": "A fall breaks the upper arm",
+    "heard": "A fall breaks the upper arm.",
     "score": 1.0,
-    "onset_error_ms": 40
+    "onset_error_ms": 0
    },
    {
-    "say": "Radial nerve is injured",
-    "heard": "Radial nerve is injured.",
+    "say": "Nerve injured: the wrist drops",
+    "heard": "Nerve injured, the wrist drops.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "The wrist drops",
-    "heard": "The wrist drops.",
+    "say": "Radial nerve: wrist drop",
+    "heard": "Radial nerve wrist drop.",
     "score": 1.0,
-    "onset_error_ms": 0
+    "onset_error_ms": 10
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000037",
   "beats": [
    {
     "say": "Deep cut at the wrist",
-    "heard": "Deep cut at the wrist,",
+    "heard": "Deep cut at the wrist.",
     "score": 1.0,
     "onset_error_ms": 0
    },
    {
-    "say": "Numb fingers, weak thumb",
-    "heard": "numb fingers, weak thumb,",
+    "say": "Little and ring finger go numb",
+    "heard": "Little and ring finger go numb.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 0
    },
    {
-    "say": "Ulnar nerve",
-    "heard": "ulnar nerve",
+    "say": "The ulnar nerve is cut",
+    "heard": "The ulnar nerve is cut.",
     "score": 1.0,
     "onset_error_ms": 10
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000038",
@@ -124,71 +132,77 @@
     "onset_error_ms": 10
    },
    {
-    "say": "Signal travels from the neck",
-    "heard": "Signal travels from the neck.",
+    "say": "Signal runs to the neck",
+    "heard": "Signal runs to the neck.",
     "score": 1.0,
-    "onset_error_ms": 20
+    "onset_error_ms": 10
    },
    {
     "say": "C5 and C6",
-    "heard": "C5 and C6. Thanks.",
+    "heard": "C5 and C6.",
     "score": 1.0,
     "onset_error_ms": 20
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000039",
   "beats": [
    {
-    "say": "Count down the lumbar spine",
-    "heard": "Count down the lumbar spine,",
+    "say": "Two common iliac veins",
+    "heard": "Two common iliac veins.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Two iliac veins join",
-    "heard": "two iliac veins join,",
+    "say": "They join at L5",
+    "heard": "They join at L5.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "L5, IVC forms",
-    "heard": "L5 IVC forms.",
+    "say": "L5: the IVC begins",
+    "heard": "L5, the IVC begins.",
     "score": 1.0,
     "onset_error_ms": 10
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000040",
   "beats": [
    {
-    "say": "The aorta runs beside the spine",
-    "heard": "The aorta runs beside the spine.",
+    "say": "Aorta runs down the spine",
+    "heard": "A order runs down the spine.",
+    "score": 0.884,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "The SMA branches forward",
+    "heard": "The SMA branches forward.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "A branch leaves the aorta",
-    "heard": "A branch leaves the aorta.",
+    "say": "L1: the transpyloric plane",
+    "heard": "L1, the transpyloric plane.",
     "score": 1.0,
-    "onset_error_ms": 10
-   },
-   {
-    "say": "L1, transpyloric plane",
-    "heard": "L1 transpolaric plane.",
-    "score": 0.895,
     "onset_error_ms": 0
    }
-  ]
+  ],
+  "stray_sound_ms": [],
+  "second_opinion": {
+   "1": "aorta runs down the spine."
+  }
  },
  {
   "qid": "Q000000041",
   "beats": [
    {
     "say": "Pressure rises, then falls",
-    "heard": "Pressure rises, then falls.",
+    "heard": "Pressure rises then falls.",
     "score": 1.0,
     "onset_error_ms": 10
    },
@@ -199,58 +213,61 @@
     "onset_error_ms": 10
    },
    {
-    "say": "Weighted average of the wave",
-    "heard": "Weighted average of the wave. please.",
+    "say": "The mean is near diastolic",
+    "heard": "The mean is near diastolic.",
     "score": 1.0,
     "onset_error_ms": 10
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000042",
   "beats": [
    {
-    "say": "Heart pumps out blood",
-    "heard": "Heart pumps out blood.",
+    "say": "The heart pumps out blood",
+    "heard": "The heart pumps out blood.",
     "score": 1.0,
-    "onset_error_ms": 20
+    "onset_error_ms": 0
    },
    {
-    "say": "Share it across the beats",
-    "heard": "Share it across the beats.",
+    "say": "Each beat ejects a share",
+    "heard": "Each beat ejects a share.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Output of a single beat",
-    "heard": "Output of a single beat. it.",
+    "say": "Stroke volume, one beat",
+    "heard": "Stroke volume 1 beat",
     "score": 1.0,
-    "onset_error_ms": 0
+    "onset_error_ms": 10
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000043",
   "beats": [
    {
-    "say": "Heart pumps blood through lungs",
-    "heard": "Heart pumps blood through lungs.",
+    "say": "Blood pumped into the lungs",
+    "heard": "Blood pumped into the lungs.",
     "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Pressure falls across the lung",
+    "heard": "Pressure falls across the line.",
+    "score": 0.923,
     "onset_error_ms": 10
    },
    {
-    "say": "Pressure falls across the lungs",
-    "heard": "Pressure falls across the lungs.",
-    "score": 1.0,
-    "onset_error_ms": 10
-   },
-   {
-    "say": "Pressure drop divided by flow",
-    "heard": "Pressure drop divided by flow.",
+    "say": "Pulmonary vascular resistance",
+    "heard": "Pulmonary vascular resistance. //",
     "score": 1.0,
     "onset_error_ms": 0
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000044",
@@ -268,127 +285,133 @@
     "onset_error_ms": 0
    },
    {
-    "say": "Flow equals push over resistance",
-    "heard": "Flow equals pushover resistance.",
+    "say": "Push over resistance",
+    "heard": "Pushover resistance.",
     "score": 1.0,
-    "onset_error_ms": 30
+    "onset_error_ms": 10
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000045",
   "beats": [
    {
-    "say": "Heart pumps cardiac output",
-    "heard": "Heart pumps cardiac output,",
+    "say": "The heart pumps out blood",
+    "heard": "The heart pumps out blood.",
     "score": 1.0,
-    "onset_error_ms": 20
+    "onset_error_ms": 0
    },
    {
-    "say": "Then divide by body size",
-    "heard": "then divide by body size.",
-    "score": 1.0,
+    "say": "Body size is its surface",
+    "heard": "Body size is at surface.",
+    "score": 0.923,
     "onset_error_ms": 10
    },
    {
-    "say": "This is cardiac index",
-    "heard": "This is cardiac index.",
+    "say": "Output per body size",
+    "heard": "Output per body size.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 0
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000046",
   "beats": [
    {
-    "say": "Artery pressure pushes in",
-    "heard": "artery pressure pushes in,",
+    "say": "Arterial pressure pushes blood in",
+    "heard": "Arterial pressure pushes blood in.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
     "say": "Skull pressure pushes back",
-    "heard": "skull pressure pushes back,",
+    "heard": "Skull pressure pushes back.",
     "score": 1.0,
     "onset_error_ms": 20
    },
    {
-    "say": "Cerebral perfusion pressure",
-    "heard": "cerebral perfusion pressure",
+    "say": "The difference: perfusion pressure",
+    "heard": "The difference, perfusion pressure.",
     "score": 1.0,
     "onset_error_ms": 10
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000047",
   "beats": [
    {
-    "say": "Pressure falls across the body",
-    "heard": "Pressure falls across the body,",
+    "say": "The heart pumps blood out",
+    "heard": "The heart pump's blood out.",
     "score": 1.0,
     "onset_error_ms": 0
    },
    {
-    "say": "Then divide by cardiac output",
-    "heard": "then divide by cardiac output,",
+    "say": "Pressure falls across the vessels",
+    "heard": "Pressure falls across the vessels.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 0
    },
    {
-    "say": "The systemic vascular resistance",
-    "heard": "the systemic vascular resistance.",
+    "say": "Systemic vascular resistance",
+    "heard": "Systemic vascular resistance.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 20
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000048",
   "beats": [
    {
-    "say": "X-ray and gamma rays",
-    "heard": "X -ray and gamma rays radio",
+    "say": "X-rays and gamma rays hit",
+    "heard": "X -rays and gamma rays hit.",
     "score": 1.0,
-    "onset_error_ms": 0
+    "onset_error_ms": 10
    },
    {
-    "say": "Radioiodine in the body",
-    "heard": "iodine in the body",
-    "score": 0.857,
+    "say": "Or radioiodine taken in",
+    "heard": "or radio iodine taken in.",
+    "score": 1.0,
     "onset_error_ms": 10
    },
    {
     "say": "Ionizing radiation",
-    "heard": "ionizing radiation",
+    "heard": "Ionizing radiation.",
     "score": 1.0,
     "onset_error_ms": 10
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000049",
   "beats": [
    {
-    "say": "Cancer of the nose lining",
-    "heard": "Cancer of the nose lining.",
+    "say": "Cancer of the nasal lining",
+    "heard": "Cancer of the nasal lining.",
     "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Inhaled dusts are linked",
-    "heard": "Inhale dusts are linked.",
-    "score": 0.976,
+    "say": "Inhaled dusts settle on it",
+    "heard": "Inhale dust settle on it.",
+    "score": 0.952,
     "onset_error_ms": 10
    },
    {
-    "say": "Nickel dust is the answer",
-    "heard": "Nickel dust is the answer.",
+    "say": "Nickel dust is the carcinogen",
+    "heard": "Nickel dust is the carcinogen.",
     "score": 1.0,
     "onset_error_ms": 10
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000050",
@@ -400,18 +423,22 @@
     "onset_error_ms": 10
    },
    {
-    "say": "Smoking causes about half",
-    "heard": "Smoking causes about half.",
-    "score": 1.0,
+    "say": "Dye chemicals reach the lining",
+    "heard": "Diochemicals reach the lining.",
+    "score": 0.962,
     "onset_error_ms": 10
    },
    {
-    "say": "Aniline dyes are the key",
-    "heard": "Aniline dyes are the key.",
-    "score": 1.0,
+    "say": "Aniline dyes are the carcinogen",
+    "heard": "Annalene dies are the carcinogen.",
+    "score": 0.909,
     "onset_error_ms": 10
    }
-  ]
+  ],
+  "stray_sound_ms": [],
+  "second_opinion": {
+   "3": "Aniline dyes are the carcinogen."
+  }
  },
  {
   "qid": "Q000000051",
@@ -423,32 +450,33 @@
     "onset_error_ms": 0
    },
    {
-    "say": "Hepatitis and cirrhosis",
-    "heard": "Hepatitis and cirrhosis.",
+    "say": "Hepatitis and cirrhosis cause most",
+    "heard": "Hepatitis and cirrhosis cause most.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 20
    },
    {
-    "say": "Polyvinyl chloride",
-    "heard": "Polyvinyl chloride",
+    "say": "Book key: polyvinyl chloride",
+    "heard": "Book key, polyvinyl chloride.",
     "score": 1.0,
-    "onset_error_ms": 10
+    "onset_error_ms": 0
    }
-  ]
+  ],
+  "stray_sound_ms": []
  },
  {
   "qid": "Q000000052",
   "beats": [
    {
-    "say": "Man, 63, unwell one month",
-    "heard": "Man 63, Unwell 1 month.",
-    "score": 0.889,
+    "say": "Man, 63, with diarrhoea",
+    "heard": "Man 63 with diarrhea.",
+    "score": 1.0,
     "onset_error_ms": 10
    },
    {
-    "say": "Diarrhoea, blood, no appetite",
-    "heard": "Diarrhea, Blood No Appetite.",
-    "score": 0.979,
+    "say": "A rectal growth bleeds",
+    "heard": "Erectal growth bleeds.",
+    "score": 0.947,
     "onset_error_ms": 10
    },
    {
@@ -457,6 +485,7 @@
     "score": 1.0,
     "onset_error_ms": 10
    }
-  ]
+  ],
+  "stray_sound_ms": []
  }
 ]

@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Prostate cancer, then cough",
-   "say": "Prostate cancer, then cough"
+   "caption": "Prostate cancer, now a cough",
+   "say": "Prostate cancer, now a cough"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Spread by blood or lymph",
-   "say": "Spread by blood or lymph"
+   "caption": "Cells spread through the blood",
+   "say": "Cells spread through the blood"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Cannonball secondaries",
-   "say": "Cannonball secondaries"
+   "caption": "Secondary lung tumour",
+   "say": "Secondary lung tumour"
   }
  ]
 }

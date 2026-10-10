@@ -81,6 +81,9 @@ Good examples by type:
    - SMART people (CC BY 4.0).
    - `lib:` library art.
    - Repeat cells with `import-svg --template` and `<use>`.
+   - Everyday objects (pills, cigarette, dye bottle, ball, cast, clock, X-ray...) use a real-looking emoji or icon as a small prop, not a
+     plain shape: Fluent Emoji, Noto or Twemoji, or Health Icons (rows E1–E3 and M2 in `AUTHORING_V2.md`). One emoji family per card;
+     never OpenMoji. Servier stays the main picture.
    - Only draw by hand what Servier lacks, such as a femur, a joint section, cytokines or receptors. Use the style-kit gradients
      (`url(#kit-bone)`, `kit-tissue`, …) and add `cellG` and `nuc` gradients as the references do.
    - Very large SVGs bloat the card (for example `hiv-virus` is about 400 KB). Redraw those in Servier style instead.

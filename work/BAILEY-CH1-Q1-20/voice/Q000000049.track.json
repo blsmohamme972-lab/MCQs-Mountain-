@@ -2,31 +2,32 @@
  "qid": "Q000000049",
  "file": "Q000000049.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 11048,
- "sha256": "c31937f686ec40c999f4dd494c45378b797af2e2b28c013f080192113fa4fa03",
- "track_ms": 6330,
+ "bytes": 11917,
+ "sha256": "d54ce7a262f7d082ad132afbabe7d7af23004aab987f225a165f94b8b34dddb9",
+ "track_ms": 6608,
  "card_ms": 7000,
  "voice": "af_heart",
  "lang": "en-us",
  "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
  "bitrate": "16k",
+ "script_sha256": "92e3455278481f206939218941a416adf0800c8a28d5727e10d9265d538ecf46",
  "cues": [
   {
    "t_ms": 250,
-   "end_ms": 1748,
-   "text": "Cancer of the nose lining",
+   "end_ms": 1790,
+   "text": "Cancer of the nasal lining",
    "speed": 1.05
   },
   {
    "t_ms": 2420,
-   "end_ms": 3832,
-   "text": "Inhaled dusts are linked",
+   "end_ms": 3998,
+   "text": "Inhaled dusts settle on it",
    "speed": 1.05
   },
   {
    "t_ms": 4720,
-   "end_ms": 6230,
-   "text": "Nickel dust is the answer",
+   "end_ms": 6508,
+   "text": "Nickel dust is the carcinogen",
    "speed": 1.05
   }
  ]

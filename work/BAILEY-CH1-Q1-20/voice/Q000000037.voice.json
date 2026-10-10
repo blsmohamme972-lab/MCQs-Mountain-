@@ -14,14 +14,14 @@
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Numb fingers, weak thumb",
-   "say": "Numb fingers, weak thumb"
+   "caption": "Little and ring finger go numb",
+   "say": "Little and ring finger go numb"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Ulnar nerve",
-   "say": "Ulnar nerve"
+   "caption": "The ulnar nerve is cut",
+   "say": "The ulnar nerve is cut"
   }
  ]
 }

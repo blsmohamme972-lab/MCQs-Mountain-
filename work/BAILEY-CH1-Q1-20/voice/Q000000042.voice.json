@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Heart pumps out blood",
-   "say": "Heart pumps out blood"
+   "caption": "The heart pumps out blood",
+   "say": "The heart pumps out blood"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Share it across the beats",
-   "say": "Share it across the beats"
+   "caption": "Each beat ejects a share",
+   "say": "Each beat ejects a share"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Output of a single beat",
-   "say": "Output of a single beat"
+   "caption": "Stroke volume: one beat's output",
+   "say": "Stroke volume, one beat"
   }
  ]
 }

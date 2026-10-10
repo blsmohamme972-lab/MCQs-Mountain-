@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Cancer of the nose lining",
-   "say": "Cancer of the nose lining"
+   "caption": "Cancer of the nasal lining",
+   "say": "Cancer of the nasal lining"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Inhaled dusts are linked",
-   "say": "Inhaled dusts are linked"
+   "caption": "Inhaled dusts settle on it",
+   "say": "Inhaled dusts settle on it"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Nickel dust is the answer",
-   "say": "Nickel dust is the answer"
+   "caption": "Nickel dust is the carcinogen",
+   "say": "Nickel dust is the carcinogen"
   }
  ]
 }

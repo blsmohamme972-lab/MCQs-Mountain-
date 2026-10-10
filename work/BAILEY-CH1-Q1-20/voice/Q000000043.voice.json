@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Heart pumps blood through lungs",
-   "say": "Heart pumps blood through lungs"
+   "caption": "Blood pumped into the lungs",
+   "say": "Blood pumped into the lungs"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Pressure falls across the lungs",
-   "say": "Pressure falls across the lungs"
+   "caption": "Pressure falls across the lung",
+   "say": "Pressure falls across the lung"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Pressure drop divided by flow",
-   "say": "Pressure drop divided by flow"
+   "caption": "Pulmonary vascular resistance",
+   "say": "Pulmonary vascular resistance"
   }
  ]
 }

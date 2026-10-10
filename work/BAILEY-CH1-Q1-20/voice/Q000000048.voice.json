@@ -8,19 +8,19 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "X-ray and gamma rays",
-   "say": "X-ray and gamma rays"
+   "caption": "X-rays and gamma rays hit",
+   "say": "X-rays and gamma rays hit"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Radioiodine in the body",
-   "say": "Radioiodine in the body"
+   "caption": "Or radioiodine taken in",
+   "say": "Or radioiodine taken in"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Ionizing radiation",
+   "caption": "Ionizing radiation: papillary cancer",
    "say": "Ionizing radiation"
   }
  ]

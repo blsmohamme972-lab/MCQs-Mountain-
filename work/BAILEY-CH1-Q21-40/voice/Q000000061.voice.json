@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Four pharyngeal pouches",
-   "say": "Four pharyngeal pouches"
+   "caption": "Four pouches in the embryo pharynx",
+   "say": "Four pouches in the embryo pharynx"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "First pouch grows outward",
-   "say": "First pouch grows outward"
+   "caption": "The first pouch grows outward",
+   "say": "The first pouch grows outward"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Becomes the Eustachian tube",
-   "say": "Becomes the Eustachian tube"
+   "caption": "First pouch: the Eustachian tube",
+   "say": "First pouch: the Eustachian tube"
   }
  ]
 }

@@ -8,14 +8,14 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Thiazide diuretics act on kidney",
-   "say": "Thiazide diuretics act on kidney"
+   "caption": "Thiazide acts on the distal tubule",
+   "say": "Thiazide acts on the distal tubule"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Blocks tubule, loses acid",
-   "say": "Blocks tubule, loses acid"
+   "caption": "Pump blocked, acid and potassium lost",
+   "say": "Pump blocked, acid lost"
   },
   {
    "start_ms": 4600,

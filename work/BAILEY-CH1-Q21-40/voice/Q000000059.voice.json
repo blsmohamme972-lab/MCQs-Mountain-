@@ -8,20 +8,20 @@
   {
    "start_ms": 0,
    "end_ms": 2300,
-   "caption": "Three openings in diaphragm",
-   "say": "Three openings in diaphragm"
+   "caption": "Three holes in the diaphragm",
+   "say": "Three holes in the diaphragm"
   },
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "Oesophagus passes through one",
-   "say": "Oesophagus passes through one"
+   "caption": "Oesophagus heads to the stomach",
+   "say": "Oesophagus heads to the stomach"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "T10, oesophageal opening",
-   "say": "T10, oesophageal opening"
+   "caption": "T10: the oesophageal opening",
+   "say": "T10: the oesophageal opening"
   }
  ]
 }

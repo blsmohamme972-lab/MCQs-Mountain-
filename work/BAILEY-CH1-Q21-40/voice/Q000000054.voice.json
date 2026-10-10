@@ -14,14 +14,14 @@
   {
    "start_ms": 2300,
    "end_ms": 4600,
-   "caption": "NSAIDs: bowel pouches form",
-   "say": "NSAIDs: bowel pouches form"
+   "caption": "Lining pokes through the wall",
+   "say": "Lining pokes through the wall"
   },
   {
    "start_ms": 4600,
    "end_ms": 7000,
-   "caption": "Inflamed pouches",
-   "say": "Inflamed pouches"
+   "caption": "Inflamed pouches: diverticulitis",
+   "say": "Diverticulitis"
   }
  ]
 }
