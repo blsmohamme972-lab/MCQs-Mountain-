@@ -11,7 +11,7 @@
   "layers": [
     {
       "type": "text",
-      "text": "Flow through a tube",
+      "text": "Poiseuille's law: radius and flow",
       "x": 320,
       "y": 44,
       "size": 26,
