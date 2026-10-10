@@ -36,6 +36,37 @@ Key production runs:
 - MotionCards #18 final remove: https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/37511701380
 - MotionCards #19 enabled-gate empty-queue verification: https://github.com/blsmohamme972-lab/MCQs-Mountain-/actions/runs/37513105490
 
+## Priority roadmap for the next AI/engineer
+
+### P0 — Evaluate a 10,000+ daily-student, $0 MotionCards delivery model before scaling content
+
+This is the **first architecture priority**, but it is a decision/review task, not a pre-approved implementation. A future AI/engineer must inspect the then-current code, Cloudflare free-tier limits, real usage telemetry and offline behavior before changing production. If a safer or more efficient design exists, prefer it and document why.
+
+Primary candidate to evaluate:
+- Make MotionCards **local-first with book/chapter downloads**: when a student downloads a chapter/book for offline study, also fetch the currently active MotionCards for that content and persist them locally (for example in the existing IndexedDB/offline download path).
+- Prefer local playback after that first download so replaying a MotionCard does not create repeated network/Worker requests.
+- Eliminate or materially reduce the current periodic MotionCards availability polling if it is no longer needed.
+- Where compatible with the security model, evaluate serving immutable MotionCards/index assets as direct static assets so static delivery does not invoke Worker code unnecessarily.
+
+The evaluation must compare this candidate against any better alternative that can realistically support **at least 10,000 daily students while keeping infrastructure at $0 or as close to $0 as practical**. Quantify request volume, D1 reads/writes, storage/file-count limits, download size, cache behavior, offline behavior and failure/recovery behavior before choosing the design.
+
+Non-negotiable constraints:
+- Keep MotionCards authoring/publishing independent from book publishing; downloading them together for the student must not make a book release responsible for MotionCards lifecycle.
+- Preserve exact `book_id + book_version + chapter_id + QID + content_hash` binding.
+- Preserve owner **Replace / Remove / Restore** safety and history. A locally cached card must not remain indefinitely trusted after the client reconnects and learns it is removed or replaced.
+- Preserve sandbox/MessageChannel isolation and do not weaken CSP or source validation for offline convenience.
+- Keep normal MCQ study usable offline even if MotionCards download/update fails.
+- Avoid a design that requires one server request per question view or frequent background polling.
+- Do not implement a large migration only because this note suggests one. First measure, compare alternatives, write the capacity calculation, and choose the smallest design that meets the 10,000-student target.
+
+Expected output of that future review:
+1. measured/current baseline;
+2. 2–3 viable architectures with free-tier capacity estimates;
+3. recommended design and reason;
+4. migration/rollback plan;
+5. tests proving offline playback, reconnect invalidation, Replace/Remove/Restore, and request-volume bounds.
+
+
 ## Repository state
 - Branch: `feature/kafu-motioncards`
 - PR: #67 (draft, owner review required before merge/deploy)
