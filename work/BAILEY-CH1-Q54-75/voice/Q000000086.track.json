@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000086",
+ "file": "Q000000086.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 33178,
+ "sha256": "203a68388b54c3f9faf85d7e367c8dd67c581b5a29b8c5bf676a9c17ca6f4ab3",
+ "track_ms": 6511,
+ "card_ms": 7000,
+ "voice": "pFZP5JQG7iQjIQuC4Bku",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "572fec7d9247e50c2b3aac849f94e80772606e96170330ec4cd23fda286030a4",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1525,
+   "text": "Back third of the tongue",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3796,
+   "text": "Nerves nine and ten",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6411,
+   "text": "Internal laryngeal branch",
+   "speed": 1.05
+  }
+ ]
+}

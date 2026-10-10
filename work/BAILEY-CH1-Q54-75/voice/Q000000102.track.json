@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000102",
+ "file": "Q000000102.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 34075,
+ "sha256": "ec1046f4a202da523db3ca65977c2f4828ba53e2e5a0036c4c7469ae31af1184",
+ "track_ms": 6563,
+ "card_ms": 7000,
+ "voice": "cgSgspJ2msm6clMCkdW9",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "5cf90000438e9ec5997602938d0e56cada7d5a8e31bcca60ecb085b15027506e",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1777,
+   "text": "Paget's disease of bone",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3977,
+   "text": "Bone turnover runs wild",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6463,
+   "text": "Osteosarcoma can arise",
+   "speed": 1.05
+  }
+ ]
+}

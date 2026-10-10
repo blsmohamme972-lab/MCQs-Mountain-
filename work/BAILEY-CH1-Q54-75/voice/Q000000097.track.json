@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000097",
+ "file": "Q000000097.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 35869,
+ "sha256": "179e83a0b8a768e45d53d640452f17a9338a00dd575035dfb7f262bc141ee5f5",
+ "track_ms": 6604,
+ "card_ms": 7000,
+ "voice": "nPczCjzI2devNBz1zQrb",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "619d9ef905da016a59ca858fe797beb73a07c9be944943985ce7f7a56034de19",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1575,
+   "text": "Muscle at the neck root",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4307,
+   "text": "Vein in front, artery behind",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6504,
+   "text": "Under the deep neck fascia",
+   "speed": 1.05
+  }
+ ]
+}

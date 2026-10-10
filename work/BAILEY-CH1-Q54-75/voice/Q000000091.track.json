@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000091",
+ "file": "Q000000091.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 34982,
+ "sha256": "f90be43315cc9e2fc98b2a3f078424efe47afcb95a8a7541624e73d42a4bbc79",
+ "track_ms": 6229,
+ "card_ms": 7000,
+ "voice": "nPczCjzI2devNBz1zQrb",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "85dff8ac525ef2385a14d890ed3fe9e3d07f395667ad66c7a4b684e9b02dffa3",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1613,
+   "text": "The spleen is removed",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4406,
+   "text": "Capsule bacteria escape clearance",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6129,
+   "text": "Haemophilus influenzae",
+   "speed": 1.05
+  }
+ ]
+}

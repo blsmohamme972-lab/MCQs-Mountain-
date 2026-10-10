@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000088",
+ "file": "Q000000088.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 32507,
+ "sha256": "d458f15a7c32c0aba760b945c37ef44ae26824cf76f82a6838c1719dfaeb2391",
+ "track_ms": 6346,
+ "card_ms": 7000,
+ "voice": "EXAVITQu4vr4xnSDxMaL",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "ebdd1722bd360db934fc047d5c3b6ce78bb7e5e0f3ef2386f6824c8868324fed",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1570,
+   "text": "Repeated vomiting",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3813,
+   "text": "Stomach acid is lost",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6246,
+   "text": "Blood turns alkaline",
+   "speed": 1.05
+  }
+ ]
+}

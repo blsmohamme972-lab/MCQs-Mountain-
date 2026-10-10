@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000096",
+ "file": "Q000000096.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 35592,
+ "sha256": "7fea56bf78eedbbf3dee5e64801a372b18c109f3c7d3b15ed27c9f8ef5c678ba",
+ "track_ms": 6652,
+ "card_ms": 7000,
+ "voice": "cgSgspJ2msm6clMCkdW9",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "31facbfc5440320b4de63b6e059ccb34d0cb7fbbe5e7172d75ab227b83e96486",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2041,
+   "text": "Two lobes of the pituitary",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4025,
+   "text": "Front lobe makes six hormones",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6552,
+   "text": "Prolactin comes from the front",
+   "speed": 1.05
+  }
+ ]
+}

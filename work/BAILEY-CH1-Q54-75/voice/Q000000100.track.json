@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000100",
+ "file": "Q000000100.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 33431,
+ "sha256": "193e8df6d4f2dfdbf8332d57e663e838305bfb2c67d7424682f528994090d977",
+ "track_ms": 6150,
+ "card_ms": 7000,
+ "voice": "EXAVITQu4vr4xnSDxMaL",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "f608bc47bd6c19fe805d825b695513a93ce46303c5aeafa80af4411abf21f32d",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1716,
+   "text": "Feeding through a gut tube",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4446,
+   "text": "Elemental feed: small molecules",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6050,
+   "text": "Needs minimal digestion",
+   "speed": 1.05
+  }
+ ]
+}

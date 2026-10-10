@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000104",
+ "file": "Q000000104.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 32235,
+ "sha256": "42ed7106d9debf1ca573e28356a61377d46e5cfe6a8073cdc7efa5f9a5e0ea3d",
+ "track_ms": 6425,
+ "card_ms": 7000,
+ "voice": "pFZP5JQG7iQjIQuC4Bku",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "0780ddb8895de5c737aef2a579854f35f60f0cad7930dbad3ad1150b3114272e",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1533,
+   "text": "Leftover yolk duct",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3828,
+   "text": "A pouch on the ileum",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6325,
+   "text": "Can hold pancreatic tissue",
+   "speed": 1.05
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000090",
+ "file": "Q000000090.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 31392,
+ "sha256": "314235618390c02a1f02875b6fe5b85afdc21890da1eaa77fc4d94f8e35fbcf0",
+ "track_ms": 6048,
+ "card_ms": 7000,
+ "voice": "cgSgspJ2msm6clMCkdW9",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "c4153c7302ee3e39c52ea5ab5ef3c1b04d9108416e701ac09b3f67a4350409a9",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1812,
+   "text": "Often on chest and shoulder",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4065,
+   "text": "Scar grows past the wound",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 5948,
+   "text": "Pressure dressings help",
+   "speed": 1.05
+  }
+ ]
+}

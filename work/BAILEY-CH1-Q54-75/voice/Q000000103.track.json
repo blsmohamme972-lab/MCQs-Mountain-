@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000103",
+ "file": "Q000000103.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 32574,
+ "sha256": "6744f64256ae1763377159c49f59ecf301f4eb1d33ea87ee63c3a846ad6eed70",
+ "track_ms": 6342,
+ "card_ms": 7000,
+ "voice": "nPczCjzI2devNBz1zQrb",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "9aee28690a585efe97f61a78406b7532f61d1c57f3c28ce720ff0136ffcaa68f",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1684,
+   "text": "Kidney on the back wall",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4138,
+   "text": "Muscles and rib behind",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6242,
+   "text": "Pleural recess behind it",
+   "speed": 1.05
+  }
+ ]
+}

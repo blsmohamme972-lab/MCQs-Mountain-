@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000099",
+ "file": "Q000000099.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 32622,
+ "sha256": "95eee4d572d7a9a37a245bded6535ea7dc8f6a22ac542ede026108542454af4d",
+ "track_ms": 6357,
+ "card_ms": 7000,
+ "voice": "JBFqnCBsd6RMkjVDRZzb",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "ecd8b509b7fee78b51e01fcfd89989055cb97f02425c6cb134745b3702c8173b",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1659,
+   "text": "Top cancers in women",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3973,
+   "text": "The top cancers in men",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6257,
+   "text": "Lung cancer leads both",
+   "speed": 1.05
+  }
+ ]
+}

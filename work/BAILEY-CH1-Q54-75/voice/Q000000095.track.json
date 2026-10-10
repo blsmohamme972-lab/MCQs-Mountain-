@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000095",
+ "file": "Q000000095.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 34475,
+ "sha256": "36b9f432c541965f43f62a90ce6433f92993f049aeff8ce55a7991bf87a498a4",
+ "track_ms": 6508,
+ "card_ms": 7000,
+ "voice": "onwK4e9ZLuTAKqWW03F9",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "ba82ee477ffcfc205789dc2ad863fe4886230d6d2487ff259c471adc83928d18",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1633,
+   "text": "Nitrogen in and out",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4308,
+   "text": "Growth builds new protein",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6408,
+   "text": "Positive balance in growth",
+   "speed": 1.091
+  }
+ ]
+}
