@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000077",
+ "file": "Q000000077.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 10409,
+ "sha256": "643818d019257c30dd9280b7186f1035a52083f568f584299eab4f9f46964ef7",
+ "track_ms": 6086,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "cd8845b5e82022b22456cc4bb6fc1b91c757a126846751f59027baf997a29f37",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1871,
+   "text": "Dragging feeling, left side",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3652,
+   "text": "Bag of worms standing",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 5986,
+   "text": "This is a varico-seal",
+   "speed": 1.05
+  }
+ ]
+}

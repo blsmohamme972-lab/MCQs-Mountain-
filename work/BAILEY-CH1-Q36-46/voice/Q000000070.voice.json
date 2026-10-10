@@ -1,0 +1,27 @@
+{
+ "qid": "Q000000070",
+ "duration_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "speed": 1.05,
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "Antibody meets soluble antigen",
+   "say": "Antibody meets soluble antigen"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "Complexes lodge, inflame tissue",
+   "say": "They lodge and inflame tissue"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "IgG immune complexes",
+   "say": "IgG immune complexes"
+  }
+ ]
+}

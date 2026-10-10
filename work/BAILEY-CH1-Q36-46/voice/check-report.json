@@ -1,0 +1,275 @@
+[
+ {
+  "qid": "Q000000068",
+  "beats": [
+   {
+    "say": "Allergen meets her again",
+    "heard": "Allergen meets her again.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "B cells make antibodies",
+    "heard": "B cells make antibodies.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "IgE is the mediator",
+    "heard": "Ig E is the mediator.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000069",
+  "beats": [
+   {
+    "say": "Antibodies target cell surfaces",
+    "heard": "Antibodies target cell surfaces.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Complement destroys the cell",
+    "heard": "Compliment destroys the cell.",
+    "score": 0.96,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "IgG is the mediator",
+    "heard": "IgG is the mediator.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000070",
+  "beats": [
+   {
+    "say": "Antibody meets soluble antigen",
+    "heard": "Antibody meets soluble antigen.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "They lodge and inflame tissue",
+    "heard": "They lodge an inflamed tissue.",
+    "score": 0.96,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "IgG immune complexes",
+    "heard": "IgG immune complexes.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000071",
+  "beats": [
+   {
+    "say": "A skin test on the arm",
+    "heard": "A skin test on the arm.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Days later, no antibodies",
+    "heard": "Days later, no antibodies.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Helper T cells drive it",
+    "heard": "Helper T cells drive it.",
+    "score": 1.0,
+    "onset_error_ms": 20
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000072",
+  "beats": [
+   {
+    "say": "The inguinal canal",
+    "heard": "The inguinal canal.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Arching muscle forms the roof",
+    "heard": "Arching muscle forms the roof.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Internal oblique and transversus",
+    "heard": "internal oblique and transversus.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000073",
+  "beats": [
+   {
+    "say": "A tunnel in mid thigh",
+    "heard": "A tunnel in mid -thigh.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Sartorius forms the roof",
+    "heard": "Sartorius forms the roof.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Vastus medialis is lateral",
+    "heard": "Fastest mediolis is lateral.",
+    "score": 0.851,
+    "onset_error_ms": 30
+   }
+  ],
+  "stray_sound_ms": [],
+  "second_opinion": {
+   "3": "Vastus medialis is lateral."
+  }
+ },
+ {
+  "qid": "Q000000074",
+  "beats": [
+   {
+    "say": "Negative mum, positive baby",
+    "heard": "negative mom, positive baby.",
+    "score": 0.957,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Baby cells could sensitise her",
+    "heard": "Baby cells could sensitize her.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Give anti-D immunoglobulin",
+    "heard": "Give anti -D immunoglobulin.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000075",
+  "beats": [
+   {
+    "say": "Lump with a cough impulse",
+    "heard": "Lump with a cough impulse.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Reduced, held at deep ring",
+    "heard": "reduced held at deep ring.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Indirect inguinal hernia",
+    "heard": "Interact inguinal hernia.",
+    "score": 0.864,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": [],
+  "second_opinion": {
+   "3": "Indirect inguinal hernia"
+  }
+ },
+ {
+  "qid": "Q000000076",
+  "beats": [
+   {
+    "say": "Painless, non tender swelling",
+    "heard": "Painless, non -tender swelling.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Firm mass within testis",
+    "heard": "Firm mass with intestines.",
+    "score": 0.952,
+    "onset_error_ms": 40
+   },
+   {
+    "say": "Testicular cancer",
+    "heard": "Testicular cancer.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000077",
+  "beats": [
+   {
+    "say": "Dragging feeling, left side",
+    "heard": "Dragging feeling, left side.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Bag of worms standing",
+    "heard": "Bag of worms standing.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "This is a varico-seal",
+    "heard": "This is a varicoseal.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000078",
+  "beats": [
+   {
+    "say": "Firm lump below jaw",
+    "heard": "Firm lump below jaw.",
+    "score": 1.0,
+    "onset_error_ms": 80
+   },
+   {
+    "say": "Skin tethered, with punctum",
+    "heard": "Skin tethered with punkedam",
+    "score": 0.851,
+    "onset_error_ms": 20
+   },
+   {
+    "say": "Epidermal cyst",
+    "heard": "Epidermal Sist",
+    "score": 0.923,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": [],
+  "second_opinion": {
+   "2": "Skin Tethered with Punctum"
+  }
+ }
+]

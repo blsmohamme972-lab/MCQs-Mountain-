@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000075",
+ "file": "Q000000075.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 10891,
+ "sha256": "7f2f57f4f9e654d3c2c0b30139416a56159abae84184e5a026b58a8731ccdd09",
+ "track_ms": 6219,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "b87f1c935f5a05a46d67a56767ee00da7a7674743ef7bd1a9e8daeaead69ee2b",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1583,
+   "text": "Lump with a cough impulse",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4016,
+   "text": "Reduced, held at deep ring",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6119,
+   "text": "Indirect inguinal hernia",
+   "speed": 1.05
+  }
+ ]
+}

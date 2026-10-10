@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000073",
+ "file": "Q000000073.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11309,
+ "sha256": "b562be290acdf0c9369f7d6710a640a0227ea8c402bef335eafa117120300372",
+ "track_ms": 6650,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "2933687d413c0b8a99371f427b534984b079355e29d13baf510d05e308689ce9",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1445,
+   "text": "A tunnel in mid thigh",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3860,
+   "text": "Sartorius forms the roof",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6550,
+   "text": "Vastus medialis is lateral",
+   "speed": 1.05
+  }
+ ]
+}

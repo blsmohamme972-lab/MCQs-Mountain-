@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000068",
+ "file": "Q000000068.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 10819,
+ "sha256": "0194a49e07a3405ded43ca68edaac04a51705802137c7f964caf33afdfe73d84",
+ "track_ms": 6175,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "1cf70f18e5d26ecbc52cd4eb7e263b93ee867530e8c5433cfbdc1f5fff96f680",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1616,
+   "text": "Allergen meets her again",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4006,
+   "text": "B cells make antibodies",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6075,
+   "text": "IgE is the mediator",
+   "speed": 1.05
+  }
+ ]
+}

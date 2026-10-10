@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000076",
+ "file": "Q000000076.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 10751,
+ "sha256": "cce6b6d1f8421a78c4c9def193989403bb31e7e31908c836ffa83d465848f2e5",
+ "track_ms": 6030,
+ "card_ms": 7000,
+ "voice": "af_heart",
+ "lang": "en-us",
+ "engine": "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1",
+ "bitrate": "16k",
+ "script_sha256": "4520b0ed4a9c770fc1bcfcdb37d98db8858a898fcf34a13cf7e585f0d0b495ca",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2010,
+   "text": "Painless, non tender swelling",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3884,
+   "text": "Firm mass within testis",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 5930,
+   "text": "Testicular cancer",
+   "speed": 1.05
+  }
+ ]
+}
