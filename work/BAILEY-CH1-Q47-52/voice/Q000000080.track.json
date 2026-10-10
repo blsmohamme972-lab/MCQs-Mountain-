@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000080",
+ "file": "Q000000080.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 11817,
+ "sha256": "8305e7658756626e5c488a7a973400c7c2ef67214116fcddd8f9022d0a88d6c5",
+ "track_ms": 6198,
+ "card_ms": 7000,
+ "voice": "Xb7hH8MSUJpSbSDYk0k2",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "16k",
+ "script_sha256": "22d985ac7b00c999f1fa469d31b419cc0e7e854935af141f210bc276164103ac",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1973,
+   "text": "Known gallstones, now vomiting",
+   "speed": 1.2
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4390,
+   "text": "A gallstone blocks the bowel",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6098,
+   "text": "Plain abdominal X-ray",
+   "speed": 1.05
+  }
+ ]
+}

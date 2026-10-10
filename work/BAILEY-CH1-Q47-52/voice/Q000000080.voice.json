@@ -1,0 +1,28 @@
+{
+ "qid": "Q000000080",
+ "duration_ms": 7000,
+ "engine": "elevenlabs",
+ "voice": "Xb7hH8MSUJpSbSDYk0k2",
+ "lang": "en-us",
+ "speed": 1.05,
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "Known gallstones, now vomiting",
+   "say": "Known gallstones, now vomiting"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "Gallstone blocks the bowel",
+   "say": "A gallstone blocks the bowel"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "Plain abdominal X-ray",
+   "say": "Plain abdominal X-ray"
+  }
+ ]
+}

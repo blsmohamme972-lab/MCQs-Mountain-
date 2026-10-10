@@ -1,0 +1,149 @@
+[
+ {
+  "qid": "Q000000079",
+  "beats": [
+   {
+    "say": "Soft neck lump, teenager",
+    "heard": "Soft necklump teenager",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Light shines through it",
+    "heard": "Light shines through it.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Cystic hygroma",
+    "heard": "cystic hygroma",
+    "score": 1.0,
+    "onset_error_ms": 0
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000080",
+  "beats": [
+   {
+    "say": "Known gallstones, now vomiting",
+    "heard": "Nungal stones now vomiting.",
+    "score": 0.898,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "A gallstone blocks the bowel",
+    "heard": "A gallstone blocks the bowel.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Plain abdominal X-ray",
+    "heard": "Plain abdominal x -ray",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": [],
+  "second_opinion": {
+   "1": "Known gallstones, now vomiting."
+  }
+ },
+ {
+  "qid": "Q000000081",
+  "beats": [
+   {
+    "say": "Fracture inside the capsule",
+    "heard": "Fracture inside the capsule.",
+    "score": 1.0,
+    "onset_error_ms": 60
+   },
+   {
+    "say": "Rheumatoid socket is worn",
+    "heard": "Rheumatoid socket is worn.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Total hip replacement",
+    "heard": "Total hip replacement.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000082",
+  "beats": [
+   {
+    "say": "Young woman, neck fracture",
+    "heard": "Young woman, neck fracture.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Save her own femoral head",
+    "heard": "Save her own femoral head.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Cannulated screws",
+    "heard": "Canulated screws.",
+    "score": 0.968,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000083",
+  "beats": [
+   {
+    "say": "Elderly man, hip fracture",
+    "heard": "Elderlyman hip fracture",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Break outside the capsule",
+    "heard": "Break outside the capsule.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Dynamic hip screw",
+    "heard": "Dynamic hip screw.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000084",
+  "beats": [
+   {
+    "say": "Two thirds is inside cells",
+    "heard": "2 thirds is inside cells.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Potassium and protein inside",
+    "heard": "Potassium and protein inside.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Less protein outside cells",
+    "heard": "Less protein outside cells",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ }
+]

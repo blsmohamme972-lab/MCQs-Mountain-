@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000084",
+ "file": "Q000000084.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 12534,
+ "sha256": "7414817cecf3c1c2484f2bf2af0a380049bcb2a78ba4c7982c64d4141b1d5323",
+ "track_ms": 6624,
+ "card_ms": 7000,
+ "voice": "Xb7hH8MSUJpSbSDYk0k2",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "16k",
+ "script_sha256": "60b975a1241d15c76f67094a50bad24f159ef9b4a97f8fd40c4904fe3d9758e7",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1870,
+   "text": "Two thirds is inside cells",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4438,
+   "text": "Potassium and protein inside",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6524,
+   "text": "Less protein outside cells",
+   "speed": 1.05
+  }
+ ]
+}
