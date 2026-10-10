@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000093",
+ "file": "Q000000093.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 34837,
+ "sha256": "ca5a0b077605fe5ac0a241f3a58f486c89b3e8bd9164b9854f412835cdf94202",
+ "track_ms": 6671,
+ "card_ms": 7000,
+ "voice": "JBFqnCBsd6RMkjVDRZzb",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "082e89180ad451b12bbd8c0e26bc8f1c1d9fa8353d83ccd1d1eda74242608a9b",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1339,
+   "text": "Heavy blood loss",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4411,
+   "text": "Carotid body senses hypoxia",
+   "speed": 1.148
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6571,
+   "text": "Deeper breaths each time",
+   "speed": 1.05
+  }
+ ]
+}

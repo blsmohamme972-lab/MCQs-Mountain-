@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000087",
+ "file": "Q000000087.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 36560,
+ "sha256": "40637baf3252de1aefafe6169cf6637159cfc30aad6bc8c6356cfa3a8fce5ab0",
+ "track_ms": 6743,
+ "card_ms": 7000,
+ "voice": "JBFqnCBsd6RMkjVDRZzb",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "b2bd5c3e895516a4cd508bdbf101dcd3190229b51b58e3baad7eced92690a942",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2015,
+   "text": "Two vessels feed the liver",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4298,
+   "text": "Portal vein brings more blood",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6643,
+   "text": "Oxygen shared half and half",
+   "speed": 1.05
+  }
+ ]
+}

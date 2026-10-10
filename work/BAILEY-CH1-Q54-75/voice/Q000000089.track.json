@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000089",
+ "file": "Q000000089.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 37688,
+ "sha256": "8c8a5880b06c9b6b8352da3918c426917489132c34d6d505a0e8ca8720d959a8",
+ "track_ms": 6475,
+ "card_ms": 7000,
+ "voice": "onwK4e9ZLuTAKqWW03F9",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "8db245581e0459e7f2a6398587243cfb2e82e8b9e3c88641137c7b4f371d861e",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2132,
+   "text": "Infection inside the bone",
+   "speed": 1.122
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4433,
+   "text": "Bacteria multiply in marrow",
+   "speed": 1.108
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6375,
+   "text": "Staphylococcus aureus",
+   "speed": 1.05
+  }
+ ]
+}

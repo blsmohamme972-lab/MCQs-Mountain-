@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000105",
+ "file": "Q000000105.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 35147,
+ "sha256": "dd697b9e94e251a8c9912bd422d6eab184966bbbe0d50a3b079e240344fed459",
+ "track_ms": 6538,
+ "card_ms": 7000,
+ "voice": "JBFqnCBsd6RMkjVDRZzb",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "2da1a9f6c83ffd2cc8b77ec67f15e7ebb33c755bf0142764d122810c3847d48b",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1999,
+   "text": "Cancer inside the prostate",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4209,
+   "text": "Radiation beams target it",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6438,
+   "text": "Radiotherapy can cure it",
+   "speed": 1.05
+  }
+ ]
+}

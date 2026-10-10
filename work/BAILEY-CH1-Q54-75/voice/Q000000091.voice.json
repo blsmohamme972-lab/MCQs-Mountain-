@@ -1,0 +1,29 @@
+{
+ "qid": "Q000000091",
+ "duration_ms": 7000,
+ "engine": "elevenlabs",
+ "voice": "nPczCjzI2devNBz1zQrb",
+ "lang": "en-us",
+ "speed": 1.05,
+ "quality": "high",
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "The spleen is removed",
+   "say": "The spleen is removed"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "Capsule bacteria escape clearance",
+   "say": "Capsule bacteria escape clearance"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "Haemophilus influenzae",
+   "say": "Haemophilus influenzae"
+  }
+ ]
+}

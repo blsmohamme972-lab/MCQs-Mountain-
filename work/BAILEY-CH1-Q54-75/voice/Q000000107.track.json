@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000107",
+ "file": "Q000000107.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 37866,
+ "sha256": "4c2c6dce4c6f791c278e33de0a0716cb7d2e391e67f94f0c0e768cc4e0a55366",
+ "track_ms": 6702,
+ "card_ms": 7000,
+ "voice": "onwK4e9ZLuTAKqWW03F9",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "fb402174dbccd50c05c447eb57ab5d5d7bee77fc88c9c2fe108fd2ba24a60716",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1963,
+   "text": "A symmetrical bell curve",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4251,
+   "text": "Mean, median, mode match",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6602,
+   "text": "Non-parametric tests work",
+   "speed": 1.05
+  }
+ ]
+}

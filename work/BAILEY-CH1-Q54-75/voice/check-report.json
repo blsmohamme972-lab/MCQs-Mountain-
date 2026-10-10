@@ -1,0 +1,488 @@
+[
+ {
+  "qid": "Q000000086",
+  "beats": [
+   {
+    "say": "Back third of the tongue",
+    "heard": "back third of the tongue.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Nerves nine and ten",
+    "heard": "NERVES 9 and 10.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Internal laryngeal branch",
+    "heard": "internal laryngeal branch.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000087",
+  "beats": [
+   {
+    "say": "Two vessels feed the liver",
+    "heard": "Two vessels feed the liver.",
+    "score": 1.0,
+    "onset_error_ms": 80
+   },
+   {
+    "say": "Portal vein brings more blood",
+    "heard": "Portal vein brings more blood.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Oxygen shared half and half",
+    "heard": "Oxygen shared half and half.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000088",
+  "beats": [
+   {
+    "say": "Repeated vomiting",
+    "heard": "Repeated vomiting.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Stomach acid is lost",
+    "heard": "Stomach acid is lost.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Blood turns alkaline",
+    "heard": "Blood turns alkaline.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000089",
+  "beats": [
+   {
+    "say": "Infection inside the bone",
+    "heard": "Infection inside the bone.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Bacteria multiply in marrow",
+    "heard": "Bacteria, multiply in marrow.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Staphylococcus aureus",
+    "heard": "Staphylococcus aureaus.",
+    "score": 0.976,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000090",
+  "beats": [
+   {
+    "say": "Often on chest and shoulder",
+    "heard": "Often on Chest and Shoulder.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Scar grows past the wound",
+    "heard": "Scar grows past the wound.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Pressure dressings help",
+    "heard": "Pressure dressings help.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000091",
+  "beats": [
+   {
+    "say": "The spleen is removed",
+    "heard": "The spleen is removed.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Capsule bacteria escape clearance",
+    "heard": "Capsule bacteria escape clearance.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Haemophilus influenzae",
+    "heard": "Hemophilus Influenza.",
+    "score": 0.947,
+    "onset_error_ms": 0
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000093",
+  "beats": [
+   {
+    "say": "Heavy blood loss",
+    "heard": "Heavy blood loss.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Carotid body senses hypoxia",
+    "heard": "Carotid body senses hypoxia.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Deeper breaths each time",
+    "heard": "Deeper breaths each time.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000094",
+  "beats": [
+   {
+    "say": "A major burn",
+    "heard": "A Major Burn",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Gut vessels clamp down",
+    "heard": "Gut vessels clamped down.",
+    "score": 0.95,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "The stomach swells up",
+    "heard": "The stomach swells up.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000095",
+  "beats": [
+   {
+    "say": "Nitrogen in and out",
+    "heard": "Nitrogen in and out.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Growth builds new protein",
+    "heard": "Growth builds new protein.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Positive balance in growth",
+    "heard": "Positive balance in growth.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000096",
+  "beats": [
+   {
+    "say": "Two lobes of the pituitary",
+    "heard": "Two lobes of the pituitary.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Front lobe makes six hormones",
+    "heard": "Front load makes six hormones.",
+    "score": 0.913,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Prolactin comes from the front",
+    "heard": "Prolactin comes from the front.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000097",
+  "beats": [
+   {
+    "say": "Muscle at the neck root",
+    "heard": "Muscle at the neck root.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Vein in front, artery behind",
+    "heard": "Vayne in front, artery behind.",
+    "score": 0.936,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Under the deep neck fascia",
+    "heard": "under the deep neck fascia.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000098",
+  "beats": [
+   {
+    "say": "Blood enters the glomerulus",
+    "heard": "Blood enters the glomerulus.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Plasma filters into the tubule",
+    "heard": "Plasma filters into the tubule.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "125 milliliters every minute",
+    "heard": "125 milliliters every minute.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000099",
+  "beats": [
+   {
+    "say": "Top cancers in women",
+    "heard": "Top cancers in women.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "The top cancers in men",
+    "heard": "The top cancers in men",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Lung cancer leads both",
+    "heard": "Lung cancer leads both.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000100",
+  "beats": [
+   {
+    "say": "Feeding through a gut tube",
+    "heard": "Feeding through a gut tube.",
+    "score": 1.0,
+    "onset_error_ms": 30
+   },
+   {
+    "say": "Elemental feed: small molecules",
+    "heard": "Elemental feed, small molecules.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Needs minimal digestion",
+    "heard": "Needs minimal digestion.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000101",
+  "beats": [
+   {
+    "say": "The largest organ",
+    "heard": "The largest organ.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Hepatic veins join vena cava",
+    "heard": "hepatic veins join Venacava.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Falsiform ligament holds it",
+    "heard": "Falsoform ligament holds it.",
+    "score": 0.958,
+    "onset_error_ms": 20
+   }
+  ],
+  "stray_sound_ms": [],
+  "second_opinion": {
+   "3": "Falsiform ligament holds it."
+  }
+ },
+ {
+  "qid": "Q000000102",
+  "beats": [
+   {
+    "say": "Paget's disease of bone",
+    "heard": "Padgett's disease a bone.",
+    "score": 0.872,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Bone turnover runs wild",
+    "heard": "Bone turnover runs wild.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Osteosarcoma can arise",
+    "heard": "Osteosarcoma can arise.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000103",
+  "beats": [
+   {
+    "say": "Kidney on the back wall",
+    "heard": "Kidney on the back wall.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Muscles and rib behind",
+    "heard": "Muscles and ribs behind",
+    "score": 0.974,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "Pleural recess behind it",
+    "heard": "Plural recess behind it.",
+    "score": 0.976,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000104",
+  "beats": [
+   {
+    "say": "Leftover yolk duct",
+    "heard": "Left over yolk duct.",
+    "score": 1.0,
+    "onset_error_ms": 0
+   },
+   {
+    "say": "A pouch on the ileum",
+    "heard": "A pouch on the isleum.",
+    "score": 0.97,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Can hold pancreatic tissue",
+    "heard": "can hold pancreatic tissue.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000105",
+  "beats": [
+   {
+    "say": "Cancer inside the prostate",
+    "heard": "Cancer inside the prostate.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Radiation beams target it",
+    "heard": "Radiation beams targeted.",
+    "score": 0.909,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Radiotherapy can cure it",
+    "heard": "Radiotherapy Concuret",
+    "score": 0.927,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": []
+ },
+ {
+  "qid": "Q000000107",
+  "beats": [
+   {
+    "say": "A symmetrical bell curve",
+    "heard": "A symmetrical bell curve.",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Mean, median, mode match",
+    "heard": "Mean Median Mode Match",
+    "score": 1.0,
+    "onset_error_ms": 10
+   },
+   {
+    "say": "Non-parametric tests work",
+    "heard": "Non -parametric test work",
+    "score": 0.977,
+    "onset_error_ms": 10
+   }
+  ],
+  "stray_sound_ms": [],
+  "second_opinion": {
+   "3": "Non -parametric tests work."
+  }
+ }
+]

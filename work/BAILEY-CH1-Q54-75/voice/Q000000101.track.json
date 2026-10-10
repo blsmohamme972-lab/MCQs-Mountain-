@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000101",
+ "file": "Q000000101.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 34742,
+ "sha256": "91022caeed1260ac46ce697d3dd8dc5900c2041d1420d98ce9959551a74a5f73",
+ "track_ms": 6619,
+ "card_ms": 7000,
+ "voice": "onwK4e9ZLuTAKqWW03F9",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "f4ef7d001389a0606b1ec68554b85eb2c610c7f2b114c2bf2880bb9ec8756af5",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1690,
+   "text": "The largest organ",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4118,
+   "text": "Hepatic veins join vena cava",
+   "speed": 1.2
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6519,
+   "text": "Falsiform ligament holds it",
+   "speed": 1.05
+  }
+ ]
+}

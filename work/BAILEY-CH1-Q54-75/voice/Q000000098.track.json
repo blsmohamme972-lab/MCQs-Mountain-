@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000098",
+ "file": "Q000000098.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 37100,
+ "sha256": "df0c4f916560da1a533c6111d2f7ca62761863cde0f01499c430bf0d95bb816b",
+ "track_ms": 6728,
+ "card_ms": 7000,
+ "voice": "pFZP5JQG7iQjIQuC4Bku",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "1a96d51fb16b8ab720047497d12d081e3dd1a3c233485659d75b6ea818d5e446",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 2072,
+   "text": "Blood enters the glomerulus",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 4335,
+   "text": "Plasma filters into the tubule",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6628,
+   "text": "125 milliliters every minute",
+   "speed": 1.2
+  }
+ ]
+}

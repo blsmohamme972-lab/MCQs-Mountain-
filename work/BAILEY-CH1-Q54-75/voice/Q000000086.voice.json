@@ -1,0 +1,29 @@
+{
+ "qid": "Q000000086",
+ "duration_ms": 7000,
+ "engine": "elevenlabs",
+ "voice": "pFZP5JQG7iQjIQuC4Bku",
+ "lang": "en-us",
+ "speed": 1.05,
+ "quality": "high",
+ "beats": [
+  {
+   "start_ms": 0,
+   "end_ms": 2300,
+   "caption": "Back third of the tongue",
+   "say": "Back third of the tongue"
+  },
+  {
+   "start_ms": 2300,
+   "end_ms": 4600,
+   "caption": "Nerves nine and ten",
+   "say": "Nerves nine and ten"
+  },
+  {
+   "start_ms": 4600,
+   "end_ms": 7000,
+   "caption": "Internal laryngeal branch",
+   "say": "Internal laryngeal branch"
+  }
+ ]
+}

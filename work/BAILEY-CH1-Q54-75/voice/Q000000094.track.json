@@ -1,0 +1,34 @@
+{
+ "qid": "Q000000094",
+ "file": "Q000000094.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 31102,
+ "sha256": "00f986141a31575a0dd0f1b4eb1ef54c89a3033ce767acaa81c849cbd4359f47",
+ "track_ms": 6310,
+ "card_ms": 7000,
+ "voice": "EXAVITQu4vr4xnSDxMaL",
+ "lang": "en-us",
+ "engine": "ElevenLabs eleven_multilingual_v2 (paid API)",
+ "bitrate": "48k",
+ "script_sha256": "030ea83b3d307f4fe895d4959636e77e726576eb3484317c6e54648393775159",
+ "cues": [
+  {
+   "t_ms": 250,
+   "end_ms": 1399,
+   "text": "A major burn",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 2420,
+   "end_ms": 3860,
+   "text": "Gut vessels clamp down",
+   "speed": 1.05
+  },
+  {
+   "t_ms": 4720,
+   "end_ms": 6210,
+   "text": "The stomach swells up",
+   "speed": 1.05
+  }
+ ]
+}
