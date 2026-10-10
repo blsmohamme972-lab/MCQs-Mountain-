@@ -15,22 +15,36 @@ Every MotionCard gets a short spoken explanation, made entirely by Claude Code. 
 | 5 | **Thousands of students can use it daily on the free plan** | Zero extra requests per card view. About 13 KB more per 8 s card download, compressed. `synth` caps every card at **20 KB** (it re-encodes a long card at 12 kbps, and refuses it if it is still too big). Playback happens on the student's phone. See the free-plan maths in [DESIGN.md](DESIGN.md#free-plan-maths). |
 | 6 | **More than 300 books, free** | About 79,000 cards × 12.6 KB ≈ **1 GB of voice** in total, with no storage charge for Worker assets. Two existing limits (unrelated to voice) must be fixed first for 300 books; see [DESIGN.md](DESIGN.md#300-books-two-existing-limits-to-fix-first). |
 | 7 | **The voice is synced with the animation as closely as possible** | (a) Each line is written for its beat and must fit inside it (`synth` refuses lines that don't). (b) Each line starts 250 ms (first beat) or 120 ms (later beats) after its caption appears, while that animation step is under way. The check measures it from the waveform: **0–40 ms** on chapter 10. (c) In the app, the voice is the master clock, so picture and sound cannot drift (browser test: under 60 ms through play, seek and pause). |
-| 8 | **A Claude Code agent can generate the voice easily: least effort, highest quality** | **One-time setup:** `voiceover/bootstrap.sh`. **Then one command:** `voiceover.py make --workspace work/<batch>`. `make` installs what's missing (model pinned by SHA-256) and pre-fills every spoken line from the card's captions. It then speaks, fits, encodes, checks by listening back, and makes review videos. It stops with **one list of everything to fix**, and each fix says how many words to cut. Quality is built in: the top-rated voice, loudness-normalised, a pronunciation dictionary, and a pass/fail listen-back check. |
+| 8 | **A Claude Code agent can generate the voice easily: least effort, highest quality** | **One-time setup:** `voiceover/bootstrap.sh`. **Then one command:** `voiceover.py make --engine <kokoro|elevenlabs> --workspace work/<batch>` (the agent asks the owner which engine first). `make` installs what's missing (model pinned by SHA-256) and pre-fills every spoken line from the card's captions. It then speaks, fits, encodes, checks by listening back, and makes review videos. It stops with **one list of everything to fix**, and each fix says how many words to cut. Quality is built in: the top-rated voice, loudness-normalised, a pronunciation dictionary, and a pass/fail listen-back check. |
 
 Voice is a required part of every new card, not an add-on. Students can mute it, and the mute choice is remembered.
 
 ## How the owner uses it
 
-1. Ask Claude Code: *"Make chapter N with voice-over"* (or *"add voice to package X"*).
+1. Ask Claude Code: *"Make chapter N with voice-over"* (or *"add voice to package X"*). It asks you first: **Kokoro (free) or ElevenLabs (paid)?** It can send you a 7-second test of each.
 2. Claude Code builds the cards and their voice, then runs every check.
 3. You get **one ZIP** and, optionally, review videos (MP4s that play in Telegram) to watch on your phone. The videos are sent in the conversation only and are never committed to the repository.
 4. Upload the ZIP to the bot. Nothing else.
+
+## Choosing the voice engine (ask the owner first)
+
+Before making any voice, the agent **asks the owner which engine to use**, once per batch, and never picks for them:
+
+| Engine | `--engine` | Cost | Voice | Notes |
+|---|---|---|---|---|
+| **Kokoro-82M** | `kokoro` | Free, offline | `af_heart` | The project default. Meets every Golden rule. Uses the IPA fixes in `lexicon.json`. |
+| **ElevenLabs** | `elevenlabs` | Paid per character (API credits) | `Alice` (`Xb7hH8MSUJpSbSDYk0k2`) | Needs `ELEVENLABS_API_KEY`. Model `eleven_multilingual_v2`. Not free, so it is an owner's exception to Golden rules 1 and 4. Uses the `say` rewrites in `lexicon.json` but not its IPA entries. Replies are cached in `~/.cache/kafu-voiceover/elevenlabs/`, so re-running `make` costs nothing extra. |
+
+If the owner wants to hear both first, run `voiceover.py sample` (7 s of the same anatomy line from each engine, same loudness, in `work/voice-sample/`) and send them the two MP3s. `--text "…"` and `--seconds N` change the test.
+
+`make` refuses to run without `--engine`. The choice is saved in each card's `voice.json` (`"engine"`), so later `synth`/`check` runs keep it. Running `make --engine <other>` switches kept scripts to the other engine and keeps their lines. Both engines go through the same fitting, encoding, listen-back check and package, so the app does not care which one made a card.
 
 ## How Claude Code makes it (Golden rule 8)
 
 ```bash
 voiceover/bootstrap.sh                                                   # once per machine: venv, pinned tools, checksummed model
-~/.venvs/kafu-voice/bin/python voiceover/voiceover.py make --workspace work/<batch>
+~/.venvs/kafu-voice/bin/python voiceover/voiceover.py sample             # optional: let the owner hear both engines
+~/.venvs/kafu-voice/bin/python voiceover/voiceover.py make --engine <kokoro|elevenlabs> --workspace work/<batch>
 ```
 
 `make` does everything, then either says **DONE** or prints **one FIX list for every card at once**. Each line says what to change:

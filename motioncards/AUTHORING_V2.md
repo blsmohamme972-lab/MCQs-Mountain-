@@ -11,7 +11,7 @@ v2 is opt-in per scene (`"schema_version": 2`). v1 scenes still work unchanged. 
 1. Write the scene.
 2. `python tools/motioncards.py lint --workspace work/<batch>`: errors name the exact field, e.g. `scene_v2_invalid:layers[3].keys[1].fill:...`.
 3. `python tools/motioncards.py render --workspace work/<batch> --out work/<batch>/render`: look at `<QID>_sheet.png` (phone + tablet frames). Fix overlaps, text off-stage, an empty first frame and cramped labels. This needs `pip install playwright`; skip it only if no browser is available.
-4. Voice: `~/.venvs/kafu-voice/bin/python voiceover/voiceover.py make --workspace work/<batch>` (one-time setup: `voiceover/bootstrap.sh`). Every new card ships with voice; keep the numbered captions short and speakable so `make` needs no edits.
+4. Voice (ask the owner first: Kokoro or ElevenLabs): `~/.venvs/kafu-voice/bin/python voiceover/voiceover.py make --engine <kokoro|elevenlabs> --workspace work/<batch>` (one-time setup: `voiceover/bootstrap.sh`). Every new card ships with voice; keep the numbered captions short and speakable so `make` needs no edits.
 5. `package` (it refuses a card without voice), then `validate`.
 
 ## Two ways to draw (mix them freely)

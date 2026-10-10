@@ -15,3 +15,6 @@ __pycache__/
 *.mp4
 # ...except the two gold-standard example videos (chapters 20–25), kept as the look to copy.
 !motioncards/gold-standard-examples/*.mp4
+
+# Voice engine test clips (`voiceover.py sample`) are sent to the owner in chat only.
+/work/voice-sample/

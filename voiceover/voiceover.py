@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Kafu MotionCards voice-over: free, offline, small, synced narration for MotionCards.
 
-Agent quick start (Golden rule 8):  voiceover/bootstrap.sh  then  voiceover.py make --workspace work/<batch>
+Agent quick start (Golden rule 8):  voiceover/bootstrap.sh  then  voiceover.py make --engine <kokoro|elevenlabs> --workspace work/<batch>
+ASK THE OWNER which engine first (kokoro = free, offline; elevenlabs = paid API, needs ELEVENLABS_API_KEY). `make` refuses to
+guess. `sample` makes a short test clip from each engine so the owner can listen before choosing.
 
 Pipeline (one command per step):
   make    everything below in one go (setup if needed, draft, synth, check, review), then ONE list of every problem
@@ -12,8 +14,9 @@ Pipeline (one command per step):
           loudness-normalise, encode Opus 16 kbps mono -> work/<batch>/voice/<QID>.opus + .track.json
   check   listen back with a speech recogniser: every word understood, no stray sound, every beat starts on time
   review  render the card and mux it with its voice into work/<batch>/voice/review/<QID>.mp4
+  sample  speak one test line with each chosen engine -> <out>/<Engine>_<N>s.mp3 (same loudness, same length) for the owner to compare
 
-Run with the voice-over venv:  ~/.venvs/kafu-voice/bin/python voiceover/voiceover.py make --workspace work/<batch>
+Run with the voice-over venv:  ~/.venvs/kafu-voice/bin/python voiceover/voiceover.py make --engine <kokoro|elevenlabs> --workspace work/<batch>
 See voiceover/README.md (the Golden 8 Rules) and voiceover/DESIGN.md.
 """
 from __future__ import annotations
@@ -42,7 +45,14 @@ MODEL = {
                         "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d"),
 }
 ENGINE = "kokoro-82M v1.0 (Apache-2.0) via kokoro-onnx 0.6.1"
-DEFAULT_VOICE, DEFAULT_LANG, DEFAULT_SPEED = "af_heart", "en-us", 1.05
+ELEVEN_MODEL = "eleven_multilingual_v2"
+ENGINES = {                     # the owner picks one per batch; the agent must ask (see README "Choosing the voice engine")
+    "kokoro": {"voice": "af_heart", "label": ENGINE},
+    "elevenlabs": {"voice": "Xb7hH8MSUJpSbSDYk0k2", "label": f"ElevenLabs {ELEVEN_MODEL} (paid API)"},   # "Alice", clear educator
+}
+DEFAULT_ENGINE = "kokoro"       # scripts written before engines existed are Kokoro
+DEFAULT_VOICE, DEFAULT_LANG, DEFAULT_SPEED = ENGINES[DEFAULT_ENGINE]["voice"], "en-us", 1.05
+SAMPLE_TEXT = "The femur is the longest bone in the body. It joins the hip to the knee and carries your weight."
 CAPTION = re.compile(r"^\s*(\d+)\s*·\s*(.+)$", re.S)
 CAPS_CALL = re.compile(r"\bcaps\s*\(\s*api\s*,\s*\w+\s*,\s*(\[\s*\[.*?\]\s*\])\s*\)", re.S)
 NUMBERS = {w: str(i) for i, w in enumerate("zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen "
@@ -95,9 +105,9 @@ def guess_beats(duration_ms: int) -> list[dict]:
             for a, b in zip(edges, edges[1:])]
 
 
-def draft_doc(scene: dict, voice=DEFAULT_VOICE, lang=DEFAULT_LANG) -> dict:
+def draft_doc(scene: dict, voice=DEFAULT_VOICE, lang=DEFAULT_LANG, engine=DEFAULT_ENGINE) -> dict:
     beats = beats_from_scene(scene)
-    return {"qid": scene["qid"], "duration_ms": int(scene["duration_ms"]), "voice": voice, "lang": lang, "speed": DEFAULT_SPEED,
+    return {"qid": scene["qid"], "duration_ms": int(scene["duration_ms"]), "engine": engine, "voice": voice, "lang": lang, "speed": DEFAULT_SPEED,
             "beats": [{"start_ms": b["start_ms"], "end_ms": b["end_ms"], "caption": b["caption"],
                        "say": b["caption"]} for b in beats] or guess_beats(int(scene["duration_ms"]))}   # say pre-filled: synth says if too long
 
@@ -312,8 +322,29 @@ def trim_lead(s, rel_db=-35.0, keep_ms=8):
     return s[max(0, first * n - SR * keep_ms // 1000):]
 
 
-def speak(text: str, voice: str, lang: str, speed: float, lex: dict):
+def eleven_pcm(text: str, voice: str, speed: float) -> bytes:
+    """ElevenLabs text-to-speech as raw 16-bit PCM at SR. Cached on disk: synth re-speaks a line to fit it, and each call costs credits."""
+    body = json.dumps({"text": text, "model_id": ELEVEN_MODEL,
+                       "voice_settings": {"stability": 0.5, "similarity_boost": 0.75, "speed": round(max(0.7, min(1.2, speed)), 3)}})
+    cached = CACHE / "elevenlabs" / (hashlib.sha256((voice + body).encode()).hexdigest() + ".pcm")
+    if cached.exists(): return cached.read_bytes()
+    key = os.environ.get("ELEVENLABS_API_KEY")
+    if not key: raise ValueError("engine elevenlabs needs ELEVENLABS_API_KEY in the environment (or ask the owner to pick --engine kokoro)")
+    req = urllib.request.Request(f"https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=pcm_{SR}", data=body.encode(),
+                                 headers={"xi-api-key": key, "Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r: pcm = r.read()
+    except urllib.error.HTTPError as e:
+        raise ValueError(f"ElevenLabs refused voice '{voice}': HTTP {e.code} {e.read()[:300].decode(errors='replace')}") from None
+    cached.parent.mkdir(parents=True, exist_ok=True); cached.write_bytes(pcm)
+    return pcm
+
+
+def speak(text: str, voice: str, lang: str, speed: float, lex: dict, engine: str = DEFAULT_ENGINE):
     import numpy as np
+    if engine == "elevenlabs":                         # reads words itself: 'say' rewrites apply, IPA entries are Kokoro-only
+        return trim_lead(np.frombuffer(eleven_pcm(spoken_text(text, lex), voice, speed), "<i2").astype(np.float32) / 32768)
+    if engine != "kokoro": raise ValueError(f"unknown voice engine '{engine}': use one of {', '.join(ENGINES)}")
     s, sr = kokoro().create(phonemes(text, lang, lex), voice=voice, speed=speed, lang=lang, is_phonemes=True)
     assert sr == SR
     return trim_lead(np.asarray(s, dtype=np.float32))
@@ -340,15 +371,26 @@ def run_draft(a) -> list[str]:
         p = d / f"{s['qid']}.voice.json"
         if p.exists() and not a.force:
             doc = json.loads(p.read_text(encoding="utf-8")); moved, problem = retime(doc, s)
+            switched = set_engine(doc, a.engine, a.voice)
             if problem: problems.append(f"{s['qid']}: {problem}")
-            elif moved: write_doc(p, doc); print("retime", p.name, "(its captions moved; lines kept)")
+            elif moved or switched: write_doc(p, doc); print("retime" if moved else "engine", p.name, f"(lines kept; voice {doc.get('engine', DEFAULT_ENGINE)} {doc['voice']})")
             else: print("keep", p.name)
             continue
-        doc = draft_doc(s, a.voice, a.lang); write_doc(p, doc)
+        engine = a.engine or DEFAULT_ENGINE
+        doc = draft_doc(s, a.voice or ENGINES[engine]["voice"], a.lang, engine); write_doc(p, doc)
         if any(b.get("timing") == GUESS for b in doc["beats"]): print("draft", p.name, "beats GUESSED: no numbered captions in the scene")
         else: print("draft", p.name, "budgets (words):", [max_words(doc, i) for i in range(len(doc["beats"]))])
     if not (ws / "scenes").is_dir(): problems.append(f"no scenes folder in {ws}: the workspace needs scenes/Q*.scene.json")
     return problems
+
+
+def set_engine(doc: dict, engine: str | None, voice: str | None) -> bool:
+    """Point a kept script at the engine (and voice) the owner chose; its lines and timing stay. True if it changed."""
+    old = (doc.get("engine", DEFAULT_ENGINE), doc["voice"])
+    if engine and engine != old[0]: doc["engine"], doc["voice"] = engine, voice or ENGINES[engine]["voice"]
+    elif voice: doc["voice"] = voice
+    doc.setdefault("engine", old[0])
+    return (doc["engine"], doc["voice"]) != old
 
 
 def encode_opus(pcm, out: Path, bitrate: str = BITRATE):
@@ -364,7 +406,8 @@ def encode_opus(pcm, out: Path, bitrate: str = BITRATE):
 
 def synth_one(doc: dict, d: Path, lex: dict) -> dict:
     import numpy as np
-    qid = doc["qid"]; clips, cues = [], []
+    qid, engine = doc["qid"], doc.get("engine", DEFAULT_ENGINE); clips, cues = [], []
+    if engine not in ENGINES: raise ValueError(f"{qid}: unknown engine '{engine}' in voice.json: use one of {', '.join(ENGINES)}")
     for ext in (".opus", ".track.json"): (d / f"{qid}{ext}").unlink(missing_ok=True)   # a card that fails keeps no stale voice
     found = script_problems(doc); problems = [m for _, m in found]; skip = {i for i, _ in found}
     if None in skip: raise ValueError("\n".join(problems))
@@ -372,11 +415,11 @@ def synth_one(doc: dict, d: Path, lex: dict) -> dict:
         if i in skip: continue                         # still speak the other beats, so their problems show up in this pass too
         say = b["say"].strip()
         speed, win = min(MAX_SPEED, float(b.get("speed", doc.get("speed", DEFAULT_SPEED)))), window_ms(doc, i)
-        clip = speak(say, doc["voice"], doc["lang"], speed, lex)
+        clip = speak(say, doc["voice"], doc["lang"], speed, lex, engine)
         ms = len(clip) * 1000 / SR
         for faster in (min(MAX_SPEED, speed * ms / win * 1.02), MAX_SPEED):   # Golden rule 7: the line must finish inside its beat
             if ms <= win or faster <= speed: continue                       # (Kokoro is not exactly 1/speed: try the cap too)
-            speed = faster; clip = speak(say, doc["voice"], doc["lang"], speed, lex); ms = len(clip) * 1000 / SR
+            speed = faster; clip = speak(say, doc["voice"], doc["lang"], speed, lex, engine); ms = len(clip) * 1000 / SR
         if ms > win:
             n = len(say.split())
             problems.append(f"{qid} beat {i+1}: '{say}' ({n} words) needs {ms:.0f} ms even at {MAX_SPEED}x, the beat allows {win} ms: "
@@ -396,7 +439,7 @@ def synth_one(doc: dict, d: Path, lex: dict) -> dict:
                          f"budget (Golden rule 5): cut about {math.ceil(words * (1 - MAX_VOICE_BYTES / size))} of its {words} words")
     info = {"qid": qid, "file": out.name, "mime": "audio/ogg; codecs=opus", "bytes": size, "sha256": sha256(out),
             "track_ms": round(total * 1000 / SR), "card_ms": doc["duration_ms"], "voice": doc["voice"], "lang": doc["lang"],
-            "engine": ENGINE, "bitrate": rate, "script_sha256": script_sha(doc), "cues": cues}
+            "engine": ENGINES[engine]["label"], "bitrate": rate, "script_sha256": script_sha(doc), "cues": cues}
     (d / f"{qid}.track.json").write_text(json.dumps(info, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     return info
 
@@ -562,10 +605,34 @@ def cmd_check(a): finish(run_check(a), "CHECK FAILED:")
 def cmd_review(a): finish(run_review(a))
 
 
+def need_engine(a):
+    if not a.engine:
+        sys.exit("Which voice engine? ASK THE OWNER first, then run again with one of:\n"
+                 "  --engine kokoro       free, offline, Kokoro-82M af_heart (the project default)\n"
+                 "  --engine elevenlabs   paid ElevenLabs API, needs ELEVENLABS_API_KEY\n"
+                 "To let them listen first: voiceover.py sample --engines kokoro elevenlabs")
+
+
+def cmd_sample(a):
+    """A short test clip per engine, same loudness and same length, so the owner can hear the difference before choosing."""
+    import numpy as np
+    out = Path(a.out); out.mkdir(parents=True, exist_ok=True); lex = load_lexicon()
+    if "kokoro" in a.engines: cmd_setup(a)
+    for engine in a.engines:
+        clip = speak(a.text, ENGINES[engine]["voice"], DEFAULT_LANG, 1.0, lex, engine)
+        f = out / f"{'ElevenLabs' if engine == 'elevenlabs' else 'Kokoro'}_{a.seconds:g}s.mp3"
+        r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", "-",
+                            "-af", f"loudnorm=I=-16:TP=-1.5,apad=whole_dur={a.seconds},atrim=0:{a.seconds}",
+                            "-ar", "44100", "-b:a", "128k", str(f)], input=np.asarray(clip, np.float32).tobytes(), capture_output=True)
+        if r.returncode: sys.exit(f"{engine}: ffmpeg failed: " + r.stderr.decode()[-400:])
+        print(f"{f}  ({len(clip) / SR:.1f} s of speech, {ENGINES[engine]['label']})")
+
+
 def cmd_make(a):
     """Golden rule 8: one command for the agent. Installs the model if missing, drafts every card's lines
     from its captions (existing scripts are kept, and re-timed if the captions moved), then synth -> check -> review.
     Every problem of every card is collected, so one editing pass can fix them all."""
+    need_engine(a)
     cmd_setup(a)                                       # verifies the pinned model (downloads it if missing) and the browser
     problems = run_draft(a)
     bad, failed = run_synth(a); problems += bad
@@ -582,10 +649,14 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("setup").set_defaults(f=cmd_setup)
+    p = sub.add_parser("sample", help="test clip per engine for the owner to compare"); p.set_defaults(f=cmd_sample)
+    p.add_argument("--engines", nargs="+", choices=list(ENGINES), default=list(ENGINES)); p.add_argument("--text", default=SAMPLE_TEXT)
+    p.add_argument("--seconds", type=float, default=7); p.add_argument("--out", default="work/voice-sample")
     for name, f in (("make", cmd_make), ("draft", cmd_draft), ("synth", cmd_synth), ("check", cmd_check), ("review", cmd_review), ("all", cmd_make)):
         p = sub.add_parser(name); p.set_defaults(f=f)
         p.add_argument("--workspace", required=True); p.add_argument("--qids", nargs="*")
-        p.add_argument("--voice", default=DEFAULT_VOICE); p.add_argument("--lang", default=DEFAULT_LANG)
+        p.add_argument("--engine", choices=list(ENGINES), help="make: required, ask the owner; draft: engine for new or switched scripts")
+        p.add_argument("--voice", help="default: the engine's voice (kokoro af_heart, elevenlabs Alice)"); p.add_argument("--lang", default=DEFAULT_LANG)
         p.add_argument("--force", action="store_true"); p.add_argument("--asr", default="base.en")
         p.add_argument("--asr2", default="small.en", help="check: second recogniser asked before a long word fails ('' = off)")
         p.add_argument("--min-score", type=float, default=0.85); p.add_argument("--fps", type=int, default=15)

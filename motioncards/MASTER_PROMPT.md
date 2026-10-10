@@ -114,9 +114,12 @@ The preview command serves a **trusted loopback host player** with the real Mess
 
 Voice-over (required: every new card ships with voice; see `voiceover/README.md`, the Golden 8 Rules):
 
+**Ask the owner first which voice engine to use** (one question per batch, before any voice is made): **Kokoro** (free, offline, the default) or **ElevenLabs** (paid API, needs `ELEVENLABS_API_KEY`). If they want to hear both, run `voiceover.py sample` and send them the two 7-second clips. Never pick for them: `make` refuses to run without `--engine`.
+
 ```bash
 voiceover/bootstrap.sh                                                        # once per machine
-~/.venvs/kafu-voice/bin/python voiceover/voiceover.py make --workspace work/my-batch
+~/.venvs/kafu-voice/bin/python voiceover/voiceover.py sample                  # optional: 7 s test clip per engine -> work/voice-sample/
+~/.venvs/kafu-voice/bin/python voiceover/voiceover.py make --engine <kokoro|elevenlabs> --workspace work/my-batch
 ```
 
 `make` reads each card's numbered captions aloud, fits every line inside its animation beat, and checks pronunciation and sync by listening back. Shorten the lines it lists, then run it again until it says DONE. Keep captions short and speakable (about 6 / 5 / 6 words on an 8 s card) so no edits are needed.
