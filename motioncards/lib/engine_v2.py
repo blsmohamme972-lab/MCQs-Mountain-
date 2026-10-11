@@ -507,7 +507,7 @@ def _validate_svg(svg,ctx:_Ctx):
 def lint_scene_v2(scene:dict)->list[str]:
     """Non-fatal layout warnings: things that are valid but usually look bad."""
     warnings=[];stage=scene.get("stage") or {};W=stage.get("width",640);H=stage.get("height",560)
-    used=set()
+    used=set(re.findall(r'href="asset:([a-z][a-z0-9_-]{0,31})"',str(scene.get("svg") or "")))   # assets drawn by the free-mode svg
     def walk(layers,path,ox,oy):
         for i,l in enumerate(layers):
             p=f"{path}[{i}]";t=l.get("type")
