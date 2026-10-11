@@ -2,9 +2,9 @@
  "qid": "Q000009327",
  "file": "Q000009327.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 81819,
- "sha256": "66fd8fa7b224e1840ee3f86d04fe779cfd5bc6f6984ab92584170f90c81fd193",
- "track_ms": 28776,
+ "bytes": 93114,
+ "sha256": "d559b207f8791f9cf282916dd9b1e675aad5a555bb9b9c7ef9d1b6a8d27dfef2",
+ "track_ms": 32852,
  "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
  "bitrate": "24k",
  "cues": [
@@ -42,6 +42,11 @@
    "t_ms": 24210,
    "end_ms": 28176,
    "text": "So weak internal rotation of the arm points to the subscapularis tendon."
+  },
+  {
+   "t_ms": 28626,
+   "end_ms": 32252,
+   "text": "Remember: subscapularis turns the arm inwards."
   }
  ]
 }
