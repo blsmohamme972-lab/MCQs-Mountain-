@@ -1,0 +1,110 @@
+{
+ "qid": "Q000009320",
+ "image": "Q000009320.png",
+ "takeaway": "Subclavian steal: a compressed subclavian artery draws blood backwards from the vertebral artery to supply the arm, causing fainting and visual disturbances.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 800,
+   "y": 240,
+   "z": 2,
+   "spot": [
+    800,
+    190,
+    150
+   ]
+  },
+  {
+   "x": 418,
+   "y": 470,
+   "z": 2,
+   "spot": [
+    230,
+    460,
+    150
+   ]
+  },
+  {
+   "x": 418,
+   "y": 706,
+   "z": 2,
+   "spot": [
+    230,
+    750,
+    150
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 500,
+   "z": 2,
+   "spot": [
+    1330,
+    540,
+    110
+   ]
+  },
+  {
+   "x": 915,
+   "y": 420,
+   "z": 2.4,
+   "spot": [
+    903,
+    420,
+    62
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 240,
+   "z": 2,
+   "spot": [
+    1250,
+    140,
+    100
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 58-year-old man, a smoker, has severe cramp-like pains in his right upper limb.",
+   "shot": 0,
+   "say": "A fifty-eight-year-old man, a smoker, has severe cramp-like pains in his right upper limb."
+  },
+  {
+   "text": "They are particularly strong when the arm is hyperabducted.",
+   "shot": 1
+  },
+  {
+   "text": "He also has fainting attacks,",
+   "shot": 2
+  },
+  {
+   "text": "and disturbances of his vision.",
+   "shot": 3
+  },
+  {
+   "text": "Imaging shows a pulsatile swelling compressing his subclavian artery.",
+   "shot": 4
+  },
+  {
+   "text": "Now blood flows backwards in the vertebral artery: retrograde flow.",
+   "shot": 5
+  },
+  {
+   "text": "That blood is redirected to supply the arm.",
+   "shot": 6
+  },
+  {
+   "text": "This is subclavian steal. It robs the vertebrobasilar circulation, causing his fainting and visual symptoms.",
+   "shot": 2,
+   "tag": "Subclavian steal"
+  }
+ ]
+}

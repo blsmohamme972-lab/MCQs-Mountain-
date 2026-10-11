@@ -1,0 +1,97 @@
+{
+ "qid": "Q000009323",
+ "image": "Q000009323.png",
+ "takeaway": "Ptosis after transthoracic sympathectomy: injury near the 1st thoracic nerve (T1) interrupts sympathetic fibres to the eye, causing Horner's syndrome.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 418,
+   "y": 706,
+   "z": 2,
+   "spot": [
+    300,
+    680,
+    190
+   ]
+  },
+  {
+   "x": 418,
+   "y": 240,
+   "z": 2,
+   "spot": [
+    350,
+    180,
+    150
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    1480,
+    330,
+    170
+   ]
+  },
+  {
+   "x": 850,
+   "y": 200,
+   "z": 2.2,
+   "spot": [
+    810,
+    180,
+    70
+   ]
+  },
+  {
+   "x": 820,
+   "y": 250,
+   "z": 1.8,
+   "spot": [
+    810,
+    200,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 28-year-old man has an endoscopic transthoracic sympathectomy.",
+   "shot": 0,
+   "say": "A twenty-eight-year-old man has an endoscopic transthoracic sympathectomy."
+  },
+  {
+   "text": "It treats his palmar hyperhidrosis: very sweaty palms.",
+   "shot": 1
+  },
+  {
+   "text": "The surgeon works on the sympathetic chain inside the chest.",
+   "shot": 2
+  },
+  {
+   "text": "After the operation, his eyelid droops. This is ptosis.",
+   "shot": 3
+  },
+  {
+   "text": "The damage happened near the 1st thoracic nerve, at T1.",
+   "shot": 4,
+   "say": "The damage happened near the first thoracic nerve, at T one."
+  },
+  {
+   "text": "Injury here can interrupt the sympathetic fibres that travel to the eye.",
+   "shot": 5
+  },
+  {
+   "text": "That gives Horner's syndrome, with ptosis of the eye.",
+   "shot": 3,
+   "tag": "Horner's syndrome"
+  }
+ ]
+}

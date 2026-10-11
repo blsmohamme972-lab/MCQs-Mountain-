@@ -1,0 +1,98 @@
+{
+ "qid": "Q000009324",
+ "image": "Q000009324.png",
+ "takeaway": "Inferior parathyroid glands come from the 3rd pharyngeal pouch and can descend into the mediastinum with the thymus, so a mediastinal adenoma arises from there.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 880,
+   "y": 240,
+   "z": 2,
+   "spot": [
+    910,
+    295,
+    70
+   ]
+  },
+  {
+   "x": 880,
+   "y": 600,
+   "z": 2,
+   "spot": [
+    870,
+    600,
+    90
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    1450,
+    280,
+    80
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    1460,
+    470,
+    150
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 600,
+   "z": 2,
+   "spot": [
+    1455,
+    670,
+    90
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 35-year-old man has hypercalcaemia from primary hyperparathyroidism.",
+   "shot": 0,
+   "say": "A thirty-five-year-old man has hypercalcaemia from primary hyperparathyroidism."
+  },
+  {
+   "text": "A technetium-labelled sestamibi scan finds a parathyroid adenoma.",
+   "shot": 1
+  },
+  {
+   "text": "It sits low, in the superior mediastinum.",
+   "shot": 2
+  },
+  {
+   "text": "Inferior parathyroid glands come from the 3rd pharyngeal pouch.",
+   "shot": 3,
+   "say": "Inferior parathyroid glands come from the third pharyngeal pouch."
+  },
+  {
+   "text": "They can travel down into the chest together with the thymus,",
+   "shot": 4
+  },
+  {
+   "text": "so they can end up in the mediastinum.",
+   "shot": 5
+  },
+  {
+   "text": "So this mediastinal adenoma developed from the 3rd pharyngeal pouch.",
+   "shot": 0,
+   "say": "So this mediastinal adenoma developed from the third pharyngeal pouch.",
+   "tag": "3rd pharyngeal pouch"
+  }
+ ]
+}

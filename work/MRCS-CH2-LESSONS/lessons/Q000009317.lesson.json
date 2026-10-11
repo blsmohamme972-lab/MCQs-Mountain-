@@ -1,0 +1,96 @@
+{
+ "qid": "Q000009317",
+ "image": "Q000009317.png",
+ "takeaway": "Drooling from the angle of the mouth after submandibular gland excision means the marginal mandibular branch of the facial nerve was injured, paralysing depressor anguli oris.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 430,
+   "z": 2,
+   "spot": [
+    285,
+    500,
+    110
+   ]
+  },
+  {
+   "x": 420,
+   "y": 260,
+   "z": 2,
+   "spot": [
+    410,
+    200,
+    165
+   ]
+  },
+  {
+   "x": 790,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    745,
+    200,
+    90
+   ]
+  },
+  {
+   "x": 1260,
+   "y": 380,
+   "z": 2.1,
+   "spot": [
+    1250,
+    350,
+    110
+   ]
+  },
+  {
+   "x": 1180,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    1100,
+    630,
+    120
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 45-year-old man has his submandibular salivary gland removed for sialadenitis.",
+   "shot": 0,
+   "say": "A forty-five-year-old man has his submandibular salivary gland removed for sialadenitis."
+  },
+  {
+   "text": "Here the surgeon lifts out the submandibular gland.",
+   "shot": 1
+  },
+  {
+   "text": "The gland was inflamed: that is sialadenitis.",
+   "shot": 2
+  },
+  {
+   "text": "On the first day after the operation, something is wrong.",
+   "shot": 3
+  },
+  {
+   "text": "He drools saliva from the angle of his mouth, on the side of the operation.",
+   "shot": 4
+  },
+  {
+   "text": "The nerve at risk is the marginal mandibular branch of the facial nerve.",
+   "shot": 5
+  },
+  {
+   "text": "Injury to it paralyses depressor anguli oris, so saliva escapes from the angle of the mouth.",
+   "shot": 4,
+   "tag": "Depressor anguli oris"
+  }
+ ]
+}
