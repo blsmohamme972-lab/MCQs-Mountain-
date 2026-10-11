@@ -38,6 +38,7 @@ MAX_VOICE_BYTES = 20 * 1024     # Golden rule 5: at most 20 KB more per card dow
 # Owner's "high" quality (asked for after hearing 16 kbps ElevenLabs): full-band Opus at 48 kbps in music mode, about 42 KB
 # for a 7 s card. Still inside the package validator's 64 KB per-card voice limit (motioncards/lib/spec.py).
 QUALITY = {"standard": {"bitrate": BITRATE, "small": SMALL_BITRATE, "app": "voip", "frame": "60", "max": MAX_VOICE_BYTES},
+           "medium": {"bitrate": "24k", "small": "20k", "app": "audio", "frame": "20", "max": 64 * 1024},
            "high": {"bitrate": "48k", "small": "40k", "app": "audio", "frame": "20", "max": 60 * 1024}}
 ONSET_LIMIT_MS = 80             # Golden rule 7: each line starts within this of its animation beat
 SILENCE_DB = -50.0              # outside its lines a track must stay this far below its peak (chapter 10: -91 dB)
@@ -53,6 +54,7 @@ ELEVEN_MODEL = "eleven_multilingual_v2"
 ENGINES = {                     # the owner picks one per batch; the agent must ask (see README "Choosing the voice engine")
     "kokoro": {"voice": "af_heart", "label": ENGINE},
     "elevenlabs": {"voice": "Xb7hH8MSUJpSbSDYk0k2", "label": f"ElevenLabs {ELEVEN_MODEL} (paid API)"},   # "Alice", clear educator
+    "breeze": {"voice": "lecturer-woman", "label": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)"},
 }
 DEFAULT_ENGINE = "kokoro"       # scripts written before engines existed are Kokoro
 # Owner's ElevenLabs standard (Oct 2026): a different voice per question, women and men taking turns, chosen from the
@@ -60,7 +62,24 @@ DEFAULT_ENGINE = "kokoro"       # scripts written before engines existed are Kok
 ELEVEN_VOICES = [("Jessica", "cgSgspJ2msm6clMCkdW9", "woman"), ("Brian", "nPczCjzI2devNBz1zQrb", "man"),
                  ("Lily", "pFZP5JQG7iQjIQuC4Bku", "woman"), ("George", "JBFqnCBsd6RMkjVDRZzb", "man"),
                  ("Sarah", "EXAVITQu4vr4xnSDxMaL", "woman"), ("Daniel", "onwK4e9ZLuTAKqWW03F9", "man")]
-ENGINE_QUALITY = {"kokoro": "standard", "elevenlabs": "high"}   # ElevenLabs is always made at high quality
+ENGINE_QUALITY = {"kokoro": "standard", "elevenlabs": "high", "breeze": "medium"}   # ElevenLabs is always made at high quality
+# Breeze TTS 2 (owner's choice, Oct 2026): free and local, slow on a CPU (about 10 s of work per second of speech), so every
+# reply is cached. It reads words itself: the lexicon's 'say' and 'say_breeze' rewrites apply, its IPA entries do not.
+BREEZE = {"repo": "https://github.com/HoppouAI/Breeze-TTS-2.cpp", "commit": "a0e177f91242ebbd2ea8d61548d742c89e4b9e06",
+          "model": ("https://huggingface.co/HoppouAI/Breeze-TTS-2.cpp/resolve/main/breeze-tts-2-q8_0.gguf",
+                    "a02bcc4b69b0601032727f8040c4942149b1b73aa0f69022fe5aaa6a8f0ef879")}
+BREEZE_SEED = 11
+BREEZE_REF_TEXT = "Good morning, everyone. Today we will look at one important topic together."
+# Voice design: each voice is invented once from its description, then every line clones that recording, so a voice never
+# drifts between lines or lessons. A free description works too (pass it as the voice).
+BREEZE_VOICES = {
+    "lecturer-woman": "A clear, warm female medical lecturer with a calm, confident, natural delivery.",
+    "lecturer-man": "A clear, warm male medical lecturer with a calm, confident, natural delivery.",
+    "doctor-man": "A middle-aged British male doctor with a deep, warm, calm voice, speaking clearly and steadily like a senior "
+                  "consultant teaching students.",
+    "doctor-woman": "A middle-aged female doctor with a warm, assured voice, speaking clearly and steadily like a senior consultant.",
+    "student-woman": "A young female medical student with a bright, friendly, curious voice and a lively, natural delivery.",
+    "student-man": "A young male medical student with a friendly, curious voice and a lively, natural delivery."}
 
 
 def engine_voice(engine: str, qid: str = "") -> str:
@@ -301,17 +320,40 @@ def setup_browser():
     CHROMIUM_FILE.write_text(exe + "\n", encoding="utf-8"); print("ok chromium", exe)
 
 
+def fetch_pinned(url: str, digest: str, p: Path):
+    if not p.exists() or sha256(p) != digest:
+        print("downloading", p.name); part = p.with_name(p.name + ".part"); urllib.request.urlretrieve(url, part)
+        got = sha256(part)                             # checked before it gets its real name: an interrupted download never looks complete
+        if got != digest: part.unlink(); sys.exit(f"{p.name}: SHA-256 mismatch ({got}); refusing to use it")
+        os.replace(part, p)
+    print("ok", p.name, digest[:12])
+
+
 def cmd_setup(a):
     CACHE.mkdir(parents=True, exist_ok=True)
-    for name, (url, digest) in MODEL.items():
-        p = CACHE / name
-        if not p.exists() or sha256(p) != digest:
-            print("downloading", name); part = p.with_name(p.name + ".part"); urllib.request.urlretrieve(url, part)
-            got = sha256(part)                         # checked before it gets its real name: an interrupted download never looks complete
-            if got != digest: part.unlink(); sys.exit(f"{name}: SHA-256 mismatch ({got}); refusing to use it")
-            os.replace(part, p)
-        print("ok", name, digest[:12])
+    for name, (url, digest) in MODEL.items(): fetch_pinned(url, digest, CACHE / name)
+    if "breeze" in ([getattr(a, "engine", None)] + list(getattr(a, "engines", None) or [])): setup_breeze()
     setup_browser()
+
+
+def breeze_paths() -> tuple[Path, Path]:
+    d = CACHE / "breeze"
+    return d / "src" / "build" / "breeze-cli", d / "breeze-tts-2-q8_0.gguf"
+
+
+def setup_breeze():
+    """Build the pinned Breeze-TTS-2.cpp commit for the CPU (no Vulkan, no server) and fetch the pinned q8_0 model."""
+    cli, model = breeze_paths(); src = cli.parents[1]; src.parent.mkdir(parents=True, exist_ok=True)
+    if not cli.exists():
+        run = lambda *c: subprocess.run(c, check=True)
+        if not src.exists(): run("git", "clone", "-q", BREEZE["repo"], str(src))
+        run("git", "-C", str(src), "checkout", "-q", BREEZE["commit"])
+        run("git", "-C", str(src), "submodule", "update", "--init", "--recursive", "-q")
+        run("cmake", "-S", str(src), "-B", str(src / "build"), "-DCMAKE_BUILD_TYPE=Release", "-DBREEZE_VULKAN=OFF",
+            "-DBREEZE_BUILD_SERVER=OFF")
+        run("cmake", "--build", str(src / "build"), "-j", str(os.cpu_count() or 2))
+    print("ok breeze-cli", BREEZE["commit"][:12])
+    fetch_pinned(*BREEZE["model"], model)
 
 
 _K = None
@@ -362,8 +404,49 @@ def eleven_pcm(text: str, voice: str, speed: float) -> bytes:
     return pcm
 
 
-def speak(text: str, voice: str, lang: str, speed: float, lex: dict, engine: str = DEFAULT_ENGINE):
+def breeze_text(text: str, lex: dict) -> str:
+    """Breeze reads words itself: 'say' rewrites plus its own 'say_breeze' respellings (a word it gets wrong).
+    Vocal events such as (laugh), (sigh), (cough) and (clears throat) pass through and are performed."""
+    return spoken_text(text, {"say": {**lex.get("say", {}), **lex.get("say_breeze", {})}})
+
+
+def breeze_args(text: str, ref: Path | None, direction: str | None = None, design: str | None = None) -> list[str]:
+    """breeze-cli arguments: voice design (a description, no reference) or a clone of the designed voice, optionally directed."""
+    if design: return ["--text", text, "--instruction", design, "--cfg-scale", "4"]
+    args = ["--text", text, "--ref-audio", str(ref), "--ref-text", BREEZE_REF_TEXT]
+    return args + (["--instruction", direction, "--cfg-scale", "4"] if direction else [])
+
+
+def _breeze_run(args: list[str], out: Path):
+    cli, model = breeze_paths()
+    if not (cli.exists() and model.exists()): raise ValueError("Breeze is not set up: run voiceover.py setup --engine breeze")
+    out.parent.mkdir(parents=True, exist_ok=True); part = out.with_name(out.stem + ".part.wav")
+    r = subprocess.run([str(cli), str(model), "--cpu", "--seed", str(BREEZE_SEED), *args, "--output", str(part)],
+                       capture_output=True, text=True)
+    if r.returncode or not part.exists(): raise ValueError("Breeze failed: " + (r.stderr or r.stdout)[-300:])
+    os.replace(part, out)                              # cached under its final name only when complete
+
+
+def breeze_wav(text: str, voice: str, direction: str | None = None) -> Path:
+    """The cached recording of one line. Same voice, direction and text give the same file without running the model again."""
+    desc = BREEZE_VOICES.get(voice, voice)
+    key = lambda *parts: hashlib.sha256(json.dumps([BREEZE["model"][1], BREEZE_SEED, *parts]).encode()).hexdigest()
+    ref = CACHE / "breeze" / "voices" / (key("voice", desc) + ".wav")
+    if not ref.exists(): _breeze_run(breeze_args(BREEZE_REF_TEXT, None, design=desc), ref)
+    out = CACHE / "breeze" / "lines" / (key("line", desc, direction, text) + ".wav")
+    if not out.exists(): _breeze_run(breeze_args(text, ref, direction), out)
+    return out
+
+
+def speak(text: str, voice: str, lang: str, speed: float, lex: dict, engine: str = DEFAULT_ENGINE, direction: str | None = None):
     import numpy as np
+    if engine == "breeze":                             # no speed control in the model: tempo is changed afterwards, pitch kept
+        af = f"atempo={speed:.3f}" if abs(speed - 1) > 1e-3 else "anull"
+        r = subprocess.run(["ffmpeg", "-v", "error", "-i", str(breeze_wav(breeze_text(text, lex), voice, direction)), "-af", af,
+                            "-ar", str(SR), "-ac", "1", "-f", "f32le", "-"], capture_output=True)
+        if r.returncode: raise ValueError("ffmpeg failed: " + r.stderr.decode()[-300:])
+        s = trim_lead(np.frombuffer(r.stdout, np.float32).copy())
+        return trim_lead(s[::-1])[::-1].copy()         # trim the tail as well
     if engine == "elevenlabs":                         # reads words itself: 'say' rewrites apply, IPA entries are Kokoro-only
         return trim_lead(np.frombuffer(eleven_pcm(spoken_text(text, lex), voice, speed), "<i2").astype(np.float32) / 32768)
     if engine != "kokoro": raise ValueError(f"unknown voice engine '{engine}': use one of {', '.join(ENGINES)}")
@@ -637,7 +720,8 @@ def need_engine(a):
         sys.exit("Which voice engine? ASK THE OWNER first, then run again with one of:\n"
                  "  --engine kokoro       free, offline, Kokoro-82M af_heart (the project default)\n"
                  "  --engine elevenlabs   paid ElevenLabs API, needs ELEVENLABS_API_KEY\n"
-                 "To let them listen first: voiceover.py sample --engines kokoro elevenlabs")
+                 "  --engine breeze       free, local Breeze TTS 2: designed voices, emotions, (laugh) (sigh); slow on a CPU\n"
+                 "To let them listen first: voiceover.py sample --engines kokoro elevenlabs breeze")
 
 
 def cmd_sample(a):
@@ -647,7 +731,7 @@ def cmd_sample(a):
     if "kokoro" in a.engines: cmd_setup(a)
     for engine in a.engines:
         clip = speak(a.text, ENGINES[engine]["voice"], DEFAULT_LANG, 1.0, lex, engine)
-        f = out / f"{'ElevenLabs' if engine == 'elevenlabs' else 'Kokoro'}_{a.seconds:g}s.mp3"
+        f = out / f"{ {'elevenlabs': 'ElevenLabs', 'breeze': 'Breeze'}.get(engine, 'Kokoro')}_{a.seconds:g}s.mp3"
         r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", "-",
                             "-af", f"loudnorm=I=-16:TP=-1.5,apad=whole_dur={a.seconds},atrim=0:{a.seconds}",
                             "-ar", "44100", "-b:a", "128k", str(f)], input=np.asarray(clip, np.float32).tobytes(), capture_output=True)
@@ -675,7 +759,8 @@ def cmd_make(a):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
-    sub.add_parser("setup").set_defaults(f=cmd_setup)
+    p = sub.add_parser("setup"); p.set_defaults(f=cmd_setup)
+    p.add_argument("--engine", choices=list(ENGINES), help="breeze: also build Breeze-TTS-2.cpp and fetch its model")
     p = sub.add_parser("sample", help="test clip per engine for the owner to compare"); p.set_defaults(f=cmd_sample)
     p.add_argument("--engines", nargs="+", choices=list(ENGINES), default=list(ENGINES)); p.add_argument("--text", default=SAMPLE_TEXT)
     p.add_argument("--seconds", type=float, default=7); p.add_argument("--out", default="work/voice-sample")
