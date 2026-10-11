@@ -1,0 +1,47 @@
+{
+ "qid": "Q000009309",
+ "file": "Q000009309.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 97011,
+ "sha256": "1b7245ffc693a5f6e32b8f7ea0573838a637487a56a783c4a686d7ed73f7be04",
+ "track_ms": 33088,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 3823,
+   "text": "A young footballer heads the ball, and he is knocked unconscious."
+  },
+  {
+   "t_ms": 4273,
+   "end_ms": 7656,
+   "text": "He is out for less than a minute, and then he carries on playing."
+  },
+  {
+   "t_ms": 8106,
+   "end_ms": 14962,
+   "text": "By the end of the game he is drowsy, and in the emergency department his Glasgow Coma Score is 13."
+  },
+  {
+   "t_ms": 15412,
+   "end_ms": 18203,
+   "text": "The CT scan shows an extradural haemorrhage."
+  },
+  {
+   "t_ms": 18653,
+   "end_ms": 24344,
+   "text": "Which vessel bled? The middle meningeal artery. It enters the skull through the foramen spinosum,"
+  },
+  {
+   "t_ms": 24794,
+   "end_ms": 27390,
+   "text": "and it lies in a groove on the temporal bone."
+  },
+  {
+   "t_ms": 27840,
+   "end_ms": 32488,
+   "text": "So a fracture in this region can tear the artery and cause an extradural haemorrhage."
+  }
+ ]
+}
