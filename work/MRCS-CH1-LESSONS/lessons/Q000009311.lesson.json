@@ -1,0 +1,94 @@
+{
+ "qid": "Q000009311",
+ "image": "Q000009311.png",
+ "takeaway": "The central artery of the retina is a branch of the ophthalmic artery, which enters the orbit through the optic canal with the optic nerve.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 260,
+   "y": 330,
+   "z": 1.7,
+   "spot": [
+    380,
+    440,
+    110
+   ]
+  },
+  {
+   "x": 575,
+   "y": 330,
+   "z": 2.2,
+   "spot": [
+    575,
+    330,
+    150
+   ]
+  },
+  {
+   "x": 885,
+   "y": 430,
+   "z": 2.2,
+   "spot": [
+    870,
+    470,
+    120
+   ]
+  },
+  {
+   "x": 1170,
+   "y": 470,
+   "z": 1.6,
+   "spot": [
+    1180,
+    520,
+    150
+   ]
+  },
+  {
+   "x": 1470,
+   "y": 390,
+   "z": 2.2,
+   "spot": [
+    1450,
+    380,
+    80
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A seventy-year-old man, a smoker, has a problem with his vision.",
+   "shot": 1
+  },
+  {
+   "text": "He has attacks of amaurosis fugax, a brief loss of vision in one eye.",
+   "shot": 2
+  },
+  {
+   "text": "On the same side, there is a systolic carotid bruit.",
+   "shot": 3
+  },
+  {
+   "text": "Follow the arterial supply up from the neck towards the eye.",
+   "shot": 4
+  },
+  {
+   "text": "The central artery of the retina is a branch of the ophthalmic artery.",
+   "shot": 5
+  },
+  {
+   "text": "And the ophthalmic artery enters the orbit through the optic canal, together with the optic nerve.",
+   "shot": 5
+  },
+  {
+   "text": "So the artery that supplies the retina enters the orbit through the optic canal.",
+   "shot": 0
+  }
+ ]
+}

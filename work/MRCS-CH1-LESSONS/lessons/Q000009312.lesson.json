@@ -1,0 +1,75 @@
+{
+ "qid": "Q000009312",
+ "image": "Q000009312.png",
+ "takeaway": "Cerebellopontine angle tumours are usually acoustic neuromas, arising from the vestibulocochlear nerve at the auditory meatus.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 250,
+   "y": 400,
+   "z": 1.7
+  },
+  {
+   "x": 690,
+   "y": 260,
+   "z": 2.0,
+   "spot": [
+    710,
+    220,
+    90
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 420,
+   "z": 2.0,
+   "spot": [
+    1350,
+    410,
+    140
+   ]
+  },
+  {
+   "x": 1260,
+   "y": 560,
+   "z": 2.2,
+   "spot": [
+    1230,
+    550,
+    90
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A forty-five-year-old woman is found to have a space-occupying lesion.",
+   "shot": 1
+  },
+  {
+   "text": "It sits at the cerebellopontine angle, between the cerebellum and the pons.",
+   "shot": 2
+  },
+  {
+   "text": "Tumours in this angle are usually acoustic neuromas.",
+   "shot": 3
+  },
+  {
+   "text": "They arise from the vestibulocochlear nerve, at the auditory meatus.",
+   "shot": 4
+  },
+  {
+   "text": "So the lesion is not coming from the cerebellum itself, even though it lies right beside it.",
+   "shot": 3
+  },
+  {
+   "text": "A lesion at the cerebellopontine angle usually arises from the vestibulocochlear nerve.",
+   "shot": 0
+  }
+ ]
+}

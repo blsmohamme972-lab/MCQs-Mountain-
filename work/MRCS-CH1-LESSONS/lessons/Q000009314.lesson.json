@@ -1,0 +1,98 @@
+{
+ "qid": "Q000009314",
+ "image": "Q000009314.png",
+ "takeaway": "A pituitary adenoma compresses the optic chiasma, affecting the nasal retinal fibres and causing bitemporal hemianopia.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 250,
+   "z": 1.8,
+   "spot": [
+    290,
+    160,
+    120
+   ]
+  },
+  {
+   "x": 700,
+   "y": 230,
+   "z": 1.8,
+   "spot": [
+    700,
+    220,
+    190
+   ]
+  },
+  {
+   "x": 730,
+   "y": 640,
+   "z": 2.0,
+   "spot": [
+    740,
+    670,
+    110
+   ]
+  },
+  {
+   "x": 1500,
+   "y": 470,
+   "z": 1.8,
+   "spot": [
+    1490,
+    450,
+    180
+   ]
+  },
+  {
+   "x": 1145,
+   "y": 320,
+   "z": 2.2,
+   "spot": [
+    1145,
+    300,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A forty-eight-year-old man has persistent headaches early in the morning.",
+   "shot": 1
+  },
+  {
+   "text": "Tests show raised intracranial pressure,",
+   "shot": 2
+  },
+  {
+   "text": "caused by a pituitary adenoma.",
+   "shot": 3
+  },
+  {
+   "text": "Recently he keeps bumping into the sides of doorways, and into people.",
+   "shot": 4
+  },
+  {
+   "text": "The tumour compresses the optic chiasma, and affects the nasal retinal fibres.",
+   "shot": 5
+  },
+  {
+   "text": "This causes bitemporal hemianopia: he loses the outer half of his vision on both sides.",
+   "shot": 5
+  },
+  {
+   "text": "That is why he bumps into things beside him.",
+   "shot": 4
+  },
+  {
+   "text": "So a pituitary adenoma presses on the optic chiasma.",
+   "shot": 0
+  }
+ ]
+}
