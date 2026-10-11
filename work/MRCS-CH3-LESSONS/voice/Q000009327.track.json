@@ -1,0 +1,47 @@
+{
+ "qid": "Q000009327",
+ "file": "Q000009327.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 81819,
+ "sha256": "66fd8fa7b224e1840ee3f86d04fe779cfd5bc6f6984ab92584170f90c81fd193",
+ "track_ms": 28776,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4426,
+   "text": "A 23-year-old man falls onto his left shoulder while playing rugby."
+  },
+  {
+   "t_ms": 4876,
+   "end_ms": 7357,
+   "text": "He has pain throughout the shoulder after the fall."
+  },
+  {
+   "t_ms": 7807,
+   "end_ms": 12315,
+   "text": "When internal rotation of the arm is tested, it is weaker than on the other side."
+  },
+  {
+   "t_ms": 12765,
+   "end_ms": 16571,
+   "text": "Internal rotation of the arm is the job of subscapularis."
+  },
+  {
+   "t_ms": 17021,
+   "end_ms": 20647,
+   "text": "An injury to the subscapularis tendon explains his weakness."
+  },
+  {
+   "t_ms": 21097,
+   "end_ms": 23760,
+   "text": "Subscapularis is part of the rotator cuff."
+  },
+  {
+   "t_ms": 24210,
+   "end_ms": 28176,
+   "text": "So weak internal rotation of the arm points to the subscapularis tendon."
+  }
+ ]
+}

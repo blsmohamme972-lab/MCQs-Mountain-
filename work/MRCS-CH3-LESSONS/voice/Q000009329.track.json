@@ -1,0 +1,42 @@
+{
+ "qid": "Q000009329",
+ "file": "Q000009329.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 74870,
+ "sha256": "08e44a6d661dd9369a551ce165b20281b654c370510b638d018ef8e921db11d7",
+ "track_ms": 26562,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4201,
+   "text": "An 18-year-old man has a deep stab wound to the front of his left forearm."
+  },
+  {
+   "t_ms": 4651,
+   "end_ms": 7812,
+   "text": "It is a deep, penetrating injury to the anterior forearm."
+  },
+  {
+   "t_ms": 8262,
+   "end_ms": 12960,
+   "text": "Several muscles lie here in the front of the forearm, each with its own nerve supply."
+  },
+  {
+   "t_ms": 13410,
+   "end_ms": 16743,
+   "text": "This yellow nerve, running down the forearm, is the ulnar nerve."
+  },
+  {
+   "t_ms": 17193,
+   "end_ms": 20854,
+   "text": "It supplies this muscle, flexor carpi ulnaris."
+  },
+  {
+   "t_ms": 21304,
+   "end_ms": 25962,
+   "text": "So flexor carpi ulnaris is the forearm muscle supplied by the ulnar nerve."
+  }
+ ]
+}

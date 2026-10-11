@@ -1,0 +1,47 @@
+{
+ "qid": "Q000009330",
+ "file": "Q000009330.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 90160,
+ "sha256": "14aa055bbcf969cbb99c4a3cef66cf0801019590098dbd897924cdeb190c359d",
+ "track_ms": 31883,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4691,
+   "text": "An 18-year-old man has a posterior dislocation of his left elbow."
+  },
+  {
+   "t_ms": 5141,
+   "end_ms": 7662,
+   "text": "The joint has been pushed out of place, backwards."
+  },
+  {
+   "t_ms": 8112,
+   "end_ms": 12155,
+   "text": "He has decreased sensation and weakness in his left first web space."
+  },
+  {
+   "t_ms": 12605,
+   "end_ms": 15666,
+   "text": "He also has weak adduction and abduction of his fingers."
+  },
+  {
+   "t_ms": 16116,
+   "end_ms": 18957,
+   "text": "The nerve injured at his elbow is the ulnar nerve."
+  },
+  {
+   "t_ms": 19407,
+   "end_ms": 24353,
+   "text": "The ulnar nerve supplies the interossei, the muscles that spread and close the fingers."
+  },
+  {
+   "t_ms": 24803,
+   "end_ms": 31283,
+   "text": "So weak finger abduction and adduction after this dislocation means ulnar nerve injury."
+  }
+ ]
+}

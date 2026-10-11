@@ -1,0 +1,47 @@
+{
+ "qid": "Q000009328",
+ "file": "Q000009328.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 82223,
+ "sha256": "8004c22f20e6ae6eea33e976a51c5c3972b149a2c453785396989ce209ed43db",
+ "track_ms": 28738,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 3926,
+   "text": "A 38-year-old woman falls from her horse at low speed."
+  },
+  {
+   "t_ms": 4376,
+   "end_ms": 8222,
+   "text": "She suffers a twisting injury, and feels pain in the region of the fracture."
+  },
+  {
+   "t_ms": 8672,
+   "end_ms": 13310,
+   "text": "Radiographs show a fracture of the humeral diaphysis, the shaft of the humerus."
+  },
+  {
+   "t_ms": 13760,
+   "end_ms": 18431,
+   "text": "On the same side, she has a wrist drop: she cannot lift her hand."
+  },
+  {
+   "t_ms": 18881,
+   "end_ms": 22137,
+   "text": "The radial nerve runs in the spiral groove of the humerus."
+  },
+  {
+   "t_ms": 22587,
+   "end_ms": 25380,
+   "text": "So it is vulnerable when the humeral shaft breaks."
+  },
+  {
+   "t_ms": 25830,
+   "end_ms": 28138,
+   "text": "Radial nerve injury causes her wrist drop."
+  }
+ ]
+}
