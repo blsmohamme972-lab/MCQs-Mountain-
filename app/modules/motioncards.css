@@ -1,6 +1,19 @@
-.kafu-motioncards-overlay, .kafu-motioncards-overlay *,
+.kafu-motioncards-overlay, .kafu-motioncards-lesson-player, .kafu-motioncards-lesson-poster {
+  --kafu-motioncards-primary: var(--color-primary, #5b4cff);
+  --kafu-motioncards-on-primary: var(--color-on-primary, #fff);
+  --kafu-motioncards-surface: var(--color-surface, #fff);
+  --kafu-motioncards-ink: var(--color-text, #182032);
+  --kafu-motioncards-muted: var(--color-muted, #526079);
+  --kafu-motioncards-border: var(--color-border, #cad2e3);
+  --kafu-motioncards-focus: var(--color-focus, #2d67f6);
+  font-family: var(--font-ui, system-ui, -apple-system, 'Segoe UI', sans-serif);
+  color: var(--kafu-motioncards-ink);
+  box-sizing: border-box;
+}
+.kafu-motioncards-overlay *,
 .kafu-motioncards-overlay *::before,
 .kafu-motioncards-overlay *::after,
+.kafu-motioncards-lesson-player *, .kafu-motioncards-lesson-poster * { box-sizing: border-box; }
 
 #kafu-motioncards-root[hidden],
 .kafu-motioncards-loading[hidden],
@@ -95,6 +108,7 @@
   border-radius: 20px;
   box-shadow: 0 6px 24px #0000000a;
 }
+
 .kafu-motioncards-stage {
   position: relative;
   min-inline-size: 0;
@@ -144,6 +158,7 @@
   border-color: var(--kafu-motioncards-primary);
   color: var(--kafu-motioncards-on-primary);
 }
+
 .kafu-motioncards-error:not([hidden]) ~ .kafu-motioncards-loading { display: none; }
 
 .kafu-motioncards-controls {
@@ -316,7 +331,7 @@
   outline-offset: 3px;
 }
 @media (hover: hover) {
-    .kafu-motioncards-close:hover,
+  .kafu-motioncards-close:hover,
   .kafu-motioncards-controls [data-motioncards-host='restart']:not(:disabled):hover { background: var(--color-surface-alt, #fff0cc); }
   .kafu-motioncards-controls [data-motioncards-host='play']:not(:disabled):hover,
   .kafu-motioncards-error button:hover { background: var(--color-primary-strong, #4336d8); border-color: var(--color-primary-strong, #4336d8); }
@@ -365,12 +380,10 @@ body.kafu-motioncards-open { overflow: hidden; }
 .kafu-motioncards-lesson-label small { font-size: .8125rem; opacity: .82; }
 .kafu-motioncards-lesson-slot.is-playing .kafu-motioncards-lesson-poster { visibility: hidden; }
 .kafu-motioncards-lesson-root { z-index: 4; }
-.kafu-motioncards-lesson-player { display: flex; flex-direction: column; gap: 8px; font-family: var(--font-ui, system-ui, sans-serif); color: var(--color-text, #182032); }
-.kafu-motioncards-lesson-player .kafu-motioncards-scroll, .kafu-motioncards-lesson-player .kafu-motioncards-main { display: flex; flex-direction: column; gap: 8px; overflow: visible; padding: 0; min-block-size: 0; }
+.kafu-motioncards-lesson-player .kafu-motioncards-scroll, .kafu-motioncards-lesson-player .kafu-motioncards-main { display: flex; flex-direction: column; gap: 6px; overflow: visible; padding: 0; min-block-size: 0; }
 .kafu-motioncards-lesson-stage { position: relative; inline-size: 100%; aspect-ratio: 16 / 9; block-size: auto; max-block-size: none; border-radius: 16px; overflow: hidden; background: #000; }
 .kafu-motioncards-lesson-stage iframe { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; border: 0; }
-.kafu-motioncards-lesson-player .kafu-motioncards-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.kafu-motioncards-lesson-player .kafu-motioncards-controls label { flex: 1 1 120px; display: flex; }
-.kafu-motioncards-lesson-player .kafu-motioncards-controls input[type=range] { inline-size: 100%; }
-.kafu-motioncards-lesson-close { margin-inline-start: auto; }
+.kafu-motioncards-lesson-player .kafu-motioncards-controls { padding: 4px 2px 0; }
+.kafu-motioncards-lesson-player { position: relative; }
+.kafu-motioncards-lesson-player .kafu-motioncards-lesson-close { position: absolute; inset-block-start: 8px; inset-inline-end: 8px; min-inline-size: 36px; min-block-size: 36px; padding: 0; border: 0; border-radius: 50%; background: rgba(0,0,0,.55); color: #fff; }
 .kafu-motioncards-lesson-player [data-motioncards-host][hidden], .kafu-motioncards-lesson-player .kafu-motioncards-final-placeholder { display: none !important; }

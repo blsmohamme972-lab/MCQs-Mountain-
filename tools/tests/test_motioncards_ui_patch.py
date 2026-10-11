@@ -15,7 +15,7 @@ class MotionCardsUiPatchTests(unittest.TestCase):
         cls.css = CSS.read_text(encoding="utf-8")
 
     def test_lesson_slot_sits_below_the_mcq(self):
-        self.assertIn('const ex=section.querySelector(".explain");if(ex)return ex;', self.player)
+        self.assertIn('let el=section.querySelector(".explain")||picks[picks.length-1]||card;', self.player)
         self.assertIn("if(anchor.nextElementSibling!==slot)anchor.after(slot);", self.player)
         self.assertIn("aspect-ratio: 16 / 9", self.css)
         self.assertNotIn("kafu-motioncards-trigger", self.player + self.css)

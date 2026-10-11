@@ -44,7 +44,7 @@ def assert_overlay_geometry(page,label):
     values=page.evaluate("""() => {
       const root=document.querySelector('.kafu-motioncards-lesson-player'),r=root.getBoundingClientRect(),
         slot=document.querySelector('.kafu-motioncards-lesson-slot').getBoundingClientRect(),stage=document.querySelector('.kafu-motioncards-lesson-stage').getBoundingClientRect(),
-        card=document.querySelector('.k-study .stem').getBoundingClientRect();
+        card=[...document.querySelectorAll("[data-a='pick']")].pop().getBoundingClientRect();
       return {left:r.left,right:r.right,top:r.top,w:innerWidth,scroll:document.documentElement.scrollWidth,slotLeft:slot.left,slotTop:slot.top,
         ratio:stage.width/stage.height,belowStem:r.top>=card.bottom-1,
         sandbox:document.querySelector('#kafu-motioncards-root iframe')?.getAttribute('sandbox')||''};

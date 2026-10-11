@@ -71,8 +71,10 @@ function slotFor(qid){if(!Core.QID.test(String(qid||"")))return null;return docu
 function clearButton(qid){slotFor(qid)?.remove();buttonFor(qid)?.remove();}
 const clock=ms=>{const s=Math.max(1,Math.round(Number(ms)/1000));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0");};
 function slotAnchor(section){
-  const ex=section.querySelector(".explain");if(ex)return ex;
-  const stem=section.querySelector(".k-question-card .stem, .stem");return stem?.closest(".k-question-card")||stem;
+  const stem=section.querySelector(".k-question-card .stem, .stem");if(!stem)return null;
+  const card=stem.closest(".k-question-card")||stem,host=card.parentNode,picks=section.querySelectorAll("[data-a='pick']");
+  let el=section.querySelector(".explain")||picks[picks.length-1]||card;
+  while(el&&el.parentNode!==host)el=el.parentNode;return el||card;
 }
 function placeSlot(snapshot,record){
   const section=document.querySelector(".k-study"),anchor=section&&slotAnchor(section);
