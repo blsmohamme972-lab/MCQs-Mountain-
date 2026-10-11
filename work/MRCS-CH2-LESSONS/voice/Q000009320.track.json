@@ -2,9 +2,9 @@
  "qid": "Q000009320",
  "file": "Q000009320.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 98853,
- "sha256": "f9543d32e5d4292a400387cac5390be3bd49e8c456e0b08fae4f50b62161fb5e",
- "track_ms": 35215,
+ "bytes": 105259,
+ "sha256": "3910f0b84c0c320b753f908dacda8459fe398db718f647ea634690946e0e6c0e",
+ "track_ms": 36608,
  "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
  "bitrate": "24k",
  "cues": [
@@ -20,32 +20,32 @@
   },
   {
    "t_ms": 10167,
-   "end_ms": 12005,
-   "text": "He also has fainting attacks,"
+   "end_ms": 12378,
+   "text": "He also suffers from attacks of fainting,"
   },
   {
-   "t_ms": 12455,
-   "end_ms": 14276,
-   "text": "and disturbances of his vision."
+   "t_ms": 12828,
+   "end_ms": 15669,
+   "text": "and he has disturbances of his vision as well."
   },
   {
-   "t_ms": 14726,
-   "end_ms": 18847,
+   "t_ms": 16119,
+   "end_ms": 20240,
    "text": "Imaging shows a pulsatile swelling compressing his subclavian artery."
   },
   {
-   "t_ms": 19297,
-   "end_ms": 24088,
+   "t_ms": 20690,
+   "end_ms": 25481,
    "text": "Now blood flows backwards in the vertebral artery: retrograde flow."
   },
   {
-   "t_ms": 24538,
-   "end_ms": 26979,
+   "t_ms": 25931,
+   "end_ms": 28372,
    "text": "That blood is redirected to supply the arm."
   },
   {
-   "t_ms": 27429,
-   "end_ms": 34615,
+   "t_ms": 28822,
+   "end_ms": 36008,
    "text": "This is subclavian steal. It robs the vertebrobasilar circulation, causing his fainting and visual symptoms."
   }
  ]

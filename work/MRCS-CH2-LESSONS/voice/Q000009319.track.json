@@ -2,9 +2,9 @@
  "qid": "Q000009319",
  "file": "Q000009319.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 85922,
- "sha256": "fe0166f59310a85a4e8bba6b6829a2705432c3dc7c282cd73d47f3d1b289afd3",
- "track_ms": 29927,
+ "bytes": 98767,
+ "sha256": "f09b612342d8bd0aa1af2aa824dd8812f2ddb1e614395102891438cd9530fff3",
+ "track_ms": 34887,
  "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
  "bitrate": "24k",
  "cues": [
@@ -20,37 +20,37 @@
   },
   {
    "t_ms": 7479,
-   "end_ms": 9330,
-   "text": "Washing his face sets off the pain."
+   "end_ms": 11327,
+   "text": "Simple things set it off. Washing his face brings on the pain."
   },
   {
-   "t_ms": 9780,
-   "end_ms": 11443,
-   "text": "Shaving brings on the same pain."
+   "t_ms": 11777,
+   "end_ms": 15143,
+   "text": "When he shaves, the same pain in his face comes back."
   },
   {
-   "t_ms": 11893,
-   "end_ms": 13389,
-   "text": "Eating brings it on as well."
+   "t_ms": 15593,
+   "end_ms": 18349,
+   "text": "Even eating a meal can bring the pain on as well."
   },
   {
-   "t_ms": 13839,
-   "end_ms": 16450,
+   "t_ms": 18799,
+   "end_ms": 21410,
    "text": "Even a cold wind blowing on his face can trigger it."
   },
   {
-   "t_ms": 16900,
-   "end_ms": 20083,
+   "t_ms": 21860,
+   "end_ms": 25043,
    "text": "So which nerve carries feeling from his face and both jaws?"
   },
   {
-   "t_ms": 20533,
-   "end_ms": 25779,
+   "t_ms": 25493,
+   "end_ms": 30739,
    "text": "This is trigeminal neuralgia, pain in the sensory distribution of the trigeminal nerve."
   },
   {
-   "t_ms": 26229,
-   "end_ms": 29327,
+   "t_ms": 31189,
+   "end_ms": 34287,
    "text": "So the nerve causing his symptoms is the trigeminal nerve."
   }
  ]
