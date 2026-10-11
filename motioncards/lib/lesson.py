@@ -201,6 +201,8 @@ def build_lesson(workspace: Path, qid: str) -> dict:
     spec["shots"] = [{**s, "x": s["x"] * sx, "y": s["y"] * sx, **({"spot": [v * sx for v in s["spot"]]} if s.get("spot") else {})} for s in spec["shots"]]
     track = build_voice(spec, workspace / "voice", qid)
     scene = build_scene(spec, qid, avif, iw, ih, track)
+    old = workspace / "scenes" / f"{qid}.scene.json"                      # keep the replace intent set by scaffold --replace
+    if old.is_file() and json.loads(old.read_text(encoding="utf-8")).get("replace") is True: scene["replace"] = True
     (workspace / "scenes" / f"{qid}.scene.json").write_text(json.dumps(scene, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     sel_path = workspace / "selection.json"; sel = json.loads(sel_path.read_text(encoding="utf-8"))
     for row in sel["selected"]:

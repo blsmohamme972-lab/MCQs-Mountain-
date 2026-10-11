@@ -1,6 +1,6 @@
 # Kafu: notes for Claude Code agents
 
-Start with `HANDOFF.md`. MotionCards: `motioncards/MASTER_PROMPT.md`. Voice-over: `voiceover/README.md`.
+Start with `HANDOFF.md`. MotionCards: `motioncards/MASTER_PROMPT.md`. Image lessons: `motioncards/LESSON_PROMPT.md`. Voice-over: `voiceover/README.md`.
 
 ## Voice-over: ask the owner which engine, every time
 
