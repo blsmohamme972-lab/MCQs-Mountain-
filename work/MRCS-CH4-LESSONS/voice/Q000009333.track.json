@@ -1,0 +1,42 @@
+{
+ "qid": "Q000009333",
+ "file": "Q000009333.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 80861,
+ "sha256": "4a95e89d9f1d1c3c52bb5ed1e0bfe1931c6c158b5712634afad26bca475b5db1",
+ "track_ms": 27371,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4946,
+   "text": "A thirty-five-year-old man has a routine annual medical examination for his employment."
+  },
+  {
+   "t_ms": 5396,
+   "end_ms": 11327,
+   "text": "His ECG shows prolongation of the PR interval, to more than 0.22 seconds."
+  },
+  {
+   "t_ms": 11777,
+   "end_ms": 15008,
+   "text": "A prolonged PR interval like this is first-degree AV block."
+  },
+  {
+   "t_ms": 15458,
+   "end_ms": 19314,
+   "text": "First-degree AV block indicates an abnormality at the AV node."
+  },
+  {
+   "t_ms": 19764,
+   "end_ms": 22140,
+   "text": "And the AV node is situated in the right atrium."
+  },
+  {
+   "t_ms": 22590,
+   "end_ms": 26771,
+   "text": "So the abnormal part of the conducting system lies in the right atrium."
+  }
+ ]
+}
