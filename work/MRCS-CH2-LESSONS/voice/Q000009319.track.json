@@ -1,0 +1,52 @@
+{
+ "qid": "Q000009319",
+ "file": "Q000009319.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 75411,
+ "sha256": "b48fad866f1d8b5d41d6f5790f82ce3bcf42ce7db6bdbd6c3fc1325962c8ca0a",
+ "track_ms": 26294,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 3956,
+   "text": "A 50-year-old man has recent onset of pain in his face."
+  },
+  {
+   "t_ms": 4406,
+   "end_ms": 7029,
+   "text": "The pain lies over his upper and lower jaws."
+  },
+  {
+   "t_ms": 7479,
+   "end_ms": 9330,
+   "text": "Washing his face sets off the pain."
+  },
+  {
+   "t_ms": 9780,
+   "end_ms": 11443,
+   "text": "Shaving brings on the same pain."
+  },
+  {
+   "t_ms": 11893,
+   "end_ms": 13389,
+   "text": "Eating brings it on as well."
+  },
+  {
+   "t_ms": 13839,
+   "end_ms": 16450,
+   "text": "Even a cold wind blowing on his face can trigger it."
+  },
+  {
+   "t_ms": 16900,
+   "end_ms": 22146,
+   "text": "This is trigeminal neuralgia, pain in the sensory distribution of the trigeminal nerve."
+  },
+  {
+   "t_ms": 22596,
+   "end_ms": 25694,
+   "text": "So the nerve causing his symptoms is the trigeminal nerve."
+  }
+ ]
+}
