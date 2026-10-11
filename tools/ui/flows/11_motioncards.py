@@ -1,4 +1,4 @@
-"""Built-app Kafu MotionCards player integration and security flow."""
+"""Built-app lesson player (landscape, docked below the MCQ) integration and security flow."""
 from __future__ import annotations
 import hashlib,json,time
 from pathlib import Path
@@ -40,14 +40,25 @@ def start(page,qids):
     page.wait_for_selector("[data-a='motioncards-open']",timeout=5000)
 
 def assert_overlay_geometry(page,label):
+    """The docked lesson sits exactly over its slot below the MCQ, inside the screen width, with a 16:9 stage."""
     values=page.evaluate("""() => {
-      const root=document.querySelector('.kafu-motioncards-overlay'),r=root.getBoundingClientRect();
-      return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,w:innerWidth,h:innerHeight,scroll:document.documentElement.scrollWidth,
+      const root=document.querySelector('.kafu-motioncards-lesson-player'),r=root.getBoundingClientRect(),
+        slot=document.querySelector('.kafu-motioncards-lesson-slot').getBoundingClientRect(),stage=document.querySelector('.kafu-motioncards-lesson-stage').getBoundingClientRect(),
+        card=[...document.querySelectorAll("[data-a='pick']")].pop().getBoundingClientRect();
+      return {left:r.left,right:r.right,top:r.top,w:innerWidth,scroll:document.documentElement.scrollWidth,slotLeft:slot.left,slotTop:slot.top,
+        ratio:stage.width/stage.height,belowStem:r.top>=card.bottom-1,
         sandbox:document.querySelector('#kafu-motioncards-root iframe')?.getAttribute('sandbox')||''};
     }""")
-    assert values["left"]>=-1 and values["right"]<=values["w"]+1 and values["top"]>=-1 and values["bottom"]<=values["h"]+1,(label,values)
+    assert values["left"]>=-1 and values["right"]<=values["w"]+1,(label,values)
+    assert abs(values["left"]-values["slotLeft"])<=1 and abs(values["top"]-values["slotTop"])<=1,(label,values)
+    assert abs(values["ratio"]-16/9)<0.02 and values["belowStem"],(label,values)
     assert values["scroll"]<=values["w"]+1,(label,values)
     assert values["sandbox"]=="allow-scripts",(label,values)
+
+def opened(page):
+    """The lesson starts by itself once ready; tests that drive the clock begin from a paused t=0."""
+    page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
+    page.evaluate("KafuMotionCards.player.restart()")
 
 def full_player(browser,origin,pack,out,helpers):
     ctx=helpers["phone_context"](browser,origin,390,"dark");install_routes(ctx,pack,origin)
@@ -62,8 +73,9 @@ def full_player(browser,origin,pack,out,helpers):
     }""")
     page.locator("[data-a='motioncards-open']").click()
     page.wait_for_selector("#kafu-motioncards-root iframe")
-    page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
-    assert page.evaluate("document.getElementById('app').inert") is True
+    page.wait_for_function("KafuMotionCards.player.active?.playing&&KafuMotionCards.player.active.time>100",timeout=7000)   # one tap plays
+    opened(page)
+    assert page.evaluate("document.getElementById('app').inert") is False
     assert_overlay_geometry(page,"390 dark open")
     out.mkdir(parents=True,exist_ok=True)
     page.screenshot(path=str(out/"motioncards-phone-dark-start.png"),full_page=False,animations="disabled")
@@ -71,6 +83,7 @@ def full_player(browser,origin,pack,out,helpers):
     page.evaluate("window.__motioncardsFrame=document.querySelector('#kafu-motioncards-root iframe')")
     page.evaluate("render()")
     assert page.evaluate("window.__motioncardsFrame===document.querySelector('#kafu-motioncards-root iframe')")
+    assert_overlay_geometry(page,"390 dark after re-render")
     page.locator("[data-motioncards-host='play']").click()
     page.wait_for_timeout(450)
     t1=float(page.locator("[data-motioncards-host='seek']").input_value());assert t1>100
@@ -105,10 +118,10 @@ def full_player(browser,origin,pack,out,helpers):
     assert page.evaluate("document.getElementById('app').inert") is False
     # Rapid reopen creates a fresh channel/frame; stale messages from the closed frame are ignored.
     page.wait_for_selector("[data-a='motioncards-open']",timeout=5000)
-    page.locator("[data-a='motioncards-open']").click();page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
+    page.locator("[data-a='motioncards-open']").click();opened(page)
     first_channel=page.evaluate("KafuMotionCards.player.active.channel")
     page.locator("[data-motioncards-host='close']").click();page.wait_for_selector("[data-a='motioncards-open']",timeout=5000)
-    page.locator("[data-a='motioncards-open']").click();page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
+    page.locator("[data-a='motioncards-open']").click();opened(page)
     second_channel=page.evaluate("KafuMotionCards.player.active.channel");assert first_channel!=second_channel
     page.evaluate("""old => window.dispatchEvent(new MessageEvent('message',{data:{type:'kafu-motioncards-ready',protocol:1,qid:SESSION.qids[SESSION.index],channel_id:old},source:window}))""",first_channel)
     assert page.evaluate("KafuMotionCards.player.active.channel")==second_channel
@@ -119,7 +132,7 @@ def full_player(browser,origin,pack,out,helpers):
     }""")
     page.wait_for_function("!KafuMotionCards.player.active")
     page.wait_for_selector("[data-a='motioncards-open']",timeout=5000)
-    page.locator("[data-a='motioncards-open']").click();page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
+    page.locator("[data-a='motioncards-open']").click();opened(page)
     # Full question identity change closes the player; underlying pending MCQ state remains.
     page.evaluate("QI[SESSION.qids[SESSION.index]].ch=999;render()")
     page.wait_for_function("!KafuMotionCards.player.active");page.evaluate("QI[SESSION.qids[SESSION.index]].ch=1;render()")
@@ -141,14 +154,13 @@ def variants(browser,origin,pack,out,helpers):
     for width in (360,430):
         ctx=helpers["phone_context"](browser,origin,width,"light");install_routes(ctx,pack,origin)
         page,errors=helpers["open_app"](ctx,origin,pack);start(page,[pack["questions"][0]["id"]])
-        page.locator("[data-a='motioncards-open']").click();page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
+        page.locator("[data-a='motioncards-open']").click();opened(page)
         assert_overlay_geometry(page,f"{width} light");assert not errors,errors;ctx.close();passed.append(f"{width}px light/reduced-motion overlay contained")
     for theme in ("light","dark"):
         ctx=helpers["context"](browser,origin,"ipad",theme);install_routes(ctx,pack,origin)
         page,errors=helpers["open_app"](ctx,origin,pack)
         page.evaluate("document.documentElement.style.setProperty('--fs','1.25')")
-        start(page,[pack["questions"][0]["id"]]);page.locator("[data-a='motioncards-open']").click()
-        page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
+        start(page,[pack["questions"][0]["id"]]);page.locator("[data-a='motioncards-open']").click();opened(page)
         assert_overlay_geometry(page,f"ipad {theme}");assert not errors,errors;ctx.close();passed.append(f"iPad {theme} large-text/reduced-motion overlay contained")
     return passed
 
@@ -167,8 +179,7 @@ def timeout_case(browser,origin,pack,helpers):
     assert "did not become ready" in page.locator(".kafu-motioncards-error").inner_text()
     assert page.locator("[data-motioncards-host='retry']:visible").count()==1
     old=page.evaluate("KafuMotionCards.player.active.channel")
-    page.locator("[data-motioncards-host='retry']").click()
-    page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
+    page.locator("[data-motioncards-host='retry']").click();opened(page)
     assert page.evaluate("KafuMotionCards.player.active.channel")!=old
     page.locator("[data-motioncards-host='close']").click();assert page.locator(".k-study .stem").count()==1
     assert not errors,errors;ctx.close()
@@ -177,7 +188,7 @@ def timeout_case(browser,origin,pack,helpers):
 def account_switch_case(browser,origin,pack,helpers):
     ctx=helpers["phone_context"](browser,origin,390,"light");install_routes(ctx,pack,origin)
     page,errors=helpers["open_app"](ctx,origin,pack);start(page,[pack["questions"][0]["id"]])
-    page.locator("[data-a='motioncards-open']").click();page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
+    page.locator("[data-a='motioncards-open']").click();opened(page)
     if page.evaluate("typeof TG!=='undefined' && !!TG && !!TG.initDataUnsafe"):
         page.evaluate("TG.initDataUnsafe.user={id:222,first_name:'B'};render()")
         page.wait_for_function("!KafuMotionCards.player.active")
@@ -241,14 +252,14 @@ def voice_case(browser,origin,pack,helpers):
         ctx.route(f"{BASE}/indexes/**",serve(json.dumps(index),"application/json"))
         ctx.route(f"{BASE}/assets/**",serve(html,"text/html"))
         page,errors=helpers["open_app"](ctx,origin,pack);start(page,[q["id"]])
-        page.locator("[data-a='motioncards-open']").click();page.wait_for_function("!document.querySelector('[data-motioncards-host=play]').disabled",timeout=7000)
+        page.locator("[data-a='motioncards-open']").click();opened(page)
         if tamper:
-            page.wait_for_timeout(600)
+            page.wait_for_timeout(600);page.evaluate("KafuMotionCards.player.restart()")
             assert page.locator("[data-motioncards-host='mute']").is_hidden() and page.evaluate("!KafuMotionCards.player.active.voice")
             page.locator("[data-motioncards-host='play']").click();page.wait_for_timeout(400)
             assert float(page.locator("[data-motioncards-host='seek']").input_value())>100   # the card still plays, silently
             assert not errors,errors;ctx.close();results.append("voice whose bytes do not match the index SHA-256 is never played; the card still plays");continue
-        page.wait_for_selector("[data-motioncards-host='mute']:not([hidden])",timeout=5000)
+        page.wait_for_selector("[data-motioncards-host='mute']:not([hidden])",timeout=5000);page.evaluate("KafuMotionCards.player.restart()")
         page.evaluate("localStorage.removeItem('kafu.motioncards.voice.muted')")
         page.locator("[data-motioncards-host='play']").click();page.wait_for_timeout(1500)
         s=page.evaluate("({t:KafuMotionCards.player.active.time,a:KafuMotionCards.player.active.voice.position,p:KafuMotionCards.player.active.voice.paused})")
@@ -291,7 +302,7 @@ def offline_case(browser,origin,pack,helpers):
     page.evaluate("k=>KafuMotionCards.player.saveCards(k,PACKS[k])",key)
     assert state["hits"]==1,state
     state["up"]=False
-    page.locator("[data-a='motioncards-open']").click();page.wait_for_selector("[data-motioncards-host='mute']:not([hidden])",timeout=9000)
+    page.locator("[data-a='motioncards-open']").click();page.wait_for_selector("[data-motioncards-host='mute']:not([hidden])",timeout=9000);opened(page)
     assert page.evaluate("KafuMotionCards.player.active.frame.src.startsWith('blob:')")
     page.locator("[data-motioncards-host='play']").click();page.wait_for_timeout(1200)
     assert page.evaluate("KafuMotionCards.player.active.voice.position")>500 and state["hits"]==1

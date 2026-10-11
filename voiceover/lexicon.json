@@ -1,5 +1,5 @@
 {
- "_about": "Pronunciation fixes for the Kokoro voice. 'say' rewrites text before phonemising (abbreviations, symbols). 'ipa' gives exact phonemes for words the phonemiser gets wrong. Add a word only after `voiceover.py check` (or a listen) shows it is wrong; re-run check after adding it.",
+ "_about": "Pronunciation fixes for the Kokoro voice. 'say' rewrites text before phonemising (abbreviations, symbols). 'ipa' gives exact phonemes for words the phonemiser gets wrong. Add a word only after `voiceover.py check` (or a listen) shows it is wrong; re-run check after adding it. 'say_breeze' respells a word for the Breeze engine only (it reads words itself, so IPA does not apply).",
  "say": {
   "INR": "I N R",
   "ACTH": "A C T H",
@@ -83,5 +83,8 @@
    "venous": "vˈiːnəs",
    "cholinergic": "kˌəʊlɪnˈɜːdʒɪk"
   }
+ },
+ "say_breeze": {
+  "sclerosing": "skler-OH-sing"
  }
 }

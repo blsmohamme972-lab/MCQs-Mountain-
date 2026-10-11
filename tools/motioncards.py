@@ -74,7 +74,16 @@ def main():
     rn.add_argument("--times",help="comma-separated milliseconds, e.g. 0,1500,4000")
     rn.add_argument("--sizes",default="phone,tablet",help="phone,tablet")
 
+    ls=sub.add_parser("lesson",help="Build image lessons: lessons/<QID>.lesson.json -> scene + voice (run with the voice venv python)")
+    ls.add_argument("--workspace",type=Path,required=True);ls.add_argument("--qids",nargs="*")
+
     a=ap.parse_args()
+    if a.cmd=="lesson":
+        from motioncards.lib.lesson import build_lesson
+        qids=a.qids or sorted(p.name.split(".")[0] for p in (a.workspace/"lessons").glob("Q*.lesson.json"))
+        if not qids:raise SystemExit(f"no lessons/Q*.lesson.json in {a.workspace}")
+        for qid in qids:print(json.dumps(build_lesson(a.workspace,qid)))
+        return
     if a.cmd=="scaffold":
         b=load(a.exports)
         result=scaffold_workspace(b,a.out,a.package_id.upper(),a.revision,a.qids,a.count,a.duration_ms,overrides(a.duration),set(a.inspected_image_qid),set(a.replace),a.schema)

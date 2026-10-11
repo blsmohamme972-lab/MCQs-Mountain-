@@ -251,6 +251,32 @@ class Engines(unittest.TestCase):
         self.assertTrue(V.set_engine(doc, "elevenlabs", None))
         self.assertEqual((doc["voice"], doc["quality"]), (V.engine_voice("elevenlabs", "Q000000080"), "high"))
 
+    def test_breeze_designs_once_then_clones_and_directs(self):
+        self.assertEqual(V.breeze_args("Hi.", None, design="A calm voice."), ["--text", "Hi.", "--instruction", "A calm voice.", "--cfg-scale", "4"])
+        self.assertEqual(V.breeze_args("Hi.", Path("r.wav")), ["--text", "Hi.", "--ref-audio", "r.wav", "--ref-text", V.BREEZE_REF_TEXT])
+        self.assertEqual(V.breeze_args("Hi.", Path("r.wav"), "worried")[-4:], ["--instruction", "worried", "--cfg-scale", "4"])
+        self.assertEqual(V.breeze_text("(sigh) Primary sclerosing cholangitis.", {"say_breeze": {"sclerosing": "skler-OH-sing"}}),
+                         "(sigh) Primary skler-OH-sing cholangitis.")
+        self.assertEqual(V.doc_quality({"engine": "breeze"}), "medium")
+        self.assertEqual(V.engine_voice("breeze", "Q000000079"), "lecturer-woman")
+
+    def test_breeze_is_cached_and_needs_setup(self):
+        old = V.CACHE; V.CACHE = self.tmp
+        try:
+            with self.assertRaises(ValueError) as e: V.breeze_wav("Hello.", "lecturer-woman")
+            self.assertIn("setup --engine breeze", str(e.exception))
+            runs = []
+            real = V._breeze_run
+            V._breeze_run = lambda args, out: runs.append(args) or (out.parent.mkdir(parents=True, exist_ok=True), out.write_bytes(b"x"))
+            try:
+                a = V.breeze_wav("Hello.", "lecturer-woman"); b = V.breeze_wav("Hello.", "lecturer-woman")
+                c = V.breeze_wav("Hello.", "lecturer-woman", "excited")
+            finally: V._breeze_run = real
+            self.assertEqual(a, b); self.assertNotEqual(a, c)
+            self.assertEqual(len(runs), 3, "one design run, then one run per new line; the repeat comes from the cache")
+            self.assertIn("--instruction", runs[0]); self.assertIn("--ref-audio", runs[1])
+        finally: V.CACHE = old
+
     def test_old_scripts_without_an_engine_are_kokoro(self):
         doc = {"voice": "af_heart"}
         self.assertFalse(V.set_engine(doc, None, None)); self.assertEqual(doc["engine"], "kokoro")
