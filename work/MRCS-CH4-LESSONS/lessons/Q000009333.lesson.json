@@ -1,0 +1,74 @@
+{
+ "qid": "Q000009333",
+ "image": "Q000009333.png",
+ "takeaway": "First-degree AV block means an abnormality at the AV node, which is situated in the right atrium.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 790,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    735,
+    395,
+    90
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    1250,
+    305,
+    80
+   ]
+  },
+  {
+   "x": 1240,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1230,
+    425,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A thirty-five-year-old man has a routine annual medical examination for his employment.",
+   "shot": 0
+  },
+  {
+   "text": "His ECG shows prolongation of the PR interval, to more than 0.22 seconds.",
+   "shot": 1,
+   "say": "His E C G shows prolongation of the P R interval, to more than nought point two two seconds."
+  },
+  {
+   "text": "A prolonged PR interval like this is first-degree AV block.",
+   "shot": 1,
+   "say": "A prolonged P R interval like this is first-degree A V block."
+  },
+  {
+   "text": "First-degree AV block indicates an abnormality at the AV node.",
+   "shot": 2,
+   "say": "First-degree A V block indicates an abnormality at the A V node."
+  },
+  {
+   "text": "And the AV node is situated in the right atrium.",
+   "shot": 3,
+   "say": "And the A V node is situated in the right atrium."
+  },
+  {
+   "text": "So the abnormal part of the conducting system lies in the right atrium.",
+   "shot": 0
+  }
+ ]
+}

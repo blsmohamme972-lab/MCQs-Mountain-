@@ -1,0 +1,70 @@
+{
+ "qid": "Q000009334",
+ "image": "Q000009334.png",
+ "takeaway": "The mitral valve is best heard over the apex beat, at the 5th left intercostal space in the midclavicular line.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 640,
+   "y": 200,
+   "z": 2.0,
+   "spot": [
+    640,
+    200,
+    140
+   ]
+  },
+  {
+   "x": 1240,
+   "y": 200,
+   "z": 1.7,
+   "spot": [
+    1240,
+    200,
+    190
+   ]
+  },
+  {
+   "x": 890,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    890,
+    610,
+    80
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A thirty-five-year-old woman is short of breath, and she is diagnosed with mitral stenosis.",
+   "shot": 0
+  },
+  {
+   "text": "Here is the narrowed mitral valve.",
+   "shot": 1
+  },
+  {
+   "text": "On auscultation there is an opening snap, and a mid-diastolic murmur with presystolic accentuation.",
+   "shot": 2
+  },
+  {
+   "text": "Where are these sounds best heard? The mitral valve is best heard over the apex beat,",
+   "shot": 3
+  },
+  {
+   "text": "at the fifth left intercostal space, in the midclavicular line.",
+   "shot": 3
+  },
+  {
+   "text": "So for mitral stenosis, put the stethoscope on the apex: fifth left intercostal space, midclavicular line.",
+   "shot": 0
+  }
+ ]
+}

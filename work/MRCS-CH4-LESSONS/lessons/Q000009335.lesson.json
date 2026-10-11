@@ -1,0 +1,67 @@
+{
+ "qid": "Q000009335",
+ "image": "Q000009335.png",
+ "takeaway": "The normal gastro-oesophageal junction is 40 cm from the incisors.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    420,
+    300,
+    90
+   ]
+  },
+  {
+   "x": 950,
+   "y": 220,
+   "z": 1.9,
+   "spot": [
+    940,
+    90,
+    80
+   ]
+  },
+  {
+   "x": 1060,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    1000,
+    620,
+    90
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A fifty-year-old man has heartburn and gastro-oesophageal reflux disease.",
+   "shot": 0
+  },
+  {
+   "text": "He is due to have an oesophagogastroduodenoscopy, a camera passed through the mouth.",
+   "shot": 1,
+   "say": "He is due to have an oesophago-gastro-duodenoscopy, a camera passed through the mouth."
+  },
+  {
+   "text": "During the scope, distances are measured from the incisors, the front teeth.",
+   "shot": 2
+  },
+  {
+   "text": "The normal gastro-oesophageal junction is found forty centimetres from the incisors.",
+   "shot": 3
+  },
+  {
+   "text": "So remember the number: forty centimetres from the incisors to the normal gastro-oesophageal junction.",
+   "shot": 0
+  }
+ ]
+}
