@@ -1,0 +1,47 @@
+{
+ "qid": "Q000009325",
+ "file": "Q000009325.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 78585,
+ "sha256": "90821c4ac73b3a50601b0efbd1d44e4c4245ddf50c0efbf080d116a52ff96e9f",
+ "track_ms": 27682,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 3991,
+   "text": "A 29-year-old man has pain in his left neck and shoulder."
+  },
+  {
+   "t_ms": 4441,
+   "end_ms": 6489,
+   "text": "He fell from his motorbike at high speed."
+  },
+  {
+   "t_ms": 6939,
+   "end_ms": 10700,
+   "text": "His arm was forced away from his body: a forced abduction injury."
+  },
+  {
+   "t_ms": 11150,
+   "end_ms": 13511,
+   "text": "Imaging shows an upper brachial plexus lesion."
+  },
+  {
+   "t_ms": 13961,
+   "end_ms": 17954,
+   "text": "Now look at the lateral cord of the brachial plexus, shown here in green."
+  },
+  {
+   "t_ms": 18404,
+   "end_ms": 21432,
+   "text": "One of its branches is the musculocutaneous nerve."
+  },
+  {
+   "t_ms": 21882,
+   "end_ms": 27082,
+   "text": "So the musculocutaneous nerve is the branch of the lateral cord we are looking for."
+  }
+ ]
+}
