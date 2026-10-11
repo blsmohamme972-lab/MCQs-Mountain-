@@ -1,0 +1,86 @@
+{
+ "qid": "Q000009328",
+ "image": "Q000009328.png",
+ "takeaway": "The radial nerve runs in the spiral groove of the humerus, so a humeral shaft fracture can injure it and cause wrist drop.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 418,
+   "y": 470,
+   "z": 2,
+   "spot": [
+    330,
+    520,
+    150
+   ]
+  },
+  {
+   "x": 930,
+   "y": 320,
+   "z": 2,
+   "spot": [
+    905,
+    305,
+    80
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 620,
+   "z": 2,
+   "spot": [
+    1180,
+    650,
+    120
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    1450,
+    260,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 38-year-old woman falls from her horse at low speed.",
+   "shot": 0,
+   "say": "A thirty-eight-year-old woman falls from her horse at low speed."
+  },
+  {
+   "text": "She suffers a twisting injury, and feels pain in the region of the fracture.",
+   "shot": 1
+  },
+  {
+   "text": "Radiographs show a fracture of the humeral diaphysis, the shaft of the humerus.",
+   "shot": 2
+  },
+  {
+   "text": "On the same side, she has a wrist drop.",
+   "shot": 3
+  },
+  {
+   "text": "The radial nerve runs in the spiral groove of the humerus.",
+   "shot": 4,
+   "tag": "Spiral groove"
+  },
+  {
+   "text": "So it is vulnerable when the humeral shaft breaks.",
+   "shot": 2
+  },
+  {
+   "text": "Radial nerve injury causes her wrist drop.",
+   "shot": 3
+  }
+ ]
+}

@@ -1,0 +1,74 @@
+{
+  "package_id": "MRCS-PARTA-550-2E-CH3-LESSONS",
+  "package_revision": 1,
+  "source": {
+    "kind": "published",
+    "catalog_url": "https://kafu-content-1.blsmohamme97.workers.dev/catalog.json",
+    "catalog_sha256": "b86f972c19cc9811f217e6f54591092df768c26c6d5072ab0ba520500cd61dfb",
+    "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/MRCS-PARTA-550-2E/v1/index.json",
+    "index_sha256": "510617f54ca807f9a37ce07bf2c40d83c7600153ceadea4b9b6453b1e8f9395b",
+    "snapshot_pinned": true
+  },
+  "scope": {
+    "type": "records",
+    "book_id": "MRCS-PARTA-550-2E",
+    "book_version": 1,
+    "chapter_ids": [
+      "3"
+    ],
+    "question_count": 8,
+    "qids": [
+      "Q000009325",
+      "Q000009326",
+      "Q000009327",
+      "Q000009328",
+      "Q000009329",
+      "Q000009330",
+      "Q000009331",
+      "Q000009332"
+    ]
+  },
+  "warnings": [],
+  "selected": [
+    {
+      "qid": "Q000009325",
+      "duration_ms": 30000,
+      "content_hash": "064a1310922178d783560f8518623dbe11330d1ae4969cd30ee90d0d36e99ecb"
+    },
+    {
+      "qid": "Q000009326",
+      "duration_ms": 30000,
+      "content_hash": "073d70cf3e2954719811599241cd265500d34c423c081295763b710b7f2b4382"
+    },
+    {
+      "qid": "Q000009327",
+      "duration_ms": 30000,
+      "content_hash": "e49738f39d4620146819b91f3f5ef6fdeeb1a7657fc65c7d5846e050d67a3fa5"
+    },
+    {
+      "qid": "Q000009328",
+      "duration_ms": 30000,
+      "content_hash": "6825a4d9147de3a78abb781f317d630e60cfe409fc03264da70ec27e257b53d0"
+    },
+    {
+      "qid": "Q000009329",
+      "duration_ms": 30000,
+      "content_hash": "69f87b587ad3ed626b44137db17b8a92095d950fd40a77d8fb97cd2253d02cc0"
+    },
+    {
+      "qid": "Q000009330",
+      "duration_ms": 30000,
+      "content_hash": "6d63d4d20bc66c76f87c940fae80ce97e2f4aec5f313e6ddbbe9ca61218d0ad1"
+    },
+    {
+      "qid": "Q000009331",
+      "duration_ms": 30000,
+      "content_hash": "2303af3c148d56f01911dab9280fc14b805bdadfaa7d722114fc7b0e3da0ef89"
+    },
+    {
+      "qid": "Q000009332",
+      "duration_ms": 30000,
+      "content_hash": "237b2bee5a59bb0cb57b02939184f14e32f0eb0a22904f5474a42a7edeaaa16a"
+    }
+  ]
+}

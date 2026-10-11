@@ -1,0 +1,86 @@
+{
+ "qid": "Q000009332",
+ "image": "Q000009332.png",
+ "takeaway": "The breast's arterial supply comes mainly from the internal thoracic (internal mammary) artery, with contributions from intercostal and axillary branches.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 418,
+   "y": 430,
+   "z": 2,
+   "spot": [
+    400,
+    460,
+    170
+   ]
+  },
+  {
+   "x": 900,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    875,
+    260,
+    80
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 430,
+   "z": 1.8,
+   "spot": [
+    1000,
+    430,
+    170
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 480,
+   "z": 1.7,
+   "spot": [
+    1150,
+    480,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 49-year-old woman has a unilateral mastectomy for carcinoma of the breast.",
+   "shot": 0,
+   "say": "A forty-nine-year-old woman has a unilateral mastectomy for carcinoma of the breast."
+  },
+  {
+   "text": "One breast has been removed. That is what unilateral means.",
+   "shot": 1
+  },
+  {
+   "text": "So which artery supplies most of the blood to the female breast?",
+   "shot": 4
+  },
+  {
+   "text": "The main supply comes from the internal thoracic artery,",
+   "shot": 2
+  },
+  {
+   "text": "also called the internal mammary artery.",
+   "shot": 2,
+   "tag": "Internal thoracic artery"
+  },
+  {
+   "text": "Its branches are the primary contributor to the breast's arterial supply.",
+   "shot": 3
+  },
+  {
+   "text": "Intercostal and axillary branches add smaller contributions to the supply.",
+   "shot": 4
+  }
+ ]
+}

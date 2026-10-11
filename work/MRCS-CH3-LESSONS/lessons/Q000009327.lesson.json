@@ -1,0 +1,86 @@
+{
+ "qid": "Q000009327",
+ "image": "Q000009327.png",
+ "takeaway": "Subscapularis is the rotator cuff muscle responsible for internal rotation of the arm, so its injury causes weak internal rotation.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 550,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    690,
+    300,
+    110
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 640,
+   "z": 2,
+   "spot": [
+    1200,
+    620,
+    150
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 260,
+   "z": 2,
+   "spot": [
+    1420,
+    240,
+    170
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 240,
+   "z": 2.3,
+   "spot": [
+    1240,
+    210,
+    80
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 23-year-old man falls onto his left shoulder while playing rugby.",
+   "shot": 0,
+   "say": "A twenty-three-year-old man falls onto his left shoulder while playing rugby."
+  },
+  {
+   "text": "He has pain throughout the shoulder after the fall.",
+   "shot": 1
+  },
+  {
+   "text": "When internal rotation of the arm is tested, it is weaker than on the other side.",
+   "shot": 2
+  },
+  {
+   "text": "Internal rotation of the arm is the job of subscapularis.",
+   "shot": 3
+  },
+  {
+   "text": "An injury to the subscapularis tendon explains his weakness.",
+   "shot": 4
+  },
+  {
+   "text": "Subscapularis is part of the rotator cuff.",
+   "shot": 3,
+   "tag": "Rotator cuff"
+  },
+  {
+   "text": "So weak internal rotation of the arm points to the subscapularis tendon.",
+   "shot": 2
+  }
+ ]
+}

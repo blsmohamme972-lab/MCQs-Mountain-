@@ -1,0 +1,47 @@
+{
+ "qid": "Q000009323",
+ "file": "Q000009323.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 82501,
+ "sha256": "2607663cfe9f54c2d666e887afa5486b7f466529bdbabcebb9e09662b51638d3",
+ "track_ms": 29749,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4496,
+   "text": "A 28-year-old man has an endoscopic transthoracic sympathectomy."
+  },
+  {
+   "t_ms": 4946,
+   "end_ms": 8902,
+   "text": "It treats his palmar hyperhidrosis: very sweaty palms."
+  },
+  {
+   "t_ms": 9352,
+   "end_ms": 12283,
+   "text": "The surgeon works on the sympathetic chain inside the chest."
+  },
+  {
+   "t_ms": 12733,
+   "end_ms": 16461,
+   "text": "After the operation, his eyelid droops. This is ptosis."
+  },
+  {
+   "t_ms": 16911,
+   "end_ms": 20492,
+   "text": "The damage happened near the 1st thoracic nerve, at T1."
+  },
+  {
+   "t_ms": 20942,
+   "end_ms": 25543,
+   "text": "Injury here can interrupt the sympathetic fibres that travel to the eye."
+  },
+  {
+   "t_ms": 25993,
+   "end_ms": 29149,
+   "text": "That gives Horner's syndrome, with ptosis of the eye."
+  }
+ ]
+}

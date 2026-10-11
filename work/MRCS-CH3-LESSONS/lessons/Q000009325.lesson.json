@@ -1,0 +1,96 @@
+{
+ "qid": "Q000009325",
+ "image": "Q000009325.png",
+ "takeaway": "The musculocutaneous nerve is a branch of the lateral cord of the brachial plexus.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 418,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    160,
+    300,
+    140
+   ]
+  },
+  {
+   "x": 850,
+   "y": 240,
+   "z": 2,
+   "spot": [
+    870,
+    170,
+    140
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 240,
+   "z": 2,
+   "spot": [
+    1520,
+    180,
+    110
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 400,
+   "z": 2,
+   "spot": [
+    1300,
+    390,
+    90
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 560,
+   "z": 2,
+   "spot": [
+    1080,
+    600,
+    100
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 29-year-old man has pain in his left neck and shoulder.",
+   "shot": 0,
+   "say": "A twenty-nine-year-old man has pain in his left neck and shoulder."
+  },
+  {
+   "text": "He fell from his motorbike at high speed.",
+   "shot": 1
+  },
+  {
+   "text": "His arm was forced away from his body: a forced abduction injury.",
+   "shot": 2
+  },
+  {
+   "text": "Imaging shows an upper brachial plexus lesion.",
+   "shot": 3
+  },
+  {
+   "text": "Now look at the lateral cord of the brachial plexus, shown here in green.",
+   "shot": 4
+  },
+  {
+   "text": "One of its branches is the musculocutaneous nerve.",
+   "shot": 5,
+   "tag": "Lateral cord"
+  },
+  {
+   "text": "So the musculocutaneous nerve is the branch of the lateral cord we are looking for.",
+   "shot": 4
+  }
+ ]
+}
