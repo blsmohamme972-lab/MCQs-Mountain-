@@ -1,0 +1,52 @@
+{
+ "qid": "Q000009314",
+ "file": "Q000009314.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 91477,
+ "sha256": "7a252434100db4eb72f794df3e29675caacd6c54a638afb5ca9bddd668ed25f9",
+ "track_ms": 32567,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4156,
+   "text": "A forty-eight-year-old man has persistent headaches early in the morning."
+  },
+  {
+   "t_ms": 4606,
+   "end_ms": 6742,
+   "text": "Tests show raised intracranial pressure,"
+  },
+  {
+   "t_ms": 7192,
+   "end_ms": 9193,
+   "text": "caused by a pituitary adenoma."
+  },
+  {
+   "t_ms": 9643,
+   "end_ms": 13799,
+   "text": "Recently he keeps bumping into the sides of doorways, and into people."
+  },
+  {
+   "t_ms": 14249,
+   "end_ms": 18330,
+   "text": "The tumour compresses the optic chiasma, and affects the nasal retinal fibres."
+  },
+  {
+   "t_ms": 18780,
+   "end_ms": 24351,
+   "text": "This causes bitemporal hemianopia: he loses the outer half of his vision on both sides."
+  },
+  {
+   "t_ms": 24801,
+   "end_ms": 27029,
+   "text": "That is why he bumps into things beside him."
+  },
+  {
+   "t_ms": 27479,
+   "end_ms": 31967,
+   "text": "So a pituitary adenoma presses on the optic chiasma."
+  }
+ ]
+}

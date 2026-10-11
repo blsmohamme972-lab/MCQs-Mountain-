@@ -1,0 +1,42 @@
+{
+ "qid": "Q000009312",
+ "file": "Q000009312.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 89021,
+ "sha256": "28ddd8de11706cf0388b25f2edcb22f1ecc9ae6b7c3927a8c07cfab464193d5b",
+ "track_ms": 29793,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4656,
+   "text": "A forty-five-year-old woman is found to have a space-occupying lesion."
+  },
+  {
+   "t_ms": 5106,
+   "end_ms": 9717,
+   "text": "It sits at the cerebellopontine angle, between the cerebellum and the pons."
+  },
+  {
+   "t_ms": 10167,
+   "end_ms": 13823,
+   "text": "Tumours in this angle are usually acoustic neuromas."
+  },
+  {
+   "t_ms": 14273,
+   "end_ms": 18394,
+   "text": "They arise from the vestibulocochlear nerve, at the auditory meatus."
+  },
+  {
+   "t_ms": 18844,
+   "end_ms": 23637,
+   "text": "So the lesion is not coming from the cerebellum itself, even though it lies right beside it."
+  },
+  {
+   "t_ms": 24087,
+   "end_ms": 29193,
+   "text": "A lesion at the cerebellopontine angle usually arises from the vestibulocochlear nerve."
+  }
+ ]
+}
