@@ -1,0 +1,42 @@
+{
+ "qid": "Q000009336",
+ "file": "Q000009336.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 87636,
+ "sha256": "901e8f42570a23a73b894b69450ebd4c9a157e393b26f416e217ea7f4f2da1f0",
+ "track_ms": 29700,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 5406,
+   "text": "A forty-five-year-old man has gastro-oesophageal reflux disease."
+  },
+  {
+   "t_ms": 5856,
+   "end_ms": 11134,
+   "text": "He is due to have a laparoscopic Nissen fundoplication, an anti-reflux operation."
+  },
+  {
+   "t_ms": 11584,
+   "end_ms": 14890,
+   "text": "The top of the stomach is wrapped around the lower oesophagus."
+  },
+  {
+   "t_ms": 15340,
+   "end_ms": 19331,
+   "text": "The right and left vagus nerves form plexuses around the oesophagus."
+  },
+  {
+   "t_ms": 19781,
+   "end_ms": 24339,
+   "text": "So the vagus nerves are vulnerable during anti-reflux surgery."
+  },
+  {
+   "t_ms": 24789,
+   "end_ms": 29100,
+   "text": "In a Nissen fundoplication, the structures in danger are the vagus nerves."
+  }
+ ]
+}
