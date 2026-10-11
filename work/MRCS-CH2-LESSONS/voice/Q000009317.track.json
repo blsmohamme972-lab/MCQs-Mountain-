@@ -2,45 +2,45 @@
  "qid": "Q000009317",
  "file": "Q000009317.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 94945,
- "sha256": "081198c87057ca42a116eb7556414033a2f59a4c385e1069dcc284f4aac94fb4",
- "track_ms": 32809,
+ "bytes": 100785,
+ "sha256": "a1c69b1872670479fa298f2d748a8b803dbec4aa23723aee9f91c7b5608c5dba",
+ "track_ms": 34791,
  "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
  "bitrate": "24k",
  "cues": [
   {
    "t_ms": 500,
-   "end_ms": 5686,
+   "end_ms": 6546,
    "text": "A 45-year-old man has his submandibular salivary gland removed for sialadenitis."
   },
   {
-   "t_ms": 6136,
-   "end_ms": 9367,
+   "t_ms": 6996,
+   "end_ms": 10227,
    "text": "Here the surgeon lifts out the submandibular gland."
   },
   {
-   "t_ms": 9817,
-   "end_ms": 13238,
+   "t_ms": 10677,
+   "end_ms": 14135,
    "text": "The gland was inflamed: that is sialadenitis."
   },
   {
-   "t_ms": 13688,
-   "end_ms": 17014,
+   "t_ms": 14585,
+   "end_ms": 17911,
    "text": "On the first day after the operation, something is wrong."
   },
   {
-   "t_ms": 17464,
-   "end_ms": 21320,
+   "t_ms": 18361,
+   "end_ms": 22662,
    "text": "He drools saliva from the angle of his mouth, on the side of the operation."
   },
   {
-   "t_ms": 21770,
-   "end_ms": 25793,
+   "t_ms": 23112,
+   "end_ms": 27135,
    "text": "The nerve at risk is the marginal mandibular branch of the facial nerve."
   },
   {
-   "t_ms": 26243,
-   "end_ms": 32209,
+   "t_ms": 27585,
+   "end_ms": 34191,
    "text": "Injury to it paralyses depressor anguli oris, so saliva escapes from the angle of the mouth."
   }
  ]
