@@ -140,7 +140,9 @@ function render(t, api) {
     api.set(el.spotG, {cx: sx.toFixed(1), cy: sy.toFixed(1), r: (rr * 1.35).toFixed(1)});
     const rp = clamp((t - c.r.start - MOVE) / 1100, 0, 1);
     api.set(el.ring, {cx: sx.toFixed(1), cy: sy.toFixed(1), r: (rr * (0.25 + 0.75 * rp)).toFixed(1), opacity: (rp > 0 && rp < 1 ? Math.sin(Math.PI * rp) * 0.9 : 0).toFixed(3)});
-  } else api.set(el.ring, {opacity: 0});
+  } else {                                                      // no spot: fixed values, so the frame depends only on t
+    api.set(el.spotG, {cx: api.W / 2, cy: api.H / 2, r: 200}); api.set(el.ring, {cx: 0, cy: 0, r: 10, opacity: 0});
+  }
   api.set(el.spot, {opacity: (0.8 * on).toFixed(3)});
   // caption of the line being spoken
   let q = null; for (const cue of L.cues) if (t >= cue.t - 100 && t <= cue.e + 400) q = cue;
@@ -199,6 +201,8 @@ def build_lesson(workspace: Path, qid: str) -> dict:
     spec["shots"] = [{**s, "x": s["x"] * sx, "y": s["y"] * sx, **({"spot": [v * sx for v in s["spot"]]} if s.get("spot") else {})} for s in spec["shots"]]
     track = build_voice(spec, workspace / "voice", qid)
     scene = build_scene(spec, qid, avif, iw, ih, track)
+    old = workspace / "scenes" / f"{qid}.scene.json"                      # keep the replace intent set by scaffold --replace
+    if old.is_file() and json.loads(old.read_text(encoding="utf-8")).get("replace") is True: scene["replace"] = True
     (workspace / "scenes" / f"{qid}.scene.json").write_text(json.dumps(scene, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     sel_path = workspace / "selection.json"; sel = json.loads(sel_path.read_text(encoding="utf-8"))
     for row in sel["selected"]:

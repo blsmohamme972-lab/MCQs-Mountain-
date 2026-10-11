@@ -1,0 +1,47 @@
+{
+ "qid": "Q000009310",
+ "file": "Q000009310.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 93270,
+ "sha256": "97331fb4b59b82df0c945cc8687a0de1ea3ae931ef90f565beb1698d5d5be59d",
+ "track_ms": 32954,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 3636,
+   "text": "A woman has an untreated infected lesion on her face."
+  },
+  {
+   "t_ms": 4086,
+   "end_ms": 10612,
+   "text": "This is the danger area of the face. Infection here can spread to the cavernous sinus and cause thrombosis."
+  },
+  {
+   "t_ms": 11062,
+   "end_ms": 14538,
+   "text": "Now she has severe pain in her eye, and a fever."
+  },
+  {
+   "t_ms": 14988,
+   "end_ms": 16529,
+   "text": "Her eye shows chemosis,"
+  },
+  {
+   "t_ms": 16979,
+   "end_ms": 20140,
+   "text": "and a pulsating proptosis: the eye is pushed forward."
+  },
+  {
+   "t_ms": 20590,
+   "end_ms": 25781,
+   "text": "These signs come from the cavernous sinus. Thrombosis here can also cause ophthalmoplegia."
+  },
+  {
+   "t_ms": 26231,
+   "end_ms": 32354,
+   "text": "So remember: ocular pain, chemosis and proptosis after a facial infection point to the cavernous sinus."
+  }
+ ]
+}

@@ -1,0 +1,94 @@
+{
+ "qid": "Q000009310",
+ "image": "Q000009310.png",
+ "takeaway": "Facial infections in the danger area of the face can cause cavernous sinus thrombosis: ocular pain, chemosis, proptosis and ophthalmoplegia.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 220,
+   "y": 260,
+   "z": 2.3,
+   "spot": [
+    210,
+    285,
+    70
+   ]
+  },
+  {
+   "x": 600,
+   "y": 320,
+   "z": 1.9,
+   "spot": [
+    600,
+    310,
+    160
+   ]
+  },
+  {
+   "x": 920,
+   "y": 310,
+   "z": 2.2,
+   "spot": [
+    920,
+    300,
+    150
+   ]
+  },
+  {
+   "x": 1220,
+   "y": 310,
+   "z": 2.2,
+   "spot": [
+    1230,
+    320,
+    140
+   ]
+  },
+  {
+   "x": 1500,
+   "y": 520,
+   "z": 1.9,
+   "spot": [
+    1540,
+    550,
+    120
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A woman has an untreated infected lesion on her face.",
+   "shot": 1
+  },
+  {
+   "text": "This is the danger area of the face. Infection here can spread to the cavernous sinus and cause thrombosis.",
+   "shot": 1
+  },
+  {
+   "text": "Now she has severe pain in her eye, and a fever.",
+   "shot": 2
+  },
+  {
+   "text": "Her eye shows chemosis,",
+   "shot": 3
+  },
+  {
+   "text": "and a pulsating proptosis: the eye is pushed forward.",
+   "shot": 4
+  },
+  {
+   "text": "These signs come from the cavernous sinus. Thrombosis here can also cause ophthalmoplegia.",
+   "shot": 5
+  },
+  {
+   "text": "So remember: ocular pain, chemosis and proptosis after a facial infection point to the cavernous sinus.",
+   "shot": 0
+  }
+ ]
+}

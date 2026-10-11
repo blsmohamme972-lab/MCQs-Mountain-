@@ -1,0 +1,94 @@
+{
+ "qid": "Q000009309",
+ "image": "Q000009309.png",
+ "takeaway": "Extradural haemorrhage: the middle meningeal artery enters the skull through the foramen spinosum and lies in a groove on the temporal bone. A fracture here can tear it.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 260,
+   "y": 230,
+   "z": 1.9,
+   "spot": [
+    300,
+    140,
+    120
+   ]
+  },
+  {
+   "x": 500,
+   "y": 300,
+   "z": 2.2,
+   "spot": [
+    535,
+    280,
+    90
+   ]
+  },
+  {
+   "x": 760,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    750,
+    440,
+    150
+   ]
+  },
+  {
+   "x": 1120,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    1130,
+    290,
+    150
+   ]
+  },
+  {
+   "x": 1500,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    1540,
+    340,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A young footballer heads the ball, and he is knocked unconscious.",
+   "shot": 1
+  },
+  {
+   "text": "He is out for less than a minute, and then he carries on playing.",
+   "shot": 2
+  },
+  {
+   "text": "By the end of the game he is drowsy, and in the emergency department his Glasgow Coma Score is 13.",
+   "shot": 3
+  },
+  {
+   "text": "The CT scan shows an extradural haemorrhage.",
+   "shot": 4
+  },
+  {
+   "text": "Which vessel bled? The middle meningeal artery. It enters the skull through the foramen spinosum,",
+   "shot": 5
+  },
+  {
+   "text": "and it lies in a groove on the temporal bone.",
+   "shot": 5
+  },
+  {
+   "text": "So a fracture in this region can tear the artery and cause an extradural haemorrhage.",
+   "shot": 0
+  }
+ ]
+}

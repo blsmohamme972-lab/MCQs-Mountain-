@@ -1,0 +1,47 @@
+{
+ "qid": "Q000009311",
+ "file": "Q000009311.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 97272,
+ "sha256": "4c7098470802a854a063648762ab50f2049d2ee14f8609f48fba78e1226cbc51",
+ "track_ms": 34876,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4431,
+   "text": "A seventy-year-old man, a smoker, has a problem with his vision."
+  },
+  {
+   "t_ms": 4881,
+   "end_ms": 10067,
+   "text": "He has attacks of amaurosis fugax, a brief loss of vision in one eye."
+  },
+  {
+   "t_ms": 10517,
+   "end_ms": 14188,
+   "text": "On the same side, there is a systolic carotid bruit."
+  },
+  {
+   "t_ms": 14638,
+   "end_ms": 18446,
+   "text": "Follow the arterial supply up from the neck towards the eye."
+  },
+  {
+   "t_ms": 18896,
+   "end_ms": 22382,
+   "text": "The central artery of the retina is a branch of the ophthalmic artery."
+  },
+  {
+   "t_ms": 22832,
+   "end_ms": 29273,
+   "text": "And the ophthalmic artery enters the orbit through the optic canal, together with the optic nerve."
+  },
+  {
+   "t_ms": 29723,
+   "end_ms": 34276,
+   "text": "So the artery that supplies the retina enters the orbit through the optic canal."
+  }
+ ]
+}

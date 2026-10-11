@@ -1,0 +1,84 @@
+{
+ "qid": "Q000009313",
+ "image": "Q000009313.png",
+ "takeaway": "A ruptured berry aneurysm commonly occurs at the anterior communicating artery and presents with subarachnoid haemorrhage.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 260,
+   "y": 260,
+   "z": 1.8,
+   "spot": [
+    320,
+    250,
+    130
+   ]
+  },
+  {
+   "x": 650,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    650,
+    600,
+    120
+   ]
+  },
+  {
+   "x": 1060,
+   "y": 380,
+   "z": 2.0,
+   "spot": [
+    1060,
+    330,
+    100
+   ]
+  },
+  {
+   "x": 1500,
+   "y": 380,
+   "z": 2.2,
+   "spot": [
+    1510,
+    370,
+    80
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A fifty-five-year-old man has a sudden, severe thunderclap headache.",
+   "shot": 0
+  },
+  {
+   "text": "He says it feels like a hammer blow to the back of the head.",
+   "shot": 1
+  },
+  {
+   "text": "A gadolinium-enhanced MRI shows a haemorrhagic lesion,",
+   "shot": 2
+  },
+  {
+   "text": "in the anterior cranial fossa.",
+   "shot": 3
+  },
+  {
+   "text": "A ruptured berry aneurysm commonly occurs at the anterior communicating artery,",
+   "shot": 4
+  },
+  {
+   "text": "and it presents with subarachnoid haemorrhage.",
+   "shot": 4
+  },
+  {
+   "text": "So a sudden thunderclap headache with bleeding in the anterior cranial fossa points to the anterior communicating artery.",
+   "shot": 0
+  }
+ ]
+}

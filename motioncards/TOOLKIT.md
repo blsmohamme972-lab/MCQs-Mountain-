@@ -1,5 +1,9 @@
 # Kafu MotionCards scene toolkit (legacy v1)
 
+> **RETIRED (Oct 2026). Do not use this to make new content.** The owner stopped hand-animated MotionCards.
+> New work is IMAGE LESSONS only: follow `motioncards/LESSON_PROMPT.md`. This file is kept only as background for
+> the shared scaffold/package/validate tools.
+
 > New cards should use schema v2. See `AUTHORING_V2.md`. This page documents the v1 engine, which remains supported unchanged for existing scenes.
 
 The v1 toolkit is intentionally small. Scene authors describe **what changes over time**; the compiler/player own responsive framing and time.

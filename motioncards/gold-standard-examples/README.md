@@ -1,5 +1,9 @@
 # Gold-standard example videos
 
+> **RETIRED (Oct 2026). Do not use this to make new content.** The owner stopped hand-animated MotionCards.
+> New work is IMAGE LESSONS only: follow `motioncards/LESSON_PROMPT.md`. This file is kept only as background for
+> the shared scaffold/package/validate tools.
+
 These two videos are the **look and pace to copy** for every new MotionCards batch. They are the owner-approved MRCS chapters 20–25:
 
 | File | Cards | Source ZIP in `dist/` |

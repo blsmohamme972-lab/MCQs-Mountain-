@@ -1,5 +1,9 @@
 # Agent instructions - Medical Motion library
 
+> **RETIRED (Oct 2026). Do not use this to make new content.** The owner stopped hand-animated MotionCards.
+> New work is IMAGE LESSONS only: follow `motioncards/LESSON_PROMPT.md`. This file is kept only as background for
+> the shared scaffold/package/validate tools.
+
 ## Scope
 
 Work only inside `Animations and illustrations/` unless the user separately authorizes application integration. This is a private reusable template store, not an app route. Do not add package dependencies, modify repository-root files, wire an app import, introduce analytics, fetch medical content at runtime, or auto-play motion. Preserve unrelated files and `.gitkeep`.

@@ -1,5 +1,9 @@
 # Kafu MotionCards — Project Brief
 
+> **RETIRED (Oct 2026). Do not use this to make new content.** The owner stopped hand-animated MotionCards.
+> New work is IMAGE LESSONS only: follow `motioncards/LESSON_PROMPT.md`. This file is kept only as background for
+> the shared scaffold/package/validate tools.
+
 > **SEPARATION WARNING:** This project is not Medical Motion. Nothing under `Animations and illustrations/` may be copied, imported, renamed, rebranded, or used as a runtime dependency.
 
 ## Product

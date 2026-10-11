@@ -1,0 +1,108 @@
+{
+ "qid": "Q000009316",
+ "image": "Q000009316.png",
+ "takeaway": "Olfactory nerve fibres pass through the cribriform plate of the ethmoid bone. A fracture here can damage the olfactory bulbs, causing anosmia and cerebrospinal rhinorrhoea.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 250,
+   "y": 300,
+   "z": 1.7,
+   "spot": [
+    170,
+    140,
+    110
+   ]
+  },
+  {
+   "x": 680,
+   "y": 260,
+   "z": 1.9,
+   "spot": [
+    660,
+    225,
+    80
+   ]
+  },
+  {
+   "x": 780,
+   "y": 560,
+   "z": 2.0,
+   "spot": [
+    800,
+    560,
+    80
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 620,
+   "z": 1.8,
+   "spot": [
+    1230,
+    630,
+    100
+   ]
+  },
+  {
+   "x": 1110,
+   "y": 260,
+   "z": 2.0,
+   "spot": [
+    1110,
+    240,
+    110
+   ]
+  },
+  {
+   "x": 1480,
+   "y": 390,
+   "z": 1.9,
+   "spot": [
+    1500,
+    390,
+    100
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A thirty-year-old man was in a road traffic accident.",
+   "shot": 1
+  },
+  {
+   "text": "He fractured his anterior cranial fossa.",
+   "shot": 2
+  },
+  {
+   "text": "At that time, he had cerebrospinal rhinorrhoea.",
+   "shot": 3
+  },
+  {
+   "text": "Five weeks later, he presents with anosmia: he cannot smell.",
+   "shot": 4
+  },
+  {
+   "text": "Olfactory nerve fibres pass through the cribriform plate of the ethmoid bone.",
+   "shot": 5
+  },
+  {
+   "text": "A fracture here can damage the olfactory bulbs,",
+   "shot": 6
+  },
+  {
+   "text": "and that causes both anosmia and cerebrospinal rhinorrhoea.",
+   "shot": 0
+  },
+  {
+   "text": "So the fractured bone behind his anosmia is the cribriform plate of the ethmoid bone.",
+   "shot": 5
+  }
+ ]
+}

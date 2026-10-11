@@ -1,5 +1,9 @@
 # Medical Motion - reusable medical animation templates
 
+> **RETIRED (Oct 2026). Do not use this to make new content.** The owner stopped hand-animated MotionCards.
+> New work is IMAGE LESSONS only: follow `motioncards/LESSON_PROMPT.md`. This file is kept only as background for
+> the shared scaffold/package/validate tools.
+
 A code-only library for future AI agents and authors. Thirty-five original, parameterized SVG mechanisms share one deterministic JavaScript engine. This directory is a **standalone asset library**, not part of the MCQs application runtime. Nothing outside this directory is required or modified.
 
 ## Start here
