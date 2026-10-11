@@ -1,5 +1,9 @@
 # Kafu MotionCards — scene authoring v2 (compact reference)
 
+> **RETIRED (Oct 2026). Do not use this to make new content.** The owner stopped hand-animated MotionCards.
+> New work is IMAGE LESSONS only: follow `motioncards/LESSON_PROMPT.md`. This file is kept only as background for
+> the shared scaffold/package/validate tools.
+
 > **GOLD STANDARD (read first):** follow [`GOLD_STANDARD.md`](GOLD_STANDARD.md), the owner-approved workflow, card format and visual method from MRCS chapters 20–25.
 
 Read this file instead of the long docs when you only author scenes. Edit only `work/<batch>/scenes/Q#########.scene.json`. The tooling does selection, hashes and packaging (see `MASTER_PROMPT.md` for the commands).

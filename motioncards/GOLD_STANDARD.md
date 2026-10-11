@@ -1,5 +1,9 @@
 # MotionCards gold standard (MRCS chapters 20–25)
 
+> **RETIRED (Oct 2026). Do not use this to make new content.** The owner stopped hand-animated MotionCards.
+> New work is IMAGE LESSONS only: follow `motioncards/LESSON_PROMPT.md`. This file is kept only as background for
+> the shared scaffold/package/validate tools.
+
 The owner approved the cards for chapters 20–22 and the rebuilt cards for chapters 23–25 (r2). Their method is the standard for every
 new batch. The owner rejected the first version of chapters 23–25 ("not beautiful, confusing"), which used simple drawn shapes, tiny
 cells and captions at the bottom. Do not repeat that.

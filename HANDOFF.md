@@ -1,5 +1,8 @@
 # Kafu handoff
 
+> **Animations (Oct 2026):** make IMAGE LESSONS only (`motioncards/LESSON_PROMPT.md`). Hand-animated MotionCards are
+> retired; their documents are marked RETIRED.
+
 Updated: 2026-09-28 (Asia/Baghdad)
 
 ## Start here

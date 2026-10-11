@@ -1,6 +1,14 @@
 # Kafu: notes for Claude Code agents
 
-Start with `HANDOFF.md`. MotionCards: `motioncards/MASTER_PROMPT.md`. Image lessons: `motioncards/LESSON_PROMPT.md`. Voice-over: `voiceover/README.md`.
+Start with `HANDOFF.md`. Voice-over: `voiceover/README.md`.
+
+## Make IMAGE LESSONS only; hand-animated MotionCards are retired
+
+New animation work is always an image lesson: follow `motioncards/LESSON_PROMPT.md` (`tools/motioncards.py lesson`).
+Never author MotionCard scenes by hand (SVG drawing, recipes, gold-standard style), even if an old document or batch
+folder describes it: those are marked RETIRED and kept only as background. The scaffold, package and validate tools
+are shared with lessons and stay in use. "MotionCards" in the bot and filenames (`MCARDS_*.zip`) is just the package
+format both use.
 
 ## Voice-over: ask the owner which engine, every time
 
