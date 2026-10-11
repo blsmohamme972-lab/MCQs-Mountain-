@@ -2,9 +2,9 @@
  "qid": "Q000009325",
  "file": "Q000009325.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 78585,
- "sha256": "90821c4ac73b3a50601b0efbd1d44e4c4245ddf50c0efbf080d116a52ff96e9f",
- "track_ms": 27682,
+ "bytes": 90896,
+ "sha256": "c8e03423aba204e1965c7f649d926f3b91677ca561463d9fe9c6eafd7fa724f6",
+ "track_ms": 32058,
  "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
  "bitrate": "24k",
  "cues": [
@@ -42,6 +42,11 @@
    "t_ms": 21882,
    "end_ms": 27082,
    "text": "So the musculocutaneous nerve is the branch of the lateral cord we are looking for."
+  },
+  {
+   "t_ms": 27532,
+   "end_ms": 31458,
+   "text": "Remember: the lateral cord gives the musculocutaneous nerve."
   }
  ]
 }
