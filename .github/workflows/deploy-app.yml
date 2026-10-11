@@ -93,7 +93,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           set -euo pipefail
-          TAG="design1-${GITHUB_SHA:0:12}-${GITHUB_RUN_ATTEMPT}"
+          TAG="design1-${GITHUB_SHA:0:12}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"   # unique per run: a re-deploy of the same commit must not share a tag
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           npx wrangler versions upload --tag "$TAG" --message "staged ${GITHUB_SHA}" --config wrangler.app.jsonc | tee /tmp/kafu-version-upload.log
           VERSION_URL="$(grep -Eo 'https://[A-Za-z0-9._-]+\.workers\.dev/?' /tmp/kafu-version-upload.log | tail -1)"
