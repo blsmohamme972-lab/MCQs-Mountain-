@@ -123,7 +123,7 @@ class EngineV2Tests(unittest.TestCase):
          (lambda s:s["layers"][12]["layers"][0].update(fixed=True),"fixed (ignore the camera) is only allowed on top-level layers"),
          (lambda s:s["layers"][12]["layers"][2].update(asset="nope"),"unknown asset id"),
          (lambda s:s.update(assets={"dot":"data:image/png;base64,"+base64.b64encode(b"GIF89a....").decode()}),"asset bytes are not a real png image"),
-         (lambda s:s.update(assets={"dot":"data:image/svg+xml;base64,PHN2Zz4="}),"asset must be data:image/png|jpeg|webp"),
+         (lambda s:s.update(assets={"dot":"data:image/svg+xml;base64,PHN2Zz4="}),"asset must be data:image/png|jpeg|webp|avif"),
          (lambda s:s["layers"][14].update(count=500),"layers[14].count:must be between 1 and 200"),
          (lambda s:s["layers"][15].update(r=20),"spotlight needs either cx/cy/r"),
          (lambda s:s.update(custom_renderer="function renderCustom(l,t,h){\n'</script>'}"),"custom_renderer:line 2: '</script' would end the page's script element"),

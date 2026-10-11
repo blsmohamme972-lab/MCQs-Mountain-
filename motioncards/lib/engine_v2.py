@@ -379,14 +379,15 @@ def _validate_assets(assets,ctx:_Ctx):
         p=f"assets.{aid}"
         if not ID_RE.fullmatch(str(aid)):_fail(p,"asset id must match ^[a-z][a-z0-9_-]{0,31}$")
         if not isinstance(uri,str):_fail(p,"asset must be a data URI string")
-        m=re.fullmatch(r"data:image/(png|jpeg|webp);base64,([A-Za-z0-9+/]+={0,2})",uri)
-        if not m:_fail(p,"asset must be data:image/png|jpeg|webp;base64,...")
+        m=re.fullmatch(r"data:image/(png|jpeg|webp|avif);base64,([A-Za-z0-9+/]+={0,2})",uri)
+        if not m:_fail(p,"asset must be data:image/png|jpeg|webp|avif;base64,...")
         total+=len(uri)
         try:raw=base64.b64decode(m.group(2),validate=True)
         except (binascii.Error,ValueError):_fail(p,"asset base64 is invalid")
         if len(raw)>MAX_ASSET_BYTES:_fail(p,f"asset larger than {MAX_ASSET_BYTES} bytes; compress it (WebP recommended)")
         kind=m.group(1)
-        ok={"png":raw.startswith(b"\x89PNG\r\n\x1a\n"),"jpeg":raw.startswith(b"\xff\xd8\xff"),"webp":raw[:4]==b"RIFF" and raw[8:12]==b"WEBP"}[kind]
+        ok={"png":raw.startswith(b"\x89PNG\r\n\x1a\n"),"jpeg":raw.startswith(b"\xff\xd8\xff"),"webp":raw[:4]==b"RIFF" and raw[8:12]==b"WEBP",
+            "avif":raw[4:8]==b"ftyp" and raw[8:12] in (b"avif",b"avis")}[kind]
         if not ok:_fail(p,f"asset bytes are not a real {kind} image")
         ctx.assets.add(aid)
     if total>MAX_ASSET_CHARS_TOTAL:_fail("assets",f"assets exceed {MAX_ASSET_CHARS_TOTAL} characters in total")

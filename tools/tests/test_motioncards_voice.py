@@ -11,6 +11,7 @@ from motioncards.lib.core import adapt_exports
 from motioncards.lib.package import scaffold_workspace, build_package, validate_package
 from motioncards.lib.compiler import compile_scene
 from motioncards.lib.voice import validate_voice, ogg_opus_duration_ms
+from motioncards.lib.spec import MAX_VOICE_BYTES
 from tools.tests.test_motioncards_publisher import q, env, fetcher
 from tools.motioncards.publish import apply_package, load_state
 
@@ -82,7 +83,7 @@ class VoicePackage(unittest.TestCase):
     def test_voice_checks(self):
         data = SAMPLE.read_bytes(); track = {"track_ms": SAMPLE_TRACK["track_ms"], "cues": SAMPLE_TRACK["cues"]}
         self.assertLessEqual(abs(ogg_opus_duration_ms(data) - SAMPLE_TRACK["track_ms"]), 120)
-        with self.assertRaisesRegex(ValueError, "voice_too_large"): validate_voice(data * 6, track, 8000)
+        with self.assertRaisesRegex(ValueError, "voice_too_large"): validate_voice(data * (MAX_VOICE_BYTES // len(data) + 1), track, 8000)
         with self.assertRaisesRegex(ValueError, "voice_track_length_mismatch"): validate_voice(data, {**track, "track_ms": 3000}, 8000)
         with self.assertRaisesRegex(ValueError, "voice_track_longer_than_card|voice_track_length_mismatch"): validate_voice(data, track, 6000)
         with self.assertRaisesRegex(ValueError, "voice_requires_schema_v2"):

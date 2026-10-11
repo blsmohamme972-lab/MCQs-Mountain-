@@ -10,7 +10,7 @@ MAX_EXPANDED_BYTES=80*1024*1024
 MAX_ENTRIES=1200
 MAX_RATIO=100.0
 MIN_DURATION_MS=2000
-MAX_DURATION_MS=30000
+MAX_DURATION_MS=180000          # image lessons run up to 3 minutes
 MAX_ANIMATIONS=500
 MAX_ENTRY_BYTES=2*1024*1024
 QID_RE=re.compile(r"^Q\d{9}$")
@@ -21,8 +21,8 @@ FORBIDDEN_EXTENSIONS={".exe",".dll",".so",".dylib",".sh",".bash",".bat",".cmd","
 PUBLIC_PREFIXES=("entries/","indexes/","voice/")
 # Voice-over (voiceover/): one Ogg Opus track per card, embedded in the compiled entry and handed to the host.
 VOICE_MIME="audio/ogg; codecs=opus"
-MAX_VOICE_BYTES=64*1024
-MAX_VOICE_CUES=12
+MAX_VOICE_BYTES=640*1024        # 3 minutes at 24 kbps (Breeze 'medium') with room to spare
+MAX_VOICE_CUES=64              # a dialogue lesson has one cue per spoken line
 SOURCE_PREFIXES=("source/","scenes/","reports/")
 ALLOWED_ROOT_FILES={MANIFEST_NAME,"validation-report.json"}
 

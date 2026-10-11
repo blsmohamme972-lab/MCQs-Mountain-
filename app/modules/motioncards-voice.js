@@ -2,7 +2,7 @@
 (function(root){
 "use strict";
 const API=root.KafuMotionCards=root.KafuMotionCards||{};
-const PREF="kafu.motioncards.voice.muted",MAX_BYTES=64*1024,MIME="audio/ogg; codecs=opus";
+const PREF="kafu.motioncards.voice.muted",MAX_BYTES=640*1024,MIME="audio/ogg; codecs=opus";
 const MAX_INTERP_MS=250;
 function readMuted(){try{return root.localStorage?.getItem(PREF)==="1";}catch(_){return false;}}
 function writeMuted(v){try{root.localStorage?.setItem(PREF,v?"1":"0");}catch(_){}}
