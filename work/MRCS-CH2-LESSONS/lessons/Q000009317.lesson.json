@@ -65,7 +65,7 @@
   {
    "text": "A 45-year-old man has his submandibular salivary gland removed for sialadenitis.",
    "shot": 0,
-   "say": "A forty-five-year-old man has his submandibular salivary gland removed for sialadenitis."
+   "say": "A forty-five-year-old man has his submandibular salivary gland removed for sigh-ah-lad-eh-NIGH-tis."
   },
   {
    "text": "Here the surgeon lifts out the submandibular gland.",
@@ -73,7 +73,8 @@
   },
   {
    "text": "The gland was inflamed: that is sialadenitis.",
-   "shot": 2
+   "shot": 2,
+   "say": "The gland was inflamed: that is sigh-ah-lad-eh-NIGH-tis."
   },
   {
    "text": "On the first day after the operation, something is wrong.",
@@ -81,7 +82,8 @@
   },
   {
    "text": "He drools saliva from the angle of his mouth, on the side of the operation.",
-   "shot": 4
+   "shot": 4,
+   "say": "He is drooling saliva from the angle of his mouth, on the side of the operation."
   },
   {
    "text": "The nerve at risk is the marginal mandibular branch of the facial nerve.",
@@ -90,7 +92,8 @@
   {
    "text": "Injury to it paralyses depressor anguli oris, so saliva escapes from the angle of the mouth.",
    "shot": 4,
-   "tag": "Depressor anguli oris"
+   "tag": "Depressor anguli oris",
+   "say": "Injury to it paralyzes depressor ang-GYOO-lee OR-iss, so saliva escapes from the angle of the mouth."
   }
  ]
 }
