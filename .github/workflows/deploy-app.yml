@@ -82,7 +82,9 @@ jobs:
             --arg CLOUDFLARE_ACCOUNT_ID "$CLOUDFLARE_ACCOUNT_ID" \
             '{BOT_TOKEN:$BOT_TOKEN,OWNER_TELEGRAM_ID:$OWNER_TELEGRAM_ID,WEBHOOK_SECRET:$WEBHOOK_SECRET,QUEUE_API_TOKEN:$QUEUE_API_TOKEN,DISPATCH_TOKEN:$DISPATCH_TOKEN,ADMIN_IDS:$ADMIN_IDS,D1_ANALYTICS_TOKEN:$D1_ANALYTICS_TOKEN,CLOUDFLARE_ACCOUNT_ID:$CLOUDFLARE_ACCOUNT_ID}' \
             > /tmp/kafu-secrets.json
-          npx wrangler secret bulk /tmp/kafu-secrets.json --config wrangler.app.jsonc
+          # Saved on a new Worker version, not the live one: the staged upload below inherits them, and they go live only on promote.
+          # (The plain "secret bulk" edits the live deployment and is refused whenever a staged version was never promoted.)
+          npx wrangler versions secret bulk /tmp/kafu-secrets.json --config wrangler.app.jsonc
           rm -f /tmp/kafu-secrets.json
       - name: Upload staged Worker version
         id: staged
