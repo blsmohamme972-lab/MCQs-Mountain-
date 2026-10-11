@@ -37,7 +37,6 @@ async function indexFor(entry,q){
   }
 }
 const okIndex=(d,entry,q)=>!!d&&d.schema===1&&String(d.book_id)===String(entry.b)&&Number(d.book_version)===Number(q.version)&&d.runtime_version===MC.VERSION&&d.protocol_version===MC.PROTOCOL&&!!d.animations&&typeof d.animations==="object";
-// Cards on the device (voice is inside each card): saved with the chapter or on first play, used only if the bytes match the index SHA-256.
 const STORE="kafu-motioncards-v1",HEAD='<!doctype html><html><head><meta charset="utf-8">';
 const CSP='<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'unsafe-inline\'; style-src \'unsafe-inline\'; img-src data:; font-src \'none\'; connect-src \'none\'; media-src \'none\'; object-src \'none\'; frame-src \'none\'; worker-src \'none\'; form-action \'none\'; base-uri \'none\'">';
 const store=()=>typeof caches==="object"?caches.open(STORE):Promise.reject(new Error("no_cache_storage"));
@@ -68,22 +67,45 @@ async function resolveMatch(snapshot){
   return record;
 }
 function buttonFor(qid){if(!Core.QID.test(String(qid||"")))return null;return document.querySelector("[data-a='motioncards-open'][data-q='"+String(qid)+"']");}
-function clearButton(qid){buttonFor(qid)?.remove();}
+function slotFor(qid){if(!Core.QID.test(String(qid||"")))return null;return document.querySelector(".kafu-motioncards-lesson-slot[data-q='"+String(qid)+"']");}
+function clearButton(qid){slotFor(qid)?.remove();buttonFor(qid)?.remove();}
+const clock=ms=>{const s=Math.max(1,Math.round(Number(ms)/1000));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0");};
+function slotAnchor(section){
+  const ex=section.querySelector(".explain");if(ex)return ex;
+  const stem=section.querySelector(".k-question-card .stem, .stem");return stem?.closest(".k-question-card")||stem;
+}
+function placeSlot(snapshot,record){
+  const section=document.querySelector(".k-study"),anchor=section&&slotAnchor(section);
+  if(!section||!anchor||!section.contains(anchor))return null;
+  let slot=slotFor(snapshot.qid);
+  if(!slot){
+    slot=document.createElement("div");slot.className="kafu-motioncards-lesson-slot";slot.dataset.q=snapshot.qid;
+    const button=document.createElement("button");button.type="button";button.className="kafu-motioncards-lesson-poster";button.dataset.a="motioncards-open";button.dataset.q=snapshot.qid;
+    button.setAttribute("aria-label","Play the lesson for this question");
+    button.innerHTML='<span class="kafu-motioncards-lesson-play" aria-hidden="true">▶</span><span class="kafu-motioncards-lesson-label"><strong>Watch the lesson</strong><small></small></span>';
+    slot.appendChild(button);
+  }
+  slot.querySelector("small").textContent=clock(record.duration_ms)+" · picture and voice";
+  if(anchor.nextElementSibling!==slot)anchor.after(slot);
+  const button=slot.querySelector("[data-a='motioncards-open']");button._motioncardsRecord=record;
+  return slot;
+}
 function injectButton(snapshot,record){
   const now=current();if(!sameIdentity(now,snapshot)||active)return;
-  const section=document.querySelector(".k-study"),stem=section?.querySelector(".k-question-card .stem, .stem");
-  if(!section||!stem)return;
-  const anchor=section.querySelector(".k-question-head")||stem.closest(".k-question-card");
-  if(!anchor||anchor.parentNode!==section)return;
-  let button=buttonFor(snapshot.qid);
-  if(!button){
-    button=document.createElement("button");button.type="button";button.className="kafu-motioncards-trigger";button.dataset.a="motioncards-open";button.dataset.q=snapshot.qid;
-    button.setAttribute("aria-label","Open Kafu MotionCards animation");
-    button.innerHTML='<span class="kafu-motioncards-trigger-icon" aria-hidden="true">▶</span><span><strong>Kafu MotionCards</strong><small>Visual explanation</small></span>';
-  }
-  if(button.parentNode!==section||button.nextElementSibling!==anchor)section.insertBefore(button,anchor);
-  button._motioncardsRecord=record;
+  placeSlot(snapshot,record);
 }
+let dockFrame=0;
+function dock(){
+  dockFrame=0;if(!active||active.standalone)return;
+  const slot=slotFor(active.qid);
+  if(!slot){active.root.style.visibility="hidden";return;}
+  slot.classList.add("is-playing");
+  const r=slot.getBoundingClientRect(),st=active.root.style;
+  st.position="absolute";st.left=(r.left+window.scrollX)+"px";st.top=(r.top+window.scrollY)+"px";st.width=r.width+"px";st.visibility="visible";
+  const h=active.root.firstElementChild?.offsetHeight||0;if(h&&slot.style.minHeight!==h+"px")slot.style.minHeight=h+"px";
+}
+const queueDock=()=>{if(active&&!dockFrame)dockFrame=requestAnimationFrame(dock);};
+window.addEventListener("resize",queueDock);window.addEventListener("scroll",queueDock,{capture:true,passive:true});
 function scheduleAvailability(){
   clearTimeout(refreshTimer);refreshTimer=0;
   if(!active&&current())refreshTimer=setTimeout(()=>{cache.clear();refreshAvailability();},refreshAfter());
@@ -159,10 +181,12 @@ function closePlayer(restore=true){
   const a=active;stopClock(a);clearTimeout(a.readyTimer);clearTimeout(a.loadWait);a.pending=0;dropVoice(a);dropBlob(a);
   try{a.port?.postMessage({type:"destroy",protocol:MC.PROTOCOL,channel_id:a.channel,qid:a.qid});a.port?.close();}catch(_){}
   window.removeEventListener("message",a.messageHandler);try{a.frame.src="about:blank";}catch(_){}active=null;lookupSerial++;
-  a.root.replaceChildren();a.root.hidden=true;document.body.classList.remove("kafu-motioncards-open");
+  a.resize?.disconnect();if(dockFrame){cancelAnimationFrame(dockFrame);dockFrame=0;}
+  const slot=slotFor(a.qid);if(slot){slot.classList.remove("is-playing");slot.style.minHeight="";}
+  a.root.replaceChildren();a.root.hidden=true;a.root.removeAttribute("style");a.root.className="";document.body.classList.remove("kafu-motioncards-open");
   const app=document.getElementById("app");if(app){app.inert=false;app.removeAttribute("aria-hidden");}
-  restoreTelegram(a);
-  if(restore){window.scrollTo(0,a.scrollY);a.focus?.focus?.({preventScroll:true});}
+  if(a.standalone){restoreTelegram(a);if(restore){window.scrollTo(0,a.scrollY);a.focus?.focus?.({preventScroll:true});}}
+  else if(restore)buttonFor(a.qid)?.focus({preventScroll:true});
   scheduleAvailability();refreshAvailability();
 }
 function fail(message){
@@ -170,7 +194,6 @@ function fail(message){
   const box=active.root.querySelector(".kafu-motioncards-error"),text=box.querySelector("[data-motioncards-error-text]");
   text.textContent=message;box.hidden=false;active.root.querySelector("[data-motioncards-host='retry']").hidden=false;
 }
-// Voice-over (voiceover/): the card hands over its Opus bytes; play them only if they match the index exactly.
 function dropVoice(a){if(a?.voice){try{a.voice.destroy();}catch(_){}a.voice=null;}const b=a?.root?.querySelector("[data-motioncards-host='mute']");if(b)b.hidden=true;}
 function muteButton(){return active?.root.querySelector("[data-motioncards-host='mute']");}
 function paintMute(){const b=muteButton();if(!b||!active?.voice)return;const m=active.voice.muted;b.hidden=false;b.setAttribute("aria-pressed",m?"true":"false");b.textContent=m?"Unmute voice":"Mute voice";}
@@ -182,14 +205,14 @@ async function acceptVoice(x,channel){
   try{const d=await crypto.subtle.digest("SHA-256",x.data);hex=[...new Uint8Array(d)].map(v=>v.toString(16).padStart(2,"0")).join("");}catch(_){return;}
   if(!active||active.channel!==channel||active.voice||hex!==String(want.sha256).toLowerCase())return;
   const card=active;   // an outside pause of the voice (call, headset, lock screen) pauses this card's picture too
-  try{active.voice=V.create(x.data,{mime:want.mime,onInterrupt:()=>{if(active===card&&card.playing)pause();}});}catch(_){active.voice=null;return;}
+  const reuse=card.audio;card.audio=null;try{reuse?.pause();}catch(_){}
+  try{active.voice=V.create(x.data,{mime:want.mime,onInterrupt:()=>{if(active===card&&card.playing)pause();},...(reuse?{audio:()=>reuse}:{})});}catch(_){active.voice=null;return;}
   paintMute();if(active.playing)active.voice.play(active.time);
 }
 function connectFromReady(event){
   if(!active||event.source!==active.frame.contentWindow)return;
   const m=event.data;if(!m||m.type!=="kafu-motioncards-ready"||m.protocol!==MC.PROTOCOL||m.qid!==active.qid||m.channel_id!==active.channel)return;
   if(active.connected||active.port||active.pending)return;
-  // The card says ready before its voice script has run; connect only once its document has fully loaded.
   const a=active,go=()=>{if(active===a&&a.pending){a.pending=0;clearTimeout(a.loadWait);connectPort();}};
   a.pending=go;if(a.loaded)go();else a.loadWait=setTimeout(go,3000);
 }
@@ -198,7 +221,8 @@ function connectPort(){
   active.port.onmessage=e=>{
     if(!active||active.channel!==expectedChannel)return;
     const x=e.data;if(!Core.validMessage(x,active))return;
-    if(x.type==="ready"){clearTimeout(active.readyTimer);active.connected=true;active.root.querySelector(".kafu-motioncards-loading").hidden=true;active.root.querySelector(".kafu-motioncards-error").hidden=true;active.play.disabled=false;active.restart.disabled=false;active.range.disabled=false;sendTime("seek");}
+    if(x.type==="ready"){clearTimeout(active.readyTimer);active.connected=true;active.root.querySelector(".kafu-motioncards-loading").hidden=true;active.root.querySelector(".kafu-motioncards-error").hidden=true;active.play.disabled=false;active.restart.disabled=false;active.range.disabled=false;sendTime("seek");
+      if(active.autoplay){active.autoplay=false;play();}}
     else if(x.type==="error")fail("This MotionCard could not render. Retry or close it and continue studying.");
     else if(x.type==="voice")acceptVoice(x,expectedChannel);
   };
@@ -227,25 +251,37 @@ function openPlayer(qid,record,providedSnapshot=null,standalone=false){
   if(!record||!Core.validRecord(record,snapshot.q,snapshot.entry))return;
   const root=ensureRoot(),focus=document.activeElement,scrollY=window.scrollY;
   root.hidden=false;
-  root.innerHTML='<div class="kafu-motioncards-overlay" role="dialog" aria-modal="true" aria-label="Kafu MotionCards">'+
-    '<header class="kafu-motioncards-bar"><button type="button" class="kafu-motioncards-close" data-motioncards-host="close" aria-label="Close MotionCards">←</button><div><strong>Kafu MotionCards</strong><small>'+esc(snapshot.qid)+'</small></div></header>'+
+  root.className=standalone?"":"kafu-motioncards-lesson-root";
+  root.innerHTML='<div class="'+(standalone?'kafu-motioncards-overlay':'kafu-motioncards-lesson-player')+'" role="'+(standalone?'dialog':'region')+'"'+(standalone?' aria-modal="true"':'')+' aria-label="Lesson">'+
+    (standalone?'<header class="kafu-motioncards-bar"><button type="button" class="kafu-motioncards-close" data-motioncards-host="close" aria-label="Close lesson">←</button><div><strong>Lesson</strong><small>'+esc(snapshot.qid)+'</small></div></header>':'')+
     '<div class="kafu-motioncards-scroll"><div class="kafu-motioncards-main">'+
-      '<section class="kafu-motioncards-stage"><iframe title="Kafu MotionCards animation" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe></section>'+
+      '<section class="kafu-motioncards-stage kafu-motioncards-lesson-stage"><iframe title="Lesson" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe></section>'+
       '<div class="kafu-motioncards-status"><div class="kafu-motioncards-error" role="alert" hidden><span data-motioncards-error-text></span><button type="button" data-motioncards-host="retry">Retry</button></div><div class="kafu-motioncards-loading" role="status">Loading animation…</div></div>'+
-      '<footer class="kafu-motioncards-controls"><button type="button" data-motioncards-host="play" disabled aria-pressed="false">Play</button><button type="button" data-motioncards-host="restart" disabled>Restart</button><button type="button" data-motioncards-host="mute" hidden aria-pressed="false">Mute voice</button><label><span class="sr-only">Animation position</span><input data-motioncards-host="seek" type="range" min="0" step="50" disabled></label><output data-motioncards-host="time" aria-live="off"></output></footer>'+
-    '</div><div class="kafu-motioncards-final-slot" aria-live="polite" aria-atomic="true"><section class="kafu-motioncards-final" hidden><strong>Takeaway</strong><p class="kafu-motioncards-takeaway"></p><strong>Correct answer</strong><div class="kafu-motioncards-answer"></div></section><div class="kafu-motioncards-final-placeholder" aria-hidden="true"><strong>Takeaway</strong><p>Your takeaway and correct answer appear here when the animation finishes.</p></div></div></div></div>';
+      '<footer class="kafu-motioncards-controls"><button type="button" data-motioncards-host="play" disabled aria-pressed="false">Play</button><button type="button" data-motioncards-host="restart" disabled>Restart</button><button type="button" data-motioncards-host="mute" hidden aria-pressed="false">Mute voice</button><label><span class="sr-only">Animation position</span><input data-motioncards-host="seek" type="range" min="0" step="50" disabled></label><output data-motioncards-host="time" aria-live="off"></output>'+(standalone?'':'<button type="button" class="kafu-motioncards-lesson-close" data-motioncards-host="close" aria-label="Close lesson">✕</button>')+'</footer>'+
+    '</div><div class="kafu-motioncards-final-slot" aria-live="polite" aria-atomic="true"><section class="kafu-motioncards-final" hidden><strong>Takeaway</strong><p class="kafu-motioncards-takeaway"></p><strong>Correct answer</strong><div class="kafu-motioncards-answer"></div></section><div class="kafu-motioncards-final-placeholder" aria-hidden="true"><strong>Takeaway</strong><p>Your takeaway and correct answer appear here when the lesson finishes.</p></div></div></div></div>';
   const frameEl=root.querySelector("iframe"),playEl=root.querySelector("[data-motioncards-host='play']"),range=root.querySelector("[data-motioncards-host='seek']"),restartEl=root.querySelector("[data-motioncards-host='restart']"),timeLabel=root.querySelector("[data-motioncards-host='time']");
   range.max=String(record.duration_ms);root.querySelector(".kafu-motioncards-takeaway").textContent=String(record.final_panel?.takeaway||"");
   const answer=root.querySelector(".kafu-motioncards-answer");for(const text of record.final_panel?.correct_answer_statements||[]){const p=document.createElement("p");p.textContent=String(text);answer.appendChild(p);}
   active={qid,record,root,frame:frameEl,play:playEl,range,restart:restartEl,timeLabel,duration:record.duration_ms,time:0,playing:false,anchor:0,raf:0,channel:"",connected:false,focus,scrollY,
     messageHandler:connectFromReady,readyTimer:0,account:snapshot.account,session:snapshot.session,book_id:snapshot.book_id,book_version:snapshot.book_version,chapter_id:snapshot.chapter_id,contentHash:String(record.content_hash).toLowerCase(),standalone,
-    mainWasVisible:!!mainBtnVisible,backWasVisible:!!(IN_TG&&TG.BackButton?.isVisible)};
-  document.body.classList.add("kafu-motioncards-open");clearTimeout(refreshTimer);
-  const app=document.getElementById("app");if(app){app.inert=true;app.setAttribute("aria-hidden","true");}
+    mainWasVisible:!!mainBtnVisible,backWasVisible:!!(IN_TG&&TG.BackButton?.isVisible),audio:unlockedAudio,autoplay:!standalone};
+  unlockedAudio=null;clearTimeout(refreshTimer);
   window.addEventListener("message",connectFromReady);loadFrame();
-  try{if(IN_TG){TG.MainButton.hide();mainBtnVisible=false;if(tgAt("6.1"))TG.BackButton.show();}}catch(_){}
-  root.querySelector(".kafu-motioncards-close").focus();
+  if(standalone){
+    document.body.classList.add("kafu-motioncards-open");
+    const app=document.getElementById("app");if(app){app.inert=true;app.setAttribute("aria-hidden","true");}
+    try{if(IN_TG){TG.MainButton.hide();mainBtnVisible=false;if(tgAt("6.1"))TG.BackButton.show();}}catch(_){}
+    root.querySelector(".kafu-motioncards-close").focus();
+  }else{
+    if(!slotFor(qid))placeSlot(snapshot,record);
+    dock();active.resize=typeof ResizeObserver==="function"?new ResizeObserver(queueDock):null;
+    active.resize?.observe(root);active.resize?.observe(document.body);
+    root.querySelector("[data-motioncards-host='play']").focus({preventScroll:true});
+  }
 }
+let unlockedAudio=null;
+const SILENT="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=";
+function unlockAudio(){try{const a=document.createElement("audio");a.src=SILENT;const p=a.play();if(p&&p.catch)p.catch(()=>{});unlockedAudio=a;}catch(_){unlockedAudio=null;}}
 async function openTrustedPreview(qid){
   try{
     for(let i=0;i<30&&!CATALOG;i++)await sleep(100);
@@ -260,15 +296,16 @@ async function openTrustedPreview(qid){
     openPlayer(qid,record,snapshot,true);
   }catch(_){toast("MotionCard preview is unavailable or no longer compatible.");}
 }
-ACTIONS["motioncards-open"]=(d,el)=>openPlayer(d.q,el?._motioncardsRecord||safeRecordFromButton(d.q));
-const oldBack=back;back=function(...args){if(active){closePlayer();return;}return oldBack.apply(this,args);};
+ACTIONS["motioncards-open"]=(d,el)=>{unlockAudio();openPlayer(d.q,el?._motioncardsRecord||safeRecordFromButton(d.q));};
+const oldBack=back;back=function(...args){if(active){const lone=active.standalone;closePlayer(false);if(lone)return;}return oldBack.apply(this,args);};
 const oldRender=render;render=function(...args){
   const result=oldRender.apply(this,args),now=current();
   if(active&&!active.standalone){
     if(!sameIdentity(now,active)){closePlayer(false);}
     else Core.questionHash(now.q).then(hash=>{if(active&&!active.standalone&&hash!==active.contentHash)closePlayer(false);}).catch(()=>closePlayer(false));
   }
-  if(active){try{if(IN_TG){TG.MainButton.hide();mainBtnVisible=false;if(tgAt("6.1"))TG.BackButton.show();}}catch(_){}}
+  if(active?.standalone){try{if(IN_TG){TG.MainButton.hide();mainBtnVisible=false;if(tgAt("6.1"))TG.BackButton.show();}}catch(_){}}
+  else if(active){placeSlot(now,active.record);dock();}
   else refreshAvailability();
   return result;
 };
@@ -281,7 +318,7 @@ document.addEventListener("input",event=>{if(active&&event.target.matches("[data
 document.addEventListener("keydown",event=>{
   if(!active)return;
   if(event.key==="Escape"){event.preventDefault();event.stopImmediatePropagation();closePlayer();return;}
-  if(event.key==="Tab"){
+  if(event.key==="Tab"&&active.standalone){
     const focusable=[...active.root.querySelectorAll("button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex='-1'])")].filter(x=>!x.hidden);
     if(focusable.length){const first=focusable[0],last=focusable.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}
     return;

@@ -1,75 +1,7 @@
-/* Kafu MotionCards / proposed host UI only.
-   Apply with snippets/DOM_SNIPPETS.html, not to unchanged production markup.
-   Existing application tokens are inherited. No global theme or MCQ redesign.
-   Source baseline: 93d89e8e2f5aadf5cb2e498eb7ea47d52055b4a6. */
-
-.kafu-motioncards-trigger,
-.kafu-motioncards-overlay {
-  --kafu-motioncards-primary: var(--color-primary, #5b4cff);
-  --kafu-motioncards-on-primary: var(--color-on-primary, #fff);
-  --kafu-motioncards-surface: var(--color-surface, #fff);
-  --kafu-motioncards-ink: var(--color-text, #182032);
-  --kafu-motioncards-muted: var(--color-muted, #526079);
-  --kafu-motioncards-border: var(--color-border, #cad2e3);
-  --kafu-motioncards-focus: var(--color-focus, #2d67f6);
-  font-family: var(--font-ui, system-ui, -apple-system, 'Segoe UI', sans-serif);
-  color: var(--kafu-motioncards-ink);
-  box-sizing: border-box;
-}
-.kafu-motioncards-overlay *,
+.kafu-motioncards-overlay, .kafu-motioncards-overlay *,
 .kafu-motioncards-overlay *::before,
 .kafu-motioncards-overlay *::after,
-.kafu-motioncards-trigger * { box-sizing: border-box; }
 
-/* Real DOM sibling before .k-question-head, never visually reordered stem content. */
-.kafu-motioncards-trigger {
-  inline-size: fit-content;
-  max-inline-size: 100%;
-  min-block-size: 48px;
-  margin: 0 0 10px auto;
-  padding: 7px 11px 7px 8px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-align: start;
-  background: var(--color-primary-soft, #e8e5ff);
-  border: 1px solid var(--kafu-motioncards-border);
-  border-radius: 14px;
-  box-shadow: none;
-  cursor: pointer;
-  transition: background-color 140ms ease, border-color 140ms ease, transform 100ms ease;
-}
-.kafu-motioncards-trigger-icon {
-  inline-size: 36px;
-  block-size: 28px;
-  border-radius: 8px;
-  display: grid;
-  place-items: center;
-  flex: none;
-  background: var(--kafu-motioncards-primary);
-  color: var(--kafu-motioncards-on-primary);
-  font-size: 13px;
-  line-height: 1;
-}
-.kafu-motioncards-trigger-icon svg { inline-size: 14px; block-size: 14px; fill: currentColor; }
-.kafu-motioncards-trigger > span:last-child { min-inline-size: 0; }
-.kafu-motioncards-trigger strong {
-  display: block;
-  font-size: .8125rem;
-  font-weight: 750;
-  line-height: 1.3;
-  overflow-wrap: anywhere;
-}
-.kafu-motioncards-trigger small {
-  display: block;
-  color: var(--kafu-motioncards-muted);
-  font-size: .71875rem;
-  line-height: 1.4;
-  margin-block-start: 1px;
-}
-.kafu-motioncards-trigger:active { transform: translateY(1px); box-shadow: none; }
-
-/* Author display:flex must NEVER defeat the existing hidden state. */
 #kafu-motioncards-root[hidden],
 .kafu-motioncards-loading[hidden],
 .kafu-motioncards-error[hidden],
@@ -163,8 +95,6 @@
   border-radius: 20px;
   box-shadow: 0 6px 24px #0000000a;
 }
-/* Stable host dimensions; NOT tied to whether the final note is displayed.
-   No transforms, filters, clipping tricks or CSS injected inside the content iframe. */
 .kafu-motioncards-stage {
   position: relative;
   min-inline-size: 0;
@@ -214,8 +144,6 @@
   border-color: var(--kafu-motioncards-primary);
   color: var(--kafu-motioncards-on-primary);
 }
-/* Error first in the proposed status wrapper. A real error takes visual precedence
-   over the loader that the existing fail() function may leave unhidden. */
 .kafu-motioncards-error:not([hidden]) ~ .kafu-motioncards-loading { display: none; }
 
 .kafu-motioncards-controls {
@@ -380,15 +308,15 @@
 .kafu-motioncards-final-placeholder strong { display: block; margin-block-end: 8px; font-size: .875rem; }
 .kafu-motioncards-final-placeholder p { margin: 0; max-inline-size: 32ch; }
 
-.kafu-motioncards-trigger:focus-visible,
+.kafu-motioncards-lesson-poster:focus-visible,
+.kafu-motioncards-lesson-player button:focus-visible,
 .kafu-motioncards-overlay button:focus-visible,
 .kafu-motioncards-controls input:focus-visible {
   outline: 3px solid var(--kafu-motioncards-focus);
   outline-offset: 3px;
 }
 @media (hover: hover) {
-  .kafu-motioncards-trigger:hover { border-color: var(--kafu-motioncards-primary); }
-  .kafu-motioncards-close:hover,
+    .kafu-motioncards-close:hover,
   .kafu-motioncards-controls [data-motioncards-host='restart']:not(:disabled):hover { background: var(--color-surface-alt, #fff0cc); }
   .kafu-motioncards-controls [data-motioncards-host='play']:not(:disabled):hover,
   .kafu-motioncards-error button:hover { background: var(--color-primary-strong, #4336d8); border-color: var(--color-primary-strong, #4336d8); }
@@ -405,14 +333,14 @@
 }
 @keyframes kafu-motioncards-note-in { from { opacity: .25; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
-  .kafu-motioncards-trigger,
+  .kafu-motioncards-lesson-poster,
   .kafu-motioncards-overlay button,
   .kafu-motioncards-final { transition: none; animation: none; }
-  .kafu-motioncards-trigger:active,
+  .kafu-motioncards-lesson-poster:active,
   .kafu-motioncards-overlay button:not(:disabled):active { transform: none; }
 }
 @media (forced-colors: active) {
-  .kafu-motioncards-trigger,
+  .kafu-motioncards-lesson-poster,
   .kafu-motioncards-overlay button,
   .kafu-motioncards-final,
   .kafu-motioncards-error { border: 1px solid ButtonText; }
@@ -420,3 +348,29 @@
   .kafu-motioncards-controls input[type='range']::-webkit-slider-thumb { background: Highlight; border-color: Canvas; box-shadow: 0 0 0 1px ButtonText; }
 }
 body.kafu-motioncards-open { overflow: hidden; }
+
+.kafu-motioncards-lesson-slot { margin: 14px 0 6px; }
+.kafu-motioncards-lesson-poster {
+  inline-size: 100%; aspect-ratio: 16 / 9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  border: 1px solid var(--color-border, #cad2e3); border-radius: 16px; cursor: pointer; color: #fff; font: inherit;
+  background: radial-gradient(ellipse at 50% 40%, #3b3a52 0%, #1d1b2b 70%); box-shadow: 0 6px 18px rgba(0,0,0,.18);
+}
+.kafu-motioncards-lesson-poster:active { transform: translateY(1px); }
+.kafu-motioncards-lesson-play {
+  inline-size: 64px; block-size: 64px; border-radius: 50%; display: grid; place-items: center; font-size: 24px; padding-inline-start: 5px;
+  background: rgba(255,255,255,.94); color: #1d1b2b; box-shadow: 0 4px 16px rgba(0,0,0,.35);
+}
+.kafu-motioncards-lesson-label { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.kafu-motioncards-lesson-label strong { font-size: 1rem; font-weight: 750; }
+.kafu-motioncards-lesson-label small { font-size: .8125rem; opacity: .82; }
+.kafu-motioncards-lesson-slot.is-playing .kafu-motioncards-lesson-poster { visibility: hidden; }
+.kafu-motioncards-lesson-root { z-index: 4; }
+.kafu-motioncards-lesson-player { display: flex; flex-direction: column; gap: 8px; font-family: var(--font-ui, system-ui, sans-serif); color: var(--color-text, #182032); }
+.kafu-motioncards-lesson-player .kafu-motioncards-scroll, .kafu-motioncards-lesson-player .kafu-motioncards-main { display: flex; flex-direction: column; gap: 8px; overflow: visible; padding: 0; min-block-size: 0; }
+.kafu-motioncards-lesson-stage { position: relative; inline-size: 100%; aspect-ratio: 16 / 9; block-size: auto; max-block-size: none; border-radius: 16px; overflow: hidden; background: #000; }
+.kafu-motioncards-lesson-stage iframe { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; border: 0; }
+.kafu-motioncards-lesson-player .kafu-motioncards-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.kafu-motioncards-lesson-player .kafu-motioncards-controls label { flex: 1 1 120px; display: flex; }
+.kafu-motioncards-lesson-player .kafu-motioncards-controls input[type=range] { inline-size: 100%; }
+.kafu-motioncards-lesson-close { margin-inline-start: auto; }
+.kafu-motioncards-lesson-player [data-motioncards-host][hidden], .kafu-motioncards-lesson-player .kafu-motioncards-final-placeholder { display: none !important; }

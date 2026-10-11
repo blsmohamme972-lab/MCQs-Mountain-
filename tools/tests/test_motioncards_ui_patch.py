@@ -14,10 +14,11 @@ class MotionCardsUiPatchTests(unittest.TestCase):
         cls.player = PLAYER.read_text(encoding="utf-8")
         cls.css = CSS.read_text(encoding="utf-8")
 
-    def test_trigger_is_reparented_before_question_head(self):
-        self.assertIn('const anchor=section.querySelector(".k-question-head")||stem.closest(".k-question-card");', self.player)
-        self.assertIn("button.nextElementSibling!==anchor", self.player)
-        self.assertNotIn("stem.parentNode.insertBefore(button,stem)", self.player)
+    def test_lesson_slot_sits_below_the_mcq(self):
+        self.assertIn('const ex=section.querySelector(".explain");if(ex)return ex;', self.player)
+        self.assertIn("if(anchor.nextElementSibling!==slot)anchor.after(slot);", self.player)
+        self.assertIn("aspect-ratio: 16 / 9", self.css)
+        self.assertNotIn("kafu-motioncards-trigger", self.player + self.css)
 
     def test_player_dom_keeps_status_before_controls_and_final_after_controls(self):
         self.assertIn('class="kafu-motioncards-status"', self.player)
