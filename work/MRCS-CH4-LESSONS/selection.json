@@ -62,12 +62,12 @@
     },
     {
       "qid": "Q000009339",
-      "duration_ms": 30000,
+      "duration_ms": 26100,
       "content_hash": "9c7110d685a7185ca1d3c74c86f2bc6b7a93f943550349bd5412dc50ad244c01"
     },
     {
       "qid": "Q000009340",
-      "duration_ms": 30000,
+      "duration_ms": 24700,
       "content_hash": "3db178d4e6cbeab975a29947f2bffdb7ab436e0c3cf645d92139423314d19c96"
     }
   ]
