@@ -2,9 +2,9 @@
  "qid": "Q000009312",
  "file": "Q000009312.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 89021,
- "sha256": "28ddd8de11706cf0388b25f2edcb22f1ecc9ae6b7c3927a8c07cfab464193d5b",
- "track_ms": 29793,
+ "bytes": 91424,
+ "sha256": "21e023a8a0443cb57fee15914091e359ba5d740b6436e4fca4896b42a3ceb163",
+ "track_ms": 30528,
  "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
  "bitrate": "24k",
  "cues": [
@@ -25,17 +25,17 @@
   },
   {
    "t_ms": 14273,
-   "end_ms": 18394,
+   "end_ms": 19129,
    "text": "They arise from the vestibulocochlear nerve, at the auditory meatus."
   },
   {
-   "t_ms": 18844,
-   "end_ms": 23637,
+   "t_ms": 19579,
+   "end_ms": 24372,
    "text": "So the lesion is not coming from the cerebellum itself, even though it lies right beside it."
   },
   {
-   "t_ms": 24087,
-   "end_ms": 29193,
+   "t_ms": 24822,
+   "end_ms": 29928,
    "text": "A lesion at the cerebellopontine angle usually arises from the vestibulocochlear nerve."
   }
  ]

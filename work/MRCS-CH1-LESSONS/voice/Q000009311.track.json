@@ -2,9 +2,9 @@
  "qid": "Q000009311",
  "file": "Q000009311.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 94572,
- "sha256": "483cf7014aa13899c4256b997b64a168b2fb350f1482ff6348843717aa27cdd8",
- "track_ms": 34131,
+ "bytes": 97272,
+ "sha256": "4c7098470802a854a063648762ab50f2049d2ee14f8609f48fba78e1226cbc51",
+ "track_ms": 34876,
  "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
  "bitrate": "24k",
  "cues": [
@@ -20,27 +20,27 @@
   },
   {
    "t_ms": 10517,
-   "end_ms": 13443,
+   "end_ms": 14188,
    "text": "On the same side, there is a systolic carotid bruit."
   },
   {
-   "t_ms": 13893,
-   "end_ms": 17701,
+   "t_ms": 14638,
+   "end_ms": 18446,
    "text": "Follow the arterial supply up from the neck towards the eye."
   },
   {
-   "t_ms": 18151,
-   "end_ms": 21637,
+   "t_ms": 18896,
+   "end_ms": 22382,
    "text": "The central artery of the retina is a branch of the ophthalmic artery."
   },
   {
-   "t_ms": 22087,
-   "end_ms": 28528,
+   "t_ms": 22832,
+   "end_ms": 29273,
    "text": "And the ophthalmic artery enters the orbit through the optic canal, together with the optic nerve."
   },
   {
-   "t_ms": 28978,
-   "end_ms": 33531,
+   "t_ms": 29723,
+   "end_ms": 34276,
    "text": "So the artery that supplies the retina enters the orbit through the optic canal."
   }
  ]
