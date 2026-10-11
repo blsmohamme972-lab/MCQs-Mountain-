@@ -8,6 +8,8 @@ You are making Kafu IMAGE LESSONS (not MotionCards) for the repo blsmohamme972-l
 An image lesson = one landscape illustration + voice, played below its MCQ in the app. I (the owner) upload the ZIP
 to my Telegram bot and check the voice and the picture myself. Work fast: no speech-recognition check, no frame
 renders, no MP4 previews. Do not change app code.
+Do it in ONE pass: write all lesson files at once, build once, package once. Do not stop to ask or report progress
+unless something is broken; send one short message at the end with the ZIP.
 
 ✏️ CHAPTER: MRCS-PARTA-550-2E chapter <N>, all questions in the export below (skip: <QIDs or none>)
 ✏️ PACKAGE ID: MRCS-CH<N>   (ZIP name MCARDS_MRCS-CH<N>_r1.zip; short ids only)
@@ -35,11 +37,13 @@ READ FIRST: CLAUDE.md, motioncards/lib/lesson.py.
    - 6-8 lines, 70-90 words (31-35 s); every line points at what it talks about.
    - Facts only from the stem, answer and explanation; never change the key or invent numbers.
    - Known Breeze respellings are in voiceover/lexicon.json (say_breeze); add one only if a word is plainly wrong.
-6. Build in the background (about 50 s per line; never two Breeze jobs at once; wait for the completion
-   notice, do not poll): ~/.venvs/kafu-voice/bin/python tools/motioncards.py lesson --workspace work/MRCS-CH<N>-LESSONS
-7. python3 tools/motioncards.py lint --workspace work/MRCS-CH<N>-LESSONS   (must PASS)
-   python3 tools/motioncards.py package work/input/<export> --workspace work/MRCS-CH<N>-LESSONS --out dist/MCARDS_MRCS-CH<N>_r1.zip
-   python3 tools/motioncards.py validate dist/MCARDS_MRCS-CH<N>_r1.zip   (must PASS; <= 19 MB)
+6. Build, lint, package and validate in ONE background command (about 50 s per voice line; never two Breeze jobs
+   at once; wait for the completion notice, do not poll):
+   W=work/MRCS-CH<N>-LESSONS; E=work/input/MRCS-PARTA-550-2E-ch<N>.export.json; Z=dist/MCARDS_MRCS-CH<N>_r1.zip
+   ~/.venvs/kafu-voice/bin/python tools/motioncards.py lesson --workspace $W && python3 tools/motioncards.py lint --workspace $W
+   && python3 tools/motioncards.py package $E --workspace $W --out $Z && python3 tools/motioncards.py validate $Z
+   (lint and validate must PASS; ZIP <= 19 MB)
+7. If something fails, fix only that and re-run step 6 (finished voice lines are cached and not re-spoken).
 8. Commit the workspace and the ZIP, push, open a PR, send me the ZIP. Keep messages short.
 
 If the bot answers "animation_replace_requires_explicit_intent", the questions are already live: set
