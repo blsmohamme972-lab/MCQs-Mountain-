@@ -2,45 +2,45 @@
  "qid": "Q000009318",
  "file": "Q000009318.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 88879,
- "sha256": "f1c0cd46df3b12446605f7039a51ce405cf602f447150f489889d57fb2f8b019",
- "track_ms": 30214,
+ "bytes": 87440,
+ "sha256": "01d011e5dc367ecbf384803acb63ec685a72aea0ec9cee0e50f2cf825b56f292",
+ "track_ms": 29839,
  "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
  "bitrate": "24k",
  "cues": [
   {
    "t_ms": 500,
-   "end_ms": 4231,
+   "end_ms": 3856,
    "text": "A 35-year-old woman is having a hemithyroidectomy."
   },
   {
-   "t_ms": 4681,
-   "end_ms": 6899,
+   "t_ms": 4306,
+   "end_ms": 6524,
    "text": "Half of her thyroid gland is being removed."
   },
   {
-   "t_ms": 7349,
-   "end_ms": 11165,
+   "t_ms": 6974,
+   "end_ms": 10790,
    "text": "To do this, the surgeon has to ligate the inferior thyroid artery."
   },
   {
-   "t_ms": 11615,
-   "end_ms": 15306,
+   "t_ms": 11240,
+   "end_ms": 14931,
    "text": "But a tie placed here can catch a nerve lying close beside it."
   },
   {
-   "t_ms": 15756,
-   "end_ms": 18142,
+   "t_ms": 15381,
+   "end_ms": 17767,
    "text": "That nerve is the recurrent laryngeal nerve."
   },
   {
-   "t_ms": 18592,
-   "end_ms": 22973,
+   "t_ms": 18217,
+   "end_ms": 22598,
    "text": "Picture the artery as a road, with the nerve running right next to it."
   },
   {
-   "t_ms": 23423,
-   "end_ms": 29614,
+   "t_ms": 23048,
+   "end_ms": 29239,
    "text": "The nerve is closely related to the inferior thyroid artery, so it is at risk whenever that artery is tied."
   }
  ]
