@@ -2,9 +2,9 @@
  "qid": "Q000009326",
  "file": "Q000009326.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 84488,
- "sha256": "a9ab23174f1d95734ae2186c4199466320974fcdc3abcc1bde599786ca46a730",
- "track_ms": 28833,
+ "bytes": 98290,
+ "sha256": "4b14a25fda9589a7cf9611e28f5bce38388bd254e0fc8104288a69bc28321a11",
+ "track_ms": 33529,
  "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
  "bitrate": "24k",
  "cues": [
@@ -42,6 +42,11 @@
    "t_ms": 24210,
    "end_ms": 28233,
    "text": "so injury to it paralyses the muscle and causes winging of the scapula."
+  },
+  {
+   "t_ms": 28683,
+   "end_ms": 32929,
+   "text": "Remember: long thoracic nerve, serratus anterior, winged scapula."
   }
  ]
 }
