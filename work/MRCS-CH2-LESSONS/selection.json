@@ -42,17 +42,17 @@
     },
     {
       "qid": "Q000009319",
-      "duration_ms": 26600,
+      "duration_ms": 30300,
       "content_hash": "cce9f990b93ff66746392cc0d97b052ac3861fb4357b54b1fe32c8119f646665"
     },
     {
       "qid": "Q000009320",
-      "duration_ms": 35300,
+      "duration_ms": 35600,
       "content_hash": "50a79bd09de673370f4cdf15564da82fb286275fa551b9919c685c96885de346"
     },
     {
       "qid": "Q000009321",
-      "duration_ms": 29900,
+      "duration_ms": 33400,
       "content_hash": "55c1875bcbac46dec0a3a790d99e182e621b4edbb5e139d6f4d55f3c0ca9749e"
     },
     {
@@ -62,7 +62,7 @@
     },
     {
       "qid": "Q000009323",
-      "duration_ms": 30100,
+      "duration_ms": 30300,
       "content_hash": "462ce00ebe0aa733525754bd610795c22db8ceae4184b913bb1bc29fb620a3c2"
     },
     {

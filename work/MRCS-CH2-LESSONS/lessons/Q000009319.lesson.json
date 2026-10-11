@@ -12,7 +12,7 @@
   },
   {
    "x": 720,
-   "y": 500,
+   "y": 554,
    "z": 2,
    "spot": [
     710,
@@ -82,15 +82,15 @@
    "shot": 1
   },
   {
-   "text": "Washing his face sets off the pain.",
+   "text": "Simple things set it off. Washing his face brings on the pain.",
    "shot": 2
   },
   {
-   "text": "Shaving brings on the same pain.",
+   "text": "When he shaves, the same pain in his face comes back.",
    "shot": 3
   },
   {
-   "text": "Eating brings it on as well.",
+   "text": "Even eating a meal can bring the pain on as well.",
    "shot": 4
   },
   {

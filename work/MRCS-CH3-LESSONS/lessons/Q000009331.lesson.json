@@ -22,7 +22,7 @@
   },
   {
    "x": 1254,
-   "y": 560,
+   "y": 624,
    "z": 2,
    "spot": [
     1390,
@@ -32,7 +32,7 @@
   },
   {
    "x": 850,
-   "y": 260,
+   "y": 304,
    "z": 2,
    "spot": [
     850,
@@ -52,7 +52,7 @@
   },
   {
    "x": 850,
-   "y": 300,
+   "y": 350,
    "z": 2.4,
    "spot": [
     860,
@@ -72,15 +72,15 @@
    "shot": 0
   },
   {
-   "text": "Tinel's sign is positive over her wrist,",
+   "text": "Tinel's sign is positive: tapping over her wrist sets off the tingling.",
    "shot": 1
   },
   {
-   "text": "and Phalen's sign is positive too.",
+   "text": "Phalen's sign is positive too, with both wrists held bent.",
    "shot": 2
   },
   {
-   "text": "This is carpal tunnel syndrome.",
+   "text": "Together, these findings point to carpal tunnel syndrome.",
    "shot": 3,
    "tag": "Carpal tunnel syndrome"
   },

@@ -2,9 +2,9 @@
  "qid": "Q000009324",
  "file": "Q000009324.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 89238,
- "sha256": "217411f0212402964e705f27a317a4ec694db628d86abb0901ee626751ef05db",
- "track_ms": 31491,
+ "bytes": 88889,
+ "sha256": "7f4883bf0bb45f93c1d88fbab8cbd05ac674670251d8c66040fe7fd4d4d8157c",
+ "track_ms": 31466,
  "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
  "bitrate": "24k",
  "cues": [
@@ -40,7 +40,7 @@
   },
   {
    "t_ms": 25708,
-   "end_ms": 30891,
+   "end_ms": 30866,
    "text": "So this mediastinal adenoma developed from the 3rd pharyngeal pouch."
   }
  ]

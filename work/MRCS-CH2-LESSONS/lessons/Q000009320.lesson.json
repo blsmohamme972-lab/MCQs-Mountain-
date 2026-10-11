@@ -35,14 +35,14 @@
    "y": 706,
    "z": 2,
    "spot": [
-    230,
-    750,
-    150
+    200,
+    690,
+    130
    ]
   },
   {
    "x": 1254,
-   "y": 500,
+   "y": 564,
    "z": 2,
    "spot": [
     1330,
@@ -82,11 +82,11 @@
    "shot": 1
   },
   {
-   "text": "He also has fainting attacks,",
+   "text": "He also suffers from attacks of fainting,",
    "shot": 2
   },
   {
-   "text": "and disturbances of his vision.",
+   "text": "and he has disturbances of his vision as well.",
    "shot": 3
   },
   {

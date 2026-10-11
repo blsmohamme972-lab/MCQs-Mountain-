@@ -2,9 +2,9 @@
  "qid": "Q000009319",
  "file": "Q000009319.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 75411,
- "sha256": "b48fad866f1d8b5d41d6f5790f82ce3bcf42ce7db6bdbd6c3fc1325962c8ca0a",
- "track_ms": 26294,
+ "bytes": 85922,
+ "sha256": "fe0166f59310a85a4e8bba6b6829a2705432c3dc7c282cd73d47f3d1b289afd3",
+ "track_ms": 29927,
  "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
  "bitrate": "24k",
  "cues": [
@@ -40,12 +40,17 @@
   },
   {
    "t_ms": 16900,
-   "end_ms": 22146,
+   "end_ms": 20083,
+   "text": "So which nerve carries feeling from his face and both jaws?"
+  },
+  {
+   "t_ms": 20533,
+   "end_ms": 25779,
    "text": "This is trigeminal neuralgia, pain in the sensory distribution of the trigeminal nerve."
   },
   {
-   "t_ms": 22596,
-   "end_ms": 25694,
+   "t_ms": 26229,
+   "end_ms": 29327,
    "text": "So the nerve causing his symptoms is the trigeminal nerve."
   }
  ]

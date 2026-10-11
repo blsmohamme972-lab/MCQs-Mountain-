@@ -12,7 +12,7 @@
   },
   {
    "x": 418,
-   "y": 470,
+   "y": 544,
    "z": 2,
    "spot": [
     330,
@@ -32,7 +32,7 @@
   },
   {
    "x": 1254,
-   "y": 620,
+   "y": 674,
    "z": 2,
    "spot": [
     1180,
@@ -66,7 +66,7 @@
    "shot": 2
   },
   {
-   "text": "On the same side, she has a wrist drop.",
+   "text": "On the same side, she has a wrist drop: she cannot lift her hand.",
    "shot": 3
   },
   {
