@@ -15,7 +15,8 @@ unless something is broken; send one short message at the end with the ZIP.
 ✏️ PACKAGE ID: MRCS-CH<N>   (ZIP name MCARDS_MRCS-CH<N>_r1.zip; short ids only)
 ✏️ ALREADY LIVE: <yes | no>  (yes = these questions already have an animation in the app)
 VOICE ENGINE: breeze (my answer to the CLAUDE.md engine question; do not ask again)
-STYLE: one narrator, Breeze lecturer-woman (default). Leave out "who", "voices" and "names".
+STYLE: one narrator per question; the builder gives each question a different Breeze voice, women and men taking
+turns (BREEZE_ROTATION in voiceover/voiceover.py). Leave out "voice", "who", "voices" and "names".
 IMAGES: attached, one per question in source order. Save each as work/MRCS-CH<N>-LESSONS/lessons/<QID>.png.
 
 READ FIRST: CLAUDE.md, motioncards/lib/lesson.py.

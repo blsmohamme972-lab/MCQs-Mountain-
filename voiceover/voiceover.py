@@ -82,10 +82,16 @@ BREEZE_VOICES = {
     "student-man": "A young male medical student with a friendly, curious voice and a lively, natural delivery."}
 
 
+# Owner's standard (Oct 2026): a different Breeze voice per question, women and men taking turns.
+BREEZE_ROTATION = ["lecturer-woman", "doctor-man", "student-woman", "lecturer-man", "doctor-woman", "student-man"]
+
+
 def engine_voice(engine: str, qid: str = "") -> str:
-    """The voice a new or switched script gets: ElevenLabs rotates through ELEVEN_VOICES by QID, Kokoro keeps its one voice."""
+    """The voice a new or switched script gets: ElevenLabs and Breeze rotate by QID (women and men taking turns, so a
+    question keeps its voice on every run), Kokoro keeps its one voice."""
     digits = re.sub(r"\D", "", qid or "")
     if engine == "elevenlabs" and digits: return ELEVEN_VOICES[int(digits) % len(ELEVEN_VOICES)][1]
+    if engine == "breeze" and digits: return BREEZE_ROTATION[int(digits) % len(BREEZE_ROTATION)]
     return ENGINES[engine]["voice"]
 
 
