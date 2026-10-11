@@ -2,9 +2,9 @@
  "qid": "Q000009328",
  "file": "Q000009328.opus",
  "mime": "audio/ogg; codecs=opus",
- "bytes": 82223,
- "sha256": "8004c22f20e6ae6eea33e976a51c5c3972b149a2c453785396989ce209ed43db",
- "track_ms": 28738,
+ "bytes": 94417,
+ "sha256": "dc1b25487c192650f68ff26a305e6ee741a019470cbb699494041f4da4c6f844",
+ "track_ms": 33624,
  "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
  "bitrate": "24k",
  "cues": [
@@ -42,6 +42,11 @@
    "t_ms": 25830,
    "end_ms": 28138,
    "text": "Radial nerve injury causes her wrist drop."
+  },
+  {
+   "t_ms": 28588,
+   "end_ms": 33024,
+   "text": "Remember: humeral shaft fracture, radial nerve, wrist drop."
   }
  ]
 }
