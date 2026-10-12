@@ -15,7 +15,10 @@
   // Telegram's own placeholder gradients, so photo-less accounts look exactly like Telegram's.
   const GRADIENTS=[['#FF885E','#FF516A'],['#FFCD6A','#FFA85C'],['#82B1FF','#665FFF'],['#A0DE7E','#54CB68'],
     ['#53EDD6','#28C9B7'],['#72D5FD','#2A9EF1'],['#E0A2F3','#D669ED']];
-  const PHOTOS=30; // app/assets/avatars/a01..a30.webp (see SOURCES.txt)
+  const PHOTOS=35; // app/assets/avatars/a01..a35.webp (see SOURCES.txt); a31 is the "star" account's picture
+  // Duolingo-style leagues: a group of 30, top 7 move up, bottom 5 move down. Higher leagues study harder.
+  const LEAGUES=['Bronze','Silver','Gold','Sapphire','Ruby','Emerald','Diamond'],FACTOR=[0.35,0.5,0.65,0.8,1,1.2,1.45];
+  const COHORT=30,PROMOTE=7,DEMOTE=5,STAR='Hiba 🌸';
   function hash(s){let h=2166136261;for(const c of String(s)){h^=c.codePointAt(0);h=Math.imul(h,16777619)}return h>>>0}
   function rng(seed){let a=seed>>>0;return()=>{a=a+0x6D2B79F5>>>0;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
   const roll=(...k)=>rng(hash(k.join('|')))();
@@ -36,11 +39,15 @@
     const evening=0.6+0.8*r();                      // how late in the day they study
     const weeks=r()<0.2?0:1+Math.floor(r()*20);
     const gradient=GRADIENTS[hash(name)%GRADIENTS.length];
-    return{id:'r'+i,name,pace,loyalty,evening,weeks,photo:null,gradient,initials:initials(name)};
+    const star=name===STAR;
+    return{id:'r'+i,name,pace:star?1250:pace,loyalty:star?0.93:loyalty,evening,weeks,star,photo:null,gradient,initials:initials(name)};
   }
   const RIVALS=NAMES.map(profile);
   // About half the accounts have a profile picture, each picture used once, like a real group.
-  RIVALS.map((p,i)=>[hash('photo|'+p.name),i]).sort((a,b)=>a[0]-b[0]).slice(0,PHOTOS).forEach(([,i],k)=>{RIVALS[i].photo='assets/avatars/a'+String(k+1).padStart(2,'0')+'.webp'});
+  const pic=k=>'assets/avatars/a'+String(k).padStart(2,'0')+'.webp';
+  RIVALS.filter(p=>!p.star).map((p,i)=>[hash('photo|'+p.name),p]).sort((a,b)=>a[0]-b[0]).slice(0,PHOTOS-1)
+    .forEach(([,p],k)=>{p.photo=pic(k<30?k+1:k+2)});
+  RIVALS.find(p=>p.star).photo=pic(31);
   const tens=x=>Math.max(0,Math.round(x/10)*10);
   function dayXp(p,day){
     if(roll(p.name,'on',day)<=p.loyalty)return tens(p.pace*(0.35+1.3*roll(p.name,'amt',day)));
@@ -52,10 +59,10 @@
     const x=Math.min(1,Math.max(0,(hour-7)/16));
     return Math.pow(x,p.evening);
   }
-  function weekly(p,now){
+  function weekly(p,now,f=1){
     const c=clock(now);let xp=0;
     for(let d=c.weekStartDay;d<c.day;d++)xp+=dayXp(p,d);
-    return tens(xp+dayXp(p,c.day)*dayShare(p,c.hour));
+    return tens(f*(xp+dayXp(p,c.day)*dayShare(p,c.hour)));
   }
   function allTime(p,now){
     return tens(p.pace*p.loyalty*7*p.weeks*(0.2+0.2*roll(p.name,'past'))+weekly(p,now));
@@ -69,31 +76,53 @@
     const c=clock(now),slot=Math.floor(now/(10*60000));
     return dayXp(p,c.day)>0&&c.hour>=8&&roll(p.name,'online',slot)<0.08+0.25*dayShare(p,c.hour)*(p.pace/1400);
   }
-  function score(p,period,now){return period==='all'?allTime(p,now):weekly(p,now)}
+  function score(p,period,now,f){return period==='all'?allTime(p,now):weekly(p,now,f)}
   function rank(entries){
     return entries.slice().sort((a,b)=>b.xp-a.xp||(a.own?-1:b.own?1:0)||a.name.localeCompare(b.name)).map((x,i)=>({...x,rank:i+1}));
   }
-  function field(period,now){return RIVALS.map(p=>({id:p.id,name:p.name,xp:score(p,period,now),initials:p.initials,gradient:p.gradient,photo:p.photo})).filter(x=>x.xp>0)}
-  function board(period,now,own){
-    period=period==='all'?'all':'weekly';
+  // This week's group: 29 rivals picked per student and week (the star account is always in it).
+  function cohort(weekKey,uid){
+    const star=RIVALS.find(p=>p.star),rest=RIVALS.filter(p=>!p.star).map(p=>[hash(weekKey+'|'+uid+'|'+p.name),p]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+    return [star,...rest.slice(0,COHORT-2)];
+  }
+  function field(period,now,league,uid){
+    const f=FACTOR[league]||1,pool=period==='all'?RIVALS:cohort(clock(now).weekKey,uid);
+    const rows=pool.map(p=>({id:p.id,name:p.name,star:p.star,xp:score(p,period,now,f),initials:p.initials,gradient:p.gradient,photo:p.photo})).filter(x=>x.xp>0);
+    if(period==='weekly'){
+      // Keep the star account among the leaders, just above whoever would otherwise be 7th.
+      const star=rows.find(x=>x.star),others=rows.filter(x=>!x.star).sort((a,b)=>b.xp-a.xp),seventh=others[PROMOTE-2];
+      if(star&&seventh&&star.xp<=seventh.xp)star.xp=tens(seventh.xp+10+40*roll(STAR,'lead',clock(now).day));
+    }
+    return rows;
+  }
+  function board(period,now,own,league=0){
+    period=period==='all'?'all':'weekly';league=Math.max(0,Math.min(LEAGUES.length-1,league|0));
+    const uid=own.id||'me';
     const me={id:'me',own:true,name:own.name||'You',photo:own.photo||null,initials:initials(own.name||'You'),gradient:GRADIENTS[hash(own.id||'me')%GRADIENTS.length],xp:tens(own[period==='all'?'allXp':'weeklyXp']||0),streak:own.streak||0};
-    const ranked=rank([...field(period,now),me]);
+    const ranked=rank([...field(period,now,league,uid),me]);
     // Movement since yesterday; early in a new week, since the start of the week (at least an hour).
     const c=clock(now),span=period==='weekly'?Math.max(HOUR,Math.min(DAY,(now-c.weekStart)/2)):DAY;
     const ownBefore=period==='all'?own.allXpBefore:own.weeklyXpBefore;
-    const was=new Map(field(period,now-span).map(x=>[x.id,x.xp]));
-    const before=new Map(rank([...field(period,now-span),{...me,xp:tens(typeof ownBefore==='function'?ownBefore(span):0)}]).map(x=>[x.id,x.rank]));
+    const then=field(period,now-span,league,uid),was=new Map(then.map(x=>[x.id,x.xp]));
+    const before=new Map(rank([...then,{...me,xp:tens(typeof ownBefore==='function'?ownBefore(span):0)}]).map(x=>[x.id,x.rank]));
     const rows=ranked.map(x=>{
       const p=x.own?null:RIVALS[Number(x.id.slice(1))];
       return{...x,move:x.own||was.get(x.id)?(before.get(x.id)||x.rank)-x.rank:0,streak:p?streak(p,now):x.streak,online:p?online(p,now):true};
     });
     const mine=rows.find(x=>x.own),ahead=rows[mine.rank-2]||null;
-    return{period,rows,own:mine,ahead,gap:ahead?Math.max(10,ahead.xp-mine.xp+10):0,clock:clock(now),size:rows.length};
+    const zones=period==='weekly'?{promote:league<LEAGUES.length-1?PROMOTE:0,demote:league>0&&rows.length>PROMOTE+DEMOTE?DEMOTE:0}:{promote:0,demote:0};
+    return{period,rows,own:mine,ahead,gap:ahead?Math.max(10,ahead.xp-mine.xp+10):0,clock:clock(now),size:rows.length,league,leagueName:LEAGUES[league],zones};
+  }
+  // Where a finished week leaves the student: up, down or the same league.
+  function outcome(rank,size,league,zones){
+    if(zones.promote&&rank<=zones.promote)return Math.min(LEAGUES.length-1,league+1);
+    if(zones.demote&&rank>size-zones.demote)return Math.max(0,league-1);
+    return league;
   }
   function ownXp(answers,now){
     const c=clock(now),valid=Object.values(answers||{}).filter(a=>a&&Number.isSafeInteger(a.n)&&a.n>0);
-    const since=t=>valid.filter(a=>Number(a.t)>=t).length*10;
-    const all=valid.length*10;
+    const since=t=>valid.filter(a=>Number(a.t)>=t&&Number(a.t)<=now).length*10;
+    const all=valid.filter(a=>!(Number(a.t)>now)).length*10;
     return{weeklyXp:since(c.weekStart),allXp:all,
       allXpBefore:span=>valid.filter(a=>Number(a.t)<=now-span).length*10,
       weeklyXpBefore:span=>valid.filter(a=>Number(a.t)>=c.weekStart&&Number(a.t)<=now-span).length*10};
@@ -102,7 +131,7 @@
     const left=Math.max(0,clock(now).weekEnd-now),d=Math.floor(left/DAY),h=Math.floor(left%DAY/HOUR),m=Math.floor(left%HOUR/60000);
     return d?d+'d '+h+'h':h?h+'h '+m+'m':m+'m';
   }
-  const api={NAMES,GRADIENTS,PHOTOS,clock,initials,board,ownXp,countdown,hash};
+  const api={NAMES,GRADIENTS,PHOTOS,LEAGUES,COHORT,PROMOTE,DEMOTE,STAR,clock,initials,board,outcome,ownXp,countdown,hash};
   root.KafuLeadersCore=api;
   if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

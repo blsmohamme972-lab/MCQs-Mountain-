@@ -22,3 +22,14 @@ test('rivals only gain XP as the week goes on and the week resets',()=>{
 test('initials follow Telegram: first letters of the first two words, no titles or emoji',()=>{
   assert.equal(L.initials('Mustafa Al-Obaidi'),'MA');assert.equal(L.initials('Hiba 🌸'),'H');assert.equal(L.initials('Dr. Sara'),'S');assert.equal(L.initials('زهراء محمد'),'زم');
 });
+test('leagues: groups of 30, top 7 move up, bottom 5 move down, the star account stays in the top 7',()=>{
+  const now=MON+4.5*86400000;
+  for(const league of [0,3,6]){
+    const b=L.board('weekly',now,{id:'7',name:'Student',weeklyXp:500},league);
+    assert.ok(b.size<=L.COHORT);assert.equal(b.leagueName,L.LEAGUES[league]);
+    assert.ok(b.rows.find(x=>x.name===L.STAR).rank<=L.PROMOTE);
+    assert.equal(b.zones.promote,league<6?7:0);assert.equal(b.zones.demote,league>0?5:0);
+  }
+  assert.equal(L.outcome(7,30,2,{promote:7,demote:5}),3);assert.equal(L.outcome(26,30,2,{promote:7,demote:5}),1);
+  assert.equal(L.outcome(25,30,2,{promote:7,demote:5}),2);assert.equal(L.outcome(1,30,6,{promote:0,demote:5}),6);
+});
