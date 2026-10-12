@@ -1,0 +1,107 @@
+{
+ "qid": "Q000006365",
+ "image": "Q000006365.png",
+ "takeaway": "Thoracic aorta branches: bronchial, pericardial, posterior intercostal, superior phrenic, oesophageal, mediastinal and subcostal arteries. Lumbar and inferior phrenic arteries come from the abdominal aorta.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 850,
+   "y": 250,
+   "z": 2.0,
+   "spot": [
+    845,
+    150,
+    140
+   ]
+  },
+  {
+   "x": 470,
+   "y": 260,
+   "z": 1.8,
+   "spot": [
+    470,
+    220,
+    220
+   ]
+  },
+  {
+   "x": 470,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    470,
+    560,
+    220
+   ]
+  },
+  {
+   "x": 1200,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    1200,
+    280,
+    220
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 600,
+   "z": 2.0,
+   "spot": [
+    1390,
+    660,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The thoracic aorta is the thoracic part of the descending aorta. Which artery is its direct branch?",
+   "shot": 1,
+   "dir": "calm, curious"
+  },
+  {
+   "text": "Its branches include the bronchial and pericardial arteries,",
+   "shot": 2,
+   "dir": "clear, explaining"
+  },
+  {
+   "text": "the posterior intercostal and superior phrenic arteries,",
+   "shot": 3,
+   "dir": "steady"
+  },
+  {
+   "text": "the oesophageal and mediastinal arteries,",
+   "shot": 4,
+   "dir": "steady"
+  },
+  {
+   "text": "and the subcostal arteries. There is our answer.",
+   "shot": 5,
+   "dir": "pleased",
+   "say": "(laugh) and the subcostal arteries. There is our answer."
+  },
+  {
+   "text": "The lumbar and inferior phrenic arteries are paired branches of the abdominal aorta.",
+   "shot": 0,
+   "dir": "calm"
+  },
+  {
+   "text": "The inferior phrenic arteries may even arise from the coeliac trunk.",
+   "shot": 0,
+   "dir": "thoughtful"
+  },
+  {
+   "text": "So the direct branch of the thoracic aorta is the subcostal artery.",
+   "shot": 5,
+   "dir": "warm, decisive"
+  }
+ ]
+}

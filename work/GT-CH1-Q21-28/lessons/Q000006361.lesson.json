@@ -1,0 +1,97 @@
+{
+ "qid": "Q000006361",
+ "image": "Q000006361.png",
+ "takeaway": "The right main bronchus is wider, shorter and more vertical than the left, so inhaled foreign bodies enter the right lung; by gravity, the right lower lobe bronchus.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 430,
+   "y": 200,
+   "z": 2.0,
+   "spot": [
+    430,
+    155,
+    150
+   ]
+  },
+  {
+   "x": 700,
+   "y": 430,
+   "z": 2.0,
+   "spot": [
+    700,
+    420,
+    130
+   ]
+  },
+  {
+   "x": 500,
+   "y": 600,
+   "z": 2.0,
+   "spot": [
+    480,
+    610,
+    140
+   ]
+  },
+  {
+   "x": 1230,
+   "y": 360,
+   "z": 1.8,
+   "spot": [
+    1180,
+    320,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A five-year-old boy needs a bronchoscopy for a suspected inhaled peanut. Where is it most likely to be?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Start at the right main bronchus.",
+   "shot": 1,
+   "dir": "calm, guiding"
+  },
+  {
+   "text": "It is wider, shorter and runs more vertically than the left main bronchus.",
+   "shot": 2,
+   "dir": "clear, explaining"
+  },
+  {
+   "text": "So inhaled foreign bodies more commonly enter the right lung.",
+   "shot": 2,
+   "dir": "confident"
+  },
+  {
+   "text": "The left main bronchus is narrower and less vertical: the less likely path.",
+   "shot": 4,
+   "dir": "calm"
+  },
+  {
+   "text": "Then gravity takes over.",
+   "shot": 3,
+   "dir": "lightly amused",
+   "say": "(clears throat) Then gravity takes over."
+  },
+  {
+   "text": "Because of gravity, the right lower lobe is most likely to receive the peanut.",
+   "shot": 3,
+   "dir": "clear, confident"
+  },
+  {
+   "text": "So the answer is the right lower lobe bronchus.",
+   "shot": 0,
+   "dir": "warm, decisive"
+  }
+ ]
+}

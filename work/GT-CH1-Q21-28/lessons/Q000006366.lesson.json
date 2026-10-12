@@ -1,0 +1,92 @@
+{
+ "qid": "Q000006366",
+ "image": "Q000006366.png",
+ "takeaway": "The lungs are invested in visceral pleura; parietal pleura coats the chest wall. The right main bronchus is shorter and wider. The arterial supply is mainly via the bronchial arteries.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 560,
+   "y": 200,
+   "z": 2.0,
+   "spot": [
+    520,
+    170,
+    150
+   ]
+  },
+  {
+   "x": 250,
+   "y": 300,
+   "z": 1.9,
+   "spot": [
+    240,
+    260,
+    140
+   ]
+  },
+  {
+   "x": 850,
+   "y": 360,
+   "z": 2.0,
+   "spot": [
+    760,
+    350,
+    150
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 520,
+   "z": 1.9,
+   "spot": [
+    1250,
+    520,
+    190
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which statement about the lungs is correct? Let us check each one.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The lungs are invested in visceral pleura, not parietal pleura.",
+   "shot": 1,
+   "dir": "clear, explaining"
+  },
+  {
+   "text": "Parietal pleura coats the chest wall.",
+   "shot": 2,
+   "dir": "steady"
+  },
+  {
+   "text": "The right main bronchus is wider, shorter and more vertical than the left, so it is not longer.",
+   "shot": 3,
+   "dir": "gently correcting",
+   "say": "(clears throat) The right main bronchus is wider, shorter and more vertical than the left, so it is not longer."
+  },
+  {
+   "text": "The arterial blood supply is mainly via the bronchial arteries,",
+   "shot": 4,
+   "dir": "clear, confident"
+  },
+  {
+   "text": "with a small amount of oxygenation from the pulmonary artery.",
+   "shot": 4,
+   "dir": "steady"
+  },
+  {
+   "text": "So the correct statement: the bronchial arteries supply the lung with oxygenated blood.",
+   "shot": 4,
+   "dir": "warm, decisive"
+  }
+ ]
+}
