@@ -1,0 +1,92 @@
+{
+ "qid": "Q000006356",
+ "image": "Q000006356.png",
+ "takeaway": "Six pairs of aortic arches arise from the truncus arteriosus. 1st and 2nd disappear; 3rd become the carotids; right 4th: brachiocephalic and subclavian; left 4th: definitive aortic arch.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 840,
+   "y": 240,
+   "z": 1.8,
+   "spot": [
+    840,
+    230,
+    180
+   ]
+  },
+  {
+   "x": 840,
+   "y": 430,
+   "z": 2.0,
+   "spot": [
+    840,
+    445,
+    170
+   ]
+  },
+  {
+   "x": 520,
+   "y": 520,
+   "z": 2.0,
+   "spot": [
+    520,
+    580,
+    160
+   ]
+  },
+  {
+   "x": 1180,
+   "y": 520,
+   "z": 2.0,
+   "spot": [
+    1150,
+    540,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Six pairs of aortic arches arise from the truncus arteriosus. Which statement is true?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The first and second arches disappear.",
+   "shot": 1,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "The third arches become the carotid arteries.",
+   "shot": 2,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "On the right, the fourth arch becomes the brachiocephalic and subclavian arteries.",
+   "shot": 3,
+   "dir": "calm, explanatory"
+  },
+  {
+   "text": "On the left, the fourth arch develops into the definitive aortic arch.",
+   "shot": 4,
+   "dir": "calm, bright"
+  },
+  {
+   "text": "That's the crowned arch in the picture, and the book's answer.",
+   "shot": 4,
+   "dir": "gently amused",
+   "say": "(laugh) That's the crowned arch in the picture, and the book's answer."
+  },
+  {
+   "text": "Remember: first and second vanish, third make the carotids, left fourth makes the aortic arch.",
+   "shot": 0,
+   "dir": "warm, conclusive"
+  }
+ ]
+}

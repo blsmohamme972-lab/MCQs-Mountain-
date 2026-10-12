@@ -1,0 +1,82 @@
+{
+ "qid": "Q000006353",
+ "image": "Q000006353.png",
+ "takeaway": "Oesophagus arteries: cervical, inferior thyroid; thoracic, descending aorta; abdominal, left gastric and left inferior phrenic. Veins: inferior thyroid, azygos, left gastric.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 800,
+   "y": 606,
+   "z": 2.0,
+   "spot": [
+    870,
+    640,
+    150
+   ]
+  },
+  {
+   "x": 760,
+   "y": 400,
+   "z": 2.0,
+   "spot": [
+    840,
+    400,
+    150
+   ]
+  },
+  {
+   "x": 700,
+   "y": 202,
+   "z": 2.0,
+   "spot": [
+    800,
+    130,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which statement about the oesophagus's blood supply is correct?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The book's answer: the lower third gets its arterial supply from the left gastric artery.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The abdominal part gets the left gastric artery, from the coeliac, and the left inferior phrenic.",
+   "shot": 1,
+   "dir": "calm, explanatory"
+  },
+  {
+   "text": "The thoracic part is supplied by the descending aorta,",
+   "shot": 2,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "and the cervical part by the inferior thyroid artery, from the thyrocervical trunk.",
+   "shot": 3,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "Veins follow: the inferior thyroid vein in the neck, the azygos vein in the thorax,",
+   "shot": 2,
+   "dir": "calm, flowing",
+   "say": "(clears throat) Veins follow: the inferior thyroid vein in the neck, the azygos vein in the thorax,"
+  },
+  {
+   "text": "and the left gastric vein, with part of the azygos, in the abdomen.",
+   "shot": 1,
+   "dir": "warm, conclusive"
+  }
+ ]
+}

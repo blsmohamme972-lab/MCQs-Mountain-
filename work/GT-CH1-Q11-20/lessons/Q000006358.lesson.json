@@ -1,0 +1,105 @@
+{
+ "qid": "Q000006358",
+ "image": "Q000006358.png",
+ "takeaway": "Thoracic duct: starts from the cisterna chyli at T12, rises between aorta and azygos, turns left at T5 behind the oesophagus, ends at the left internal jugular-subclavian confluence.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 500,
+   "y": 640,
+   "z": 2.0,
+   "spot": [
+    520,
+    680,
+    160
+   ]
+  },
+  {
+   "x": 560,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    570,
+    400,
+    170
+   ]
+  },
+  {
+   "x": 700,
+   "y": 260,
+   "z": 2.0,
+   "spot": [
+    700,
+    230,
+    150
+   ]
+  },
+  {
+   "x": 1232,
+   "y": 300,
+   "z": 1.9,
+   "spot": [
+    1330,
+    280,
+    190
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 235,
+   "z": 2.0,
+   "spot": [
+    1460,
+    90,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which statement about the thoracic duct is correct?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "It begins at the end of the cisterna chyli, at T12, not T10.",
+   "shot": 1,
+   "dir": "calm, explanatory",
+   "say": "(clears throat) It begins at the end of the cisterna chyli, at T twelve, not T ten."
+  },
+  {
+   "text": "It passes up between the aorta and the azygos vein, not the vena cava.",
+   "shot": 2,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "At T5 it turns to the left, passing behind the oesophagus.",
+   "shot": 3,
+   "dir": "steady, clear",
+   "say": "At T five it turns to the left, passing behind the oesophagus."
+  },
+  {
+   "text": "It arches over the left pleura to join the left internal jugular and subclavian veins.",
+   "shot": 4,
+   "dir": "calm, explanatory"
+  },
+  {
+   "text": "So the book's answer is the last statement: in adults it carries up to 4 L of lymph a day.",
+   "shot": 5,
+   "dir": "calm, confident",
+   "say": "So the book's answer is the last statement: in adults it carries up to four litres of lymph a day."
+  },
+  {
+   "text": "Remember: T12 start, left turn at T5, left-sided drainage.",
+   "shot": 0,
+   "dir": "warm, conclusive",
+   "say": "Remember: T twelve start, left turn at T five, left-sided drainage."
+  }
+ ]
+}

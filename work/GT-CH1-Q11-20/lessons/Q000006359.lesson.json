@@ -1,0 +1,95 @@
+{
+ "qid": "Q000006359",
+ "image": "Q000006359.png",
+ "takeaway": "Bochdalek hernias: posterolateral defects (85-90% of diaphragmatic hernias), left side in 80%. Morgagni hernias, between costal and sternal origins, are rare (1-2%).",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 1050,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    1000,
+    330,
+    190
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    1380,
+    330,
+    150
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 520,
+   "z": 2.0,
+   "spot": [
+    1300,
+    540,
+    170
+   ]
+  },
+  {
+   "x": 420,
+   "y": 235,
+   "z": 2.0,
+   "spot": [
+    300,
+    125,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Where do Bochdalek hernias most often occur?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Diaphragmatic hernias come from failed fusion of its parts, or from a primary defect.",
+   "shot": 1,
+   "dir": "calm, explanatory"
+  },
+  {
+   "text": "Most, 85 to 90 per cent, arise from posterolateral defects: the Bochdalek hernia.",
+   "shot": 1,
+   "dir": "steady, clear",
+   "say": "Most, eighty-five to ninety per cent, arise from posterolateral defects: the Bochdalek hernia."
+  },
+  {
+   "text": "The left side is most commonly affected, in 80 per cent.",
+   "shot": 2,
+   "dir": "steady, clear",
+   "say": "The left side is most commonly affected, in eighty per cent."
+  },
+  {
+   "text": "So the answer is left posterior.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Morgagni hernias, between the costal and sternal origins, are rare: 1 to 2 per cent.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Morgagni hernias, between the costal and sternal origins, are rare: one to two per cent."
+  },
+  {
+   "text": "Bochdalek: back, and left.",
+   "shot": 4,
+   "dir": "gently amused",
+   "say": "(laugh) Bochdalek: back, and left."
+  }
+ ]
+}
