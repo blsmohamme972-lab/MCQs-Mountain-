@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000060",
+ "file": "Q000000060.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 86090,
+ "sha256": "0d218e8c207d1cee7f426ab2c655b48d858aa3d17d9260f796e479f007e40497",
+ "track_ms": 28778,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 3421,
+   "text": "At what level does the aorta pass through the diaphragm?"
+  },
+  {
+   "t_ms": 3871,
+   "end_ms": 5987,
+   "text": "It passes through the aortic opening."
+  },
+  {
+   "t_ms": 6437,
+   "end_ms": 9168,
+   "text": "The aortic opening is at the T12 level."
+  },
+  {
+   "t_ms": 9618,
+   "end_ms": 14736,
+   "text": "The azygos and hemiazygos veins and the thoracic duct pass with it."
+  },
+  {
+   "t_ms": 15186,
+   "end_ms": 19949,
+   "text": "The inferior vena cava passes at T8, with the right phrenic nerve."
+  },
+  {
+   "t_ms": 20399,
+   "end_ms": 25310,
+   "text": "Compare the vena cava opening at T8, and the oesophageal opening at T10."
+  },
+  {
+   "t_ms": 25760,
+   "end_ms": 28178,
+   "text": "So the aorta passes at T12."
+  }
+ ]
+}

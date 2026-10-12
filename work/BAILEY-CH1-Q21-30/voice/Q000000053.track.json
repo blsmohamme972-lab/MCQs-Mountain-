@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000053",
+ "file": "Q000000053.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 97704,
+ "sha256": "f926dae1049f28338f98731291bd21a27d81635c819a72d36eed0e342ad9d952",
+ "track_ms": 34149,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4276,
+   "text": "A twenty-eight-year-old woman has no relevant past medical history."
+  },
+  {
+   "t_ms": 4726,
+   "end_ms": 6574,
+   "text": "She has central abdominal pains,"
+  },
+  {
+   "t_ms": 7024,
+   "end_ms": 8570,
+   "text": "bloodstained diarrhoea,"
+  },
+  {
+   "t_ms": 9020,
+   "end_ms": 10946,
+   "text": "and anaemia."
+  },
+  {
+   "t_ms": 11396,
+   "end_ms": 18757,
+   "text": "Ulcerative colitis causes inflammation and ulcers of the colon and rectum, with pain and diarrhoea mixed with blood and mucus."
+  },
+  {
+   "t_ms": 19207,
+   "end_ms": 25128,
+   "text": "The main differential is Crohn's disease, which can occur anywhere from mouth to anus, with skip lesions."
+  },
+  {
+   "t_ms": 25578,
+   "end_ms": 33549,
+   "text": "Ulcerative colitis is limited to the colon, with continuous inflammation. So the best diagnosis is ulcerative colitis."
+  }
+ ]
+}

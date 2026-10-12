@@ -1,0 +1,42 @@
+{
+ "qid": "Q000000061",
+ "file": "Q000000061.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 77043,
+ "sha256": "5f96c46fcdbdf67b7a5334f01c5d5eef13d0e4b7b221423c874b619ba0af8f9d",
+ "track_ms": 26518,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 3981,
+   "text": "Which pharyngeal pouch does the Eustachian tube arise from?"
+  },
+  {
+   "t_ms": 4431,
+   "end_ms": 10392,
+   "text": "The choices are the first, second, third, fourth and sixth pharyngeal pouches."
+  },
+  {
+   "t_ms": 10842,
+   "end_ms": 14298,
+   "text": "The Eustachian tube arises from the first pharyngeal pouch."
+  },
+  {
+   "t_ms": 14748,
+   "end_ms": 18754,
+   "text": "The answer is the lowest number, marked here with a golden one."
+  },
+  {
+   "t_ms": 19204,
+   "end_ms": 22365,
+   "text": "Remember: the Eustachian tube comes from pouch number one."
+  },
+  {
+   "t_ms": 22815,
+   "end_ms": 25918,
+   "text": "So the answer is the first pharyngeal pouch."
+  }
+ ]
+}

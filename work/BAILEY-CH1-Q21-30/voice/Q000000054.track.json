@@ -1,0 +1,52 @@
+{
+ "qid": "Q000000054",
+ "file": "Q000000054.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 101573,
+ "sha256": "c8a76d6d5b901a4332a15462350785bf4a1888f151a89260954c4f7ed4facb7d",
+ "track_ms": 36209,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 2236,
+   "text": "A sixty-nine-year-old woman"
+  },
+  {
+   "t_ms": 2686,
+   "end_ms": 4952,
+   "text": "is awaiting a total hip replacement."
+  },
+  {
+   "t_ms": 5402,
+   "end_ms": 7455,
+   "text": "She reports severe abdominal pain"
+  },
+  {
+   "t_ms": 7905,
+   "end_ms": 8721,
+   "text": "and nausea."
+  },
+  {
+   "t_ms": 9171,
+   "end_ms": 16477,
+   "text": "She is taking non-steroidal anti-inflammatory drugs for pain relief, a known risk factor for diverticulitis."
+  },
+  {
+   "t_ms": 16927,
+   "end_ms": 24393,
+   "text": "Pouches form where the colonic mucosa herniates into the bowel wall. In diverticulitis, these pouches become inflamed."
+  },
+  {
+   "t_ms": 24843,
+   "end_ms": 30981,
+   "text": "Symptoms include severe lower abdominal pain, fever, nausea and a change in bowel habit."
+  },
+  {
+   "t_ms": 31431,
+   "end_ms": 35609,
+   "text": "So the single best diagnosis is diverticulitis."
+  }
+ ]
+}

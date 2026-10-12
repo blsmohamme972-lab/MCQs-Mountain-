@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000062",
+ "file": "Q000000062.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 68316,
+ "sha256": "a786217d610066c52d0f72fe8ffe61f3046cf2035b24b98f1ea7e45a71635a19",
+ "track_ms": 24872,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 3221,
+   "text": "Which nerve innervates the second pharyngeal pouch?"
+  },
+  {
+   "t_ms": 3671,
+   "end_ms": 5822,
+   "text": "The second pharyngeal pouch is innervated"
+  },
+  {
+   "t_ms": 6272,
+   "end_ms": 9063,
+   "text": "by the facial nerve, cranial nerve seven."
+  },
+  {
+   "t_ms": 9513,
+   "end_ms": 12874,
+   "text": "The first pouch has the trigeminal nerve, cranial nerve five."
+  },
+  {
+   "t_ms": 13324,
+   "end_ms": 17050,
+   "text": "The third pouch has the glossopharyngeal nerve, cranial nerve nine."
+  },
+  {
+   "t_ms": 17500,
+   "end_ms": 21351,
+   "text": "The fourth and sixth have branches of the vagus nerve, cranial nerve ten."
+  },
+  {
+   "t_ms": 21801,
+   "end_ms": 24272,
+   "text": "So the answer is the facial nerve."
+  }
+ ]
+}

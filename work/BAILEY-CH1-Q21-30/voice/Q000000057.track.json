@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000057",
+ "file": "Q000000057.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 87073,
+ "sha256": "2ad45cb5594125f9a202aaea94e8932fbe5cda93ea28603ddec5a0930df5cd6a",
+ "track_ms": 30762,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4076,
+   "text": "Which arterial blood gas result does Guillain-Barré syndrome give?"
+  },
+  {
+   "t_ms": 4526,
+   "end_ms": 8897,
+   "text": "It is a neuromuscular disease, so the patient cannot ventilate adequately."
+  },
+  {
+   "t_ms": 9347,
+   "end_ms": 12223,
+   "text": "Hypoventilation raises carbon dioxide in the blood."
+  },
+  {
+   "t_ms": 12673,
+   "end_ms": 16519,
+   "text": "Acute respiratory acidosis occurs with an abrupt failure of ventilation."
+  },
+  {
+   "t_ms": 16969,
+   "end_ms": 22795,
+   "text": "A raised PaCO2 decreases the bicarbonate to PaCO2 ratio, and the pH falls."
+  },
+  {
+   "t_ms": 23245,
+   "end_ms": 25146,
+   "text": "That is respiratory acidosis."
+  },
+  {
+   "t_ms": 25596,
+   "end_ms": 30162,
+   "text": "Other neuromuscular causes include myasthenia gravis and muscular dystrophy."
+  }
+ ]
+}

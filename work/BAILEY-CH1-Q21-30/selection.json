@@ -196,52 +196,52 @@
   "selected": [
     {
       "qid": "Q000000053",
-      "duration_ms": 30000,
+      "duration_ms": 34500,
       "content_hash": "8667d9a17a2e54530be73a1c9350342a8a975dd081f079207f7bab3ee26f97ae"
     },
     {
       "qid": "Q000000054",
-      "duration_ms": 30000,
+      "duration_ms": 36600,
       "content_hash": "dee9cbe39a1cbfe352af394532cfdb14ec1a421a65c424b95a4cda42feb97ff3"
     },
     {
       "qid": "Q000000055",
-      "duration_ms": 30000,
+      "duration_ms": 30300,
       "content_hash": "88247c51e3328458776f32fef909ecae1b8aa022c8982d22b5b37d2b4d815591"
     },
     {
       "qid": "Q000000056",
-      "duration_ms": 30000,
+      "duration_ms": 28600,
       "content_hash": "14207fcfb56070174d0bcf0104fbdbd832304deff9d30817d346f495cacfc7e1"
     },
     {
       "qid": "Q000000057",
-      "duration_ms": 30000,
+      "duration_ms": 31100,
       "content_hash": "e3f2606648538c983bf3536fce4d343c8589f73cc0822db651e506ca42467bca"
     },
     {
       "qid": "Q000000058",
-      "duration_ms": 30000,
+      "duration_ms": 28600,
       "content_hash": "7ea1f62b001d9ec032dc064ae103ab809c5121a5038756a114e0d23f94ad07cc"
     },
     {
       "qid": "Q000000059",
-      "duration_ms": 30000,
+      "duration_ms": 26400,
       "content_hash": "f90d6f5293d176f8565993bc59ca31d98e9cf1ca07a5c8e23254b5eb4b1d45f7"
     },
     {
       "qid": "Q000000060",
-      "duration_ms": 30000,
+      "duration_ms": 29100,
       "content_hash": "5983747b891666afc59b55e17ee6330a82e31434d22a53f4229b8fd8c0c8f7b2"
     },
     {
       "qid": "Q000000061",
-      "duration_ms": 30000,
+      "duration_ms": 26900,
       "content_hash": "207b11739bea59dc20364245942b7534a9589436d98d8af5ae41a5606e3d7bb8"
     },
     {
       "qid": "Q000000062",
-      "duration_ms": 30000,
+      "duration_ms": 25200,
       "content_hash": "b232ebaf3caac5ac9e032a6686dd4ca9fa131414039f7b3cd867679a1149bb7d"
     }
   ]

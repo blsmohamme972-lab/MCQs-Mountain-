@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000059",
+ "file": "Q000000059.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 73031,
+ "sha256": "4a3770602b9c8e54a720dec47e1187111453ee3e57e43f4bdf2bc13cdda15486",
+ "track_ms": 26019,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 3731,
+   "text": "At what level does the oesophagus pass through the diaphragm?"
+  },
+  {
+   "t_ms": 4181,
+   "end_ms": 6677,
+   "text": "The choices run from T8 to T12."
+  },
+  {
+   "t_ms": 7127,
+   "end_ms": 10513,
+   "text": "It passes through its own opening: the oesophageal opening."
+  },
+  {
+   "t_ms": 10963,
+   "end_ms": 13134,
+   "text": "That opening is at the T10 level."
+  },
+  {
+   "t_ms": 13584,
+   "end_ms": 16210,
+   "text": "The left and right vagus nerves pass through with it."
+  },
+  {
+   "t_ms": 16660,
+   "end_ms": 21176,
+   "text": "Remember: oesophagus, oesophageal opening, T10."
+  },
+  {
+   "t_ms": 21626,
+   "end_ms": 25419,
+   "text": "So the oesophagus passes the diaphragm at the T10 level."
+  }
+ ]
+}
