@@ -1,7 +1,7 @@
 {
  "qid": "Q000006345",
  "image": "Q000006345.png",
- "takeaway": "The thoracic duct runs between the thoracic aorta (lateral to it) and the azygous vein (medial), so it lies lateral to the azygous vein; injury causes chylothorax.",
+ "takeaway": "The thoracic duct runs between the thoracic aorta on its left and the azygous vein on its right, so it lies lateral to the azygous vein; injury causes chylothorax.",
  "engine": "breeze",
  "tempo": 1.0,
  "shots": [
@@ -64,12 +64,12 @@
    "say": "The thoracic duct rises from the chyle cisterns in the abdomen, through the aortic hiatus at T twelve."
   },
   {
-   "text": "In the chest it runs between two neighbours: the thoracic aorta lateral to it, and the azygous vein medially.",
+   "text": "In the posterior mediastinum it runs between two neighbours: the thoracic aorta on its left, and the azygous vein on its right.",
    "shot": 2,
    "dir": "steady, clear"
   },
   {
-   "text": "So the duct lies lateral to the azygous vein: that is the answer.",
+   "text": "So the duct lies just lateral to the azygous vein: that is the answer.",
    "shot": 3,
    "dir": "confident, emphatic"
   },
