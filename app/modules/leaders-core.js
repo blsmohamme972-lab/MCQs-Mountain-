@@ -49,7 +49,10 @@
     return{kind:'student',city:col[0],college:col[1],stage,short:col[2].replace('Medicine','Med').replace('Medical','Med')+' · '+stage.split(' ')[0],line:col[1]+' · '+stage};
   }
   // Duolingo-style leagues: a group of 30, top 7 move up, bottom 5 move down. Higher leagues study harder.
-  const LEAGUES=['Bronze','Silver','Gold','Sapphire','Ruby','Emerald','Diamond'],FACTOR=[0.35,0.5,0.65,0.8,1,1.2,1.45];
+  // Rivals' study pace per league, then scaled to the student's own recent weeks so the top 7 is always
+  // reachable with a bit more effort (engagement-matched groups, as Duolingo does).
+  const LEAGUES=['Bronze','Silver','Gold','Sapphire','Ruby','Emerald','Diamond'],FACTOR=[0.17,0.21,0.26,0.32,0.4,0.5,0.62];
+  const paceOf=avg=>Math.max(0.75,Math.min(4,((avg||0)+400)/1100));
   const COHORT=30,PROMOTE=7,DEMOTE=5,STAR='Hiba 🌸';
   function hash(s){let h=2166136261;for(const c of String(s)){h^=c.codePointAt(0);h=Math.imul(h,16777619)}return h>>>0}
   function rng(seed){let a=seed>>>0;return()=>{a=a+0x6D2B79F5>>>0;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
@@ -62,6 +65,7 @@
   function initials(name){
     // Telegram shows the first letter of the first and last name; titles and emoji are not letters.
     const words=String(name).replace(/^(Dr\.|د\.)\s*/,'').split(/\s+/).map(w=>w.replace(/[^\p{L}]/gu,'')).filter(Boolean);
+    if(/[\u0600-\u06FF]/.test(words[0]||''))return [...words[0]][0]; // joined Arabic letters would read as a word
     return words.slice(0,2).map(w=>[...w][0]).join('').toUpperCase()||'K';
   }
   function profile(name,i){
@@ -90,7 +94,7 @@
   }
   function dayShare(p,hour){
     // Little before 7:00, most between afternoon and midnight; late studiers shift right.
-    const x=Math.min(1,Math.max(0,(hour-7)/16));
+    const x=Math.min(1,Math.max(0,(hour-9)/14)); // nobody has studied much before 9:00
     return Math.pow(x,p.evening);
   }
   function weekly(p,now,f=1){
@@ -101,10 +105,12 @@
   function allTime(p,now){
     return tens(p.pace*p.loyalty*7*p.weeks*(0.2+0.2*roll(p.name,'past'))+weekly(p,now));
   }
+  // Past days never change, so the run up to yesterday is cached per rival and day.
+  const runs=new Map();
   function streak(p,now){
-    const c=clock(now);let run=0;
-    for(let d=c.day;d>c.day-400;d--){const on=d===c.day?dayXp(p,d)*dayShare(p,c.hour)>0:dayXp(p,d)>0;if(on)run++;else if(d!==c.day)break}
-    return run;
+    const c=clock(now),key=p.name+'|'+c.day;let past=runs.get(key);
+    if(past===undefined){past=0;for(let d=c.day-1;d>c.day-400&&dayXp(p,d)>0;d--)past++;if(runs.size>500)runs.clear();runs.set(key,past)}
+    return dayXp(p,c.day)*dayShare(p,c.hour)>0?past+1:past;
   }
   function online(p,now){
     const c=clock(now),slot=Math.floor(now/(10*60000));
@@ -112,32 +118,34 @@
   }
   function score(p,period,now,f){return period==='all'?allTime(p,now):weekly(p,now,f)}
   function rank(entries){
-    return entries.slice().sort((a,b)=>b.xp-a.xp||(a.own?-1:b.own?1:0)||a.name.localeCompare(b.name)).map((x,i)=>({...x,rank:i+1}));
+    // The student wins ties once they have XP; at zero they sit among the others by name.
+    return entries.slice().sort((a,b)=>b.xp-a.xp||(a.xp>0&&(a.own?-1:b.own?1:0))||a.name.localeCompare(b.name)).map((x,i)=>({...x,rank:i+1}));
   }
   // This week's group: 29 rivals picked per student and week (the star account is always in it).
   function cohort(weekKey,uid){
     const star=RIVALS.find(p=>p.star),rest=RIVALS.filter(p=>!p.star).map(p=>[hash(weekKey+'|'+uid+'|'+p.name),p]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
     return [star,...rest.slice(0,COHORT-2)];
   }
-  function field(period,now,league,uid){
-    const f=FACTOR[league]||1,pool=period==='all'?RIVALS:cohort(clock(now).weekKey,uid);
-    const rows=pool.map(p=>({id:p.id,name:p.name,star:p.star,xp:score(p,period,now,f),initials:p.initials,gradient:p.gradient,photo:p.photo,tag:p.short})).filter(x=>x.xp>0);
+  function field(period,now,league,uid,pace=1){
+    const f=(FACTOR[league]||1)*pace,pool=period==='all'?RIVALS:cohort(clock(now).weekKey,uid);
+    // Weekly keeps everyone in the group (some still on 0 early in the week); all-time lists those who have studied.
+    const rows=pool.map(p=>({id:p.id,name:p.name,star:p.star,xp:score(p,period,now,f),initials:p.initials,gradient:p.gradient,photo:p.photo,tag:p.short})).filter(x=>period==='weekly'||x.xp>0);
     if(period==='weekly'){
       // Keep the star account among the leaders, just above whoever would otherwise be 7th.
       const star=rows.find(x=>x.star),others=rows.filter(x=>!x.star).sort((a,b)=>b.xp-a.xp),seventh=others[PROMOTE-2];
-      if(star&&seventh&&star.xp<=seventh.xp)star.xp=tens(seventh.xp+10+40*roll(STAR,'lead',clock(now).day));
+      if(star&&seventh&&seventh.xp>0&&star.xp<=seventh.xp)star.xp=tens(seventh.xp+10+40*roll(STAR,'lead',clock(now).day));
     }
     return rows;
   }
   function board(period,now,own,league=0){
     period=period==='all'?'all':'weekly';league=Math.max(0,Math.min(LEAGUES.length-1,league|0));
-    const uid=own.id||'me';
+    const uid=own.id||'me',pace=paceOf(own.avgWeekly);
     const me={id:'me',own:true,name:own.name||'You',photo:own.photo||null,initials:initials(own.name||'You'),gradient:GRADIENTS[hash(own.id||'me')%GRADIENTS.length],xp:tens(own[period==='all'?'allXp':'weeklyXp']||0),streak:own.streak||0};
-    const ranked=rank([...field(period,now,league,uid),me]);
+    const ranked=rank([...field(period,now,league,uid,pace),me]);
     // Movement since yesterday; early in a new week, since the start of the week (at least an hour).
     const c=clock(now),span=period==='weekly'?Math.max(HOUR,Math.min(DAY,(now-c.weekStart)/2)):DAY;
     const ownBefore=period==='all'?own.allXpBefore:own.weeklyXpBefore;
-    const then=field(period,now-span,league,uid),was=new Map(then.map(x=>[x.id,x.xp]));
+    const then=field(period,now-span,league,uid,pace),was=new Map(then.map(x=>[x.id,x.xp]));
     const before=new Map(rank([...then,{...me,xp:tens(typeof ownBefore==='function'?ownBefore(span):0)}]).map(x=>[x.id,x.rank]));
     const rows=ranked.map(x=>{
       const p=x.own?null:RIVALS[Number(x.id.slice(1))];
@@ -145,13 +153,14 @@
     });
     const mine=rows.find(x=>x.own),ahead=rows[mine.rank-2]||null;
     const zones=period==='weekly'?{promote:league<LEAGUES.length-1?PROMOTE:0,demote:league>0&&rows.length>PROMOTE+DEMOTE?DEMOTE:0}:{promote:0,demote:0};
-    return{period,rows,own:mine,ahead,gap:ahead?Math.max(10,ahead.xp-mine.xp+10):0,clock:clock(now),size:rows.length,league,leagueName:LEAGUES[league],zones};
+    return{period,rows,own:mine,ahead,gap:ahead?Math.max(10,ahead.xp-mine.xp+10):0,clock:clock(now),size:rows.length,league,leagueName:LEAGUES[league],zones,pace};
   }
   // Profile card: this week's XP per day (Monday first, today so far), city and how long they have studied.
-  function card(id,now,league=0){
+  function card(id,now,league=0,pace=1,boardXp=null){
     const p=RIVALS[Number(String(id).slice(1))];if(!p)return null;
-    const c=clock(now),f=[0.35,0.5,0.65,0.8,1,1.2,1.45][league]||1;
+    const c=clock(now),f=(FACTOR[league]||1)*pace;
     const days=[0,1,2,3,4,5,6].map(i=>{const d=c.weekStartDay+i;return d<c.day?tens(f*dayXp(p,d)):d===c.day?tens(f*dayXp(p,d)*dayShare(p,c.hour)):null});
+    const sum=days.reduce((a,d)=>a+(d||0),0);if(boardXp!=null&&boardXp>sum)days[c.weekday]=(days[c.weekday]||0)+boardXp-sum;
     return{days,city:p.city,weeks:p.weeks+1,streak:streak(p,now),woman:p.woman,kind:p.kind,line:p.line,college:p.college,
       board:p.board,specialty:p.specialty,accuracy:p.accuracy,questions:Math.round(days.reduce((a,d)=>a+(d||0),0)/10)};
   }
@@ -165,7 +174,8 @@
     const c=clock(now),valid=Object.values(answers||{}).filter(a=>a&&Number.isSafeInteger(a.n)&&a.n>0);
     const since=t=>valid.filter(a=>Number(a.t)>=t&&Number(a.t)<=now).length*10;
     const all=valid.filter(a=>!(Number(a.t)>now)).length*10;
-    return{weeklyXp:since(c.weekStart),allXp:all,
+    const wk=(a,b)=>valid.filter(x=>Number(x.t)>=a&&Number(x.t)<b).length*10;
+    return{weeklyXp:since(c.weekStart),allXp:all,avgWeekly:(wk(c.weekStart-14*DAY,c.weekStart-7*DAY)+wk(c.weekStart-7*DAY,c.weekStart))/2,
       allXpBefore:span=>valid.filter(a=>Number(a.t)<=now-span).length*10,
       weeklyXpBefore:span=>valid.filter(a=>Number(a.t)>=c.weekStart&&Number(a.t)<=now-span).length*10};
   }

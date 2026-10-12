@@ -20,7 +20,7 @@ test('rivals only gain XP as the week goes on and the week resets',()=>{
   const next=at(MON+7*86400000+60000);assert.ok([...next.values()].every(x=>x<=200));
 });
 test('initials follow Telegram: first letters of the first two words, no titles or emoji',()=>{
-  assert.equal(L.initials('Mustafa Al-Obaidi'),'MA');assert.equal(L.initials('Hiba 🌸'),'H');assert.equal(L.initials('Dr. Sara'),'S');assert.equal(L.initials('زهراء محمد'),'زم');
+  assert.equal(L.initials('Mustafa Al-Obaidi'),'MA');assert.equal(L.initials('Hiba 🌸'),'H');assert.equal(L.initials('Dr. Sara'),'S');assert.equal(L.initials('زهراء محمد'),'ز','joined Arabic letters would read as a word');
 });
 test('leagues: groups of 30, top 7 move up, bottom 5 move down, the star account stays in the top 7',()=>{
   const now=MON+4.5*86400000;
@@ -47,4 +47,14 @@ test('studying-now count follows the Baghdad day: quiet before dawn, ~1,400 by d
   let prev=at(12),worst=0;for(let s=1;s<1800;s++){const v=L.activeNow(day+12*3600000+s*1000);worst=Math.max(worst,Math.abs(v-prev));prev=v}
   assert.ok(worst<=3,'never jumps');
   assert.equal(L.activeNow(day+5e6),L.activeNow(day+5e6),'deterministic');
+});
+test('leagues adapt to the student: at their usual pace they sit near the promotion line, a bit more effort promotes',()=>{
+  const DAY=86400000,end=MON+7*DAY-1000;
+  for(const q of [10,20,40]){
+    const avg=q*7*10,steady=L.board('weekly',end,{id:'p',name:'P',weeklyXp:avg,avgWeekly:avg},0).own.rank;
+    const more=L.board('weekly',end,{id:'p',name:'P',weeklyXp:Math.round(avg*1.6/10)*10,avgWeekly:avg},0).own.rank;
+    assert.ok(steady>=4&&steady<=14,'steady '+q+'/day rank '+steady);assert.ok(more<=L.PROMOTE,'more effort rank '+more);
+  }
+  const mon=L.board('weekly',MON+8*3600000,{id:'p',name:'Zz',weeklyXp:0},0);
+  assert.equal(mon.size,L.COHORT);assert.ok(mon.own.rank<mon.size,'not last on Monday morning');
 });
