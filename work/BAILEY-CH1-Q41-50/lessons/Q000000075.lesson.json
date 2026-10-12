@@ -1,0 +1,80 @@
+{
+ "qid": "Q000000075",
+ "image": "Q000000075.png",
+ "takeaway": "A scrotal lump you cannot get above, with a cough impulse, that reduces along the inguinal canal and is controlled by occluding the deep ring: indirect inguinal hernia.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 1180,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    1180,
+    560,
+    130
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 500,
+   "z": 1.9,
+   "spot": [
+    1290,
+    450,
+    130
+   ]
+  },
+  {
+   "x": 900,
+   "y": 480,
+   "z": 2.0,
+   "spot": [
+    950,
+    460,
+    100
+   ]
+  },
+  {
+   "x": 900,
+   "y": 260,
+   "z": 1.8,
+   "spot": [
+    900,
+    220,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A twenty-seven-year-old man has a soft lump in his right scrotum.",
+   "shot": 1
+  },
+  {
+   "text": "There is a positive cough impulse, which suggests herniating bowel.",
+   "shot": 2
+  },
+  {
+   "text": "The doctor cannot get above the lump, so it arises from the inguinal canal.",
+   "shot": 3
+  },
+  {
+   "text": "The lump can be pushed back up along the inguinal canal.",
+   "shot": 4
+  },
+  {
+   "text": "With fingers over the deep inguinal ring, it does not reappear, even on coughing.",
+   "shot": 4
+  },
+  {
+   "text": "A hernia controlled by occluding the deep ring is pathognomonic of an indirect inguinal hernia.",
+   "shot": 0
+  }
+ ]
+}

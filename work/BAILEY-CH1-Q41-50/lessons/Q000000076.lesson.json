@@ -1,0 +1,84 @@
+{
+ "qid": "Q000000076",
+ "image": "Q000000076.png",
+ "takeaway": "Any firm scrotal mass is cancer until proven otherwise, even when the swelling transilluminates: testicular cancer is often associated with a hydrocele.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 220,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    220,
+    380,
+    150
+   ]
+  },
+  {
+   "x": 635,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    635,
+    400,
+    150
+   ]
+  },
+  {
+   "x": 1030,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    1030,
+    400,
+    150
+   ]
+  },
+  {
+   "x": 1440,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    1440,
+    400,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A twenty-two-year-old man has a swelling in his right scrotum.",
+   "shot": 1
+  },
+  {
+   "text": "It is painless and non-tender.",
+   "shot": 2
+  },
+  {
+   "text": "The scrotal swelling brightly transilluminates.",
+   "shot": 4
+  },
+  {
+   "text": "But inside it is a firm mass that does not seem separate from the testicle.",
+   "shot": 3
+  },
+  {
+   "text": "Any firm scrotal mass is cancer until proven otherwise.",
+   "shot": 3
+  },
+  {
+   "text": "And testicular cancer may often be associated with a hydrocele.",
+   "shot": 4
+  },
+  {
+   "text": "So the diagnosis is testicular cancer.",
+   "shot": 0
+  }
+ ]
+}

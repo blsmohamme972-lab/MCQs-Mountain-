@@ -1,0 +1,75 @@
+{
+ "qid": "Q000000078",
+ "image": "Q000000078.png",
+ "takeaway": "Epidermal cysts originate in the skin and have a characteristic punctum; they commonly occur in the head and neck.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 400,
+   "z": 2.0,
+   "spot": [
+    400,
+    430,
+    90
+   ]
+  },
+  {
+   "x": 1200,
+   "y": 470,
+   "z": 1.9,
+   "spot": [
+    1180,
+    500,
+    130
+   ]
+  },
+  {
+   "x": 1260,
+   "y": 440,
+   "z": 2.2,
+   "spot": [
+    1220,
+    470,
+    70
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A thirty-four-year-old man has a firm lump on the right side of his neck, just below the mandible.",
+   "shot": 1
+  },
+  {
+   "text": "It measures 3 cm.",
+   "shot": 2,
+   "say": "It measures three centimetres."
+  },
+  {
+   "text": "The skin appears attached to the lump,",
+   "shot": 2
+  },
+  {
+   "text": "and there is a small punctum.",
+   "shot": 3
+  },
+  {
+   "text": "That punctum is the key: epidermal cysts originate in the skin and have a characteristic punctum.",
+   "shot": 3
+  },
+  {
+   "text": "They commonly occur in the head and neck region.",
+   "shot": 0
+  },
+  {
+   "text": "So the diagnosis is an epidermal cyst.",
+   "shot": 2
+  }
+ ]
+}

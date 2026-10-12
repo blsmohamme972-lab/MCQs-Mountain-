@@ -1,0 +1,70 @@
+{
+ "qid": "Q000000082",
+ "image": "Q000000082.png",
+ "takeaway": "Young patient with an intracapsular femoral neck fracture: cannulated screws, preserving the femoral head, because femoral head prostheses have a limited lifespan.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 250,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    260,
+    280,
+    140
+   ]
+  },
+  {
+   "x": 760,
+   "y": 380,
+   "z": 2.0,
+   "spot": [
+    745,
+    390,
+    110
+   ]
+  },
+  {
+   "x": 1420,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    1420,
+    390,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A thirty-five-year-old woman is hit by a car.",
+   "shot": 1
+  },
+  {
+   "text": "Her plain X-ray shows an intracapsular fracture of the right femoral neck.",
+   "shot": 2
+  },
+  {
+   "text": "In younger patients with intracapsular fractures, cannulated screws are preferred.",
+   "shot": 3
+  },
+  {
+   "text": "They fix the fracture and preserve the head of the femur.",
+   "shot": 3
+  },
+  {
+   "text": "A replacement head is avoided, because femoral head prostheses have a limited lifespan.",
+   "shot": 0
+  },
+  {
+   "text": "So for this young woman, the operation is cannulated screws.",
+   "shot": 3
+  }
+ ]
+}
