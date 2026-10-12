@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000068",
+ "file": "Q000000068.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 90611,
+ "sha256": "230b9ed32e3fba8c726510169f5fe52f69577cf53f4a2b69208675ecd05251d4",
+ "track_ms": 32233,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4131,
+   "text": "Type One hypersensitivity is an immediate, allergic reaction."
+  },
+  {
+   "t_ms": 4581,
+   "end_ms": 8829,
+   "text": "It is provoked by re-exposure to a specific antigen, called an allergen."
+  },
+  {
+   "t_ms": 9279,
+   "end_ms": 10755,
+   "text": "Which mediator drives it?"
+  },
+  {
+   "t_ms": 11205,
+   "end_ms": 17673,
+   "text": "CD4+ Th2 cells stimulate B cells to produce IgE antibodies specific to that antigen."
+  },
+  {
+   "t_ms": 18123,
+   "end_ms": 20836,
+   "text": "So the answer is immunoglobulin E."
+  },
+  {
+   "t_ms": 21286,
+   "end_ms": 28037,
+   "text": "Not IgA, IgD or IgG: for Type One, think IgE."
+  },
+  {
+   "t_ms": 28487,
+   "end_ms": 31633,
+   "text": "Examples include allergic asthma and anaphylaxis."
+  }
+ ]
+}

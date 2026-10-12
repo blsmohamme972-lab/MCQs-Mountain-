@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000070",
+ "file": "Q000000070.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 108185,
+ "sha256": "56c40f22fba93ca92239c86ad3b96b3689e703ea60d6c5627e3462dd3663e800",
+ "track_ms": 36486,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 6228,
+   "text": "Type Three hypersensitivity is driven by immune complexes, made of antigen and antibody."
+  },
+  {
+   "t_ms": 6678,
+   "end_ms": 13389,
+   "text": "When innate immune cells do not clear them, they accumulate, causing inflammation and leukocyte activation."
+  },
+  {
+   "t_ms": 13839,
+   "end_ms": 15755,
+   "text": "Which mediator is it?"
+  },
+  {
+   "t_ms": 16205,
+   "end_ms": 18156,
+   "text": "Immunoglobulin G."
+  },
+  {
+   "t_ms": 18606,
+   "end_ms": 23582,
+   "text": "IgG binds a soluble antigen, forming a circulating immune complex."
+  },
+  {
+   "t_ms": 24032,
+   "end_ms": 31938,
+   "text": "These are immune complex diseases. Examples include SLE and rheumatoid arthritis."
+  },
+  {
+   "t_ms": 32388,
+   "end_ms": 35886,
+   "text": "So for Type Three, the answer is immunoglobulin G."
+  }
+ ]
+}

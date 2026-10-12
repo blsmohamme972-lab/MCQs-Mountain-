@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000069",
+ "file": "Q000000069.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 99916,
+ "sha256": "79bba96b176d9c3abe8ea363205993011d2d17893c6ede453e2af1e1c6e0d5e7",
+ "track_ms": 33984,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 6121,
+   "text": "Type Two hypersensitivity is also called tissue-specific, or cytotoxic, hypersensitivity."
+  },
+  {
+   "t_ms": 6571,
+   "end_ms": 10822,
+   "text": "Here, antibodies bind to antigens on the patient's own cell surfaces."
+  },
+  {
+   "t_ms": 11272,
+   "end_ms": 14123,
+   "text": "Which mediator is it? Immunoglobulin G."
+  },
+  {
+   "t_ms": 14573,
+   "end_ms": 19294,
+   "text": "IgG and IgM antibodies bind these antigens, forming complexes."
+  },
+  {
+   "t_ms": 19744,
+   "end_ms": 24717,
+   "text": "These activate the classical pathway of complement, to eliminate the cells presenting the antigens."
+  },
+  {
+   "t_ms": 25167,
+   "end_ms": 29758,
+   "text": "Examples include ABO blood incompatibility and autoimmune haemolytic anaemia."
+  },
+  {
+   "t_ms": 30208,
+   "end_ms": 33384,
+   "text": "So for Type Two, the answer is immunoglobulin G."
+  }
+ ]
+}
