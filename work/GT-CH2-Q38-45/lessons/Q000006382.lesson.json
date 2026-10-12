@@ -1,0 +1,91 @@
+{
+ "qid": "Q000006382",
+ "image": "Q000006382.png",
+ "takeaway": "A Lanz incision is a transverse incision across McBurney's point, lateral to rectus abdominis, so rectus is not divided. Divided: skin, superficial fascia, external and internal oblique, transversus, peritoneum.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 380,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    290,
+    340,
+    130
+   ]
+  },
+  {
+   "x": 900,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    850,
+    255,
+    120
+   ]
+  },
+  {
+   "x": 900,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    900,
+    430,
+    170
+   ]
+  },
+  {
+   "x": 1450,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    1520,
+    380,
+    160
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A ten-year-old boy has an open appendicectomy through a Lanz incision.",
+   "shot": 1,
+   "dir": "calm, warm"
+  },
+  {
+   "text": "It is a transverse incision across McBurney's point, a third of the way from the anterior superior iliac spine to the umbilicus.",
+   "shot": 1,
+   "dir": "explaining, steady"
+  },
+  {
+   "text": "You cut through skin, then superficial fascia: Camper's fatty layer and Scarpa's membranous layer,",
+   "shot": 2,
+   "dir": "clear, steady"
+  },
+  {
+   "text": "then the muscles: external oblique, internal oblique and transversus abdominis, and finally the peritoneum.",
+   "shot": 3,
+   "dir": "clear, steady"
+  },
+  {
+   "text": "But rectus abdominis lies in the centre of the abdomen.",
+   "shot": 4,
+   "dir": "curious, pointed"
+  },
+  {
+   "text": "The Lanz incision is lateral to it, so rectus abdominis is the one not divided.",
+   "shot": 4,
+   "dir": "confident, bright"
+  },
+  {
+   "text": "And as a bonus, the Lanz incision is cosmetically better.",
+   "shot": 0,
+   "dir": "gently amused"
+  }
+ ]
+}

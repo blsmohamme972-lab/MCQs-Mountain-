@@ -1,0 +1,91 @@
+{
+ "qid": "Q000006385",
+ "image": "Q000006385.png",
+ "takeaway": "The fundus is supplied by the short gastric arteries from the splenic artery. Lesser curvature: left and right gastric. Lower greater curvature: left and right gastroepiploic.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 400,
+   "z": 1
+  },
+  {
+   "x": 1350,
+   "y": 380,
+   "z": 1.9,
+   "spot": [
+    1300,
+    420,
+    150
+   ]
+  },
+  {
+   "x": 900,
+   "y": 260,
+   "z": 1.9,
+   "spot": [
+    920,
+    200,
+    160
+   ]
+  },
+  {
+   "x": 650,
+   "y": 380,
+   "z": 1.9,
+   "spot": [
+    620,
+    330,
+    140
+   ]
+  },
+  {
+   "x": 800,
+   "y": 589,
+   "z": 1.9,
+   "spot": [
+    800,
+    680,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which arteries supply the fundus of the stomach?",
+   "shot": 0,
+   "dir": "curious, warm"
+  },
+  {
+   "text": "The splenic artery runs in the gastrosplenic ligament.",
+   "shot": 1,
+   "dir": "explaining, steady"
+  },
+  {
+   "text": "It gives rise to the short gastric arteries, which supply the fundus and the upper greater curvature.",
+   "shot": 2,
+   "dir": "clear, steady"
+  },
+  {
+   "text": "So the answer is the short gastric arteries.",
+   "shot": 2,
+   "dir": "confident, bright"
+  },
+  {
+   "text": "The lesser curvature gets branches of the left and right gastric arteries.",
+   "shot": 3,
+   "dir": "explaining, steady"
+  },
+  {
+   "text": "The lower greater curvature gets the left and right gastroepiploic arteries:",
+   "shot": 4,
+   "dir": "clear, steady"
+  },
+  {
+   "text": "the right from the gastroduodenal artery, and the left from the splenic artery.",
+   "shot": 4,
+   "dir": "warm, concluding"
+  }
+ ]
+}

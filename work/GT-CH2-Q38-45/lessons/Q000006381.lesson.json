@@ -1,0 +1,92 @@
+{
+ "qid": "Q000006381",
+ "image": "Q000006381.png",
+ "takeaway": "In a Hartmann's procedure the sigmoid colon is resected, the rectum is closed as a stump, and an end colostomy is brought out in the left lower quadrant (LLQ).",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 400,
+   "z": 1
+  },
+  {
+   "x": 840,
+   "y": 210,
+   "z": 1.9,
+   "spot": [
+    840,
+    75,
+    110
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 580,
+   "z": 1.9,
+   "spot": [
+    1150,
+    620,
+    150
+   ]
+  },
+  {
+   "x": 600,
+   "y": 500,
+   "z": 1.9,
+   "spot": [
+    600,
+    540,
+    110
+   ]
+  },
+  {
+   "x": 900,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    905,
+    405,
+    120
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "An 81-year-old lady has peritonitis from perforated diverticular disease.",
+   "shot": 0,
+   "dir": "concerned, calm",
+   "say": "An eighty-one year old lady has peritonitis from perforated diverticular disease."
+  },
+  {
+   "text": "She undergoes a Hartmann's procedure.",
+   "shot": 1,
+   "dir": "clear, steady"
+  },
+  {
+   "text": "The sigmoid colon is resected.",
+   "shot": 2,
+   "dir": "explaining, steady"
+  },
+  {
+   "text": "The rectum is sewn shut and left as a stump.",
+   "shot": 3,
+   "dir": "explaining, steady"
+  },
+  {
+   "text": "The descending or proximal sigmoid colon is brought out as a stoma, in the left lower quadrant.",
+   "shot": 4,
+   "dir": "confident, clear"
+  },
+  {
+   "text": "Contamination from the perforation makes joining the ends unsafe, though it may be reversed later.",
+   "shot": 0,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "So the answer is the left lower quadrant.",
+   "shot": 4,
+   "dir": "warm, confident"
+  }
+ ]
+}

@@ -1,0 +1,97 @@
+{
+ "qid": "Q000006378",
+ "image": "Q000006378.png",
+ "takeaway": "Calot's triangle is bordered by the inferior border of the liver, the cystic duct and the common hepatic duct. The cystic artery, from the right hepatic artery, lies within it.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 400,
+   "z": 1
+  },
+  {
+   "x": 880,
+   "y": 380,
+   "z": 1.9,
+   "spot": [
+    880,
+    390,
+    170
+   ]
+  },
+  {
+   "x": 880,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    880,
+    268,
+    120
+   ]
+  },
+  {
+   "x": 830,
+   "y": 420,
+   "z": 2.0,
+   "spot": [
+    840,
+    420,
+    110
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 400,
+   "z": 2.0,
+   "spot": [
+    1095,
+    390,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A woman has a cholecystectomy, weeks after an episode of acute cholecystitis.",
+   "shot": 0,
+   "dir": "calm, warm"
+  },
+  {
+   "text": "To find the cystic artery, the surgeon first identifies Calot's triangle.",
+   "shot": 1,
+   "dir": "focused, inviting",
+   "say": "(clears throat) To find the cystic artery, the surgeon first identifies Calot's triangle."
+  },
+  {
+   "text": "Its upper border is the inferior border of the liver.",
+   "shot": 2,
+   "dir": "clear, steady"
+  },
+  {
+   "text": "One side is the cystic duct,",
+   "shot": 3,
+   "dir": "clear, steady"
+  },
+  {
+   "text": "and the other is the common hepatic duct.",
+   "shot": 4,
+   "dir": "clear, confident"
+  },
+  {
+   "text": "So the answer: the common hepatic duct, the inferior border of the liver, and the cystic duct.",
+   "shot": 1,
+   "dir": "confident, warm"
+  },
+  {
+   "text": "The cystic artery, a branch of the right hepatic artery, lies inside this triangle.",
+   "shot": 1,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "Biliary anatomy varies a lot, so identify these structures before any dissection.",
+   "shot": 0,
+   "dir": "serious, caring"
+  }
+ ]
+}

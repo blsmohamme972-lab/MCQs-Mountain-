@@ -1,0 +1,93 @@
+{
+ "qid": "Q000006384",
+ "image": "Q000006384.png",
+ "takeaway": "A varicocele is an abnormal enlargement of the pampiniform venous plexus. It may be idiopathic or secondary; exclude abdominal or pelvic malignancy in a new unilateral varicocele.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 500,
+   "y": 280,
+   "z": 1.9,
+   "spot": [
+    500,
+    250,
+    150
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 250,
+   "z": 1.9,
+   "spot": [
+    1050,
+    190,
+    170
+   ]
+  },
+  {
+   "x": 1200,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    1100,
+    430,
+    150
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    1260,
+    600,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A man develops a scrotal swelling after an open inguinal hernia repair.",
+   "shot": 0,
+   "dir": "calm, warm"
+  },
+  {
+   "text": "His GP diagnoses a varicocele.",
+   "shot": 1,
+   "dir": "clear, steady",
+   "say": "His G P diagnoses a varicocele."
+  },
+  {
+   "text": "A varicocele is an abnormal enlargement of the pampiniform venous plexus within the scrotum.",
+   "shot": 2,
+   "dir": "explaining, steady"
+  },
+  {
+   "text": "So damage to the pampiniform plexus of veins accounts for it.",
+   "shot": 2,
+   "dir": "confident, bright"
+  },
+  {
+   "text": "It may be idiopathic, from a valve problem in the plexus, or secondary to compression of the testicular venous drainage.",
+   "shot": 3,
+   "dir": "explaining, steady"
+  },
+  {
+   "text": "Patients describe a dragging discomfort, or heaviness, in the scrotum.",
+   "shot": 4,
+   "dir": "sympathetic",
+   "say": "(sigh) Patients describe a dragging discomfort, or heaviness, in the scrotum."
+  },
+  {
+   "text": "And with a new one-sided varicocele, always exclude an abdominal or pelvic malignancy.",
+   "shot": 0,
+   "dir": "serious, caring"
+  }
+ ]
+}

@@ -1,0 +1,93 @@
+{
+ "qid": "Q000006383",
+ "image": "Q000006383.png",
+ "takeaway": "Difficulty standing and walking after a groin stab wound: femoral nerve injury. Largest branch of the lumbar plexus (L2-4); passes behind the inguinal ligament, lateral to the femoral sheath.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 400,
+   "z": 1
+  },
+  {
+   "x": 1100,
+   "y": 250,
+   "z": 2.0,
+   "spot": [
+    1130,
+    140,
+    140
+   ]
+  },
+  {
+   "x": 440,
+   "y": 300,
+   "z": 1.9,
+   "spot": [
+    230,
+    300,
+    160
+   ]
+  },
+  {
+   "x": 950,
+   "y": 380,
+   "z": 1.9,
+   "spot": [
+    900,
+    380,
+    150
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    1150,
+    500,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "An 18-year-old man is stabbed in the groin and the abdomen.",
+   "shot": 0,
+   "dir": "serious, calm",
+   "say": "An eighteen year old man is stabbed in the groin and the abdomen."
+  },
+  {
+   "text": "Three months later, he finds standing and walking difficult.",
+   "shot": 0,
+   "dir": "concerned"
+  },
+  {
+   "text": "This is due to damage to the femoral nerve, which supplies the quadriceps, the knee extensors.",
+   "shot": 1,
+   "dir": "confident, clear"
+  },
+  {
+   "text": "It is the largest branch of the lumbar plexus, from the posterior roots of L2, 3 and 4.",
+   "shot": 2,
+   "dir": "explaining, steady",
+   "say": "It is the largest branch of the lumbar plexus, from the posterior roots of L two, three and four."
+  },
+  {
+   "text": "After a motor branch to iliacus, it passes behind the inguinal ligament.",
+   "shot": 3,
+   "dir": "clear, steady"
+  },
+  {
+   "text": "In the femoral triangle it lies lateral to the femoral sheath.",
+   "shot": 4,
+   "dir": "clear, steady"
+  },
+  {
+   "text": "There, the lateral femoral circumflex artery divides it into superficial and deep branches.",
+   "shot": 4,
+   "dir": "warm, concluding"
+  }
+ ]
+}
