@@ -87,12 +87,12 @@
     },
     {
       "qid": "Q000006348",
-      "duration_ms": 30000,
+      "duration_ms": 28700,
       "content_hash": "19edd87b25124c0b6afd939dea1e947d16457c382b3fd89b64abed9a64f05d39"
     },
     {
       "qid": "Q000006349",
-      "duration_ms": 30000,
+      "duration_ms": 34100,
       "content_hash": "ec0c6b56313e561421aa3c5811cd1188348b62e9ede345ad1417eb32dd1959d9"
     }
   ]
