@@ -18,3 +18,8 @@ __pycache__/
 
 # Voice engine test clips (`voiceover.py sample`) are sent to the owner in chat only.
 /work/voice-sample/
+
+# Lean storage: a lesson is kept as lessons/ (lesson.json + WebP image), scenes/ and selection.json. The voice is
+# rebuilt from the text (cached on the machine) and the ZIP goes to the owner in chat and lives in the bot.
+/work/*/voice/
+/dist/MCARDS_*.zip

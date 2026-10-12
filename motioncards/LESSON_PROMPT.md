@@ -54,7 +54,9 @@ READ FIRST: CLAUDE.md, motioncards/lib/lesson.py.
    && python3 tools/motioncards.py package $E --workspace $W --out $Z && python3 tools/motioncards.py validate $Z
    (lint and validate must PASS; ZIP <= 19 MB)
 7. If something fails, fix only that and re-run step 6 (finished voice lines are cached and not re-spoken).
-8. Commit the workspace and the ZIP, push, open a PR, send me the ZIP. Keep messages short.
+8. Send me the ZIP (SendUserFile). Commit only the workspace's lessons/ (lesson files + the WebP the build made of
+   each image), scenes/, selection.json and input/; never the voice/ folder or the ZIP (.gitignore keeps them out,
+   do not force-add them). Push, open a PR. Keep messages short.
 
 If the bot's publish fails after the upload was accepted (e.g. a smoke-test timeout), do not re-send the file
 (the bot answers "already received"): I send /motioncards-retry <PACKAGE-ID>_r<N> to re-queue it.

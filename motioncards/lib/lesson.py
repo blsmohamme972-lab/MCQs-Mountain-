@@ -17,6 +17,7 @@ from pathlib import Path
 
 W, H = 960, 540                       # landscape stage (16:9)
 MAX_IMAGE_BYTES = 600 * 1024          # engine_v2 asset limit
+SLIM_IMAGE_BYTES = 400 * 1024         # a source image above this is stored as WebP (slim_image)
 LESSON_KEYS = {"qid", "image", "takeaway", "engine", "voice", "voices", "names", "tempo", "gap_ms", "shots", "lines", "lang"}
 LINE_KEYS = {"who", "text", "say", "dir", "shot", "tag"}
 
@@ -191,12 +192,27 @@ def build_scene(spec: dict, qid: str, avif: bytes, iw: int, ih: int, track: dict
             "svg": svg, "script": SCRIPT.replace("__LESSON__", json.dumps(data, ensure_ascii=False, separators=(",", ":")))}
 
 
+def slim_image(lesson: Path, img: Path) -> Path:
+    """Keep only a small copy of the source image in the repo: a large PNG/JPEG becomes a same-size WebP (about
+    280 KB instead of about 2.3 MB), the lesson file points at it and the original is removed. The same pixel size
+    keeps every shot and spotlight in place; the app shows its own AVIF anyway."""
+    if img.suffix.lower() == ".webp" or img.stat().st_size <= SLIM_IMAGE_BYTES: return img
+    out = img.with_suffix(".webp")
+    r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(img), "-c:v", "libwebp", "-quality", "80", str(out)], capture_output=True)
+    if r.returncode or _image_size(out) != _image_size(img): _fail(f"could not make a WebP copy of {img.name}: " + r.stderr.decode()[-300:])
+    raw = json.loads(lesson.read_text(encoding="utf-8")); raw["image"] = out.relative_to(lesson.parent.resolve()).as_posix()
+    lesson.write_text(json.dumps(raw, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    img.unlink()
+    return out
+
+
 def build_lesson(workspace: Path, qid: str) -> dict:
     """lessons/<QID>.lesson.json -> scenes/<QID>.scene.json + voice/<QID>.opus/.track.json; selection.json gets the real length."""
     src = workspace / "lessons" / f"{qid}.lesson.json"
     spec = check_lesson(json.loads(src.read_text(encoding="utf-8")), qid)
     img = (src.parent / spec["image"]).resolve()
     if not img.is_file(): _fail(f"image not found: {img}")
+    img = slim_image(src, img)
     avif, iw, ih = encode_avif(img)
     sx = iw / _image_size(img)[0]                                        # shots are written in the original image's pixels
     spec["shots"] = [{**s, "x": s["x"] * sx, "y": s["y"] * sx, **({"spot": [v * sx for v in s["spot"]]} if s.get("spot") else {})} for s in spec["shots"]]
