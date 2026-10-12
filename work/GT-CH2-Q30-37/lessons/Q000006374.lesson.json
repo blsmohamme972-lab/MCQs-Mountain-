@@ -1,0 +1,93 @@
+{
+ "qid": "Q000006374",
+ "image": "Q000006374.png",
+ "takeaway": "Pringle's manoeuvre grasps the free edge of the lesser omentum, compressing the hepatic artery and portal vein (b and c only) to control liver bleeding.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 395,
+   "z": 1
+  },
+  {
+   "x": 900,
+   "y": 260,
+   "z": 1.8,
+   "spot": [
+    920,
+    230,
+    150
+   ]
+  },
+  {
+   "x": 800,
+   "y": 470,
+   "z": 1.9,
+   "spot": [
+    775,
+    470,
+    80
+   ]
+  },
+  {
+   "x": 820,
+   "y": 470,
+   "z": 1.9,
+   "spot": [
+    840,
+    480,
+    80
+   ]
+  },
+  {
+   "x": 810,
+   "y": 470,
+   "z": 1.9,
+   "spot": [
+    810,
+    490,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A young man with a liver laceration is bleeding heavily.",
+   "shot": 0,
+   "dir": "urgent, steady"
+  },
+  {
+   "text": "Pringle's manoeuvre means grasping the free edge of the lesser omentum.",
+   "shot": 1,
+   "dir": "clear, confident"
+  },
+  {
+   "text": "Within that free edge lies the hepatic artery,",
+   "shot": 2,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "and the portal vein.",
+   "shot": 3,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "Compressing them stops blood reaching the liver, so the haemorrhage can be controlled.",
+   "shot": 4,
+   "dir": "relieved, steady",
+   "say": "Compressing them stops blood reaching the liver, so the haemorrhage can be controlled. (sigh)"
+  },
+  {
+   "text": "The superior mesenteric artery is not compressed.",
+   "shot": 0,
+   "dir": "gently warning"
+  },
+  {
+   "text": "So the answer is b and c only: the hepatic artery and the portal vein.",
+   "shot": 4,
+   "dir": "confident, warm",
+   "say": "So the answer is b and c only: the hepatic artery, and the portal vein."
+  }
+ ]
+}

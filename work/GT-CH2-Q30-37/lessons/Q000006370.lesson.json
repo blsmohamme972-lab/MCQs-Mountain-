@@ -1,0 +1,87 @@
+{
+ "qid": "Q000006370",
+ "image": "Q000006370.png",
+ "takeaway": "Cord layers continue the abdominal wall: external oblique to external spermatic fascia, internal oblique to cremaster and cremasteric fascia, transversalis fascia to internal spermatic fascia, peritoneum to tunica vaginalis.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 395,
+   "z": 1
+  },
+  {
+   "x": 1100,
+   "y": 230,
+   "z": 1.8,
+   "spot": [
+    1300,
+    200,
+    130
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 340,
+   "z": 1.8,
+   "spot": [
+    1350,
+    330,
+    130
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 460,
+   "z": 1.8,
+   "spot": [
+    1350,
+    460,
+    130
+   ]
+  },
+  {
+   "x": 1200,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    1420,
+    590,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Each layer of the abdominal wall continues around the spermatic cord.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The external oblique aponeurosis becomes the external spermatic fascia.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The internal oblique gives a few muscle fibres and its fascia: the cremaster muscle and cremasteric fascia.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The transversalis fascia, where the processus vaginalis pushes through at the deep ring, becomes the internal spermatic fascia.",
+   "shot": 3,
+   "dir": "steady, explaining"
+  },
+  {
+   "text": "And the peritoneum pairs with the tunica vaginalis.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "So every pairing is correct: the answer is All of the above.",
+   "shot": 0,
+   "dir": "pleased, confident",
+   "say": "So every pairing is correct (laugh): the answer is all of the above."
+  }
+ ]
+}

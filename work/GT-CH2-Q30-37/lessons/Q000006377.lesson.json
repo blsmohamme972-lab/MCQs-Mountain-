@@ -1,0 +1,92 @@
+{
+ "qid": "Q000006377",
+ "image": "Q000006377.png",
+ "takeaway": "Hesselbach's triangle: inferior epigastric artery superiorly and laterally, inguinal ligament inferiorly, lateral border of rectus abdominis medially.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 395,
+   "z": 1
+  },
+  {
+   "x": 850,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    870,
+    380,
+    160
+   ]
+  },
+  {
+   "x": 650,
+   "y": 280,
+   "z": 1.8,
+   "spot": [
+    600,
+    250,
+    130
+   ]
+  },
+  {
+   "x": 700,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    750,
+    520,
+    130
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 350,
+   "z": 1.8,
+   "spot": [
+    1180,
+    330,
+    120
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 23-year-old man has a direct inguinal hernia, and the registrar asks about Hesselbach's triangle.",
+   "shot": 0,
+   "dir": "warm, curious",
+   "say": "A twenty-three-year-old man has a direct inguinal hernia, and the registrar asks about Hesselbach's triangle."
+  },
+  {
+   "text": "Direct inguinal hernias arise through this triangle.",
+   "shot": 1,
+   "dir": "clear, explaining"
+  },
+  {
+   "text": "Superiorly and laterally, it is bordered by the inferior epigastric artery.",
+   "shot": 2,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "Inferiorly lies the inguinal ligament.",
+   "shot": 3,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "And medially, the lateral border of rectus abdominis.",
+   "shot": 4,
+   "dir": "clear, confident"
+  },
+  {
+   "text": "That muscle edge is the medial boundary.",
+   "shot": 4,
+   "dir": "steady"
+  },
+  {
+   "text": "So the answer is rectus abdominis.",
+   "shot": 4,
+   "dir": "confident, warm"
+  }
+ ]
+}

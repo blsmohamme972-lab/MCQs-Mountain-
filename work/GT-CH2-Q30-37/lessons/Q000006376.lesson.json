@@ -1,0 +1,93 @@
+{
+ "qid": "Q000006376",
+ "image": "Q000006376.png",
+ "takeaway": "Inguinal canal roof: internal oblique, conjoint tendon and transversus abdominis. Front: internal and external oblique. Back: conjoint tendon and transversalis fascia. Floor: inguinal and lacunar ligaments.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 395,
+   "z": 1
+  },
+  {
+   "x": 850,
+   "y": 230,
+   "z": 1.8,
+   "spot": [
+    750,
+    230,
+    190
+   ]
+  },
+  {
+   "x": 400,
+   "y": 430,
+   "z": 1.8,
+   "spot": [
+    440,
+    450,
+    150
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    1200,
+    500,
+    150
+   ]
+  },
+  {
+   "x": 900,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    900,
+    640,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The inguinal canal is an oblique 4–6 cm slit above the medial half of the inguinal ligament.",
+   "shot": 0,
+   "dir": "warm, steady",
+   "say": "The inguinal canal is an oblique four to six centimetre slit above the medial half of the inguinal ligament."
+  },
+  {
+   "text": "Its roof is made of three structures: internal oblique, the conjoint tendon and transversus abdominis.",
+   "shot": 1,
+   "dir": "clear, confident"
+  },
+  {
+   "text": "In front: the internal and external oblique.",
+   "shot": 2,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "Behind: the conjoint tendon and the transversalis fascia.",
+   "shot": 3,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "And the floor: the inguinal and lacunar ligaments.",
+   "shot": 4,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "Together, these boundaries reduce this natural point of weakness.",
+   "shot": 0,
+   "dir": "thoughtful"
+  },
+  {
+   "text": "So the roof is internal oblique, conjoint tendon and transversus abdominis.",
+   "shot": 1,
+   "dir": "confident, warm",
+   "say": "(clears throat) So the roof is internal oblique, conjoint tendon and transversus abdominis."
+  }
+ ]
+}

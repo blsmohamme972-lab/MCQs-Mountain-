@@ -1,0 +1,92 @@
+{
+ "qid": "Q000006375",
+ "image": "Q000006375.png",
+ "takeaway": "The transpyloric plane runs through the lower L1, pylorus and first part of the duodenum, the neck of the pancreas, the renal hila and the ninth costal cartilages.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 395,
+   "z": 1
+  },
+  {
+   "x": 700,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    600,
+    400,
+    120
+   ]
+  },
+  {
+   "x": 840,
+   "y": 320,
+   "z": 2.0,
+   "spot": [
+    840,
+    330,
+    110
+   ]
+  },
+  {
+   "x": 900,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    870,
+    420,
+    130
+   ]
+  },
+  {
+   "x": 950,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    900,
+    570,
+    120
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The transpyloric plane lies midway between the suprasternal notch and the pubic symphysis.",
+   "shot": 1,
+   "dir": "clear, curious"
+  },
+  {
+   "text": "At the bedside, estimate it halfway between the xiphisternum and the umbilicus.",
+   "shot": 1,
+   "dir": "warm, practical"
+  },
+  {
+   "text": "It runs through the inferior part of L1,",
+   "shot": 2,
+   "dir": "calm, explaining",
+   "say": "It runs through the inferior part of L one,"
+  },
+  {
+   "text": "and through the pylorus, the gastroduodenal junction and the first part of the duodenum.",
+   "shot": 3,
+   "dir": "clear, confident"
+  },
+  {
+   "text": "It also crosses the neck of the pancreas,",
+   "shot": 4,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "the hila of the kidneys, and the ninth costal cartilages.",
+   "shot": 0,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "So the answer is the first part of the duodenum.",
+   "shot": 3,
+   "dir": "confident, warm"
+  }
+ ]
+}
