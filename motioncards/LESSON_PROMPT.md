@@ -17,7 +17,8 @@ unless something is broken; send one short message at the end with the ZIP.
 VOICE ENGINE: breeze (my answer to the CLAUDE.md engine question; do not ask again)
 STYLE: one narrator per question; the builder gives each question a different Breeze voice, women and men taking
 turns (BREEZE_ROTATION in voiceover/voiceover.py). Leave out "voice", "who", "voices" and "names".
-IMAGES: attached, one per question in source order. Save each as work/MRCS-CH<N>-LESSONS/lessons/<QID>.png.
+IMAGES: attached (one per question, named by question number, sent as several ZIP parts of at most 30 MB; collect
+all parts first). Save each as work/MRCS-CH<N>-LESSONS/lessons/<QID>.png.
 
 READ FIRST: CLAUDE.md, motioncards/lib/lesson.py.
 
@@ -54,7 +55,8 @@ READ FIRST: CLAUDE.md, motioncards/lib/lesson.py.
    && python3 tools/motioncards.py package $E --workspace $W --out $Z && python3 tools/motioncards.py validate $Z
    (lint and validate must PASS; ZIP <= 19 MB)
 7. If something fails, fix only that and re-run step 6 (finished voice lines are cached and not re-spoken).
-8. Commit the workspace and the ZIP, push, open a PR, send me the ZIP. Keep messages short.
+8. Send me the ZIP (SendUserFile). Commit only lessons/<QID>.lesson.json and selection.json: no images, voice,
+   scenes, export copy or ZIP (.gitignore keeps them out; never force-add them). Push, open a PR. Keep messages short.
 
 If the bot's publish fails after the upload was accepted (e.g. a smoke-test timeout), do not re-send the file
 (the bot answers "already received"): I send /motioncards-retry <PACKAGE-ID>_r<N> to re-queue it.

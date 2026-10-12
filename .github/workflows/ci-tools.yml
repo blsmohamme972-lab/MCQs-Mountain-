@@ -1,19 +1,7 @@
 name: Kafu Content Contract CI
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "app/**"
-      - "content-worker/**"
-      - "tools/**"
-      - "worker/**"
-      - "migrations/**"
-      - "Animations and illustrations/**"
-      - "motioncards/**"
-      - "motioncards-worker/**"
-      - ".github/workflows/**"
+  workflow_dispatch:
   pull_request:
     paths:
       - "app/**"
@@ -27,8 +15,8 @@ on:
       - "motioncards-worker/**"
       - "voiceover/**"
 
-# Paths keep documentation-only pull requests and main commits from starting CI.
-# One run per pull request (or main) prevents outdated work from consuming minutes.
+# Paths keep documentation-only pull requests from starting CI. Pull requests only: the merged commit was already
+# checked there, so main is not checked twice. One run per pull request keeps outdated work from consuming minutes.
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true

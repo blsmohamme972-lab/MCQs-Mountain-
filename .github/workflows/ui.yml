@@ -1,9 +1,8 @@
 name: Kafu Visual and Flow CI
+# Runs on pull requests only: the merged commit was already checked there (saves Actions minutes).
 on:
+  workflow_dispatch:
   pull_request:
-    paths: ['app/**', 'motioncards/**', 'motioncards-worker/**', 'tools/ui/**']
-  push:
-    branches: [main]
     paths: ['app/**', 'motioncards/**', 'motioncards-worker/**', 'tools/ui/**']
 permissions:
   contents: read

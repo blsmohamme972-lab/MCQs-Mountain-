@@ -14,7 +14,8 @@ on:
         default: false
         type: boolean
   schedule:
-    - cron: "17 * * * *"
+    # Uploads dispatch immediately from the bot; this only recovers a missed dispatch, once a day, to save Actions minutes.
+    - cron: "17 3 * * *"
 
 permissions:
   contents: write
@@ -38,17 +39,6 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: Cache key for this month's tool downloads
-        id: month
-        run: echo "month=$(date -u +%Y-%m)" >> "$GITHUB_OUTPUT"
-      - name: Reuse downloaded Wrangler packages (refreshed monthly)
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: kafu-npm-wrangler4-${{ runner.os }}-${{ steps.month.outputs.month }}
-      - name: Install Wrangler
-        run: npm install --no-save --package-lock=false --prefer-offline --no-audit --no-fund wrangler@4
-
       - name: Restore independent MotionCards state
         run: |
           set -euo pipefail
@@ -73,6 +63,21 @@ jobs:
           else
             echo "has_work=false" >> "$GITHUB_OUTPUT"
           fi
+
+      # Tools are installed only when a job was claimed, so an empty check costs seconds, not minutes.
+      - name: Cache key for this month's tool downloads
+        id: month
+        if: steps.prepare.outputs.has_work == 'true'
+        run: echo "month=$(date -u +%Y-%m)" >> "$GITHUB_OUTPUT"
+      - name: Reuse downloaded Wrangler packages (refreshed monthly)
+        if: steps.prepare.outputs.has_work == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: kafu-npm-wrangler4-${{ runner.os }}-${{ steps.month.outputs.month }}
+      - name: Install Wrangler
+        if: steps.prepare.outputs.has_work == 'true'
+        run: npm install --no-save --package-lock=false --prefer-offline --no-audit --no-fund wrangler@4
 
       - name: Stage complete candidate tree
         if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
