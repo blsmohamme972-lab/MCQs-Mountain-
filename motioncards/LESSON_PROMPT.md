@@ -21,7 +21,9 @@ IMAGES: attached, one per question in source order. Save each as work/MRCS-CH<N>
 
 READ FIRST: CLAUDE.md, motioncards/lib/lesson.py.
 
-1. Setup (fresh machine, run in the background while you read):
+1. Setup (fresh machine, run in the background while you read). Then start step 6 only after setup has ended:
+   chain them in one command (setup && build), never a `while pgrep -f ...` wait loop (it matches itself and waits
+   forever). If `setup` reports a failed download, run it again; it resumes.
    export MOTIONCARDS_CHROMIUM=/opt/pw-browsers/chromium-1194/chrome-linux/chrome ; pip install playwright ;
    voiceover/bootstrap.sh ; ~/.venvs/kafu-voice/bin/python voiceover/voiceover.py setup --engine breeze
 2. Save the export below as work/input/MRCS-PARTA-550-2E-ch<N>.export.json (content hashes must match).
