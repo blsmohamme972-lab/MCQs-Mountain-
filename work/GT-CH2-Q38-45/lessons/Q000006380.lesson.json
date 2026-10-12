@@ -1,0 +1,91 @@
+{
+ "qid": "Q000006380",
+ "image": "Q000006380.png",
+ "takeaway": "The lower greater curvature is supplied by the left and right gastroepiploic arteries. Left from the splenic artery; right from the gastroduodenal. Short gastrics: fundus. Gastric arteries: lesser curvature.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 400,
+   "z": 1
+  },
+  {
+   "x": 800,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    800,
+    560,
+    200
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 380,
+   "z": 1.9,
+   "spot": [
+    1230,
+    380,
+    150
+   ]
+  },
+  {
+   "x": 450,
+   "y": 450,
+   "z": 1.9,
+   "spot": [
+    460,
+    460,
+    140
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 220,
+   "z": 1.9,
+   "spot": [
+    1080,
+    190,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A man has an emergency endoscopy for a bleeding gastric ulcer.",
+   "shot": 0,
+   "dir": "concerned, calm"
+  },
+  {
+   "text": "The ulcer sits on the lower greater curvature of the stomach.",
+   "shot": 1,
+   "dir": "focused"
+  },
+  {
+   "text": "This area is supplied by the left and right gastroepiploic arteries.",
+   "shot": 1,
+   "dir": "clear, explaining"
+  },
+  {
+   "text": "Of the options, the answer is the left gastroepiploic artery, which comes from the splenic artery.",
+   "shot": 2,
+   "dir": "confident, bright"
+  },
+  {
+   "text": "The right gastroepiploic is a terminal branch of the gastroduodenal artery.",
+   "shot": 3,
+   "dir": "clear, steady"
+  },
+  {
+   "text": "The fundus and the upper greater curvature get the short gastric arteries.",
+   "shot": 4,
+   "dir": "explaining, steady"
+  },
+  {
+   "text": "And the lesser curvature is supplied by the left and right gastric arteries.",
+   "shot": 0,
+   "dir": "warm, concluding"
+  }
+ ]
+}
