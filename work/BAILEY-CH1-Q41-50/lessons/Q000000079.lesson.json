@@ -1,0 +1,75 @@
+{
+ "qid": "Q000000079",
+ "image": "Q000000079.png",
+ "takeaway": "Cystic hygroma: a lymphangioma that usually presents in childhood, typically in the neck, and transilluminates.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 820,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    840,
+    410,
+    120
+   ]
+  },
+  {
+   "x": 1420,
+   "y": 220,
+   "z": 2.0,
+   "spot": [
+    1390,
+    220,
+    110
+   ]
+  },
+  {
+   "x": 1360,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    1360,
+    560,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A fourteen-year-old girl has a soft, fluctuant lump on the right side of her neck.",
+   "shot": 1
+  },
+  {
+   "text": "It measures 2 cm and sits next to the angle of the mandible.",
+   "shot": 1,
+   "say": "It measures two centimetres and sits next to the angle of the mandible."
+  },
+  {
+   "text": "The lump transilluminates,",
+   "shot": 2
+  },
+  {
+   "text": "and it is cystic on ultrasound.",
+   "shot": 3
+  },
+  {
+   "text": "This is a cystic hygroma: a lymphangioma that usually presents in childhood.",
+   "shot": 0
+  },
+  {
+   "text": "Cystic hygromas typically occur in the neck, and they transilluminate.",
+   "shot": 1
+  },
+  {
+   "text": "So in this young girl, the diagnosis is cystic hygroma.",
+   "shot": 0
+  }
+ ]
+}

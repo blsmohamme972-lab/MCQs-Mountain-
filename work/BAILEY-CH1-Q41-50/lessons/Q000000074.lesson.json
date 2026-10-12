@@ -1,0 +1,91 @@
+{
+ "qid": "Q000000074",
+ "image": "Q000000074.png",
+ "takeaway": "An RhD-negative mother exposed to RhD antigen at childbirth gets anti-D immunoglobulin, to reduce the risk of antibodies that would attack a later RhD-positive baby.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 250,
+   "z": 2.0,
+   "spot": [
+    190,
+    150,
+    120
+   ]
+  },
+  {
+   "x": 920,
+   "y": 470,
+   "z": 1.9,
+   "spot": [
+    920,
+    440,
+    140
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 300,
+   "z": 1.9,
+   "spot": [
+    1295,
+    230,
+    130
+   ]
+  },
+  {
+   "x": 790,
+   "y": 220,
+   "z": 2.0,
+   "spot": [
+    790,
+    180,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "This mother is blood group B, RhD-negative.",
+   "shot": 1,
+   "say": "This mother is blood group B, R h D negative."
+  },
+  {
+   "text": "She has just given birth to a baby who is B, RhD-positive.",
+   "shot": 2,
+   "say": "She has just given birth to a baby who is B, R h D positive."
+  },
+  {
+   "text": "Through childbirth, she has been exposed to the RhD antigen.",
+   "shot": 2,
+   "say": "Through childbirth, she has been exposed to the R h D antigen."
+  },
+  {
+   "text": "Untreated, she would develop antibodies that would attack a later RhD-positive baby in the womb.",
+   "shot": 0,
+   "say": "Untreated, she would develop antibodies that would attack a later R h D positive baby in the womb."
+  },
+  {
+   "text": "Anti-D immunoglobulin reduces her immune response, and so the risk of developing these antibodies.",
+   "shot": 3,
+   "say": "Anti D immunoglobulin reduces her immune response, and so the risk of developing these antibodies."
+  },
+  {
+   "text": "Her haemoglobin of 11.0 needs no transfusion; that is usually considered below 8 g/dL.",
+   "shot": 4,
+   "say": "Her haemoglobin of eleven needs no transfusion; that is usually considered below eight grams per decilitre."
+  },
+  {
+   "text": "So the correct pairing is this mother with anti-D immunoglobulin.",
+   "shot": 3,
+   "say": "So the correct pairing is this mother with anti D immunoglobulin."
+  }
+ ]
+}

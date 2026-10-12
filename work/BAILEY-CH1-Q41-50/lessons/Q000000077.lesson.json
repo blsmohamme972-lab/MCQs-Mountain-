@@ -1,0 +1,75 @@
+{
+ "qid": "Q000000077",
+ "image": "Q000000077.png",
+ "takeaway": "Varicocele: a 'bag of worms' felt only on standing. More common on the left, as the left testicular vein drains into the left renal vein; the right drains directly into the IVC.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 1310,
+   "y": 230,
+   "z": 1.9,
+   "spot": [
+    1310,
+    170,
+    130
+   ]
+  },
+  {
+   "x": 1340,
+   "y": 500,
+   "z": 1.9,
+   "spot": [
+    1340,
+    520,
+    140
+   ]
+  },
+  {
+   "x": 835,
+   "y": 380,
+   "z": 1.7,
+   "spot": [
+    835,
+    330,
+    180
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A thirty-two-year-old man complains of a dragging sensation in his left scrotum.",
+   "shot": 1
+  },
+  {
+   "text": "The doctor feels a soft mass, like a bag of worms,",
+   "shot": 2
+  },
+  {
+   "text": "but only when the patient is standing.",
+   "shot": 3
+  },
+  {
+   "text": "This is the classic description of a varicocele.",
+   "shot": 0
+  },
+  {
+   "text": "Varicoceles are more common on the left, because the left testicular vein drains into the left renal vein,",
+   "shot": 0
+  },
+  {
+   "text": "whereas the right testicular vein drains directly into the IVC.",
+   "shot": 0,
+   "say": "whereas the right testicular vein drains directly into the I V C."
+  },
+  {
+   "text": "So the diagnosis is varicocele.",
+   "shot": 2
+  }
+ ]
+}

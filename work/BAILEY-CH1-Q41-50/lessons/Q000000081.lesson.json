@@ -1,0 +1,80 @@
+{
+ "qid": "Q000000081",
+ "image": "Q000000081.png",
+ "takeaway": "Elderly intracapsular femoral neck fracture: hemiarthroplasty, unless the acetabulum is diseased, when a total hip replacement is preferred.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 320,
+   "z": 1.8,
+   "spot": [
+    430,
+    220,
+    140
+   ]
+  },
+  {
+   "x": 860,
+   "y": 300,
+   "z": 1.9,
+   "spot": [
+    860,
+    260,
+    170
+   ]
+  },
+  {
+   "x": 850,
+   "y": 600,
+   "z": 1.9,
+   "spot": [
+    850,
+    600,
+    130
+   ]
+  },
+  {
+   "x": 1400,
+   "y": 350,
+   "z": 1.8,
+   "spot": [
+    1400,
+    380,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A sixty-seven-year-old woman with rheumatoid arthritis falls when walking back from town.",
+   "shot": 1
+  },
+  {
+   "text": "Her arthritis affects both hips.",
+   "shot": 2
+  },
+  {
+   "text": "The X-ray shows an intracapsular fracture of the femoral neck.",
+   "shot": 3
+  },
+  {
+   "text": "In elderly patients, hemiarthroplasty is indicated for intracapsular fractures,",
+   "shot": 0
+  },
+  {
+   "text": "unless there is a diseased acetabulum, when a total hip replacement is preferred.",
+   "shot": 4
+  },
+  {
+   "text": "Here, rheumatoid arthritis affects both hips, so the operation is a total hip replacement.",
+   "shot": 4
+  }
+ ]
+}
