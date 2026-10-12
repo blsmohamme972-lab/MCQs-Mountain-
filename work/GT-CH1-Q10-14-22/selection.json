@@ -1,0 +1,69 @@
+{
+  "package_id": "GT-CH1-Q10-14-22",
+  "package_revision": 1,
+  "source": {
+    "kind": "published",
+    "catalog_url": "https://kafu-content-1.blsmohamme97.workers.dev/catalog.json",
+    "catalog_sha256": "b86f972c19cc9811f217e6f54591092df768c26c6d5072ab0ba520500cd61dfb",
+    "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/GET-THROUGH-MRCS-A-SBA/v3/index.json",
+    "index_sha256": "878de8995eb62fb2d34a6d82b3f20cc407d8aa49f634b3872271e20b11ee2530",
+    "snapshot_pinned": true
+  },
+  "scope": {
+    "type": "records",
+    "book_id": "GET-THROUGH-MRCS-A-SBA",
+    "book_version": 3,
+    "chapter_ids": [
+      "1"
+    ],
+    "question_count": 28,
+    "qids": [
+      "Q000006341",
+      "Q000006342",
+      "Q000006343",
+      "Q000006344",
+      "Q000006345",
+      "Q000006346",
+      "Q000006347",
+      "Q000006348",
+      "Q000006349",
+      "Q000006350",
+      "Q000006351",
+      "Q000006352",
+      "Q000006353",
+      "Q000006354",
+      "Q000006355",
+      "Q000006356",
+      "Q000006357",
+      "Q000006358",
+      "Q000006359",
+      "Q000006360",
+      "Q000006361",
+      "Q000006362",
+      "Q000006363",
+      "Q000006364",
+      "Q000006365",
+      "Q000006366",
+      "Q000006367",
+      "Q000006368"
+    ]
+  },
+  "warnings": [],
+  "selected": [
+    {
+      "qid": "Q000006350",
+      "duration_ms": 30000,
+      "content_hash": "6dcd811e803adeb9aedeebfa25956ded8dd1650738ab6a88d1cd0c78a84d9559"
+    },
+    {
+      "qid": "Q000006354",
+      "duration_ms": 30000,
+      "content_hash": "edf1d9963c7ac6b174923358420e8c1e4ecb0f9e8463051067c20fca1ec4c930"
+    },
+    {
+      "qid": "Q000006362",
+      "duration_ms": 30000,
+      "content_hash": "78475bb1a85249a8136f441839ae8ee22b6f4f921b009ccce54d3c03a22a3338"
+    }
+  ]
+}
