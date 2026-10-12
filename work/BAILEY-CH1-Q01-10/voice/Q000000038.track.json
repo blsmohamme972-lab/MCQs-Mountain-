@@ -1,0 +1,37 @@
+{
+ "qid": "Q000000038",
+ "file": "Q000000038.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 51746,
+ "sha256": "0ae46ecab13a562e777818fa15c3b18c7b4b6c4ca64074d537ca619f1b66b61c",
+ "track_ms": 18502,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 2896,
+   "text": "Which nerve roots carry the biceps reflex?"
+  },
+  {
+   "t_ms": 3346,
+   "end_ms": 6922,
+   "text": "The doctor taps the biceps tendon to test the biceps reflex."
+  },
+  {
+   "t_ms": 7372,
+   "end_ms": 11428,
+   "text": "The biceps reflex is mediated by the C5 and C6 nerve roots,"
+  },
+  {
+   "t_ms": 11878,
+   "end_ms": 13329,
+   "text": "and mainly by C5."
+  },
+  {
+   "t_ms": 13779,
+   "end_ms": 17902,
+   "text": "So the root values for the biceps reflex are C5 and C6."
+  }
+ ]
+}

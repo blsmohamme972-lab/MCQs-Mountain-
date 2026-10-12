@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000033",
+ "file": "Q000000033.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 96463,
+ "sha256": "b15942ac541b3a0c4b9551419d9149cc288fae60fd037ed5f6386ad84f4d438c",
+ "track_ms": 34632,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 3681,
+   "text": "In statistics, every study starts with a null hypothesis."
+  },
+  {
+   "t_ms": 4131,
+   "end_ms": 8322,
+   "text": "A null hypothesis is a statement of no significant difference, or no effect."
+  },
+  {
+   "t_ms": 8772,
+   "end_ms": 12123,
+   "text": "For example, no significant difference between two groups,"
+  },
+  {
+   "t_ms": 12573,
+   "end_ms": 14074,
+   "text": "or no effect from a treatment."
+  },
+  {
+   "t_ms": 14524,
+   "end_ms": 21240,
+   "text": "A Type One error wrongly rejects a true null hypothesis: a false positive. A benefit is seen when there is none."
+  },
+  {
+   "t_ms": 21690,
+   "end_ms": 27821,
+   "text": "A Type Two error accepts a false null hypothesis: a false negative. A real benefit is missed."
+  },
+  {
+   "t_ms": 28271,
+   "end_ms": 34032,
+   "text": "And remember: sensitivity is the true positive rate, and specificity is the true negative rate."
+  }
+ ]
+}

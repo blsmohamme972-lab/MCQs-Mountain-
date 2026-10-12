@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000035",
+ "file": "Q000000035.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 96846,
+ "sha256": "ba259a5c82b3516c425647c8921139616cf38db3677e8bf5f39f6fd01c8c05c5",
+ "track_ms": 33888,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 5626,
+   "text": "A sixty-five-year-old woman has lost sensation over her thumb, index and middle fingers."
+  },
+  {
+   "t_ms": 6076,
+   "end_ms": 8929,
+   "text": "Her radiograph shows a distal radius fracture."
+  },
+  {
+   "t_ms": 9379,
+   "end_ms": 15182,
+   "text": "Median nerve injury at the wrist causes sensory loss over the thumb, index finger, middle finger,"
+  },
+  {
+   "t_ms": 15632,
+   "end_ms": 17968,
+   "text": "and the radial side of the ring finger."
+  },
+  {
+   "t_ms": 18418,
+   "end_ms": 21619,
+   "text": "The hand muscles it supplies are remembered as LOAF:"
+  },
+  {
+   "t_ms": 22069,
+   "end_ms": 28980,
+   "text": "lumbricals one and two, opponens pollicis, abductor pollicis, and flexor pollicis brevis."
+  },
+  {
+   "t_ms": 29430,
+   "end_ms": 33288,
+   "text": "So a distal radius fracture with this numbness points to the median nerve."
+  }
+ ]
+}
