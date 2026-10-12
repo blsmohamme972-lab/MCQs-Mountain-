@@ -100,9 +100,10 @@ def build_voice(spec: dict, voice_dir: Path, qid: str) -> dict:
 
 SCRIPT = r"""// Image lesson player: camera, spotlight, pulse ring and captions, all a pure function of t (the voice clock in the app).
 const L = __LESSON__;
-const MOVE = 1500, LEAD = 350;
-const ease = p => p < .5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3) / 2, clamp = (v, a, b) => Math.max(a, Math.min(b, v)), lerp = (a, b, p) => a + (b - a) * p;
-const EV = {"(laugh)": "laughs", "(sigh)": "sighs", "(cough)": "coughs", "(clears throat)": "clears throat"};
+const MOVE = 1900, LEAD = 450, SPOT_IN = 750, CAP_FADE = 220;
+// smootherstep: zero speed and zero acceleration at both ends, so the camera glides instead of starting and stopping
+const ease = p => p * p * p * (p * (6 * p - 15) + 10), clamp = (v, a, b) => Math.max(a, Math.min(b, v)), lerp = (a, b, p) => a + (b - a) * p;
+const EV = ["(laugh)", "(sigh)", "(cough)", "(clears throat)"];   // performed by the voice, never shown in the caption
 let el = {}, runs = [], base = 1;
 function setup(api) {
   base = Math.max(api.W / L.iw, api.H / L.ih);                  // the image covers the stage at zoom 1
@@ -115,7 +116,7 @@ function setup(api) {
   const probe = api.el("text", {"font-size": 34, "font-weight": 700, "font-family": "system-ui, sans-serif", opacity: 0}, api.svg);
   const fits = s => { probe.textContent = s; return probe.getComputedTextLength() <= api.W * 0.88; };
   L.cues.forEach(c => {
-    let words = c.text; for (const e in EV) words = words.split(e).join(" " + EV[e] + " ");
+    let words = c.text; for (const e of EV) words = words.split(e).join(" ");
     const name = c.who ? (L.names[c.who] || c.who) + "  " : "", out = []; let line = name;
     for (const w of words.split(/\s+/).filter(Boolean)) { const tryL = line ? line + (line.endsWith("  ") ? "" : " ") + w : w; if (fits(tryL) || !line.trim()) line = tryL; else { out.push(line); line = w; } }
     out.push(line); c.lines = out.slice(0, 3); c.nameLen = name.length;
@@ -126,25 +127,32 @@ function camera(t) {
   let k = 0; for (let j = 0; j < runs.length; j++) if (t >= runs[j].start) k = j;
   const r = runs[k], s = L.shots[r.shot], a = L.shots[k ? runs[k - 1].shot : r.shot];
   const p = k ? ease(clamp((t - r.start) / MOVE, 0, 1)) : 1, hold = clamp((t - r.start - MOVE) / Math.max(100, r.end - r.start - MOVE), 0, 1);
-  let z = Math.exp(lerp(Math.log(a.z), Math.log(s.z), p)) * (1 + 0.04 * hold);
-  if (k === 0) z = lerp(1.1, 1, ease(clamp(t / 2200, 0, 1))) * (1 + 0.04 * hold);
-  return {x: lerp(a.x, s.x, p), y: lerp(a.y, s.y, p), z, s, p, r};
+  // between two close-ups far apart the camera eases out a little mid-way, like a real camera move, then settles in
+  const far = Math.hypot(s.x - a.x, s.y - a.y) / L.iw, dip = Math.min(a.z, s.z) > 1.15 ? Math.min(0.22, far * 0.5) : 0;
+  let z = Math.exp(lerp(Math.log(a.z), Math.log(s.z), p)) * (1 - dip * Math.sin(Math.PI * p)) * (1 + 0.035 * ease(hold));
+  if (k === 0) z = lerp(1.08, 1, ease(clamp(t / 2600, 0, 1))) * (1 + 0.035 * ease(hold));
+  return {x: lerp(a.x, s.x, p), y: lerp(a.y, s.y, p), z, s, a, p, r, k};
 }
 function render(t, api) {
   const c = camera(t), k = base * c.z, sw = L.iw * k, sh = L.ih * k;
   const ox = clamp(api.W / 2 - c.x * k, api.W - sw, 0), oy = clamp(api.H / 2 - c.y * k, api.H - sh, 0);
   api.set(el.img, {transform: `translate(${ox.toFixed(2)} ${oy.toFixed(2)}) scale(${k.toFixed(5)})`});
-  // spotlight on the part being explained; off while the camera travels
-  const sp = c.s.spot, on = sp && c.p >= 1 ? clamp((t - c.r.start - MOVE) / 600, 0, 1) : 0;
-  if (sp) {
+  // spotlight: everything but the idea being explained fades back. Spot to spot it glides with the camera (it never
+  // switches off mid-lesson); it fades in when a spot appears and fades out when the next shot has none.
+  const A = c.k ? c.a.spot : null, B = c.s.spot, since = t - c.r.start;
+  let sp = null, on = 0;
+  if (A && B) { sp = [0, 1, 2].map(i => lerp(A[i], B[i], c.p)); on = 1; }
+  else if (B) { sp = B; on = ease(clamp((since - (c.k ? MOVE * 0.55 : MOVE)) / SPOT_IN, 0, 1)); }
+  else if (A) { sp = A; on = 1 - ease(clamp(since / (MOVE * 0.5), 0, 1)); }
+  if (sp && on > 0) {
     const sx = ox + sp[0] * k, sy = oy + sp[1] * k, rr = sp[2] * k;
-    api.set(el.spotG, {cx: sx.toFixed(1), cy: sy.toFixed(1), r: (rr * 1.35).toFixed(1)});
-    const rp = clamp((t - c.r.start - MOVE) / 1100, 0, 1);
-    api.set(el.ring, {cx: sx.toFixed(1), cy: sy.toFixed(1), r: (rr * (0.25 + 0.75 * rp)).toFixed(1), opacity: (rp > 0 && rp < 1 ? Math.sin(Math.PI * rp) * 0.9 : 0).toFixed(3)});
+    api.set(el.spotG, {cx: sx.toFixed(1), cy: sy.toFixed(1), r: (rr * 1.4).toFixed(1)});
+    const rp = B ? clamp((since - MOVE * 0.85) / 1300, 0, 1) : 0;   // one soft ring as the camera settles on the idea
+    api.set(el.ring, {cx: sx.toFixed(1), cy: sy.toFixed(1), r: (rr * (0.55 + 0.45 * ease(rp))).toFixed(1), opacity: (rp > 0 && rp < 1 ? Math.sin(Math.PI * rp) * 0.75 : 0).toFixed(3)});
   } else {                                                      // no spot: fixed values, so the frame depends only on t
     api.set(el.spotG, {cx: api.W / 2, cy: api.H / 2, r: 200}); api.set(el.ring, {cx: 0, cy: 0, r: 10, opacity: 0});
   }
-  api.set(el.spot, {opacity: (0.8 * on).toFixed(3)});
+  api.set(el.spot, {opacity: (0.92 * on).toFixed(3)});
   // caption of the line being spoken
   let q = null; for (const cue of L.cues) if (t >= cue.t - 100 && t <= cue.e + 400) q = cue;
   if (el.capFor !== q) {
@@ -155,10 +163,13 @@ function render(t, api) {
       else ts.textContent = ln;
     });
     const n = q ? q.lines.length : 0, h = 26 + 42 * n;
-    api.set(el.cap, {y: api.H - 20 - h + 47}); api.set(el.capBox, {y: api.H - 20 - h, height: h, opacity: n ? 0.78 : 0});
+    api.set(el.cap, {y: api.H - 20 - h + 47}); api.set(el.capBox, {y: api.H - 20 - h, height: h});
     const tg = q && q.tag || ""; el.tagText.textContent = tg; api.set(el.tag, {opacity: tg ? 1 : 0});
     if (tg) api.set(api.$("#lesson-tag-box"), {width: el.tagText.getComputedTextLength() + 30});
   }
+  // captions fade in and out instead of cutting (computed from t on every frame)
+  const f = q ? ease(clamp((t - q.t + 100) / CAP_FADE, 0, 1)) * ease(clamp((q.e + 400 - t) / CAP_FADE, 0, 1)) : 0;
+  api.set(el.cap, {opacity: f.toFixed(3)}); api.set(el.capBox, {opacity: (0.78 * f).toFixed(3)});
 }"""
 
 SPEAKER_COLORS = ["#8fd3ff", "#ffb3d1", "#b8f28c", "#ffd27a"]
@@ -173,13 +184,13 @@ def build_scene(spec: dict, qid: str, avif: bytes, iw: int, ih: int, track: dict
             "colors": {w: SPEAKER_COLORS[i % len(SPEAKER_COLORS)] for i, w in enumerate(who)}}
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg"><defs>'
            f'<radialGradient id="lesson-spot-g" gradientUnits="userSpaceOnUse" cx="480" cy="270" r="200">'
-           f'<stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#0c0906" stop-opacity=".58"/></radialGradient>'
+           f'<stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset=".72" stop-color="#0c0906" stop-opacity=".55"/><stop offset="1" stop-color="#0c0906" stop-opacity=".8"/></radialGradient>'
            f'<radialGradient id="lesson-vig" cx=".5" cy=".5" r=".75"><stop offset=".62" stop-color="#000" stop-opacity="0"/>'
            f'<stop offset="1" stop-color="#000" stop-opacity=".42"/></radialGradient></defs>'
            f'<image id="lesson-img" href="asset:img" x="0" y="0" width="{iw}" height="{ih}"/>'
            f'<rect id="lesson-spot" x="0" y="0" width="{W}" height="{H}" fill="url(#lesson-spot-g)" opacity="0"/>'
            f'<rect x="0" y="0" width="{W}" height="{H}" fill="url(#lesson-vig)"/>'
-           f'<circle id="lesson-ring" cx="0" cy="0" r="10" fill="none" stroke="#d9a441" stroke-width="3" opacity="0"/>'
+           f'<circle id="lesson-ring" cx="0" cy="0" r="10" fill="none" stroke="#f0c46a" stroke-width="2.5" opacity="0"/>'
            f'<g id="lesson-tag" opacity="0"><rect id="lesson-tag-box" x="22" y="20" width="200" height="40" rx="20" fill="#d9a441"/>'
            f'<text id="lesson-tag-text" x="36" y="47" font-size="22" font-weight="750" fill="#1f1a14" font-family="system-ui, sans-serif"></text></g>'
            f'<rect id="lesson-cap-box" x="{W*0.05:.0f}" y="440" width="{W*0.9:.0f}" height="60" rx="14" fill="#140f0a" opacity="0"/>'

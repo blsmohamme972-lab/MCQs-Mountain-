@@ -48,6 +48,10 @@ READ FIRST: CLAUDE.md, motioncards/lib/lesson.py.
    - Owner's rule: stay with the book's explanation. If the key, the image or the explanation disagree, narrate the
      explanation, do not correct the book, and list the disagreement in the PR.
    - Known Breeze respellings are in voiceover/lexicon.json (say_breeze); add one only if a word is plainly wrong.
+   - Human touch (owner's request), never distracting: give each line a short "dir" (emotion, e.g. "warm, curious",
+     "calm, confident", "gently amused") and add at most 1-2 vocal events per lesson, (laugh), (sigh) or
+     (clears throat), only where natural (a light joke, a relief, a new point). Put the event in "say" only, so the
+     caption ("text") stays clean. No other sounds exist (no sneeze); never use (cough) in a lesson.
 6. Build, lint, package and validate in ONE background command (about 50 s per voice line; never two Breeze jobs
    at once; wait for the completion notice, do not poll):
    W=work/MRCS-CH<N>-LESSONS; E=work/input/MRCS-PARTA-550-2E-ch<N>.export.json; Z=dist/MCARDS_MRCS-CH<N>_r1.zip
