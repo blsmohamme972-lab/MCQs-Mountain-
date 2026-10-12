@@ -32,7 +32,7 @@ globalThis.KafuEnhancements.installers.push({name:'tasteful-delight',install(){
   };
   const completed=VIEWS['chapter-complete'];VIEWS['chapter-complete']=function(...args){const result=completed.apply(this,args);return result;};
   function levelState(){
-    const answered=project().answered,xp=answered*10,level=Math.floor(xp/100)+1,into=xp%100;
+    const answered=project().answered,xp=globalThis.KafuXP?KafuXP.total():answered*10,level=Math.floor(xp/100)+1,into=xp%100;
     return{answered,xp,level,into,next:100};
   }
   function homeMarkup(){
