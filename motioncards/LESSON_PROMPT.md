@@ -45,8 +45,10 @@ READ FIRST: CLAUDE.md, motioncards/lib/lesson.py.
      Keep each spotlight in the upper three-quarters of its shot (the caption covers the bottom).
    - 6-8 lines, 70-90 words (31-35 s); every line points at what it talks about.
    - Facts only from the stem, answer and explanation; never change the key or invent numbers.
-   - Owner's rule: stay with the book's explanation. If the key, the image or the explanation disagree, narrate the
-     explanation, do not correct the book, and list the disagreement in the PR.
+   - Owner's rule: follow the book's explanation and never change the answer key. Where the explanation is wrong,
+     contradictory, off-topic or does not explain the key, narrate a short, correct, standard explanation that
+     supports the key instead (no new numbers or claims beyond standard anatomy/physiology). List every such case
+     in the PR.
    - Known Breeze respellings are in voiceover/lexicon.json (say_breeze); add one only if a word is plainly wrong.
    - Human touch (owner's request), never distracting: give each line a short "dir" (emotion, e.g. "warm, curious",
      "calm, confident", "gently amused") and add at most 1-2 vocal events per lesson, (laugh), (sigh) or
