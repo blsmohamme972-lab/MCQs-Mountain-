@@ -10,8 +10,8 @@ folder describes it: those are marked RETIRED and kept only as background. The s
 are shared with lessons and stay in use. "MotionCards" in the bot and filenames (`MCARDS_*.zip`) is just the package
 format both use.
 
-Lean storage: commit a lesson as lessons/ (lesson.json + the WebP the build makes of its image), scenes/ and
-selection.json. Never commit voice/ or the MCARDS ZIP (`.gitignore`); send the ZIP to the owner in chat.
+Lean storage (owner's rule): commit only the text of a lesson, lessons/<QID>.lesson.json, and selection.json.
+Never commit images, voice/, scenes/, input/ or the MCARDS ZIP (`.gitignore`); send the ZIP to the owner in chat.
 
 ## Voice-over: ask the owner which engine, every time
 
