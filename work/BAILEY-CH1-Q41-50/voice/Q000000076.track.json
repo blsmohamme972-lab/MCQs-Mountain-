@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000076",
+ "file": "Q000000076.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 80087,
+ "sha256": "2995fe2045cb5516c7a2134d91db1a6d523cb8a7d7e9ea3f5ad8218f1cf886dd",
+ "track_ms": 27506,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4226,
+   "text": "A twenty-two-year-old man has a swelling in his right scrotum."
+  },
+  {
+   "t_ms": 4676,
+   "end_ms": 6792,
+   "text": "It is painless and non-tender."
+  },
+  {
+   "t_ms": 7242,
+   "end_ms": 10430,
+   "text": "The scrotal swelling brightly transilluminates."
+  },
+  {
+   "t_ms": 10880,
+   "end_ms": 15251,
+   "text": "But inside it is a firm mass that does not seem separate from the testicle."
+  },
+  {
+   "t_ms": 15701,
+   "end_ms": 19502,
+   "text": "Any firm scrotal mass is cancer until proven otherwise."
+  },
+  {
+   "t_ms": 19952,
+   "end_ms": 23973,
+   "text": "And testicular cancer may often be associated with a hydrocele."
+  },
+  {
+   "t_ms": 24423,
+   "end_ms": 26906,
+   "text": "So the diagnosis is testicular cancer."
+  }
+ ]
+}

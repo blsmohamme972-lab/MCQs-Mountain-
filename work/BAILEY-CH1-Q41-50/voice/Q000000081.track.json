@@ -1,0 +1,42 @@
+{
+ "qid": "Q000000081",
+ "file": "Q000000081.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 78595,
+ "sha256": "46a4e7905a22119cd4ef36a9650004ef6c155746855c9d9795f177a250577e47",
+ "track_ms": 28158,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 5196,
+   "text": "A sixty-seven-year-old woman with rheumatoid arthritis falls when walking back from town."
+  },
+  {
+   "t_ms": 5646,
+   "end_ms": 7554,
+   "text": "Her arthritis affects both hips."
+  },
+  {
+   "t_ms": 8004,
+   "end_ms": 11400,
+   "text": "The X-ray shows an intracapsular fracture of the femoral neck."
+  },
+  {
+   "t_ms": 11850,
+   "end_ms": 16516,
+   "text": "In elderly patients, hemiarthroplasty is indicated for intracapsular fractures,"
+  },
+  {
+   "t_ms": 16966,
+   "end_ms": 21117,
+   "text": "unless there is a diseased acetabulum, when a total hip replacement is preferred."
+  },
+  {
+   "t_ms": 21567,
+   "end_ms": 27558,
+   "text": "Here, rheumatoid arthritis affects both hips, so the operation is a total hip replacement."
+  }
+ ]
+}

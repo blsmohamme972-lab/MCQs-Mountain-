@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000079",
+ "file": "Q000000079.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 86219,
+ "sha256": "86e3581a870f253247292298d5012290c8d1abc1a37b490ef64bf7a4759fad0f",
+ "track_ms": 29523,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4601,
+   "text": "A fourteen-year-old girl has a soft, fluctuant lump on the right side of her neck."
+  },
+  {
+   "t_ms": 5051,
+   "end_ms": 8882,
+   "text": "It measures 2 cm and sits next to the angle of the mandible."
+  },
+  {
+   "t_ms": 9332,
+   "end_ms": 11080,
+   "text": "The lump transilluminates,"
+  },
+  {
+   "t_ms": 11530,
+   "end_ms": 13246,
+   "text": "and it is cystic on ultrasound."
+  },
+  {
+   "t_ms": 13696,
+   "end_ms": 18422,
+   "text": "This is a cystic hygroma: a lymphangioma that usually presents in childhood."
+  },
+  {
+   "t_ms": 18872,
+   "end_ms": 23680,
+   "text": "Cystic hygromas typically occur in the neck, and they transilluminate."
+  },
+  {
+   "t_ms": 24130,
+   "end_ms": 28923,
+   "text": "So in this young girl, the diagnosis is cystic hygroma."
+  }
+ ]
+}

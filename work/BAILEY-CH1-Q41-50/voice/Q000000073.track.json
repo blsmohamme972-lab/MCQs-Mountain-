@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000073",
+ "file": "Q000000073.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 106963,
+ "sha256": "092e9556addc0c972067016990be2d185aa2c30e6963db9ad7a1733a2ee02534",
+ "track_ms": 35777,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 6551,
+   "text": "Hunter's canal, also called the adductor canal, is an aponeurotic tunnel in the middle third of the thigh."
+  },
+  {
+   "t_ms": 7001,
+   "end_ms": 13202,
+   "text": "It runs from the apex of the femoral triangle to the adductor hiatus, an opening in adductor magnus."
+  },
+  {
+   "t_ms": 13652,
+   "end_ms": 16803,
+   "text": "Its lateral border is formed by vastus medialis."
+  },
+  {
+   "t_ms": 17253,
+   "end_ms": 20629,
+   "text": "That is this large muscle on the outer side of the canal."
+  },
+  {
+   "t_ms": 21079,
+   "end_ms": 26055,
+   "text": "The medial border is adductor longus above, and adductor magnus below."
+  },
+  {
+   "t_ms": 26505,
+   "end_ms": 30951,
+   "text": "The roof is sartorius, with fascia and the subsartorial plexus."
+  },
+  {
+   "t_ms": 31401,
+   "end_ms": 35177,
+   "text": "So the lateral border of Hunter's canal is vastus medialis."
+  }
+ ]
+}

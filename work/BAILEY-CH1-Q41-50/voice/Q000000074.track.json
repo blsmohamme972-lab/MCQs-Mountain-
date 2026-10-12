@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000074",
+ "file": "Q000000074.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 100988,
+ "sha256": "f598a3c64860ed6527695039d51798bccccaf301cd255c72d8dab828cc12f7f3",
+ "track_ms": 35098,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 3736,
+   "text": "This mother is blood group B, RhD-negative."
+  },
+  {
+   "t_ms": 4186,
+   "end_ms": 7797,
+   "text": "She has just given birth to a baby who is B, RhD-positive."
+  },
+  {
+   "t_ms": 8247,
+   "end_ms": 11680,
+   "text": "Through childbirth, she has been exposed to the RhD antigen."
+  },
+  {
+   "t_ms": 12130,
+   "end_ms": 17431,
+   "text": "Untreated, she would develop antibodies that would attack a later RhD-positive baby in the womb."
+  },
+  {
+   "t_ms": 17881,
+   "end_ms": 23824,
+   "text": "Anti-D immunoglobulin reduces her immune response, and so the risk of developing these antibodies."
+  },
+  {
+   "t_ms": 24274,
+   "end_ms": 30185,
+   "text": "Her haemoglobin of 11.0 needs no transfusion; that is usually considered below 8 g/dL."
+  },
+  {
+   "t_ms": 30635,
+   "end_ms": 34498,
+   "text": "So the correct pairing is this mother with anti-D immunoglobulin."
+  }
+ ]
+}
