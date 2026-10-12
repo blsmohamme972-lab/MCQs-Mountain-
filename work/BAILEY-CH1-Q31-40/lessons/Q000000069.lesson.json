@@ -1,0 +1,76 @@
+{
+ "qid": "Q000000069",
+ "image": "Q000000069.png",
+ "takeaway": "Type II (cytotoxic) hypersensitivity: IgG and IgM bind antigens on the patient's own cells and activate the classical complement pathway. Examples: ABO incompatibility, autoimmune haemolytic anaemia.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    270,
+    140,
+    190
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1340,
+    260,
+    200
+   ]
+  },
+  {
+   "x": 1350,
+   "y": 500,
+   "z": 1.9,
+   "spot": [
+    1400,
+    520,
+    180
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Type Two hypersensitivity is also called tissue-specific, or cytotoxic, hypersensitivity.",
+   "shot": 1
+  },
+  {
+   "text": "Here, antibodies bind to antigens on the patient's own cell surfaces.",
+   "shot": 3
+  },
+  {
+   "text": "Which mediator is it? Immunoglobulin G.",
+   "shot": 2
+  },
+  {
+   "text": "IgG and IgM antibodies bind these antigens, forming complexes.",
+   "say": "I g G and I g M antibodies bind these antigens, forming complexes.",
+   "shot": 3
+  },
+  {
+   "text": "These activate the classical pathway of complement, to eliminate the cells presenting the antigens.",
+   "shot": 3
+  },
+  {
+   "text": "Examples include ABO blood incompatibility and autoimmune haemolytic anaemia.",
+   "say": "Examples include A B O blood incompatibility and autoimmune haemolytic anaemia.",
+   "shot": 0
+  },
+  {
+   "text": "So for Type Two, the answer is immunoglobulin G.",
+   "shot": 2
+  }
+ ]
+}

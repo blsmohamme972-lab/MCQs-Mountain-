@@ -1,0 +1,22 @@
+{
+ "qid": "Q000000066",
+ "image": "Q000000066.png",
+ "takeaway": "Small cell (oat-cell) carcinoma is highly malignant, metastasises early and is often associated with ectopic hormone production and paraneoplastic syndromes, such as hypercalcaemia.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {"x": 836, "y": 470, "z": 1},
+  {"x": 420, "y": 300, "z": 1.8, "spot": [550, 250, 220]},
+  {"x": 1150, "y": 250, "z": 1.9, "spot": [1020, 230, 150]},
+  {"x": 1400, "y": 250, "z": 2.0, "spot": [1470, 230, 140]},
+  {"x": 1250, "y": 520, "z": 1.8, "spot": [1250, 560, 170]}
+ ],
+ "lines": [
+  {"text": "A fifty-two year old woman has a rapidly worsening cough, haemoptysis, and breathlessness at rest.", "shot": 1},
+  {"text": "Her chest radiograph shows mediastinal gland enlargement.", "shot": 2},
+  {"text": "Her blood tests reveal hypercalcaemia.", "shot": 3},
+  {"text": "This points to small cell carcinoma, also called oat-cell carcinoma, a highly malignant cancer that most often arises in the lung.", "shot": 4},
+  {"text": "Compared with non-small cell cancer, it has a shorter doubling time, a higher growth fraction, and earlier metastases.", "shot": 4},
+  {"text": "It is often associated with ectopic hormone production and paraneoplastic syndromes.", "shot": 0}
+ ]
+}

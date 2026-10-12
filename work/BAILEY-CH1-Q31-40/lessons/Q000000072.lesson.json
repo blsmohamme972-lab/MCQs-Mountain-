@@ -1,0 +1,23 @@
+{
+ "qid": "Q000000072",
+ "image": "Q000000072.png",
+ "takeaway": "Inguinal canal: roof = arching fibres of internal oblique and transversus abdominis; anterior wall = external oblique (plus internal oblique laterally); posterior wall = transversalis fascia and conjoint tendon.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {"x": 836, "y": 470, "z": 1},
+  {"x": 700, "y": 520, "z": 1.8, "spot": [800, 540, 200]},
+  {"x": 836, "y": 260, "z": 2.0, "spot": [810, 150, 130]},
+  {"x": 450, "y": 280, "z": 1.9, "spot": [380, 250, 170]},
+  {"x": 1300, "y": 300, "z": 1.9, "spot": [1330, 300, 170]}
+ ],
+ "lines": [
+  {"text": "Which structures form the roof of the inguinal canal?", "shot": 1},
+  {"text": "The roof is made of arching muscle fibres.", "shot": 2},
+  {"text": "The arching fibres of internal oblique,", "shot": 3},
+  {"text": "and of transversus abdominis.", "shot": 4},
+  {"text": "Compare the other walls. The anterior wall is external oblique, with internal oblique for the lateral third.", "shot": 0},
+  {"text": "The posterior wall is transversalis fascia and the conjoint tendon.", "shot": 0},
+  {"text": "So the roof is internal oblique and transversus abdominis.", "shot": 2}
+ ]
+}

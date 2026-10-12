@@ -1,0 +1,62 @@
+{
+ "qid": "Q000000071",
+ "image": "Q000000071.png",
+ "takeaway": "Type IV (delayed) hypersensitivity is cell-mediated, not antibody-mediated: CD4+ Th1 helper T cells recognise antigen with MHC class II. Examples: Mantoux test, chronic transplant rejection.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    300,
+    280,
+    210
+   ]
+  },
+  {
+   "x": 780,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    790,
+    330,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Type Four hypersensitivity is delayed: it takes several days to develop.",
+   "shot": 1
+  },
+  {
+   "text": "Unlike the other types, it is not antibody mediated. It is a cell-mediated response.",
+   "shot": 1
+  },
+  {
+   "text": "So the mediator is the helper T cell.",
+   "shot": 2
+  },
+  {
+   "text": "CD4+ Th1 helper T cells recognise antigen in a complex with MHC class two, on antigen-presenting cells.",
+   "say": "C D four positive T H one helper T cells recognise antigen in a complex with M H C class two, on antigen-presenting cells.",
+   "shot": 2
+  },
+  {
+   "text": "Examples include the Mantoux test and chronic transplant rejection.",
+   "say": "Examples include the Mantoo test, and chronic transplant rejection.",
+   "shot": 0
+  },
+  {
+   "text": "So for Type Four, the answer is helper T cells, not an antibody.",
+   "shot": 2
+  }
+ ]
+}

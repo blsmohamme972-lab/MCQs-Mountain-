@@ -1,0 +1,20 @@
+{
+ "qid": "Q000000067",
+ "image": "Q000000067.png",
+ "takeaway": "The zona fasciculata of the adrenal cortex produces glucocorticoids, mainly cortisol, with basal secretion and bursts in response to ACTH from the anterior pituitary.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {"x": 836, "y": 470, "z": 1},
+  {"x": 600, "y": 280, "z": 1.8, "spot": [700, 320, 200]},
+  {"x": 1400, "y": 330, "z": 1.9, "spot": [1500, 280, 170]}
+ ],
+ "lines": [
+  {"text": "Which hormone does the zona fasciculata of the adrenal cortex secrete?", "shot": 0},
+  {"text": "The zona fasciculata produces glucocorticoids.", "shot": 1},
+  {"text": "The main glucocorticoid under normal conditions is cortisol.", "shot": 2},
+  {"text": "Cortisol mobilises fats, proteins, and carbohydrates, and enhances the activity of glucagon and catecholamines.", "shot": 2},
+  {"text": "This zone secretes a basal level of cortisol, with bursts in response to ACTH from the anterior pituitary gland.", "say": "This zone secretes a basal level of cortisol, with bursts in response to A C T H from the anterior pituitary gland.", "shot": 1},
+  {"text": "So the answer is cortisol.", "shot": 0}
+ ]
+}

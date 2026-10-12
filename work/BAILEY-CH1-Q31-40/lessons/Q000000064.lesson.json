@@ -1,0 +1,64 @@
+{
+ "qid": "Q000000064",
+ "image": "Q000000064.png",
+ "takeaway": "The coeliac trunk is closely related to the fibres of the greater splanchnic nerves.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 1150,
+   "y": 250,
+   "z": 1.8,
+   "spot": [
+    1100,
+    200,
+    160
+   ]
+  },
+  {
+   "x": 856,
+   "y": 420,
+   "z": 2.0,
+   "spot": [
+    856,
+    400,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "This question is about vascular supply in the upper abdomen.",
+   "shot": 0
+  },
+  {
+   "text": "Which artery is closely related to the greater splanchnic nerves?",
+   "shot": 1
+  },
+  {
+   "text": "Follow these nerve fibres down beside the aorta.",
+   "shot": 1
+  },
+  {
+   "text": "They wrap closely around the coeliac trunk.",
+   "shot": 2
+  },
+  {
+   "text": "So the answer is the coeliac trunk, a branch of the abdominal aorta.",
+   "shot": 2
+  },
+  {
+   "text": "Remember: greater splanchnic nerves, close to the coeliac trunk.",
+   "shot": 0
+  },
+  {
+   "text": "Greater splanchnic nerves and the coeliac trunk: keep these two together.",
+   "shot": 2
+  }
+ ]
+}
