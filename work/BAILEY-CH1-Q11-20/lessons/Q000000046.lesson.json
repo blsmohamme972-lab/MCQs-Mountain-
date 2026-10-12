@@ -1,0 +1,94 @@
+{
+ "qid": "Q000000046",
+ "image": "Q000000046.png",
+ "takeaway": "Cerebral perfusion pressure = MAP − ICP. With MAP 60–160 mmHg and ICP about 10 mmHg (CPP 50–150 mmHg), autoregulation maintains sufficient blood flow.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 420,
+   "y": 260,
+   "z": 2.0,
+   "spot": [
+    260,
+    230,
+    150
+   ]
+  },
+  {
+   "x": 690,
+   "y": 270,
+   "z": 2.0,
+   "spot": [
+    690,
+    240,
+    150
+   ]
+  },
+  {
+   "x": 1020,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    1020,
+    330,
+    110
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 240,
+   "z": 2.0,
+   "spot": [
+    1390,
+    180,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "This equation is MAP minus ICP.",
+   "shot": 0,
+   "say": "This equation is mean arterial pressure minus intracranial pressure."
+  },
+  {
+   "text": "MAP is the mean arterial pressure.",
+   "shot": 1,
+   "say": "M A P is the mean arterial pressure."
+  },
+  {
+   "text": "ICP, the intracranial pressure, is subtracted from it.",
+   "shot": 2,
+   "say": "I C P, the intracranial pressure, is subtracted from it."
+  },
+  {
+   "text": "The difference is the cerebral perfusion pressure.",
+   "shot": 4
+  },
+  {
+   "text": "Normally, MAP is between 60 and 160 mmHg, and ICP is about 10 mmHg,",
+   "shot": 3,
+   "say": "Normally, mean arterial pressure is between sixty and one hundred and sixty millimetres of mercury, and intracranial pressure is about ten,"
+  },
+  {
+   "text": "giving a CPP of 50 to 150 mmHg.",
+   "shot": 4,
+   "say": "giving a cerebral perfusion pressure of fifty to one hundred and fifty millimetres of mercury."
+  },
+  {
+   "text": "In that range, autoregulation maintains sufficient blood flow.",
+   "shot": 0
+  },
+  {
+   "text": "So if MAP falls or ICP rises, the perfusion pressure falls.",
+   "shot": 3,
+   "say": "So if mean arterial pressure falls, or intracranial pressure rises, the perfusion pressure falls."
+  }
+ ]
+}

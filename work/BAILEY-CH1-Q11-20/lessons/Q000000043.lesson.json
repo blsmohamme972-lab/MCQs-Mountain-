@@ -1,0 +1,101 @@
+{
+ "qid": "Q000000043",
+ "image": "Q000000043.png",
+ "takeaway": "Pulmonary vascular resistance = (mean pulmonary artery pressure − mean pulmonary capillary wedge pressure) × 80 / cardiac output. Reference range 125–250 dynes × sec/cm³.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 430,
+   "y": 240,
+   "z": 2.0,
+   "spot": [
+    260,
+    150,
+    130
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 240,
+   "z": 2.0,
+   "spot": [
+    1270,
+    120,
+    130
+   ]
+  },
+  {
+   "x": 830,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    820,
+    500,
+    200
+   ]
+  },
+  {
+   "x": 430,
+   "y": 420,
+   "z": 2.0,
+   "spot": [
+    220,
+    400,
+    130
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 400,
+   "z": 2.0,
+   "spot": [
+    1500,
+    330,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "This equation measures a resistance in the lungs.",
+   "shot": 0
+  },
+  {
+   "text": "Start with the mean pulmonary artery pressure,",
+   "shot": 1
+  },
+  {
+   "text": "and subtract the mean pulmonary capillary wedge pressure.",
+   "shot": 2
+  },
+  {
+   "text": "Multiply that difference by 80,",
+   "shot": 3,
+   "say": "Multiply that difference by eighty,"
+  },
+  {
+   "text": "then divide by the cardiac output.",
+   "shot": 4
+  },
+  {
+   "text": "The result is the pulmonary vascular resistance.",
+   "shot": 5
+  },
+  {
+   "text": "So: the pressure difference across the lungs, times 80, divided by cardiac output.",
+   "shot": 3,
+   "say": "So: the pressure difference across the lungs, times eighty, divided by cardiac output."
+  },
+  {
+   "text": "Its reference range is 125 to 250 dynes × sec/cm³.",
+   "shot": 0,
+   "say": "Its reference range is one hundred and twenty-five to two hundred and fifty dynes seconds per centimetre cubed."
+  }
+ ]
+}

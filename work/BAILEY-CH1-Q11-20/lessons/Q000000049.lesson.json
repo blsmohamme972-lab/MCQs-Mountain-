@@ -1,0 +1,74 @@
+{
+ "qid": "Q000000049",
+ "image": "Q000000049.png",
+ "takeaway": "Cancer of the nasal cavity is associated with nickel dust. Other links: wood, textile, leather and flour dust, chromium dust, mustard gas, asbestos, formaldehyde, HPV.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 440,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    420,
+    330,
+    180
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    1380,
+    320,
+    170
+   ]
+  },
+  {
+   "x": 900,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    900,
+    410,
+    180
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which carcinogen is linked to cancer of the nasal cavity?",
+   "shot": 0
+  },
+  {
+   "text": "The answer is nickel: nickel dust is a known carcinogen here.",
+   "shot": 1
+  },
+  {
+   "text": "Cancer of the nasal cavity is associated with many inhaled materials.",
+   "shot": 2
+  },
+  {
+   "text": "These include dust from the wood, textile and leather industries, and flour dust,",
+   "shot": 3
+  },
+  {
+   "text": "as well as chromium dust, mustard gas, asbestos, formaldehyde and solvent fumes.",
+   "shot": 3
+  },
+  {
+   "text": "Human papillomavirus, air pollution and marijuana use are also linked.",
+   "shot": 2
+  },
+  {
+   "text": "Chromium is on that list too, but the single best answer is nickel.",
+   "shot": 1
+  }
+ ]
+}

@@ -1,0 +1,74 @@
+{
+ "qid": "Q000000050",
+ "image": "Q000000050.png",
+ "takeaway": "Transitional cell carcinoma of the urinary tract: smoking causes about half; chemicals such as petroleum, paints and pigments (aniline dyes) and chronic irritation also predispose.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 420,
+   "y": 240,
+   "z": 2.0,
+   "spot": [
+    400,
+    220,
+    170
+   ]
+  },
+  {
+   "x": 800,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    820,
+    470,
+    180
+   ]
+  },
+  {
+   "x": 1232,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    1340,
+    400,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which carcinogen is linked to transitional cell carcinoma of the urinary tract?",
+   "shot": 0
+  },
+  {
+   "text": "Cigarette smoking contributes about one half of the disease burden.",
+   "shot": 3
+  },
+  {
+   "text": "Chemical exposure also predisposes to it: petroleum, paints and pigments,",
+   "shot": 1
+  },
+  {
+   "text": "for example, aniline dyes.",
+   "shot": 1
+  },
+  {
+   "text": "As with most epithelial cancers, physical irritation also raises the risk of malignant change:",
+   "shot": 2
+  },
+  {
+   "text": "chronic urinary stones, chronic catheterization and chronic infection.",
+   "shot": 2
+  },
+  {
+   "text": "So the answer is aniline dyes.",
+   "shot": 1
+  }
+ ]
+}

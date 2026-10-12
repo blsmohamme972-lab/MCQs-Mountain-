@@ -1,0 +1,75 @@
+{
+ "qid": "Q000000048",
+ "image": "Q000000048.png",
+ "takeaway": "Ionizing radiation is a major known risk factor for thyroid cancer, particularly papillary carcinoma: external X-rays and γ-rays, or inhaled or ingested radioiodines.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 420,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    290,
+    310,
+    170
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    1250,
+    300,
+    180
+   ]
+  },
+  {
+   "x": 940,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    950,
+    370,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which carcinogen is linked to thyroid cancer?",
+   "shot": 0
+  },
+  {
+   "text": "The incidence of thyroid cancer is increasing,",
+   "shot": 2
+  },
+  {
+   "text": "partly from improved detection, and partly from causes such as ionizing radiation.",
+   "shot": 1
+  },
+  {
+   "text": "Ionizing radiation is a major known risk factor, particularly for papillary carcinoma.",
+   "shot": 1
+  },
+  {
+   "text": "Both external radiation (X-rays and γ-rays) and internal radioiodines, inhaled or ingested, raise the risk.",
+   "shot": 3,
+   "say": "Both external radiation, X-rays and gamma rays, and internal radioiodines, inhaled or ingested, raise the risk."
+  },
+  {
+   "text": "Examples include therapeutic external beam radiation, and exposure after nuclear weapon explosions or reactor accidents.",
+   "shot": 3
+  },
+  {
+   "text": "So the answer is ionizing radiation.",
+   "shot": 1
+  }
+ ]
+}

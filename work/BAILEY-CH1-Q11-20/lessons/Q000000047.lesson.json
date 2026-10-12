@@ -1,0 +1,101 @@
+{
+ "qid": "Q000000047",
+ "image": "Q000000047.png",
+ "takeaway": "Systemic vascular resistance = (MAP − mean right atrial pressure) × 80 / cardiac output. Reference range 800–1200 dynes × sec/cm³.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 420,
+   "y": 240,
+   "z": 2.0,
+   "spot": [
+    190,
+    170,
+    150
+   ]
+  },
+  {
+   "x": 600,
+   "y": 250,
+   "z": 2.0,
+   "spot": [
+    580,
+    200,
+    150
+   ]
+  },
+  {
+   "x": 880,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    890,
+    290,
+    110
+   ]
+  },
+  {
+   "x": 880,
+   "y": 480,
+   "z": 2.0,
+   "spot": [
+    890,
+    520,
+    130
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 240,
+   "z": 2.0,
+   "spot": [
+    1400,
+    170,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Let's build this equation one piece at a time.",
+   "shot": 0
+  },
+  {
+   "text": "Start with the mean arterial pressure,",
+   "shot": 1
+  },
+  {
+   "text": "and subtract the mean right atrial pressure.",
+   "shot": 2
+  },
+  {
+   "text": "Multiply the difference by 80,",
+   "shot": 3,
+   "say": "Multiply the difference by eighty,"
+  },
+  {
+   "text": "then divide by the cardiac output.",
+   "shot": 4
+  },
+  {
+   "text": "The result is the systemic vascular resistance.",
+   "shot": 5
+  },
+  {
+   "text": "So: the arterial minus right atrial pressure, times 80, divided by cardiac output.",
+   "shot": 3,
+   "say": "So: the arterial minus right atrial pressure, times eighty, divided by cardiac output."
+  },
+  {
+   "text": "Its reference range is 800 to 1200 dynes × sec/cm³.",
+   "shot": 5,
+   "say": "Its reference range is eight hundred to twelve hundred dynes seconds per centimetre cubed."
+  }
+ ]
+}
