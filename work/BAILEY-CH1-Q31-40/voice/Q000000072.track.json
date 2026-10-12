@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000072",
+ "file": "Q000000072.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 79790,
+ "sha256": "ee8553c26fdbc105aeb454a938aa71a5128af659e4bc4cc219c5ff3066a918cd",
+ "track_ms": 28101,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 3426,
+   "text": "Which structures form the roof of the inguinal canal?"
+  },
+  {
+   "t_ms": 3876,
+   "end_ms": 6329,
+   "text": "The roof is made of arching muscle fibres."
+  },
+  {
+   "t_ms": 6779,
+   "end_ms": 8870,
+   "text": "The arching fibres of internal oblique,"
+  },
+  {
+   "t_ms": 9320,
+   "end_ms": 11276,
+   "text": "and of transversus abdominis."
+  },
+  {
+   "t_ms": 11726,
+   "end_ms": 18022,
+   "text": "Compare the other walls. The anterior wall is external oblique, with internal oblique for the lateral third."
+  },
+  {
+   "t_ms": 18472,
+   "end_ms": 22508,
+   "text": "The posterior wall is transversalis fascia and the conjoint tendon."
+  },
+  {
+   "t_ms": 22958,
+   "end_ms": 27501,
+   "text": "So the roof is internal oblique and transversus abdominis."
+  }
+ ]
+}
