@@ -1,0 +1,89 @@
+{
+ "qid": "Q000006344",
+ "image": "Q000006344.png",
+ "takeaway": "The aorta crosses the diaphragm at T12; it passes behind the diaphragm rather than piercing it, so breathing does not affect its blood flow.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 600,
+   "y": 260,
+   "z": 1.8,
+   "spot": [
+    600,
+    110,
+    110
+   ]
+  },
+  {
+   "x": 470,
+   "y": 440,
+   "z": 2.0,
+   "spot": [
+    470,
+    515,
+    80
+   ]
+  },
+  {
+   "x": 1280,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    1270,
+    330,
+    110
+   ]
+  },
+  {
+   "x": 1270,
+   "y": 420,
+   "z": 2.1,
+   "spot": [
+    1540,
+    455,
+    70
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "At which vertebral level does the aorta pass through the diaphragm?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Follow the aorta down from the chest.",
+   "shot": 1,
+   "dir": "calm"
+  },
+  {
+   "text": "It crosses the diaphragm at the level of T12.",
+   "shot": 2,
+   "dir": "confident, emphatic",
+   "say": "It crosses the diaphragm at the level of T twelve."
+  },
+  {
+   "text": "Strictly, it does not pierce the diaphragm: it passes behind it, though questions may still say it passes through.",
+   "shot": 3,
+   "dir": "gently amused",
+   "say": "(laugh) Strictly, it does not pierce the diaphragm: it passes behind it, though questions may still say it passes through."
+  },
+  {
+   "text": "Because it does not pierce the muscle, the breathing movements of the diaphragm do not affect its blood flow.",
+   "shot": 3,
+   "dir": "explanatory"
+  },
+  {
+   "text": "So the answer is T12.",
+   "shot": 4,
+   "dir": "bright, encouraging",
+   "say": "So the answer is T twelve."
+  }
+ ]
+}

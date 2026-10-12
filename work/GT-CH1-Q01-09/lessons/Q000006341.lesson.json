@@ -1,0 +1,90 @@
+{
+ "qid": "Q000006341",
+ "image": "Q000006341.png",
+ "takeaway": "The left pleura leaves the midline at the 4th costal cartilage to make room for the heart; the pleurae meet in the midline at the 2nd.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 420,
+   "y": 270,
+   "z": 1.8,
+   "spot": [
+    330,
+    150,
+    90
+   ]
+  },
+  {
+   "x": 900,
+   "y": 260,
+   "z": 1.9,
+   "spot": [
+    770,
+    240,
+    80
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    800,
+    455,
+    80
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    1080,
+    600,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The two pleural sacs meet in the midline, then part to make room for the heart. At which costal cartilage does the left one leave?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The pleurae start about 2.5 cm above the clavicle, at the border of its medial and middle thirds.",
+   "shot": 1,
+   "dir": "calm, explanatory",
+   "say": "The pleurae start about two and a half centimetres above the clavicle, at the border of its medial and middle thirds."
+  },
+  {
+   "text": "They run obliquely down to meet in the midline at the 2nd costal cartilage.",
+   "shot": 2,
+   "dir": "steady",
+   "say": "They run obliquely down to meet in the midline at the second costal cartilage."
+  },
+  {
+   "text": "At the 4th costal cartilage, the left pleura leaves the midline.",
+   "shot": 3,
+   "dir": "confident, emphatic",
+   "say": "At the fourth costal cartilage, the left pleura leaves the midline."
+  },
+  {
+   "text": "It swings out to make room for the heart.",
+   "shot": 4,
+   "dir": "warm"
+  },
+  {
+   "text": "So the answer is the 4th costal cartilage.",
+   "shot": 0,
+   "dir": "bright, encouraging",
+   "say": "(clears throat) So the answer is the fourth costal cartilage."
+  }
+ ]
+}

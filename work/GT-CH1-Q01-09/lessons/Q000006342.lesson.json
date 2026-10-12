@@ -1,0 +1,89 @@
+{
+ "qid": "Q000006342",
+ "image": "Q000006342.png",
+ "takeaway": "The oblique fissures start at the level of the 3rd spinous process, run along the medial border of the rotated scapula and finish at the 6th costochondral joint.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 850,
+   "y": 300,
+   "z": 1.7,
+   "spot": [
+    850,
+    90,
+    120
+   ]
+  },
+  {
+   "x": 470,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    470,
+    330,
+    110
+   ]
+  },
+  {
+   "x": 1370,
+   "y": 520,
+   "z": 1.9,
+   "spot": [
+    1250,
+    560,
+    70
+   ]
+  },
+  {
+   "x": 1370,
+   "y": 520,
+   "z": 1.9,
+   "spot": [
+    1497,
+    563,
+    70
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The oblique fissures divide the lungs into lobes. At which costochondral joint do they finish?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "With the horizontal fissure, they make three lobes on the right, two on the left.",
+   "shot": 1,
+   "dir": "calm"
+  },
+  {
+   "text": "Each oblique fissure starts at the level of the tip of the 3rd spinous process, and runs along the medial border of the rotated scapula.",
+   "shot": 2,
+   "dir": "explanatory",
+   "say": "Each oblique fissure starts at the level of the tip of the third spinous process, and runs along the medial border of the rotated scapula."
+  },
+  {
+   "text": "It then sweeps round to the front, ending at the 6th costochondral joint.",
+   "shot": 3,
+   "dir": "confident",
+   "say": "It then sweeps round to the front, ending at the sixth costochondral joint."
+  },
+  {
+   "text": "Both fissures finish at this same point on the anterior chest wall.",
+   "shot": 4,
+   "dir": "steady"
+  },
+  {
+   "text": "Follow the trail round: the answer is the 6th costochondral joint.",
+   "shot": 0,
+   "dir": "bright, encouraging",
+   "say": "Follow the trail round: the answer is the sixth costochondral joint."
+  }
+ ]
+}

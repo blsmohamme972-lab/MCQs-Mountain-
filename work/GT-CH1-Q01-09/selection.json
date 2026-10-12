@@ -1,0 +1,99 @@
+{
+  "package_id": "GT-CH1-Q01-09",
+  "package_revision": 1,
+  "source": {
+    "kind": "published",
+    "catalog_url": "https://kafu-content-1.blsmohamme97.workers.dev/catalog.json",
+    "catalog_sha256": "b86f972c19cc9811f217e6f54591092df768c26c6d5072ab0ba520500cd61dfb",
+    "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/GET-THROUGH-MRCS-A-SBA/v3/index.json",
+    "index_sha256": "878de8995eb62fb2d34a6d82b3f20cc407d8aa49f634b3872271e20b11ee2530",
+    "snapshot_pinned": true
+  },
+  "scope": {
+    "type": "records",
+    "book_id": "GET-THROUGH-MRCS-A-SBA",
+    "book_version": 3,
+    "chapter_ids": [
+      "1"
+    ],
+    "question_count": 28,
+    "qids": [
+      "Q000006341",
+      "Q000006342",
+      "Q000006343",
+      "Q000006344",
+      "Q000006345",
+      "Q000006346",
+      "Q000006347",
+      "Q000006348",
+      "Q000006349",
+      "Q000006350",
+      "Q000006351",
+      "Q000006352",
+      "Q000006353",
+      "Q000006354",
+      "Q000006355",
+      "Q000006356",
+      "Q000006357",
+      "Q000006358",
+      "Q000006359",
+      "Q000006360",
+      "Q000006361",
+      "Q000006362",
+      "Q000006363",
+      "Q000006364",
+      "Q000006365",
+      "Q000006366",
+      "Q000006367",
+      "Q000006368"
+    ]
+  },
+  "warnings": [],
+  "selected": [
+    {
+      "qid": "Q000006341",
+      "duration_ms": 32600,
+      "content_hash": "1d4a4bce19c36838926d661751df30d623fb0da8ebc5d5a9e09e9cf2afae1346"
+    },
+    {
+      "qid": "Q000006342",
+      "duration_ms": 33000,
+      "content_hash": "ffcf95bb8c6df6f70f45ba3c51f5a27b537db0c0cd5a5022f714612dab696cc8"
+    },
+    {
+      "qid": "Q000006343",
+      "duration_ms": 28700,
+      "content_hash": "4ffe4214e0ede1dcc7fd27a995ffd208e128f3685a923a6fb7d0f83ec926197c"
+    },
+    {
+      "qid": "Q000006344",
+      "duration_ms": 24100,
+      "content_hash": "c56be0f56a4f6e69f865597f83a59e8e5671ae3c75a4c388e6da8535ede4336c"
+    },
+    {
+      "qid": "Q000006345",
+      "duration_ms": 38400,
+      "content_hash": "2793e5a7a2adff19fbde2f9bc5abdf941d17b406de9995d8b9ea1069ea53edcf"
+    },
+    {
+      "qid": "Q000006346",
+      "duration_ms": 38000,
+      "content_hash": "19fe2ba2b3d365f2e9ece59cf96e21d8ed75381307e2a812a199826f22c0052c"
+    },
+    {
+      "qid": "Q000006347",
+      "duration_ms": 37400,
+      "content_hash": "2466f2bd75b602d5fcaa3af14333cd3ea000d2fc990b8a15553859d9fdcf5ce1"
+    },
+    {
+      "qid": "Q000006348",
+      "duration_ms": 28700,
+      "content_hash": "19edd87b25124c0b6afd939dea1e947d16457c382b3fd89b64abed9a64f05d39"
+    },
+    {
+      "qid": "Q000006349",
+      "duration_ms": 34100,
+      "content_hash": "ec0c6b56313e561421aa3c5811cd1188348b62e9ede345ad1417eb32dd1959d9"
+    }
+  ]
+}
