@@ -15,7 +15,7 @@
   // Telegram's own placeholder gradients, so photo-less accounts look exactly like Telegram's.
   const GRADIENTS=[['#FF885E','#FF516A'],['#FFCD6A','#FFA85C'],['#82B1FF','#665FFF'],['#A0DE7E','#54CB68'],
     ['#53EDD6','#28C9B7'],['#72D5FD','#2A9EF1'],['#E0A2F3','#D669ED']];
-  const SCENES=['sunset','flower','night','mountain','sea','coffee','book','rose'];
+  const PHOTOS=30; // app/assets/avatars/a01..a30.webp (see SOURCES.txt)
   function hash(s){let h=2166136261;for(const c of String(s)){h^=c.codePointAt(0);h=Math.imul(h,16777619)}return h>>>0}
   function rng(seed){let a=seed>>>0;return()=>{a=a+0x6D2B79F5>>>0;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
   const roll=(...k)=>rng(hash(k.join('|')))();
@@ -35,11 +35,12 @@
     const loyalty=0.5+0.45*r();                     // chance of studying on a given day
     const evening=0.6+0.8*r();                      // how late in the day they study
     const weeks=r()<0.2?0:1+Math.floor(r()*20);
-    const scene=r()<0.34?SCENES[Math.floor(r()*SCENES.length)]:null;
     const gradient=GRADIENTS[hash(name)%GRADIENTS.length];
-    return{id:'r'+i,name,pace,loyalty,evening,weeks,scene,gradient,initials:initials(name)};
+    return{id:'r'+i,name,pace,loyalty,evening,weeks,photo:null,gradient,initials:initials(name)};
   }
   const RIVALS=NAMES.map(profile);
+  // About half the accounts have a profile picture, each picture used once, like a real group.
+  RIVALS.map((p,i)=>[hash('photo|'+p.name),i]).sort((a,b)=>a[0]-b[0]).slice(0,PHOTOS).forEach(([,i],k)=>{RIVALS[i].photo='assets/avatars/a'+String(k+1).padStart(2,'0')+'.webp'});
   const tens=x=>Math.max(0,Math.round(x/10)*10);
   function dayXp(p,day){
     if(roll(p.name,'on',day)<=p.loyalty)return tens(p.pace*(0.35+1.3*roll(p.name,'amt',day)));
@@ -72,7 +73,7 @@
   function rank(entries){
     return entries.slice().sort((a,b)=>b.xp-a.xp||(a.own?-1:b.own?1:0)||a.name.localeCompare(b.name)).map((x,i)=>({...x,rank:i+1}));
   }
-  function field(period,now){return RIVALS.map(p=>({id:p.id,name:p.name,xp:score(p,period,now),initials:p.initials,gradient:p.gradient,scene:p.scene})).filter(x=>x.xp>0)}
+  function field(period,now){return RIVALS.map(p=>({id:p.id,name:p.name,xp:score(p,period,now),initials:p.initials,gradient:p.gradient,photo:p.photo})).filter(x=>x.xp>0)}
   function board(period,now,own){
     period=period==='all'?'all':'weekly';
     const me={id:'me',own:true,name:own.name||'You',photo:own.photo||null,initials:initials(own.name||'You'),gradient:GRADIENTS[hash(own.id||'me')%GRADIENTS.length],xp:tens(own[period==='all'?'allXp':'weeklyXp']||0),streak:own.streak||0};
@@ -101,7 +102,7 @@
     const left=Math.max(0,clock(now).weekEnd-now),d=Math.floor(left/DAY),h=Math.floor(left%DAY/HOUR),m=Math.floor(left%HOUR/60000);
     return d?d+'d '+h+'h':h?h+'h '+m+'m':m+'m';
   }
-  const api={NAMES,GRADIENTS,SCENES,clock,initials,board,ownXp,countdown,hash};
+  const api={NAMES,GRADIENTS,PHOTOS,clock,initials,board,ownXp,countdown,hash};
   root.KafuLeadersCore=api;
   if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

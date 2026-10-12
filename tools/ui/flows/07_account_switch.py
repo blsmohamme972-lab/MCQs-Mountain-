@@ -24,7 +24,7 @@ def run(browser,origin,pack,out,helpers):
     a.evaluate("async()=>{await startChapter('DESIGN-CARDIO',1);const q=QI[SESSION.qids[0]].q,r=SESSION.resp[q.id]||(SESSION.resp[q.id]=newResp(q));r.sel=q.answer.charCodeAt(0)-65;submitCurrent();await DB.put('meta','state',S);}")
     a_state=a.evaluate("DB.get('meta','state_user_101')")
     assert len(a_state['answers'])==1 and a_state['answers']['Q000001001']['c'] is True
-    assert a.evaluate("KafuLeaderboard.pending.length")==1
+    assert a.evaluate("typeof KafuLeaderboard")=="undefined"  # the Leaders board sends nothing to the server
     a.close()
 
     b,eb=user(202)
@@ -32,14 +32,11 @@ def run(browser,origin,pack,out,helpers):
     assert b.evaluate("DB.get('meta','state_user_101').then(x=>Object.keys(x.answers).length)")==1
     b.evaluate("async()=>{S.fav=['Q000001002'];await DB.put('meta','state',S);}")
     assert b.evaluate("DB.get('meta','state_user_202').then(x=>x.fav.includes('Q000001002'))") is True
-    assert b.evaluate("KafuLeaderboard.pending.length")==0
-    assert b.evaluate("DB.get('meta','leaderboard_score_user_202')") is None
     b.close()
 
     a2,ea2=user(101)
     assert a2.evaluate("Object.keys(S.answers).length")==1
     assert a2.evaluate("S.answers['Q000001001'].c") is True
-    assert a2.evaluate("KafuLeaderboard.pending.length")==1
     assert a2.evaluate("S.fav.includes('Q000001002')") is False
     assert a2.evaluate("DB.get('meta','state_user_202').then(x=>x.fav.includes('Q000001002'))") is True
     assert not ea+eb+ea2,ea+eb+ea2

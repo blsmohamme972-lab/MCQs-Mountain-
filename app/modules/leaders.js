@@ -1,70 +1,100 @@
-/* Leaders tab: weekly league and all-time ranking. Data comes from KafuLeadersCore on the device. */
-globalThis.KafuEnhancements.installers.push({name:'leaders',install(){
+/* Leaders tab: weekly league and all-time ranking. Everything runs on the device (KafuLeadersCore):
+   no network requests, no storage beyond one "last seen" time, so it costs nothing to serve. */
+const KafuLeadersModule={name:'leaders',install(){
   'use strict';
   const L=KafuLeadersCore,C=KafuDesign;
-  let period='weekly',ticker=null,seen=false;
-  const SCENE={
-    sunset:'<rect width="40" height="40" fill="#FF9A62"/><rect y="20" width="40" height="20" fill="#3B4C8A"/><circle cx="20" cy="22" r="8" fill="#FFE07A"/><rect y="22" width="40" height="18" fill="#2F3E73"/><path d="M6 27h10M22 30h12M12 34h16" stroke="#FFB27A" stroke-width="1.4" stroke-linecap="round"/>',
-    flower:'<rect width="40" height="40" fill="#BFE3C0"/><g transform="translate(20 19)" fill="#F7A8C4"><circle cx="0" cy="-7" r="5.5"/><circle cx="7" cy="0" r="5.5"/><circle cx="0" cy="7" r="5.5"/><circle cx="-7" cy="0" r="5.5"/></g><circle cx="20" cy="19" r="4" fill="#FFD45E"/><path d="M20 27v13" stroke="#4E9A5B" stroke-width="2.4"/>',
-    night:'<rect width="40" height="40" fill="#1E2A4A"/><circle cx="24" cy="15" r="8" fill="#F4E7B5"/><circle cx="28" cy="12" r="7" fill="#1E2A4A"/><g fill="#fff"><circle cx="9" cy="9" r=".9"/><circle cx="14" cy="27" r=".7"/><circle cx="31" cy="30" r=".9"/><circle cx="7" cy="20" r=".6"/></g>',
-    mountain:'<rect width="40" height="40" fill="#9ED3F2"/><path d="M-2 40 14 16l9 12 5-6 14 18z" fill="#5B7F95"/><path d="M14 16l4 5.5-3-1-3 2.5z" fill="#fff"/><path d="M-2 40c10-6 20-7 44-3v3z" fill="#6FAE73"/>',
-    sea:'<rect width="40" height="40" fill="#BDE7F7"/><rect y="24" width="40" height="16" fill="#2E8FC2"/><path d="M0 27c4-2 6 2 10 0s6 2 10 0 6 2 10 0 6 2 10 0" stroke="#fff" stroke-width="1.3" fill="none"/><path d="M24 23l4-11 1 11z" fill="#fff"/><path d="M21 23h11l-2 3h-8z" fill="#7B4B2A"/>',
-    coffee:'<rect width="40" height="40" fill="#E9D8C4"/><path d="M11 17h16v8a7 7 0 0 1-7 7h-2a7 7 0 0 1-7-7z" fill="#fff"/><path d="M27 19h2.5a3 3 0 0 1 0 6H27" stroke="#fff" stroke-width="2" fill="none"/><ellipse cx="19" cy="17.5" rx="7.5" ry="1.8" fill="#7A4A2B"/><path d="M15 13c0-2 2-2 2-4M20 13c0-2 2-2 2-4" stroke="#A88" stroke-width="1.2" fill="none" stroke-linecap="round"/>',
-    book:'<rect width="40" height="40" fill="#F4C9A8"/><path d="M8 13c4-1.5 8-1.5 12 1 4-2.5 8-2.5 12-1v16c-4-1.2-8-1.2-12 1-4-2.2-8-2.2-12-1z" fill="#fff"/><path d="M20 14v16" stroke="#C9A" stroke-width="1"/><path d="M11 17h6M11 20h6M23 17h6M23 20h6" stroke="#D8C6B8" stroke-width="1"/>',
-    rose:'<rect width="40" height="40" fill="#F6E1E6"/><circle cx="20" cy="17" r="7" fill="#D63E5C"/><path d="M16 15c2-3 6-3 8 0M15.5 19c3 2 6 2 9 0" stroke="#A82444" stroke-width="1.2" fill="none"/><path d="M20 24v14" stroke="#3F8A4D" stroke-width="2"/><path d="M20 31c-4-3-7-2-8 0 3 1.5 6 1.5 8 0" fill="#4E9A5B"/>'
-  };
+  const SEEN='kafu_leaders_seen',MIN_GAP=20*60000,MAX_GAP=6*3600000,FIRST_GAP=3*3600000;
+  const OPEN_DELAY=1200,TICK=9000;
+  let period='weekly',ticker=null,pending=null,shownAt=0;
+  const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
   const fmt=n=>Number(n||0).toLocaleString('en-US');
+  function seen(){try{return Number(localStorage.getItem(SEEN))||0}catch(_){return 0}}
+  function markSeen(t){try{localStorage.setItem(SEEN,String(t))}catch(_){}}
   function owner(){
     const u=IN_TG&&TG.initDataUnsafe&&TG.initDataUnsafe.user||{};
-    const name=[u.first_name,u.last_name].filter(Boolean).join(' ')||greetingName();
     let run=0;try{run=Number(streak())||0}catch(_){}
-    return{id:u.id?String(u.id):'browser',name,photo:typeof u.photo_url==='string'&&/^https:\/\//.test(u.photo_url)?u.photo_url:null,streak:run};
+    return{id:u.id?String(u.id):'browser',name:[u.first_name,u.last_name].filter(Boolean).join(' ')||greetingName(),photo:/^https:\/\//.test(u.photo_url||'')?u.photo_url:null,streak:run};
   }
+  const data=at=>L.board(period,at,{...owner(),...L.ownXp(S.answers,Date.now())});
   function avatar(x,size){
-    const cls='k-lb-av'+(size?' '+size:'');
-    let inner;
-    if(x.photo)inner='<img src="'+C.e(x.photo)+'" alt="" loading="lazy" referrerpolicy="no-referrer">';
-    else if(x.scene&&SCENE[x.scene])inner='<svg viewBox="0 0 40 40" aria-hidden="true">'+SCENE[x.scene]+'</svg>';
-    else inner='<span style="background:linear-gradient(180deg,'+x.gradient[0]+','+x.gradient[1]+')">'+C.e(x.initials)+'</span>';
-    return '<span class="'+cls+'">'+inner+(x.online&&!x.own?'<i class="k-lb-online" aria-label="Active now"></i>':'')+'</span>';
+    // The picture sits over Telegram-style initials; if it cannot load (offline), the initials show.
+    return '<span class="k-lb-av'+(size?' '+size:'')+'"><span style="background:linear-gradient('+x.gradient[0]+','+x.gradient[1]+')">'+C.e(x.initials)+'</span>'+
+      (x.photo?'<img src="'+C.e(x.photo)+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">':'')+
+      (x.online&&!x.own?'<i class="k-lb-online" aria-label="Active now"></i>':'')+'</span>';
   }
   const name=x=>'<bdi class="k-lb-name">'+C.e(x.name)+'</bdi>';
-  function move(x){
-    if(!x.move)return '<span class="k-lb-move same" aria-label="No change">–</span>';
-    return x.move>0?'<span class="k-lb-move up" aria-label="Up '+x.move+'">▲'+x.move+'</span>':'<span class="k-lb-move down" aria-label="Down '+(-x.move)+'">▼'+(-x.move)+'</span>';
-  }
+  const xpEl=x=>'<strong data-xp="'+x.xp+'">'+fmt(x.xp)+'</strong>';
+  const move=x=>!x.move?'<span class="k-lb-move">–</span>':x.move>0?'<span class="k-lb-move up" aria-label="Up '+x.move+'">▲'+x.move+'</span>':'<span class="k-lb-move down" aria-label="Down '+-x.move+'">▼'+-x.move+'</span>';
   function podium(rows){
-    const spot=(x,place)=>!x?'':'<div class="k-lb-spot p'+place+(x.own?' own':'')+'">'+(place===1?'<span class="k-lb-crown" aria-hidden="true">👑</span>':'')+avatar(x,'lg')+'<span class="k-lb-medal" aria-hidden="true">'+place+'</span>'+name(x)+'<strong>'+fmt(x.xp)+' XP</strong><span class="k-lb-step"><b>'+place+'</b></span></div>';
-    return '<section class="k-lb-podium" aria-label="Top three">'+spot(rows[1],2)+spot(rows[0],1)+spot(rows[2],3)+'</section>';
+    const spot=(x,p)=>!x?'<div class="k-lb-spot p'+p+'"></div>':'<div class="k-lb-spot p'+p+(x.own?' own':'')+'" data-id="'+x.id+'">'+(p===1?'<span class="k-lb-crown" aria-hidden="true">👑</span>':'')+avatar(x,'lg')+'<span class="k-lb-medal" aria-hidden="true">'+p+'</span>'+name(x)+'<span class="k-lb-pxp">'+xpEl(x)+' XP</span><span class="k-lb-step"><b>'+p+'</b></span></div>';
+    return spot(rows[1],2)+spot(rows[0],1)+spot(rows[2],3);
   }
   function row(x,i){
-    const sub=x.own?'You':(x.online?'<span class="k-lb-live">Active now</span>':'')+(x.streak?'<span class="k-lb-fire">🔥 '+x.streak+'</span>':'');
-    return '<li class="k-lb-row'+(x.own?' own':'')+'" style="--i:'+Math.min(i,20)+'"'+(x.own?' id="k-lb-me"':'')+'><span class="k-lb-rank">'+x.rank+'</span>'+avatar(x)+'<span class="k-lb-who">'+name(x)+'<small>'+sub+'</small></span><span class="k-lb-xp"><strong>'+fmt(x.xp)+'</strong><small>XP</small></span>'+move(x)+'</li>';
+    const sub=x.own?'You':(x.online?'<span class="k-lb-live">Active now</span>':'')+(x.streak?'<span>🔥 '+x.streak+'</span>':'');
+    return '<li class="k-lb-row'+(x.own?' own" id="k-lb-me':'')+'" data-id="'+x.id+'" data-rank="'+x.rank+'" style="--i:'+Math.min(i,20)+'"><span class="k-lb-rank">'+x.rank+'</span>'+avatar(x)+'<span class="k-lb-who">'+name(x)+'<small>'+sub+'</small></span><span class="k-lb-xp">'+xpEl(x)+'<small>XP</small></span>'+move(x)+'</li>';
   }
-  function build(){
-    const now=Date.now(),me=owner(),xp=L.ownXp(S.answers,now);
-    const b=L.board(period,now,{...me,...xp});
-    const rows=b.rows,rest=rows.slice(3);
-    const zone=period==='weekly'?10:null;
-    let list='';
-    rest.forEach((x,i)=>{list+=row(x,i);if(zone&&x.rank===zone&&rest.length>i+1)list+='<li class="k-lb-zone" aria-hidden="true"><span>Top 10</span></li>'});
-    const hero=period==='weekly'
-      ?'<section class="k-lb-hero"><span class="k-lb-trophy" aria-hidden="true">🏆</span><div><p class="k-pixel">WEEKLY LEAGUE</p><h2>Top students this week</h2><p>Ends in <b>'+L.countdown(now)+'</b> · resets Monday</p></div></section>'
-      :'<section class="k-lb-hero all"><span class="k-lb-trophy" aria-hidden="true">⭐</span><div><p class="k-pixel">HALL OF FAME</p><h2>All-time XP</h2><p>Every answer earns 10 XP</p></div></section>';
+  const list=b=>b.rows.slice(3).map((x,i)=>row(x,i)+(period==='weekly'&&x.rank===10&&b.rows.length>11?'<li class="k-lb-zone" aria-hidden="true">Top 10</li>':'')).join('');
+  function mebar(b){
     const ahead=b.ahead?'<b>'+fmt(b.gap)+' XP</b> to pass <bdi>'+C.e(b.ahead.name)+'</bdi>':'You lead the board — keep it!';
-    const bar='<button class="k-lb-mebar" data-a="leaders-me" aria-label="Your rank '+b.own.rank+'"><span class="k-lb-rank">#'+b.own.rank+'</span>'+avatar(b.own,'sm')+'<span class="k-lb-who"><strong>You</strong><small>'+ahead+'</small></span><span class="k-lb-xp"><strong>'+fmt(b.own.xp)+'</strong><small>XP</small></span></button>';
-    return '<section class="k-lb'+(seen?' calm':'')+'" data-period="'+period+'">'+hero+
-      '<div class="k-lb-tabs" role="tablist" aria-label="Leaders period"><button role="tab" aria-selected="'+(period==='weekly')+'" data-a="leaders-period" data-v="weekly">This week</button><button role="tab" aria-selected="'+(period==='all')+'" data-a="leaders-period" data-v="all">All time</button></div>'+
-      podium(rows)+'<ol class="k-lb-list" aria-label="'+(period==='weekly'?'Weekly':'All-time')+' ranking">'+list+'</ol>'+bar+'</section>';
+    return '<span class="k-lb-rank">#'+b.own.rank+'</span>'+avatar(b.own,'sm')+'<span class="k-lb-who"><strong>You</strong><small>'+ahead+'</small></span><span class="k-lb-xp">'+xpEl(b.own)+'<small>XP</small></span>';
   }
-  VIEWS.leaders=()=>{const html=build();seen=true;return{title:'Leaders',html,tabs:'leaders',action:null}};
-  ACTIONS['leaders-period']=d=>{period=d.v==='all'?'all':'weekly';seen=false;render()};
-  ACTIONS['leaders-me']=()=>{const el=document.getElementById('k-lb-me');if(el){el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});el.classList.remove('pulse');void el.offsetWidth;el.classList.add('pulse')}};
-  // Keep the board moving while it is on screen; quiet re-render without entrance animation.
-  function tick(){
-    if(cur().v==='leaders'&&document.visibilityState==='visible'&&!SHEET)render();
+  const hero=now=>period==='weekly'
+    ?'<section class="k-lb-hero"><span class="k-lb-trophy" aria-hidden="true">🏆</span><div><p class="k-pixel">WEEKLY LEAGUE</p><h2>Top students this week</h2><p>Ends in <b>'+L.countdown(now)+'</b> · resets Monday</p></div></section>'
+    :'<section class="k-lb-hero all"><span class="k-lb-trophy" aria-hidden="true">⭐</span><div><p class="k-pixel">HALL OF FAME</p><h2>All-time XP</h2><p>Every answer earns 10 XP</p></div></section>';
+  const tabBtn=(v,l)=>'<button role="tab" aria-selected="'+(period===v)+'" data-a="leaders-period" data-v="'+v+'">'+l+'</button>';
+  const page=(b,now,intro)=>'<section class="k-lb'+(intro?'':' calm')+'" data-period="'+period+'">'+hero(now)+
+    '<div class="k-lb-tabs" role="tablist" aria-label="Leaders period">'+tabBtn('weekly','This week')+tabBtn('all','All time')+'</div>'+
+    '<section class="k-lb-podium" aria-label="Top three">'+podium(b.rows)+'</section><ol class="k-lb-list" aria-label="Ranking">'+list(b)+'</ol>'+
+    '<button class="k-lb-mebar" data-a="leaders-me" aria-label="Your rank '+b.own.rank+'">'+mebar(b)+'</button></section>';
+  // Open on the board as it was at the last visit, then let it catch up in front of the student.
+  VIEWS.leaders=()=>{
+    const now=Date.now();let html;
+    if(pending===null){
+      const last=seen();shownAt=reduced()?now:now-(last?Math.min(MAX_GAP,Math.max(MIN_GAP,now-last)):FIRST_GAP);
+      html=page(data(shownAt),now,true);pending=setTimeout(()=>{pending=0;update(true)},OPEN_DELAY);
+    }else html=page(data(shownAt),now,false);
+    return{title:'Leaders',html,tabs:'leaders',action:null};
+  };
+  function countUp(el,from,to){
+    el.dataset.xp=to;if(from===to||reduced()){el.textContent=fmt(to);return}
+    const start=performance.now();el.classList.add('ticking');
+    (function step(t){const k=Math.min(1,(t-start)/900);el.textContent=fmt(Math.round((from+(to-from)*(1-Math.pow(1-k,3)))/10)*10);if(k<1)requestAnimationFrame(step);else el.classList.remove('ticking')})(start);
   }
+  // FLIP: measure every row, swap in the new order, then glide each row from where it was.
+  function update(big){
+    const root=document.querySelector('.k-lb');if(!root||cur().v!=='leaders')return;
+    const now=Date.now(),b=data(now),q=s=>root.querySelector(s);shownAt=now;markSeen(now);
+    const listEl=q('.k-lb-list'),pod=q('.k-lb-podium'),bar=q('.k-lb-mebar');
+    const before=new Map([...listEl.children].filter(el=>el.dataset.id).map(el=>[el.dataset.id,{top:el.getBoundingClientRect().top,rank:+el.dataset.rank,xp:+el.querySelector('[data-xp]').dataset.xp}]));
+    const podXp=new Map([...pod.querySelectorAll('[data-id]')].map(el=>[el.dataset.id,+el.querySelector('[data-xp]').dataset.xp]));
+    listEl.innerHTML=list(b);
+    if([...podXp.keys()].join()!==[b.rows[1],b.rows[0],b.rows[2]].filter(Boolean).map(x=>x.id).join()){pod.innerHTML=podium(b.rows);pod.classList.remove('swap');void pod.offsetWidth;pod.classList.add('swap')}
+    else for(const x of b.rows.slice(0,3)){const el=pod.querySelector('[data-id="'+x.id+'"] [data-xp]');countUp(el,podXp.get(x.id),x.xp)}
+    const oldRank=+bar.querySelector('.k-lb-rank').textContent.slice(1),oldXp=+bar.querySelector('[data-xp]').dataset.xp;
+    bar.innerHTML=mebar(b);bar.setAttribute('aria-label','Your rank '+b.own.rank);countUp(bar.querySelector('[data-xp]'),oldXp,b.own.xp);
+    if(oldRank!==b.own.rank){bar.classList.remove('up','down');void bar.offsetWidth;bar.classList.add(b.own.rank<oldRank?'up':'down')}
+    for(const el of listEl.querySelectorAll('.k-lb-row')){
+      const was=before.get(el.dataset.id),x=el.querySelector('[data-xp]');
+      if(!was)continue;
+      countUp(x,was.xp,+x.dataset.xp);
+      const dy=was.top-el.getBoundingClientRect().top,rank=+el.dataset.rank;
+      // The arrow shows the move the student just watched.
+      if(rank!==was.rank)el.querySelector('.k-lb-move').outerHTML=move({move:was.rank-rank});
+      if(reduced()||Math.abs(dy)<1)continue;
+      el.style.transition='none';el.style.transform='translateY('+dy+'px)';el.classList.add(rank<was.rank?'climb':'fall');
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{el.style.transition='transform '+(big?820:600)+'ms cubic-bezier(.2,.8,.2,1)';el.style.transform=''}));
+      setTimeout(()=>el.classList.remove('climb','fall'),1600);
+    }
+    const left=q('.k-lb-hero b');if(left&&period==='weekly')left.textContent=L.countdown(now);
+  }
+  const stop=()=>{clearTimeout(pending);pending=null};
+  ACTIONS['leaders-period']=d=>{period=d.v==='all'?'all':'weekly';stop();render()};
+  ACTIONS['leaders-me']=()=>{const el=document.getElementById('k-lb-me');if(el){el.scrollIntoView({behavior:reduced()?'auto':'smooth',block:'center'});el.classList.remove('pulse');void el.offsetWidth;el.classList.add('pulse')}};
   const baseTab=ACTIONS.tab;
-  ACTIONS.tab=d=>{if(d.v==='leaders')seen=false;return baseTab(d)};
-  if(!ticker)ticker=setInterval(tick,60000);
-}});
+  ACTIONS.tab=d=>{if(d.v==='leaders'||cur().v==='leaders')stop();return baseTab(d)};
+  document.addEventListener('visibilitychange',()=>{if(cur().v!=='leaders')return;if(document.visibilityState==='hidden')markSeen(Date.now());else if(pending===0)update(false)});
+  if(!ticker)ticker=setInterval(()=>{if(cur().v==='leaders'&&pending===0&&document.visibilityState==='visible'&&!SHEET)update(false)},TICK);
+  globalThis.KafuLeaders={update,get period(){return period}};
+}};
+// Loaded after start-up by leaders-loader.js, so install straight away.
+(R=>R.installed?KafuLeadersModule.install():R.installers.push(KafuLeadersModule))(globalThis.KafuEnhancements);
