@@ -8,6 +8,9 @@ def run(browser, origin, pack, out, helpers):
             ctx = helpers['context'](browser, origin, device, theme)
             page, errors = helpers['open_app'](ctx, origin, pack)
             favorites = page.evaluate('JSON.stringify([S.fav,S.favBooks])')
+            # XP ledger: a new question 10 (5 if wrong), a later-day return 12 (4 if wrong), same day again 0.
+            expected_xp = page.evaluate("""ids => ids.reduce((sum,id,i) => {const ok=i!==0,p=S.answers[id],d=KafuXP.day,last=id in KafuXP.ledger.last?KafuXP.ledger.last[id]:p&&p.n>0?d(p.t||0):null;
+              return sum+(last===null?(ok?10:5):last===d(Date.now())?0:(ok?12:4))},0)""", IDS)
             page.evaluate("ids=>startSession({mode:'study',title:'A focused practice session',bookId:'DESIGN-CARDIO',chId:1,qids:ids})", IDS)
             for i in range(4):
                 assert page.locator('[role="progressbar"][aria-label="Question progress"]').get_attribute('aria-valuenow') == str(i+1)
@@ -26,7 +29,7 @@ def run(browser, origin, pack, out, helpers):
             assert result['mistakes'] == [IDS[0]] and not result['perfect']
             assert page.locator('.k-complete-mascot svg').count() == 1
             assert page.locator('.k-victory-stars svg.earned').count() == 2
-            assert '+40 XP' in page.locator('.k-xp-gained').inner_text()
+            assert result['xp'] == expected_xp and f'+{expected_xp} XP' in page.locator('.k-xp-gained').inner_text()
             if theme=='dark':
                 ratio=page.evaluate("""() => {const e=document.querySelector('.k-xp-gained span'),p=s=>s.match(/[\\d.]+/g).slice(0,3).map(Number),lum=c=>{c=c.map(v=>v/255).map(v=>v<=.03928?v/12.92:((v+.055)/1.055)**2.4);return .2126*c[0]+.7152*c[1]+.0722*c[2]},s=getComputedStyle(e),a=lum(p(s.color)),b=lum(p(s.backgroundColor));return (Math.max(a,b)+.05)/(Math.min(a,b)+.05)}""")
                 assert ratio>=4.5,f'dark XP label contrast {ratio}'
