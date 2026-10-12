@@ -1,5 +1,8 @@
 # Leaderboard summaries and daily D1 usage
 
+> **October 2026:** the app no longer uploads scores or shows this server board. The Leaders tab runs on the device
+> (see `docs/LEADERS.md`). The Worker endpoints and D1 tables below are kept for real users later.
+
 The leaderboard now reads indexed score summaries, never the answer history. Compact 4096-question attempt buckets retain lifetime first-attempt deduplication, including incorrect answers. A revision-guarded ledger replacement and SQL trigger update total and current Baghdad-week scores together. The migration backfills existing scores and attempts once. Historical rows and compatibility triggers remain so the previous Worker can receive answers during staged deployment; the new Worker never appends per-question rows.
 
 Top 30 snapshots refresh on demand once per ten minutes. Cached boards make no writes. Personal rank is removed. The device shows its last server-verified score and computes `max(0, cutoff + 1 - score)` from the cached #30 score, without another D1 read when opening the board. One extra point avoids promising a place on a tie. Before this device has a verified submission score it asks for an answer batch to sync, rather than inventing a points gap. Privacy changes immediately invalidate snapshots. Weeks reset Monday 00:00 Baghdad time; old weekly scores do not appear in a new week.

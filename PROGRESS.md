@@ -2,6 +2,12 @@
 
 Updated 2026-09-30. Protected production book: KAFU-UPLOAD-TEST v1 (4 questions, 1 chapter, 2 images). No production queue tests during design. English-only/offline-first; no credential/account/infrastructure changes.
 
+## Leaders tab and XP ledger — 2026-10-12
+
+- Merged #129 (Leaders tab, leagues, profiles), #130 (studying-now count), #131 (fair leagues and the specialist
+  review fixes), #132 (XP ledger), #133 (idle prefetch, offline pictures). Each passed Content Contract and Visual/Flow
+  CI and deployed through the normal Deploy Kafu run. Details, costs and the next steps: `docs/LEADERS.md`.
+
 ## Earlier work
 
 Night 1 PRs #12-19 and #21-23 merged: secure publishing, atomic queue recovery, personal sync, FSRS Review Due, background downloads, offline shell, privacy, content tools and owner report. Weekly backup PR #20 merged with owner approval; initial backup run 36389139180 passed. CI cost reduction PR #28 merged. Content tooling merged PR #21. Owner docs merged PR #22. Combined Night 1 report merged PR #23. See HANDOFF.md and docs/reports/ for exact earlier evidence. Previously exposed credentials require owner rotation, skipped during design.

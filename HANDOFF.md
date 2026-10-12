@@ -3,6 +3,9 @@
 > **Animations (Oct 2026):** make IMAGE LESSONS only (`motioncards/LESSON_PROMPT.md`). Hand-animated MotionCards are
 > retired; their documents are marked RETIRED.
 
+> **Leaders and XP (Oct 2026):** a fifth tab with on-device weekly leagues and one XP ledger. Zero server cost.
+> See `docs/LEADERS.md`.
+
 Updated: 2026-09-28 (Asia/Baghdad)
 
 ## Start here
