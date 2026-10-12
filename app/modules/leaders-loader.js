@@ -19,4 +19,8 @@ globalThis.KafuEnhancements.installers.push({name:'leaders-loader',install(){
     return{title:'Leaders',html:'<section class="k-empty" role="status">'+html+'</section>',tabs:'leaders',action:null};
   };
   ACTIONS['leaders-retry']=()=>{state='idle';render()};
+  // Fetch the board quietly once the app is open and idle, so the first tap on Leaders is instant.
+  // Skipped on data saver or very slow connections; the pictures still load only when the tab is opened.
+  const net=navigator.connection||{};
+  if(!net.saveData&&!/(^|-)2g$/.test(net.effectiveType||''))setTimeout(()=>(globalThis.requestIdleCallback||(f=>f()))(()=>{if(navigator.onLine!==false)load()},{timeout:8000}),3000);
 }});

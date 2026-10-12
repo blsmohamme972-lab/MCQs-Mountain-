@@ -55,3 +55,15 @@ test('cache quota failure does not block a valid online page',async()=>{
   const h=setup();h.env.caches.open=async()=>({match:async()=>undefined,put:async()=>{throw new Error('quota');},keys:async()=>[]});
   const response=await h.app.handle(new Request(ORIGIN+'/'));assert.equal(response.status,200);
 });
+test('Leaders pictures are cached once in their own cache, kept across app versions and served offline',async()=>{
+  const {AVATARS}=require('../../../app/sw.js');const h=setup();
+  assert.equal(policy(new Request(ORIGIN+'/assets/avatars/a07.webp'),ORIGIN).kind,'avatar');
+  assert.equal(policy(new Request(ORIGIN+'/assets/avatars/a07.webp?x=1'),ORIGIN),null);
+  assert.equal(policy(new Request(ORIGIN+'/assets/other.webp'),ORIGIN),null);
+  h.env.fetch=async request=>{h.fetched.push(request.url);return new Response('webp',{headers:{'content-type':'image/webp'}})};
+  await h.app.handle(new Request(ORIGIN+'/assets/avatars/a07.webp'));
+  assert.ok(h.stores.has(AVATARS));
+  h.env.fetch=async()=>{throw new TypeError('offline')};
+  const again=await h.app.handle(new Request(ORIGIN+'/assets/avatars/a07.webp'));assert.equal(await again.text(),'webp');
+  h.stores.set(PREFIX+'old',new MemoryCache());await h.app.activate().catch(()=>{});assert.ok(h.stores.has(AVATARS),'not removed on app update');
+});

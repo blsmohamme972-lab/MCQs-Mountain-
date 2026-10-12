@@ -5,6 +5,9 @@
 (function(scope){
   'use strict';
   const VERSION='__KAFU_SW_VERSION__',PREFIX='kafu-public-shell-',LIMIT=48;
+  // Leaders profile pictures never change, so they live in their own cache, outside the 48-entry shell
+  // limit and kept across app versions. Rename the cache if a picture file is ever replaced.
+  const AVATARS='kafu-leaders-avatars-1';
   const CONTENT='https://kafu-content-1.blsmohamme97.workers.dev';
   function policy(request,origin){
     if(request.method!=='GET'||request.headers?.has('authorization')||request.headers?.has('x-telegram-bot-api-secret-token')||request.headers?.has('range'))return null;
@@ -15,6 +18,7 @@
     if(path==='/catalog.json'&&(url.origin===origin||url.origin===CONTENT))return{kind:'catalog',key:url.origin+path};
     if(url.origin===origin){
       if((path==='/'||path==='/index.html')&&!url.search)return{kind:'shell',key:origin+'/index.html'};
+      if(!url.search&&/^\/assets\/avatars\/a\d{2}\.webp$/.test(path))return{kind:'avatar',key:url.href};
       if(!url.search&&(/^\/(?:modules|vendor|icons|fonts)\/[A-Za-z0-9_./-]+\.(?:js|css|svg|png|ico|woff2?|txt)$/.test(path)))return{kind:'asset',key:url.href};
       return null;
     }
@@ -57,6 +61,12 @@
     }
     async function handle(request){
       const selected=policy(request,origin);if(!selected)return env.fetch(request);
+      if(selected.kind==='avatar'){
+        try{const cache=await env.caches.open(AVATARS),cached=await cache.match(selected.key);if(cached)return cached;
+          const response=await env.fetch(request);
+          if(response.ok&&(response.headers.get('content-type')||'').startsWith('image/'))await cache.put(selected.key,response.clone()).catch(()=>{});
+          return response;}catch(_){return env.fetch(request);}
+      }
       let cache;try{cache=await env.caches.open(cacheName);}catch(_){return env.fetch(request);}
       if(!['shell','catalog'].includes(selected.kind)){
         const cached=await cache.match(selected.key);if(cached)return cached;
@@ -96,7 +106,7 @@
     }
     return{handle,install,activate,warm,cacheName,acceptable};
   }
-  if(typeof module==='object'&&module.exports)module.exports={policy,runtime,PREFIX,VERSION,LIMIT};
+  if(typeof module==='object'&&module.exports)module.exports={policy,runtime,PREFIX,VERSION,LIMIT,AVATARS};
   if(!scope?.addEventListener||!scope.caches||!scope.clients)return;
   const app=runtime(scope);
   scope.addEventListener('install',event=>event.waitUntil(app.install()));
