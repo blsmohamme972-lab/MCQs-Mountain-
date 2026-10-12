@@ -46,15 +46,12 @@ test('A -> B -> A restores only that account queue, privacy and verified score',
   b.ctx.recordAnswer({id:'Q000000003'},{sel:0,c:true});await new Promise(r=>setImmediate(r));
   const a2=harness([],a.meta,1);await a2.ctx.DB.open();
   assert.equal(a2.ctx.KafuLeaderboard.pending.length,1);assert.equal(a2.ctx.KafuLeaderboard.pending[0].qid,'Q000000002');
-  a2.ctx.fetch=async()=>({ok:true,json:async()=>({top:[],cutoff:10,week_key:'2026-09-28'})});
-  await a2.ctx.KafuLeaderboard.loadBoard();
-  assert.match(a2.ctx.VIEWS.leaderboard().html,/You need 6 points to reach #30/);
+  assert.equal(a2.ctx.KafuLeaderboard.verifiedScore.total,12);assert.equal(a2.ctx.KafuLeaderboard.hidden,true);
   assert.equal(a2.meta.get('leaderboard_pending_user_2')[0].qid,'Q000000003');
   assert.equal(a2.meta.get('leaderboard_hidden_user_1'),true);
 });
-test('points gap uses verified weekly and all-time scores, and beats ties without a rank request',async()=>{
-  const h=harness();h.meta.set('leaderboard_score_user_1',{total:20,weekly:4,week_key:'2026-09-28'});await h.ctx.DB.open();
-  let calls=0;h.ctx.fetch=async(_,init)=>{calls++;assert.ok(JSON.parse(init.body).period);return {ok:true,json:async()=>({top:[],cutoff:8,week_key:'2026-09-28'})}};
-  await h.ctx.KafuLeaderboard.loadBoard('weekly');assert.match(h.ctx.VIEWS.leaderboard().html,/You need 5 points to reach #30/);
-  await h.ctx.KafuLeaderboard.loadBoard('all_time');assert.match(h.ctx.VIEWS.leaderboard().html,/You need 0 points to reach #30/);assert.equal(calls,2);
+test('score sync no longer renders the retired server board or the Me entry',async()=>{
+  const h=harness();await h.ctx.DB.open();
+  assert.equal(h.ctx.VIEWS.leaderboard,undefined);assert.equal(h.ctx.ACTIONS['open-leaderboard'],undefined);
+  assert.equal(h.ctx.VIEWS.me().html,'');
 });

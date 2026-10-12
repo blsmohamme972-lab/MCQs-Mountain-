@@ -100,7 +100,7 @@ figure.qimg img { max-width: 100%; border-radius: var(--radius-md); display: blo
 .actionbar .btn { width: 100%; max-width: calc(var(--measure) - var(--space-8)); margin: 0 auto; display: flex; padding: 14px; font-size: var(--text-base); }
 .tg .actionbar { display: none; }
 .tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--surface); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); }
-.tabs-in { max-width: var(--content-max); margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
+.tabs-in { max-width: var(--content-max); margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); }
 .tab { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0 7px; font-size: var(--text-xs); color: var(--muted); font-weight: 500; }
 .tab svg { width: 22px; height: 22px; }
 .tab[aria-current="page"] { color: var(--teal-2); }

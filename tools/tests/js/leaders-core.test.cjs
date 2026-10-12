@@ -1,0 +1,24 @@
+const test=require('node:test'),assert=require('node:assert/strict'),path=require('node:path');
+const L=require(path.resolve(__dirname,'../../../app/modules/leaders-core.js'));
+const MON=Date.parse('2026-10-11T21:00:00Z'); // Monday 00:00 Baghdad
+test('weeks start Monday 00:00 Baghdad and the countdown reaches the next Monday',()=>{
+  assert.equal(L.clock(MON).weekStart,MON);assert.equal(L.clock(MON-1).weekEnd,MON);
+  assert.equal(L.clock(MON+3*86400000).weekStart,MON);assert.equal(L.countdown(MON+6*86400000+23*3600000),'1h 0m');
+});
+test('the board is deterministic, ranked, and places the student by their own local XP',()=>{
+  const now=MON+3.7*86400000,answers={};for(let i=0;i<120;i++)answers['Q'+String(i).padStart(9,'0')]={n:1,c:true,t:now-i*60000};
+  const own={name:'Student',...L.ownXp(answers,now)},a=L.board('weekly',now,own),b=L.board('weekly',now,own);
+  assert.deepEqual(a,b);assert.equal(own.weeklyXp,1200);
+  assert.ok(a.rows.every((x,i)=>x.rank===i+1&&(i===0||a.rows[i-1].xp>=x.xp)));
+  assert.equal(a.rows.filter(x=>x.own).length,1);assert.equal(a.own.xp,1200);
+  if(a.ahead)assert.ok(a.own.xp+a.gap>a.ahead.xp);
+});
+test('rivals only gain XP as the week goes on and the week resets',()=>{
+  const at=t=>new Map(L.board('weekly',t,{name:'x'}).rows.filter(x=>!x.own).map(x=>[x.name,x.xp]));
+  const early=at(MON+86400000),late=at(MON+5*86400000);
+  for(const [n,xp] of early)assert.ok((late.get(n)||0)>=xp,n);
+  const next=at(MON+7*86400000+60000);assert.ok([...next.values()].every(x=>x<=200));
+});
+test('initials follow Telegram: first letters of the first two words, no titles or emoji',()=>{
+  assert.equal(L.initials('Mustafa Al-Obaidi'),'MA');assert.equal(L.initials('Hiba 🌸'),'H');assert.equal(L.initials('Dr. Sara'),'S');assert.equal(L.initials('زهراء محمد'),'زم');
+});

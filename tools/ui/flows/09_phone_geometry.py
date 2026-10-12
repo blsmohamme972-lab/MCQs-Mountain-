@@ -181,31 +181,24 @@ def run(browser,origin,pack,out,helpers):
         assert not errors,errors
         ctx.close()
 
-        # Exercise the actual populated leaderboard UI at every phone width.
+        # Exercise the Leaders tab (fifth main tab) at every phone width, both periods.
         lctx=helpers['phone_context'](browser,origin,width,'light')
         lctx.add_init_script(TG_SDK)
-        leaderboard={
-            "period":"weekly","week_key":"2026-09-28",
-            "own":{"score":88,"rank":37,"hidden":False},
-            "top":[
-                {"name":"Student "+str(i),"photo_url":origin+"/icons/kafu.svg","score":120-i,"rank":i}
-                for i in range(1,31)
-            ]
-        }
-        lctx.route("**/api/leaderboard/board",lambda route:route.fulfill(status=200,content_type="application/json",body=json.dumps(leaderboard)))
-        lctx.route("**/api/leaderboard/privacy",lambda route:route.fulfill(status=200,content_type="application/json",body=json.dumps({"ok":True,"hidden":False})))
         lpage,lerrors=helpers['open_app'](lctx,origin,pack)
+        assert lpage.locator('nav[aria-label="Main"] .tab').count()==5
+        lpage.locator('nav[aria-label="Main"] [data-v="leaders"]').click()
+        lpage.wait_for_selector('.k-lb-row')
+        assert lpage.locator('.k-lb-podium .k-lb-spot').count()==3
+        assert lpage.locator('.k-lb .k-lb-row.own, .k-lb .k-lb-spot.own').count()==1
+        assert lpage.locator('.k-lb-mebar').count()==1
+        assert_geometry(lpage,f'{width} leaders-weekly')
+        lpage.locator('[data-a="leaders-period"][data-v="all"]').click()
+        lpage.wait_for_selector('.k-lb[data-period="all"]')
+        assert_geometry(lpage,f'{width} leaders-all-time')
         lpage.evaluate("tab('me')")
-        lpage.wait_for_selector('[data-a="leader-hide"]')
-        assert_geometry(lpage,f'{width} me-leaderboard-toggle')
-        lpage.evaluate("ACTIONS['open-leaderboard']()")
-        lpage.wait_for_selector('.k-leader-row')
-        assert lpage.locator('.k-leader-list .k-leader-row').count()==30
-        assert lpage.locator('.k-leader-list .k-leader-row img').count()==30
-        assert lpage.locator('nav[aria-label="Main"] .tab').count()==4
-        assert_geometry(lpage,f'{width} leaderboard')
+        assert lpage.locator('[data-a="open-leaderboard"],[data-a="leader-hide"]').count()==0
         assert not lerrors,lerrors
         lctx.close()
 
-        passed.append(f'{width}px: home/library/specialty/book/review/me/leaderboard/privacy/about/onboarding/results/study/report-sheet/completion have no document overflow or excess scroll tail; 205-question compact progress and 40-dot contained scroller pass')
+        passed.append(f'{width}px: home/library/specialty/book/review/leaders/me/privacy/about/onboarding/results/study/report-sheet/completion have no document overflow or excess scroll tail; 205-question compact progress and 40-dot contained scroller pass')
     return {'passed':passed+[f"Regression evidence: {evidence}"]}
