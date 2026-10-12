@@ -24,7 +24,7 @@ const KafuLeadersModule={name:'leaders',install(){
     if(saved.start<week){
       let lg=saved.league,start=saved.start,last=null;
       for(let i=0;i<8&&start<week;i++,start+=7*DAY){
-        const end=start+7*DAY-1,own={...me,...L.ownXp(S.answers,end)};
+        const end=start+7*DAY-1,own={...me,...ownAt(end)};
         if(own.weeklyXp>0){const b=L.board('weekly',end,own,lg),to=L.outcome(b.own.rank,b.size,lg,b.zones);last={rank:b.own.rank,from:lg,to};lg=to}
       }
       if(last)result=last;
@@ -32,7 +32,14 @@ const KafuLeadersModule={name:'leaders',install(){
     }
     league=saved.league;
   }
-  const data=at=>L.board(period,at,{...owner(),...L.ownXp(S.answers,at)},league);
+  // The student's XP comes from the same ledger as their level (KafuXP); answers alone are the fallback.
+  function ownAt(at){
+    const X=globalThis.KafuXP;if(!X)return L.ownXp(S.answers,at);
+    const w=L.clock(at).weekStart,week=(a,b)=>X.between(a,b);
+    return{weeklyXp:week(w,at),allXp:X.total(at),avgWeekly:(week(w-14*DAY,w-7*DAY-1)+week(w-7*DAY,w-1))/2,
+      allXpBefore:span=>X.total(at-span),weeklyXpBefore:span=>at-span<w?0:week(w,at-span)};
+  }
+  const data=at=>L.board(period,at,{...owner(),...ownAt(at)},league);
   // Icons: one stroke style, matching the tab bar (no emoji as icons).
   const ICON={
     flame:'<svg class="k-lb-i flame" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.2 2.5c.9 3.3 4.9 5.2 4.9 10.6A5.1 5.1 0 0 1 12 18.4a5.1 5.1 0 0 1-5.1-5.3c0-2.6 1.4-4.2 2.6-5.3.2 1.6 1 2.8 2.1 3.1-.6-2.6-.4-5.3.6-8.4z"/></svg>',
@@ -74,7 +81,7 @@ const KafuLeadersModule={name:'leaders',install(){
   const GEM=['#C98B5A','#A9B6C4','#F5C342','#3D8BFD','#E5484D','#2FBF71','#7FE3FF'];
   const gem=(i,cls)=>'<svg class="k-lb-gem'+cls+'" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 21 8v8l-9 6-9-6V8z" fill="'+GEM[i]+'"/><path d="M12 2 3 8l9 5z" fill="#fff" fill-opacity=".45"/><path d="M12 2l9 6-9 5z" fill="#fff" fill-opacity=".18"/><path d="M21 8v8l-9 6v-9z" fill="#000" fill-opacity=".22"/><path d="M3 8v8l9 6v-9z" fill="#000" fill-opacity=".06"/></svg>';
   function hero(now){
-    if(period!=='weekly')return '<section class="k-lb-hero all"><span class="k-lb-badge">'+ICON.star+'</span><div><p class="k-lb-kicker">Hall of fame</p><h2>All-time XP</h2><p>Every answer earns 10 XP</p></div></section>';
+    if(period!=='weekly')return '<section class="k-lb-hero all"><span class="k-lb-badge">'+ICON.star+'</span><div><p class="k-lb-kicker">Hall of fame</p><h2>All-time XP</h2><p>10 XP a new question · 12 XP for a review you get right</p></div></section>';
     const top=league>=L.LEAGUES.length-1;
     return '<section class="k-lb-hero lg'+league+'"><span class="k-lb-badge">'+gem(league,'')+'</span><div><p class="k-lb-kicker">'+L.LEAGUES[league]+' League</p><h2>'+(top?'Hold your place at the top':'Top '+L.PROMOTE+' move up to '+L.LEAGUES[league+1])+'</h2><p>Ends in <b>'+L.countdown(now)+'</b> · resets Monday</p><div class="k-lb-gems">'+L.LEAGUES.map((_,i)=>gem(i,i===league?' on':i<league?' done':'')).join('')+'</div></div></section>'+
       (result?'<section class="k-lb-result '+(result.to>result.from?'up':result.to<result.from?'down':'')+'" role="status">'+gem(result.to,'')+'<p><b>'+(result.to>result.from?'Promoted to '+L.LEAGUES[result.to]+' League!':result.to<result.from?'New week in '+L.LEAGUES[result.to]+' League':'You stayed in '+L.LEAGUES[result.to]+' League')+'</b><br>You finished #'+result.rank+' last week.'+(result.to<result.from?' A fresh start: the top 7 move up again.':'')+'</p><button data-a="leaders-ok" aria-label="Close">×</button></section>':'');
@@ -158,7 +165,8 @@ const KafuLeadersModule={name:'leaders',install(){
   function cardHtml(id){
     const now=Date.now(),b=data(now),x=b.rows.find(r=>r.id===id);if(!x)return '';
     let days,info=null;
-    if(x.own){const c=L.clock(now),qs=Object.values(S.answers||{});days=[0,1,2,3,4,5,6].map(i=>{const a=c.weekStart+i*DAY;return a>now?null:qs.filter(q=>q&&q.n>0&&q.t>=a&&q.t<a+DAY).length*10})}
+    if(x.own){const c=L.clock(now),qs=Object.values(S.answers||{}),X=globalThis.KafuXP;
+      days=[0,1,2,3,4,5,6].map(i=>{const a=c.weekStart+i*DAY;return a>now?null:X?X.between(a,a):qs.filter(q=>q&&q.n>0&&q.t>=a&&q.t<a+DAY).length*10})}
     else{info=L.card(id,now,league,b.pace,period==='weekly'?x.xp:null);days=info.days}
     const ch=cheers(),mine=ch.ids.includes(id),base=L.hash('cheer|'+id+ch.week)%9;
     const max=Math.max(10,...days.map(d=>d||0)),today=L.clock(now).weekday;

@@ -8,7 +8,7 @@ globalThis.KafuEnhancements.installers.push({name:'study-polish',install(){
     if(!session||!['study','review'].includes(session.mode)||session.index<session.qids.length-1)
       return next.apply(this,args);
     if(session.finished)return;
-    last={...Core.summarize(session.qids,session.resp),title:session.title,bookId:session.bookId,chId:session.chId,mode:session.mode};
+    last={...Core.summarize(session.qids,session.resp),xp:globalThis.KafuXP?.session(session),title:session.title,bookId:session.bookId,chId:session.chId,mode:session.mode};
     session.finished=true;session.endedAt=Date.now();
     STACK.splice(0,STACK.length,{v:'home',p:{}},{v:'chapter-complete',p:{}});
     render(true);
@@ -19,7 +19,7 @@ globalThis.KafuEnhancements.installers.push({name:'study-polish',install(){
     const title=last.mode==='study'&&last.skipped===0?'Chapter complete':'Session complete';
     const note=last.perfect?'Every answer correct. A focused session, well spent.':'Every explanation is another step forward.';
     const secondary=last.mistakes.length?C.button('Review mistakes',{action:'session-mistakes',variant:'ghost'}):C.button('Browse chapters',{action:'find-library',variant:'ghost'});
-    const stars=last.percent>=85?3:last.percent>=60?2:1,xp=last.answered*10;
+    const stars=last.percent>=85?3:last.percent>=60?2:1,xp=last.xp??last.answered*10;
     const starSvg=i=>`<svg viewBox="0 0 24 24" aria-hidden="true" class="${i<stars?'earned':''}"><path d="m12 2.8 2.8 5.7 6.3.9-4.6 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2-4.6-4.4 6.3-.9L12 2.8Z"/></svg>`;
     const mascot='<svg viewBox="0 0 72 72" aria-hidden="true"><path d="M18 28c0-12 8-20 18-20s18 8 18 20v22c0 9-8 14-18 14S18 59 18 50V28Z" fill="currentColor"/><circle cx="29" cy="31" r="3" fill="var(--color-surface)"/><circle cx="43" cy="31" r="3" fill="var(--color-surface)"/><path d="M28 43c5 5 11 5 16 0" fill="none" stroke="var(--color-surface)" stroke-width="3" stroke-linecap="round"/><path d="M18 39 9 33M54 39l9-6" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>';
     const confetti='<div class="k-confetti" aria-hidden="true">'+Array.from({length:12},(_,i)=>`<i style="--x:${(i%2?-1:1)*(36+i*5)}px;--y:${80+i*4}px;--delay:${i*12}ms"></i>`).join('')+'</div>';
@@ -99,7 +99,7 @@ globalThis.KafuEnhancements.installers.push({name:'study-polish',install(){
         if(!child.classList.contains('study-top'))before.push(child);
       }
       const head=document.createElement('div');head.className='k-question-head';
-      const combo=sessionCombo(session),xp=Object.values(session.resp).filter(x=>x?.done&&x.correct).length*10;
+      const combo=sessionCombo(session),xp=globalThis.KafuXP?KafuXP.session(session):Object.values(session.resp).filter(x=>x?.done&&x.correct).length*10;
       head.innerHTML=`<div class="k-question-tab"><strong>${pos}</strong><span>of ${total}</span></div><div class="k-question-hud"><span class="k-hud-streak" aria-label="${combo} correct in a row"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.2 2.5c.9 3.3 4.9 5.2 4.9 10.6A5.1 5.1 0 0 1 12 18.4a5.1 5.1 0 0 1-5.1-5.3c0-2.6 1.4-4.2 2.6-5.3.2 1.6 1 2.8 2.1 3.1-.6-2.6-.4-5.3.6-8.4z"/></svg><b>${combo}</b></span><span class="k-hud-xp k-pixel">${xp} XP</span></div>`;
       const card=document.createElement('article');card.className='k-question-card';
       section.insertBefore(head,opts);section.insertBefore(card,opts);
