@@ -38,8 +38,16 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+      - name: Cache key for this month's tool downloads
+        id: month
+        run: echo "month=$(date -u +%Y-%m)" >> "$GITHUB_OUTPUT"
+      - name: Reuse downloaded Wrangler packages (refreshed monthly)
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: kafu-npm-wrangler4-${{ runner.os }}-${{ steps.month.outputs.month }}
       - name: Install Wrangler
-        run: npm install --no-save --package-lock=false wrangler@4
+        run: npm install --no-save --package-lock=false --prefer-offline --no-audit --no-fund wrangler@4
 
       - name: Restore independent MotionCards state
         run: |
@@ -142,6 +150,12 @@ jobs:
         if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
         run: python -m tools.motioncards.smoke --url "${{ steps.staged.outputs.version_url }}" --result /tmp/kafu-motioncards/result.json
 
+      - name: Reuse the downloaded playback browser
+        if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: kafu-playwright-1.57.0-chromium-${{ runner.os }}-publish
       - name: Install isolated browser for staged MotionCards playback smoke
         if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
         run: |
