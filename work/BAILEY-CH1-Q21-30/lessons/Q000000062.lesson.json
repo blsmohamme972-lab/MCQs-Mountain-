@@ -1,0 +1,74 @@
+{
+ "qid": "Q000000062",
+ "image": "Q000000062.png",
+ "takeaway": "Pouch nerves: first, trigeminal (V); second, facial (VII); third, glossopharyngeal (IX); fourth and sixth, branches of the vagus (X).",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 470,
+   "y": 280,
+   "z": 1.8,
+   "spot": [
+    450,
+    250,
+    200
+   ]
+  },
+  {
+   "x": 800,
+   "y": 500,
+   "z": 1.9,
+   "spot": [
+    770,
+    470,
+    150
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 260,
+   "z": 1.8,
+   "spot": [
+    1230,
+    230,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which nerve innervates the second pharyngeal pouch?",
+   "shot": 1
+  },
+  {
+   "text": "The second pharyngeal pouch is innervated",
+   "shot": 2
+  },
+  {
+   "text": "by the facial nerve, cranial nerve seven.",
+   "shot": 3
+  },
+  {
+   "text": "The first pouch has the trigeminal nerve, cranial nerve five.",
+   "shot": 0
+  },
+  {
+   "text": "The third pouch has the glossopharyngeal nerve, cranial nerve nine.",
+   "shot": 0
+  },
+  {
+   "text": "The fourth and sixth have branches of the vagus nerve, cranial nerve ten.",
+   "shot": 0
+  },
+  {
+   "text": "So the answer is the facial nerve.",
+   "shot": 3
+  }
+ ]
+}

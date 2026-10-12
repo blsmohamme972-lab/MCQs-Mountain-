@@ -1,0 +1,78 @@
+{
+ "qid": "Q000000059",
+ "image": "Q000000059.png",
+ "takeaway": "The oesophagus passes through the diaphragm at the oesophageal opening, at the T10 level, with the left and right vagus nerves.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 620,
+   "y": 200,
+   "z": 1.9,
+   "spot": [
+    620,
+    150,
+    150
+   ]
+  },
+  {
+   "x": 680,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    700,
+    430,
+    170
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 250,
+   "z": 1.9,
+   "spot": [
+    1060,
+    220,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "At what level does the oesophagus pass through the diaphragm?",
+   "shot": 1
+  },
+  {
+   "text": "The choices run from T8 to T12.",
+   "shot": 0,
+   "say": "The choices run from T eight to T twelve."
+  },
+  {
+   "text": "It passes through its own opening: the oesophageal opening.",
+   "shot": 2
+  },
+  {
+   "text": "That opening is at the T10 level.",
+   "shot": 3,
+   "say": "That opening is at the T ten level."
+  },
+  {
+   "text": "The left and right vagus nerves pass through with it.",
+   "shot": 2
+  },
+  {
+   "text": "Remember: oesophagus, oesophageal opening, T10.",
+   "shot": 3,
+   "say": "Remember: oesophagus, oesophageal opening, T ten."
+  },
+  {
+   "text": "So the oesophagus passes the diaphragm at the T10 level.",
+   "shot": 0,
+   "say": "So the oesophagus passes the diaphragm at the T ten level."
+  }
+ ]
+}

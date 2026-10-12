@@ -1,0 +1,108 @@
+{
+ "qid": "Q000000054",
+ "image": "Q000000054.png",
+ "takeaway": "Diverticulitis: inflamed pouches in the large bowel wall. Severe lower abdominal pain, fever, nausea and a change in bowel habit; NSAIDs are a risk factor.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 200,
+   "z": 1.8,
+   "spot": [
+    280,
+    150,
+    160
+   ]
+  },
+  {
+   "x": 840,
+   "y": 180,
+   "z": 2.0,
+   "spot": [
+    840,
+    150,
+    150
+   ]
+  },
+  {
+   "x": 470,
+   "y": 420,
+   "z": 2.0,
+   "spot": [
+    470,
+    420,
+    130
+   ]
+  },
+  {
+   "x": 960,
+   "y": 450,
+   "z": 2.0,
+   "spot": [
+    960,
+    440,
+    130
+   ]
+  },
+  {
+   "x": 900,
+   "y": 700,
+   "z": 1.8,
+   "spot": [
+    880,
+    680,
+    140
+   ]
+  },
+  {
+   "x": 1440,
+   "y": 340,
+   "z": 1.9,
+   "spot": [
+    1440,
+    330,
+    190
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A sixty-nine-year-old woman",
+   "shot": 1
+  },
+  {
+   "text": "is awaiting a total hip replacement.",
+   "shot": 2
+  },
+  {
+   "text": "She reports severe abdominal pain",
+   "shot": 3
+  },
+  {
+   "text": "and nausea.",
+   "shot": 4
+  },
+  {
+   "text": "She is taking non-steroidal anti-inflammatory drugs for pain relief, a known risk factor for diverticulitis.",
+   "shot": 5
+  },
+  {
+   "text": "Pouches form where the colonic mucosa herniates into the bowel wall. In diverticulitis, these pouches become inflamed.",
+   "shot": 6
+  },
+  {
+   "text": "Symptoms include severe lower abdominal pain, fever, nausea and a change in bowel habit.",
+   "shot": 3
+  },
+  {
+   "text": "So the single best diagnosis is diverticulitis.",
+   "shot": 0
+  }
+ ]
+}

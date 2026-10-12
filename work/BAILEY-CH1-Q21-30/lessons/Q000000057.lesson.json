@@ -1,0 +1,86 @@
+{
+ "qid": "Q000000057",
+ "image": "Q000000057.png",
+ "takeaway": "Guillain-Barré syndrome is a neuromuscular disease: hypoventilation raises PaCO2 and lowers pH, giving respiratory acidosis.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 290,
+   "y": 250,
+   "z": 1.8,
+   "spot": [
+    270,
+    130,
+    170
+   ]
+  },
+  {
+   "x": 720,
+   "y": 350,
+   "z": 1.9,
+   "spot": [
+    720,
+    330,
+    180
+   ]
+  },
+  {
+   "x": 1370,
+   "y": 300,
+   "z": 1.9,
+   "spot": [
+    1380,
+    290,
+    190
+   ]
+  },
+  {
+   "x": 1360,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    1370,
+    520,
+    190
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which arterial blood gas result does Guillain-Barré syndrome give?",
+   "shot": 1,
+   "say": "Which arterial blood gas result does Ghee-yan Barray syndrome give?"
+  },
+  {
+   "text": "It is a neuromuscular disease, so the patient cannot ventilate adequately.",
+   "shot": 2
+  },
+  {
+   "text": "Hypoventilation raises carbon dioxide in the blood.",
+   "shot": 2
+  },
+  {
+   "text": "Acute respiratory acidosis occurs with an abrupt failure of ventilation.",
+   "shot": 2
+  },
+  {
+   "text": "A raised PaCO2 decreases the bicarbonate to PaCO2 ratio, and the pH falls.",
+   "shot": 3,
+   "say": "A raised P A C O two decreases the bicarbonate to P A C O two ratio, and the P H falls."
+  },
+  {
+   "text": "That is respiratory acidosis.",
+   "shot": 4
+  },
+  {
+   "text": "Other neuromuscular causes include myasthenia gravis and muscular dystrophy.",
+   "shot": 0
+  }
+ ]
+}

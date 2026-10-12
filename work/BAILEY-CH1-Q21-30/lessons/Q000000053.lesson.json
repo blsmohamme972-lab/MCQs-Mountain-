@@ -1,0 +1,94 @@
+{
+ "qid": "Q000000053",
+ "image": "Q000000053.png",
+ "takeaway": "Ulcerative colitis: inflammation and ulcers of the colon and rectum, with abdominal pain and diarrhoea mixed with blood. Continuous and limited to the colon, unlike Crohn's disease.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 260,
+   "y": 180,
+   "z": 2.0,
+   "spot": [
+    220,
+    60,
+    120
+   ]
+  },
+  {
+   "x": 420,
+   "y": 520,
+   "z": 1.9,
+   "spot": [
+    420,
+    510,
+    150
+   ]
+  },
+  {
+   "x": 690,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    680,
+    270,
+    140
+   ]
+  },
+  {
+   "x": 1020,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    1020,
+    240,
+    120
+   ]
+  },
+  {
+   "x": 1460,
+   "y": 290,
+   "z": 1.8,
+   "spot": [
+    1460,
+    250,
+    180
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A twenty-eight-year-old woman has no relevant past medical history.",
+   "shot": 1
+  },
+  {
+   "text": "She has central abdominal pains,",
+   "shot": 2
+  },
+  {
+   "text": "bloodstained diarrhoea,",
+   "shot": 3
+  },
+  {
+   "text": "and anaemia.",
+   "shot": 4
+  },
+  {
+   "text": "Ulcerative colitis causes inflammation and ulcers of the colon and rectum, with pain and diarrhoea mixed with blood and mucus.",
+   "shot": 5
+  },
+  {
+   "text": "The main differential is Crohn's disease, which can occur anywhere from mouth to anus, with skip lesions.",
+   "shot": 0
+  },
+  {
+   "text": "Ulcerative colitis is limited to the colon, with continuous inflammation. So the best diagnosis is ulcerative colitis.",
+   "shot": 5
+  }
+ ]
+}
