@@ -41,3 +41,10 @@ test('every rival has an Iraqi city and either a board specialty or a medical co
   assert.ok(rows.every(x=>x.tag&&x.tag.length<=24),'short tags fit the row');
   assert.ok(cards.every(c=>c.accuracy>=62&&c.accuracy<=91));
 });
+test('studying-now count follows the Baghdad day: quiet before dawn, ~1,400 by day, busiest in the evening, smooth',()=>{
+  const day=MON+86400000,at=h=>L.activeNow(day+h*3600000);
+  assert.ok(at(4)<600&&at(12)>1000&&at(12)<1700&&at(21)>at(12));
+  let prev=at(12),worst=0;for(let s=1;s<1800;s++){const v=L.activeNow(day+12*3600000+s*1000);worst=Math.max(worst,Math.abs(v-prev));prev=v}
+  assert.ok(worst<=3,'never jumps');
+  assert.equal(L.activeNow(day+5e6),L.activeNow(day+5e6),'deterministic');
+});
