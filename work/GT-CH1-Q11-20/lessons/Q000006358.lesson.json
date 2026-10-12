@@ -90,16 +90,15 @@
    "dir": "calm, explanatory"
   },
   {
-   "text": "So the book's answer is the last statement: in adults it carries up to 4 L of lymph a day.",
+   "text": "So the answer: in adults it carries up to 4 L of lymph a day.",
    "shot": 5,
    "dir": "calm, confident",
-   "say": "So the book's answer is the last statement: in adults it carries up to four litres of lymph a day."
+   "say": "So the answer: in adults it carries up to four litres of lymph a day."
   },
   {
-   "text": "Remember: T12 start, left turn at T5, left-sided drainage.",
-   "shot": 0,
-   "dir": "warm, conclusive",
-   "say": "Remember: T twelve start, left turn at T five, left-sided drainage."
+   "text": "The right lymphatic duct drains only the right upper body, not the lower limb.",
+   "shot": 2,
+   "dir": "warm, conclusive"
   }
  ]
 }

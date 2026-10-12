@@ -1,7 +1,7 @@
 {
  "qid": "Q000006355",
  "image": "Q000006355.png",
- "takeaway": "The coronary sinus receives the small, middle and great cardiac veins; the anterior cardiac vein is not among them. It lies in the posterior AV groove and opens into the right atrium.",
+ "takeaway": "The coronary sinus receives the small, middle and great cardiac veins. The anterior cardiac veins bypass it and drain directly into the right atrium.",
  "engine": "breeze",
  "tempo": 1.0,
  "shots": [
@@ -68,7 +68,7 @@
    "dir": "steady, clear"
   },
   {
-   "text": "The anterior cardiac vein is not among them.",
+   "text": "The anterior cardiac veins are not among them: they drain directly into the right atrium.",
    "shot": 3,
    "dir": "calm, confident"
   },
