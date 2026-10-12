@@ -1,0 +1,73 @@
+{
+ "qid": "Q000006373",
+ "image": "Q000006373.png",
+ "takeaway": "Posterior duodenal ulcers, usually in the first part of the duodenum, erode into the gastroduodenal artery; anterior ulcers perforate into the peritoneal cavity.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 395,
+   "z": 1
+  },
+  {
+   "x": 600,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    670,
+    350,
+    110
+   ]
+  },
+  {
+   "x": 760,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    750,
+    430,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 45-year-old man is bleeding from a duodenal ulcer.",
+   "shot": 0,
+   "dir": "calm, focused",
+   "say": "A forty-five-year-old man is bleeding from a duodenal ulcer."
+  },
+  {
+   "text": "Duodenal ulcers commonly lie in the first, superior, part of the duodenum.",
+   "shot": 1,
+   "dir": "clear, explaining"
+  },
+  {
+   "text": "Ulcers that lie posteriorly erode into the gastroduodenal artery.",
+   "shot": 2,
+   "dir": "serious, clear"
+  },
+  {
+   "text": "That is the source of this bleeding.",
+   "shot": 2,
+   "dir": "focused"
+  },
+  {
+   "text": "Ulcers that lie anteriorly erode into the peritoneal cavity instead, causing peritonitis.",
+   "shot": 1,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "Bleeding occurs in 20% of peptic ulcers, with a high mortality over the age of 55.",
+   "shot": 0,
+   "dir": "serious",
+   "say": "Bleeding occurs in twenty percent of peptic ulcers, with a high mortality over the age of fifty-five."
+  },
+  {
+   "text": "So the artery is the gastroduodenal artery.",
+   "shot": 2,
+   "dir": "confident, warm"
+  }
+ ]
+}

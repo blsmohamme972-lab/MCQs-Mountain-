@@ -1,0 +1,108 @@
+{
+ "qid": "Q000006371",
+ "image": "Q000006371.png",
+ "takeaway": "The posterior wall of the inguinal canal is mainly transversalis fascia, reinforced medially by the conjoint tendon. The pectineal ligament belongs to the femoral canal.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 395,
+   "z": 1
+  },
+  {
+   "x": 650,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    680,
+    320,
+    150
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    1050,
+    420,
+    110
+   ]
+  },
+  {
+   "x": 450,
+   "y": 470,
+   "z": 1.8,
+   "spot": [
+    480,
+    470,
+    120
+   ]
+  },
+  {
+   "x": 1050,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    1020,
+    540,
+    110
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 250,
+   "z": 1.8,
+   "spot": [
+    990,
+    280,
+    100
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The inguinal canal runs for 4–6 cm, from the deep ring to the superficial ring.",
+   "shot": 0,
+   "dir": "warm, steady",
+   "say": "The inguinal canal runs for four to six centimetres, from the deep ring to the superficial ring."
+  },
+  {
+   "text": "Its posterior border is mainly the transversalis fascia.",
+   "shot": 1,
+   "dir": "clear, confident"
+  },
+  {
+   "text": "Medially, that back wall is reinforced by the conjoint tendon.",
+   "shot": 2,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "In front lies the external oblique aponeurosis, reinforced laterally by internal oblique fibres.",
+   "shot": 3,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "The floor is the inguinal ligament,",
+   "shot": 4,
+   "dir": "steady"
+  },
+  {
+   "text": "and the roof is the arching fibres of internal oblique and transversus abdominis, the conjoint tendon.",
+   "shot": 5,
+   "dir": "steady"
+  },
+  {
+   "text": "Beware the pectineal ligament: it forms the posterior border of the femoral canal.",
+   "shot": 0,
+   "dir": "gently warning",
+   "say": "(clears throat) Beware the pectineal ligament: it forms the posterior border of the femoral canal."
+  },
+  {
+   "text": "So the answer is the transversalis fascia.",
+   "shot": 1,
+   "dir": "confident, warm"
+  }
+ ]
+}

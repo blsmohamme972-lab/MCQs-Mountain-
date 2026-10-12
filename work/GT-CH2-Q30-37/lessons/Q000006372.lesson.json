@@ -1,0 +1,101 @@
+{
+ "qid": "Q000006372",
+ "image": "Q000006372.png",
+ "takeaway": "Portal hypertension in cirrhosis opens portal-systemic anastomoses: haemorrhoids, oesophageal varices, caput medusae, the bare area of the liver and retroperitoneal connections.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 395,
+   "z": 1
+  },
+  {
+   "x": 830,
+   "y": 250,
+   "z": 1.8,
+   "spot": [
+    830,
+    220,
+    170
+   ]
+  },
+  {
+   "x": 250,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    250,
+    560,
+    150
+   ]
+  },
+  {
+   "x": 1110,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    1110,
+    640,
+    130
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 220,
+   "z": 1.8,
+   "spot": [
+    1330,
+    180,
+    150
+   ]
+  },
+  {
+   "x": 1460,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    1460,
+    520,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Cirrhosis causes portal hypertension, so the body opens channels between the portal and systemic veins.",
+   "shot": 1,
+   "dir": "serious, clear"
+  },
+  {
+   "text": "Around the inferior rectum and anal canal, these form haemorrhoids.",
+   "shot": 3,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "At the umbilicus, a recanalised ligamentum teres gives caput medusae.",
+   "shot": 2,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "At the bare area of the liver, portal and systemic veins swell where they meet.",
+   "shot": 4,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "And in the retroperitoneum, veins of the gut join veins of the body wall.",
+   "shot": 5,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "Oesophageal varices complete the five anastomoses.",
+   "shot": 0,
+   "dir": "steady"
+  },
+  {
+   "text": "Every option is one of these connections, so the answer is All of the above.",
+   "shot": 0,
+   "dir": "pleased, confident"
+  }
+ ]
+}
