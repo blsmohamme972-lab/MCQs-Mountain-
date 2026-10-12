@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse,hashlib,json,sys,urllib.error,urllib.request
+import argparse,hashlib,json,sys,time,urllib.error,urllib.request
 from pathlib import Path
 from urllib.parse import urlsplit
 ROOT=Path(__file__).resolve().parents[2]
@@ -13,15 +13,21 @@ MAX_ENTRY=2*1024*1024
 class NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self,req,fp,code,msg,headers,newurl):return None
 
-def fetch_exact(url):
+def fetch_exact(url,attempts=3):
+    # A freshly staged preview can be slow on its first request: retry timeouts and
+    # connection errors (not HTTP answers) before failing the publish.
     req=urllib.request.Request(url,method="GET",headers={"User-Agent":"kafu-motioncards-smoke/1.0"})
-    try:
-        with urllib.request.build_opener(NoRedirect()).open(req,timeout=20) as r:
-            raw=r.read(MAX_ENTRY+1)
-            return r.status,r.geturl(),r.headers,raw
-    except urllib.error.HTTPError as exc:
-        if 300<=exc.code<400:raise ValueError("motioncards_entry_redirect:"+str(exc.code)) from None
-        raise
+    for attempt in range(1,attempts+1):
+        try:
+            with urllib.request.build_opener(NoRedirect()).open(req,timeout=45) as r:
+                raw=r.read(MAX_ENTRY+1)
+                return r.status,r.geturl(),r.headers,raw
+        except urllib.error.HTTPError as exc:
+            if 300<=exc.code<400:raise ValueError("motioncards_entry_redirect:"+str(exc.code)) from None
+            raise
+        except (TimeoutError,urllib.error.URLError,ConnectionError):
+            if attempt==attempts:raise
+            time.sleep(5*attempt)
 
 def check_entry(base,row):
     path=urlsplit(row["entry_url"]).path;expected=base+path

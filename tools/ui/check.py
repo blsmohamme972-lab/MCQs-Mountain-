@@ -50,6 +50,8 @@ VISUAL_HASH_VARIANTS={
         'dc7cda13f60a5d1c9a304a4f1ad9529af8cdb6d66d02660e8422f825e8843f7b',
         'd31098a727e408f0d8a290770359a1d1a7dac1e0344ef35d7ce0ecb0cf87a336',
         'f599e9031346705977f71b61b959925f94189f0a5997983843a7c3525202212a',
+        # Seen on PR #111's first visual-flow run (passed on re-run).
+        '5ed1c897d0df86db640be516667eefd12ef94f016835d714c0ca86a4913c7fcd',
     },
     'ipad-dark-library-no-results':{
         'b78a1b8a2898889f4b635797e5cce7a5ccaf19036a19cff08e8197268a677b31',
@@ -57,6 +59,8 @@ VISUAL_HASH_VARIANTS={
         'a878750755d17c80fef4b8b60bdc0544c2fd0a7700b84fc61a50e79c6b24107c',
         '8821de659817eb951546f4cfc3805220ecae6e17c7be853cb312380a6cfe39eb',
         '541ee13295736b89e23830d390bee3dd58ebc8d7bc2bb38ec4dc9f309a82061c',
+        # Seen on PR #109's first visual-flow run (passed on re-run).
+        '861d922b961c156afda4d8a25831feac0aee6edc43176e070ff9bc035ef79eb9',
     },
 }
 
