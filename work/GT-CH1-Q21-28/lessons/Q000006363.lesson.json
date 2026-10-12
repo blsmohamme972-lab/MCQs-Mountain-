@@ -1,0 +1,107 @@
+{
+ "qid": "Q000006363",
+ "image": "Q000006363.png",
+ "takeaway": "The four normal oesophageal constrictions: cricopharyngeus (15 cm), aortic arch (22.5 cm), left main bronchus (27.5 cm), lower oesophageal sphincter (40 cm). The left atrium indents it only when dilated.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 1000,
+   "y": 180,
+   "z": 2.0,
+   "spot": [
+    990,
+    90,
+    110
+   ]
+  },
+  {
+   "x": 1030,
+   "y": 320,
+   "z": 2.0,
+   "spot": [
+    1020,
+    270,
+    120
+   ]
+  },
+  {
+   "x": 1050,
+   "y": 490,
+   "z": 2.0,
+   "spot": [
+    1020,
+    450,
+    110
+   ]
+  },
+  {
+   "x": 1050,
+   "y": 600,
+   "z": 2.0,
+   "spot": [
+    1060,
+    640,
+    130
+   ]
+  },
+  {
+   "x": 1450,
+   "y": 480,
+   "z": 2.0,
+   "spot": [
+    1480,
+    470,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The normal oesophagus has four constrictions, seen on video fluoroscopy.",
+   "shot": 0,
+   "dir": "calm, curious"
+  },
+  {
+   "text": "The first, and narrowest, is the cricopharyngeus muscle, fifteen centimetres from the incisors.",
+   "shot": 1,
+   "dir": "clear, explaining"
+  },
+  {
+   "text": "The second is the aortic arch, at twenty-two and a half centimetres.",
+   "shot": 2,
+   "dir": "steady"
+  },
+  {
+   "text": "Then the left main bronchus, at twenty-seven and a half.",
+   "shot": 3,
+   "dir": "steady"
+  },
+  {
+   "text": "And the lower oesophageal sphincter, at forty centimetres.",
+   "shot": 4,
+   "dir": "steady"
+  },
+  {
+   "text": "But the left atrium does not indent the normal oesophagus.",
+   "shot": 5,
+   "dir": "knowing, gentle",
+   "say": "(clears throat) But the left atrium does not indent the normal oesophagus."
+  },
+  {
+   "text": "It does so only when it is enlarged, in left atrial dilatation.",
+   "shot": 5,
+   "dir": "clear, confident"
+  },
+  {
+   "text": "So the answer is the left atrium.",
+   "shot": 0,
+   "dir": "warm, decisive"
+  }
+ ]
+}

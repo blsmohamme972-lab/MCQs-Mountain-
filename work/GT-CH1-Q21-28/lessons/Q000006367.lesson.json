@@ -1,0 +1,96 @@
+{
+ "qid": "Q000006367",
+ "image": "Q000006367.png",
+ "takeaway": "The long thoracic nerve supplies serratus anterior and runs superficially over it. Injury: no abduction above the horizontal and a winged scapula.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 385,
+   "z": 1
+  },
+  {
+   "x": 260,
+   "y": 290,
+   "z": 1.9,
+   "spot": [
+    230,
+    240,
+    170
+   ]
+  },
+  {
+   "x": 330,
+   "y": 430,
+   "z": 1.9,
+   "spot": [
+    300,
+    420,
+    170
+   ]
+  },
+  {
+   "x": 1080,
+   "y": 230,
+   "z": 2.0,
+   "spot": [
+    1080,
+    170,
+    150
+   ]
+  },
+  {
+   "x": 1420,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    1420,
+    330,
+    160
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "An eighteen-year-old has a superficial stab wound on his right chest wall.",
+   "shot": 0,
+   "dir": "concerned, calm"
+  },
+  {
+   "text": "He cannot raise his right arm above the horizontal.",
+   "shot": 2,
+   "dir": "clear"
+  },
+  {
+   "text": "And when he presses his hands against a wall, his right scapula sticks out.",
+   "shot": 3,
+   "dir": "curious"
+  },
+  {
+   "text": "This is a winged scapula, from damage to the long thoracic nerve.",
+   "shot": 3,
+   "dir": "confident"
+  },
+  {
+   "text": "The long thoracic nerve supplies the serratus anterior muscle.",
+   "shot": 1,
+   "dir": "clear, explaining"
+  },
+  {
+   "text": "It runs superficially over the muscle, so it is vulnerable to injury.",
+   "shot": 1,
+   "dir": "steady"
+  },
+  {
+   "text": "Without serratus anterior, the glenoid cavity cannot rotate upwards.",
+   "shot": 2,
+   "dir": "thoughtful"
+  },
+  {
+   "text": "So the damaged nerve is the long thoracic nerve.",
+   "shot": 0,
+   "dir": "warm, decisive"
+  }
+ ]
+}

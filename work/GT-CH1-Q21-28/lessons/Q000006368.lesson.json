@@ -1,0 +1,93 @@
+{
+ "qid": "Q000006368",
+ "image": "Q000006368.png",
+ "takeaway": "The first rib has grooves for the subclavian vein and artery, with the scalene tubercle (scalenus anterior) between them. It articulates only with T1, not T2.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 840,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    840,
+    260,
+    140
+   ]
+  },
+  {
+   "x": 1350,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    1350,
+    310,
+    200
+   ]
+  },
+  {
+   "x": 520,
+   "y": 260,
+   "z": 2.0,
+   "spot": [
+    520,
+    230,
+    150
+   ]
+  },
+  {
+   "x": 850,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    850,
+    560,
+    180
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which statement about the first rib is not true?",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "On its upper surface, the first rib has two grooves for the subclavian vessels.",
+   "shot": 2,
+   "dir": "clear, explaining"
+  },
+  {
+   "text": "The subclavian vein lies in front of scalenus anterior, and the subclavian artery behind it.",
+   "shot": 2,
+   "dir": "steady"
+  },
+  {
+   "text": "Between the two grooves is the scalene tubercle, where scalenus anterior attaches.",
+   "shot": 3,
+   "dir": "clear"
+  },
+  {
+   "text": "So the groove for the vein and the muscle attachment are both true.",
+   "shot": 3,
+   "dir": "confident"
+  },
+  {
+   "text": "But the first rib articulates only with the T1 vertebra.",
+   "shot": 4,
+   "dir": "knowing",
+   "say": "(clears throat) But the first rib articulates only with the T one vertebra."
+  },
+  {
+   "text": "So the false statement is: it articulates with T1 and T2.",
+   "shot": 4,
+   "dir": "warm, decisive",
+   "say": "So the false statement is: it articulates with T one and T two."
+  }
+ ]
+}
