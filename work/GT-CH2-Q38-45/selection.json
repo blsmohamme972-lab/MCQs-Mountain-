@@ -120,37 +120,37 @@
     },
     {
       "qid": "Q000006379",
-      "duration_ms": 30000,
+      "duration_ms": 37400,
       "content_hash": "aefd891b3c2594d3d638ecb79f4eacec596f6e671cc11a2f274c4e03a65b33c7"
     },
     {
       "qid": "Q000006380",
-      "duration_ms": 30000,
+      "duration_ms": 31900,
       "content_hash": "f74f24a89344b5c776ac6abe49295c040e73a1640b199352820d946adda9f32f"
     },
     {
       "qid": "Q000006381",
-      "duration_ms": 30000,
+      "duration_ms": 26100,
       "content_hash": "665af0040c596623d6f739403f5d456dac4a38763f4bb96600e2e4a9ca566b71"
     },
     {
       "qid": "Q000006382",
-      "duration_ms": 30000,
+      "duration_ms": 42400,
       "content_hash": "0569037a97ea00c377e7f7e5a52a5ec6f689b728d91554c32055c81750ed17a3"
     },
     {
       "qid": "Q000006383",
-      "duration_ms": 30000,
+      "duration_ms": 36800,
       "content_hash": "333695961821b5b4d1a8eb7e29ab41f3d22e8aed7b262df64c5c76771aff8b2d"
     },
     {
       "qid": "Q000006384",
-      "duration_ms": 30000,
+      "duration_ms": 38300,
       "content_hash": "fe2e75ef4255648a12d79e013ba8cca55f8c84e66a08aedfcf807533c9436bf9"
     },
     {
       "qid": "Q000006385",
-      "duration_ms": 30000,
+      "duration_ms": 30800,
       "content_hash": "43ce522d0ecb384fbeebfb80aed55f46fcb1a8acbaac7bc0986e5d81cd67e916"
     }
   ]
