@@ -1,0 +1,66 @@
+{
+ "qid": "Q000000070",
+ "image": "Q000000070.png",
+ "takeaway": "Type III hypersensitivity: IgG binds soluble antigen to form circulating immune complexes that are not cleared, causing inflammation. Examples: SLE, rheumatoid arthritis.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    280,
+    340,
+    210
+   ]
+  },
+  {
+   "x": 830,
+   "y": 300,
+   "z": 1.9,
+   "spot": [
+    830,
+    250,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Type Three hypersensitivity is driven by immune complexes, made of antigen and antibody.",
+   "shot": 1
+  },
+  {
+   "text": "When innate immune cells do not clear them, they accumulate, causing inflammation and leukocyte activation.",
+   "shot": 1
+  },
+  {
+   "text": "Which mediator is it?",
+   "shot": 0
+  },
+  {
+   "text": "Immunoglobulin G.",
+   "shot": 2
+  },
+  {
+   "text": "IgG binds a soluble antigen, forming a circulating immune complex.",
+   "say": "I g G binds a soluble antigen, forming a circulating immune complex.",
+   "shot": 2
+  },
+  {
+   "text": "These are immune complex diseases. Examples include SLE and rheumatoid arthritis.",
+   "say": "These are immune complex diseases. Examples include systemic lupus erythematosus, and rheumatoid arthritis.",
+   "shot": 0
+  },
+  {
+   "text": "So for Type Three, the answer is immunoglobulin G.",
+   "shot": 2
+  }
+ ]
+}

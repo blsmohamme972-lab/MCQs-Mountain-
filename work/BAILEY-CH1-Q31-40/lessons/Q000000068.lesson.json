@@ -1,0 +1,76 @@
+{
+ "qid": "Q000000068",
+ "image": "Q000000068.png",
+ "takeaway": "Type I (immediate) hypersensitivity is mediated by IgE: CD4+ Th2 cells stimulate B cells to make allergen-specific IgE. Examples: allergic asthma, anaphylaxis.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    300,
+    200,
+    200
+   ]
+  },
+  {
+   "x": 860,
+   "y": 350,
+   "z": 1.8,
+   "spot": [
+    860,
+    360,
+    190
+   ]
+  },
+  {
+   "x": 1400,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1430,
+    300,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Type One hypersensitivity is an immediate, allergic reaction.",
+   "shot": 1
+  },
+  {
+   "text": "It is provoked by re-exposure to a specific antigen, called an allergen.",
+   "shot": 1
+  },
+  {
+   "text": "Which mediator drives it?",
+   "shot": 2
+  },
+  {
+   "text": "CD4+ Th2 cells stimulate B cells to produce IgE antibodies specific to that antigen.",
+   "say": "C D four positive T H two cells stimulate B cells to produce I g E antibodies specific to that antigen.",
+   "shot": 2
+  },
+  {
+   "text": "So the answer is immunoglobulin E.",
+   "shot": 3
+  },
+  {
+   "text": "Not IgA, IgD or IgG: for Type One, think IgE.",
+   "say": "Not I g A, I g D or I g G: for Type One, think I g E.",
+   "shot": 3
+  },
+  {
+   "text": "Examples include allergic asthma and anaphylaxis.",
+   "shot": 0
+  }
+ ]
+}

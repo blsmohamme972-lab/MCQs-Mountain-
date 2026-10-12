@@ -1,0 +1,70 @@
+{
+ "qid": "Q000000063",
+ "image": "Q000000063.png",
+ "takeaway": "Painful, swollen limb in a plaster, even with a distal pulse: suspect compartment syndrome. Remove the plaster first and reassess; fasciotomy is the definitive treatment.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 760,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    800,
+    410,
+    140
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    1420,
+    600,
+    140
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    1360,
+    300,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A young man has a lower limb plaster after a complex tibial plateau fracture.",
+   "shot": 1
+  },
+  {
+   "text": "Now his limb is painful and swollen, yet a distal pulse can still be felt.",
+   "shot": 2
+  },
+  {
+   "text": "Do not be reassured by the pulse. This is compartment syndrome, caused by external compression from the plaster.",
+   "shot": 2
+  },
+  {
+   "text": "The immediate step is to remove the plaster, and then reassess the patient.",
+   "shot": 3
+  },
+  {
+   "text": "The definitive treatment is a fasciotomy.",
+   "shot": 0
+  },
+  {
+   "text": "Suspect compartment syndrome when pain is out of proportion to the injury, or on passive stretch of the compartment. Paralysis and paraesthesia are late signs.",
+   "shot": 0
+  }
+ ]
+}

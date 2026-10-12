@@ -1,0 +1,71 @@
+{
+ "qid": "Q000000065",
+ "image": "Q000000065.png",
+ "takeaway": "Cannonball lesions are large, well circumscribed, round pulmonary metastases: a secondary lung tumour spread from cancer elsewhere, such as the prostate.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    300,
+    360,
+    170
+   ]
+  },
+  {
+   "x": 360,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    320,
+    560,
+    150
+   ]
+  },
+  {
+   "x": 1400,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    1300,
+    280,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A seventy-two year old man has a cough and weight loss.",
+   "shot": 1
+  },
+  {
+   "text": "He was recently treated for prostate cancer.",
+   "shot": 2
+  },
+  {
+   "text": "His chest radiograph shows a cannonball lesion.",
+   "shot": 3
+  },
+  {
+   "text": "Cannonball metastases are large, well circumscribed, round pulmonary metastases.",
+   "shot": 3
+  },
+  {
+   "text": "So this is a secondary lung tumour: a cancer that developed elsewhere and spread to the lungs through the bloodstream or lymphatics.",
+   "shot": 0
+  },
+  {
+   "text": "They are also called envolée de ballons, meaning balloons release.",
+   "shot": 0,
+   "say": "They are also called on-voh-lay duh bah-lon, meaning balloons release."
+  }
+ ]
+}
