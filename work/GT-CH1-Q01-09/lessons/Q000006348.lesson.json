@@ -1,0 +1,79 @@
+{
+ "qid": "Q000006348",
+ "image": "Q000006348.png",
+ "takeaway": "The sternal angle is at T4: the aortic arch is ending, the azygos vein enters the superior vena cava and the pulmonary trunk may be seen dividing.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 440,
+   "y": 320,
+   "z": 1.9,
+   "spot": [
+    290,
+    310,
+    80
+   ]
+  },
+  {
+   "x": 900,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    900,
+    200,
+    110
+   ]
+  },
+  {
+   "x": 1232,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    1380,
+    320,
+    90
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "After a chest injury, which statement about the level of the sternal angle is true?",
+   "shot": 0,
+   "dir": "serious, focused"
+  },
+  {
+   "text": "The sternal angle lies at the level of T4.",
+   "shot": 1,
+   "dir": "calm, explanatory",
+   "say": "The sternal angle lies at the level of T four."
+  },
+  {
+   "text": "At this level the azygos vein enters the superior vena cava,",
+   "shot": 2,
+   "dir": "explanatory"
+  },
+  {
+   "text": "the aortic arch is ending, not beginning, and the pulmonary trunk may be seen dividing.",
+   "shot": 2,
+   "dir": "steady"
+  },
+  {
+   "text": "So a section at the sternal angle shows the T4 vertebral body.",
+   "shot": 3,
+   "dir": "confident, emphatic",
+   "say": "So a section at the sternal angle shows the T four vertebral body."
+  },
+  {
+   "text": "The answer: it demonstrates the T4 vertebral body.",
+   "shot": 0,
+   "dir": "warm, encouraging",
+   "say": "(clears throat) The answer: it demonstrates the T four vertebral body."
+  }
+ ]
+}

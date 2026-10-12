@@ -1,0 +1,78 @@
+{
+ "qid": "Q000006343",
+ "image": "Q000006343.png",
+ "takeaway": "In a fit patient the apex beat, the bottom left corner of the heart, lies in the 5th intercostal space, mid-clavicular line; cardiomegaly displaces it laterally.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 600,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    740,
+    105,
+    110
+   ]
+  },
+  {
+   "x": 440,
+   "y": 480,
+   "z": 2.0,
+   "spot": [
+    440,
+    555,
+    70
+   ]
+  },
+  {
+   "x": 1200,
+   "y": 560,
+   "z": 2.0,
+   "spot": [
+    1280,
+    650,
+    80
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Where would you expect to feel the apex beat in a fit young patient?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "In a fit patient, the apex beat represents the bottom left corner of the heart.",
+   "shot": 1,
+   "dir": "calm"
+  },
+  {
+   "text": "You will find it in the mid-clavicular line, right here.",
+   "shot": 2,
+   "dir": "explanatory"
+  },
+  {
+   "text": "Count down the steps: it is the 5th intercostal space.",
+   "shot": 3,
+   "dir": "confident, emphatic",
+   "say": "Count down the steps: it is the fifth intercostal space."
+  },
+  {
+   "text": "Conditions such as cardiac failure can cause cardiomegaly, and the apex beat is then displaced laterally.",
+   "shot": 2,
+   "dir": "thoughtful, concerned"
+  },
+  {
+   "text": "So the answer is the 5th intercostal space, in the mid-clavicular line.",
+   "shot": 0,
+   "dir": "bright, encouraging",
+   "say": "(clears throat) So the answer is the fifth intercostal space, in the mid-clavicular line."
+  }
+ ]
+}

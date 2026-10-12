@@ -1,0 +1,93 @@
+{
+ "qid": "Q000006347",
+ "image": "Q000006347.png",
+ "takeaway": "False: the LCA does not supply the AV node in most cases; the RCA does in 90%. The LCA supplies most of the left ventricle and atrium, part of the right ventricle, and the SA node in 40%.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 386,
+   "z": 1
+  },
+  {
+   "x": 1100,
+   "y": 280,
+   "z": 1.8,
+   "spot": [
+    1150,
+    135,
+    110
+   ]
+  },
+  {
+   "x": 900,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    990,
+    540,
+    110
+   ]
+  },
+  {
+   "x": 900,
+   "y": 350,
+   "z": 1.9,
+   "spot": [
+    960,
+    330,
+    100
+   ]
+  },
+  {
+   "x": 760,
+   "y": 500,
+   "z": 1.9,
+   "spot": [
+    700,
+    575,
+    90
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A patient has a blocked left coronary artery. Which statement about this artery is false?",
+   "shot": 0,
+   "dir": "serious, focused"
+  },
+  {
+   "text": "Here is the left coronary artery.",
+   "shot": 1,
+   "dir": "calm"
+  },
+  {
+   "text": "The left coronary artery supplies the vast majority of the left ventricle,",
+   "shot": 2,
+   "dir": "explanatory"
+  },
+  {
+   "text": "and of the left atrium too.",
+   "shot": 3,
+   "dir": "steady"
+  },
+  {
+   "text": "Through a conus branch, it also supplies part of the right ventricle.",
+   "shot": 4,
+   "dir": "steady"
+  },
+  {
+   "text": "It supplies the sinoatrial node in 40% of hearts; the right coronary artery does in 60%.",
+   "shot": 0,
+   "dir": "calm",
+   "say": "It supplies the sinoatrial node in forty percent of hearts; the right coronary artery does in sixty percent."
+  },
+  {
+   "text": "But the right coronary artery supplies the atrioventricular node in 90% of cases; saying the left supplies it in most cases is false.",
+   "shot": 0,
+   "dir": "confident, emphatic",
+   "say": "(clears throat) But the right coronary artery supplies the atrioventricular node in ninety percent of cases; saying the left supplies it in most cases is false."
+  }
+ ]
+}

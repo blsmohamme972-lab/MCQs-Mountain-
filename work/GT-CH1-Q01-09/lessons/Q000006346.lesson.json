@@ -1,0 +1,95 @@
+{
+ "qid": "Q000006346",
+ "image": "Q000006346.png",
+ "takeaway": "Rumbling diastolic murmur after rheumatic fever = mitral stenosis; the mitral valve lies behind the sternum at the 4th costal cartilage.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 900,
+   "y": 280,
+   "z": 1.8,
+   "spot": [
+    860,
+    80,
+    110
+   ]
+  },
+  {
+   "x": 950,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    950,
+    300,
+    130
+   ]
+  },
+  {
+   "x": 520,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    520,
+    485,
+    80
+   ]
+  },
+  {
+   "x": 1232,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    1525,
+    240,
+    90
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A woman with past rheumatic fever has a rumbling diastolic murmur. Where is the affected valve?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "This is mitral stenosis.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the affected valve is the mitral valve.",
+   "shot": 2,
+   "dir": "explanatory"
+  },
+  {
+   "text": "All the heart valves lie behind the sternum; the mitral valve is at the level of the 4th costal cartilage.",
+   "shot": 3,
+   "dir": "steady",
+   "say": "All the heart valves lie behind the sternum; the mitral valve is at the level of the fourth costal cartilage."
+  },
+  {
+   "text": "So the answer is the 4th costal cartilage.",
+   "shot": 4,
+   "dir": "confident, emphatic",
+   "say": "So the answer is the fourth costal cartilage."
+  },
+  {
+   "text": "Compare: the aortic valve is at the 3rd intercostal space, the tricuspid at the 4th intercostal space, and the pulmonary at the left 3rd costal cartilage.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Compare: the aortic valve is at the third intercostal space, the tricuspid at the fourth intercostal space, and the pulmonary at the left third costal cartilage."
+  },
+  {
+   "text": "Remember: mitral, 4th costal cartilage.",
+   "shot": 0,
+   "dir": "bright, encouraging",
+   "say": "(clears throat) Remember: mitral, fourth costal cartilage."
+  }
+ ]
+}

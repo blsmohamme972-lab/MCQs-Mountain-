@@ -1,0 +1,102 @@
+{
+ "qid": "Q000006349",
+ "image": "Q000006349.png",
+ "takeaway": "False: the first rib does not move during respiration. Inspiration involves diaphragm descent, ribs moving up and out (larger AP dimension), and serratus anterior via the long thoracic nerve.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 830,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    830,
+    580,
+    100
+   ]
+  },
+  {
+   "x": 830,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    1100,
+    330,
+    100
+   ]
+  },
+  {
+   "x": 440,
+   "y": 380,
+   "z": 1.9,
+   "spot": [
+    210,
+    420,
+    100
+   ]
+  },
+  {
+   "x": 1232,
+   "y": 500,
+   "z": 1.9,
+   "spot": [
+    1420,
+    520,
+    110
+   ]
+  },
+  {
+   "x": 1232,
+   "y": 300,
+   "z": 1.9,
+   "spot": [
+    1430,
+    170,
+    100
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which statement about the movements of inspiration is false?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Inspiration involves descent of the diaphragm,",
+   "shot": 1,
+   "dir": "calm, explanatory"
+  },
+  {
+   "text": "and elevation of the ribs, which move upwards and outwards, increasing the anteroposterior dimension of the chest.",
+   "shot": 2,
+   "dir": "steady"
+  },
+  {
+   "text": "Contraction of the intercostal muscles is part of it too.",
+   "shot": 3,
+   "dir": "calm"
+  },
+  {
+   "text": "The long thoracic nerve supplies serratus anterior, which helps lift the ribs.",
+   "shot": 4,
+   "dir": "explanatory"
+  },
+  {
+   "text": "But the first rib stays put: it does not move during respiration.",
+   "shot": 5,
+   "dir": "gently amused",
+   "say": "(laugh) But the first rib stays put: it does not move during respiration."
+  },
+  {
+   "text": "So the false statement is the upward and forward movement of the first rib.",
+   "shot": 0,
+   "dir": "confident, emphatic"
+  }
+ ]
+}

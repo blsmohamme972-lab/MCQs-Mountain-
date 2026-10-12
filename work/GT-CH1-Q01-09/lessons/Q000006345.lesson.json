@@ -1,0 +1,88 @@
+{
+ "qid": "Q000006345",
+ "image": "Q000006345.png",
+ "takeaway": "The thoracic duct runs between the thoracic aorta (lateral to it) and the azygous vein (medial), so it lies lateral to the azygous vein; injury causes chylothorax.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 470,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    388,
+    120,
+    90
+   ]
+  },
+  {
+   "x": 420,
+   "y": 420,
+   "z": 2.0,
+   "spot": [
+    390,
+    420,
+    110
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 360,
+   "z": 1.8,
+   "spot": [
+    1010,
+    400,
+    120
+   ]
+  },
+  {
+   "x": 1230,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    1500,
+    290,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Creamy chest drain fluid after oesophagectomy suggests thoracic duct injury. The duct lies lateral to which structure?",
+   "shot": 0,
+   "dir": "serious, focused"
+  },
+  {
+   "text": "The thoracic duct rises from the chyle cisterns in the abdomen, through the aortic hiatus at T12.",
+   "shot": 1,
+   "dir": "calm, explanatory",
+   "say": "The thoracic duct rises from the chyle cisterns in the abdomen, through the aortic hiatus at T twelve."
+  },
+  {
+   "text": "In the chest it runs between two neighbours: the thoracic aorta lateral to it, and the azygous vein medially.",
+   "shot": 2,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "So the duct lies lateral to the azygous vein: that is the answer.",
+   "shot": 3,
+   "dir": "confident, emphatic"
+  },
+  {
+   "text": "The duct is thin-walled and easily missed; if torn, chyle can form a chylothorax.",
+   "shot": 4,
+   "dir": "concerned",
+   "say": "(sigh) The duct is thin-walled and easily missed; if torn, chyle can form a chylothorax."
+  },
+  {
+   "text": "Remember: lateral to the azygous vein.",
+   "shot": 0,
+   "dir": "warm, encouraging"
+  }
+ ]
+}
