@@ -42,12 +42,12 @@ const KafuLeadersModule={name:'leaders',install(){
   const xpEl=x=>'<strong data-xp="'+x.xp+'">'+fmt(x.xp)+'</strong>';
   const move=x=>!x.move?'<span class="k-lb-move">–</span>':x.move>0?'<span class="k-lb-move up" aria-label="Up '+x.move+'">▲'+x.move+'</span>':'<span class="k-lb-move down" aria-label="Down '+-x.move+'">▼'+-x.move+'</span>';
   function podium(rows){
-    const spot=(x,p)=>!x?'<div class="k-lb-spot p'+p+'"></div>':'<div class="k-lb-spot p'+p+(x.own?' own':'')+'" data-id="'+x.id+'">'+(p===1?'<span class="k-lb-crown" aria-hidden="true">👑</span>':'')+avatar(x,'lg')+'<span class="k-lb-medal" aria-hidden="true">'+p+'</span>'+name(x)+'<span class="k-lb-pxp">'+xpEl(x)+' XP</span><span class="k-lb-step"><b>'+p+'</b></span></div>';
+    const spot=(x,p)=>!x?'<div class="k-lb-spot p'+p+'"></div>':'<div class="k-lb-spot p'+p+(x.own?' own':'')+'" data-id="'+x.id+'" data-a="leaders-card" data-v="'+x.id+'">'+(p===1?'<span class="k-lb-crown" aria-hidden="true">👑</span>':'')+avatar(x,'lg')+'<span class="k-lb-medal" aria-hidden="true">'+p+'</span>'+name(x)+'<span class="k-lb-pxp">'+xpEl(x)+' XP</span><span class="k-lb-step"><b>'+p+'</b></span></div>';
     return spot(rows[1],2)+spot(rows[0],1)+spot(rows[2],3);
   }
   function row(x,i,zone=''){
     const sub=x.own?'You':(x.online?'<span class="k-lb-live">Active now</span>':'')+(x.streak?'<span>🔥 '+x.streak+'</span>':'');
-    return '<li class="k-lb-row'+zone+(x.own?' own" id="k-lb-me':'')+'" data-id="'+x.id+'" data-rank="'+x.rank+'" style="--i:'+Math.min(i,20)+'"><span class="k-lb-rank">'+x.rank+'</span>'+avatar(x)+'<span class="k-lb-who">'+name(x)+'<small>'+sub+'</small></span><span class="k-lb-xp">'+xpEl(x)+'<small>XP</small></span>'+move(x)+'</li>';
+    return '<li class="k-lb-row'+zone+(x.own?' own" id="k-lb-me':'')+'" data-id="'+x.id+'" data-a="leaders-card" data-v="'+x.id+'" data-rank="'+x.rank+'" style="--i:'+Math.min(i,20)+'"><span class="k-lb-rank">'+x.rank+'</span>'+avatar(x)+'<span class="k-lb-who">'+name(x)+'<small>'+sub+'</small></span><span class="k-lb-xp">'+xpEl(x)+'<small>XP</small></span>'+move(x)+'</li>';
   }
   function list(b){
     const up=b.zones.promote,down=b.zones.demote?b.size-b.zones.demote:0,next=L.LEAGUES[b.league+1],prev=L.LEAGUES[b.league-1];
@@ -95,7 +95,7 @@ const KafuLeadersModule={name:'leaders',install(){
     else for(const x of b.rows.slice(0,3)){const el=pod.querySelector('[data-id="'+x.id+'"] [data-xp]');countUp(el,podXp.get(x.id),x.xp)}
     const oldRank=+bar.querySelector('.k-lb-rank').textContent.slice(1),oldXp=+bar.querySelector('[data-xp]').dataset.xp;
     bar.innerHTML=mebar(b);bar.setAttribute('aria-label','Your rank '+b.own.rank);countUp(bar.querySelector('[data-xp]'),oldXp,b.own.xp);
-    if(oldRank!==b.own.rank){bar.classList.remove('up','down');void bar.offsetWidth;bar.classList.add(b.own.rank<oldRank?'up':'down')}
+    if(oldRank!==b.own.rank){globalThis.KafuGameFeel?.haptic?.(b.own.rank<oldRank?'success':'light');bar.classList.remove('up','down');void bar.offsetWidth;bar.classList.add(b.own.rank<oldRank?'up':'down')}
     for(const el of listEl.querySelectorAll('.k-lb-row')){
       const was=before.get(el.dataset.id),x=el.querySelector('[data-xp]');
       if(!was)continue;
@@ -111,11 +111,42 @@ const KafuLeadersModule={name:'leaders',install(){
     const left=q('.k-lb-hero b');if(left&&period==='weekly')left.textContent=L.countdown(now);
   }
   const stop=()=>{clearTimeout(pending);pending=null};
+  // Profile card (Duolingo / Chess.com style) with a week chart and a Strava-style cheer, all on the device.
+  const DAYS=['M','T','W','T','F','S','S'],CHEERS='kafu_leaders_cheers';
+  function cheers(){try{const c=JSON.parse(localStorage.getItem(CHEERS)||'{}');return c.week===L.clock(Date.now()).weekKey?c:{week:L.clock(Date.now()).weekKey,ids:[]}}catch(_){return{ids:[]}}}
+  function cardHtml(id){
+    const now=Date.now(),b=data(now),x=b.rows.find(r=>r.id===id);if(!x)return '';
+    let days,city='',weeks=0;
+    if(x.own){const c=L.clock(now);days=[0,1,2,3,4,5,6].map(i=>{const a=c.weekStart+i*864e5;return a>now?null:Object.values(S.answers||{}).filter(q=>q&&q.n>0&&q.t>=a&&q.t<a+864e5).length*10})}
+    else{const c=L.card(id,now,league||0);days=c.days;city=c.city;weeks=c.weeks}
+    const max=Math.max(10,...days.map(d=>d||0)),today=L.clock(now).weekday,mine=cheers().ids.includes(id),base=L.hash('cheer|'+id+cheers().week)%9;
+    const bars=days.map((d,i)=>'<span class="'+(i===today?'today':'')+'"><i style="height:'+(d==null?0:Math.max(4,Math.round(d/max*100)))+'%"></i><b>'+DAYS[i]+'</b></span>').join('');
+    return '<section class="k-lb-card" role="dialog" aria-label="'+C.e(x.name)+'" data-a="leaders-noop">'+avatar(x,'xl')+'<h3>'+name(x)+'</h3>'+
+      '<p class="k-lb-meta">'+gem(league||0,'')+' '+L.LEAGUES[league||0]+' League'+(city?' · 📍 '+city:'')+(weeks?' · studying for '+weeks+' wk':'')+'</p>'+
+      '<div class="k-lb-stats"><span><b>#'+x.rank+'</b>Rank</span><span><b>'+fmt(x.xp)+'</b>XP this week</span><span><b>🔥 '+(x.streak||0)+'</b>Day streak</span></div>'+
+      '<div class="k-lb-bars" aria-label="XP each day this week">'+bars+'</div>'+
+      (x.own?'':'<button class="k-lb-cheer'+(mine?' on':'')+'" data-a="leaders-cheer" data-v="'+x.id+'">👏 <span>'+(mine?'Cheered':'Cheer')+'</span> <small>'+(base+(mine?1:0))+'</small></button>')+
+      '<button class="k-lb-close" data-a="leaders-close" aria-label="Close">×</button></section>';
+  }
+  function openCard(id){
+    closeCard();const wrap=document.createElement('div');wrap.className='k-lb-scrim';wrap.dataset.a='leaders-close';wrap.innerHTML=cardHtml(id);
+    document.body.appendChild(wrap);globalThis.KafuGameFeel?.haptic?.('light');
+  }
+  function closeCard(){document.querySelector('.k-lb-scrim')?.remove()}
+  ACTIONS['leaders-card']=d=>openCard(d.v);
+  ACTIONS['leaders-close']=closeCard;
+  ACTIONS['leaders-noop']=()=>{};
+  ACTIONS['leaders-cheer']=d=>{
+    const c=cheers(),on=!c.ids.includes(d.v);c.ids=on?[...c.ids,d.v]:c.ids.filter(x=>x!==d.v);
+    try{localStorage.setItem(CHEERS,JSON.stringify(c))}catch(_){}
+    const card=document.querySelector('.k-lb-card');if(card)card.outerHTML=cardHtml(d.v);
+    if(on){globalThis.KafuGameFeel?.haptic?.('success');const btn=document.querySelector('.k-lb-cheer');if(btn&&!reduced())for(let i=0;i<8;i++){const e=document.createElement('i');e.className='k-lb-burst';e.textContent=['👏','💖','✨'][i%3];e.style.setProperty('--a',(i*45)+'deg');btn.appendChild(e);setTimeout(()=>e.remove(),900)}}
+  };
   ACTIONS['leaders-ok']=()=>{result=null;document.querySelector('.k-lb-result')?.remove()};
   ACTIONS['leaders-period']=d=>{period=d.v==='all'?'all':'weekly';stop();render()};
   ACTIONS['leaders-me']=()=>{const el=document.getElementById('k-lb-me');if(el){el.scrollIntoView({behavior:reduced()?'auto':'smooth',block:'center'});el.classList.remove('pulse');void el.offsetWidth;el.classList.add('pulse')}};
   const baseTab=ACTIONS.tab;
-  ACTIONS.tab=d=>{if(d.v==='leaders'||cur().v==='leaders')stop();return baseTab(d)};
+  ACTIONS.tab=d=>{if(d.v==='leaders'||cur().v==='leaders'){stop();closeCard()}return baseTab(d)};
   document.addEventListener('visibilitychange',()=>{if(cur().v!=='leaders')return;if(document.visibilityState==='hidden')markSeen(Date.now());else if(pending===0)update(false)});
   if(!ticker)ticker=setInterval(()=>{if(cur().v==='leaders'&&pending===0&&document.visibilityState==='visible'&&!SHEET)update(false)},TICK);
   globalThis.KafuLeaders={update,get period(){return period}};

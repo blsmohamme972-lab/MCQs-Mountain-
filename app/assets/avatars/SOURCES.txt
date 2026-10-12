@@ -36,3 +36,17 @@ a32.webp  https://picsum.photos/id/360/  (Unsplash photo via Lorem Picsum)
 a33.webp  https://picsum.photos/id/365/  (Unsplash photo via Lorem Picsum)
 a34.webp  https://picsum.photos/id/152/  (Unsplash photo via Lorem Picsum)
 a35.webp  https://picsum.photos/id/407/  (Unsplash photo via Lorem Picsum)
+
+Openverse (https://openverse.org) images, licence as listed (CC BY: credit given here):
+a36.webp  "Pink Rose" by audreyjm529, CC BY — https://www.flickr.com/photos/98799884@N00/295255637
+a37.webp  "Pink & Blue Macarons" by edenpictures, CC BY — https://www.flickr.com/photos/10485077@N06/52197715691
+a38.webp  "2022166-PINK FLOWER UNDER THE RAIN" by amalthus, CC0 — https://www.flickr.com/photos/168583569@N03/51911606845
+a39.webp  "Perfume Bottle" by Jessica Weiller, CC0 — https://stocksnap.io/photo/perfume-bottle-0BZ1W3NNQK
+a40.webp  "Pink roses" by cattan2011, CC BY — https://www.flickr.com/photos/68166820@N08/51294624605
+a41.webp  "Macarons" by sarahstierch, CC BY — https://www.flickr.com/photos/7633518@N08/52789569314
+a42.webp  "Pink Flower Reference #3" by claralieu, CC BY — https://www.flickr.com/photos/189561381@N07/51908835133
+a43.webp  "Nyx Lipstick Beside Eye Shadow Palette - Credit to http://homedust.com/" by Homedust, CC BY — https://www.flickr.com/photos/159630537@N08/40940531060
+a44.webp  "Pink Rose" by slgckgc, CC BY — https://www.flickr.com/photos/14771153@N04/8077100255
+a45.webp  "Pink Flowers" by Corey Leopold, CC BY — https://www.flickr.com/photos/97708873@N00/51621776058
+a46.webp  "Macaron Time with Deborah" by thelazydba, CC BY — https://www.flickr.com/photos/71832042@N00/25924692061
+a47.webp  "Perfumed" by ₡ґǘșϯγ Ɗᶏ Ⱪᶅṏⱳդ, CC0 — https://www.flickr.com/photos/148598741@N02/51309707884

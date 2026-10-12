@@ -15,7 +15,11 @@
   // Telegram's own placeholder gradients, so photo-less accounts look exactly like Telegram's.
   const GRADIENTS=[['#FF885E','#FF516A'],['#FFCD6A','#FFA85C'],['#82B1FF','#665FFF'],['#A0DE7E','#54CB68'],
     ['#53EDD6','#28C9B7'],['#72D5FD','#2A9EF1'],['#E0A2F3','#D669ED']];
-  const PHOTOS=35; // app/assets/avatars/a01..a35.webp (see SOURCES.txt); a31 is the "star" account's picture
+  const PHOTOS=47; // app/assets/avatars/a01..a47.webp (see SOURCES.txt): a01-a30 general, a31 the star's, a32-a47 feminine
+  const WOMEN=new Set(['Zainab.H','Hiba 🌸','زهراء محمد','نور الهدى','Dr. Sara','مريم','Fatima Alzahraa','فاطمة الزهراء 🤍','Ruqaya','رقية',
+    'Teeba ✨','آية حسن','Dania','حوراء','Mays','تبارك','Lina','بنين علي','Rusul 🌷','شهد','Shahad.M','سارة 🌙','Hawraa','زينب ع',
+    'Zahraa Ali','Noor Alhuda','همسة','ديانا','Baneen','رسل']);
+  const CITIES=['Baghdad','Baghdad','Baghdad','Basra','Najaf','Karbala','Mosul','Erbil','Hilla','Kirkuk','Diwaniyah','Nasiriyah','Kut','Ramadi'];
   // Duolingo-style leagues: a group of 30, top 7 move up, bottom 5 move down. Higher leagues study harder.
   const LEAGUES=['Bronze','Silver','Gold','Sapphire','Ruby','Emerald','Diamond'],FACTOR=[0.35,0.5,0.65,0.8,1,1.2,1.45];
   const COHORT=30,PROMOTE=7,DEMOTE=5,STAR='Hiba 🌸';
@@ -39,14 +43,16 @@
     const evening=0.6+0.8*r();                      // how late in the day they study
     const weeks=r()<0.2?0:1+Math.floor(r()*20);
     const gradient=GRADIENTS[hash(name)%GRADIENTS.length];
-    const star=name===STAR;
-    return{id:'r'+i,name,pace:star?1250:pace,loyalty:star?0.93:loyalty,evening,weeks,star,photo:null,gradient,initials:initials(name)};
+    const star=name===STAR,woman=WOMEN.has(name);
+    return{id:'r'+i,name,pace:star?1250:woman?pace*1.12:pace,loyalty:star?0.93:loyalty,evening,weeks,star,woman,photo:null,gradient,initials:initials(name),city:CITIES[Math.floor(r()*CITIES.length)]};
   }
   const RIVALS=NAMES.map(profile);
   // About half the accounts have a profile picture, each picture used once, like a real group.
   const pic=k=>'assets/avatars/a'+String(k).padStart(2,'0')+'.webp';
-  RIVALS.filter(p=>!p.star).map((p,i)=>[hash('photo|'+p.name),p]).sort((a,b)=>a[0]-b[0]).slice(0,PHOTOS-1)
-    .forEach(([,p],k)=>{p.photo=pic(k<30?k+1:k+2)});
+  const order=list=>list.map(p=>[hash('photo|'+p.name),p]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+  // Most women get one of the feminine pictures; the general pictures go to everyone else and a few women.
+  const women=order(RIVALS.filter(p=>p.woman&&!p.star)),fem=women.slice(0,16),others=order(RIVALS.filter(p=>!p.star&&!fem.includes(p)));
+  fem.forEach((p,k)=>{p.photo=pic(32+k)});others.slice(0,30).forEach((p,k)=>{p.photo=pic(1+k)});
   RIVALS.find(p=>p.star).photo=pic(31);
   const tens=x=>Math.max(0,Math.round(x/10)*10);
   function dayXp(p,day){
@@ -113,6 +119,13 @@
     const zones=period==='weekly'?{promote:league<LEAGUES.length-1?PROMOTE:0,demote:league>0&&rows.length>PROMOTE+DEMOTE?DEMOTE:0}:{promote:0,demote:0};
     return{period,rows,own:mine,ahead,gap:ahead?Math.max(10,ahead.xp-mine.xp+10):0,clock:clock(now),size:rows.length,league,leagueName:LEAGUES[league],zones};
   }
+  // Profile card: this week's XP per day (Monday first, today so far), city and how long they have studied.
+  function card(id,now,league=0){
+    const p=RIVALS[Number(String(id).slice(1))];if(!p)return null;
+    const c=clock(now),f=[0.35,0.5,0.65,0.8,1,1.2,1.45][league]||1;
+    const days=[0,1,2,3,4,5,6].map(i=>{const d=c.weekStartDay+i;return d<c.day?tens(f*dayXp(p,d)):d===c.day?tens(f*dayXp(p,d)*dayShare(p,c.hour)):null});
+    return{days,city:p.city,weeks:p.weeks+1,streak:streak(p,now),woman:p.woman};
+  }
   // Where a finished week leaves the student: up, down or the same league.
   function outcome(rank,size,league,zones){
     if(zones.promote&&rank<=zones.promote)return Math.min(LEAGUES.length-1,league+1);
@@ -131,7 +144,7 @@
     const left=Math.max(0,clock(now).weekEnd-now),d=Math.floor(left/DAY),h=Math.floor(left%DAY/HOUR),m=Math.floor(left%HOUR/60000);
     return d?d+'d '+h+'h':h?h+'h '+m+'m':m+'m';
   }
-  const api={NAMES,GRADIENTS,PHOTOS,LEAGUES,COHORT,PROMOTE,DEMOTE,STAR,clock,initials,board,outcome,ownXp,countdown,hash};
+  const api={NAMES,GRADIENTS,PHOTOS,LEAGUES,COHORT,PROMOTE,DEMOTE,STAR,clock,initials,board,outcome,card,ownXp,countdown,hash};
   root.KafuLeadersCore=api;
   if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

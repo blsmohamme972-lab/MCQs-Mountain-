@@ -192,6 +192,9 @@ def run(browser,origin,pack,out,helpers):
         assert lpage.locator('.k-lb .k-lb-row.own, .k-lb .k-lb-spot.own').count()==1
         assert lpage.locator('.k-lb-mebar').count()==1
         assert_geometry(lpage,f'{width} leaders-weekly')
+        lpage.locator('.k-lb-spot.p1').click();lpage.wait_for_selector('.k-lb-card .k-lb-bars')
+        assert lpage.locator('.k-lb-card .k-lb-bars span').count()==7
+        lpage.locator('.k-lb-close').click();assert lpage.locator('.k-lb-scrim').count()==0
         lpage.locator('[data-a="leaders-period"][data-v="all"]').click()
         lpage.wait_for_selector('.k-lb[data-period="all"]')
         assert_geometry(lpage,f'{width} leaders-all-time')
