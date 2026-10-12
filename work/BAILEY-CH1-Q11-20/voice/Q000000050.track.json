@@ -1,0 +1,47 @@
+{
+ "qid": "Q000000050",
+ "file": "Q000000050.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 87230,
+ "sha256": "7a7fbc313a19480953d048db3acb6e099aa6bcb6afec30479ecbdab29f3fe50a",
+ "track_ms": 31546,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4731,
+   "text": "Which carcinogen is linked to transitional cell carcinoma of the urinary tract?"
+  },
+  {
+   "t_ms": 5181,
+   "end_ms": 8614,
+   "text": "Cigarette smoking contributes about one half of the disease burden."
+  },
+  {
+   "t_ms": 9064,
+   "end_ms": 14380,
+   "text": "Chemical exposure also predisposes to it: petroleum, paints and pigments,"
+  },
+  {
+   "t_ms": 14830,
+   "end_ms": 16813,
+   "text": "for example, aniline dyes."
+  },
+  {
+   "t_ms": 17263,
+   "end_ms": 22844,
+   "text": "As with most epithelial cancers, physical irritation also raises the risk of malignant change:"
+  },
+  {
+   "t_ms": 23294,
+   "end_ms": 27675,
+   "text": "chronic urinary stones, chronic catheterization and chronic infection."
+  },
+  {
+   "t_ms": 28125,
+   "end_ms": 30946,
+   "text": "So the answer is aniline dyes."
+  }
+ ]
+}

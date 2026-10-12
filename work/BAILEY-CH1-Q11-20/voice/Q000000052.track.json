@@ -1,0 +1,52 @@
+{
+ "qid": "Q000000052",
+ "file": "Q000000052.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 100823,
+ "sha256": "db6ac6e7b4dfe7ee69b64e174b883f6d6fe47b2400c3a0241599fac5b203c243",
+ "track_ms": 34518,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4156,
+   "text": "A 63-year-old man comes in with bowel symptoms."
+  },
+  {
+   "t_ms": 4606,
+   "end_ms": 9912,
+   "text": "He has had diarrhoea for a month: a change in bowel habit lasting more than three weeks,"
+  },
+  {
+   "t_ms": 10362,
+   "end_ms": 12765,
+   "text": "and fresh rectal bleeding."
+  },
+  {
+   "t_ms": 13215,
+   "end_ms": 15455,
+   "text": "He also has occasional abdominal pain,"
+  },
+  {
+   "t_ms": 15905,
+   "end_ms": 17823,
+   "text": "and loss of appetite."
+  },
+  {
+   "t_ms": 18273,
+   "end_ms": 22979,
+   "text": "These are common symptoms of colorectal cancer: here, a rectal carcinoma."
+  },
+  {
+   "t_ms": 23429,
+   "end_ms": 29557,
+   "text": "The risk rises with age; the median age at diagnosis of rectal cancer is 63."
+  },
+  {
+   "t_ms": 30007,
+   "end_ms": 33918,
+   "text": "Other warning signs: dark stools, weight loss and fatigue."
+  }
+ ]
+}
