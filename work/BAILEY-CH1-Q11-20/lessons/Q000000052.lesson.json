@@ -1,0 +1,110 @@
+{
+ "qid": "Q000000052",
+ "image": "Q000000052.png",
+ "takeaway": "Change in bowel habit over 3 weeks, rectal bleeding, abdominal pain and poor appetite in an older patient suggest colorectal cancer; median age at rectal cancer diagnosis is 63.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 420,
+   "y": 250,
+   "z": 2.0,
+   "spot": [
+    300,
+    200,
+    170
+   ]
+  },
+  {
+   "x": 700,
+   "y": 470,
+   "z": 2.0,
+   "spot": [
+    700,
+    530,
+    150
+   ]
+  },
+  {
+   "x": 1080,
+   "y": 520,
+   "z": 2.0,
+   "spot": [
+    1080,
+    530,
+    160
+   ]
+  },
+  {
+   "x": 420,
+   "y": 380,
+   "z": 2.0,
+   "spot": [
+    260,
+    370,
+    150
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 240,
+   "z": 2.0,
+   "spot": [
+    1150,
+    200,
+    170
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    1500,
+    330,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 63-year-old man comes in with bowel symptoms.",
+   "shot": 1,
+   "say": "A sixty-three-year-old man comes in with bowel symptoms."
+  },
+  {
+   "text": "He has had diarrhoea for a month: a change in bowel habit lasting more than three weeks,",
+   "shot": 2
+  },
+  {
+   "text": "and fresh rectal bleeding.",
+   "shot": 3
+  },
+  {
+   "text": "He also has occasional abdominal pain,",
+   "shot": 4
+  },
+  {
+   "text": "and loss of appetite.",
+   "shot": 5
+  },
+  {
+   "text": "These are common symptoms of colorectal cancer: here, a rectal carcinoma.",
+   "shot": 6
+  },
+  {
+   "text": "The risk rises with age; the median age at diagnosis of rectal cancer is 63.",
+   "shot": 1,
+   "say": "The risk rises with age; the median age at diagnosis of rectal cancer is sixty-three."
+  },
+  {
+   "text": "Other warning signs: dark stools, weight loss and fatigue.",
+   "shot": 0
+  }
+ ]
+}

@@ -1,0 +1,75 @@
+{
+ "qid": "Q000000051",
+ "image": "Q000000051.png",
+ "takeaway": "Book key: polyvinyl chloride. HCC mostly follows hepatitis B or C or cirrhosis; other causes include alcohol, aflatoxin, iron overload, NASH and type 2 diabetes.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 420,
+   "y": 260,
+   "z": 2.0,
+   "spot": [
+    240,
+    290,
+    170
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 260,
+   "z": 2.0,
+   "spot": [
+    1330,
+    280,
+    190
+   ]
+  },
+  {
+   "x": 830,
+   "y": 280,
+   "z": 2.0,
+   "spot": [
+    820,
+    290,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which carcinogen is linked to hepatocellular carcinoma?",
+   "shot": 0
+  },
+  {
+   "text": "Hepatocellular carcinoma is the most common type of liver cancer.",
+   "shot": 2
+  },
+  {
+   "text": "Most cases follow viral hepatitis, B or C, or cirrhosis, most often from alcohol.",
+   "shot": 2
+  },
+  {
+   "text": "Other known causes include toxins such as alcohol, aflatoxin and iron overload,",
+   "shot": 3
+  },
+  {
+   "text": "and metabolic disease: non-alcoholic steatohepatitis and type 2 diabetes.",
+   "shot": 3,
+   "say": "and metabolic disease: non-alcoholic steatohepatitis and type two diabetes."
+  },
+  {
+   "text": "Among the options given, the book's answer is polyvinyl chloride.",
+   "shot": 1
+  },
+  {
+   "text": "So remember: polyvinyl chloride, linked to hepatocellular carcinoma.",
+   "shot": 0
+  }
+ ]
+}

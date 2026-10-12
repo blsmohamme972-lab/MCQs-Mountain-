@@ -1,0 +1,89 @@
+{
+ "qid": "Q000000044",
+ "image": "Q000000044.png",
+ "takeaway": "Cerebral blood flow = cerebral perfusion pressure / cerebral vascular resistance (CPP/CVR). In an adult, typically 750 mL/min, 15% of the cardiac output.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 420,
+   "y": 240,
+   "z": 2.0,
+   "spot": [
+    190,
+    200,
+    140
+   ]
+  },
+  {
+   "x": 560,
+   "y": 260,
+   "z": 2.0,
+   "spot": [
+    555,
+    300,
+    140
+   ]
+  },
+  {
+   "x": 870,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    875,
+    370,
+    120
+   ]
+  },
+  {
+   "x": 1230,
+   "y": 260,
+   "z": 1.9,
+   "spot": [
+    1335,
+    200,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Here the equation is CPP over CVR.",
+   "shot": 0,
+   "say": "Here the equation is cerebral perfusion pressure over cerebral vascular resistance."
+  },
+  {
+   "text": "CPP is the cerebral perfusion pressure,",
+   "shot": 1,
+   "say": "C P P is the cerebral perfusion pressure,"
+  },
+  {
+   "text": "and CVR is the cerebral vascular resistance.",
+   "shot": 2,
+   "say": "and C V R is the cerebral vascular resistance."
+  },
+  {
+   "text": "Pressure divided by resistance gives a flow:",
+   "shot": 3
+  },
+  {
+   "text": "the cerebral blood flow, the blood supply per unit area of brain tissue per unit time.",
+   "shot": 4
+  },
+  {
+   "text": "In an adult it is typically 750 mL per minute, or 15 per cent of the cardiac output.",
+   "shot": 4,
+   "say": "In an adult it is typically seven hundred and fifty millilitres per minute, or fifteen per cent of the cardiac output."
+  },
+  {
+   "text": "It is directly proportional to blood volume, but inversely related to CVR.",
+   "shot": 2,
+   "say": "It is directly proportional to blood volume, but inversely related to cerebral vascular resistance."
+  }
+ ]
+}
