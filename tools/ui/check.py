@@ -52,6 +52,9 @@ VISUAL_HASH_VARIANTS={
         'f599e9031346705977f71b61b959925f94189f0a5997983843a7c3525202212a',
         # Seen on PR #111's first visual-flow run (passed on re-run).
         '5ed1c897d0df86db640be516667eefd12ef94f016835d714c0ca86a4913c7fcd',
+        # Five-tab bar (Leaders tab, PR #129): two renderer variants seen on its first two runs.
+        '7d458c2631b19b6ebb4ab160c6e1956a2769f63dbfa599c937b5ece75f8b4ea5',
+        '8ea86a2b3c22dc4a78c98710e2bdde61fa824738e6ffb5ec98a07ce057b8000f',
     },
     'ipad-dark-library-no-results':{
         'b78a1b8a2898889f4b635797e5cce7a5ccaf19036a19cff08e8197268a677b31',
@@ -61,6 +64,9 @@ VISUAL_HASH_VARIANTS={
         '541ee13295736b89e23830d390bee3dd58ebc8d7bc2bb38ec4dc9f309a82061c',
         # Seen on PR #109's first visual-flow run (passed on re-run).
         '861d922b961c156afda4d8a25831feac0aee6edc43176e070ff9bc035ef79eb9',
+        # Five-tab bar (Leaders tab, PR #129): two renderer variants seen on its first two runs.
+        '26b118ba00302d72b048b187e5c95c1f7cdc27dbf04f5177f10922512fc6f6bc',
+        '8416172e413e246e1d1a4ca17e90782b14cac1d1e00eab93c112c2de0d28d615',
     },
 }
 
