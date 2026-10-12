@@ -1,7 +1,7 @@
 {
  "qid": "Q000006376",
  "image": "Q000006376.png",
- "takeaway": "Inguinal canal roof: internal oblique, conjoint tendon and transversus abdominis. Front: internal and external oblique. Back: conjoint tendon and transversalis fascia. Floor: inguinal and lacunar ligaments.",
+ "takeaway": "Inguinal canal roof: internal oblique, conjoint tendon and transversus abdominis. Front: external oblique aponeurosis (internal oblique laterally). Back: transversalis fascia (conjoint tendon medially). Floor: inguinal, lacunar ligaments.",
  "engine": "breeze",
  "tempo": 1.0,
  "shots": [
@@ -64,12 +64,12 @@
    "dir": "clear, confident"
   },
   {
-   "text": "In front: the internal and external oblique.",
+   "text": "In front: the external oblique aponeurosis, reinforced laterally by internal oblique.",
    "shot": 2,
    "dir": "calm, explaining"
   },
   {
-   "text": "Behind: the conjoint tendon and the transversalis fascia.",
+   "text": "Behind: the transversalis fascia, reinforced medially by the conjoint tendon.",
    "shot": 3,
    "dir": "calm, explaining"
   },
