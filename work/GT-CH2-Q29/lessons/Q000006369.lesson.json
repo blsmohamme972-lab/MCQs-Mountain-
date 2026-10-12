@@ -1,0 +1,23 @@
+{
+ "qid": "Q000006369",
+ "image": "Q000006369.png",
+ "takeaway": "The spermatic cord contains the ductus deferens, testicular and cremasteric arteries, the artery of the ductus, the pampiniform plexus, nerves and lymphatics. The ilioinguinal nerve is in the canal, not the cord.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {"x": 836, "y": 470, "z": 1},
+  {"x": 300, "y": 400, "z": 1.9, "spot": [240, 380, 130]},
+  {"x": 850, "y": 350, "z": 1.9, "spot": [840, 360, 130]},
+  {"x": 1080, "y": 380, "z": 1.9, "spot": [1040, 400, 140]},
+  {"x": 1300, "y": 450, "z": 1.9, "spot": [1350, 470, 120]}
+ ],
+ "lines": [
+  {"text": "The spermatic cord runs from the deep inguinal ring, through the superficial ring, to the back of the testis.", "shot": 1, "dir": "warm, curious"},
+  {"text": "It carries the testicular artery,", "shot": 2, "dir": "clear, explaining"},
+  {"text": "the pampiniform plexus, a large collection of veins ending in the testicular vein,", "shot": 3, "dir": "calm, explaining"},
+  {"text": "and the cremasteric artery.", "shot": 4, "dir": "clear, explaining"},
+  {"text": "It also holds the ductus deferens and its artery, nerves and lymph vessels.", "shot": 1, "dir": "steady"},
+  {"text": "The ilioinguinal nerve lies in the inguinal canal, but not in the cord.", "shot": 0, "dir": "gently warning", "say": "(clears throat) The ilioinguinal nerve lies in the inguinal canal, but not in the cord."},
+  {"text": "So all three are in the cord: the answer is All of the above.", "shot": 0, "dir": "confident, warm"}
+ ]
+}
