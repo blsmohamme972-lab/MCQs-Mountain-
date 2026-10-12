@@ -1,0 +1,73 @@
+{
+ "qid": "Q000000039",
+ "image": "Q000000039.png",
+ "takeaway": "The IVC is formed from the common iliac veins at L5, the level where the common iliac arteries bifurcate.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 820,
+   "y": 540,
+   "z": 1.6,
+   "spot": [
+    830,
+    500,
+    200
+   ]
+  },
+  {
+   "x": 820,
+   "y": 420,
+   "z": 2.0,
+   "spot": [
+    820,
+    430,
+    90
+   ]
+  },
+  {
+   "x": 830,
+   "y": 560,
+   "z": 2.0,
+   "spot": [
+    830,
+    620,
+    90
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Where is the inferior vena cava formed?",
+   "shot": 0
+  },
+  {
+   "text": "The two common iliac veins join together,",
+   "shot": 1
+  },
+  {
+   "text": "and here they form the inferior vena cava.",
+   "shot": 2
+  },
+  {
+   "text": "This happens at the level of the fifth lumbar vertebra, L5.",
+   "shot": 3,
+   "say": "This happens at the level of the fifth lumbar vertebra, L five."
+  },
+  {
+   "text": "L5 is also the site where the common iliac arteries bifurcate.",
+   "shot": 3,
+   "say": "L five is also the site where the common iliac arteries bifurcate."
+  },
+  {
+   "text": "So the inferior vena cava is formed from the common iliac veins at L5.",
+   "shot": 0,
+   "say": "So the inferior vena cava is formed from the common iliac veins at L five."
+  }
+ ]
+}

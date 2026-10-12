@@ -1,0 +1,85 @@
+{
+ "qid": "Q000000035",
+ "image": "Q000000035.png",
+ "takeaway": "Median nerve injury at the wrist causes sensory loss over the thumb, index, middle and radial half of the ring finger. Its hand muscles: LOAF.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 350,
+   "z": 1.7,
+   "spot": [
+    230,
+    360,
+    150
+   ]
+  },
+  {
+   "x": 850,
+   "y": 450,
+   "z": 1.9,
+   "spot": [
+    850,
+    480,
+    140
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    1390,
+    230,
+    170
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 420,
+   "z": 1.7,
+   "spot": [
+    1300,
+    420,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A sixty-five-year-old woman has lost sensation over her thumb, index and middle fingers.",
+   "shot": 1
+  },
+  {
+   "text": "Her radiograph shows a distal radius fracture.",
+   "shot": 2
+  },
+  {
+   "text": "Median nerve injury at the wrist causes sensory loss over the thumb, index finger, middle finger,",
+   "shot": 3
+  },
+  {
+   "text": "and the radial side of the ring finger.",
+   "shot": 3
+  },
+  {
+   "text": "The hand muscles it supplies are remembered as LOAF:",
+   "shot": 4,
+   "say": "The hand muscles it supplies are remembered as loaf:"
+  },
+  {
+   "text": "lumbricals one and two, opponens pollicis, abductor pollicis, and flexor pollicis brevis.",
+   "shot": 4
+  },
+  {
+   "text": "So a distal radius fracture with this numbness points to the median nerve.",
+   "shot": 0
+  }
+ ]
+}

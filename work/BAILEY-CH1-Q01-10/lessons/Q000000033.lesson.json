@@ -1,0 +1,74 @@
+{
+ "qid": "Q000000033",
+ "image": "Q000000033.png",
+ "takeaway": "A null hypothesis is a statement of no significant difference or effect. Type I error: a false positive; Type II error: a false negative.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 1140,
+   "y": 220,
+   "z": 2.0,
+   "spot": [
+    1140,
+    230,
+    120
+   ]
+  },
+  {
+   "x": 1130,
+   "y": 540,
+   "z": 1.8,
+   "spot": [
+    920,
+    540,
+    130
+   ]
+  },
+  {
+   "x": 1130,
+   "y": 540,
+   "z": 1.8,
+   "spot": [
+    1340,
+    540,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "In statistics, every study starts with a null hypothesis.",
+   "shot": 0
+  },
+  {
+   "text": "A null hypothesis is a statement of no significant difference, or no effect.",
+   "shot": 1
+  },
+  {
+   "text": "For example, no significant difference between two groups,",
+   "shot": 2
+  },
+  {
+   "text": "or no effect from a treatment.",
+   "shot": 3
+  },
+  {
+   "text": "A Type One error wrongly rejects a true null hypothesis: a false positive. A benefit is seen when there is none.",
+   "shot": 1
+  },
+  {
+   "text": "A Type Two error accepts a false null hypothesis: a false negative. A real benefit is missed.",
+   "shot": 1
+  },
+  {
+   "text": "And remember: sensitivity is the true positive rate, and specificity is the true negative rate.",
+   "shot": 0
+  }
+ ]
+}

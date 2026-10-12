@@ -1,0 +1,74 @@
+{
+ "qid": "Q000000037",
+ "image": "Q000000037.png",
+ "takeaway": "A deep wrist laceration with loss of thumb adduction and numb little and ring fingers means ulnar nerve injury.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 1450,
+   "y": 250,
+   "z": 1.9,
+   "spot": [
+    1380,
+    220,
+    120
+   ]
+  },
+  {
+   "x": 1420,
+   "y": 620,
+   "z": 1.9,
+   "spot": [
+    1420,
+    620,
+    140
+   ]
+  },
+  {
+   "x": 980,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    1000,
+    600,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A forty-three-year-old man has a deep laceration to his right wrist after a fight.",
+   "shot": 0
+  },
+  {
+   "text": "He has lost thumb adduction,",
+   "shot": 1
+  },
+  {
+   "text": "and he has lost sensation over his little and ring fingers.",
+   "shot": 2
+  },
+  {
+   "text": "These point to the ulnar nerve. In the hand, its deep branch supplies adductor pollicis,",
+   "shot": 3
+  },
+  {
+   "text": "the hypothenar muscles, the third and fourth lumbricals, and the interossei.",
+   "shot": 3
+  },
+  {
+   "text": "It also gives sensation to the little finger and the medial half of the ring finger.",
+   "shot": 2
+  },
+  {
+   "text": "So a deep wrist laceration with this picture means the ulnar nerve is damaged.",
+   "shot": 0
+  }
+ ]
+}
