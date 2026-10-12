@@ -1,0 +1,52 @@
+{
+ "qid": "Q000000046",
+ "file": "Q000000046.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 128645,
+ "sha256": "51f0aace214f7ac19bfacab88bdfdc19fb7ea7147f8bc1beca88386fd5d6fc57",
+ "track_ms": 43451,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4911,
+   "text": "This equation is MAP minus ICP."
+  },
+  {
+   "t_ms": 5361,
+   "end_ms": 8409,
+   "text": "MAP is the mean arterial pressure."
+  },
+  {
+   "t_ms": 8859,
+   "end_ms": 12637,
+   "text": "ICP, the intracranial pressure, is subtracted from it."
+  },
+  {
+   "t_ms": 13087,
+   "end_ms": 16458,
+   "text": "The difference is the cerebral perfusion pressure."
+  },
+  {
+   "t_ms": 16908,
+   "end_ms": 25736,
+   "text": "Normally, MAP is between 60 and 160 mmHg, and ICP is about 10 mmHg,"
+  },
+  {
+   "t_ms": 26186,
+   "end_ms": 31417,
+   "text": "giving a CPP of 50 to 150 mmHg."
+  },
+  {
+   "t_ms": 31867,
+   "end_ms": 35848,
+   "text": "In that range, autoregulation maintains sufficient blood flow."
+  },
+  {
+   "t_ms": 36298,
+   "end_ms": 42851,
+   "text": "So if MAP falls or ICP rises, the perfusion pressure falls."
+  }
+ ]
+}

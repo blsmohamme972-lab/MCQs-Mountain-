@@ -1,0 +1,52 @@
+{
+ "qid": "Q000000043",
+ "file": "Q000000043.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 90603,
+ "sha256": "df15d62eef0f2bf44eaf950aaf0100f27d0053567d2a7f5178b5437b45c394c0",
+ "track_ms": 31292,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 3251,
+   "text": "This equation measures a resistance in the lungs."
+  },
+  {
+   "t_ms": 3701,
+   "end_ms": 6539,
+   "text": "Start with the mean pulmonary artery pressure,"
+  },
+  {
+   "t_ms": 6989,
+   "end_ms": 10055,
+   "text": "and subtract the mean pulmonary capillary wedge pressure."
+  },
+  {
+   "t_ms": 10505,
+   "end_ms": 12451,
+   "text": "Multiply that difference by 80,"
+  },
+  {
+   "t_ms": 12901,
+   "end_ms": 14674,
+   "text": "then divide by the cardiac output."
+  },
+  {
+   "t_ms": 15124,
+   "end_ms": 17620,
+   "text": "The result is the pulmonary vascular resistance."
+  },
+  {
+   "t_ms": 18070,
+   "end_ms": 23551,
+   "text": "So: the pressure difference across the lungs, times 80, divided by cardiac output."
+  },
+  {
+   "t_ms": 24001,
+   "end_ms": 30692,
+   "text": "Its reference range is 125 to 250 dynes × sec/cm³."
+  }
+ ]
+}
