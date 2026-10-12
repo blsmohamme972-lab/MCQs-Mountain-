@@ -1,0 +1,80 @@
+{
+ "qid": "Q000000036",
+ "image": "Q000000036.png",
+ "takeaway": "A midshaft humeral fracture can damage the radial nerve: wrist drop from unopposed flexion and sensory loss on the back of the hand ('Saturday night palsy').",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 250,
+   "z": 1.7,
+   "spot": [
+    300,
+    180,
+    140
+   ]
+  },
+  {
+   "x": 780,
+   "y": 300,
+   "z": 1.9,
+   "spot": [
+    760,
+    310,
+    110
+   ]
+  },
+  {
+   "x": 1500,
+   "y": 300,
+   "z": 1.7,
+   "spot": [
+    1540,
+    260,
+    140
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 620,
+   "z": 1.8,
+   "spot": [
+    1150,
+    640,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A fifty-seven-year-old man falls off his ladder.",
+   "shot": 1
+  },
+  {
+   "text": "His radiograph shows a midshaft fracture of the humerus.",
+   "shot": 2
+  },
+  {
+   "text": "A midshaft humeral fracture can damage the radial nerve.",
+   "shot": 3
+  },
+  {
+   "text": "That causes wrist drop, because flexion at the wrist is now unopposed.",
+   "shot": 4
+  },
+  {
+   "text": "Sensation is lost over the back of the hand and the lateral three and a half fingers.",
+   "shot": 4
+  },
+  {
+   "text": "It is often called Saturday night palsy. So the damaged nerve is the radial nerve.",
+   "shot": 0
+  }
+ ]
+}

@@ -1,0 +1,56 @@
+{
+ "qid": "Q000009338",
+ "image": "Q000009338.png",
+ "takeaway": "Headaches, shortness of breath and swelling of the face, upper chest and neck are typical of superior vena cava syndrome from compression by a mediastinal tumour.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 250,
+   "z": 1.8,
+   "spot": [
+    430,
+    300,
+    150
+   ]
+  },
+  {
+   "x": 1240,
+   "y": 520,
+   "z": 1.9,
+   "spot": [
+    1240,
+    540,
+    100
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A sixty-year-old man, a smoker, has a three-day history of worsening headaches.",
+   "shot": 0
+  },
+  {
+   "text": "He is short of breath, and his face, upper chest and neck are swollen.",
+   "shot": 1
+  },
+  {
+   "text": "These symptoms are typical of superior vena cava syndrome.",
+   "shot": 2
+  },
+  {
+   "text": "A mediastinal tumour compresses the superior vena cava.",
+   "shot": 2
+  },
+  {
+   "text": "So the structure being compressed is the superior vena cava.",
+   "shot": 0
+  }
+ ]
+}

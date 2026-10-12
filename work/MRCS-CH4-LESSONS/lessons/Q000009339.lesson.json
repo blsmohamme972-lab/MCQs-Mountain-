@@ -1,0 +1,66 @@
+{
+ "qid": "Q000009339",
+ "image": "Q000009339.png",
+ "takeaway": "The middle and lower thoracic oesophagus drain first to the lymph nodes behind the pericardium on the oesophagus: the posterior mediastinal nodes.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 250,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    210,
+    190,
+    90
+   ]
+  },
+  {
+   "x": 930,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    940,
+    420,
+    90
+   ]
+  },
+  {
+   "x": 1110,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    1110,
+    440,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A sixty-two-year-old man complains of dysphagia, difficulty swallowing.",
+   "shot": 1
+  },
+  {
+   "text": "He has carcinoma of the middle third of the oesophagus.",
+   "shot": 2
+  },
+  {
+   "text": "Where does it spread first? To the lymph nodes behind the pericardium, on the oesophagus.",
+   "shot": 3
+  },
+  {
+   "text": "These are the posterior mediastinal nodes. They drain the middle and lower thoracic oesophagus first.",
+   "shot": 3
+  },
+  {
+   "text": "So cancer of the middle third of the oesophagus spreads first to the posterior mediastinal nodes.",
+   "shot": 0
+  }
+ ]
+}

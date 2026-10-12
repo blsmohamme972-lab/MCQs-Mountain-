@@ -1,0 +1,37 @@
+{
+ "qid": "Q000009338",
+ "file": "Q000009338.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 61482,
+ "sha256": "e8d3c3f90d5402ccc34db03e8c309490838247907b95efd8f99a21b368a138fc",
+ "track_ms": 21937,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 5586,
+   "text": "A sixty-year-old man, a smoker, has a three-day history of worsening headaches."
+  },
+  {
+   "t_ms": 6036,
+   "end_ms": 9942,
+   "text": "He is short of breath, and his face, upper chest and neck are swollen."
+  },
+  {
+   "t_ms": 10392,
+   "end_ms": 13513,
+   "text": "These symptoms are typical of superior vena cava syndrome."
+  },
+  {
+   "t_ms": 13963,
+   "end_ms": 17254,
+   "text": "A mediastinal tumour compresses the superior vena cava."
+  },
+  {
+   "t_ms": 17704,
+   "end_ms": 21337,
+   "text": "So the structure being compressed is the superior vena cava."
+  }
+ ]
+}

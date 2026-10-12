@@ -1,0 +1,37 @@
+{
+ "qid": "Q000009339",
+ "file": "Q000009339.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 73945,
+ "sha256": "68173f2d0281effebbf0d0c13d057463ce1e16d4d73babb101e5c2b1243f9f53",
+ "track_ms": 25709,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4383,
+   "text": "A sixty-two-year-old man complains of dysphagia, difficulty swallowing."
+  },
+  {
+   "t_ms": 4833,
+   "end_ms": 7651,
+   "text": "He has carcinoma of the middle third of the oesophagus."
+  },
+  {
+   "t_ms": 8101,
+   "end_ms": 12732,
+   "text": "Where does it spread first? To the lymph nodes behind the pericardium, on the oesophagus."
+  },
+  {
+   "t_ms": 13182,
+   "end_ms": 18958,
+   "text": "These are the posterior mediastinal nodes. They drain the middle and lower thoracic oesophagus first."
+  },
+  {
+   "t_ms": 19408,
+   "end_ms": 25109,
+   "text": "So cancer of the middle third of the oesophagus spreads first to the posterior mediastinal nodes."
+  }
+ ]
+}

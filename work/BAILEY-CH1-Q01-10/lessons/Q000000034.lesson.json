@@ -1,0 +1,54 @@
+{
+ "qid": "Q000000034",
+ "image": "Q000000034.png",
+ "takeaway": "Gilmore's groin (sportsman's hernia): chronic groin pain after sport, worse with sudden twisting movements, usually without a lump.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 460,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    450,
+    480,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A twenty-eight-year-old man has abdominal and groin pain after a rugby match.",
+   "shot": 0
+  },
+  {
+   "text": "The book explains this as Gilmore's groin, the sportsman's hernia, also called athletic pubalgia.",
+   "shot": 1
+  },
+  {
+   "text": "It is a syndrome of groin disruption: chronic pain, made worse by sudden and twisting movements.",
+   "shot": 1
+  },
+  {
+   "text": "In general, there is no associated lump.",
+   "shot": 1
+  },
+  {
+   "text": "Compare the other patients: the plumber with a reducible groin swelling has an inguinal hernia,",
+   "shot": 0
+  },
+  {
+   "text": "the woman with a lump in her upper thigh has a femoral hernia, and a lump at an old scar is an incisional hernia.",
+   "shot": 0
+  },
+  {
+   "text": "So the correct pairing is the rugby player with groin pain after the match.",
+   "shot": 0
+  }
+ ]
+}

@@ -1,0 +1,37 @@
+{
+ "qid": "Q000009337",
+ "file": "Q000009337.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 78818,
+ "sha256": "41d8fe052120a48b7d390b6bcba25cca29f0212ba65bfe2025d2155b0a8affa2",
+ "track_ms": 26190,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 3516,
+   "text": "A baby girl is born with severe respiratory distress."
+  },
+  {
+   "t_ms": 3966,
+   "end_ms": 8657,
+   "text": "It is caused by a congenital diaphragmatic hernia, which was diagnosed antenatally."
+  },
+  {
+   "t_ms": 9107,
+   "end_ms": 13593,
+   "text": "The diaphragm has several openings. Which one did the hernia pass through?"
+  },
+  {
+   "t_ms": 14043,
+   "end_ms": 19999,
+   "text": "Congenital diaphragmatic hernia most commonly occurs through the posterolateral foramen of Bochdalek."
+  },
+  {
+   "t_ms": 20449,
+   "end_ms": 25590,
+   "text": "So for a newborn with a congenital diaphragmatic hernia, think of Bochdalek's foramen."
+  }
+ ]
+}

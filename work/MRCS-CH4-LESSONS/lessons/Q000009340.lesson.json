@@ -1,0 +1,80 @@
+{
+ "qid": "Q000009340",
+ "image": "Q000009340.png",
+ "takeaway": "The phrenic nerve supplies the diaphragm; infiltration by a lung carcinoma paralyses it and elevates the hemidiaphragm.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 1210,
+   "y": 230,
+   "z": 1.9,
+   "spot": [
+    1215,
+    185,
+    90
+   ]
+  },
+  {
+   "x": 350,
+   "y": 380,
+   "z": 1.6,
+   "spot": [
+    480,
+    460,
+    110
+   ]
+  },
+  {
+   "x": 1180,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    1180,
+    320,
+    90
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 470,
+   "z": 1.8,
+   "spot": [
+    1250,
+    480,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A sixty-year-old man has a large carcinoma of the upper left lung.",
+   "shot": 1
+  },
+  {
+   "text": "His chest X-ray also shows marked elevation of the left hemidiaphragm.",
+   "shot": 2
+  },
+  {
+   "text": "The phrenic nerve supplies the diaphragm.",
+   "shot": 3
+  },
+  {
+   "text": "When the carcinoma infiltrates the phrenic nerve, the diaphragm is paralysed,",
+   "shot": 3
+  },
+  {
+   "text": "and the left dome is elevated.",
+   "shot": 4
+  },
+  {
+   "text": "So the nerve affected by the carcinoma is the phrenic nerve.",
+   "shot": 0
+  }
+ ]
+}

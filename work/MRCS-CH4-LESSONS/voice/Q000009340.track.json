@@ -1,0 +1,42 @@
+{
+ "qid": "Q000009340",
+ "file": "Q000009340.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 70722,
+ "sha256": "5b2a75df2d6b3fb5ce0cd4f685734fa9bea0d4560f56bbdf66381177762687ba",
+ "track_ms": 24332,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4191,
+   "text": "A sixty-year-old man has a large carcinoma of the upper left lung."
+  },
+  {
+   "t_ms": 4641,
+   "end_ms": 8979,
+   "text": "His chest X-ray also shows marked elevation of the left hemidiaphragm."
+  },
+  {
+   "t_ms": 9429,
+   "end_ms": 11607,
+   "text": "The phrenic nerve supplies the diaphragm."
+  },
+  {
+   "t_ms": 12057,
+   "end_ms": 16683,
+   "text": "When the carcinoma infiltrates the phrenic nerve, the diaphragm is paralysed,"
+  },
+  {
+   "t_ms": 17133,
+   "end_ms": 19254,
+   "text": "and the left dome is elevated."
+  },
+  {
+   "t_ms": 19704,
+   "end_ms": 23732,
+   "text": "So the nerve affected by the carcinoma is the phrenic nerve."
+  }
+ ]
+}

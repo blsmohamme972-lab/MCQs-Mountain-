@@ -1,0 +1,37 @@
+{
+ "qid": "Q000009335",
+ "file": "Q000009335.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 82083,
+ "sha256": "902bcf98524b729354560091aca366a1bf95e2b1d310e0a899ee8b773b2edd92",
+ "track_ms": 28512,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 5016,
+   "text": "A fifty-year-old man has heartburn and gastro-oesophageal reflux disease."
+  },
+  {
+   "t_ms": 5466,
+   "end_ms": 10732,
+   "text": "He is due to have an oesophagogastroduodenoscopy, a camera passed through the mouth."
+  },
+  {
+   "t_ms": 11182,
+   "end_ms": 15428,
+   "text": "During the scope, distances are measured from the incisors, the front teeth."
+  },
+  {
+   "t_ms": 15878,
+   "end_ms": 20859,
+   "text": "The normal gastro-oesophageal junction is found forty centimetres from the incisors."
+  },
+  {
+   "t_ms": 21309,
+   "end_ms": 27912,
+   "text": "So remember the number: forty centimetres from the incisors to the normal gastro-oesophageal junction."
+  }
+ ]
+}

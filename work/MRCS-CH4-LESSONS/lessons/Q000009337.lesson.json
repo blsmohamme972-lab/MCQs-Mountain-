@@ -1,0 +1,78 @@
+{
+ "qid": "Q000009337",
+ "image": "Q000009337.png",
+ "takeaway": "Congenital diaphragmatic hernia most commonly occurs through the posterolateral Bochdalek foramen.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    390,
+    540,
+    130
+   ]
+  },
+  {
+   "x": 540,
+   "y": 190,
+   "z": 1.9,
+   "spot": [
+    540,
+    170,
+    140
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    1100,
+    300,
+    180
+   ]
+  },
+  {
+   "x": 1430,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    1430,
+    420,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A baby girl is born with severe respiratory distress.",
+   "shot": 1
+  },
+  {
+   "text": "It is caused by a congenital diaphragmatic hernia, which was diagnosed antenatally.",
+   "shot": 2
+  },
+  {
+   "text": "The diaphragm has several openings. Which one did the hernia pass through?",
+   "shot": 3
+  },
+  {
+   "text": "Congenital diaphragmatic hernia most commonly occurs through the posterolateral foramen of Bochdalek.",
+   "shot": 4,
+   "say": "Congenital diaphragmatic hernia most commonly occurs through the posterolateral foramen of Bok-dah-lek."
+  },
+  {
+   "text": "So for a newborn with a congenital diaphragmatic hernia, think of Bochdalek's foramen.",
+   "shot": 0,
+   "say": "So for a newborn with a congenital diaphragmatic hernia, think of Bok-dah-lek's foramen."
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+{
+ "qid": "Q000009334",
+ "file": "Q000009334.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 103343,
+ "sha256": "6ca0cb32a684a421e07d7d8d64b4b34ce186b3a45802499156ca5ed5169143d0",
+ "track_ms": 35043,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 5578,
+   "text": "A thirty-five-year-old woman is short of breath, and she is diagnosed with mitral stenosis."
+  },
+  {
+   "t_ms": 6028,
+   "end_ms": 8154,
+   "text": "Here is the narrowed mitral valve."
+  },
+  {
+   "t_ms": 8604,
+   "end_ms": 15164,
+   "text": "On auscultation there is an opening snap, and a mid-diastolic murmur with presystolic accentuation."
+  },
+  {
+   "t_ms": 15614,
+   "end_ms": 20807,
+   "text": "Where are these sounds best heard? The mitral valve is best heard over the apex beat,"
+  },
+  {
+   "t_ms": 21257,
+   "end_ms": 25575,
+   "text": "at the fifth left intercostal space, in the midclavicular line."
+  },
+  {
+   "t_ms": 26025,
+   "end_ms": 34443,
+   "text": "So for mitral stenosis, put the stethoscope on the apex: fifth left intercostal space, midclavicular line."
+  }
+ ]
+}

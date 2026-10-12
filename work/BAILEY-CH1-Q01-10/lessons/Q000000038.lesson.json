@@ -1,0 +1,59 @@
+{
+ "qid": "Q000000038",
+ "image": "Q000000038.png",
+ "takeaway": "The biceps reflex is mediated by the C5 and C6 nerve roots, mainly C5.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 430,
+   "y": 380,
+   "z": 1.9,
+   "spot": [
+    450,
+    420,
+    110
+   ]
+  },
+  {
+   "x": 1480,
+   "y": 280,
+   "z": 1.9,
+   "spot": [
+    1490,
+    230,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which nerve roots carry the biceps reflex?",
+   "shot": 0
+  },
+  {
+   "text": "The doctor taps the biceps tendon to test the biceps reflex.",
+   "shot": 1
+  },
+  {
+   "text": "The biceps reflex is mediated by the C5 and C6 nerve roots,",
+   "shot": 2,
+   "say": "The biceps reflex is mediated by the C five and C six nerve roots,"
+  },
+  {
+   "text": "and mainly by C5.",
+   "shot": 2,
+   "say": "and mainly by C five."
+  },
+  {
+   "text": "So the root values for the biceps reflex are C5 and C6.",
+   "shot": 0,
+   "say": "So the root values for the biceps reflex are C five and C six."
+  }
+ ]
+}

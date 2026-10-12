@@ -258,7 +258,11 @@ class Engines(unittest.TestCase):
         self.assertEqual(V.breeze_text("(sigh) Primary sclerosing cholangitis.", {"say_breeze": {"sclerosing": "skler-OH-sing"}}),
                          "(sigh) Primary skler-OH-sing cholangitis.")
         self.assertEqual(V.doc_quality({"engine": "breeze"}), "medium")
-        self.assertEqual(V.engine_voice("breeze", "Q000000079"), "lecturer-woman")
+        # a different Breeze voice per question, women and men taking turns; a question keeps its voice
+        self.assertEqual(V.engine_voice("breeze", "Q000000079"), "doctor-man")
+        self.assertEqual(V.engine_voice("breeze", "Q000000080"), "student-woman")
+        self.assertEqual(V.engine_voice("breeze", ""), "lecturer-woman")
+        self.assertTrue(set(V.BREEZE_ROTATION) <= set(V.BREEZE_VOICES))
 
     def test_breeze_is_cached_and_needs_setup(self):
         old = V.CACHE; V.CACHE = self.tmp

@@ -17,7 +17,7 @@ from pathlib import Path
 
 W, H = 960, 540                       # landscape stage (16:9)
 MAX_IMAGE_BYTES = 600 * 1024          # engine_v2 asset limit
-LESSON_KEYS = {"qid", "image", "takeaway", "engine", "voices", "names", "tempo", "gap_ms", "shots", "lines", "lang"}
+LESSON_KEYS = {"qid", "image", "takeaway", "engine", "voice", "voices", "names", "tempo", "gap_ms", "shots", "lines", "lang"}
 LINE_KEYS = {"who", "text", "say", "dir", "shot", "tag"}
 
 
@@ -82,8 +82,9 @@ def build_voice(spec: dict, voice_dir: Path, qid: str) -> dict:
     if engine not in V.ENGINES: _fail(f"engine must be one of {', '.join(V.ENGINES)}")
     lead, gap, tail = 500, int(spec["gap_ms"]), 600
     pcm = [np.zeros(V.SR * lead // 1000, np.float32)]; t = lead; cues = []
+    narrator = spec.get("voice") or V.engine_voice(engine, qid)          # one narrator: the engine's voice for this question
     for i, ln in enumerate(spec["lines"]):
-        voice = spec["voices"].get(ln.get("who", ""), V.ENGINES[engine]["voice"])
+        voice = spec["voices"].get(ln.get("who", ""), narrator)
         clip = V.speak(ln.get("say") or ln["text"], voice, spec["lang"], float(spec["tempo"]), lex, engine, ln.get("dir"))
         ms = len(clip) * 1000 / V.SR
         cues.append({"t_ms": round(t), "end_ms": round(t + ms), "text": ln["text"]})

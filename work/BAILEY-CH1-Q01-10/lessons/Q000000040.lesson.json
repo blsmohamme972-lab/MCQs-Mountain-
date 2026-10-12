@@ -1,0 +1,73 @@
+{
+ "qid": "Q000000040",
+ "image": "Q000000040.png",
+ "takeaway": "The superior mesenteric artery comes off the aorta at L1, the transpyloric plane of Addison (halfway between suprasternal notch and pubic symphysis).",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 850,
+   "y": 250,
+   "z": 1.8,
+   "spot": [
+    860,
+    150,
+    90
+   ]
+  },
+  {
+   "x": 920,
+   "y": 380,
+   "z": 2.0,
+   "spot": [
+    950,
+    375,
+    80
+   ]
+  },
+  {
+   "x": 1060,
+   "y": 360,
+   "z": 2.0,
+   "spot": [
+    1060,
+    360,
+    80
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "At which level does the superior mesenteric artery leave the aorta?",
+   "shot": 0
+  },
+  {
+   "text": "Here is the abdominal aorta.",
+   "shot": 1
+  },
+  {
+   "text": "The superior mesenteric artery comes off it at the level of L1.",
+   "shot": 2,
+   "say": "The superior mesenteric artery comes off it at the level of L one."
+  },
+  {
+   "text": "L1 marks an important level: the transpyloric plane of Addison,",
+   "shot": 3,
+   "say": "L one marks an important level: the transpyloric plane of Addison,"
+  },
+  {
+   "text": "a horizontal line halfway between the suprasternal notch and the pubic symphysis.",
+   "shot": 3
+  },
+  {
+   "text": "So remember: the superior mesenteric artery arises at L1, on the transpyloric plane.",
+   "shot": 0,
+   "say": "So remember: the superior mesenteric artery arises at L one, on the transpyloric plane."
+  }
+ ]
+}
