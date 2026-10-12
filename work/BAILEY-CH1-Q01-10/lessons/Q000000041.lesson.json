@@ -1,0 +1,28 @@
+{
+ "qid": "Q000000041",
+ "image": "Q000000041.png",
+ "takeaway": "Mean arterial pressure = [(2 × diastolic) + systolic]/3; diastole counts twice because two thirds of the cardiac cycle is diastole.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {"x": 836, "y": 470, "z": 1},
+  {"x": 940, "y": 230, "z": 1.7, "spot": [940, 215, 120]},
+  {"x": 690, "y": 520, "z": 2.0, "spot": [750, 600, 70]},
+  {"x": 820, "y": 450, "z": 2.0, "spot": [755, 540, 70]},
+  {"x": 1400, "y": 460, "z": 2.0, "spot": [1410, 465, 110]}
+ ],
+ "lines": [
+  {"text": "Which value is two times the diastolic, plus the systolic, all divided by 3?", "shot": 1,
+   "say": "Which value is two times the diastolic, plus the systolic, all divided by three?"},
+  {"text": "Diastolic pressure is counted twice,", "shot": 2},
+  {"text": "because two thirds of the cardiac cycle is spent in diastole.", "shot": 2},
+  {"text": "Systolic pressure is counted once, and the total is divided by 3.", "shot": 3,
+   "say": "Systolic pressure is counted once, and the total is divided by three."},
+  {"text": "This gives the mean arterial pressure, or MAP.", "shot": 4,
+   "say": "This gives the mean arterial pressure, or M A P."},
+  {"text": "A MAP of 60 is needed to perfuse the coronary arteries, brain and kidneys; the reference range is 70 to 100 mmHg.", "shot": 4,
+   "say": "An M A P of sixty is needed to perfuse the coronary arteries, brain and kidneys; the reference range is seventy to one hundred millimetres of mercury."},
+  {"text": "So remember: MAP equals two diastolic plus one systolic, over 3.", "shot": 0,
+   "say": "So remember: M A P equals two diastolic plus one systolic, over three."}
+ ]
+}

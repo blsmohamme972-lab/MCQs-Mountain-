@@ -1,0 +1,24 @@
+{
+ "qid": "Q000000042",
+ "image": "Q000000042.png",
+ "takeaway": "Stroke volume = cardiac output / heart rate; reference range 60–120 mL per beat.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {"x": 836, "y": 470, "z": 1},
+  {"x": 300, "y": 480, "z": 2.0, "spot": [260, 560, 90]},
+  {"x": 960, "y": 560, "z": 2.0, "spot": [960, 620, 80]},
+  {"x": 1060, "y": 290, "z": 1.7, "spot": [1060, 280, 130]},
+  {"x": 1460, "y": 600, "z": 2.0, "spot": [1460, 580, 90]}
+ ],
+ "lines": [
+  {"text": "Which value is cardiac output divided by heart rate?", "shot": 0},
+  {"text": "Start with the cardiac output.", "shot": 1},
+  {"text": "Divide it by the heart rate, written HR in the stem.", "shot": 2,
+   "say": "Divide it by the heart rate, written H R in the stem."},
+  {"text": "Cardiac output divided by heart rate gives the stroke volume.", "shot": 3},
+  {"text": "That is the volume pumped with each beat; its reference range is 60 to 120 mL per beat.", "shot": 4,
+   "say": "That is the volume pumped with each beat; its reference range is sixty to one hundred and twenty millilitres per beat."},
+  {"text": "So remember: stroke volume equals cardiac output over heart rate.", "shot": 0}
+ ]
+}
