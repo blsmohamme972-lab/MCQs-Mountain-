@@ -1,0 +1,95 @@
+{
+ "qid": "Q000006352",
+ "image": "Q000006352.png",
+ "takeaway": "The left phrenic nerve pierces the central tendon. Phrenic (C3-5): motor and central sensation; lower six intercostals: peripheral sensation. T8 IVC, T10 oesophagus, T12 aorta.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 1050,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    1110,
+    280,
+    160
+   ]
+  },
+  {
+   "x": 960,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    960,
+    520,
+    170
+   ]
+  },
+  {
+   "x": 470,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    380,
+    470,
+    160
+   ]
+  },
+  {
+   "x": 840,
+   "y": 220,
+   "z": 2.0,
+   "spot": [
+    840,
+    200,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which statement about the diaphragm is correct?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The book's answer: the left phrenic nerve pierces the central tendon.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The phrenic nerve, C3, 4 and 5, gives the motor supply and sensation to the central portion.",
+   "shot": 2,
+   "dir": "calm, explanatory",
+   "say": "The phrenic nerve, C three, four and five, gives the motor supply and sensation to the central portion."
+  },
+  {
+   "text": "The lower six intercostal nerves supply sensation only to the periphery.",
+   "shot": 3,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "Now the levels. At T8: the right phrenic nerve and the inferior vena cava.",
+   "shot": 4,
+   "dir": "brisk, organised",
+   "say": "(clears throat) Now the levels. At T eight: the right phrenic nerve and the inferior vena cava."
+  },
+  {
+   "text": "At T10: the oesophagus and vagus. At T12: the aorta, azygos vein and thoracic duct.",
+   "shot": 4,
+   "dir": "brisk, organised",
+   "say": "At T ten: the oesophagus and vagus. At T twelve: the aorta, azygos vein and thoracic duct."
+  },
+  {
+   "text": "So the IVC is not at T10, and the oesophageal hiatus is not at T12.",
+   "shot": 0,
+   "dir": "warm, conclusive",
+   "say": "So the inferior vena cava is not at T ten, and the oesophageal hiatus is not at T twelve."
+  }
+ ]
+}

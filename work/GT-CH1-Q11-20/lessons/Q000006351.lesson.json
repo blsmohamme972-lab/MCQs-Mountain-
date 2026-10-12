@@ -1,0 +1,83 @@
+{
+ "qid": "Q000006351",
+ "image": "Q000006351.png",
+ "takeaway": "False statement: the coronary arteries arise immediately ABOVE the aortic valve, not below. RCA: marginal and posterior interventricular; LCA: anterior interventricular and circumflex.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 870,
+   "y": 260,
+   "z": 2.0,
+   "spot": [
+    870,
+    290,
+    150
+   ]
+  },
+  {
+   "x": 650,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    650,
+    420,
+    180
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1150,
+    400,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "After surgery, a patient has a heart attack. Which statement about cardiac blood supply is false?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The false one says the coronaries arise just below the aortic valve. In fact, they arise immediately above it.",
+   "shot": 1,
+   "dir": "calm, confident",
+   "say": "(clears throat) The false one says the coronaries arise just below the aortic valve. In fact, they arise immediately above it."
+  },
+  {
+   "text": "The right coronary artery divides into marginal and posterior interventricular branches.",
+   "shot": 2,
+   "dir": "calm, explanatory"
+  },
+  {
+   "text": "The left coronary artery divides into anterior interventricular and circumflex branches.",
+   "shot": 3,
+   "dir": "calm, explanatory"
+  },
+  {
+   "text": "Whichever artery gives the posterior descending artery defines dominance.",
+   "shot": 3,
+   "dir": "thoughtful"
+  },
+  {
+   "text": "Seventy percent of hearts are right dominant, 20% co-dominant, and 10% left dominant.",
+   "shot": 0,
+   "dir": "steady, clear",
+   "say": "Seventy percent of hearts are right dominant, twenty percent co-dominant, and ten percent left dominant."
+  },
+  {
+   "text": "So remember: the coronaries arise above the aortic valve.",
+   "shot": 1,
+   "dir": "warm, conclusive"
+  }
+ ]
+}

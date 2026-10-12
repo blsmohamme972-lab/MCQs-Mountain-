@@ -1,0 +1,119 @@
+{
+ "qid": "Q000006360",
+ "image": "Q000006360.png",
+ "takeaway": "Chest drain safe triangle: pectoralis major (front), latissimus dorsi (behind), nipple level (below); mid-axillary line at the 5th space guides. Not the mid-clavicular line (needle decompression).",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 650,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    720,
+    330,
+    170
+   ]
+  },
+  {
+   "x": 840,
+   "y": 240,
+   "z": 2.0,
+   "spot": [
+    850,
+    200,
+    160
+   ]
+  },
+  {
+   "x": 450,
+   "y": 520,
+   "z": 1.9,
+   "spot": [
+    560,
+    520,
+    160
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 440,
+   "z": 2.0,
+   "spot": [
+    960,
+    450,
+    150
+   ]
+  },
+  {
+   "x": 700,
+   "y": 560,
+   "z": 2.0,
+   "spot": [
+    700,
+    580,
+    140
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    1145,
+    280,
+    160
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 35-year-old man with a haemothorax needs a chest drain. Which landmark is least useful?",
+   "shot": 0,
+   "dir": "calm, focused",
+   "say": "A thirty-five-year-old man with a haemothorax needs a chest drain. Which landmark is least useful?"
+  },
+  {
+   "text": "Think of the safe triangle.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "In front: the inferolateral border of pectoralis major.",
+   "shot": 2,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "Behind: the anterior border of latissimus dorsi.",
+   "shot": 3,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "Below: the axial plane at the level of the nipple.",
+   "shot": 4,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "The mid-axillary line at the 5th intercostal space can guide the incision.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "The mid-axillary line at the fifth intercostal space can guide the incision."
+  },
+  {
+   "text": "But the mid-clavicular line should not be used for a chest drain: that's the answer.",
+   "shot": 6,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It is used for needle thoracocentesis in a tension pneumothorax.",
+   "shot": 6,
+   "dir": "warm, conclusive",
+   "say": "(clears throat) It is used for needle thoracocentesis in a tension pneumothorax."
+  }
+ ]
+}

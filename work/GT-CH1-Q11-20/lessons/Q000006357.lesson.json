@@ -1,0 +1,83 @@
+{
+ "qid": "Q000006357",
+ "image": "Q000006357.png",
+ "takeaway": "Thoracic trachea (C6 to T5) relations. Right: vagus, azygos vein. Anterior: brachiocephalic artery, left common carotid, thymus, left brachiocephalic vein. Posterior: oesophagus, recurrent laryngeal nerves.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 860,
+   "y": 260,
+   "z": 1.8,
+   "spot": [
+    860,
+    210,
+    170
+   ]
+  },
+  {
+   "x": 600,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    620,
+    420,
+    170
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1180,
+    430,
+    180
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which relation of the thoracic trachea is correct?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The trachea runs from the cricoid cartilage at C6 to its split into two main bronchi at T5.",
+   "shot": 1,
+   "dir": "calm, explanatory",
+   "say": "The trachea runs from the cricoid cartilage at C six to its split into two main bronchi at T five."
+  },
+  {
+   "text": "On its right lie the vagus nerve and the azygos vein: that's the book's answer.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "In front: the brachiocephalic artery, left common carotid, thymus and left brachiocephalic vein.",
+   "shot": 1,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "Behind: the oesophagus and the recurrent laryngeal nerves.",
+   "shot": 1,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "On the left: the aortic arch, left subclavian vein, left recurrent laryngeal nerve and left common carotid.",
+   "shot": 3,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "So, on the right: the azygos vein.",
+   "shot": 2,
+   "dir": "warm, conclusive",
+   "say": "(clears throat) So, on the right: the azygos vein."
+  }
+ ]
+}

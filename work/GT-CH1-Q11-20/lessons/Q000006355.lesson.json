@@ -1,0 +1,82 @@
+{
+ "qid": "Q000006355",
+ "image": "Q000006355.png",
+ "takeaway": "The coronary sinus receives the small, middle and great cardiac veins. The anterior cardiac veins bypass it and drain directly into the right atrium.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 404,
+   "z": 1
+  },
+  {
+   "x": 700,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    690,
+    430,
+    180
+   ]
+  },
+  {
+   "x": 530,
+   "y": 260,
+   "z": 1.8,
+   "spot": [
+    520,
+    240,
+    230
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    1460,
+    300,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which vein does not drain into the coronary sinus?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The coronary sinus lies in the posterior atrioventricular groove and opens into the right atrium.",
+   "shot": 1,
+   "dir": "calm, explanatory"
+  },
+  {
+   "text": "It receives the small cardiac vein, which runs with the marginal artery along the inferior border,",
+   "shot": 2,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "the middle cardiac vein, in the inferior interventricular groove,",
+   "shot": 2,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "and the great cardiac vein, in the anterior interventricular groove.",
+   "shot": 2,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "The anterior cardiac veins are not among them: they drain directly into the right atrium.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the odd one out is the anterior cardiac vein.",
+   "shot": 3,
+   "dir": "gently amused",
+   "say": "(laugh) So the odd one out is the anterior cardiac vein."
+  }
+ ]
+}
