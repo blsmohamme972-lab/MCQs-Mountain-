@@ -1,0 +1,71 @@
+{
+ "qid": "Q000000055",
+ "image": "Q000000055.png",
+ "takeaway": "Thiazide diuretics inhibit the sodium-chloride transporter in the distal tubule. Increased hydrogen and potassium ion loss can lead to metabolic alkalosis.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 280,
+   "y": 250,
+   "z": 1.9,
+   "spot": [
+    270,
+    150,
+    170
+   ]
+  },
+  {
+   "x": 850,
+   "y": 300,
+   "z": 1.9,
+   "spot": [
+    840,
+    280,
+    180
+   ]
+  },
+  {
+   "x": 1420,
+   "y": 280,
+   "z": 1.9,
+   "spot": [
+    1420,
+    250,
+    180
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which arterial blood gas result do thiazide diuretics give?",
+   "shot": 0
+  },
+  {
+   "text": "Thiazide diuretics inhibit the sodium-chloride transporter in the distal tubule.",
+   "shot": 1
+  },
+  {
+   "text": "With diuretics, increased hydrogen and potassium ion loss can lead to metabolic alkalosis.",
+   "shot": 2
+  },
+  {
+   "text": "Metabolic alkalosis is an increased pH in the tissues.",
+   "shot": 3,
+   "say": "Metabolic alkalosis is an increased P H in the tissues."
+  },
+  {
+   "text": "It comes from a decreased hydrogen ion concentration, or directly from increased bicarbonate.",
+   "shot": 3
+  },
+  {
+   "text": "So the answer is metabolic alkalosis.",
+   "shot": 0
+  }
+ ]
+}

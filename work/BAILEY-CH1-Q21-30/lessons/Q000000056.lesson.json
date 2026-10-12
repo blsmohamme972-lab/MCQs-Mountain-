@@ -1,0 +1,72 @@
+{
+ "qid": "Q000000056",
+ "image": "Q000000056.png",
+ "takeaway": "Chronic renal failure gives metabolic acidosis: the kidneys fail to remove enough acid. MUDPILES: U is for uraemia (chronic kidney failure).",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 310,
+   "y": 260,
+   "z": 1.8,
+   "spot": [
+    300,
+    170,
+    190
+   ]
+  },
+  {
+   "x": 930,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    920,
+    320,
+    180
+   ]
+  },
+  {
+   "x": 1420,
+   "y": 320,
+   "z": 1.9,
+   "spot": [
+    1440,
+    280,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which arterial blood gas result does chronic renal failure give?",
+   "shot": 0
+  },
+  {
+   "text": "In chronic renal failure, the kidneys fail to remove enough acid from the body.",
+   "shot": 1
+  },
+  {
+   "text": "Metabolic acidosis may also come from the body making too much acid.",
+   "shot": 3
+  },
+  {
+   "text": "Unchecked, it leads to acidaemia, a pH less than 7.35.",
+   "shot": 2,
+   "say": "Unchecked, it leads to acidaemia, a P H less than seven point three five."
+  },
+  {
+   "text": "Remember the causes with MUDPILES. U is for uraemia, chronic kidney failure.",
+   "shot": 3,
+   "say": "Remember the causes with mud piles. U is for uraemia, chronic kidney failure."
+  },
+  {
+   "text": "So the answer is metabolic acidosis.",
+   "shot": 0
+  }
+ ]
+}

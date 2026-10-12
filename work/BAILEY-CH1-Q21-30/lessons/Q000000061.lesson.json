@@ -1,0 +1,70 @@
+{
+ "qid": "Q000000061",
+ "image": "Q000000061.png",
+ "takeaway": "The Eustachian tube arises from the first pharyngeal pouch.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 800,
+   "y": 250,
+   "z": 1.9,
+   "spot": [
+    790,
+    170,
+    160
+   ]
+  },
+  {
+   "x": 700,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    860,
+    540,
+    160
+   ]
+  },
+  {
+   "x": 330,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    280,
+    180,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which pharyngeal pouch does the Eustachian tube arise from?",
+   "shot": 1
+  },
+  {
+   "text": "The choices are the first, second, third, fourth and sixth pharyngeal pouches.",
+   "shot": 2
+  },
+  {
+   "text": "The Eustachian tube arises from the first pharyngeal pouch.",
+   "shot": 3
+  },
+  {
+   "text": "The answer is the lowest number, marked here with a golden one.",
+   "shot": 3
+  },
+  {
+   "text": "Remember: the Eustachian tube comes from pouch number one.",
+   "shot": 1
+  },
+  {
+   "text": "So the answer is the first pharyngeal pouch.",
+   "shot": 0
+  }
+ ]
+}

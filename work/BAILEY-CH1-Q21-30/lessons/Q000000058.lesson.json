@@ -1,0 +1,78 @@
+{
+ "qid": "Q000000058",
+ "image": "Q000000058.png",
+ "takeaway": "The thoracic duct passes through the diaphragm at the aortic opening, at the T12 level.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 650,
+   "y": 200,
+   "z": 1.9,
+   "spot": [
+    620,
+    130,
+    160
+   ]
+  },
+  {
+   "x": 950,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    830,
+    300,
+    160
+   ]
+  },
+  {
+   "x": 960,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    860,
+    560,
+    160
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "At what level does the thoracic duct pass through the diaphragm?",
+   "shot": 1
+  },
+  {
+   "text": "The choices run from T8 to T12.",
+   "shot": 0,
+   "say": "The choices run from T eight to T twelve."
+  },
+  {
+   "text": "It does not have its own opening.",
+   "shot": 2
+  },
+  {
+   "text": "It passes through the aortic opening, together with the aorta.",
+   "shot": 2
+  },
+  {
+   "text": "The aortic opening is at the T12 level.",
+   "shot": 3,
+   "say": "The aortic opening is at the T twelve level."
+  },
+  {
+   "text": "Remember: thoracic duct, aortic opening, T12.",
+   "shot": 3,
+   "say": "Remember: thoracic duct, aortic opening, T twelve."
+  },
+  {
+   "text": "So the thoracic duct passes the diaphragm at the T12 level.",
+   "shot": 0,
+   "say": "So the thoracic duct passes the diaphragm at the T twelve level."
+  }
+ ]
+}

@@ -1,0 +1,78 @@
+{
+ "qid": "Q000000060",
+ "image": "Q000000060.png",
+ "takeaway": "The aorta passes through the diaphragm at the aortic opening, T12, with the azygos and hemiazygos veins and the thoracic duct.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 650,
+   "y": 180,
+   "z": 1.9,
+   "spot": [
+    600,
+    120,
+    150
+   ]
+  },
+  {
+   "x": 1050,
+   "y": 380,
+   "z": 1.9,
+   "spot": [
+    1050,
+    340,
+    180
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 600,
+   "z": 1.9,
+   "spot": [
+    950,
+    610,
+    160
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "At what level does the aorta pass through the diaphragm?",
+   "shot": 1
+  },
+  {
+   "text": "It passes through the aortic opening.",
+   "shot": 2
+  },
+  {
+   "text": "The aortic opening is at the T12 level.",
+   "shot": 3,
+   "say": "The aortic opening is at the T twelve level."
+  },
+  {
+   "text": "The azygos and hemiazygos veins and the thoracic duct pass with it.",
+   "shot": 2
+  },
+  {
+   "text": "The inferior vena cava passes at T8, with the right phrenic nerve.",
+   "shot": 0,
+   "say": "The inferior vena cava passes at T eight, with the right phrenic nerve."
+  },
+  {
+   "text": "Compare the vena cava opening at T8, and the oesophageal opening at T10.",
+   "shot": 0,
+   "say": "Compare the vena cava opening at T eight, and the oesophageal opening at T ten."
+  },
+  {
+   "text": "So the aorta passes at T12.",
+   "shot": 3,
+   "say": "So the aorta passes at T twelve."
+  }
+ ]
+}
