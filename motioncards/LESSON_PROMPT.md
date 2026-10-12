@@ -29,9 +29,14 @@ READ FIRST: CLAUDE.md, motioncards/lib/lesson.py.
 2. Save the export below as work/input/MRCS-PARTA-550-2E-ch<N>.export.json (content hashes must match).
 3. Look at each image once: it must open fully, and its "Answer -->" text must match that question's key.
    Tell me only if one is broken or belongs to another question; otherwise carry on without asking.
+   If an attached ZIP is cut off ("unexpected end of file"), save every image that is still whole (e.g.
+   `python3 -c "import zipfile..."` per entry, or read the local file headers) and tell me in one line exactly which
+   question numbers are missing, so I re-send only those. Build the rest meanwhile.
 4. Scaffold: python3 tools/motioncards.py scaffold work/input/<export> --out work/MRCS-CH<N>-LESSONS
    --package-id MRCS-CH<N> --revision 1 --qids <QIDs> --duration-ms 30000
    If ALREADY LIVE is yes, add --replace <QID> for every QID (the bot refuses to overwrite without it).
+   If scaffold stops with "source_image_bytes_not_inspected" for a QID (its question has book images), look at
+   those images once, then add --inspected-image-qid <QID> for it.
 5. Write lessons/<QID>.lesson.json per question:
    {"qid","image":"<QID>.png","takeaway"(<=240 chars),"engine":"breeze","tempo":1.0,
     "shots":[{"x","y","z","spot":[x,y,r]}],"lines":[{"text","shot"}]}
@@ -50,6 +55,9 @@ READ FIRST: CLAUDE.md, motioncards/lib/lesson.py.
    (lint and validate must PASS; ZIP <= 19 MB)
 7. If something fails, fix only that and re-run step 6 (finished voice lines are cached and not re-spoken).
 8. Commit the workspace and the ZIP, push, open a PR, send me the ZIP. Keep messages short.
+
+If the bot's publish fails after the upload was accepted (e.g. a smoke-test timeout), do not re-send the file
+(the bot answers "already received"): I send /motioncards-retry <PACKAGE-ID>_r<N> to re-queue it.
 
 If the bot answers "animation_replace_requires_explicit_intent", the questions are already live: set
 "replace": true in each scenes/<QID>.scene.json, raise package_revision in selection.json, package again as _r2.

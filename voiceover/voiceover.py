@@ -20,7 +20,7 @@ Run with the voice-over venv:  ~/.venvs/kafu-voice/bin/python voiceover/voiceove
 See voiceover/README.md (the Golden 8 Rules) and voiceover/DESIGN.md.
 """
 from __future__ import annotations
-import argparse, hashlib, json, math, os, re, shutil, subprocess, sys, urllib.request
+import argparse, hashlib, json, math, os, re, shutil, subprocess, sys, urllib.error, urllib.request
 from difflib import SequenceMatcher
 from pathlib import Path
 
@@ -326,9 +326,28 @@ def setup_browser():
     CHROMIUM_FILE.write_text(exe + "\n", encoding="utf-8"); print("ok chromium", exe)
 
 
+def download_resuming(url: str, part: Path, attempts: int = 5):
+    """Download into `part`, continuing a cut-off transfer (HTTP Range) instead of starting again."""
+    import time
+    for attempt in range(1, attempts + 1):
+        have = part.stat().st_size if part.exists() else 0
+        req = urllib.request.Request(url, headers={"Range": f"bytes={have}-"} if have else {})
+        try:
+            with urllib.request.urlopen(req, timeout=60) as r:
+                if have and r.status != 206: have = 0     # server ignored the range: start over
+                with open(part, "ab" if have else "wb") as f: shutil.copyfileobj(r, f, 1 << 20)
+            return
+        except urllib.error.HTTPError as exc:
+            if exc.code == 416: return                   # already complete; the SHA-256 check decides
+            if attempt == attempts: raise
+        except (OSError, urllib.error.URLError):
+            if attempt == attempts: raise
+        print(f"  download interrupted, resuming ({attempt}/{attempts - 1})"); time.sleep(3 * attempt)
+
+
 def fetch_pinned(url: str, digest: str, p: Path):
     if not p.exists() or sha256(p) != digest:
-        print("downloading", p.name); part = p.with_name(p.name + ".part"); urllib.request.urlretrieve(url, part)
+        print("downloading", p.name); part = p.with_name(p.name + ".part"); download_resuming(url, part)
         got = sha256(part)                             # checked before it gets its real name: an interrupted download never looks complete
         if got != digest: part.unlink(); sys.exit(f"{p.name}: SHA-256 mismatch ({got}); refusing to use it")
         os.replace(part, p)
