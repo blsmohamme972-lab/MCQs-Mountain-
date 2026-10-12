@@ -55,6 +55,7 @@ VISUAL_HASH_VARIANTS={
         # Five-tab bar (Leaders tab, PR #129): two renderer variants seen on its first two runs.
         '7d458c2631b19b6ebb4ab160c6e1956a2769f63dbfa599c937b5ece75f8b4ea5',
         '8ea86a2b3c22dc4a78c98710e2bdde61fa824738e6ffb5ec98a07ce057b8000f',
+        '61dfe374aa64be3d556cbaded180d6e54b34070cd41f4e0e3e42ce95ca5536a5',  # seen on PR #132's first run
     },
     'ipad-dark-library-no-results':{
         'b78a1b8a2898889f4b635797e5cce7a5ccaf19036a19cff08e8197268a677b31',

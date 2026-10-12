@@ -6,12 +6,12 @@
   },
   "ipad-dark-chapter-complete": {
     "height": 1180,
-    "sha256": "74095bec7acaf7cf1ecd92db171ab357c46d880d156069f6efb0b68737f13b3b",
+    "sha256": "b7b7b8d6f44d8611e40f918f4236eb15c88b7fa7d744601ead49e805367fc14b",
     "width": 820
   },
   "ipad-dark-chapter-complete-mixed": {
     "height": 1180,
-    "sha256": "6334d35d318f2023956e4d58f7417e78256d914299da99165e79872cf1ec48b8",
+    "sha256": "32b7e3dfd1ad4cfa4dc26f0a05711f7ff57f7297640304f5e554b351d8930494",
     "width": 820
   },
   "ipad-dark-download-undo": {
@@ -65,9 +65,9 @@
     "width": 820
   },
   "ipad-dark-study-correct": {
-    "sha256": "cbe36283b2c441e7e70540ba4753bef025edf8a5140b37c131114bde8caa9f14",
-    "width": 820,
-    "height": 1180
+    "height": 1180,
+    "sha256": "4919ed9f8c10bd054f68f2a24a98a72ecad389284247375e083120ab2042f155",
+    "width": 820
   },
   "ipad-dark-study-wrong": {
     "sha256": "320c18d1f455853c61b8e7f5a7441eb0bdb256ecf2722f86d41f72e5a4bf7f19",
@@ -86,12 +86,12 @@
   },
   "ipad-light-chapter-complete": {
     "height": 1180,
-    "sha256": "307a21d3c648e8c18a0c2dca1dc02b4b335cc44416ad9153f1382bac1cc6af48",
+    "sha256": "2f74e6503427bdf3696f408fba5bb087443f92ad4dc9310072231a4348e3bc41",
     "width": 820
   },
   "ipad-light-chapter-complete-mixed": {
     "height": 1180,
-    "sha256": "4f0910f01103d823d40f1b9fc2fa1e45c7f2720319510c61d8f16b7326193c26",
+    "sha256": "93997e747afe9d12b370cb894c72dece3572149a47b48bb63f21782f5ba1af23",
     "width": 820
   },
   "ipad-light-download-undo": {
@@ -145,9 +145,9 @@
     "width": 820
   },
   "ipad-light-study-correct": {
-    "sha256": "684c939398eed76a22e4a6bee1166c5c4ee0fff42dd5327110d74fc3afca4d2d",
-    "width": 820,
-    "height": 1180
+    "height": 1180,
+    "sha256": "c22c4a9cd119781f459a818a940e807d93a0f1d3ae8ae2eea2681494e7fa81dd",
+    "width": 820
   },
   "ipad-light-study-wrong": {
     "sha256": "fce564a619db8310e2855d58813b6ea7bd1a1cd10cb750e225f7059348ad0c0a",
@@ -165,14 +165,14 @@
     "width": 390
   },
   "phone-dark-chapter-complete": {
-    "sha256": "cdb3bdf902661f24d3a842a0a14d7f7b8c659625298b88649c048963201a08be",
-    "width": 390,
-    "height": 953
+    "height": 953,
+    "sha256": "0342f0275afea48a284014751e9a4348cfad62eeb7eca0dc01d99edc8f7deaf7",
+    "width": 390
   },
   "phone-dark-chapter-complete-mixed": {
-    "sha256": "2cd029449d8c119e3d9d6ce7496d5c741c07f48bc8d9a4197d1b75a937c30802",
-    "width": 390,
-    "height": 927
+    "height": 927,
+    "sha256": "dcab546ae8825a6ae0ef9e648e960d737b1c7dede107299e883672a02a696d54",
+    "width": 390
   },
   "phone-dark-download-undo": {
     "height": 2567,
@@ -225,9 +225,9 @@
     "height": 878
   },
   "phone-dark-study-correct": {
-    "sha256": "0ba69b405de604594ddc2767cba65a6104c352a6f85d7f404ff23ff4701575f7",
-    "width": 390,
-    "height": 999
+    "height": 999,
+    "sha256": "dbe505b3b30b019b9939deee341fbbf233da1d316a901e154043f10256ba7719",
+    "width": 390
   },
   "phone-dark-study-wrong": {
     "sha256": "344e4ce5a36f9d6abede83a8a6a807cc1f3d1cea7be43f6b5e441e38768c3803",
@@ -245,14 +245,14 @@
     "width": 390
   },
   "phone-light-chapter-complete": {
-    "sha256": "02a911ff280fbba7c2f515abe4ff455714331d55b98bb37d4921e0314dec0178",
-    "width": 390,
-    "height": 953
+    "height": 953,
+    "sha256": "63e61dbe42737692e70420f955c905412762aa44a236f21a8542c557f5c5b89e",
+    "width": 390
   },
   "phone-light-chapter-complete-mixed": {
-    "sha256": "a12183d6a970205c8b6bd024aeb79dc31a4cea02ca9619f5edd7d634041104a8",
-    "width": 390,
-    "height": 927
+    "height": 927,
+    "sha256": "5f00daf06a3349d9cf32eeb48e92cd47f2dc0ef29c7309253b16353089d6fccc",
+    "width": 390
   },
   "phone-light-download-undo": {
     "height": 2567,
@@ -305,9 +305,9 @@
     "height": 878
   },
   "phone-light-study-correct": {
-    "sha256": "c209fd7ca096de520dd3f8ff139e551d7e8e4a42d70eefdd0defc634643d92c3",
-    "width": 390,
-    "height": 999
+    "height": 999,
+    "sha256": "5432fd954a34eb55a9049a71d1c70d2c6c6b28bfe4c8c25678ef60daf63fdb9a",
+    "width": 390
   },
   "phone-light-study-wrong": {
     "sha256": "680f706cb2599b9df31d1082ae91d4a9262088f14c7fa813c9886f6b230e73f0",
