@@ -69,14 +69,31 @@ const KafuLeadersModule={name:'leaders',install(){
   const tabBtn=(v,l)=>'<button role="tab" aria-selected="'+(period===v)+'" data-a="leaders-period" data-v="'+v+'">'+l+'</button>';
   const page=(b,now,intro)=>'<section class="k-lb'+(intro?'':' calm')+'" data-period="'+period+'">'+hero(now)+
     '<div class="k-lb-tabs" role="tablist" aria-label="Leaders period">'+tabBtn('weekly','This week')+tabBtn('all','All time')+'</div>'+
-    '<section class="k-lb-podium" aria-label="Top three">'+podium(b.rows)+'</section><ol class="k-lb-list" aria-label="Ranking">'+list(b)+'</ol>'+
+    '<section class="k-lb-podium" aria-label="Top three">'+podium(b.rows)+'</section>'+live()+'<ol class="k-lb-list" aria-label="Ranking">'+list(b)+'</ol>'+
     '<button class="k-lb-mebar" data-a="leaders-me" aria-label="Your rank '+b.own.rank+'">'+mebar(b)+'</button></section>';
+  // "Studying now": on each opening the count catches up in a few small steps, then stays still.
+  let liveShown=0,liveTimer=null;
+  const live=()=>'<p class="k-lb-now" role="status"><i aria-hidden="true"></i><b>'+fmt(liveShown)+'</b> students studying now</p>';
+  function startLive(){
+    clearTimeout(liveTimer);
+    const target=L.activeNow(Date.now()),steps=[];let n=3+Math.floor(Math.random()*4);
+    while(n--)steps.push(Math.random()<0.12?-1:1+Math.floor(Math.random()*3));
+    liveShown=target-steps.reduce((a,b)=>a+b,0);
+    if(reduced()){liveShown=target;return}
+    const next=()=>{
+      if(!steps.length||cur().v!=='leaders')return;
+      liveShown+=steps.shift();const el=document.querySelector('.k-lb-now b');
+      if(el){el.textContent=fmt(liveShown);el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump')}
+      liveTimer=setTimeout(next,500+Math.random()*700);
+    };
+    liveTimer=setTimeout(next,500);
+  }
   // Open on the board as it was at the last visit, then let it catch up in front of the student.
   VIEWS.leaders=()=>{
     const now=Date.now();let html;settle();
     if(pending===null){
       const last=seen();shownAt=reduced()?now:now-(last?Math.min(MAX_GAP,Math.max(MIN_GAP,now-last)):FIRST_GAP);
-      html=page(data(shownAt),now,true);pending=setTimeout(()=>{pending=0;update(true)},OPEN_DELAY);
+      startLive();html=page(data(shownAt),now,true);pending=setTimeout(()=>{pending=0;update(true)},OPEN_DELAY);
     }else html=page(data(shownAt),now,false);
     return{title:'Leaders',html,tabs:'leaders',action:null};
   };
@@ -112,7 +129,7 @@ const KafuLeadersModule={name:'leaders',install(){
     }
     const left=q('.k-lb-hero b');if(left&&period==='weekly')left.textContent=L.countdown(now);
   }
-  const stop=()=>{clearTimeout(pending);pending=null};
+  const stop=()=>{clearTimeout(pending);clearTimeout(liveTimer);pending=null};
   // Profile card (Duolingo / Chess.com style) with a week chart and a Strava-style cheer, all on the device.
   const DAYS=['M','T','W','T','F','S','S'],CHEERS='kafu_leaders_cheers';
   function cheers(){try{const c=JSON.parse(localStorage.getItem(CHEERS)||'{}');return c.week===L.clock(Date.now()).weekKey?c:{week:L.clock(Date.now()).weekKey,ids:[]}}catch(_){return{ids:[]}}}

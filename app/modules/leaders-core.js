@@ -169,11 +169,21 @@
       allXpBefore:span=>valid.filter(a=>Number(a.t)<=now-span).length*10,
       weeklyXpBefore:span=>valid.filter(a=>Number(a.t)>=c.weekStart&&Number(a.t)<=now-span).length*10};
   }
+  // Students studying right now: about 1,400 in the daytime, quiet before dawn, busiest late evening
+  // (Baghdad time), a little lower on Fridays, with a smooth drift so it never looks mechanical.
+  const HOURLY=[.95,.7,.45,.3,.25,.28,.38,.55,.72,.85,.92,.95,.9,.85,.88,.95,1,1.05,1.1,1.2,1.3,1.38,1.35,1.18];
+  function activeNow(now){
+    const c=clock(now),h=Math.floor(c.hour),f=c.hour-h,curve=HOURLY[h]+(HOURLY[(h+1)%24]-HOURLY[h])*f;
+    const day=c.weekday===4?0.85:c.weekday===3?0.95:1; // Monday = 0, so Friday = 4
+    const slot=now/600000,k=Math.floor(slot),t=slot-k,ease=t*t*(3-2*t);
+    const drift=(roll('active',k)*(1-ease)+roll('active',k+1)*ease-0.5)*0.12;
+    return Math.round(1400*curve*day*(1+drift));
+  }
   function countdown(now){
     const left=Math.max(0,clock(now).weekEnd-now),d=Math.floor(left/DAY),h=Math.floor(left%DAY/HOUR),m=Math.floor(left%HOUR/60000);
     return d?d+'d '+h+'h':h?h+'h '+m+'m':m+'m';
   }
-  const api={NAMES,GRADIENTS,PHOTOS,LEAGUES,COHORT,PROMOTE,DEMOTE,STAR,clock,initials,board,outcome,card,ownXp,countdown,hash};
+  const api={NAMES,GRADIENTS,PHOTOS,LEAGUES,COHORT,PROMOTE,DEMOTE,STAR,clock,initials,board,outcome,card,ownXp,countdown,activeNow,hash};
   root.KafuLeadersCore=api;
   if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
