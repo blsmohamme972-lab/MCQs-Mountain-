@@ -33,3 +33,11 @@ test('leagues: groups of 30, top 7 move up, bottom 5 move down, the star account
   assert.equal(L.outcome(7,30,2,{promote:7,demote:5}),3);assert.equal(L.outcome(26,30,2,{promote:7,demote:5}),1);
   assert.equal(L.outcome(25,30,2,{promote:7,demote:5}),2);assert.equal(L.outcome(1,30,6,{promote:0,demote:5}),6);
 });
+test('every rival has an Iraqi city and either a board specialty or a medical college; most are on the board',()=>{
+  const now=MON+2*86400000,rows=L.board('all',now,{name:'x'}).rows.filter(x=>!x.own);
+  const cards=rows.map(x=>L.card(x.id,now));
+  assert.ok(cards.every(c=>c.city&&c.line&&(c.kind==='board'?/Board$/.test(c.board)&&c.specialty:/Medic/.test(c.college))));
+  assert.ok(cards.filter(c=>c.kind==='board').length>cards.length/2);
+  assert.ok(rows.every(x=>x.tag&&x.tag.length<=24),'short tags fit the row');
+  assert.ok(cards.every(c=>c.accuracy>=62&&c.accuracy<=91));
+});

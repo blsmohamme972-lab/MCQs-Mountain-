@@ -149,3 +149,5 @@
 @keyframes k-lb-shine{0%{background-position:150% 0,0 0}35%,100%{background-position:-50% 0,0 0}}
 @media(prefers-reduced-motion:reduce){.k-lb-hero .k-lb-gem.big,.k-lb-spot.p1 .k-lb-step{animation:none}}
 .k-lb-av:has(>img)>span{visibility:hidden}
+.k-lb-tag{overflow:hidden;text-overflow:ellipsis;color:var(--color-muted);opacity:.9}
+.k-lb-role{margin:0;padding:6px 12px;border-radius:var(--radius-pill);background:var(--color-primary-soft);color:var(--color-text);font-size:var(--text-sm);max-width:100%}

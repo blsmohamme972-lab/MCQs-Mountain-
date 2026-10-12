@@ -46,7 +46,8 @@ const KafuLeadersModule={name:'leaders',install(){
     return spot(rows[1],2)+spot(rows[0],1)+spot(rows[2],3);
   }
   function row(x,i,zone=''){
-    const sub=x.own?'You':(x.online?'<span class="k-lb-live">Active now</span>':'')+(x.streak?'<span>🔥 '+x.streak+'</span>':'');
+    // The green dot already says who is active now, so the line carries their training and streak.
+    const sub=x.own?'You':(x.tag?'<span class="k-lb-tag">'+C.e(x.tag)+'</span>':'')+(x.streak?'<span>🔥 '+x.streak+'</span>':'');
     return '<li class="k-lb-row'+zone+(x.own?' own" id="k-lb-me':'')+'" data-id="'+x.id+'" data-a="leaders-card" data-v="'+x.id+'" data-rank="'+x.rank+'" style="--i:'+Math.min(i,20)+'"><span class="k-lb-rank">'+x.rank+'</span>'+avatar(x)+'<span class="k-lb-who">'+name(x)+'<small>'+sub+'</small></span><span class="k-lb-xp">'+xpEl(x)+'<small>XP</small></span>'+move(x)+'</li>';
   }
   function list(b){
@@ -117,14 +118,16 @@ const KafuLeadersModule={name:'leaders',install(){
   function cheers(){try{const c=JSON.parse(localStorage.getItem(CHEERS)||'{}');return c.week===L.clock(Date.now()).weekKey?c:{week:L.clock(Date.now()).weekKey,ids:[]}}catch(_){return{ids:[]}}}
   function cardHtml(id){
     const now=Date.now(),b=data(now),x=b.rows.find(r=>r.id===id);if(!x)return '';
-    let days,city='',weeks=0;
+    let days,city='',weeks=0,info=null;
     if(x.own){const c=L.clock(now);days=[0,1,2,3,4,5,6].map(i=>{const a=c.weekStart+i*864e5;return a>now?null:Object.values(S.answers||{}).filter(q=>q&&q.n>0&&q.t>=a&&q.t<a+864e5).length*10})}
-    else{const c=L.card(id,now,league||0);days=c.days;city=c.city;weeks=c.weeks}
+    else{info=L.card(id,now,league||0);days=info.days;city=info.city;weeks=info.weeks}
     const max=Math.max(10,...days.map(d=>d||0)),today=L.clock(now).weekday,mine=cheers().ids.includes(id),base=L.hash('cheer|'+id+cheers().week)%9;
     const bars=days.map((d,i)=>'<span class="'+(i===today?'today':'')+'"><i style="height:'+(d==null?0:Math.max(4,Math.round(d/max*100)))+'%"></i><b>'+DAYS[i]+'</b></span>').join('');
     return '<section class="k-lb-card" role="dialog" aria-label="'+C.e(x.name)+'" data-a="leaders-noop">'+avatar(x,'xl')+'<h3>'+name(x)+'</h3>'+
-      '<p class="k-lb-meta">'+gem(league||0,'')+' '+L.LEAGUES[league||0]+' League'+(city?' · 📍 '+city:'')+(weeks?' · studying for '+weeks+' wk':'')+'</p>'+
-      '<div class="k-lb-stats"><span><b>#'+x.rank+'</b>Rank</span><span><b>'+fmt(x.xp)+'</b>XP this week</span><span><b>🔥 '+(x.streak||0)+'</b>Day streak</span></div>'+
+      (info?'<p class="k-lb-role">'+(info.kind==='board'?'🩺 <b>'+C.e(info.board)+'</b> · '+C.e(info.specialty)+' · '+C.e(info.line.split(' · ').pop()):'🎓 '+C.e(info.college)+' · <b>'+C.e(info.line.split(' · ').pop())+'</b>')+'</p>':'')+
+      '<p class="k-lb-meta">'+gem(league||0,'')+' '+L.LEAGUES[league||0]+' League'+(city?' · 📍 '+city:'')+(weeks?' · on Kafu '+weeks+' wk':'')+'</p>'+
+      '<div class="k-lb-stats"><span><b>#'+x.rank+'</b>Rank</span><span><b>'+fmt(x.xp)+'</b>XP this week</span><span><b>🔥 '+(x.streak||0)+'</b>Day streak</span>'+
+      (info?'<span><b>'+info.accuracy+'%</b>Accuracy</span><span><b>'+fmt(info.questions)+'</b>Questions</span><span><b>'+(info.kind!=='board'?'Finals':/Surg|Urology|ENT|Orthop/.test(info.specialty)?'MRCS':'Board exam')+'</b>Preparing for</span>':'')+'</div>'+
       '<div class="k-lb-bars" aria-label="XP each day this week">'+bars+'</div>'+
       (x.own?'':'<button class="k-lb-cheer'+(mine?' on':'')+'" data-a="leaders-cheer" data-v="'+x.id+'">👏 <span>'+(mine?'Cheered':'Cheer')+'</span> <small>'+(base+(mine?1:0))+'</small></button>')+
       '<button class="k-lb-close" data-a="leaders-close" aria-label="Close">×</button></section>';

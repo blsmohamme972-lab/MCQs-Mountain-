@@ -19,7 +19,35 @@
   const WOMEN=new Set(['Zainab.H','Hiba 🌸','زهراء محمد','نور الهدى','Dr. Sara','مريم','Fatima Alzahraa','فاطمة الزهراء 🤍','Ruqaya','رقية',
     'Teeba ✨','آية حسن','Dania','حوراء','Mays','تبارك','Lina','بنين علي','Rusul 🌷','شهد','Shahad.M','سارة 🌙','Hawraa','زينب ع',
     'Zahraa Ali','Noor Alhuda','همسة','ديانا','Baneen','رسل']);
-  const CITIES=['Baghdad','Baghdad','Baghdad','Basra','Najaf','Karbala','Mosul','Erbil','Hilla','Kirkuk','Diwaniyah','Nasiriyah','Kut','Ramadi'];
+  // Iraqi medical colleges by city; board residents train in the same cities.
+  const COLLEGES=[
+    ['Baghdad','University of Baghdad College of Medicine','Baghdad Medicine'],['Baghdad','Al-Nahrain University College of Medicine','Al-Nahrain Medicine'],
+    ['Baghdad','Mustansiriyah University College of Medicine','Mustansiriyah Medicine'],['Baghdad','Al-Kindy College of Medicine','Al-Kindy Medicine'],
+    ['Basra','University of Basrah College of Medicine','Basrah Medicine'],['Mosul','University of Mosul College of Medicine','Mosul Medicine'],
+    ['Erbil','Hawler Medical University','Hawler Medical'],['Najaf','University of Kufa Faculty of Medicine','Kufa Medicine'],
+    ['Najaf','Jabir ibn Hayyan Medical University','Jabir ibn Hayyan'],['Karbala','University of Kerbala College of Medicine','Kerbala Medicine'],
+    ['Hilla','University of Babylon College of Medicine','Babylon Medicine'],['Kirkuk','University of Kirkuk College of Medicine','Kirkuk Medicine'],
+    ['Diwaniyah','University of Al-Qadisiyah College of Medicine','Qadisiyah Medicine'],['Nasiriyah','University of Thi-Qar College of Medicine','Thi-Qar Medicine'],
+    ['Kut','University of Wasit College of Medicine','Wasit Medicine'],['Ramadi','University of Anbar College of Medicine','Anbar Medicine'],
+    ['Sulaymaniyah','University of Sulaimani College of Medicine','Sulaimani Medicine'],['Tikrit','Tikrit University College of Medicine','Tikrit Medicine'],
+    ['Baqubah','University of Diyala College of Medicine','Diyala Medicine'],['Duhok','University of Duhok College of Medicine','Duhok Medicine']];
+  // Surgical boards weigh more: the app is used mostly for MRCS preparation.
+  const SPECIALTIES=['General Surgery','General Surgery','General Surgery','Orthopaedic Surgery','Orthopaedic Surgery','Urology','Neurosurgery',
+    'Plastic Surgery','Cardiothoracic Surgery','Paediatric Surgery','Otolaryngology (ENT)','Ophthalmology','Obstetrics & Gynaecology',
+    'Internal Medicine','Paediatrics','Anaesthesia & Intensive Care','Emergency Medicine','Radiology','Family Medicine'];
+  const SHORT={'Orthopaedic Surgery':'Orthopaedics','Otolaryngology (ENT)':'ENT','Obstetrics & Gynaecology':'Obs & Gynae','Anaesthesia & Intensive Care':'Anaesthesia',
+    'Cardiothoracic Surgery':'Cardiothoracic','Paediatric Surgery':'Paed Surgery','Emergency Medicine':'Emergency'};
+  const STAGES=['4th stage','5th stage','6th stage','6th stage'];
+  function role(name){
+    const r=rng(hash('role|'+name)),col=COLLEGES[Math.floor(Math.pow(r(),1.3)*COLLEGES.length)];
+    if(r()<0.68){
+      const arab=r()<0.22,spec=SPECIALTIES[Math.floor(r()*SPECIALTIES.length)],year=1+Math.floor(r()*(spec.includes('Surgery')||spec==='Urology'?5:4));
+      return{kind:'board',city:col[0],college:col[1],board:arab?'Arab Board':'Iraqi Board',specialty:spec,year:'R'+year,
+        short:(SHORT[spec]||spec)+' · R'+year,line:(arab?'Arab Board':'Iraqi Board')+' · '+spec+' · R'+year};
+    }
+    const stage=STAGES[Math.floor(r()*STAGES.length)];
+    return{kind:'student',city:col[0],college:col[1],stage,short:col[2].replace('Medicine','Med').replace('Medical','Med')+' · '+stage.split(' ')[0],line:col[1]+' · '+stage};
+  }
   // Duolingo-style leagues: a group of 30, top 7 move up, bottom 5 move down. Higher leagues study harder.
   const LEAGUES=['Bronze','Silver','Gold','Sapphire','Ruby','Emerald','Diamond'],FACTOR=[0.35,0.5,0.65,0.8,1,1.2,1.45];
   const COHORT=30,PROMOTE=7,DEMOTE=5,STAR='Hiba 🌸';
@@ -44,7 +72,7 @@
     const weeks=r()<0.2?0:1+Math.floor(r()*20);
     const gradient=GRADIENTS[hash(name)%GRADIENTS.length];
     const star=name===STAR,woman=WOMEN.has(name);
-    return{id:'r'+i,name,pace:star?1250:woman?pace*1.12:pace,loyalty:star?0.93:loyalty,evening,weeks,star,woman,photo:null,gradient,initials:initials(name),city:CITIES[Math.floor(r()*CITIES.length)]};
+    return{id:'r'+i,name,pace:star?1250:woman?pace*1.12:pace,loyalty:star?0.93:loyalty,evening,weeks,star,woman,photo:null,gradient,initials:initials(name),...role(name),accuracy:62+Math.floor(r()*30)};
   }
   const RIVALS=NAMES.map(profile);
   // About half the accounts have a profile picture, each picture used once, like a real group.
@@ -93,7 +121,7 @@
   }
   function field(period,now,league,uid){
     const f=FACTOR[league]||1,pool=period==='all'?RIVALS:cohort(clock(now).weekKey,uid);
-    const rows=pool.map(p=>({id:p.id,name:p.name,star:p.star,xp:score(p,period,now,f),initials:p.initials,gradient:p.gradient,photo:p.photo})).filter(x=>x.xp>0);
+    const rows=pool.map(p=>({id:p.id,name:p.name,star:p.star,xp:score(p,period,now,f),initials:p.initials,gradient:p.gradient,photo:p.photo,tag:p.short})).filter(x=>x.xp>0);
     if(period==='weekly'){
       // Keep the star account among the leaders, just above whoever would otherwise be 7th.
       const star=rows.find(x=>x.star),others=rows.filter(x=>!x.star).sort((a,b)=>b.xp-a.xp),seventh=others[PROMOTE-2];
@@ -124,7 +152,8 @@
     const p=RIVALS[Number(String(id).slice(1))];if(!p)return null;
     const c=clock(now),f=[0.35,0.5,0.65,0.8,1,1.2,1.45][league]||1;
     const days=[0,1,2,3,4,5,6].map(i=>{const d=c.weekStartDay+i;return d<c.day?tens(f*dayXp(p,d)):d===c.day?tens(f*dayXp(p,d)*dayShare(p,c.hour)):null});
-    return{days,city:p.city,weeks:p.weeks+1,streak:streak(p,now),woman:p.woman};
+    return{days,city:p.city,weeks:p.weeks+1,streak:streak(p,now),woman:p.woman,kind:p.kind,line:p.line,college:p.college,
+      board:p.board,specialty:p.specialty,accuracy:p.accuracy,questions:Math.round(days.reduce((a,d)=>a+(d||0),0)/10)};
   }
   // Where a finished week leaves the student: up, down or the same league.
   function outcome(rank,size,league,zones){
