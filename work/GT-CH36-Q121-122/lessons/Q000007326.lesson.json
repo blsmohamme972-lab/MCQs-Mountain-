@@ -1,0 +1,25 @@
+{
+ "qid": "Q000007326",
+ "image": "Q000007326.png",
+ "takeaway": "Isolated ST depression in V1 and V2 suggests posterior myocardial ischaemia, most likely from the posterior descending artery, supplied by the right coronary or the circumflex artery.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {"text": "Postoperative chest pain; ECG shows tachycardia and isolated ST depression in V1 and V2. Which coronary artery is most likely responsible?"},
+ "answer": {"text": "Posterior descending coronary artery"},
+ "shots": [
+  {"x": 768, "y": 512, "z": 1},
+  {"x": 190, "y": 480, "z": 1.9, "spot": [200, 450, 160]},
+  {"x": 560, "y": 450, "z": 1.9, "spot": [580, 600, 170]},
+  {"x": 990, "y": 400, "z": 1.9, "spot": [990, 400, 190]},
+  {"x": 1300, "y": 560, "z": 1.9, "spot": [1400, 590, 120]}
+ ],
+ "lines": [
+  {"text": "The monitor shows a fast heart rate in a patient with chest pain.", "shot": 1, "dir": "calm, confident"},
+  {"text": "ST depression across all leads would mean ischaemia, or angina.", "shot": 0, "dir": "calm, clear"},
+  {"text": "But here the ST depression is isolated, in leads V1 and V2 only.", "shot": 2, "dir": "warm, clear"},
+  {"text": "Those leads look at the heart from the front, so they see the posterior wall like a mirror.", "shot": 3, "say": "Those leads look at the heart from the front, so they see the posterior wall like a mirror. (laugh)", "dir": "gently amused"},
+  {"text": "ST depression there points to a posterior myocardial infarction.", "shot": 3, "dir": "calm, serious"},
+  {"text": "The artery behind that is the posterior descending artery.", "shot": 4, "dir": "calm, confident"},
+  {"text": "The right coronary or circumflex can supply it, and the ECG alone cannot tell which.", "shot": 0, "dir": "warm, reassuring"}
+ ]
+}
