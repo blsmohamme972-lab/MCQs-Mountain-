@@ -1,0 +1,25 @@
+{
+ "qid": "Q000007309",
+ "image": "Q000007309.png",
+ "takeaway": "The gastroduodenal artery, from the common hepatic artery, passes behind the first part of the duodenum and can be eroded by a posterior duodenal ulcer.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {"text": "A bleeding duodenal ulcer is found at laparotomy for upper GI haemorrhage. Which vessel is the likely cause of bleeding?"},
+ "answer": {"text": "Gastroduodenal artery"},
+ "shots": [
+  {"x": 768, "y": 512, "z": 1},
+  {"x": 1100, "y": 300, "z": 1.9, "spot": [1150, 190, 150]},
+  {"x": 760, "y": 560, "z": 1.9, "spot": [740, 700, 150]},
+  {"x": 700, "y": 460, "z": 1.9, "spot": [610, 560, 130]},
+  {"x": 880, "y": 520, "z": 1.9, "spot": [870, 410, 160]}
+ ],
+ "lines": [
+  {"text": "Let's follow the blood supply of the stomach and duodenum.", "shot": 0, "dir": "calm, confident"},
+  {"text": "The gastroduodenal artery comes from the common hepatic artery.", "shot": 1, "dir": "warm, clear"},
+  {"text": "It passes down behind the first part of the duodenum.", "shot": 2, "dir": "calm, confident"},
+  {"text": "So a duodenal ulcer sits right in front of it.", "shot": 3, "dir": "calm, curious"},
+  {"text": "The ulcer can erode into the artery, and that causes the bleed.", "shot": 4, "say": "The ulcer can erode into the artery, and that causes the bleed. (laugh)", "dir": "gently amused"},
+  {"text": "The gastric arteries and the gastroepiploic artery run along the stomach curvatures, not behind the duodenum.", "shot": 0, "dir": "calm, confident"},
+  {"text": "So the answer is the gastroduodenal artery.", "shot": 4, "dir": "warm, reassuring"}
+ ]
+}

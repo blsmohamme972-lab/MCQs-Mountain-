@@ -1,0 +1,25 @@
+{
+ "qid": "Q000007308",
+ "image": "Q000007308.png",
+ "takeaway": "Post-operative swollen calf, tachypnoea, tachycardia, chest pain and a blood gas with low PO2 and low PCO2 with raised pH: pulmonary embolism, with respiratory alkalosis.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {"text": "Two days after a prolonged cholecystectomy: swollen calf, tachypnoea, tachycardia, chest pain; pH 7.48, PCO2 3.5 kPa, PO2 7.3 kPa. Most likely diagnosis?", "say": "Two days after a prolonged cholecystectomy: swollen calf, tachypnoea, tachycardia, chest pain; pH 7.48, P C O 2 3.5 kilopascals, P O 2 7.3 kilopascals. Most likely diagnosis?"},
+ "answer": {"text": "Pulmonary embolism"},
+ "shots": [
+  {"x": 768, "y": 512, "z": 1},
+  {"x": 330, "y": 520, "z": 1.9, "spot": [330, 640, 150]},
+  {"x": 640, "y": 380, "z": 1.9, "spot": [640, 330, 140]},
+  {"x": 1150, "y": 420, "z": 1.8, "spot": [1100, 400, 190]},
+  {"x": 1300, "y": 520, "z": 1.9, "spot": [1330, 700, 190]}
+ ],
+ "lines": [
+  {"text": "Look at the leg first: a swollen calf after a long operation points to a deep vein clot.", "shot": 1, "dir": "calm, confident"},
+  {"text": "That clot can travel through the veins and up to the heart.", "shot": 2, "dir": "warm, clear"},
+  {"text": "Then it lodges in the pulmonary arteries of the lung.", "shot": 3, "dir": "calm, serious"},
+  {"text": "Now she breathes fast, her heart races, and she has central chest pain.", "shot": 3, "dir": "calm, confident"},
+  {"text": "The blood gas shows hypoxia and a low carbon dioxide with a raised pH.", "shot": 4, "dir": "calm, confident"},
+  {"text": "That is a respiratory alkalosis, because she is overbreathing.", "shot": 4, "say": "That is a respiratory alkalosis, because she is overbreathing. (sigh)", "dir": "calm, explaining"},
+  {"text": "Together, that is pulmonary embolism.", "shot": 0, "dir": "warm, reassuring"}
+ ]
+}
