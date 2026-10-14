@@ -1,0 +1,102 @@
+{
+ "qid": "Q000007224",
+ "image": "Q000007224.png",
+ "takeaway": "Codman's triangle: new bone where a tumour lifts the periosteum, characteristic of osteosarcoma (with a sun-ray pattern).",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A radiograph of the distal femur shows the periosteum lifted with reactive new bone beneath: Codman's triangle. Which bone tumour is it characteristically associated with?"
+ },
+ "answer": {
+  "text": "Osteosarcoma"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 520,
+   "z": 1.7,
+   "spot": [
+    330,
+    470,
+    200
+   ]
+  },
+  {
+   "x": 640,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    720,
+    300,
+    180
+   ]
+  },
+  {
+   "x": 700,
+   "y": 560,
+   "z": 2.0,
+   "spot": [
+    690,
+    520,
+    140
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1300,
+    330,
+    200
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 330,
+   "z": 1.7,
+   "spot": [
+    1260,
+    160,
+    160
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Here is a distal femur with a bone tumour growing out of the metaphysis.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "As the tumour grows, it breaks through the cortex and lifts the periosteum.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The periosteum reacts by laying down new bone, and the triangle of new bone under its raised edge is Codman's triangle.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "This is the sign of osteosarcoma, our pirate with the saw.",
+   "shot": 4,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Later, the tumour pushes into the soft tissue and makes streaks of calcification: the sun ray appearance.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the answer is osteosarcoma.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
