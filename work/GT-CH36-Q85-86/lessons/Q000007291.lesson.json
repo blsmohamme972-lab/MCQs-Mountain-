@@ -1,0 +1,108 @@
+{
+ "qid": "Q000007291",
+ "image": "Q000007291.png",
+ "takeaway": "Splenectomy is done for unstable or high-grade splenic injury, ITP, hereditary spherocytosis and autoimmune haemolytic anaemia; not for sickle cell disease sequestration, where transfusion is preferred.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Splenectomy is indicated for all but which one of the following conditions?"
+ },
+ "answer": {
+  "text": "Sickle cell disease"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 280,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    250,
+    430,
+    230
+   ]
+  },
+  {
+   "x": 790,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    800,
+    260,
+    200
+   ]
+  },
+  {
+   "x": 790,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    720,
+    490,
+    200
+   ]
+  },
+  {
+   "x": 790,
+   "y": 560,
+   "z": 2,
+   "spot": [
+    760,
+    700,
+    200
+   ]
+  },
+  {
+   "x": 1290,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    1270,
+    430,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "We are looking for the one condition where the spleen stays in.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "If the injury is greater than grade three, or the patient becomes unstable, the spleen comes out.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Idiopathic thrombocytopenic purpura is a classic indication.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So is hereditary spherocytosis, with its round fragile red cells.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "And so is autoimmune haemolytic anaemia.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "But in sickle cell disease, there is little evidence for splenectomy during an acute sequestration crisis.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "A blood transfusion is preferred instead, so sickle cell disease is the exception.",
+   "shot": 5,
+   "say": "A blood transfusion is preferred instead. (sigh) So sickle cell disease is the exception.",
+   "dir": "calm, relieved"
+  }
+ ]
+}

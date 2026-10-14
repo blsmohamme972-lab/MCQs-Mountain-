@@ -1,0 +1,100 @@
+{
+ "qid": "Q000007290",
+ "image": "Q000007290.png",
+ "takeaway": "Unfractionated heparin is a mix of chain lengths and needs APTT monitoring; LMWH has only short chains and reduces DVT extension or recurrence by 38%.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Compared with unfractionated heparin, which statement about low molecular weight heparin (LMWH) is correct?",
+  "say": "Compared with unfractionated heparin, which statement about low molecular weight heparin, L M W H, is correct?"
+ },
+ "answer": {
+  "text": "LMWH reduces the risk of extension or recurrence of DVT by 38% compared with unfractionated heparin.",
+  "say": "L M W H reduces the risk of extension or recurrence of D V T by thirty eight percent compared with unfractionated heparin."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 450,
+   "z": 2,
+   "spot": [
+    330,
+    520,
+    260
+   ]
+  },
+  {
+   "x": 260,
+   "y": 260,
+   "z": 2,
+   "spot": [
+    300,
+    180,
+    130
+   ]
+  },
+  {
+   "x": 820,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    900,
+    470,
+    230
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    1280,
+    400,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Start with plain unfractionated heparin, a tangled heap of chains of every length.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "It needs regular APTT monitoring, so it is not a once-daily or monitoring-free drug.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Now cut the chains. LMWH is fractionated, so it holds only short polysaccharides.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It is used for DVT prophylaxis in surgery.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It is also better at stopping a DVT from extending, or coming back.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "That is a thirty eight percent lower risk, which is the correct statement.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "And heparin-induced thrombocytopenia? LMWH carries a lower risk, not a higher one.",
+   "shot": 0,
+   "say": "And heparin-induced thrombocytopenia? (clears throat) LMWH carries a lower risk, not a higher one.",
+   "dir": "gently amused"
+  }
+ ]
+}
