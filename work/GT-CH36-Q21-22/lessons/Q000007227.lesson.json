@@ -1,0 +1,102 @@
+{
+ "qid": "Q000007227",
+ "image": "Q000007227.png",
+ "takeaway": "The submandibular gland is separated from the parotid gland posteriorly by the stylomandibular ligament. Lingual nerve lies above it, hypoglossal below.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which statement is correct regarding the anatomy of the submandibular gland?"
+ },
+ "answer": {
+  "text": "The gland is separated from the parotid gland by the stylomandibular ligament."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 520,
+   "y": 460,
+   "z": 1.8,
+   "spot": [
+    620,
+    500,
+    200
+   ]
+  },
+  {
+   "x": 900,
+   "y": 600,
+   "z": 1.8,
+   "spot": [
+    900,
+    600,
+    150
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    1070,
+    500,
+    170
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 700,
+   "z": 1.8,
+   "spot": [
+    1110,
+    720,
+    150
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 570,
+   "z": 1.8,
+   "spot": [
+    1390,
+    570,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Let us place the submandibular gland, at the angle of the jaw.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Far behind, the parotid gland sits in front of the ear.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The stylomandibular ligament runs between them, separating the two glands. That is our answer.",
+   "shot": 1,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "The lingual nerve lies superior to the submandibular gland.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The hypoglossal nerve lies inferior. Both are at risk during gland excision.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "(clears throat) And the duct arises anteriorly, to open beside the frenulum.",
+   "shot": 5,
+   "dir": "gently amused"
+  }
+ ]
+}

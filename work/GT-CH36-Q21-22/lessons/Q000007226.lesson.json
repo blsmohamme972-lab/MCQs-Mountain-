@@ -1,0 +1,103 @@
+{
+ "qid": "Q000007226",
+ "image": "Q000007226.png",
+ "takeaway": "The small intestine secretes 1.5 L of fluid per day. Fluid balance for a nil-by-mouth patient must count absorption and secretion along the whole gut.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A patient is nil by mouth for several days. Which statement about fluid secretion and absorption in the gut is correct?"
+ },
+ "answer": {
+  "text": "The small intestine secretes 1.5 L of fluid per day.",
+  "say": "The small intestine secretes one and a half litres of fluid per day."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 280,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    260,
+    560,
+    170
+   ]
+  },
+  {
+   "x": 600,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    590,
+    300,
+    160
+   ]
+  },
+  {
+   "x": 900,
+   "y": 540,
+   "z": 1.8,
+   "spot": [
+    900,
+    520,
+    200
+   ]
+  },
+  {
+   "x": 1350,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    1350,
+    340,
+    170
+   ]
+  },
+  {
+   "x": 1400,
+   "y": 640,
+   "z": 1.8,
+   "spot": [
+    1400,
+    620,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Our patient will be nil by mouth for days, so we must plan his fluids carefully.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The gut both secretes and absorbs fluid all day long. The stomach secretes two to three litres of gastric juice.",
+   "shot": 2,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The small intestine secretes one and a half litres of fluid per day. That is our answer.",
+   "shot": 3,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "(sigh) The large bowel absorbs one litre, so very little is left behind.",
+   "shot": 4,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Only about a hundred millilitres leaves in the faeces.",
+   "shot": 5,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "So fluid balance must count every part of the gut, to keep a positive net balance.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
