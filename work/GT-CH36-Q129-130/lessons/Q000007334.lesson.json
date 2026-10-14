@@ -1,0 +1,108 @@
+{
+ "qid": "Q000007334",
+ "image": "Q000007334.png",
+ "takeaway": "The left coronary artery divides into the anterior interventricular and circumflex arteries; the right coronary gives the posterior interventricular artery.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Concerning the blood supply and drainage of the heart, which statement is correct?"
+ },
+ "answer": {
+  "text": "The circumflex artery arises from the left coronary artery."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 520,
+   "y": 380,
+   "z": 2.0,
+   "spot": [
+    440,
+    320,
+    110
+   ]
+  },
+  {
+   "x": 700,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    625,
+    565,
+    110
+   ]
+  },
+  {
+   "x": 900,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    915,
+    545,
+    110
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    1250,
+    350,
+    110
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    1290,
+    630,
+    100
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Look at the picture: the aorta gives off the coronary arteries just above the aortic valve.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The left coronary artery arises from the aortic sinus, and soon divides in two.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "One branch is the anterior interventricular artery, running down the front groove.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The other is the circumflex artery, curling round the atrioventricular groove. So the circumflex comes from the left coronary.",
+   "shot": 3,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "The right coronary artery is a separate vessel from the aorta.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "It gives the posterior interventricular artery, which meets the anterior one in the groove.",
+   "shot": 5,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "So the anterior interventricular does not come from the right, and the circumflex arises from the left.",
+   "shot": 0,
+   "dir": "warm, relieved",
+   "say": "(sigh) So the anterior interventricular does not come from the right, and the circumflex arises from the left."
+  }
+ ]
+}
