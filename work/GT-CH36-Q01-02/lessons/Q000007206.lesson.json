@@ -1,0 +1,100 @@
+{
+ "qid": "Q000007206",
+ "image": "Q000007206.png",
+ "takeaway": "The oesophagus crosses the diaphragm at T10, accompanied by the anterior and posterior gastric nerves.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "At which vertebral level does the oesophagus cross the diaphragm?"
+ },
+ "answer": {
+  "text": "T10",
+  "say": "T ten"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    200,
+    430,
+    110
+   ]
+  },
+  {
+   "x": 820,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    830,
+    240,
+    130
+   ]
+  },
+  {
+   "x": 840,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    860,
+    400,
+    200
+   ]
+  },
+  {
+   "x": 850,
+   "y": 500,
+   "z": 2.0,
+   "spot": [
+    860,
+    590,
+    120
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Count down the spine on the left, and stop at the golden block.",
+   "shot": 1,
+   "dir": "calm, friendly"
+  },
+  {
+   "text": "The oesophagus traverses the middle of the diaphragm at the level of T ten.",
+   "shot": 2,
+   "dir": "calm, confident",
+   "say": "The oesophagus traverses the middle of the diaphragm at the level of T ten."
+  },
+  {
+   "text": "It does not go alone: the vagus nerves dance through the hole beside it.",
+   "shot": 3,
+   "dir": "warm, amused"
+  },
+  {
+   "text": "At this point they are the anterior and posterior gastric nerves.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "They rotate anticlockwise, because they follow the rotation of the gut.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Small oesophageal branches of the left gastric vessels, and a few lymphatics, pass through here too.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "So the oesophagus crosses at T ten.",
+   "shot": 0,
+   "dir": "warm, relieved",
+   "say": "(sigh) So the oesophagus crosses at T ten."
+  }
+ ]
+}
