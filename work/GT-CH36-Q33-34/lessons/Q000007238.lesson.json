@@ -1,0 +1,92 @@
+{
+ "qid": "Q000007238",
+ "image": "Q000007238.png",
+ "takeaway": "Magnesium is absorbed mainly in the duodenum and regulated by the kidneys. Its major renal transport site is the thick ascending limb of Henle, so loop diuretics increase magnesium loss.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which one of the following statements regarding magnesium homeostasis is correct?"
+ },
+ "answer": {
+  "text": "The major site for magnesium transport is in the thick ascending loop of Henle."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 350,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    220,
+    480,
+    200
+   ]
+  },
+  {
+   "x": 950,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    960,
+    450,
+    230
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    1330,
+    330,
+    200
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 600,
+   "z": 1.8,
+   "spot": [
+    1320,
+    740,
+    180
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Dietary magnesium is absorbed mainly in the duodenum, not the large bowel.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The kidneys then regulate the body's magnesium concentration.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Unlike most salts, magnesium is transported in the thick ascending loop of Henle.",
+   "shot": 2,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "So loop diuretics increase magnesium loss, they do not decrease it.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Raised magnesium and calcium levels reduce the amount reabsorbed by the loop of Henle.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the correct statement is the thick ascending loop of Henle.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}

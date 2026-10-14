@@ -1,0 +1,92 @@
+{
+ "qid": "Q000007239",
+ "image": "Q000007239.png",
+ "takeaway": "The breast is supplied by the internal thoracic artery (a subclavian branch), the lateral thoracic and thoracoacromial arteries (axillary branches), and in part by the intercostal arteries.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Before a mastectomy for breast cancer, which one of the following statements regarding the anatomy of the breast is correct?"
+ },
+ "answer": {
+  "text": "The breast is supplied in part by the intercostal arteries."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 350,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    290,
+    500,
+    250
+   ]
+  },
+  {
+   "x": 600,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    560,
+    330,
+    230
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    1030,
+    480,
+    230
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    1320,
+    620,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The internal thoracic artery is a branch of the subclavian artery, and it supplies the breast.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The lateral thoracic and thoracoacromial arteries are branches of the axillary artery.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the supply is not only from the thoracic arteries, and not completely from the subclavian branches.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Further blood supply comes from the intercostal arteries.",
+   "shot": 3,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "It is important to include this area when performing a mastectomy and examining the breast.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the breast is supplied in part by the intercostal arteries.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}
