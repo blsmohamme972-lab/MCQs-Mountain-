@@ -1,0 +1,118 @@
+{
+ "qid": "Q000006499",
+ "image": "Q000006499.png",
+ "takeaway": "Weak dorsiflexion, weak toe extension and numb first web space point to the anterior compartment (deep peroneal nerve); treat with fasciotomy.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 21-year-old man has compartment syndrome with weak ankle dorsiflexion, weak toe extension and numbness of the first dorsal web space. Which compartment had raised pressure?"
+ },
+ "answer": {
+  "text": "Anterior compartment"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 380,
+   "y": 400,
+   "z": 2.0,
+   "spot": [
+    230,
+    300,
+    180
+   ]
+  },
+  {
+   "x": 790,
+   "y": 380,
+   "z": 2.0,
+   "spot": [
+    790,
+    260,
+    170
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    1380,
+    130,
+    130
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 450,
+   "z": 2.0,
+   "spot": [
+    1190,
+    525,
+    110
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 700,
+   "z": 2.0,
+   "spot": [
+    1350,
+    650,
+    120
+   ]
+  },
+  {
+   "x": 700,
+   "y": 700,
+   "z": 2.0,
+   "spot": [
+    780,
+    640,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "In compartment syndrome, pressure inside a fascial compartment rises and chokes its blood flow.",
+   "shot": 0,
+   "dir": "calm, serious"
+  },
+  {
+   "text": "Here the anterior compartment is swollen, and the gauge is deep in the red.",
+   "shot": 1,
+   "dir": "concerned"
+  },
+  {
+   "text": "The deep peroneal nerve supplies this compartment, and it is squeezed.",
+   "shot": 2,
+   "dir": "concerned"
+  },
+  {
+   "text": "So dorsiflexion of the ankle is weak,",
+   "shot": 3,
+   "dir": "calm"
+  },
+  {
+   "text": "and toe extension is weak too.",
+   "shot": 4,
+   "dir": "calm"
+  },
+  {
+   "text": "The first dorsal web space is the nerve's own sensory area, and it goes numb.",
+   "shot": 5,
+   "dir": "calm"
+  },
+  {
+   "text": "A fasciotomy opens the room. The raised pressure was in the anterior compartment.",
+   "shot": 6,
+   "dir": "calm, relieved",
+   "say": "(sigh) A fasciotomy opens the room. The raised pressure was in the anterior compartment."
+  }
+ ]
+}

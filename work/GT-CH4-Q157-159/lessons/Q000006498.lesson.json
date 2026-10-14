@@ -1,0 +1,107 @@
+{
+ "qid": "Q000006498",
+ "image": "Q000006498.png",
+ "takeaway": "Hunter's canal (adductor canal) lies in the distal medial thigh: roof sartorius, floor adductor longus and magnus, lateral vastus medialis; vessels exit at the adductor hiatus.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following muscles form part of Hunter's canal?"
+ },
+ "answer": {
+  "text": "All of the above"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 700,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    700,
+    235,
+    170
+   ]
+  },
+  {
+   "x": 400,
+   "y": 600,
+   "z": 2.0,
+   "spot": [
+    400,
+    690,
+    140
+   ]
+  },
+  {
+   "x": 940,
+   "y": 600,
+   "z": 2.0,
+   "spot": [
+    940,
+    700,
+    140
+   ]
+  },
+  {
+   "x": 400,
+   "y": 400,
+   "z": 2.0,
+   "spot": [
+    130,
+    270,
+    150
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 450,
+   "z": 2.0,
+   "spot": [
+    1300,
+    470,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Hunter's canal, also called the adductor canal, is a narrow fascial tunnel in the distal medial thigh.",
+   "shot": 0,
+   "dir": "calm, curious"
+  },
+  {
+   "text": "Its roof is the sartorius, the tailor sewing along the top.",
+   "shot": 1,
+   "dir": "warm"
+  },
+  {
+   "text": "The floor is formed by the adductor longus,",
+   "shot": 2,
+   "dir": "calm"
+  },
+  {
+   "text": "and the adductor magnus.",
+   "shot": 3,
+   "dir": "calm"
+  },
+  {
+   "text": "The vastus medialis lies along the outer wall.",
+   "shot": 4,
+   "dir": "calm"
+  },
+  {
+   "text": "The femoral vessels travel through, then exit at the adductor hiatus into the popliteal region.",
+   "shot": 5,
+   "dir": "warm"
+  },
+  {
+   "text": "The sartorius and both adductors are part of the canal, so the answer is all of the above.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
