@@ -1,0 +1,89 @@
+{
+ "qid": "Q000007216",
+ "image": "Q000007216.png",
+ "takeaway": "The ankle is stabilised by the mortice of tibia and fibula, the syndesmosis and tibiofibular ligament, and the deltoid ligament: all of the above.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which structure contributes toward the stability of the ankle joint?",
+  "say": "Which structure contributes toward the stability of the ankle joint?"
+ },
+ "answer": {
+  "text": "All of the above",
+  "say": "All of the above."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1.0,
+   "spot": [
+    768,
+    300,
+    420
+   ]
+  },
+  {
+   "x": 280,
+   "y": 380,
+   "z": 2.0,
+   "spot": [
+    280,
+    330,
+    210
+   ]
+  },
+  {
+   "x": 770,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    770,
+    320,
+    240
+   ]
+  },
+  {
+   "x": 1280,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    1260,
+    400,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The ankle is a synovial joint between the talus, tibia and fibula.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Tibia and fibula form a deep mortice, and the talus sits snugly inside it.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The syndesmosis and tibiofibular ligament bind the two leg bones together.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "On the inside, the strong triangular deltoid ligament holds the joint.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "When the foot is dorsiflexed, the wider talus wedges tighter into its socket.",
+   "shot": 3,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Every helper contributes, so the answer is all of the above.",
+   "shot": 3,
+   "dir": "relieved, confident"
+  }
+ ]
+}
