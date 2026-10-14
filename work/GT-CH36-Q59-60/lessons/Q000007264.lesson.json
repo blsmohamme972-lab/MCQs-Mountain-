@@ -1,0 +1,100 @@
+{
+ "qid": "Q000007264",
+ "image": "Q000007264.png",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "takeaway": "Scar strength after uncomplicated healing: about 10% at 1 week, rising rapidly over 4 weeks, then plateauing at 70-80% of unwounded skin by 3 months.",
+ "question": {
+  "text": "After 3 months of normal healing, about how strong is the scar as a percentage of the original undamaged skin?"
+ },
+ "answer": {
+  "text": "70-80%",
+  "say": "seventy to eighty percent"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1.0,
+   "spot": [
+    768,
+    70,
+    220
+   ]
+  },
+  {
+   "x": 260,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    250,
+    450,
+    170
+   ]
+  },
+  {
+   "x": 768,
+   "y": 380,
+   "z": 1.9,
+   "spot": [
+    770,
+    300,
+    170
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 520,
+   "z": 1.9,
+   "spot": [
+    1250,
+    420,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "This is a scar's strength over time.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "At one week the wound is weak, only about ten percent of normal skin.",
+   "shot": 1,
+   "dir": "calm, confident",
+   "say": "At one week the wound is weak, only about ten percent of normal skin."
+  },
+  {
+   "text": "Over the next four weeks, tensile strength rises rapidly.",
+   "shot": 2,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "By three months it reaches a plateau.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "On the gauge, that is seventy to eighty percent of unwounded skin.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "After this point there is little further gain, as the note says.",
+   "shot": 3,
+   "dir": "gently amused"
+  },
+  {
+   "text": "So even a perfect repair never quite matches the original skin.",
+   "shot": 3,
+   "dir": "warm, curious",
+   "say": "(sigh) So even a perfect repair never quite matches the original skin."
+  },
+  {
+   "text": "So: seventy to eighty percent.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}
