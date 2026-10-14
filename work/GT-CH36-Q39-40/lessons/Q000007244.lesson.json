@@ -1,0 +1,95 @@
+{
+ "qid": "Q000007244",
+ "image": "Q000007244.png",
+ "takeaway": "CSF: about 140 mL in total (40 mL around the brain, 100 mL around the cord), made by the choroid plexus and absorbed mainly by arachnoid villi, and also by spinal villi in the lumbar region.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following statements regarding cerebrospinal fluid (CSF) is correct?",
+  "say": "Which of the following statements regarding cerebrospinal fluid, C S F, is correct?"
+ },
+ "answer": {
+  "text": "CSF is absorbed by the spinal villi in the lumbar region.",
+  "say": "C S F is absorbed by the spinal villi in the lumbar region."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 290,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    290,
+    280,
+    130
+   ]
+  },
+  {
+   "x": 770,
+   "y": 480,
+   "z": 1.6,
+   "spot": [
+    770,
+    320,
+    150
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 280,
+   "z": 2.0,
+   "spot": [
+    1290,
+    200,
+    130
+   ]
+  },
+  {
+   "x": 1240,
+   "y": 560,
+   "z": 2.0,
+   "spot": [
+    1200,
+    650,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Let us follow the fluid through the picture.",
+   "shot": 0,
+   "dir": "calm, friendly"
+  },
+  {
+   "text": "It is made by the choroid plexus in the ventricles, and it cushions the brain like a hydraulic pad.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The total volume is about one hundred and forty millilitres: forty around the brain and a hundred around the spinal cord.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "It circulates in the subarachnoid space, and is mostly reabsorbed into the venous sinuses by the arachnoid villi.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "But some is also absorbed by the spinal villi in the lumbar region.",
+   "shot": 4,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "That is the correct statement, so the volume of a hundred millilitres is wrong.",
+   "shot": 4,
+   "dir": "gently amused",
+   "say": "(laugh) That is the correct statement, so the volume of a hundred millilitres is wrong."
+  }
+ ]
+}
