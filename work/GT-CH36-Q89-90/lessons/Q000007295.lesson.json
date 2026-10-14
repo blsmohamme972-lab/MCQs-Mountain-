@@ -1,0 +1,109 @@
+{
+ "qid": "Q000007295",
+ "image": "Q000007295.png",
+ "takeaway": "The radial nerve (C5-T1) supplies supinator, extensor carpi ulnaris, brachioradialis and anconeus: all of the above.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following muscles are supplied by the radial nerve: supinator, extensor carpi ulnaris, brachioradialis?"
+ },
+ "answer": {
+  "text": "All of the above"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 384,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    170,
+    230,
+    200
+   ]
+  },
+  {
+   "x": 470,
+   "y": 430,
+   "z": 2,
+   "spot": [
+    470,
+    430,
+    170
+   ]
+  },
+  {
+   "x": 790,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    790,
+    430,
+    180
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    1100,
+    430,
+    180
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 480,
+   "z": 2,
+   "spot": [
+    1380,
+    480,
+    150
+   ]
+  },
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  }
+ ],
+ "lines": [
+  {
+   "text": "The radial nerve, C5\u2013T1, supplies the extensor muscles of the arm and forearm.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "The radial nerve, C five to T one, supplies the extensor muscles of the arm and forearm."
+  },
+  {
+   "text": "The supinator is one of its muscles, and it is the main supinator when the elbow is extended.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Extensor carpi ulnaris extends the wrist, so it is radial nerve too.",
+   "shot": 3,
+   "dir": "steady"
+  },
+  {
+   "text": "Brachioradialis looks like a flexor, but surprise: it is also supplied by the radial nerve.",
+   "shot": 4,
+   "dir": "gently amused",
+   "say": "(laugh) Brachioradialis looks like a flexor, but surprise: it is also supplied by the radial nerve."
+  },
+  {
+   "text": "Anconeus joins in as well, a small muscle that straightens the elbow.",
+   "shot": 5,
+   "dir": "steady"
+  },
+  {
+   "text": "So the answer is all of the above.",
+   "shot": 6,
+   "dir": "calm, confident"
+  }
+ ]
+}

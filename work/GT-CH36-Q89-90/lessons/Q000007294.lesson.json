@@ -1,0 +1,113 @@
+{
+ "qid": "Q000007294",
+ "image": "Q000007294.png",
+ "takeaway": "The inguinal canal roof is internal oblique and transversalis; floor is the inguinal and lacunar ligaments; back wall is transversalis fascia and conjoint tendon.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which one of the following statements regarding the inguinal canal is correct?"
+ },
+ "answer": {
+  "text": "The roof consists of the internal oblique and transversalis muscles."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    400,
+    360,
+    230
+   ]
+  },
+  {
+   "x": 384,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    100,
+    250,
+    110
+   ]
+  },
+  {
+   "x": 400,
+   "y": 470,
+   "z": 2,
+   "spot": [
+    330,
+    500,
+    200
+   ]
+  },
+  {
+   "x": 920,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    920,
+    320,
+    250
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    1360,
+    420,
+    260
+   ]
+  },
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  }
+ ],
+ "lines": [
+  {
+   "text": "The inguinal canal is about 4 cm long, running from the deep ring to the superficial ring.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "The inguinal canal is about four centimetres long, running from the deep ring to the superficial ring."
+  },
+  {
+   "text": "It carries the spermatic cord in men, and the round ligament in women.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Now picture the canal as a little house. The roof is the internal oblique and the transversalis muscle.",
+   "shot": 4,
+   "dir": "gently amused"
+  },
+  {
+   "text": "The floor is the inguinal and lacunar ligaments.",
+   "shot": 5,
+   "dir": "steady"
+  },
+  {
+   "text": "And the back wall is the transversalis fascia and the conjoint tendon.",
+   "shot": 5,
+   "dir": "steady"
+  },
+  {
+   "text": "Options A and B mix up the floor and the back wall, so they are wrong.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the correct statement is the roof: internal oblique and transversalis.",
+   "shot": 6,
+   "dir": "calm, confident"
+  }
+ ]
+}
