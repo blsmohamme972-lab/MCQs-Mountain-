@@ -1,0 +1,108 @@
+{
+ "qid": "Q000007237",
+ "image": "Q000007237.png",
+ "takeaway": "Follicular thyroid carcinoma spreads through the blood, rarely to lymph nodes, and has a 5-year survival of about 70%.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A woman has a hemithyroidectomy and the histology shows follicular carcinoma. Which statement about follicular carcinoma is correct?"
+ },
+ "answer": {
+  "text": "It has a 5-year survival rate of approximately 70%."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    420,
+    330
+   ]
+  },
+  {
+   "x": 230,
+   "y": 440,
+   "z": 1.8,
+   "spot": [
+    240,
+    430,
+    240
+   ]
+  },
+  {
+   "x": 760,
+   "y": 470,
+   "z": 1.8,
+   "spot": [
+    760,
+    470,
+    300
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 260,
+   "z": 2,
+   "spot": [
+    1330,
+    260,
+    210
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 520,
+   "z": 2,
+   "spot": [
+    1230,
+    520,
+    150
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 620,
+   "z": 1.8,
+   "spot": [
+    1250,
+    660,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The surgeon removed one lobe, and the pathologist found follicular carcinoma.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "To call it malignant, we look for extracapsular spread on the excised tissue.",
+   "shot": 2,
+   "dir": "curious, engaged"
+  },
+  {
+   "text": "Fine needle aspiration cannot tell it from a follicular adenoma.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It spreads through the blood, the haematogenous route.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Lymph node spread is unusual, so that statement is wrong.",
+   "shot": 4,
+   "dir": "firm, clear"
+  },
+  {
+   "text": "The correct statement is a 5-year survival of about 70 percent.",
+   "say": "(laugh) The correct statement is a five year survival of about seventy percent.",
+   "shot": 5,
+   "dir": "warm, confident"
+  }
+ ]
+}
