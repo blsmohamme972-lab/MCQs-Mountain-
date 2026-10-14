@@ -1,0 +1,93 @@
+{
+ "qid": "Q000007235",
+ "image": "Q000007235.png",
+ "takeaway": "Venous ulcers sit in the gaiter area; treat with elevation and compression bandaging, and exclude coexisting arterial disease.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 74-year-old man has a long history of bilateral leg ulceration. Which statement regarding venous ulcers is correct?"
+ },
+ "answer": {
+  "text": "Elevation aids in treatment."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    230,
+    490,
+    120
+   ]
+  },
+  {
+   "x": 800,
+   "y": 430,
+   "z": 1.7,
+   "spot": [
+    800,
+    520,
+    170
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1330,
+    280,
+    150
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 540,
+   "z": 1.8,
+   "spot": [
+    1250,
+    660,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A venous ulcer sits in the gaiter area, around the ankle, with a sloughy base.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The skin around it can be dark and hard, from lipodermatosclerosis.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Treatment starts with elevation. Raise the leg, and the happy vein drains.",
+   "shot": 2,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "Regular dressings and compression bandaging do the rest.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "But always check the pedal pulses first, because compression can further compromise a poor blood supply.",
+   "shot": 4,
+   "dir": "warm, careful"
+  },
+  {
+   "text": "So elevation aids treatment, and that is our answer.",
+   "shot": 0,
+   "dir": "gently amused",
+   "say": "(clears throat) So elevation aids treatment, and that is our answer."
+  }
+ ]
+}

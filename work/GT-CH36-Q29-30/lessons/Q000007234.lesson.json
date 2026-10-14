@@ -1,0 +1,103 @@
+{
+ "qid": "Q000007234",
+ "image": "Q000007234.png",
+ "takeaway": "Pain on passive stretch of the big toe points to flexor hallucis longus, which lies in the deep posterior compartment of the leg.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Hours after tibial nailing, a man has excruciating pain on passive extension of the big toe; no neurovascular deficit. What is the likely diagnosis?"
+ },
+ "answer": {
+  "text": "Compartment syndrome of the deep posterior compartment of the leg"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 280,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    180,
+    250,
+    120
+   ]
+  },
+  {
+   "x": 770,
+   "y": 420,
+   "z": 1.7,
+   "spot": [
+    790,
+    520,
+    170
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1390,
+    290,
+    110
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    1300,
+    620,
+    140
+   ]
+  },
+  {
+   "x": 600,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    570,
+    280,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A tibial nail, three hours ago, and now terrible pain.",
+   "shot": 1,
+   "dir": "concerned, calm"
+  },
+  {
+   "text": "In compartment syndrome, pain is worsened by passive stretching of the affected muscles.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Here the big toe is stretched, and it screams. That stretches flexor hallucis longus.",
+   "shot": 3,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The ankle movements hurt much less, so the problem is not the calf bulk.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Flexor hallucis longus sits in the deep posterior compartment, with flexor digitorum longus and tibialis posterior.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The anterior compartment holds the extensors instead. So the answer is the deep posterior compartment.",
+   "shot": 5,
+   "dir": "warm, relieved",
+   "say": "(sigh) The anterior compartment holds the extensors instead. So the answer is the deep posterior compartment."
+  }
+ ]
+}
