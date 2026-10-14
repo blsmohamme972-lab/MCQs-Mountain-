@@ -1,0 +1,103 @@
+{
+ "qid": "Q000006528",
+ "image": "Q000006528.png",
+ "takeaway": "Iliopsoas is formed by psoas major and iliacus, passes deep to the inguinal ligament, attaches to the lesser trochanter and flexes the thigh at the hip.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following statements regarding the iliopsoas muscle is correct?"
+ },
+ "answer": {
+  "text": "It passes deep to the inguinal ligament."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 430,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    330,
+    330,
+    170
+   ]
+  },
+  {
+   "x": 790,
+   "y": 360,
+   "z": 2,
+   "spot": [
+    790,
+    380,
+    140
+   ]
+  },
+  {
+   "x": 800,
+   "y": 700,
+   "z": 2,
+   "spot": [
+    840,
+    700,
+    110
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    1190,
+    420,
+    170
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    1380,
+    260,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Psoas major and iliacus merge to form iliopsoas, not psoas minor.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "It passes deep to the inguinal ligament, under this rope bridge, on its way to the thigh.",
+   "shot": 2,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "It attaches to the lesser trochanter of the femur, not the greater trochanter.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It is the main flexor of the thigh at the hip joint, so it does not extend it.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Psoas major is supplied by the anterior rami of L1 to L3, not the superior gluteal nerve.",
+   "shot": 5,
+   "dir": "clear, steady",
+   "say": "Psoas major is supplied by the anterior rami of L one to L three, not the superior gluteal nerve."
+  },
+  {
+   "text": "So the correct statement is that it passes deep to the inguinal ligament.",
+   "shot": 2,
+   "dir": "firm, confident"
+  }
+ ]
+}

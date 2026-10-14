@@ -1,0 +1,107 @@
+{
+ "qid": "Q000006529",
+ "image": "Q000006529.png",
+ "takeaway": "Sartorius runs from the anterior superior iliac spine to the upper medial tibia and flexes both the hip and the knee.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following muscles acts as a flexor for both the knee joint and the hip joint?"
+ },
+ "answer": {
+  "text": "Sartorius"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 560,
+   "y": 440,
+   "z": 1.8,
+   "spot": [
+    560,
+    440,
+    150
+   ]
+  },
+  {
+   "x": 400,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    270,
+    270,
+    120
+   ]
+  },
+  {
+   "x": 800,
+   "y": 600,
+   "z": 2,
+   "spot": [
+    880,
+    570,
+    120
+   ]
+  },
+  {
+   "x": 800,
+   "y": 700,
+   "z": 2,
+   "spot": [
+    840,
+    740,
+    110
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    1190,
+    330,
+    160
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The sartorius is a thin, long muscle on the front of the thigh.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "It starts at the anterior superior iliac spine,",
+   "shot": 2,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "runs obliquely from lateral to medial, and ends on the upper medial tibia.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Because it crosses both joints, it flexes the hip and it flexes the knee.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It also abducts and laterally rotates the thigh at the hip.",
+   "shot": 0,
+   "dir": "clear, steady"
+  },
+  {
+   "text": "Rectus femoris is different: it extends the knee.",
+   "shot": 5,
+   "dir": "gently contrasting"
+  },
+  {
+   "text": "So the answer is sartorius.",
+   "shot": 0,
+   "dir": "firm, confident"
+  }
+ ]
+}
