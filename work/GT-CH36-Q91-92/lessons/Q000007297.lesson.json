@@ -1,0 +1,117 @@
+{
+ "qid": "Q000007297",
+ "image": "Q000007297.png",
+ "takeaway": "The intrinsic pathway runs XII, XI, IX with VIII and calcium. Factor VII is not part of it; it belongs to the extrinsic pathway.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "All of the following are involved in the intrinsic pathway of clotting except which?"
+ },
+ "answer": {
+  "text": "Factor VII"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 180,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    170,
+    400,
+    170
+   ]
+  },
+  {
+   "x": 450,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    420,
+    420,
+    200
+   ]
+  },
+  {
+   "x": 900,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    760,
+    420,
+    200
+   ]
+  },
+  {
+   "x": 1050,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    1000,
+    400,
+    170
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    1170,
+    420,
+    170
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    1420,
+    330,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The intrinsic pathway starts when blood meets collagen under the endothelium.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Collagen activates factor twelve.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Active factor twelve activates factor eleven, and active eleven activates factor nine.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Factor nine then forms a complex with active factor eight.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Calcium joins in as well.",
+   "shot": 5,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "But factor seven? It is the one standing apart: not intrinsic.",
+   "shot": 6,
+   "dir": "gently amused"
+  },
+  {
+   "text": "So the exception is factor seven.",
+   "shot": 6,
+   "dir": "calm, confident"
+  }
+ ]
+}
