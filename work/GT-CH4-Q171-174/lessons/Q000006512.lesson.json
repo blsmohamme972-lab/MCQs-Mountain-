@@ -1,0 +1,92 @@
+{
+ "qid": "Q000006512",
+ "image": "Q000006512.png",
+ "takeaway": "Tibial nerve: roots L4 to S3, deep to soleus in the calf, divides into medial and lateral plantar nerves in the foot; in the popliteal fossa it gives a cutaneous branch, the sural nerve.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following statements regarding the tibial nerve is correct?"
+ },
+ "answer": {
+  "text": "Cutaneous supply within the popliteal fossa is via a branch of the sural nerve."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 200,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    120,
+    370,
+    90
+   ]
+  },
+  {
+   "x": 790,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    790,
+    400,
+    190
+   ]
+  },
+  {
+   "x": 1290,
+   "y": 500,
+   "z": 2,
+   "spot": [
+    1290,
+    520,
+    200
+   ]
+  },
+  {
+   "x": 400,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    440,
+    400,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The tibial nerve starts from the roots L4, L5, S1, S2 and S3.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "It crosses the popliteal fossa, then runs down the calf deep to soleus, not superficial to it.",
+   "shot": 2,
+   "dir": "steady, explaining"
+  },
+  {
+   "text": "At the ankle it ends by dividing into the medial and lateral plantar nerves, in the foot.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "In the popliteal fossa it gives muscle branches to gastrocnemius, popliteus and soleus, so it does supply extrinsic muscles.",
+   "shot": 0,
+   "dir": "gently amused"
+  },
+  {
+   "text": "It also gives a cutaneous branch there: the sural nerve, carrying skin sensation.",
+   "shot": 4,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "So the correct statement is the cutaneous supply through a branch of the sural nerve.",
+   "shot": 4,
+   "dir": "warm, concluding"
+  }
+ ]
+}
