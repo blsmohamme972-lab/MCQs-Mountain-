@@ -1,0 +1,112 @@
+{
+ "qid": "Q000007246",
+ "image": "Q000007246.png",
+ "takeaway": "Calot's triangle is formed by the cystic duct, the common hepatic duct and the liver. The cystic artery, usually from the right hepatic artery, runs through it.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "When performing a laparoscopic cholecystectomy the surgeon identifies the cystic artery within Calot\u2019s triangle. Which structures make up the triangle?"
+ },
+ "answer": {
+  "text": "Cystic duct, common hepatic duct and liver"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 460,
+   "z": 1.8,
+   "spot": [
+    400,
+    470,
+    170
+   ]
+  },
+  {
+   "x": 720,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    720,
+    520,
+    230
+   ]
+  },
+  {
+   "x": 1050,
+   "y": 440,
+   "z": 1.8,
+   "spot": [
+    1000,
+    430,
+    170
+   ]
+  },
+  {
+   "x": 760,
+   "y": 320,
+   "z": 1.8,
+   "spot": [
+    760,
+    190,
+    200
+   ]
+  },
+  {
+   "x": 760,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    760,
+    520,
+    120
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "When we take out the gallbladder laparoscopically, we look for Calot's triangle.",
+   "shot": 0,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Inside it runs the cystic artery.",
+   "shot": 5,
+   "dir": "curious, warm"
+  },
+  {
+   "text": "The triangle has three sides.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The cystic duct.",
+   "shot": 1,
+   "dir": "matter-of-fact"
+  },
+  {
+   "text": "The common hepatic duct.",
+   "shot": 3,
+   "dir": "matter-of-fact"
+  },
+  {
+   "text": "And the edge of the liver above.",
+   "shot": 4,
+   "dir": "matter-of-fact"
+  },
+  {
+   "text": "The cystic artery is usually a branch of the right hepatic artery, but its origin can vary.",
+   "shot": 5,
+   "dir": "calm, steady"
+  },
+  {
+   "text": "It is not a side of the triangle; it runs through it. So the answer is cystic duct, common hepatic duct and liver.",
+   "shot": 2,
+   "dir": "warm, satisfied"
+  }
+ ]
+}
