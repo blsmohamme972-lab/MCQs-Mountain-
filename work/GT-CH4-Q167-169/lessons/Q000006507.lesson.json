@@ -1,0 +1,123 @@
+{
+ "qid": "Q000006507",
+ "image": "Q000006507.png",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "takeaway": "The hamstrings arise from the ischial tuberosity (short head of biceps from the linea aspera), are supplied by the sciatic nerve, and get their blood from the profunda femoris, not the femoral artery.",
+ "question": {
+  "text": "Which of the following statements regarding the hamstring muscles is incorrect?"
+ },
+ "answer": {
+  "text": "The hamstring compartment receives its blood supply from the femoral artery."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 380,
+   "y": 420,
+   "z": 1.7,
+   "spot": [
+    380,
+    400,
+    170
+   ]
+  },
+  {
+   "x": 1340,
+   "y": 320,
+   "z": 2,
+   "spot": [
+    1340,
+    300,
+    110
+   ]
+  },
+  {
+   "x": 1340,
+   "y": 650,
+   "z": 2,
+   "spot": [
+    1360,
+    640,
+    110
+   ]
+  },
+  {
+   "x": 300,
+   "y": 320,
+   "z": 1.9,
+   "spot": [
+    200,
+    260,
+    110
+   ]
+  },
+  {
+   "x": 900,
+   "y": 430,
+   "z": 1.7,
+   "spot": [
+    860,
+    400,
+    150
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    1090,
+    400,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Meet the hamstrings, sitting together on the ischial tuberosity.",
+   "shot": 1,
+   "dir": "warm, playful"
+  },
+  {
+   "text": "The short head of biceps femoris is the odd one out: it starts on the linea aspera.",
+   "shot": 2,
+   "dir": "curious"
+  },
+  {
+   "text": "Both heads of biceps femoris join one tendon to the head of the fibula.",
+   "shot": 1,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "Semimembranosus inserts on the medial condyle of the tibia.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "And the sciatic nerve supplies all three muscles.",
+   "shot": 4,
+   "dir": "warm"
+  },
+  {
+   "text": "Now the blood supply. It comes from the profunda femoris artery,",
+   "shot": 5,
+   "dir": "focused, a new point",
+   "say": "(clears throat) Now the blood supply. It comes from the profunda femoris artery,"
+  },
+  {
+   "text": "not from the femoral artery itself.",
+   "shot": 6,
+   "dir": "gently amused"
+  },
+  {
+   "text": "So the incorrect statement is the femoral artery one.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}

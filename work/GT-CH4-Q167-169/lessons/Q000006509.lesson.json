@@ -1,0 +1,132 @@
+{
+ "qid": "Q000006509",
+ "image": "Q000006509.png",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "takeaway": "The popliteal fossa floor is the popliteal surface of the femur, the knee joint capsule and the oblique popliteal ligament; the roof is deep fascia.",
+ "question": {
+  "text": "Which of the following statements regarding the popliteal fossa is correct?"
+ },
+ "answer": {
+  "text": "The floor contains the oblique popliteal ligament."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 340,
+   "y": 320,
+   "z": 1.9,
+   "spot": [
+    330,
+    280,
+    120
+   ]
+  },
+  {
+   "x": 1200,
+   "y": 320,
+   "z": 1.9,
+   "spot": [
+    1230,
+    260,
+    120
+   ]
+  },
+  {
+   "x": 768,
+   "y": 640,
+   "z": 1.2,
+   "spot": [
+    330,
+    680,
+    130
+   ]
+  },
+  {
+   "x": 768,
+   "y": 250,
+   "z": 1.9,
+   "spot": [
+    768,
+    170,
+    120
+   ]
+  },
+  {
+   "x": 700,
+   "y": 600,
+   "z": 1.7,
+   "spot": [
+    700,
+    600,
+    170
+   ]
+  },
+  {
+   "x": 960,
+   "y": 620,
+   "z": 2,
+   "spot": [
+    960,
+    620,
+    110
+   ]
+  },
+  {
+   "x": 760,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    750,
+    400,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The popliteal fossa is the diamond-shaped space at the back of the knee joint.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Semitendinosus forms the upper medial border,",
+   "shot": 1,
+   "dir": "calm"
+  },
+  {
+   "text": "and biceps femoris the upper lateral one.",
+   "shot": 2,
+   "dir": "calm"
+  },
+  {
+   "text": "Below, the two heads of gastrocnemius close the diamond.",
+   "shot": 3,
+   "dir": "explaining"
+  },
+  {
+   "text": "The roof is deep fascia.",
+   "shot": 4,
+   "dir": "calm"
+  },
+  {
+   "text": "The floor is the femur and the knee capsule,",
+   "shot": 5,
+   "dir": "explaining"
+  },
+  {
+   "text": "and the oblique popliteal ligament, our answer.",
+   "shot": 6,
+   "dir": "pleased, confident"
+  },
+  {
+   "text": "Inside run the popliteal artery and vein, and the tibial and common peroneal nerves.",
+   "shot": 7,
+   "dir": "warm"
+  }
+ ]
+}
