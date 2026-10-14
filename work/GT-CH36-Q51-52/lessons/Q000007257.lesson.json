@@ -1,0 +1,123 @@
+{
+ "qid": "Q000007257",
+ "image": "Q000007257.png",
+ "takeaway": "Low aldosterone (Addison disease) causes sodium loss, low blood pressure, potassium retention and acidosis; increased urinary potassium loss is the exception.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Mineralocorticoid deficiency can cause the following conditions except:"
+ },
+ "answer": {
+  "text": "Increased urinary potassium (K⁺) loss",
+  "say": "Increased urinary potassium loss"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    512,
+    60
+   ]
+  },
+  {
+   "x": 250,
+   "y": 400,
+   "z": 2,
+   "spot": [
+    250,
+    330,
+    200
+   ]
+  },
+  {
+   "x": 580,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    580,
+    400,
+    200
+   ]
+  },
+  {
+   "x": 880,
+   "y": 340,
+   "z": 2,
+   "spot": [
+    880,
+    340,
+    200
+   ]
+  },
+  {
+   "x": 880,
+   "y": 720,
+   "z": 2,
+   "spot": [
+    880,
+    700,
+    150
+   ]
+  },
+  {
+   "x": 1290,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    1290,
+    380,
+    220
+   ]
+  },
+  {
+   "x": 1290,
+   "y": 690,
+   "z": 2,
+   "spot": [
+    1290,
+    680,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Aldosterone comes from the zona glomerulosa, and is lost when the adrenal cortex is destroyed, as in Addison disease.",
+   "shot": 1,
+   "dir": "calm, curious"
+  },
+  {
+   "text": "Without it the kidney loses sodium, and water follows.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Blood pressure falls, giving postural hypotension.",
+   "shot": 3,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Buccal pigmentation is also a feature of Addison disease.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Aldosterone normally makes the kidney excrete potassium, so in deficiency potassium is retained, not lost.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Retained potassium and hydrogen ions bring metabolic acidosis.",
+   "shot": 6,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So increased potassium loss is the exception. The answer is B.",
+   "shot": 0,
+   "dir": "warm, reassuring"
+  }
+ ]
+}
