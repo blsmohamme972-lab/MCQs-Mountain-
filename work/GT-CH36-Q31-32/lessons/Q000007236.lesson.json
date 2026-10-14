@@ -1,0 +1,109 @@
+{
+ "qid": "Q000007236",
+ "image": "Q000007236.png",
+ "takeaway": "Raised calcium and PTH point to primary hyperparathyroidism, which is generally associated with calcium phosphate stones.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 52-year-old woman has left loin to groin pain, polyuria, skeletal aches, calcium 3.1 and PTH 150, with a left ureteric stone. Which stone is most likely?",
+  "say": "A 52-year-old woman has left loin to groin pain, polyuria, skeletal aches, calcium 3.1 and P T H 150, with a left ureteric stone. Which stone is most likely?"
+ },
+ "answer": {
+  "text": "Calcium phosphate"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    420,
+    330
+   ]
+  },
+  {
+   "x": 170,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    160,
+    520,
+    200
+   ]
+  },
+  {
+   "x": 520,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    510,
+    350,
+    230
+   ]
+  },
+  {
+   "x": 760,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    760,
+    420,
+    270
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    1290,
+    380,
+    230
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 650,
+   "z": 1.8,
+   "spot": [
+    1300,
+    700,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Loin to groin pain tells us a stone is moving down the ureter.",
+   "shot": 1,
+   "dir": "concerned, clear"
+  },
+  {
+   "text": "But look at her blood: a high calcium, and a high PTH.",
+   "shot": 2,
+   "dir": "curious, engaged"
+  },
+  {
+   "text": "That combination means primary hyperparathyroidism, with the glands pouring out PTH.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Calcium phosphate stones are generally associated with primary hyperparathyroidism.",
+   "shot": 4,
+   "dir": "firm, clear"
+  },
+  {
+   "text": "Calcium oxalate is the commonest stone overall, and uric acid stones are radiolucent, so neither fits this case.",
+   "shot": 5,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "High calcium, high PTH, think calcium phosphate.",
+   "say": "(sigh) High calcium, high P T H, think calcium phosphate.",
+   "shot": 0,
+   "dir": "relieved, warm"
+  }
+ ]
+}
