@@ -1,0 +1,109 @@
+{
+ "qid": "Q000007240",
+ "image": "Q000007240.png",
+ "takeaway": "The posterior circumflex humeral artery arises from the axillary artery; vertebral, internal thoracic, costocervical and dorsal scapular arteries come from the subclavian.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "The axillary artery runs from the first rib to the inferior border of teres major. Which artery is a direct branch of the axillary artery?",
+  "say": "The axillary artery runs from the first rib to the inferior border of teres major. Which artery is a direct branch of the axillary artery?"
+ },
+ "answer": {
+  "text": "Posterior circumflex humoral"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    420,
+    330
+   ]
+  },
+  {
+   "x": 330,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    330,
+    400,
+    250
+   ]
+  },
+  {
+   "x": 540,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    540,
+    270,
+    170
+   ]
+  },
+  {
+   "x": 520,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    540,
+    670,
+    160
+   ]
+  },
+  {
+   "x": 980,
+   "y": 400,
+   "z": 2,
+   "spot": [
+    990,
+    420,
+    230
+   ]
+  },
+  {
+   "x": 1360,
+   "y": 400,
+   "z": 2,
+   "spot": [
+    1360,
+    400,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Follow the red road: the axillary artery starts at the first rib.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "It runs behind pectoralis minor, a natural bridge over the road.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "And it ends at the lower border of teres major.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Along the way it gives branches, including the circumflex humeral arteries, which ring the neck of the humerus like a fountain.",
+   "shot": 4,
+   "dir": "engaged, confident"
+  },
+  {
+   "text": "So the posterior circumflex humeral artery is a direct branch.",
+   "say": "(clears throat) So the posterior circumflex humeral artery is a direct branch.",
+   "shot": 4,
+   "dir": "firm, clear"
+  },
+  {
+   "text": "The vertebral, internal thoracic, costocervical and dorsal scapular arteries are on the subclavian road instead.",
+   "shot": 5,
+   "dir": "calm, reassuring"
+  }
+ ]
+}

@@ -1,0 +1,108 @@
+{
+ "qid": "Q000007241",
+ "image": "Q000007241.png",
+ "takeaway": "Apoptosis is a regulated, energy-dependent process: DNA is cleaved, the membrane stays intact, and cells are phagocytosed. It is not energy independent.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "The following statements regarding apoptosis are true except:"
+ },
+ "answer": {
+  "text": "It is energy independent."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    420,
+    330
+   ]
+  },
+  {
+   "x": 260,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    270,
+    310,
+    200
+   ]
+  },
+  {
+   "x": 280,
+   "y": 620,
+   "z": 1.8,
+   "spot": [
+    290,
+    640,
+    210
+   ]
+  },
+  {
+   "x": 740,
+   "y": 350,
+   "z": 2,
+   "spot": [
+    740,
+    350,
+    190
+   ]
+  },
+  {
+   "x": 1070,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    1060,
+    330,
+    230
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 600,
+   "z": 1.8,
+   "spot": [
+    1250,
+    640,
+    240
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Apoptosis is programmed, regulated cell death, physiological or pathological.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Enzymes cleave the cell's DNA into small fragments.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The membrane stays intact, and neighbouring cells phagocytose the shrunken cell.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It needs energy, so saying it is energy independent is the false statement.",
+   "shot": 4,
+   "dir": "firm, clear"
+  },
+  {
+   "text": "Do not confuse it with necrosis, which is always pathological and messy.",
+   "say": "(laugh) Do not confuse it with necrosis, which is always pathological and messy.",
+   "shot": 5,
+   "dir": "gently amused"
+  },
+  {
+   "text": "So the exception is: it is energy independent.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
