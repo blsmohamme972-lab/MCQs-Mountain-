@@ -1,0 +1,100 @@
+{
+ "qid": "Q000007335",
+ "image": "Q000007335.png",
+ "takeaway": "Osmolality changes are detected in the hypothalamus; ADH, made there and released from the posterior pituitary, makes the collecting duct more permeable to water.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following statements relating to antidiuretic hormone (ADH) is true?",
+  "say": "Which of the following statements relating to anti-diuretic hormone, A D H, is true?"
+ },
+ "answer": {
+  "text": "Changes in osmolality are detected in the hypothalamus.",
+  "say": "Changes in osmolality are detected in the hypothalamus."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 220,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    210,
+    380,
+    150
+   ]
+  },
+  {
+   "x": 600,
+   "y": 400,
+   "z": 2.0,
+   "spot": [
+    580,
+    300,
+    130
+   ]
+  },
+  {
+   "x": 960,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    990,
+    560,
+    110
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1310,
+    420,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Follow the story from the left. Salty blood means high osmolality.",
+   "shot": 1,
+   "dir": "calm, curious"
+  },
+  {
+   "text": "The watchtower in the hypothalamus is the sensor: it detects changes in osmolality.",
+   "shot": 2,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "That is the true statement, and it is our answer.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The hypothalamus makes ADH, and the posterior pituitary releases it.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "ADH makes aquaporins fuse with the membrane of the collecting duct cells.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The duct becomes more permeable to water, so more water is absorbed, and less urine is passed.",
+   "shot": 4,
+   "dir": "warm, clear"
+  },
+  {
+   "text": "Low blood volume, sensed by stretch receptors in the left atrium, raises ADH rather than lowering it.",
+   "shot": 0,
+   "dir": "gently amused",
+   "say": "(clears throat) Low blood volume, sensed by stretch receptors in the left atrium, raises ADH rather than lowering it."
+  }
+ ]
+}
