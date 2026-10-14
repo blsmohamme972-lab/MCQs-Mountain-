@@ -1,0 +1,89 @@
+{
+ "qid": "Q000007254",
+ "image": "Q000007254.png",
+ "takeaway": "In acute inflammation vascular permeability is increased, not decreased; so decreased permeability is the incorrect statement.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "In acute inflammation, such as a microbial infection, which statement is incorrect?",
+  "say": "In acute inflammation, such as a microbial infection, which statement is incorrect?"
+ },
+ "answer": {
+  "text": "There is decreased vascular permeability.",
+  "say": "There is decreased vascular permeability."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1.0,
+   "spot": [
+    768,
+    300,
+    420
+   ]
+  },
+  {
+   "x": 520,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    620,
+    330,
+    230
+   ]
+  },
+  {
+   "x": 1060,
+   "y": 300,
+   "z": 1.9,
+   "spot": [
+    1100,
+    230,
+    200
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    1390,
+    250,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Here, microbes have invaded, and the body sounds the alarm.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Neutrophils line up along the vessel wall and stick to it using ICAM-1.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Mediators like histamine and bradykinin make the vessels dilate; bradykinin also causes pain.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Histamine, bradykinin, nitric oxide and leukotriene B4 open the gaps in the wall.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So vascular permeability goes up, and fluid pours into the tissue.",
+   "shot": 2,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Decreased permeability is the false statement, so it is the incorrect one.",
+   "shot": 3,
+   "dir": "relieved, confident"
+  }
+ ]
+}

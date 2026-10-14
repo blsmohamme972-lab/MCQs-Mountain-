@@ -1,0 +1,89 @@
+{
+ "qid": "Q000007255",
+ "image": "Q000007255.png",
+ "takeaway": "Vertigo on turning in bed with a positive Hallpike manoeuvre is benign positional paroxysmal vertigo (BPPV), from loose crystals in the inner ear.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 38-year-old woman has a month of vertigo, severe when she turns over in bed; Hallpike is positive. What is the cause?",
+  "say": "A 38-year-old woman has a month of vertigo, severe when she turns over in bed. The Hallpike manoeuvre confirms the diagnosis. What is the cause?"
+ },
+ "answer": {
+  "text": "Benign positional paroxysmal vertigo (BPPV)",
+  "say": "Benign positional paroxysmal vertigo, B P P V."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1.0,
+   "spot": [
+    768,
+    300,
+    420
+   ]
+  },
+  {
+   "x": 280,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    270,
+    330,
+    230
+   ]
+  },
+  {
+   "x": 770,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    760,
+    330,
+    230
+   ]
+  },
+  {
+   "x": 1280,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    1300,
+    400,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Our patient gets short attacks of vertigo whenever she turns in bed.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Inside the inner ear, calcified particles have been dislodged.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "These loose crystals drift in the canal when the head moves.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It can follow head trauma or chronic otitis media, or arise spontaneously.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The Hallpike manoeuvre turns the head quickly, with the head held below the couch.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "That reproduces the symptoms and confirms B P P V.",
+   "shot": 3,
+   "dir": "relieved, confident"
+  }
+ ]
+}
