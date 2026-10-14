@@ -1,0 +1,85 @@
+{
+ "takeaway": "White pulp hypertrophies in lymphoid leukaemia, not myeloid, so that statement is the incorrect one. Red pulp is about 75% and filters; white pulp makes antibodies.",
+ "question": {
+  "text": "Which statement about the pathology of the spleen is incorrect?",
+  "say": "Which statement about the pathology of the spleen is incorrect?"
+ },
+ "answer": {
+  "text": "White pulp hypertrophies in myeloid leukaemia.",
+  "say": "White pulp hypertrophies in myeloid leukaemia."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 250,
+   "y": 480,
+   "z": 2,
+   "spot": [
+    250,
+    420,
+    210
+   ]
+  },
+  {
+   "x": 780,
+   "y": 480,
+   "z": 2,
+   "spot": [
+    850,
+    470,
+    220
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    1400,
+    300,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The spleen comes from mesoderm, and about seventy-five percent of it is red pulp.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Red pulp is a mechanical filter, removing old red cells, antigens and microorganisms.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "A marginal zone separates it from the white pulp, which is lymphoid tissue.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "White pulp helps make antibodies and clears antigen-coated organisms.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It hypertrophies in lymphoid leukaemia, and that causes splenomegaly.",
+   "shot": 2,
+   "dir": "warm, interested"
+  },
+  {
+   "text": "Myeloid leukaemia is not the trigger, so that statement is the incorrect one.",
+   "shot": 3,
+   "say": "Myeloid leukaemia is not the trigger, so that statement is the incorrect one. (clears throat)",
+   "dir": "calm, confident"
+  }
+ ],
+ "qid": "Q000007276",
+ "image": "Q000007276.png",
+ "engine": "breeze",
+ "tempo": 1.0
+}

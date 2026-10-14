@@ -1,0 +1,84 @@
+{
+ "takeaway": "The common peroneal nerve winds round the fibular neck. Injury causes loss of ankle dorsiflexion and foot eversion: foot drop with a high-stepping gait.",
+ "question": {
+  "text": "After a fractured neck of fibula from a side impact, what would you most likely find on examination?",
+  "say": "A man has a fractured neck of fibula after a side impact. What would you most likely find on examination?"
+ },
+ "answer": {
+  "text": "Loss of ankle dorsiflexion",
+  "say": "Loss of ankle dorsiflexion."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 520,
+   "z": 2,
+   "spot": [
+    270,
+    470,
+    230
+   ]
+  },
+  {
+   "x": 780,
+   "y": 480,
+   "z": 2,
+   "spot": [
+    780,
+    380,
+    230
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 500,
+   "z": 2,
+   "spot": [
+    1250,
+    450,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The side impact crushes the door into the lateral knee and fractures the neck of the fibula.",
+   "shot": 1,
+   "dir": "warm, concerned"
+  },
+  {
+   "text": "The common peroneal nerve winds around the neck of the fibula.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So this fracture is the classic way to damage it.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The nerve supplies the lateral and anterior compartments of the leg.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Those muscles dorsiflex the ankle and evert the foot.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "With the nerve damaged, he cannot dorsiflex, giving foot drop and a high stepping gait.",
+   "shot": 3,
+   "dir": "gently sympathetic"
+  }
+ ],
+ "qid": "Q000007277",
+ "image": "Q000007277.png",
+ "engine": "breeze",
+ "tempo": 1.0
+}
