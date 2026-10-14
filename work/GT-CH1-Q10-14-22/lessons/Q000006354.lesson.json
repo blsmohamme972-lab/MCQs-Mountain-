@@ -1,0 +1,104 @@
+{
+ "qid": "Q000006354",
+ "image": "Q000006354.png",
+ "takeaway": "The T10 opening (oesophageal hiatus, in the right crus) transmits the oesophagus, the left gastric artery and vein and the two vagi.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 395,
+   "z": 1
+  },
+  {
+   "x": 600,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    500,
+    140,
+    100
+   ]
+  },
+  {
+   "x": 900,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    870,
+    250,
+    90
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 400,
+   "z": 2.0,
+   "spot": [
+    1010,
+    420,
+    80
+   ]
+  },
+  {
+   "x": 900,
+   "y": 380,
+   "z": 2.0,
+   "spot": [
+    800,
+    300,
+    70
+   ]
+  },
+  {
+   "x": 830,
+   "y": 560,
+   "z": 2.0,
+   "spot": [
+    825,
+    620,
+    80
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which structure passes through the diaphragm opening at the level of T10?",
+   "shot": 0,
+   "dir": "warm, curious",
+   "say": "Which structure passes through the diaphragm opening at the level of T ten?"
+  },
+  {
+   "text": "This is the oesophageal opening, between the muscular fibres of the right crus.",
+   "shot": 1,
+   "dir": "calm"
+  },
+  {
+   "text": "It transmits the oesophagus,",
+   "shot": 2,
+   "dir": "explanatory"
+  },
+  {
+   "text": "the left gastric artery and vein,",
+   "shot": 3,
+   "dir": "steady"
+  },
+  {
+   "text": "and the two vagi.",
+   "shot": 4,
+   "dir": "steady"
+  },
+  {
+   "text": "So at T10, the answer is the left gastric artery.",
+   "shot": 5,
+   "dir": "confident, emphatic",
+   "say": "So at T ten, the answer is the left gastric artery."
+  },
+  {
+   "text": "The inferior vena cava and right phrenic nerve pass higher, at T8; the azygous vein and thoracic duct go with the aorta at T12.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "(clears throat) The inferior vena cava and right phrenic nerve pass higher, at T eight; the azygous vein and thoracic duct go with the aorta at T twelve."
+  }
+ ]
+}

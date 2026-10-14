@@ -1,0 +1,92 @@
+{
+ "qid": "Q000006362",
+ "image": "Q000006362.png",
+ "takeaway": "Lymph from the abdominal oesophagus drains to the gastric and coeliac nodes; the upper two-thirds drain upwards; the wall is inner circular, outer longitudinal.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 395,
+   "z": 1
+  },
+  {
+   "x": 700,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    600,
+    120,
+    110
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 480,
+   "z": 1.9,
+   "spot": [
+    1070,
+    560,
+    100
+   ]
+  },
+  {
+   "x": 760,
+   "y": 480,
+   "z": 1.9,
+   "spot": [
+    750,
+    560,
+    110
+   ]
+  },
+  {
+   "x": 900,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    890,
+    300,
+    80
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which statement about the anatomy of the oesophagus is true?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Follow the oesophagus down through the diaphragm into the abdomen.",
+   "shot": 1,
+   "dir": "calm"
+  },
+  {
+   "text": "Lymph from its abdominal portion usually drains into the gastric",
+   "shot": 2,
+   "dir": "confident, emphatic"
+  },
+  {
+   "text": "and coeliac lymph nodes. That is the true statement.",
+   "shot": 3,
+   "dir": "steady"
+  },
+  {
+   "text": "Higher up, the upper two-thirds usually drain upwards: cervical to internal jugular nodes, thoracic to mediastinal nodes.",
+   "shot": 4,
+   "dir": "explanatory"
+  },
+  {
+   "text": "And watch the trap: the wall has inner circular and outer longitudinal muscle, not the other way round.",
+   "shot": 4,
+   "dir": "gently amused",
+   "say": "(laugh) And watch the trap: the wall has inner circular and outer longitudinal muscle, not the other way round."
+  },
+  {
+   "text": "So the answer: abdominal oesophageal lymph drains to the gastric and coeliac nodes.",
+   "shot": 0,
+   "dir": "bright, encouraging"
+  }
+ ]
+}

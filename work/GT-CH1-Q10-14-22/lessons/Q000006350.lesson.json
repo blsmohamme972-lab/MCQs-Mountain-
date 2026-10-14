@@ -1,0 +1,92 @@
+{
+ "qid": "Q000006350",
+ "image": "Q000006350.png",
+ "takeaway": "Section of the left phrenic nerve alone paralyses the left hemidiaphragm; each dome has its own nerve, and the paralysed dome moves paradoxically.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 395,
+   "z": 1
+  },
+  {
+   "x": 900,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    915,
+    300,
+    80
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    1000,
+    470,
+    110
+   ]
+  },
+  {
+   "x": 440,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    300,
+    190,
+    90
+   ]
+  },
+  {
+   "x": 560,
+   "y": 500,
+   "z": 1.9,
+   "spot": [
+    560,
+    600,
+    90
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which statement about paralysis of the left hemidiaphragm is true?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The phrenic nerve gives motor and sensory supply to the diaphragm, and leaves the cord high in the neck.",
+   "shot": 3,
+   "dir": "calm, explanatory"
+  },
+  {
+   "text": "Each dome has its own nerve. Cut the left phrenic nerve alone,",
+   "shot": 1,
+   "dir": "steady"
+  },
+  {
+   "text": "and the left hemidiaphragm is paralysed. That is the true statement.",
+   "shot": 2,
+   "dir": "confident, emphatic"
+  },
+  {
+   "text": "Instead of descending, the paralysed dome rises on inspiration: a paradoxical movement that helps detect it.",
+   "shot": 2,
+   "dir": "explanatory"
+  },
+  {
+   "text": "The healthy right dome still descends normally.",
+   "shot": 4,
+   "dir": "calm"
+  },
+  {
+   "text": "So the answer: it may be caused by section of the left phrenic nerve alone.",
+   "shot": 0,
+   "dir": "bright, encouraging",
+   "say": "(clears throat) So the answer: it may be caused by section of the left phrenic nerve alone."
+  }
+ ]
+}
