@@ -1,0 +1,100 @@
+{
+ "qid": "Q000007233",
+ "image": "Q000007233.png",
+ "takeaway": "Erb palsy: excessive neck-shoulder angle injures the superior brachial plexus (C5-C6, superior trunk), giving the waiter's tip position with loss of abduction, lateral rotation and elbow flexion.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A horse rider lands on his shoulder, stretching his neck. He loses shoulder abduction and lateral rotation, and elbow flexion and supination. Which roots are damaged?"
+ },
+ "answer": {
+  "text": "C5–C6",
+  "say": "C five, C six"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 250,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    240,
+    560,
+    230
+   ]
+  },
+  {
+   "x": 640,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    630,
+    330,
+    200
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 540,
+   "z": 1.8,
+   "spot": [
+    1120,
+    600,
+    220
+   ]
+  },
+  {
+   "x": 1400,
+   "y": 380,
+   "z": 1.9,
+   "spot": [
+    1390,
+    360,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "He landed with the neck stretched away from the shoulder.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "That increased angle injures the superior part of the brachial plexus.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The C5 and C6 roots join to form the superior trunk.",
+   "shot": 2,
+   "dir": "calm, confident",
+   "say": "The C five and C six roots join to form the superior trunk."
+  },
+  {
+   "text": "So he cannot abduct the shoulder, rotate it laterally, flex the elbow or supinate.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The arm hangs in the waiter's tip position.",
+   "shot": 3,
+   "dir": "gently amused"
+  },
+  {
+   "text": "This is Erb palsy.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the damaged roots are C5 and C6.",
+   "shot": 0,
+   "dir": "calm, confident",
+   "say": "So the damaged roots are C five and C six."
+  }
+ ]
+}
