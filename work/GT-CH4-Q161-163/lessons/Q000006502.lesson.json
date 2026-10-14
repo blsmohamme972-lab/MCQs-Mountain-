@@ -5,8 +5,8 @@
  "engine": "breeze",
  "tempo": 1.0,
  "question": {
-  "text": "A 50-year-old man is undergoing a total hip replacement. The operating surgeon takes a lateral approach to the joint. Which of the following anatomical structures does not attach to the greater trochanter?",
-  "say": "A fifty-year-old man is undergoing a total hip replacement. The operating surgeon takes a lateral approach to the joint. Which of the following anatomical structures does not attach to the greater trochanter?"
+  "text": "A 50-year-old man is having a total hip replacement through a lateral approach. Which of the following anatomical structures does not attach to the greater trochanter?",
+  "say": "A fifty-year-old man is having a total hip replacement through a lateral approach. Which of the following anatomical structures does not attach to the greater trochanter?"
  },
  "answer": {
   "text": "Iliacus"
