@@ -1,0 +1,99 @@
+{
+ "qid": "Q000006496",
+ "image": "Q000006496.png",
+ "takeaway": "Trendelenburg gait means weak hip abductors, the gluteus medius and minimus: the opposite hip dips and the trunk lurches over the weak side.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 67-year-old man walks into your orthopaedic clinic after his total hip replacement and you notice he has a Trendelenburg gait. Which muscles are most likely to have been damaged to cause this type of gait?",
+  "say": "A sixty-seven-year-old man walks into your orthopaedic clinic after his total hip replacement and you notice he has a Trendelenburg gait. Which muscles are most likely to have been damaged to cause this type of gait?"
+ },
+ "answer": {
+  "text": "The gluteus minimus and medius"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 250,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    290,
+    410,
+    140
+   ]
+  },
+  {
+   "x": 720,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    720,
+    420,
+    170
+   ]
+  },
+  {
+   "x": 1130,
+   "y": 450,
+   "z": 2.0,
+   "spot": [
+    1130,
+    470,
+    120
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    1340,
+    280,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "After his hip replacement, this man walks with a Trendelenburg gait.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "This gait comes from weak hip abductors.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "And the hip abductors are the gluteus medius and gluteus minimus, here fast asleep.",
+   "shot": 2,
+   "dir": "gently amused",
+   "say": "(laugh) And the hip abductors are the gluteus medius and gluteus minimus, here fast asleep."
+  },
+  {
+   "text": "If the right abductors are weak, lifting the left foot makes the left hip dip instead of rise.",
+   "shot": 1,
+   "dir": "clear, explaining"
+  },
+  {
+   "text": "The trunk lurches to the right to keep the centre of gravity over the right hip.",
+   "shot": 4,
+   "dir": "clear, explaining"
+  },
+  {
+   "text": "The Trendelenburg test checks the strength of these same muscles.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the damaged muscles are the gluteus medius and minimus.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}

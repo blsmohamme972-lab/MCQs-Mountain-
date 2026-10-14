@@ -1,0 +1,109 @@
+{
+ "qid": "Q000006495",
+ "image": "Q000006495.png",
+ "takeaway": "The deep peroneal nerve supplies the first web space; the superficial peroneal supplies most of the dorsum, the sural the posterolateral foot, the plantar nerves the sole.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 25-year-old gentleman sustains an injury to the common peroneal nerve while playing rugby. Which area of the foot would you touch to test the deep peroneal nerve?",
+  "say": "A twenty-five-year-old gentleman sustains an injury to the common peroneal nerve while playing rugby. Which area of the foot would you touch to test the deep peroneal nerve?"
+ },
+ "answer": {
+  "text": "None of the above"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 260,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    330,
+    460,
+    100
+   ]
+  },
+  {
+   "x": 760,
+   "y": 440,
+   "z": 1.8,
+   "spot": [
+    760,
+    500,
+    120
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 280,
+   "z": 2.0,
+   "spot": [
+    1380,
+    150,
+    90
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    1330,
+    420,
+    150
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 720,
+   "z": 1.9,
+   "spot": [
+    1300,
+    730,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Rugby has injured the common peroneal nerve.",
+   "shot": 1,
+   "dir": "warm, sympathetic"
+  },
+  {
+   "text": "Our diver is the deep peroneal nerve, and it dives into the first web space.",
+   "shot": 2,
+   "dir": "playful, curious"
+  },
+  {
+   "text": "So you test it by touching the skin between the big toe and the second toe.",
+   "shot": 2,
+   "dir": "clear, confident"
+  },
+  {
+   "text": "The superficial peroneal nerve covers the anterolateral calf and most of the dorsum.",
+   "shot": 3,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "The sural nerve supplies the posterolateral calf and foot.",
+   "shot": 4,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "The medial and lateral sole belong to the medial and lateral plantar nerves.",
+   "shot": 4,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "No option names the first web space, so the answer is none of the above.",
+   "shot": 5,
+   "dir": "gently amused",
+   "say": "(laugh) No option names the first web space, so the answer is none of the above."
+  }
+ ]
+}
