@@ -1,0 +1,103 @@
+{
+ "qid": "Q000007330",
+ "image": "Q000007330.png",
+ "takeaway": "Dobutamine is predominantly a beta 1 agonist, used in cardiogenic shock. Nitrates are venodilators, not inotropes.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following statements concerning inotropes is correct?"
+ },
+ "answer": {
+  "text": "Dobutamine is predominantly a \u03b2\u2081 receptor agonist."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 200,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    200,
+    430,
+    190
+   ]
+  },
+  {
+   "x": 520,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    540,
+    330,
+    200
+   ]
+  },
+  {
+   "x": 930,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    980,
+    430,
+    210
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    1330,
+    300,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Inotropes strengthen the force of the heart's contraction.",
+   "shot": 0,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Dobutamine is predominantly a beta 1 receptor agonist.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It is used mainly in cardiogenic shock, to make a failing heart pump harder.",
+   "shot": 3,
+   "dir": "warm, steady"
+  },
+  {
+   "text": "Adrenaline is different. It acts on alpha, beta 1 and beta 2 receptors, with strong vasoconstriction.",
+   "shot": 0,
+   "dir": "matter-of-fact"
+  },
+  {
+   "text": "Isoprenaline acts on both beta 1 and beta 2 receptors.",
+   "shot": 0,
+   "dir": "matter-of-fact"
+  },
+  {
+   "text": "Nitrates are not inotropes at all.",
+   "shot": 4,
+   "dir": "warm, emphatic"
+  },
+  {
+   "text": "They do not change contractility; they dilate veins and lower peripheral resistance.",
+   "shot": 4,
+   "dir": "gently amused",
+   "say": "They do not change contractility; (laugh) they dilate veins and lower peripheral resistance."
+  },
+  {
+   "text": "So the correct statement: dobutamine is mainly a beta 1 agonist.",
+   "shot": 2,
+   "dir": "warm, satisfied"
+  }
+ ]
+}
