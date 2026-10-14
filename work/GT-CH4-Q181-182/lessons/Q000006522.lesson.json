@@ -1,0 +1,25 @@
+{
+ "qid": "Q000006522",
+ "image": "Q000006522.png",
+ "takeaway": "The femoral sheath encloses the femoral artery, femoral vein and femoral canal (with lymphatics and Cloquet's node); the femoral nerve lies lateral, outside the sheath.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {"text": "The following structures are contained within the femoral sheath except:"},
+ "answer": {"text": "The femoral nerve"},
+ "shots": [
+  {"x": 768, "y": 512, "z": 1},
+  {"x": 900, "y": 520, "z": 1.5, "spot": [900, 470, 230]},
+  {"x": 850, "y": 430, "z": 1.9, "spot": [850, 400, 170]},
+  {"x": 1290, "y": 470, "z": 2.1, "spot": [1270, 490, 100]},
+  {"x": 260, "y": 430, "z": 1.8, "spot": [250, 420, 160]}
+ ],
+ "lines": [
+  {"text": "The femoral sheath is a fascial tube extending about 4 cm below the inguinal ligament.", "say": "The femoral sheath is a fascial tube extending about four centimetres below the inguinal ligament.", "shot": 1, "dir": "warm, curious"},
+  {"text": "It encloses the upper parts of the femoral artery and vein.", "shot": 2, "dir": "calm, clear"},
+  {"text": "The sheath lets these vessels glide deep to the inguinal ligament as the hip moves.", "shot": 2, "dir": "calm, explaining"},
+  {"text": "Its medial part is the femoral canal, which holds Cloquet's node.", "say": "Its medial part is the femoral canal, which holds Kloh-kay's node.", "shot": 3, "dir": "bright, friendly"},
+  {"text": "But the femoral nerve is not inside the sheath.", "shot": 4, "dir": "calm, confident"},
+  {"text": "It lies lateral to it, wide awake with its lantern.", "say": "(laugh) It lies lateral to it, wide awake with its lantern.", "shot": 4, "dir": "gently amused"},
+  {"text": "So the structure not contained in the femoral sheath is the femoral nerve.", "shot": 0, "dir": "warm, conclusive"}
+ ]
+}
