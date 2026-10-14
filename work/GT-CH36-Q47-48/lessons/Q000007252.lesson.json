@@ -1,0 +1,102 @@
+{
+ "qid": "Q000007252",
+ "image": "Q000007252.png",
+ "takeaway": "Superior gluteal nerve injury paralyses gluteus medius, minimus and tensor fascia lata, giving a positive Trendelenburg test.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 74-year-old woman has a positive Trendelenburg test after a hip replacement. Injury to which nerve is the most likely explanation?"
+ },
+ "answer": {
+  "text": "Superior gluteal nerve"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 210,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    200,
+    440,
+    190
+   ]
+  },
+  {
+   "x": 800,
+   "y": 330,
+   "z": 1.7,
+   "spot": [
+    800,
+    220,
+    170
+   ]
+  },
+  {
+   "x": 800,
+   "y": 500,
+   "z": 1.7,
+   "spot": [
+    820,
+    290,
+    200
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    1380,
+    250,
+    180
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 520,
+   "z": 1.9,
+   "spot": [
+    1380,
+    640,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "After her hip replacement, this lady has a positive Trendelenburg test.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The superior gluteal nerve supplies three muscles: gluteus medius, gluteus minimus and tensor fascia lata.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "When this nerve is injured, all three are paralysed.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Normally, gluteus medius tilts the pelvis to lift the opposite side as we walk.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Without it, gravity wins and the unsupported hip drops, giving a lurching gait.",
+   "shot": 5,
+   "dir": "gently amused"
+  },
+  {
+   "text": "So the answer is the superior gluteal nerve.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
