@@ -1,0 +1,92 @@
+{
+ "qid": "Q000007316",
+ "image": "Q000007316.png",
+ "takeaway": "The axillary nerve, from the posterior cord, winds round the surgical neck of the humerus. It is characteristically damaged in anterior dislocation of the humerus, weakening deltoid and numbing the regimental patch.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "An A&E registrar refers a patient with an injured axillary nerve. In which of the following scenarios is this nerve characteristically damaged?"
+ },
+ "answer": {
+  "text": "Anterior dislocation of the humerus"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 430,
+   "z": 1.8,
+   "spot": [
+    220,
+    400,
+    220
+   ]
+  },
+  {
+   "x": 800,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    790,
+    470,
+    200
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 350,
+   "z": 1.8,
+   "spot": [
+    1370,
+    310,
+    170
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 540,
+   "z": 1.8,
+   "spot": [
+    1330,
+    630,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The axillary nerve is a terminal branch of the posterior cord of the brachial plexus.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "In an anterior dislocation, the head of the humerus is pushed forward out of the shoulder socket.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The nerve runs through the quadrangular space and around the surgical neck of the humerus, so the dislocated head squashes it.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It supplies the skin over the lower deltoid, the regimental patch.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It also supplies the deltoid and teres minor, so the deltoid becomes weak.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the nerve is characteristically damaged in anterior dislocation of the humerus.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}
