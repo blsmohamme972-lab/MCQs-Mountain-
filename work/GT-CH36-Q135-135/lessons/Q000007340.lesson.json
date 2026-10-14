@@ -1,0 +1,98 @@
+{
+ "qid": "Q000007340",
+ "image": "Q000007340.png",
+ "takeaway": "The anterior mediastinum lies behind the sternum and in front of the great vessels. It contains the thymus, lymph nodes, fat and vessels.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following structures is located in the anterior mediastinum?"
+ },
+ "answer": {
+  "text": "Thymus gland"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 200,
+   "y": 420,
+   "z": 2.0,
+   "spot": [
+    190,
+    330,
+    150
+   ]
+  },
+  {
+   "x": 540,
+   "y": 480,
+   "z": 1.9,
+   "spot": [
+    540,
+    540,
+    200
+   ]
+  },
+  {
+   "x": 900,
+   "y": 430,
+   "z": 1.9,
+   "spot": [
+    900,
+    480,
+    230
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 400,
+   "z": 2.0,
+   "spot": [
+    1400,
+    420,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The anterior mediastinum is the space just behind the sternum.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Right here, the thymus gland sits in front.",
+   "shot": 2,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "Behind it are the great vessels, which mark the back border of this compartment.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Besides the thymus, it holds lymph nodes, fat and vessels.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The oesophagus and trachea wait in other rooms, so they are not anterior.",
+   "shot": 4,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Anterior mediastinal masses are classically thymic, substernal thyroid goitre, teratoma and other germ cell tumours, or lymphoma.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So remember: behind the sternum, think thymus.",
+   "shot": 2,
+   "say": "(sigh) So remember: behind the sternum, think thymus.",
+   "dir": "warm, relieved"
+  }
+ ]
+}
