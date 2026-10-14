@@ -1,0 +1,117 @@
+{
+ "qid": "Q000007222",
+ "image": "Q000007222.png",
+ "takeaway": "Long-term GORD refluxes acid into the distal oesophagus. Chronic inflammation causes metaplasia: one differentiated cell type replaced by another. It is reversible if the irritant is removed.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Endoscopy of a patient with long-term GORD shows erythema around the distal third of the oesophagus. Which pathological process has most likely occurred?"
+ },
+ "answer": {
+  "text": "Metaplasia"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    300,
+    420,
+    200
+   ]
+  },
+  {
+   "x": 300,
+   "y": 350,
+   "z": 2,
+   "spot": [
+    260,
+    300,
+    130
+   ]
+  },
+  {
+   "x": 760,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    780,
+    400,
+    230
+   ]
+  },
+  {
+   "x": 1200,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1190,
+    380,
+    200
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    1380,
+    190,
+    120
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 600,
+   "z": 1.8,
+   "spot": [
+    1260,
+    720,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "In gastro-oesophageal reflux disease, the stomach refluxes acid up into the oesophagus.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The distal oesophagus becomes red and inflamed.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "If the exposure is severe and chronic enough, the lining changes.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "One differentiated cell type is replaced by another. That is metaplasia.",
+   "shot": 3,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "The process is reversible: if the irritant is removed, the tissue may return to normal.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Neoplasia and dysplasia are not the most likely process here.",
+   "shot": 6,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the answer is metaplasia.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}

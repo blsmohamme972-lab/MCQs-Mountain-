@@ -1,0 +1,97 @@
+{
+ "qid": "Q000007223",
+ "image": "Q000007223.png",
+ "takeaway": "Ca 15-3 breast, Ca 19-9 advanced colorectal, VMA phaeochromocytoma, ADH oat cell are correct. Calcitonin marks medullary thyroid carcinoma; parathyroid carcinoma raises PTH.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "The following tumour markers are correctly paired with an associated neoplasia except which one?"
+ },
+ "answer": {
+  "text": "Calcitonin: Parathyroid carcinoma"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    300,
+    450,
+    300
+   ]
+  },
+  {
+   "x": 780,
+   "y": 450,
+   "z": 2,
+   "spot": [
+    780,
+    430,
+    200
+   ]
+  },
+  {
+   "x": 1130,
+   "y": 450,
+   "z": 2,
+   "spot": [
+    1120,
+    470,
+    190
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 450,
+   "z": 2,
+   "spot": [
+    1430,
+    520,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Check each pair. Ca 15-3 goes with breast cancer, and Ca 19-9 with advanced colorectal carcinoma.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Vanillylmandelic acid goes with phaeochromocytoma.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Antidiuretic hormone goes with oat cell tumours.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Now the parathyroid. Parathyroid carcinoma may increase parathyroid hormone, PTH.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It is not marked by calcitonin.",
+   "shot": 2,
+   "dir": "gently firm"
+  },
+  {
+   "text": "Calcitonin belongs to the thyroid, in medullary carcinoma.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the pair that does not fit is calcitonin with parathyroid carcinoma.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}
