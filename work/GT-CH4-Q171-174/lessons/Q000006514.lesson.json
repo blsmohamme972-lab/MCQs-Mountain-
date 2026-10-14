@@ -1,0 +1,97 @@
+{
+ "qid": "Q000006514",
+ "image": "Q000006514.png",
+ "takeaway": "Posterior cruciate ligament: lateral surface of medial femoral condyle to the posterior tibia; two bundles; intracapsular but extrasynovial; main role is to prevent posterior displacement of the tibia.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following statements regarding the posterior cruciate ligament is correct?"
+ },
+ "answer": {
+  "text": "It prevents posterior dislocation of the tibia."
+ },
+ "shots": [
+  {
+   "x": 700,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    700,
+    500,
+    170
+   ]
+  },
+  {
+   "x": 300,
+   "y": 270,
+   "z": 2,
+   "spot": [
+    255,
+    255,
+    110
+   ]
+  },
+  {
+   "x": 560,
+   "y": 520,
+   "z": 2,
+   "spot": [
+    560,
+    540,
+    150
+   ]
+  },
+  {
+   "x": 1230,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    1360,
+    245,
+    130
+   ]
+  },
+  {
+   "x": 800,
+   "y": 640,
+   "z": 1.8,
+   "spot": [
+    530,
+    670,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The posterior cruciate ligament sits in the middle of the knee, between the femur and the tibia.",
+   "shot": 0,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "It attaches to the lateral surface of the medial femoral condyle, not the lateral condyle.",
+   "shot": 1,
+   "dir": "steady, explaining"
+  },
+  {
+   "text": "It is made of two bundles, not three.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "And it is intracapsular but extrasynovial, so it is not intrasynovial.",
+   "shot": 3,
+   "dir": "curious, careful"
+  },
+  {
+   "text": "Its main job is to stop the tibia from sliding backwards on the femur.",
+   "shot": 4,
+   "dir": "warm, emphatic"
+  },
+  {
+   "text": "So the correct statement is that it prevents posterior displacement of the tibia.",
+   "shot": 4,
+   "dir": "warm, concluding"
+  }
+ ]
+}

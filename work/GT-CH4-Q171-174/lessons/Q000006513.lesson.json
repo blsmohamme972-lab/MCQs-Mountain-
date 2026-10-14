@@ -1,0 +1,97 @@
+{
+ "qid": "Q000006513",
+ "image": "Q000006513.png",
+ "takeaway": "Medial plantar nerve: flexor digitorum brevis, abductor hallucis, flexor hallucis brevis. Flexor digiti minimi brevis is supplied by the lateral plantar nerve.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following muscles in the sole of the foot is not supplied by the medial plantar nerve?"
+ },
+ "answer": {
+  "text": "Flexor digiti minimi brevis"
+ },
+ "shots": [
+  {
+   "x": 830,
+   "y": 520,
+   "z": 1.6,
+   "spot": [
+    840,
+    520,
+    230
+   ]
+  },
+  {
+   "x": 480,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    500,
+    330,
+    170
+   ]
+  },
+  {
+   "x": 200,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    100,
+    470,
+    260
+   ]
+  },
+  {
+   "x": 1200,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    1200,
+    280,
+    170
+   ]
+  },
+  {
+   "x": 1400,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    1410,
+    350,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The sole of the foot has four muscle layers, just like a layered cake.",
+   "shot": 0,
+   "dir": "playful, warm"
+  },
+  {
+   "text": "The yellow waiter is the medial plantar nerve.",
+   "shot": 1,
+   "dir": "light, amused"
+  },
+  {
+   "text": "He serves flexor digitorum brevis, abductor hallucis, and flexor hallucis brevis.",
+   "shot": 2,
+   "dir": "steady, listing"
+  },
+  {
+   "text": "The purple waiter is the lateral plantar nerve. It supplies abductor digiti minimi, quadratus plantae, adductor hallucis and the interossei.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "And flexor digiti minimi brevis, the happy muscle on the right, is also lateral plantar.",
+   "shot": 4,
+   "dir": "warm, pleased"
+  },
+  {
+   "text": "So it is not supplied by the medial plantar nerve.",
+   "shot": 4,
+   "dir": "calm, confident"
+  }
+ ]
+}

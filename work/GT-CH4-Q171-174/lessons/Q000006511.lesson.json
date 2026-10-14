@@ -1,0 +1,92 @@
+{
+ "qid": "Q000006511",
+ "image": "Q000006511.png",
+ "takeaway": "Four tributaries join the long saphenous vein at the saphenofemoral junction: superficial epigastric, superficial circumflex iliac, superficial external pudendal and deep external pudendal. The inferior epigastric vein does not.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A saphenofemoral junction ligation is performed for varicose veins. Which tributary does not commonly join the long saphenous vein at the opening?"
+ },
+ "answer": {
+  "text": "Inferior epigastric vein"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 830,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    850,
+    510,
+    140
+   ]
+  },
+  {
+   "x": 1060,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    1100,
+    395,
+    100
+   ]
+  },
+  {
+   "x": 330,
+   "y": 430,
+   "z": 1.6,
+   "spot": [
+    230,
+    430,
+    210
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 560,
+   "z": 2,
+   "spot": [
+    1400,
+    545,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The long saphenous vein climbs the thigh and joins the femoral vein at the saphenofemoral junction.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "This is the spot a surgeon ties off, a ligation, when treating varicose veins.",
+   "shot": 2,
+   "dir": "warm, matter-of-fact"
+  },
+  {
+   "text": "Just below the junction, four small tributaries pour in.",
+   "shot": 3,
+   "dir": "curious"
+  },
+  {
+   "text": "The superficial epigastric, the superficial circumflex iliac, the superficial external pudendal, and the deep external pudendal.",
+   "shot": 3,
+   "dir": "steady, listing"
+  },
+  {
+   "text": "The inferior epigastric vein is not one of them. It drains elsewhere, so it does not commonly join here.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the tributary that does not join is the inferior epigastric vein.",
+   "shot": 0,
+   "dir": "warm, concluding"
+  }
+ ]
+}
