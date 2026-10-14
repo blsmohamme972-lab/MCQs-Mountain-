@@ -1,0 +1,116 @@
+{
+ "qid": "Q000007290",
+ "image": "Q000007290.png",
+ "takeaway": "LMWH is fractionated to short chains and cuts DVT extension or recurrence by 38% versus unfractionated heparin, with a lower risk of HIT.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Compared with unfractionated heparin, which statement about low molecular weight heparin (LMWH) is correct?"
+ },
+ "answer": {
+  "text": "LMWH reduces the risk of DVT extension or recurrence by 38%.",
+  "say": "Low molecular weight heparin reduces the risk of DVT extension or recurrence by thirty-eight percent."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 360,
+   "y": 520,
+   "z": 2,
+   "spot": [
+    330,
+    520,
+    250
+   ]
+  },
+  {
+   "x": 384,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    300,
+    180,
+    150
+   ]
+  },
+  {
+   "x": 700,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    650,
+    260,
+    170
+   ]
+  },
+  {
+   "x": 920,
+   "y": 560,
+   "z": 2,
+   "spot": [
+    930,
+    520,
+    200
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    1290,
+    400,
+    250
+   ]
+  },
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  }
+ ],
+ "lines": [
+  {
+   "text": "Unfractionated heparin is a tangle of polymers of many different molecular weights.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "It needs regular APTT monitoring, so the option saying it does not is wrong.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Low molecular weight heparin is fractionated, snipped down to short chains only.",
+   "shot": 3,
+   "dir": "gently amused",
+   "say": "Low molecular weight heparin is fractionated, snipped down to short chains only."
+  },
+  {
+   "text": "These short chains are used for DVT prophylaxis in surgery.",
+   "shot": 4,
+   "dir": "steady"
+  },
+  {
+   "text": "It reduces the risk of DVT extending or recurring by 38% compared with unfractionated heparin.",
+   "shot": 5,
+   "dir": "calm, confident",
+   "say": "It reduces the risk of DVT extending or recurring by thirty-eight percent compared with unfractionated heparin."
+  },
+  {
+   "text": "It also carries a lower risk of heparin-induced thrombocytopenia, so that option is wrong.",
+   "shot": 5,
+   "dir": "steady"
+  },
+  {
+   "text": "So the correct statement is the 38% reduction.",
+   "shot": 6,
+   "dir": "calm, confident",
+   "say": "So the correct statement is the thirty-eight percent reduction."
+  }
+ ]
+}
