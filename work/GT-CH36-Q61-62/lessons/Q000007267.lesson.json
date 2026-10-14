@@ -1,0 +1,109 @@
+{
+ "qid": "Q000007267",
+ "image": "Q000007267.png",
+ "takeaway": "Thoracic duct: arises at L1-L2 as the cisterna chyli, passes through the right crus, ascends behind the oesophagus and crosses the midline from right to left at T5.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Concerning the course of the thoracic duct, which statement is correct?",
+  "say": "Concerning the course of the thoracic duct, which statement is correct?"
+ },
+ "answer": {
+  "text": "It crosses the midline from right to left at T5.",
+  "say": "It crosses the midline from right to left at T five."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 384,
+   "y": 600,
+   "z": 2.0,
+   "spot": [
+    230,
+    580,
+    200
+   ]
+  },
+  {
+   "x": 640,
+   "y": 520,
+   "z": 2.0,
+   "spot": [
+    600,
+    470,
+    200
+   ]
+  },
+  {
+   "x": 850,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    830,
+    300,
+    170
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    1300,
+    300,
+    170
+   ]
+  },
+  {
+   "x": 1230,
+   "y": 560,
+   "z": 2.0,
+   "spot": [
+    1330,
+    430,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Follow the thoracic duct from the bottom up.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "It arises between L1 and L2 as the cisterna chyli.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "It passes up through the right crus of the diaphragm.",
+   "shot": 2,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "It ascends posterior to the oesophagus.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Then, at T5, the hand with five fingers, it crosses the midline from right to left.",
+   "shot": 4,
+   "dir": "warm, explaining"
+  },
+  {
+   "text": "Like a bridge from right to left.",
+   "shot": 5,
+   "dir": "gently amused"
+  },
+  {
+   "text": "So the correct statement is: it crosses the midline from right to left at T5.",
+   "shot": 5,
+   "dir": "pleased, confident"
+  }
+ ]
+}
