@@ -1,0 +1,102 @@
+{
+ "qid": "Q000007331",
+ "image": "Q000007331.png",
+ "takeaway": "The circumflex artery arises from the left coronary artery. The anterior cardiac veins drain directly into the right atrium; the small cardiac vein usually drains into the coronary sinus.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Concerning the blood supply/drainage of the heart, which of the following statements is correct?"
+ },
+ "answer": {
+  "text": "The circumflex artery arises from the left coronary artery."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    330,
+    300,
+    170
+   ]
+  },
+  {
+   "x": 520,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    500,
+    580,
+    170
+   ]
+  },
+  {
+   "x": 960,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    950,
+    400,
+    210
+   ]
+  },
+  {
+   "x": 1320,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    1320,
+    420,
+    190
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Two coronary arteries supply the heart.",
+   "shot": 0,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The left coronary artery arises from the aorta and divides into two branches.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The anterior interventricular artery, also from the left, runs in the groove between the ventricles.",
+   "shot": 2,
+   "dir": "matter-of-fact"
+  },
+  {
+   "text": "The circumflex artery runs in the atrioventricular groove.",
+   "shot": 3,
+   "dir": "matter-of-fact"
+  },
+  {
+   "text": "So the circumflex arises from the left coronary artery: the correct statement.",
+   "shot": 3,
+   "dir": "warm, satisfied"
+  },
+  {
+   "text": "The right coronary artery gives the posterior interventricular artery, and the marginal branch.",
+   "shot": 4,
+   "dir": "calm, steady"
+  },
+  {
+   "text": "Veins: the anterior cardiac veins drain directly into the right atrium, not the coronary sinus.",
+   "shot": 0,
+   "dir": "matter-of-fact"
+  },
+  {
+   "text": "The small cardiac vein usually drains into the coronary sinus.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
