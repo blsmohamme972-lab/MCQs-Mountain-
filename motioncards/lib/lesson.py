@@ -10,6 +10,9 @@ package, validate, bot upload, hosting and offline download all work unchanged:
 - the scene script moves a camera over the image (eased zoom and pan per shot, a slow push-in while a shot holds),
   dims everything but the part being explained (spotlight), pulses a ring on it, and shows the line as a caption with
   the speaker's name. The voice is the master clock in the app, so picture and sound cannot drift.
+- optional intro ("question" and "answer"): the picture is dimmed, a box shows the question (shortened when long) while
+  the voice reads it, a second box below shows the answer while the voice says it, then both fade and the explanation
+  starts with the camera and spotlight.
 """
 from __future__ import annotations
 import base64, json, math, subprocess, sys
@@ -17,8 +20,13 @@ from pathlib import Path
 
 W, H = 960, 540                       # landscape stage (16:9)
 MAX_IMAGE_BYTES = 600 * 1024          # engine_v2 asset limit
-LESSON_KEYS = {"qid", "image", "takeaway", "engine", "voice", "voices", "names", "tempo", "gap_ms", "shots", "lines", "lang"}
+LESSON_KEYS = {"qid", "image", "takeaway", "engine", "voice", "voices", "names", "tempo", "gap_ms", "shots", "lines", "lang",
+               "question", "answer"}
 LINE_KEYS = {"who", "text", "say", "dir", "shot", "tag"}
+INTRO_KEYS = {"text", "say", "dir"}
+INTRO_MAX = {"question": 220, "answer": 110}               # characters that fit the intro boxes (about 5 and 3 lines)
+INTRO_DIR = {"question": "clear, curious", "answer": "calm, confident"}
+INTRO_HOLD_MS = 1100                                        # silence after the answer while the boxes fade out
 
 
 def _fail(msg: str): raise ValueError("lesson: " + msg)
@@ -48,6 +56,14 @@ def check_lesson(spec: dict, qid: str) -> dict:
         if extra: _fail(f"lines[{i}]: unknown fields " + ", ".join(sorted(extra)))
         if not isinstance(ln.get("text"), str) or not ln["text"].strip() or len(ln["text"]) > 200: _fail(f"lines[{i}].text must be 1..200 characters")
         if not isinstance(ln.get("shot"), int) or not 0 <= ln["shot"] < len(shots): _fail(f"lines[{i}].shot must index shots")
+    if ("question" in spec) != ("answer" in spec): _fail("question and answer go together (the intro needs both)")
+    for k in ("question", "answer"):
+        if k not in spec: continue
+        b = spec[k]
+        if not isinstance(b, dict): _fail(f"{k} must be an object")
+        extra = set(b) - INTRO_KEYS
+        if extra: _fail(f"{k}: unknown fields " + ", ".join(sorted(extra)))
+        if not isinstance(b.get("text"), str) or not b["text"].strip() or len(b["text"]) > INTRO_MAX[k]: _fail(f"{k}.text must be 1..{INTRO_MAX[k]} characters")
     out = {"engine": "kokoro", "voices": {}, "names": {}, "tempo": 1.0, "gap_ms": 450, "lang": "en-us", **spec}
     if not 0.8 <= float(out["tempo"]) <= 1.25: _fail("tempo must be 0.8..1.25")
     return out
@@ -83,6 +99,13 @@ def build_voice(spec: dict, voice_dir: Path, qid: str) -> dict:
     lead, gap, tail = 500, int(spec["gap_ms"]), 600
     pcm = [np.zeros(V.SR * lead // 1000, np.float32)]; t = lead; cues = []
     narrator = spec.get("voice") or V.engine_voice(engine, qid)          # one narrator: the engine's voice for this question
+    if "question" in spec:                                              # intro: the question, then the answer, then a pause
+        for k in ("question", "answer"):
+            b = spec[k]; clip = V.speak(b.get("say") or b["text"], narrator, spec["lang"], float(spec["tempo"]), lex, engine, b.get("dir") or INTRO_DIR[k])
+            ms = len(clip) * 1000 / V.SR
+            cues.append({"t_ms": round(t), "end_ms": round(t + ms), "text": b["text"], "kind": k})
+            pause = gap if k == "question" else gap + INTRO_HOLD_MS
+            pcm += [clip, np.zeros(V.SR * pause // 1000, np.float32)]; t += ms + pause
     for i, ln in enumerate(spec["lines"]):
         voice = spec["voices"].get(ln.get("who", ""), narrator)
         clip = V.speak(ln.get("say") or ln["text"], voice, spec["lang"], float(spec["tempo"]), lex, engine, ln.get("dir"))
@@ -104,13 +127,17 @@ const MOVE = 1900, LEAD = 450, SPOT_IN = 750, CAP_FADE = 220;
 // smootherstep: zero speed and zero acceleration at both ends, so the camera glides instead of starting and stopping
 const ease = p => p * p * p * (p * (6 * p - 15) + 10), clamp = (v, a, b) => Math.max(a, Math.min(b, v)), lerp = (a, b, p) => a + (b - a) * p;
 const EV = ["(laugh)", "(sigh)", "(cough)", "(clears throat)"];   // performed by the voice, never shown in the caption
+const IN = 450, OUT = 600, Q_FONT = 30, A_FONT = 30, LH = 40;
 let el = {}, runs = [], base = 1;
 function setup(api) {
   base = Math.max(api.W / L.iw, api.H / L.ih);                  // the image covers the stage at zoom 1
   el.img = api.$("#lesson-img"); el.spot = api.$("#lesson-spot"); el.spotG = api.$("#lesson-spot-g");
   el.ring = api.$("#lesson-ring"); el.cap = api.$("#lesson-cap"); el.capBox = api.$("#lesson-cap-box"); el.tag = api.$("#lesson-tag");
   el.tagText = api.$("#lesson-tag-text");
-  L.cues.forEach((c, i) => { if (!runs.length || runs[runs.length - 1].shot !== c.shot) runs.push({shot: c.shot, start: i ? c.t - LEAD : 0}); });
+  if (L.intro) { el.dim = api.$("#lesson-dim"); el.qG = api.$("#lesson-q"); el.aG = api.$("#lesson-a"); el.qBox = api.$("#lesson-q-box");
+    el.aBox = api.$("#lesson-a-box"); el.qHead = api.$("#lesson-q-head"); el.aHead = api.$("#lesson-a-head"); }
+  if (L.intro) runs.push({shot: L.shots.length - 1, start: 0});  // the intro shows the whole picture (last shot)
+  L.cues.forEach(c => { if (!runs.length || runs[runs.length - 1].shot !== c.shot) runs.push({shot: c.shot, start: runs.length ? c.t - LEAD : 0}); });
   runs.forEach((r, i) => r.end = i + 1 < runs.length ? runs[i + 1].start : api.D);
   // pre-wrap every caption into lines that fit the caption width
   const probe = api.el("text", {"font-size": 34, "font-weight": 700, "font-family": "system-ui, sans-serif", opacity: 0}, api.svg);
@@ -121,7 +148,33 @@ function setup(api) {
     for (const w of words.split(/\s+/).filter(Boolean)) { const tryL = line ? line + (line.endsWith("  ") ? "" : " ") + w : w; if (fits(tryL) || !line.trim()) line = tryL; else { out.push(line); line = w; } }
     out.push(line); c.lines = out.slice(0, 3); c.nameLen = name.length;
   });
+  if (L.intro) layoutIntro(api, probe);
   probe.remove();
+}
+// intro boxes: wrap the question and the answer, stack both boxes in the middle of the stage
+function layoutIntro(api, probe) {
+  const bw = api.W * 0.84, tw = bw - 56, wrap = (s, size) => {
+    api.set(probe, {"font-size": size}); const out = []; let line = "";
+    for (const w of s.split(/\s+/).filter(Boolean)) { const tryL = line ? line + " " + w : w; probe.textContent = tryL;
+      if (probe.getComputedTextLength() <= tw || !line) line = tryL; else { out.push(line); line = w; } }
+    out.push(line); return out;
+  };
+  const q = wrap(L.intro.q.text, Q_FONT).slice(0, 6), a = wrap(L.intro.a.text, A_FONT).slice(0, 4);
+  const qh = 62 + LH * q.length, ah = 62 + LH * a.length, top = Math.round((api.H - qh - 22 - ah) / 2), x0 = (api.W - bw) / 2;
+  const fill = (id, lines, y, size) => { const g = api.$(id); g.textContent = "";
+    lines.forEach((ln, i) => { api.el("tspan", {x: api.W / 2, y: y + i * LH, "font-size": size}, g).textContent = ln; }); };
+  api.set(el.qBox, {x: x0, y: top, width: bw, height: qh}); api.set(el.qHead, {x: x0 + 26, y: top + 32});
+  fill("#lesson-q-text", q, top + 70, Q_FONT);
+  api.set(el.aBox, {x: x0, y: top + qh + 22, width: bw, height: ah}); api.set(el.aHead, {x: x0 + 26, y: top + qh + 54});
+  fill("#lesson-a-text", a, top + qh + 92, A_FONT);
+}
+function intro(t, api) {
+  if (!L.intro) return;
+  const I = L.intro, out = 1 - ease(clamp((t - I.out) / OUT, 0, 1));
+  const qo = ease(clamp((t - I.q.t + 350) / IN, 0, 1)) * out, ao = ease(clamp((t - I.a.t + 250) / IN, 0, 1)) * out;
+  api.set(el.dim, {opacity: (0.66 * ease(clamp(t / 500, 0, 1)) * out).toFixed(3)});
+  api.set(el.qG, {opacity: qo.toFixed(3), transform: `translate(0 ${(14 * (1 - qo)).toFixed(2)})`});
+  api.set(el.aG, {opacity: ao.toFixed(3), transform: `translate(0 ${(14 * (1 - ao)).toFixed(2)})`});
 }
 function camera(t) {
   let k = 0; for (let j = 0; j < runs.length; j++) if (t >= runs[j].start) k = j;
@@ -170,6 +223,7 @@ function render(t, api) {
   // captions fade in and out instead of cutting (computed from t on every frame)
   const f = q ? ease(clamp((t - q.t + 100) / CAP_FADE, 0, 1)) * ease(clamp((q.e + 400 - t) / CAP_FADE, 0, 1)) : 0;
   api.set(el.cap, {opacity: f.toFixed(3)}); api.set(el.capBox, {opacity: (0.78 * f).toFixed(3)});
+  intro(t, api);
 }"""
 
 SPEAKER_COLORS = ["#8fd3ff", "#ffb3d1", "#b8f28c", "#ffd27a"]
@@ -178,10 +232,25 @@ SPEAKER_COLORS = ["#8fd3ff", "#ffb3d1", "#b8f28c", "#ffd27a"]
 def build_scene(spec: dict, qid: str, avif: bytes, iw: int, ih: int, track: dict) -> dict:
     duration = int(math.ceil((track["track_ms"] + 300) / 100) * 100)
     who = list(dict.fromkeys(ln.get("who") for ln in spec["lines"] if ln.get("who")))
+    head = {c["kind"]: c for c in track["cues"] if c.get("kind")}
+    body = [c for c in track["cues"] if not c.get("kind")]
     cues = [{"t": c["t_ms"], "e": c["end_ms"], "text": c["text"], "who": ln.get("who", ""), "shot": ln["shot"], "tag": ln.get("tag", "")}
-            for c, ln in zip(track["cues"], spec["lines"])]
-    data = {"iw": iw, "ih": ih, "shots": spec["shots"], "cues": cues, "names": spec["names"],
+            for c, ln in zip(body, spec["lines"])]
+    shots = list(spec["shots"]); intro = None
+    if head:                                                             # the boxes fade out in the pause after the answer
+        a = head["answer"]; intro = {"q": {"t": head["question"]["t_ms"], "text": spec["question"]["text"]},
+                                     "a": {"t": a["t_ms"], "text": spec["answer"]["text"]}, "out": a["end_ms"] + 350}
+        shots.append({"x": iw / 2, "y": ih / 2, "z": 1})               # the whole picture behind the intro
+    data = {"iw": iw, "ih": ih, "shots": shots, "cues": cues, "names": spec["names"], "intro": intro,
             "colors": {w: SPEAKER_COLORS[i % len(SPEAKER_COLORS)] for i, w in enumerate(who)}}
+    font = 'font-family="system-ui, sans-serif"'
+    intro_svg = ('<rect id="lesson-dim" x="0" y="0" width="%d" height="%d" fill="#0c0906" opacity="0"/>'
+                 '<g id="lesson-q" opacity="0"><rect id="lesson-q-box" x="0" y="0" width="10" height="10" rx="18" fill="#fffaf0" stroke="#d9a441" stroke-width="3"/>'
+                 '<text id="lesson-q-head" x="0" y="0" font-size="20" font-weight="800" letter-spacing="2" fill="#a86f12" %s>QUESTION</text>'
+                 '<text id="lesson-q-text" text-anchor="middle" font-weight="700" fill="#1b2a4a" %s></text></g>'
+                 '<g id="lesson-a" opacity="0"><rect id="lesson-a-box" x="0" y="0" width="10" height="10" rx="18" fill="#123d2a" stroke="#4fd18b" stroke-width="3"/>'
+                 '<text id="lesson-a-head" x="0" y="0" font-size="20" font-weight="800" letter-spacing="2" fill="#7ee2a8" %s>ANSWER</text>'
+                 '<text id="lesson-a-text" text-anchor="middle" font-weight="750" fill="#ffffff" %s></text></g>') % (W, H, font, font, font, font) if intro else ""
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg"><defs>'
            f'<radialGradient id="lesson-spot-g" gradientUnits="userSpaceOnUse" cx="480" cy="270" r="200">'
            f'<stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset=".72" stop-color="#0c0906" stop-opacity=".55"/><stop offset="1" stop-color="#0c0906" stop-opacity=".8"/></radialGradient>'
@@ -191,6 +260,7 @@ def build_scene(spec: dict, qid: str, avif: bytes, iw: int, ih: int, track: dict
            f'<rect id="lesson-spot" x="0" y="0" width="{W}" height="{H}" fill="url(#lesson-spot-g)" opacity="0"/>'
            f'<rect x="0" y="0" width="{W}" height="{H}" fill="url(#lesson-vig)"/>'
            f'<circle id="lesson-ring" cx="0" cy="0" r="10" fill="none" stroke="#f0c46a" stroke-width="2.5" opacity="0"/>'
+           f'{intro_svg}'
            f'<g id="lesson-tag" opacity="0"><rect id="lesson-tag-box" x="22" y="20" width="200" height="40" rx="20" fill="#d9a441"/>'
            f'<text id="lesson-tag-text" x="36" y="47" font-size="22" font-weight="750" fill="#1f1a14" font-family="system-ui, sans-serif"></text></g>'
            f'<rect id="lesson-cap-box" x="{W*0.05:.0f}" y="440" width="{W*0.9:.0f}" height="60" rx="14" fill="#140f0a" opacity="0"/>'

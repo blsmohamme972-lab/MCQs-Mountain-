@@ -40,10 +40,18 @@ READ FIRST: CLAUDE.md, motioncards/lib/lesson.py.
    those images once, then add --inspected-image-qid <QID> for it.
 5. Write lessons/<QID>.lesson.json per question:
    {"qid","image":"<QID>.png","takeaway"(<=240 chars),"engine":"breeze","tempo":1.0,
+    "question":{"text","say"},"answer":{"text","say"},
     "shots":[{"x","y","z","spot":[x,y,r]}],"lines":[{"text","shot"}]}
+   - Intro (owner's standard): the picture dims, a box shows the question while the voice reads it, a second box
+     shows the answer while the voice says it, then both fade and the explanation starts.
+     "question.text" <= 220 characters: the stem as written when it fits, otherwise a short faithful version that
+     keeps the clinical point and the lead-in (e.g. "Which is the best treatment of compartment syndrome?").
+     "answer.text" <= 110 characters: the key's option text (shortened only if longer), never a different answer.
+     "say" only when the spoken form differs (abbreviations, numbers). The explanation lines then start from the
+     picture, without repeating the whole question.
    - shots in the image's own pixels; shot 0 = whole image (z 1); 1.7-2.3 to zoom on a labelled part.
      Keep each spotlight in the upper three-quarters of its shot (the caption covers the bottom).
-   - 6-8 lines, 70-90 words (31-35 s); every line points at what it talks about.
+   - 6-8 lines, 70-90 words (31-35 s, plus the intro); every line points at what it talks about.
    - Facts only from the stem, answer and explanation; never change the key or invent numbers.
    - Owner's rule: follow the book's explanation and never change the answer key. Where the explanation is wrong,
      contradictory, off-topic or does not explain the key, narrate a short, correct, standard explanation that

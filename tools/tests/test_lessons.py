@@ -33,6 +33,22 @@ class Lessons(unittest.TestCase):
         validate_scene(scene, QID, scene["duration_ms"])
         self.assertIn('"who":"S"', scene["script"]); self.assertIn("function render(t, api)", scene["script"])
 
+    def test_intro_question_then_answer_then_explanation(self):
+        spec = {**SPEC, "question": {"text": "Which ducts are beaded?"}, "answer": {"text": "The bile ducts", "say": "The bile ducts."}}
+        bad = [({**SPEC, "question": {"text": "x"}}, "go together"), ({**spec, "answer": {"text": "x" * 111}}, r"answer.text"),
+               ({**spec, "question": {"text": "q", "colour": 1}}, "question: unknown fields")]
+        for b, msg in bad:
+            with self.subTest(msg):
+                with self.assertRaisesRegex(ValueError, msg): check_lesson(b, QID)
+        track = {"track_ms": 12000, "cues": [{"t_ms": 500, "end_ms": 2500, "text": "Which ducts are beaded?", "kind": "question"},
+                                             {"t_ms": 2950, "end_ms": 4000, "text": "The bile ducts", "kind": "answer"}]
+                 + [{**c, "t_ms": c["t_ms"] + 5000, "end_ms": c["end_ms"] + 5000} for c in TRACK["cues"]]}
+        scene = build_scene(check_lesson(spec, QID), QID, AVIF, 1600, 900, track)
+        validate_scene(scene, QID, scene["duration_ms"])
+        self.assertIn('"intro":{"q":{"t":500', scene["script"]); self.assertIn('"out":4350', scene["script"])
+        self.assertIn('id="lesson-q-text"', scene["svg"]); self.assertIn("ANSWER", scene["svg"])
+        self.assertIn('{"x":800.0,"y":450.0,"z":1}', scene["script"])   # the whole picture behind the intro
+
 
 if __name__ == "__main__":
     unittest.main()
