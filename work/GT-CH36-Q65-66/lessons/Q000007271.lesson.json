@@ -1,0 +1,103 @@
+{
+ "qid": "Q000007271",
+ "image": "Q000007271.png",
+ "takeaway": "Muscarinic receptors are found in most involuntary organs; nicotinic receptors are at the skeletal neuromuscular junction and in autonomic ganglia. Both respond to acetylcholine.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following statements relating to cholinergic receptors is true?"
+ },
+ "answer": {
+  "text": "Muscarinic receptors are present in most involuntary organs."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 430,
+   "z": 1.8,
+   "spot": [
+    150,
+    500,
+    160
+   ]
+  },
+  {
+   "x": 650,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    660,
+    520,
+    200
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1300,
+    480,
+    260
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    1040,
+    560,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Acetylcholine is the transmitter of all somatic motor neurons, preganglionic neurons, and most postganglionic parasympathetic neurons.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Its effect depends on the receptor type: nicotinic or muscarinic.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Nicotinic receptors sit at the neuromuscular junction of skeletal muscle, and in autonomic ganglia.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "They are named for nicotine, from tobacco.",
+   "shot": 2,
+   "dir": "matter-of-fact"
+  },
+  {
+   "text": "Muscarinic receptors are named for muscarine, from poisonous mushrooms.",
+   "shot": 3,
+   "dir": "matter-of-fact"
+  },
+  {
+   "text": "They are found in most involuntary organs: the gut, the bladder, the heart.",
+   "shot": 3,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "Not skeletal muscle. That is nicotinic territory.",
+   "shot": 4,
+   "dir": "gently amused",
+   "say": "Not skeletal muscle. (laugh) That is nicotinic territory."
+  },
+  {
+   "text": "So the true statement: muscarinic receptors are present in most involuntary organs.",
+   "shot": 3,
+   "dir": "warm, satisfied"
+  }
+ ]
+}
