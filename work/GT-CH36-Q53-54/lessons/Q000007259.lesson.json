@@ -1,0 +1,89 @@
+{
+ "qid": "Q000007259",
+ "image": "Q000007259.png",
+ "takeaway": "Necrosis: groups of cells, swelling and lysis, loss of membrane integrity, inflammation. Apoptosis: single cells, shrinkage, intact membrane, no inflammation.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which one of the following is characteristic of necrosis in comparison with apoptosis?",
+  "say": "Which one of the following is characteristic of necrosis in comparison with apoptosis?"
+ },
+ "answer": {
+  "text": "There is an inflammatory response.",
+  "say": "There is an inflammatory response."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 270,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    250,
+    380,
+    220
+   ]
+  },
+  {
+   "x": 780,
+   "y": 430,
+   "z": 1.7,
+   "spot": [
+    760,
+    430,
+    260
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1250,
+    390,
+    230
+   ]
+  },
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  }
+ ],
+ "lines": [
+  {
+   "text": "Start with apoptosis, on the left. The cell packs its bag and quietly shrinks into small bubbles. Its membrane stays intact.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Neighbouring cells eat the bubbles tidily, and there is no inflammation. It involves single cells.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Necrosis is the opposite. The cell swells, its membrane is lost, and it bursts, with groups of cells collapsing together.",
+   "shot": 2,
+   "dir": "calm, serious"
+  },
+  {
+   "text": "That brings in the neutrophil firefighters. Necrosis causes an inflammatory response.",
+   "shot": 3,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "So the membrane staying intact, shrinkage and single cells all describe apoptosis, and apoptosis is the physiological process.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The characteristic of necrosis is the inflammatory response.",
+   "shot": 4,
+   "dir": "warm, confident"
+  }
+ ]
+}

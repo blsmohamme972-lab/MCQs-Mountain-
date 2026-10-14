@@ -1,0 +1,114 @@
+{
+ "qid": "Q000007258",
+ "image": "Q000007258.png",
+ "takeaway": "Acral lentiginous melanoma is more common in darker-skinned people, on palms, soles and mucous membranes. Superficial spreading is the commonest overall; lentigo maligna is on the elderly face.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following subtypes of malignant melanoma is more common in darker-skinned individuals?",
+  "say": "Which of the following subtypes of malignant melanoma is more common in darker-skinned individuals?"
+ },
+ "answer": {
+  "text": "Acral lentiginous melanoma",
+  "say": "Acral lentiginous melanoma."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 250,
+   "y": 500,
+   "z": 1.6,
+   "spot": [
+    330,
+    400,
+    200
+   ]
+  },
+  {
+   "x": 780,
+   "y": 420,
+   "z": 1.7,
+   "spot": [
+    780,
+    330,
+    200
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 330,
+   "z": 1.7,
+   "spot": [
+    1310,
+    250,
+    150
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 500,
+   "z": 1.7,
+   "spot": [
+    1320,
+    545,
+    150
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 650,
+   "z": 1.7,
+   "spot": [
+    1300,
+    740,
+    140
+   ]
+  },
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  }
+ ],
+ "lines": [
+  {
+   "text": "Five subtypes of malignant melanoma are recognised. Here a child with darker skin shows a dark patch on the palm and the sole.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The little hiker leaves a dark trail across the palm and sole. That is acral lentiginous melanoma, more common in darker-skinned people.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It is found mostly on the palms, soles and mucous membranes.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Lentigo maligna is commonly found on the face of elderly patients, so it is crossed out.",
+   "shot": 3,
+   "dir": "warm, clear"
+  },
+  {
+   "text": "Superficial spreading is the most common subtype overall, mostly on the lower limb or trunk.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Nodular is the round lump, also crossed out here.",
+   "shot": 5,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "So the answer is acral lentiginous melanoma.",
+   "shot": 6,
+   "dir": "warm, confident"
+  }
+ ]
+}
