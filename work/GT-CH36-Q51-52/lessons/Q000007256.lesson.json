@@ -1,0 +1,102 @@
+{
+ "qid": "Q000007256",
+ "image": "Q000007256.png",
+ "takeaway": "Bone is living tissue: osteoblasts lay bone, osteoclasts resorb it, immobility loses bone, and thyroxine is one of the hormones involved in remodelling.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Concerning bone physiology, which one of the following statements is true?"
+ },
+ "answer": {
+  "text": "Thyroxine is involved in bone remodelling."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    512,
+    60
+   ]
+  },
+  {
+   "x": 200,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    180,
+    250,
+    170
+   ]
+  },
+  {
+   "x": 480,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    480,
+    300,
+    180
+   ]
+  },
+  {
+   "x": 850,
+   "y": 400,
+   "z": 2,
+   "spot": [
+    850,
+    380,
+    230
+   ]
+  },
+  {
+   "x": 1340,
+   "y": 400,
+   "z": 2,
+   "spot": [
+    1340,
+    350,
+    190
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Bone is never finished; it is constantly remodelled.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Osteoblasts are the builders. They lay down new bone, so they do not resorb it.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Osteoclasts are the demolition crew, resorbing bone with lytic enzymes.",
+   "shot": 2,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Hormones conduct the orchestra: parathormone, calcitonin, oestrogen, and thyroxine.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So thyroxine is involved in remodelling.",
+   "shot": 3,
+   "dir": "warm, reassuring"
+  },
+  {
+   "text": "And immobility does cause bone loss, called disuse osteoporosis.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The answer is D.",
+   "shot": 0,
+   "dir": "warm, reassuring"
+  }
+ ]
+}
