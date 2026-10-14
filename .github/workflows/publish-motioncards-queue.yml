@@ -193,15 +193,18 @@ jobs:
         if: steps.prepare.outputs.has_work == 'true' && steps.prepare.outputs.needs_deploy == 'true'
         run: |
           set -euo pipefail
-          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+          # The promoted version can take a while to reach every edge location, especially right after
+          # several packages were published (GT chapter 4 run, 2026-10-14: a 30 s window was not enough
+          # and left the queue item stuck in "running"). Allow about 3 minutes with a growing pause.
+          for attempt in $(seq 1 24); do
             if python -m tools.motioncards.smoke --url "$MOTIONCARDS_URL" --result /tmp/kafu-motioncards/result.json; then
               exit 0
             fi
-            if [[ "$attempt" -eq 10 ]]; then
+            if [[ "$attempt" -eq 24 ]]; then
               echo "::error::MotionCards production smoke did not converge after promotion."
               exit 1
             fi
-            sleep 3
+            sleep $(( attempt < 6 ? 3 : 8 ))
           done
 
       - name: Exercise every affected production MotionCard in sandbox
