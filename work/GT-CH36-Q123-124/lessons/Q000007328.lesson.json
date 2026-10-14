@@ -1,0 +1,115 @@
+{
+ "qid": "Q000007328",
+ "image": "Q000007328.png",
+ "takeaway": "Type I fibres are red, slow, oxidative, with low myosin ATPase; type IIb are white, fast, glycolytic, with high myosin ATPase.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Regarding skeletal muscle fibres, which of the following statements is true?"
+ },
+ "answer": {
+  "text": "Type I fibres have a low myosin ATPase content."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 270,
+   "y": 520,
+   "z": 2,
+   "spot": [
+    270,
+    500,
+    200
+   ]
+  },
+  {
+   "x": 610,
+   "y": 470,
+   "z": 2,
+   "spot": [
+    620,
+    470,
+    160
+   ]
+  },
+  {
+   "x": 990,
+   "y": 450,
+   "z": 2,
+   "spot": [
+    1000,
+    440,
+    230
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    1380,
+    360,
+    150
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 700,
+   "z": 2,
+   "spot": [
+    1380,
+    680,
+    130
+   ]
+  },
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  }
+ ],
+ "lines": [
+  {
+   "text": "Type I fibres are the red, slow ones, packed with myoglobin and a rich capillary supply.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "That gives them a high oxidative capacity, so they are built for endurance, like the postural soleus.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "They reach peak tension in 80\u2013200 ms, so they are slow.",
+   "shot": 4,
+   "dir": "steady",
+   "say": "They reach peak tension in eighty to two hundred milliseconds, so they are slow."
+  },
+  {
+   "text": "And their myosin ATPase content is low: look, this battery is nearly empty.",
+   "shot": 2,
+   "dir": "gently amused",
+   "say": "(sigh) And their myosin ATPase content is low: look, this battery is nearly empty."
+  },
+  {
+   "text": "Type IIb fibres are the white sprinters, with a big glycogen store and lots of glycolytic enzymes.",
+   "shot": 3,
+   "dir": "energetic, warm"
+  },
+  {
+   "text": "They run on anaerobic respiration, so few mitochondria, and a high myosin ATPase.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the true statement: type I fibres have a low myosin ATPase content.",
+   "shot": 6,
+   "dir": "calm, confident",
+   "say": "So the true statement: type one fibres have a low myosin ATPase content."
+  }
+ ]
+}
