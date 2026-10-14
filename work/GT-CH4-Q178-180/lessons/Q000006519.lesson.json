@@ -5,7 +5,7 @@
  "engine": "breeze",
  "tempo": 1.0,
  "question": {
-  "text": "Following open reduction and internal fixation of both the distal tibia and the distal fibula, a patient complains of numbness along the lateral side of the foot. Which nerve is likely to have been injured?"
+  "text": "After open reduction and internal fixation of the distal tibia and distal fibula, a patient has numbness along the lateral side of the foot. Which nerve is likely to have been injured?"
  },
  "answer": {
   "text": "Sural nerve"
