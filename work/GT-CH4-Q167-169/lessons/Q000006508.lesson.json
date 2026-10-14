@@ -1,0 +1,113 @@
+{
+ "qid": "Q000006508",
+ "image": "Q000006508.png",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "takeaway": "In adults the femoral head is supplied mainly by the medial and lateral circumflex femoral arteries via retinacular vessels; the ligamentum teres artery matters in childhood.",
+ "question": {
+  "text": "Concerning the blood supply to the femoral head, which of the following statements is correct?"
+ },
+ "answer": {
+  "text": "Lateral and medial circumflex femoral arteries supply the femoral head via retinacula."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 250,
+   "y": 380,
+   "z": 1.9,
+   "spot": [
+    230,
+    320,
+    120
+   ]
+  },
+  {
+   "x": 760,
+   "y": 640,
+   "z": 2,
+   "spot": [
+    700,
+    620,
+    90
+   ]
+  },
+  {
+   "x": 760,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    700,
+    280,
+    130
+   ]
+  },
+  {
+   "x": 780,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    780,
+    460,
+    170
+   ]
+  },
+  {
+   "x": 1290,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    1290,
+    380,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "In children, the artery of the ligamentum teres matters more.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "In adults, this obturator branch gives only a negligible supply.",
+   "shot": 2,
+   "dir": "calm"
+  },
+  {
+   "text": "The main supply comes from the medial and lateral circumflex femoral arteries.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Their branches run back under the hip capsule in longitudinal bands, the retinacula, to reach the head.",
+   "shot": 3,
+   "dir": "explaining"
+  },
+  {
+   "text": "Vessels from the diaphysis add only a small supply in adults.",
+   "shot": 0,
+   "dir": "calm"
+  },
+  {
+   "text": "That is why an intracapsular fracture, tearing these retinacular vessels, risks avascular necrosis,",
+   "shot": 5,
+   "dir": "concerned"
+  },
+  {
+   "text": "while extracapsular fractures leave them intact.",
+   "shot": 5,
+   "dir": "reassuring",
+   "say": "(sigh) while extracapsular fractures leave them intact."
+  },
+  {
+   "text": "So the answer: the circumflex arteries, via the retinacula.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
