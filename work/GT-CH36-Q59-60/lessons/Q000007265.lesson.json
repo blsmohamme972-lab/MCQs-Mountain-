@@ -1,0 +1,93 @@
+{
+ "qid": "Q000007265",
+ "image": "Q000007265.png",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "takeaway": "Melanocytes are found in the stratum basale, the deepest layer of the epidermis; the stratum corneum is the outermost keratin-filled layer.",
+ "question": {
+  "text": "With regard to the epidermis, in which layer are the melanin-producing melanocytes located?"
+ },
+ "answer": {
+  "text": "Stratum basale"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1.0,
+   "spot": [
+    768,
+    70,
+    220
+   ]
+  },
+  {
+   "x": 300,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    130,
+    290,
+    150
+   ]
+  },
+  {
+   "x": 520,
+   "y": 600,
+   "z": 1.9,
+   "spot": [
+    680,
+    720,
+    160
+   ]
+  },
+  {
+   "x": 220,
+   "y": 700,
+   "z": 1.9,
+   "spot": [
+    130,
+    780,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Here is the epidermis, drawn as a building with its layers.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "At the very top is the stratum corneum, the outermost layer of keratin-filled cells with no nuclei.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Below it come the stratum granulosum and the stratum spinosum, both crossed out.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Melanocytes are not there.",
+   "shot": 1,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Right at the bottom, our little painter is the melanocyte, splashing melanin up toward the sun.",
+   "shot": 2,
+   "dir": "warm, curious",
+   "say": "(laugh) Right at the bottom, our little painter is the melanocyte, splashing melanin up toward the sun."
+  },
+  {
+   "text": "He lives in the deepest layer, the stratum basale.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So: the stratum basale.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}
