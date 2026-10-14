@@ -1,0 +1,108 @@
+{
+ "qid": "Q000006518",
+ "image": "Q000006518.png",
+ "takeaway": "The anterior compartment holds tibialis anterior, EHL, EDL and peroneus tertius (deep peroneal nerve, anterior tibial artery); peroneus brevis is in the lateral compartment.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following muscles is not present in the anterior compartment of the leg?"
+ },
+ "answer": {
+  "text": "Peroneus brevis"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    260,
+    330,
+    170
+   ]
+  },
+  {
+   "x": 760,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    760,
+    340,
+    170
+   ]
+  },
+  {
+   "x": 550,
+   "y": 700,
+   "z": 1.9,
+   "spot": [
+    545,
+    720,
+    130
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    1300,
+    450,
+    180
+   ]
+  },
+  {
+   "x": 1420,
+   "y": 480,
+   "z": 2.2,
+   "spot": [
+    1430,
+    520,
+    120
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Picture the anterior compartment of the leg as a band on stage.",
+   "shot": 0,
+   "dir": "warm, playful"
+  },
+  {
+   "text": "Tibialis anterior and extensor hallucis longus are playing up front,",
+   "shot": 1,
+   "dir": "bright, friendly"
+  },
+  {
+   "text": "with extensor digitorum longus and peroneus tertius, the drummer with the three.",
+   "shot": 2,
+   "dir": "gently amused"
+  },
+  {
+   "text": "The conductor is the deep peroneal nerve, which supplies them all; the anterior tibial artery feeds them.",
+   "shot": 3,
+   "dir": "clear, confident"
+  },
+  {
+   "text": "Next door is the lateral compartment.",
+   "shot": 4,
+   "dir": "curious",
+   "say": "(clears throat) Next door is the lateral compartment."
+  },
+  {
+   "text": "Peroneus longus lives there, together with peroneus brevis.",
+   "shot": 5,
+   "dir": "calm, explanatory"
+  },
+  {
+   "text": "So the muscle not found in the anterior compartment is peroneus brevis.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}

@@ -1,0 +1,87 @@
+{
+ "qid": "Q000006520",
+ "image": "Q000006520.png",
+ "takeaway": "The popliteal vein becomes the femoral vein at the adductor hiatus; the short saphenous vein drains into the popliteal vein, and the popliteal artery is the deepest structure in the fossa.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Multiple structures are contained within or pass through the popliteal fossa. Which one of the following statements is correct?"
+ },
+ "answer": {
+  "text": "The popliteal vein becomes the femoral vein at the adductor hiatus."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    220,
+    350,
+    150
+   ]
+  },
+  {
+   "x": 790,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    790,
+    450,
+    190
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 500,
+   "z": 1.9,
+   "spot": [
+    1330,
+    560,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The short, or small, saphenous vein drains into the popliteal vein, not the femoral vein.",
+   "shot": 1,
+   "dir": "warm, clear"
+  },
+  {
+   "text": "The popliteal vein runs up and ends at the adductor hiatus,",
+   "shot": 2,
+   "dir": "curious, building"
+  },
+  {
+   "text": "where it becomes the femoral vein.",
+   "shot": 2,
+   "dir": "pleased, confident"
+  },
+  {
+   "text": "In the fossa, the deepest structure is the popliteal artery, not the saphenous vein.",
+   "shot": 3,
+   "dir": "clear, explanatory"
+  },
+  {
+   "text": "It starts medial to the tibial nerve and moves lateral to it as it runs down.",
+   "shot": 3,
+   "dir": "steady, careful"
+  },
+  {
+   "text": "It comes from the superficial femoral artery, not the profunda femoris.",
+   "shot": 3,
+   "dir": "calm, firm"
+  },
+  {
+   "text": "So the correct statement: the popliteal vein becomes the femoral vein at the adductor hiatus.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}

@@ -1,0 +1,98 @@
+{
+ "qid": "Q000006519",
+ "image": "Q000006519.png",
+ "takeaway": "The sural nerve, a purely sensory branch of the tibial nerve, supplies the lateral leg and foot and lies about 1 cm behind the distal fibula, so fibular surgery can injure it.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Following open reduction and internal fixation of both the distal tibia and the distal fibula, a patient complains of numbness along the lateral side of the foot. Which nerve is likely to have been injured?"
+ },
+ "answer": {
+  "text": "Sural nerve"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 250,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    250,
+    350,
+    150
+   ]
+  },
+  {
+   "x": 620,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    560,
+    380,
+    150
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    950,
+    560,
+    180
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    1400,
+    320,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Here the distal fibula has been fixed with a plate.",
+   "shot": 1,
+   "dir": "calm, curious"
+  },
+  {
+   "text": "Now the lateral side of the foot feels numb.",
+   "shot": 3,
+   "dir": "concerned, gentle"
+  },
+  {
+   "text": "The sural nerve is a branch of the tibial nerve, and it is purely sensory.",
+   "shot": 2,
+   "dir": "clear, explanatory"
+  },
+  {
+   "text": "It supplies the lateral border of the leg and the lateral border of the foot.",
+   "shot": 3,
+   "dir": "steady, clear"
+  },
+  {
+   "text": "It lies about one centimetre behind the distal fibula, so surgery there can injure it.",
+   "shot": 2,
+   "dir": "gentle, serious",
+   "say": "(sigh) It lies about one centimetre behind the distal fibula, so surgery there can injure it."
+  },
+  {
+   "text": "The saphenous nerve is different: it supplies the medial leg, down to the medial malleolus.",
+   "shot": 4,
+   "dir": "brighter, contrasting"
+  },
+  {
+   "text": "So the injured nerve is the sural nerve.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
