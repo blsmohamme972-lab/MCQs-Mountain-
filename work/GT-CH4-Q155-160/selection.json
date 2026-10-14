@@ -59,17 +59,17 @@
   "selected": [
     {
       "qid": "Q000006495",
-      "duration_ms": 30000,
+      "duration_ms": 42400,
       "content_hash": "7d550acac5efda6d5d3631f08b00a0dd8a0df7c751464728eb5ffb86023878c2"
     },
     {
       "qid": "Q000006496",
-      "duration_ms": 30000,
+      "duration_ms": 50200,
       "content_hash": "71ea326bc785a582b6aad0ea715e32be715d6dd5c5daced8565c991e9d4caa69"
     },
     {
       "qid": "Q000006500",
-      "duration_ms": 30000,
+      "duration_ms": 45500,
       "content_hash": "807b91fe772952a7f5b738febfd3ed06a9da40f4b4e9a204efd932c0bf657ee1"
     }
   ]
