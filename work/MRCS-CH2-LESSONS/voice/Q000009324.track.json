@@ -1,0 +1,47 @@
+{
+ "qid": "Q000009324",
+ "file": "Q000009324.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 88889,
+ "sha256": "7f4883bf0bb45f93c1d88fbab8cbd05ac674670251d8c66040fe7fd4d4d8157c",
+ "track_ms": 31466,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 6146,
+   "text": "A 35-year-old man has hypercalcaemia from primary hyperparathyroidism."
+  },
+  {
+   "t_ms": 6596,
+   "end_ms": 10402,
+   "text": "A technetium-labelled sestamibi scan finds a parathyroid adenoma."
+  },
+  {
+   "t_ms": 10852,
+   "end_ms": 14333,
+   "text": "It sits low, in the superior mediastinum."
+  },
+  {
+   "t_ms": 14783,
+   "end_ms": 18739,
+   "text": "Inferior parathyroid glands come from the 3rd pharyngeal pouch."
+  },
+  {
+   "t_ms": 19189,
+   "end_ms": 22655,
+   "text": "They can travel down into the chest together with the thymus,"
+  },
+  {
+   "t_ms": 23105,
+   "end_ms": 25258,
+   "text": "so they can end up in the mediastinum."
+  },
+  {
+   "t_ms": 25708,
+   "end_ms": 30866,
+   "text": "So this mediastinal adenoma developed from the 3rd pharyngeal pouch."
+  }
+ ]
+}

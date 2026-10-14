@@ -1,0 +1,86 @@
+{
+ "qid": "Q000009329",
+ "image": "Q000009329.png",
+ "takeaway": "Flexor carpi ulnaris is the forearm muscle supplied by the ulnar nerve.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 418,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    470,
+    330,
+    130
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    1000,
+    330,
+    150
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 500,
+   "z": 2,
+   "spot": [
+    1210,
+    450,
+    90
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 480,
+   "z": 2,
+   "spot": [
+    1265,
+    460,
+    100
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "An 18-year-old man has a deep stab wound to the front of his left forearm.",
+   "shot": 0,
+   "say": "An eighteen-year-old man has a deep stab wound to the front of his left forearm."
+  },
+  {
+   "text": "It is a deep, penetrating injury to the anterior forearm.",
+   "shot": 1
+  },
+  {
+   "text": "Several muscles lie here in the front of the forearm, each with its own nerve supply.",
+   "shot": 2
+  },
+  {
+   "text": "This yellow nerve, running down the forearm, is the ulnar nerve.",
+   "shot": 3
+  },
+  {
+   "text": "It supplies this muscle, flexor carpi ulnaris.",
+   "shot": 4,
+   "tag": "Flexor carpi ulnaris"
+  },
+  {
+   "text": "So flexor carpi ulnaris is the forearm muscle supplied by the ulnar nerve.",
+   "shot": 4
+  },
+  {
+   "text": "Remember: the ulnar nerve supplies flexor carpi ulnaris, on the ulnar side of the forearm.",
+   "shot": 4
+  }
+ ]
+}

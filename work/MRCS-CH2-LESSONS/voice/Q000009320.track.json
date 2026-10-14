@@ -1,0 +1,52 @@
+{
+ "qid": "Q000009320",
+ "file": "Q000009320.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 105259,
+ "sha256": "3910f0b84c0c320b753f908dacda8459fe398db718f647ea634690946e0e6c0e",
+ "track_ms": 36608,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 6016,
+   "text": "A 58-year-old man, a smoker, has severe cramp-like pains in his right upper limb."
+  },
+  {
+   "t_ms": 6466,
+   "end_ms": 9717,
+   "text": "They are particularly strong when the arm is hyperabducted."
+  },
+  {
+   "t_ms": 10167,
+   "end_ms": 12378,
+   "text": "He also suffers from attacks of fainting,"
+  },
+  {
+   "t_ms": 12828,
+   "end_ms": 15669,
+   "text": "and he has disturbances of his vision as well."
+  },
+  {
+   "t_ms": 16119,
+   "end_ms": 20240,
+   "text": "Imaging shows a pulsatile swelling compressing his subclavian artery."
+  },
+  {
+   "t_ms": 20690,
+   "end_ms": 25481,
+   "text": "Now blood flows backwards in the vertebral artery: retrograde flow."
+  },
+  {
+   "t_ms": 25931,
+   "end_ms": 28372,
+   "text": "That blood is redirected to supply the arm."
+  },
+  {
+   "t_ms": 28822,
+   "end_ms": 36008,
+   "text": "This is subclavian steal. It robs the vertebrobasilar circulation, causing his fainting and visual symptoms."
+  }
+ ]
+}

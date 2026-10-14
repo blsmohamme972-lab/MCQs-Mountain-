@@ -1,0 +1,57 @@
+{
+ "qid": "Q000009319",
+ "file": "Q000009319.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 98767,
+ "sha256": "f09b612342d8bd0aa1af2aa824dd8812f2ddb1e614395102891438cd9530fff3",
+ "track_ms": 34887,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 3956,
+   "text": "A 50-year-old man has recent onset of pain in his face."
+  },
+  {
+   "t_ms": 4406,
+   "end_ms": 7029,
+   "text": "The pain lies over his upper and lower jaws."
+  },
+  {
+   "t_ms": 7479,
+   "end_ms": 11327,
+   "text": "Simple things set it off. Washing his face brings on the pain."
+  },
+  {
+   "t_ms": 11777,
+   "end_ms": 15143,
+   "text": "When he shaves, the same pain in his face comes back."
+  },
+  {
+   "t_ms": 15593,
+   "end_ms": 18349,
+   "text": "Even eating a meal can bring the pain on as well."
+  },
+  {
+   "t_ms": 18799,
+   "end_ms": 21410,
+   "text": "Even a cold wind blowing on his face can trigger it."
+  },
+  {
+   "t_ms": 21860,
+   "end_ms": 25043,
+   "text": "So which nerve carries feeling from his face and both jaws?"
+  },
+  {
+   "t_ms": 25493,
+   "end_ms": 30739,
+   "text": "This is trigeminal neuralgia, pain in the sensory distribution of the trigeminal nerve."
+  },
+  {
+   "t_ms": 31189,
+   "end_ms": 34287,
+   "text": "So the nerve causing his symptoms is the trigeminal nerve."
+  }
+ ]
+}

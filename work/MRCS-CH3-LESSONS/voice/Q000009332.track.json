@@ -1,0 +1,47 @@
+{
+ "qid": "Q000009332",
+ "file": "Q000009332.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 88598,
+ "sha256": "83eedaeaaa6436490f7b4d8c02983fefbaf17db01ef1c663448ee05f2fc25883",
+ "track_ms": 29941,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 4866,
+   "text": "A 49-year-old woman has a unilateral mastectomy for carcinoma of the breast."
+  },
+  {
+   "t_ms": 5316,
+   "end_ms": 8994,
+   "text": "One breast has been removed. That is what unilateral means."
+  },
+  {
+   "t_ms": 9444,
+   "end_ms": 13637,
+   "text": "So which artery supplies most of the blood to the female breast?"
+  },
+  {
+   "t_ms": 14087,
+   "end_ms": 17413,
+   "text": "The main supply comes from the internal thoracic artery,"
+  },
+  {
+   "t_ms": 17863,
+   "end_ms": 20284,
+   "text": "also called the internal mammary artery."
+  },
+  {
+   "t_ms": 20734,
+   "end_ms": 24750,
+   "text": "Its branches are the primary contributor to the breast's arterial supply."
+  },
+  {
+   "t_ms": 25200,
+   "end_ms": 29341,
+   "text": "Intercostal and axillary branches add smaller contributions to the supply."
+  }
+ ]
+}

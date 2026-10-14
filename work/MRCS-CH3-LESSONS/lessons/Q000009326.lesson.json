@@ -1,0 +1,90 @@
+{
+ "qid": "Q000009326",
+ "image": "Q000009326.png",
+ "takeaway": "The long thoracic nerve of Bell supplies serratus anterior; injury paralyses the muscle and causes winging of the scapula.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 418,
+   "y": 454,
+   "z": 2,
+   "spot": [
+    270,
+    430,
+    130
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 494,
+   "z": 2,
+   "spot": [
+    1120,
+    470,
+    130
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    1250,
+    220,
+    90
+   ]
+  },
+  {
+   "x": 1149,
+   "y": 380,
+   "z": 1.6,
+   "spot": [
+    1270,
+    350,
+    180
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 35-year-old woman presents with winging of her scapula.",
+   "shot": 0,
+   "say": "A thirty-five-year-old woman presents with winging of her scapula."
+  },
+  {
+   "text": "See how the scapula sticks out from her back, like a wing.",
+   "shot": 1
+  },
+  {
+   "text": "This happens because her serratus anterior muscle is paralysed.",
+   "shot": 2
+  },
+  {
+   "text": "The nerve that supplies that muscle has been injured.",
+   "shot": 3
+  },
+  {
+   "text": "It is the long thoracic nerve, also called the long thoracic nerve of Bell.",
+   "shot": 4,
+   "tag": "Long thoracic nerve"
+  },
+  {
+   "text": "The long thoracic nerve supplies serratus anterior,",
+   "shot": 2
+  },
+  {
+   "text": "so injury to it paralyses the muscle and causes winging of the scapula.",
+   "shot": 1
+  },
+  {
+   "text": "Remember: long thoracic nerve, serratus anterior, winged scapula.",
+   "shot": 0
+  }
+ ]
+}

@@ -1,0 +1,100 @@
+{
+ "qid": "Q000009331",
+ "image": "Q000009331.png",
+ "takeaway": "Carpal tunnel syndrome: compression of the median nerve beneath the transverse carpal ligament causes numbness, thenar atrophy and positive Tinel's and Phalen's signs.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 1254,
+   "y": 240,
+   "z": 2,
+   "spot": [
+    1380,
+    190,
+    110
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 624,
+   "z": 2,
+   "spot": [
+    1390,
+    600,
+    140
+   ]
+  },
+  {
+   "x": 850,
+   "y": 304,
+   "z": 2,
+   "spot": [
+    850,
+    280,
+    150
+   ]
+  },
+  {
+   "x": 850,
+   "y": 250,
+   "z": 2.4,
+   "spot": [
+    850,
+    250,
+    110
+   ]
+  },
+  {
+   "x": 850,
+   "y": 350,
+   "z": 2.4,
+   "spot": [
+    860,
+    330,
+    60
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 48-year-old woman has had numbness and tingling in her left hand for a year.",
+   "shot": 0,
+   "say": "A forty-eight-year-old woman has had numbness and tingling in her left hand for a year."
+  },
+  {
+   "text": "It affects the radial three and a half digits, and her thenar eminence has wasted.",
+   "shot": 0
+  },
+  {
+   "text": "Tinel's sign is positive: tapping over her wrist sets off the tingling.",
+   "shot": 1
+  },
+  {
+   "text": "Phalen's sign is positive too, with both wrists held bent.",
+   "shot": 2
+  },
+  {
+   "text": "Together, these findings point to carpal tunnel syndrome.",
+   "shot": 3,
+   "tag": "Carpal tunnel syndrome"
+  },
+  {
+   "text": "Here, at the wrist, is the transverse carpal ligament.",
+   "shot": 4
+  },
+  {
+   "text": "Beneath it, the median nerve is compressed.",
+   "shot": 5
+  },
+  {
+   "text": "So compression of the median nerve causes her symptoms.",
+   "shot": 3
+  }
+ ]
+}

@@ -1,0 +1,92 @@
+{
+ "qid": "Q000009321",
+ "image": "Q000009321.png",
+ "takeaway": "A pharyngeal pouch passes through Killian's dehiscence, between the thyropharyngeus and cricopharyngeus parts of the inferior constrictor.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 1300,
+   "y": 470,
+   "z": 1.6
+  },
+  {
+   "x": 1330,
+   "y": 581,
+   "z": 2.2,
+   "spot": [
+    1340,
+    560,
+    90
+   ]
+  },
+  {
+   "x": 1360,
+   "y": 721,
+   "z": 2.2,
+   "spot": [
+    1380,
+    700,
+    90
+   ]
+  },
+  {
+   "x": 1400,
+   "y": 675,
+   "z": 2.4,
+   "spot": [
+    1430,
+    655,
+    70
+   ]
+  },
+  {
+   "x": 1350,
+   "y": 586,
+   "z": 1.8,
+   "spot": [
+    1420,
+    560,
+    190
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 70-year-old woman has sudden bouts of severe coughing when she is asleep.",
+   "shot": 0,
+   "say": "A seventy-year-old woman has sudden bouts of severe coughing when she is asleep."
+  },
+  {
+   "text": "Investigations show a pharyngeal pouch. But where exactly does it form?",
+   "say": "Investigations show a fa-RIN-jee-al pouch. But where exactly does it form?",
+   "shot": 1
+  },
+  {
+   "text": "This muscle is thyropharyngeus, part of the inferior constrictor.",
+   "shot": 2
+  },
+  {
+   "text": "Below it lies cricopharyngeus, the other part of the same muscle.",
+   "shot": 3
+  },
+  {
+   "text": "Between these two parts is a gap called Killian's dehiscence.",
+   "shot": 4,
+   "tag": "Killian's dehiscence"
+  },
+  {
+   "text": "A pharyngeal pouch pushes out through this gap.",
+   "shot": 5
+  },
+  {
+   "text": "So the pouch occurs between thyropharyngeus and cricopharyngeus.",
+   "shot": 4
+  }
+ ]
+}

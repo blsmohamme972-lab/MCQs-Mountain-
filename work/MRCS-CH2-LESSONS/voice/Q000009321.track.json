@@ -1,0 +1,47 @@
+{
+ "qid": "Q000009321",
+ "file": "Q000009321.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 92818,
+ "sha256": "dc46dc699d4c314f09967713f9f929d63162ccd68ce7befa92f422abccf94b48",
+ "track_ms": 33079,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 5301,
+   "text": "A 70-year-old woman has sudden bouts of severe coughing when she is asleep."
+  },
+  {
+   "t_ms": 5751,
+   "end_ms": 11652,
+   "text": "Investigations show a pharyngeal pouch. But where exactly does it form?"
+  },
+  {
+   "t_ms": 12102,
+   "end_ms": 15908,
+   "text": "This muscle is thyropharyngeus, part of the inferior constrictor."
+  },
+  {
+   "t_ms": 16358,
+   "end_ms": 20109,
+   "text": "Below it lies cricopharyngeus, the other part of the same muscle."
+  },
+  {
+   "t_ms": 20559,
+   "end_ms": 24375,
+   "text": "Between these two parts is a gap called Killian's dehiscence."
+  },
+  {
+   "t_ms": 24825,
+   "end_ms": 27241,
+   "text": "A pharyngeal pouch pushes out through this gap."
+  },
+  {
+   "t_ms": 27691,
+   "end_ms": 32479,
+   "text": "So the pouch occurs between thyropharyngeus and cricopharyngeus."
+  }
+ ]
+}

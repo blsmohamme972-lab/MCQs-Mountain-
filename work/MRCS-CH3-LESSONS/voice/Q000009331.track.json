@@ -1,0 +1,52 @@
+{
+ "qid": "Q000009331",
+ "file": "Q000009331.opus",
+ "mime": "audio/ogg; codecs=opus",
+ "bytes": 97853,
+ "sha256": "0e4799759ce2a736a0e2d2c84b3cacf113f0599d66fd4b0e732f3bd8e7905325",
+ "track_ms": 35680,
+ "engine": "Breeze TTS 2 (Breeze-TTS-2.cpp q8_0, local)",
+ "bitrate": "24k",
+ "cues": [
+  {
+   "t_ms": 500,
+   "end_ms": 5381,
+   "text": "A 48-year-old woman has had numbness and tingling in her left hand for a year."
+  },
+  {
+   "t_ms": 5831,
+   "end_ms": 11572,
+   "text": "It affects the radial three and a half digits, and her thenar eminence has wasted."
+  },
+  {
+   "t_ms": 12022,
+   "end_ms": 16023,
+   "text": "Tinel's sign is positive: tapping over her wrist sets off the tingling."
+  },
+  {
+   "t_ms": 16473,
+   "end_ms": 19829,
+   "text": "Phalen's sign is positive too, with both wrists held bent."
+  },
+  {
+   "t_ms": 20279,
+   "end_ms": 23940,
+   "text": "Together, these findings point to carpal tunnel syndrome."
+  },
+  {
+   "t_ms": 24390,
+   "end_ms": 28656,
+   "text": "Here, at the wrist, is the transverse carpal ligament."
+  },
+  {
+   "t_ms": 29106,
+   "end_ms": 31787,
+   "text": "Beneath it, the median nerve is compressed."
+  },
+  {
+   "t_ms": 32237,
+   "end_ms": 35080,
+   "text": "So compression of the median nerve causes her symptoms."
+  }
+ ]
+}

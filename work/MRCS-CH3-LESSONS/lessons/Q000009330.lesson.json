@@ -1,0 +1,86 @@
+{
+ "qid": "Q000009330",
+ "image": "Q000009330.png",
+ "takeaway": "The ulnar nerve supplies the interossei, so its injury at the elbow weakens finger abduction and adduction.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 680,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    690,
+    310,
+    130
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    1190,
+    290,
+    90
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 706,
+   "z": 2,
+   "spot": [
+    1320,
+    660,
+    220
+   ]
+  },
+  {
+   "x": 700,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    770,
+    450,
+    110
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "An 18-year-old man has a posterior dislocation of his left elbow.",
+   "shot": 0,
+   "say": "An eighteen-year-old man has a posterior dislocation of his left elbow."
+  },
+  {
+   "text": "The joint has been pushed out of place, backwards.",
+   "shot": 1
+  },
+  {
+   "text": "He has decreased sensation and weakness in his left first web space.",
+   "shot": 2
+  },
+  {
+   "text": "He also has weak adduction and abduction of his fingers.",
+   "shot": 3
+  },
+  {
+   "text": "The nerve injured at his elbow is the ulnar nerve.",
+   "shot": 4,
+   "tag": "Ulnar nerve"
+  },
+  {
+   "text": "The ulnar nerve supplies the interossei, the muscles that spread and close the fingers.",
+   "shot": 3
+  },
+  {
+   "text": "So weak finger abduction and adduction after this dislocation means ulnar nerve injury.",
+   "shot": 0
+  }
+ ]
+}

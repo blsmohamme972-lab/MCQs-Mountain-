@@ -1,0 +1,95 @@
+{
+ "qid": "Q000009322",
+ "image": "Q000009322.png",
+ "takeaway": "The vagus nerve lies within the carotid sheath, so it is the structure most vulnerable to damage during an open carotid endarterectomy.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 1254,
+   "y": 240,
+   "z": 2,
+   "spot": [
+    1390,
+    200,
+    170
+   ]
+  },
+  {
+   "x": 418,
+   "y": 484,
+   "z": 2,
+   "spot": [
+    360,
+    460,
+    100
+   ]
+  },
+  {
+   "x": 850,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    840,
+    330,
+    120
+   ]
+  },
+  {
+   "x": 1020,
+   "y": 470,
+   "z": 2,
+   "spot": [
+    1010,
+    470,
+    90
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 520,
+   "z": 1.9,
+   "spot": [
+    1290,
+    490,
+    120
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "This is an open carotid endarterectomy.",
+   "shot": 0
+  },
+  {
+   "text": "The internal carotid artery is narrowed, and this has caused transient ischaemic attacks.",
+   "shot": 1
+  },
+  {
+   "text": "The surgeon opens the artery to clear the narrowing.",
+   "shot": 2
+  },
+  {
+   "text": "Here is the stenosis inside the internal carotid artery.",
+   "shot": 3
+  },
+  {
+   "text": "The vagus nerve lies with the artery, inside the carotid sheath.",
+   "shot": 4,
+   "tag": "Carotid sheath"
+  },
+  {
+   "text": "So the vagus nerve is the structure most vulnerable to damage during this operation.",
+   "shot": 5
+  },
+  {
+   "text": "Protect the vagus nerve in the carotid sheath.",
+   "shot": 4
+  }
+ ]
+}

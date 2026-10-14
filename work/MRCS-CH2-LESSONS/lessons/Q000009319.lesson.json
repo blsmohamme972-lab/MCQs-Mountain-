@@ -1,0 +1,114 @@
+{
+ "qid": "Q000009319",
+ "image": "Q000009319.png",
+ "takeaway": "Facial pain over the upper and lower jaws, set off by washing, shaving, eating or a cold wind, is trigeminal neuralgia: pain in the sensory distribution of the trigeminal nerve.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 720,
+   "y": 554,
+   "z": 2,
+   "spot": [
+    710,
+    530,
+    130
+   ]
+  },
+  {
+   "x": 418,
+   "y": 240,
+   "z": 2,
+   "spot": [
+    200,
+    220,
+    170
+   ]
+  },
+  {
+   "x": 418,
+   "y": 706,
+   "z": 2,
+   "spot": [
+    210,
+    620,
+    170
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 240,
+   "z": 2,
+   "spot": [
+    1460,
+    220,
+    170
+   ]
+  },
+  {
+   "x": 1254,
+   "y": 706,
+   "z": 2,
+   "spot": [
+    1460,
+    630,
+    170
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    1030,
+    300,
+    100
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 50-year-old man has recent onset of pain in his face.",
+   "shot": 0,
+   "say": "A fifty-year-old man has recent onset of pain in his face."
+  },
+  {
+   "text": "The pain lies over his upper and lower jaws.",
+   "shot": 1
+  },
+  {
+   "text": "Simple things set it off. Washing his face brings on the pain.",
+   "shot": 2
+  },
+  {
+   "text": "When he shaves, the same pain in his face comes back.",
+   "shot": 3
+  },
+  {
+   "text": "Even eating a meal can bring the pain on as well.",
+   "shot": 4
+  },
+  {
+   "text": "Even a cold wind blowing on his face can trigger it.",
+   "shot": 5
+  },
+  {
+   "text": "So which nerve carries feeling from his face and both jaws?",
+   "shot": 0
+  },
+  {
+   "text": "This is trigeminal neuralgia, pain in the sensory distribution of the trigeminal nerve.",
+   "shot": 6,
+   "tag": "Trigeminal neuralgia"
+  },
+  {
+   "text": "So the nerve causing his symptoms is the trigeminal nerve.",
+   "shot": 1
+  }
+ ]
+}

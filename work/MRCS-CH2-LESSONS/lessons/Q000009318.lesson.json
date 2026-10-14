@@ -1,0 +1,106 @@
+{
+ "qid": "Q000009318",
+ "image": "Q000009318.png",
+ "takeaway": "The recurrent laryngeal nerve is closely related to the inferior thyroid artery, so it is at risk when that artery is ligated during a hemithyroidectomy.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "shots": [
+  {
+   "x": 836,
+   "y": 470,
+   "z": 1
+  },
+  {
+   "x": 418,
+   "y": 444,
+   "z": 2,
+   "spot": [
+    290,
+    420,
+    110
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 450,
+   "z": 2,
+   "spot": [
+    960,
+    470,
+    120
+   ]
+  },
+  {
+   "x": 1180,
+   "y": 561,
+   "z": 2.2,
+   "spot": [
+    1160,
+    540,
+    80
+   ]
+  },
+  {
+   "x": 1290,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    1280,
+    390,
+    110
+   ]
+  },
+  {
+   "x": 418,
+   "y": 706,
+   "z": 2,
+   "spot": [
+    340,
+    710,
+    130
+   ]
+  },
+  {
+   "x": 1220,
+   "y": 470,
+   "z": 1.8,
+   "spot": [
+    1220,
+    470,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 35-year-old woman is having a hemithyroidectomy.",
+   "shot": 0,
+   "say": "A thirty-five-year-old woman is having a hemi-thyroidectomy."
+  },
+  {
+   "text": "Half of her thyroid gland is being removed.",
+   "shot": 1
+  },
+  {
+   "text": "To do this, the surgeon has to ligate the inferior thyroid artery.",
+   "shot": 2
+  },
+  {
+   "text": "But a tie placed here can catch a nerve lying close beside it.",
+   "shot": 3
+  },
+  {
+   "text": "That nerve is the recurrent laryngeal nerve.",
+   "shot": 4
+  },
+  {
+   "text": "Picture the artery as a road, with the nerve running right next to it.",
+   "shot": 5
+  },
+  {
+   "text": "The nerve is closely related to the inferior thyroid artery, so it is at risk whenever that artery is tied.",
+   "shot": 6,
+   "tag": "Recurrent laryngeal nerve"
+  }
+ ]
+}
