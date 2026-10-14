@@ -1,0 +1,97 @@
+{
+ "qid": "Q000007269",
+ "image": "Q000007269.png",
+ "takeaway": "Expiratory reserve volume is the maximum volume that can be expired after a normal tidal expiration, so it excludes tidal volume. Residual volume stays in the lungs.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "When analysing a spirogram, the expiratory reserve volume is defined as which one of the following?"
+ },
+ "answer": {
+  "text": "The maximum volume expired during forced breathing excluding the tidal volume"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 620,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    620,
+    390,
+    150
+   ]
+  },
+  {
+   "x": 900,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    940,
+    620,
+    230
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    1300,
+    220,
+    170
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    1450,
+    760,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A spirogram traces each breath on moving paper.",
+   "shot": 0,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The small waves are tidal volume, the air in a normal breath.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "After a normal breath out, you can force out much more air.",
+   "shot": 2,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "That extra volume is the expiratory reserve volume.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "It does not include the tidal volume, we cut that part away.",
+   "shot": 3,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Some air always stays behind in the lungs, and that is the residual volume.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So expiratory reserve is forced expiration, excluding tidal volume.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}
