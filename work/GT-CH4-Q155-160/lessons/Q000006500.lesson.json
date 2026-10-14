@@ -1,0 +1,98 @@
+{
+ "qid": "Q000006500",
+ "image": "Q000006500.png",
+ "takeaway": "The sciatic nerve supplies the posterior thigh: biceps femoris, semitendinosus, semimembranosus and the ischial part of adductor magnus.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 25-year-old woman fractures her pelvis in a road traffic accident, and her sciatic nerve is thought to be injured as it exits the pelvis. Which muscle will lose its innervation?",
+  "say": "A twenty-five-year-old woman fractures her pelvis in a road traffic accident, and her sciatic nerve is thought to be injured as it exits the pelvis. Which muscle will lose its innervation?"
+ },
+ "answer": {
+  "text": "Semimembranosus"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 280,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    380,
+    470,
+    130
+   ]
+  },
+  {
+   "x": 780,
+   "y": 450,
+   "z": 1.7,
+   "spot": [
+    780,
+    470,
+    200
+   ]
+  },
+  {
+   "x": 780,
+   "y": 520,
+   "z": 2.1,
+   "spot": [
+    770,
+    500,
+    110
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    1310,
+    400,
+    180
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Her pelvic fracture has injured the sciatic nerve as it leaves the pelvis.",
+   "shot": 1,
+   "dir": "warm, sympathetic"
+  },
+  {
+   "text": "It is the largest nerve in the body, and it divides at the popliteal fossa into tibial and common peroneal nerves.",
+   "shot": 1,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "In general, it supplies the posterior compartment of the thigh: the hamstrings.",
+   "shot": 2,
+   "dir": "clear, confident"
+  },
+  {
+   "text": "Biceps femoris, semitendinosus and semimembranosus all switch off.",
+   "shot": 2,
+   "dir": "clear, explaining"
+  },
+  {
+   "text": "Semimembranosus is the only one among the options, so it loses its supply.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Sartorius and the adductors have other nerves, so they stay lit.",
+   "shot": 4,
+   "dir": "light, reassuring"
+  },
+  {
+   "text": "The answer is semimembranosus.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
