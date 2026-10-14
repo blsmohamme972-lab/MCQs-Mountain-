@@ -1,0 +1,92 @@
+{
+ "qid": "Q000007213",
+ "image": "Q000007213.png",
+ "takeaway": "The ascending limb of the loop of Henle actively reabsorbs sodium, with chloride following, but is impermeable to water. The descending limb loses water.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which part of the nephron tubule is impermeable to water?"
+ },
+ "answer": {
+  "text": "The ascending limb of the loop of Henle"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    430,
+    330,
+    170
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    880,
+    350,
+    170
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    1250,
+    430,
+    200
+   ]
+  },
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1.4,
+   "spot": [
+    768,
+    500,
+    300
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The loop of Henle builds high ion concentrations by the countercurrent multiplier.",
+   "shot": 0,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "In the descending limb, water leaves the tubule, and sodium chloride passively enters.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "So the fluid becomes concentrated, over four times from the start of the loop.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Now follow the ascending limb, wearing its waterproof raincoat.",
+   "shot": 2,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Here sodium is actively pumped out, and chloride passively follows.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "But no water can leave: this part is impermeable to water.",
+   "shot": 2,
+   "dir": "calm, confident"
+  }
+ ]
+}

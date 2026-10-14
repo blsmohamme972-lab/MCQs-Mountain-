@@ -1,0 +1,112 @@
+{
+ "qid": "Q000007212",
+ "image": "Q000007212.png",
+ "takeaway": "Chief (peptic) cells secrete pepsinogen. Parietal cells make acid and intrinsic factor, G-cells gastrin, goblet cells mucus, D-cells somatostatin, ECL cells histamine.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which cells in the gastric wall secrete pepsinogen?"
+ },
+ "answer": {
+  "text": "Chief cells"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 210,
+   "y": 430,
+   "z": 2.0,
+   "spot": [
+    210,
+    440,
+    150
+   ]
+  },
+  {
+   "x": 800,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    800,
+    430,
+    200
+   ]
+  },
+  {
+   "x": 1400,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1390,
+    250,
+    130
+   ]
+  },
+  {
+   "x": 1400,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1400,
+    440,
+    130
+   ]
+  },
+  {
+   "x": 1400,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1390,
+    640,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Look at the stomach wall: it is deeply folded.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The folds form gastric glands, which open into the lumen at the gastric pits.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Inside the glands sit different secretory cells, each with its own product.",
+   "shot": 0,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Our chef, the chief or peptic cell, pours out pepsinogen.",
+   "shot": 2,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "Parietal cells make hydrochloric acid and intrinsic factor.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Goblet cells make mucus.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "G-cells make gastrin. D-cells make somatostatin, and ECL cells make histamine.",
+   "shot": 5,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "So pepsinogen comes from the chief cells.",
+   "shot": 2,
+   "dir": "calm, confident"
+  }
+ ]
+}
