@@ -1,0 +1,26 @@
+{
+ "qid": "Q000007211",
+ "image": "Q000007211.png",
+ "takeaway": "Inferior epigastric artery: supplies rectus abdominis and the medial anterolateral wall, anastomoses with the superior epigastric. Hernias medial to it are direct; lateral are indirect.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {"text": "Which statement regarding the inferior epigastric artery is incorrect?"},
+ "answer": {"text": "An inguinal hernia medial to the inferior epigastric artery is described as an indirect hernia."},
+ "shots": [
+  {"x": 768, "y": 512, "z": 1},
+  {"x": 200, "y": 480, "z": 1.9, "spot": [190, 420, 150]},
+  {"x": 780, "y": 420, "z": 1.8, "spot": [770, 400, 150]},
+  {"x": 560, "y": 330, "z": 2.0, "spot": [540, 300, 140]},
+  {"x": 1000, "y": 330, "z": 2.0, "spot": [990, 330, 140]},
+  {"x": 1340, "y": 440, "z": 1.8, "spot": [1340, 420, 190]}
+ ],
+ "lines": [
+  {"text": "The inferior epigastric artery climbs up behind the rectus abdominis.", "shot": 1, "dir": "calm, confident"},
+  {"text": "It supplies the rectus muscle and the medial part of the anterolateral abdominal wall.", "shot": 1, "dir": "warm, clear"},
+  {"text": "Above the umbilicus it anastomoses with the superior epigastric artery, so a laparoscopic port can injure it.", "shot": 0, "dir": "calm, cautionary"},
+  {"text": "Now picture it as the fence post of a seesaw.", "shot": 2, "say": "Now picture it as the fence post of a seesaw. (laugh)", "dir": "gently amused"},
+  {"text": "Lateral to the artery is the indirect hernia.", "shot": 3, "dir": "calm, confident"},
+  {"text": "Medial to the artery is the direct hernia.", "shot": 4, "dir": "calm, confident"},
+  {"text": "So saying medial means indirect is the incorrect statement.", "shot": 5, "dir": "warm, reassuring"}
+ ]
+}

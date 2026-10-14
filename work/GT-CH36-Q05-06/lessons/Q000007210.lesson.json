@@ -1,0 +1,26 @@
+{
+ "qid": "Q000007210",
+ "image": "Q000007210.png",
+ "takeaway": "Portosystemic anastomoses: lower oesophagus, anal canal, umbilicus, retroperitoneum, bare area of liver. The superior and inferior pancreaticoduodenal veins are both portal, so they are not a site.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {"text": "Which of the following is not a site for communication between the portal and systemic venous systems?"},
+ "answer": {"text": "Between the superior and inferior pancreaticoduodenal veins", "say": "Between the superior and inferior pancreatico-duodenal veins"},
+ "shots": [
+  {"x": 768, "y": 512, "z": 1},
+  {"x": 250, "y": 520, "z": 1.8, "spot": [250, 560, 170]},
+  {"x": 540, "y": 400, "z": 2.0, "spot": [540, 330, 150]},
+  {"x": 800, "y": 400, "z": 2.0, "spot": [800, 330, 150]},
+  {"x": 1040, "y": 400, "z": 2.0, "spot": [1040, 330, 150]},
+  {"x": 1340, "y": 420, "z": 2.0, "spot": [1340, 400, 190]}
+ ],
+ "lines": [
+  {"text": "Portal blood has a few places to meet the systemic veins.", "shot": 0, "dir": "calm, confident"},
+  {"text": "At the lower oesophagus, the left gastric branches join the azygos vein.", "shot": 1, "dir": "warm, clear"},
+  {"text": "At the anal canal, the superior rectal vein joins the middle and inferior rectal veins.", "shot": 2, "dir": "calm, confident"},
+  {"text": "Around the umbilicus, paraumbilical veins meet the epigastric veins, giving caput medusae.", "shot": 3, "say": "Around the umbilicus, paraumbilical veins meet the epigastric veins, giving caput medusae. (sigh)", "dir": "gently amused"},
+  {"text": "In the retroperitoneum, portal tributaries meet the lumbar and renal veins.", "shot": 4, "dir": "calm, confident"},
+  {"text": "But the superior and inferior pancreaticoduodenal veins are both portal.", "shot": 5, "say": "But the superior and inferior pancreatico-duodenal veins are both portal.", "dir": "curious, emphasising"},
+  {"text": "Two portal veins shaking hands is no link to the systemic system, so this is not a portosystemic site.", "shot": 5, "dir": "warm, reassuring"}
+ ]
+}
