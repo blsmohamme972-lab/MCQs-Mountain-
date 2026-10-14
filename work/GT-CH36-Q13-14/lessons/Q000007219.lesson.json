@@ -1,0 +1,92 @@
+{
+ "qid": "Q000007219",
+ "image": "Q000007219.png",
+ "takeaway": "Warthin tumour (papillary cystadenoma lymphomatosum): benign, almost only parotid, male smokers aged 40-60, cystic spaces with double epithelial layer, 10% bilateral and 10% multifocal.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 65-year-old lifelong smoker has a 3 cm parotid lump; histology shows an encapsulated mass with cystic spaces lined by a double layer of epithelium. Most likely diagnosis?"
+ },
+ "answer": {
+  "text": "Warthin tumour"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 250,
+   "y": 380,
+   "z": 1.9,
+   "spot": [
+    250,
+    300,
+    200
+   ]
+  },
+  {
+   "x": 610,
+   "y": 360,
+   "z": 1.9,
+   "spot": [
+    610,
+    380,
+    170
+   ]
+  },
+  {
+   "x": 980,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    980,
+    420,
+    200
+   ]
+  },
+  {
+   "x": 1360,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    1360,
+    330,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "This is a Warthin tumour.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Think of the smoker with a lump in the parotid gland. People who smoke are eight times more likely to develop it.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "It is also called papillary cystadenoma lymphomatosum, hence the little lymph node hat on our warthog.",
+   "shot": 2,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Under the microscope, you see an encapsulated mass with narrow cystic spaces lined by a double layer of cells.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It is benign, arises almost only in the parotid, and is more common in men aged forty to sixty.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "So, smoker, parotid lump, double layer: Warthin tumour.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
