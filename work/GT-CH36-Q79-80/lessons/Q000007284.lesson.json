@@ -1,0 +1,92 @@
+{
+ "qid": "Q000007284",
+ "image": "Q000007284.png",
+ "takeaway": "High anion gap metabolic acidosis: unmeasured anions accumulate, as in ketoacidosis and lactic acidosis. A normal gap acidosis can also occur.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which condition is associated with a metabolic acidosis and a high anion gap?"
+ },
+ "answer": {
+  "text": "Ketoacidosis"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 260,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    250,
+    330,
+    150
+   ]
+  },
+  {
+   "x": 840,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    840,
+    280,
+    130
+   ]
+  },
+  {
+   "x": 740,
+   "y": 540,
+   "z": 2.0,
+   "spot": [
+    740,
+    520,
+    120
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 430,
+   "z": 2.0,
+   "spot": [
+    1340,
+    420,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Here is the anion gap, balanced on a seesaw.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The gap is the measured sodium and potassium, minus bicarbonate and chloride.",
+   "shot": 0,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "When it is high, unmeasured anions are piling up: ketones, lactate, organic acids.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Ketoacidosis is the classic cause, with its fruity breath of acetone. That is our answer.",
+   "shot": 2,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "(sigh) Lactic acidosis, the tired little sugar cube, behaves the same way.",
+   "shot": 3,
+   "dir": "gently amused"
+  },
+  {
+   "text": "But careful: a metabolic acidosis can also have a normal gap, so the gap tells them apart.",
+   "shot": 4,
+   "dir": "calm, confident"
+  }
+ ]
+}
