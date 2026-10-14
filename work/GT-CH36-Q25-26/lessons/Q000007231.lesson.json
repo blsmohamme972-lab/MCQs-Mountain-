@@ -1,0 +1,107 @@
+{
+ "qid": "Q000007231",
+ "image": "Q000007231.png",
+ "takeaway": "Secretin does not stimulate gastrin release (the exception). Vagus drives the cephalic phase, most secretion is in the gastric phase, somatostatin inhibits gastrin, fat releases CCK.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Regarding the regulation of gastric secretion, the following statements are true except:"
+ },
+ "answer": {
+  "text": "Secretin from the duodenum stimulating gastrin release is the false statement."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 230,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    230,
+    230,
+    200
+   ]
+  },
+  {
+   "x": 700,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    720,
+    330,
+    230
+   ]
+  },
+  {
+   "x": 1260,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    1260,
+    230,
+    200
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    1280,
+    470,
+    200
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 700,
+   "z": 1.9,
+   "spot": [
+    1250,
+    760,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Here the false statement is secretin stimulating gastrin release.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Gastric secretion has three phases. First, the cephalic phase: the sight or smell of food, and vagal activity stimulates secretion.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The vagus also stimulates G-cells to release gastrin, which drives more acid.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Most secretion happens in the gastric phase, once food reaches the stomach.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Fatty food in the duodenum releases cholecystokinin.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Somatostatin is the brake: it inhibits gastrin secretion.",
+   "shot": 5,
+   "dir": "gently amused"
+  },
+  {
+   "text": "But secretin does not stimulate gastrin, so that is the exception.",
+   "shot": 4,
+   "dir": "calm, confident"
+  }
+ ]
+}

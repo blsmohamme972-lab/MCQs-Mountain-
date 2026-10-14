@@ -1,0 +1,97 @@
+{
+ "qid": "Q000007230",
+ "image": "Q000007230.png",
+ "takeaway": "One litre of normal saline contains 154 mmol of sodium. Three bags a day meet an NBM adult's fluid needs; daily sodium need is about 100 mmol.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 24-year-old woman with appendicitis is nil by mouth on IV fluids. The first bag is 1 L of normal saline. How much sodium is in this bag?"
+ },
+ "answer": {
+  "text": "154 mmol/L"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 230,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    230,
+    300,
+    200
+   ]
+  },
+  {
+   "x": 820,
+   "y": 480,
+   "z": 1.9,
+   "spot": [
+    820,
+    360,
+    230
+   ]
+  },
+  {
+   "x": 840,
+   "y": 640,
+   "z": 2.0,
+   "spot": [
+    820,
+    640,
+    200
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 450,
+   "z": 1.9,
+   "spot": [
+    1330,
+    420,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "She is nil by mouth, so all her fluid comes through the drip.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The average adult needs about three litres of fluid a day.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "That is easily met with three bags of intravenous fluid, each run over eight hours.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Now look at the first bag: one litre of normal saline.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Normal saline is salt water, so it carries sodium.",
+   "shot": 2,
+   "dir": "gently amused"
+  },
+  {
+   "text": "One litre contains one hundred and fifty-four millimoles of sodium.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "An adult needs about a hundred millimoles of sodium per day, so this bag supplies plenty.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
