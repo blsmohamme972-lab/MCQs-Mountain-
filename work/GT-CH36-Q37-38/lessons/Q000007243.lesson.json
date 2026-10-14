@@ -1,0 +1,107 @@
+{
+ "qid": "Q000007243",
+ "image": "Q000007243.png",
+ "takeaway": "Saliva is hypotonic to plasma at all times, never above 70% of plasma tonicity. About 500 to 1500 mL a day; submandibular basal rate is higher than parotid.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following statements concerning saliva is correct?"
+ },
+ "answer": {
+  "text": "Saliva is hypotonic to plasma at all times."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 170,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    170,
+    400,
+    170
+   ]
+  },
+  {
+   "x": 600,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    580,
+    720,
+    150
+   ]
+  },
+  {
+   "x": 820,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    880,
+    500,
+    200
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    1230,
+    330,
+    170
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    1230,
+    640,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Let's go through the statements about saliva.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The parotid and submandibular glands differ.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The sticky, viscous saliva is due to its high mucin content.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Basal flow is higher from the submandibular gland, but this reverses during stimulation.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The daily volume is not 300 mL: it ranges from 500 to 1500 mL.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "And here is the correct one: saliva is hypotonic to plasma at all times.",
+   "shot": 4,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "Even at the highest flow rates, its tonicity does not exceed 70 percent of plasma.",
+   "shot": 5,
+   "dir": "calm, confident"
+  }
+ ]
+}

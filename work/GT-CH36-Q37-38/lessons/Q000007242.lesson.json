@@ -1,0 +1,112 @@
+{
+ "qid": "Q000007242",
+ "image": "Q000007242.png",
+ "takeaway": "An acute transfusion reaction is a type II hypersensitivity reaction: circulating IgG and IgM antibodies react with antigens on cell surfaces. Type I is IgE-mediated allergy.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "An 85-year-old man develops an acute transfusion reaction after a transfusion for lower GI bleeding. Which hypersensitivity type is it?"
+ },
+ "answer": {
+  "text": "Type II"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 260,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    250,
+    430,
+    170
+   ]
+  },
+  {
+   "x": 820,
+   "y": 430,
+   "z": 1.8,
+   "spot": [
+    900,
+    300,
+    150
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1050,
+    520,
+    170
+   ]
+  },
+  {
+   "x": 1260,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    1340,
+    300,
+    150
+   ]
+  },
+  {
+   "x": 1260,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    1360,
+    820,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Our patient is bleeding, so he is given a blood transfusion.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Soon after, he has an acute transfusion reaction.",
+   "shot": 0,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Look at the red cells: their surface carries antigens.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Circulating IgG and IgM antibodies attack those cell surface antigens.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "That is the Type Two hypersensitivity shield.",
+   "shot": 4,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "Rhesus incompatibility works the same way.",
+   "shot": 5,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Type One is different: it is allergy, with IgE on mast cells, like a bee sting.",
+   "shot": 5,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "So a transfusion reaction is Type Two.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
