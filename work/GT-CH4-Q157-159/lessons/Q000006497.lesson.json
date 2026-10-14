@@ -1,0 +1,108 @@
+{
+ "qid": "Q000006497",
+ "image": "Q000006497.png",
+ "takeaway": "The medial border of the femoral ring is the lacunar ligament. Lateral: femoral vein; anterior: inguinal ligament; posterior: pectineal ligament.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which one of the following structures forms the medial border of the femoral ring?"
+ },
+ "answer": {
+  "text": "The lacunar ligament"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 1150,
+   "y": 430,
+   "z": 2.0,
+   "spot": [
+    1190,
+    430,
+    150
+   ]
+  },
+  {
+   "x": 400,
+   "y": 500,
+   "z": 2.0,
+   "spot": [
+    190,
+    520,
+    150
+   ]
+  },
+  {
+   "x": 768,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    770,
+    185,
+    150
+   ]
+  },
+  {
+   "x": 800,
+   "y": 420,
+   "z": 2.0,
+   "spot": [
+    780,
+    410,
+    170
+   ]
+  },
+  {
+   "x": 768,
+   "y": 600,
+   "z": 1.6,
+   "spot": [
+    770,
+    570,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The femoral ring is the doorway at the top of the femoral canal, guarded on four sides.",
+   "shot": 0,
+   "dir": "calm, curious"
+  },
+  {
+   "text": "On the medial side stands the lacunar ligament, the glowing curtain.",
+   "shot": 1,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "Laterally is the femoral vein, the blue knight with his shield.",
+   "shot": 2,
+   "dir": "warm"
+  },
+  {
+   "text": "In front, the inguinal ligament forms the rope bridge.",
+   "shot": 3,
+   "dir": "calm"
+  },
+  {
+   "text": "Behind, the pectineal ligament is the solid stone wall.",
+   "shot": 4,
+   "dir": "calm"
+  },
+  {
+   "text": "So the medial border is the lacunar ligament.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "From lateral to medial, the femoral structures spell NAVY: nerve, artery, vein, lymph nodes.",
+   "shot": 0,
+   "dir": "gently amused",
+   "say": "(laugh) From lateral to medial, the femoral structures spell NAVY: nerve, artery, vein, lymph nodes."
+  }
+ ]
+}
