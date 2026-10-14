@@ -1,0 +1,122 @@
+{
+ "qid": "Q000006503",
+ "image": "Q000006503.png",
+ "takeaway": "The adductor canal: adductor longus and magnus behind, vastus medialis anterolaterally, and a fibrous roof overlapped by sartorius anteromedially.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following statements regarding the adductor canal is not correct?"
+ },
+ "answer": {
+  "text": "It is bounded anteromedially by the vastus medialis."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 1152,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    1360,
+    250,
+    150
+   ]
+  },
+  {
+   "x": 480,
+   "y": 500,
+   "z": 1.7,
+   "spot": [
+    450,
+    500,
+    220
+   ]
+  },
+  {
+   "x": 1050,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    1060,
+    540,
+    140
+   ]
+  },
+  {
+   "x": 700,
+   "y": 260,
+   "z": 2,
+   "spot": [
+    680,
+    200,
+    130
+   ]
+  },
+  {
+   "x": 770,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    770,
+    460,
+    140
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 700,
+   "z": 2,
+   "spot": [
+    1360,
+    700,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "In the adductor canal, the adductor longus and magnus form the posterior wall.",
+   "shot": 2,
+   "dir": "warm, clear"
+  },
+  {
+   "text": "Longus lies proximally, and magnus distally.",
+   "shot": 2,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "Vastus medialis forms the anterolateral wall, not the anteromedial one.",
+   "shot": 3,
+   "dir": "clear, emphatic"
+  },
+  {
+   "text": "The anteromedial roof is a fibrous membrane, overlapped by sartorius.",
+   "shot": 4,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "The femoral artery and vein, and the saphenous nerve, run through the canal.",
+   "shot": 5,
+   "dir": "steady, friendly"
+  },
+  {
+   "text": "The artery leaves through the adductor hiatus in adductor magnus.",
+   "shot": 5,
+   "dir": "clear, steady"
+  },
+  {
+   "text": "Clinically, this canal is the commonest site of atherosclerosis in the lower limb.",
+   "shot": 6,
+   "dir": "serious, calm"
+  },
+  {
+   "text": "So the incorrect statement puts vastus medialis anteromedially.",
+   "shot": 1,
+   "dir": "calm, confident"
+  }
+ ]
+}

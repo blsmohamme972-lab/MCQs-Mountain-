@@ -1,0 +1,109 @@
+{
+ "qid": "Q000006502",
+ "image": "Q000006502.png",
+ "takeaway": "Iliacus and psoas insert on the lesser trochanter and flex the hip; piriformis, the obturators, gemelli and gluteus medius and minimus attach to the greater trochanter.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 50-year-old man is having a total hip replacement through a lateral approach. Which of the following anatomical structures does not attach to the greater trochanter?",
+  "say": "A fifty-year-old man is having a total hip replacement through a lateral approach. Which of the following anatomical structures does not attach to the greater trochanter?"
+ },
+ "answer": {
+  "text": "Iliacus"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 920,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    920,
+    300,
+    110
+   ]
+  },
+  {
+   "x": 640,
+   "y": 640,
+   "z": 1.8,
+   "spot": [
+    645,
+    670,
+    90
+   ]
+  },
+  {
+   "x": 400,
+   "y": 700,
+   "z": 2,
+   "spot": [
+    170,
+    720,
+    120
+   ]
+  },
+  {
+   "x": 1056,
+   "y": 450,
+   "z": 1.6,
+   "spot": [
+    1350,
+    420,
+    230
+   ]
+  },
+  {
+   "x": 384,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    180,
+    300,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A lateral approach to the hip brings the surgeon onto the greater trochanter.",
+   "shot": 5,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The greater trochanter sits on the lateral side of the femur.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Piriformis, obturator internus and externus, gluteus medius and minimus, and the gemelli all attach here.",
+   "shot": 4,
+   "dir": "steady, explaining"
+  },
+  {
+   "text": "The lesser trochanter is on the medial side of the proximal femur.",
+   "shot": 2,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "Iliacus and psoas attach to this prominence, and they flex the hip.",
+   "shot": 3,
+   "dir": "clear, confident"
+  },
+  {
+   "text": "So poor iliacus never reaches the greater trochanter.",
+   "shot": 3,
+   "dir": "gently amused",
+   "say": "(laugh) So poor iliacus never reaches the greater trochanter."
+  },
+  {
+   "text": "The muscle that does not attach there is iliacus.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
