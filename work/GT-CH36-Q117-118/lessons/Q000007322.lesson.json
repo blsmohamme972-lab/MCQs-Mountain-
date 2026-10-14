@@ -1,0 +1,99 @@
+{
+ "qid": "Q000007322",
+ "image": "Q000007322.png",
+ "takeaway": "Brown-Sequard (cord hemisection): same-side paralysis and loss of proprioception below the lesion; pain and temperature lost on the opposite side.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which statement about incomplete spinal cord injuries is correct?",
+  "say": "Which statement about incomplete spinal cord injuries is correct?"
+ },
+ "answer": {
+  "text": "Brown–Sequard syndrome: loss of pain and temperature on the opposite side below the lesion.",
+  "say": "Brown Sequard syndrome: loss of pain and temperature on the opposite side below the lesion."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 640,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    620,
+    280,
+    170
+   ]
+  },
+  {
+   "x": 340,
+   "y": 640,
+   "z": 2.0,
+   "spot": [
+    330,
+    600,
+    170
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 480,
+   "z": 2.0,
+   "spot": [
+    1140,
+    560,
+    170
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    1370,
+    300,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Think of Brown-Sequard as a knife slicing half of the cord.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "A hemisection: only one side is cut.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Below the cut, the same-side leg is paralysed, and it loses proprioception and fine discrimination.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "But the pain and temperature fibres cross over in the cord.",
+   "shot": 3,
+   "dir": "warm, explaining"
+  },
+  {
+   "text": "So pain and temperature are lost on the opposite side, below the lesion.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "That is the correct statement: option E.",
+   "shot": 4,
+   "dir": "pleased, clear"
+  },
+  {
+   "text": "Remember the picture: same-side paralysis, opposite-side pain loss.",
+   "shot": 0,
+   "dir": "warm, reassuring"
+  }
+ ]
+}

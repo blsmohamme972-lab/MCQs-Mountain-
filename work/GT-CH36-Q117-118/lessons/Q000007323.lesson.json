@@ -1,0 +1,99 @@
+{
+ "qid": "Q000007323",
+ "image": "Q000007323.png",
+ "takeaway": "Supraspinatus initiates shoulder abduction (first 15°); deltoid takes over to 90°; trapezius and serratus anterior rotate the scapula beyond that.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following muscles initiates shoulder abduction?",
+  "say": "Which of the following muscles initiates shoulder abduction?"
+ },
+ "answer": {
+  "text": "Supraspinatus.",
+  "say": "Supraspinatus."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    250,
+    260,
+    150
+   ]
+  },
+  {
+   "x": 330,
+   "y": 600,
+   "z": 2.0,
+   "spot": [
+    370,
+    570,
+    130
+   ]
+  },
+  {
+   "x": 780,
+   "y": 480,
+   "z": 2.0,
+   "spot": [
+    790,
+    420,
+    200
+   ]
+  },
+  {
+   "x": 1280,
+   "y": 420,
+   "z": 2.0,
+   "spot": [
+    1290,
+    380,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Picture abduction as a relay race.",
+   "shot": 0,
+   "dir": "warm, playful"
+  },
+  {
+   "text": "The supraspinatus is the starter: it fires the gun and begins the movement.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "It covers the first fifteen degrees.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Then the deltoid takes the baton and abducts the arm up to ninety degrees.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Beyond that, the trapezius and serratus anterior rotate the scapula for the last stretch.",
+   "shot": 4,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "And a painful middle arc points to supraspinatus tendinitis.",
+   "shot": 0,
+   "dir": "gently serious"
+  },
+  {
+   "text": "So the muscle that initiates abduction is the supraspinatus.",
+   "shot": 1,
+   "dir": "pleased, confident"
+  }
+ ]
+}
