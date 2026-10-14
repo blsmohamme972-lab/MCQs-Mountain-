@@ -1,0 +1,29 @@
+{
+ "qid": "Q000006505",
+ "image": "Q000006505.png",
+ "takeaway": "SUFE: overweight boys around puberty (10-15 years). Perthes is younger (4-10), hip dysplasia is newborn, and septic arthritis or NOF fracture are rare at this age.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {"text": "An obese 15-year-old boy presents with pain in the hip. He walks with an antalgic gait with some shortening of the affected limb. Which of the following is the most likely diagnosis?",
+              "say": "An obese fifteen-year-old boy presents with pain in the hip. He walks with an antalgic gait with some shortening of the affected limb. Which of the following is the most likely diagnosis?"},
+ "answer": {"text": "Slipped upper femoral epiphysis (SUFE)", "say": "Slipped upper femoral epiphysis."},
+ "shots": [
+  {"x": 768, "y": 512, "z": 1},
+  {"x": 427, "y": 450, "z": 1.8, "spot": [230, 400, 150]},
+  {"x": 760, "y": 320, "z": 2.0, "spot": [860, 290, 110]},
+  {"x": 760, "y": 640, "z": 2.0, "spot": [720, 660, 120]},
+  {"x": 1152, "y": 300, "z": 2.0, "spot": [1300, 250, 110]},
+  {"x": 1152, "y": 620, "z": 2.0, "spot": [1270, 520, 100]},
+  {"x": 1152, "y": 700, "z": 2.0, "spot": [1270, 750, 110]}
+ ],
+ "lines": [
+  {"text": "An obese fifteen-year-old boy limps with a painful hip.", "shot": 1, "dir": "warm, curious"},
+  {"text": "This classic picture fits overweight boys around puberty, ten to fifteen years.", "shot": 1, "dir": "calm, explaining"},
+  {"text": "Like ice cream sliding off its cone, the epiphysis slips off the femoral neck.", "say": "(laugh) Like ice cream sliding off its cone, the epiphysis slips off the femoral neck.", "shot": 2, "dir": "gently amused"},
+  {"text": "So the limb looks shorter.", "shot": 3, "dir": "calm, clear"},
+  {"text": "Perthes disease also favours boys, but younger ones, four to ten years.", "shot": 4, "dir": "thoughtful, comparing"},
+  {"text": "Hip dysplasia shows in the newborn or the first few years.", "shot": 5, "dir": "light, matter-of-fact"},
+  {"text": "Septic arthritis and hip fracture are very rare at fifteen, and usually stop weight bearing.", "shot": 6, "dir": "serious, careful"},
+  {"text": "So the diagnosis is slipped upper femoral epiphysis.", "shot": 0, "dir": "calm, confident"}
+ ]
+}

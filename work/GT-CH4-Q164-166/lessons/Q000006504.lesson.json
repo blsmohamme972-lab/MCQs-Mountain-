@@ -1,0 +1,29 @@
+{
+ "qid": "Q000006504",
+ "image": "Q000006504.png",
+ "takeaway": "The medial and lateral circumflex arteries form the extracapsular arterial ring; it feeds the metaphysis and, through retinacular vessels, the femoral head.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {"text": "An elderly woman presents with a fall and a tender right hip. Which of the following is true regarding the hip and neck of femur (NOF) fractures?",
+              "say": "An elderly woman presents with a fall and a tender right hip. Which of the following is true regarding the hip and neck of femur fractures?"},
+ "answer": {"text": "Metaphyseal blood supply arises from the extracapsular arterial ring."},
+ "shots": [
+  {"x": 768, "y": 512, "z": 1},
+  {"x": 427, "y": 450, "z": 1.8, "spot": [200, 340, 130]},
+  {"x": 760, "y": 520, "z": 1.8, "spot": [850, 470, 110]},
+  {"x": 560, "y": 560, "z": 2.0, "spot": [560, 620, 100]},
+  {"x": 760, "y": 340, "z": 2.0, "spot": [820, 320, 110]},
+  {"x": 860, "y": 680, "z": 2.0, "spot": [860, 720, 110]},
+  {"x": 1152, "y": 360, "z": 2.0, "spot": [1360, 400, 110]}
+ ],
+ "lines": [
+  {"text": "An elderly woman falls and hurts her hip.", "shot": 1, "dir": "warm, concerned"},
+  {"text": "The medial and lateral circumflex arteries form a ring around the base of the femoral neck.", "shot": 2, "dir": "calm, explaining"},
+  {"text": "The medial circumflex is the most important.", "shot": 3, "dir": "firm, clear"},
+  {"text": "From that extracapsular ring, retinacular vessels climb up the neck into the head.", "shot": 4, "dir": "curious, vivid"},
+  {"text": "The ring also sends branches to the metaphysis below.", "shot": 5, "dir": "calm, explaining"},
+  {"text": "The artery of the ligamentum teres is only a minor supply.", "shot": 6, "dir": "light, matter-of-fact"},
+  {"text": "A neck fracture can tear these vessels and cause avascular necrosis.", "shot": 4, "dir": "serious, careful"},
+  {"text": "So the metaphyseal supply comes from the extracapsular ring.", "shot": 0, "dir": "calm, confident"}
+ ]
+}
