@@ -1,0 +1,119 @@
+{
+ "qid": "Q000007321",
+ "image": "Q000007321.png",
+ "takeaway": "Class II shock: 15-30% blood loss, heart rate above 100, normal blood pressure, urine output 20-30 mL/h, mildly anxious.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A stabbed 30-year-old is anxious, with a raised respiratory rate, BP 120/105, heart rate 105 and urine 20 mL in the last hour. Which class of shock?",
+  "say": "A stabbed thirty-year-old is anxious, with a raised respiratory rate, blood pressure one twenty over one oh five, heart rate one oh five, and urine twenty mil in the last hour. Which class of shock?"
+ },
+ "answer": {
+  "text": "Class II",
+  "say": "Class two"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    300,
+    340,
+    230
+   ]
+  },
+  {
+   "x": 690,
+   "y": 360,
+   "z": 1.9,
+   "spot": [
+    640,
+    330,
+    190
+   ]
+  },
+  {
+   "x": 780,
+   "y": 540,
+   "z": 1.9,
+   "spot": [
+    780,
+    600,
+    150
+   ]
+  },
+  {
+   "x": 1120,
+   "y": 450,
+   "z": 1.9,
+   "spot": [
+    1100,
+    400,
+    150
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    1330,
+    330,
+    150
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 600,
+   "z": 1.8,
+   "spot": [
+    1320,
+    700,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "This stabbed office worker is anxious but awake. Let us place him on the shock scale.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "His blood loss is probably fifteen to thirty percent, and it can hide inside the abdomen.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "His heart races at about one hundred and five beats, which is above one hundred.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "His urine output is about twenty millilitres an hour, which is reduced.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Yet his blood pressure is still normal. Class two keeps the systolic pressure up.",
+   "shot": 5,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Mild anxiety, a fast pulse, a faster breathing rate and low urine all fit the second step of the podium.",
+   "shot": 6,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the answer is class two shock. Class three would show a falling blood pressure.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
