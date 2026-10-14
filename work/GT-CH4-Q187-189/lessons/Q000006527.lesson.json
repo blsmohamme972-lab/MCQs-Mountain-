@@ -1,0 +1,108 @@
+{
+ "qid": "Q000006527",
+ "image": "Q000006527.png",
+ "takeaway": "Six structures pass under the flexor retinaculum behind the medial malleolus: Tom, Dick, And, Very, Nervous, Harry. The deep peroneal nerve is not one of them.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following structures does not travel under the flexor retinaculum behind the medial malleolus?"
+ },
+ "answer": {
+  "text": "The deep peroneal nerve"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 630,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    630,
+    235,
+    120
+   ]
+  },
+  {
+   "x": 400,
+   "y": 500,
+   "z": 2,
+   "spot": [
+    230,
+    420,
+    170
+   ]
+  },
+  {
+   "x": 640,
+   "y": 520,
+   "z": 2,
+   "spot": [
+    640,
+    470,
+    190
+   ]
+  },
+  {
+   "x": 800,
+   "y": 520,
+   "z": 2,
+   "spot": [
+    940,
+    480,
+    110
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    1290,
+    300,
+    120
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Behind the medial ankle, the flexor retinaculum roofs the tarsal tunnel.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Tom, Dick and a very nervous Harry pass through it. Tom is tibialis posterior, and Dick is flexor digitorum longus.",
+   "shot": 2,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "And is the posterior tibial artery, very is the vein, and nervous is the tibial nerve.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Harry is flexor hallucis longus.",
+   "shot": 4,
+   "dir": "gently amused",
+   "say": "(laugh) Harry is flexor hallucis longus."
+  },
+  {
+   "text": "That makes six structures under the retinaculum, from front to back.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The deep peroneal nerve is not one of them. It runs at the front of the ankle.",
+   "shot": 5,
+   "dir": "firm, clear"
+  },
+  {
+   "text": "So the answer is the deep peroneal nerve.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
