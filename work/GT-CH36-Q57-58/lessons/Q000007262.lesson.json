@@ -1,0 +1,98 @@
+{
+ "qid": "Q000007262",
+ "image": "Q000007262.png",
+ "takeaway": "Acute inflammation: rapid onset, neutrophils, an innate immune response. Chronic: lymphocytes, macrophages, slow prolonged response.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Acute inflammation is characterized by which one of the following?"
+ },
+ "answer": {
+  "text": "Innate immune response"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    420,
+    330
+   ]
+  },
+  {
+   "x": 300,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    300,
+    380,
+    230
+   ]
+  },
+  {
+   "x": 700,
+   "y": 600,
+   "z": 1.8,
+   "spot": [
+    700,
+    620,
+    260
+   ]
+  },
+  {
+   "x": 770,
+   "y": 260,
+   "z": 2,
+   "spot": [
+    770,
+    250,
+    220
+   ]
+  },
+  {
+   "x": 1290,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1290,
+    430,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Acute inflammation is the sprinter: a rapid onset, with prominent vasodilation and increased vascular permeability.",
+   "shot": 1,
+   "dir": "energetic, clear"
+  },
+  {
+   "text": "Neutrophils are the first runners on the track.",
+   "shot": 2,
+   "dir": "engaged, confident"
+  },
+  {
+   "text": "They belong to the innate immune response, the castle guard that reacts at once.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It lasts from hours to weeks.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Chronic inflammation is the slow tortoise road, with lymphocytes, macrophages, and a prolonged response.",
+   "say": "(laugh) Chronic inflammation is the slow tortoise road, with lymphocytes, macrophages, and a prolonged response.",
+   "shot": 4,
+   "dir": "gently amused"
+  },
+  {
+   "text": "So for acute inflammation, the answer is the innate immune response.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
