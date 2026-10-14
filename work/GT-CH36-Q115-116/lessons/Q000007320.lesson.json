@@ -1,0 +1,107 @@
+{
+ "qid": "Q000007320",
+ "image": "Q000007320.png",
+ "takeaway": "Raised temperature, PCO2, H+ and 2,3-DPG shift the oxygen dissociation curve to the right, which means lower haemoglobin affinity for oxygen.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which one of the following conditions results in decreased affinity of haemoglobin for oxygen?"
+ },
+ "answer": {
+  "text": "The temperature is increased."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 280,
+   "y": 430,
+   "z": 1.8,
+   "spot": [
+    270,
+    340,
+    200
+   ]
+  },
+  {
+   "x": 840,
+   "y": 430,
+   "z": 1.9,
+   "spot": [
+    850,
+    420,
+    230
+   ]
+  },
+  {
+   "x": 840,
+   "y": 680,
+   "z": 1.9,
+   "spot": [
+    820,
+    765,
+    150
+   ]
+  },
+  {
+   "x": 1280,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    1270,
+    330,
+    230
+   ]
+  },
+  {
+   "x": 1280,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    1270,
+    500,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Here is the oxygen dissociation curve, and one condition that lowers affinity.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "When the temperature rises, our red cell sweats and lets go of its oxygen balloons.",
+   "shot": 1,
+   "dir": "gently amused"
+  },
+  {
+   "text": "On the graph, the curve slides to the right. That is a right shift.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "A right shift means a lower affinity of haemoglobin for oxygen, so oxygen is released to the tissues more easily.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Other helpers push the curve the same way: a high carbon dioxide level, and a high hydrogen ion level, which together are the Bohr effect.",
+   "shot": 4,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "A high level of 2,3-DPG in the red cells shifts it right too.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the answer is an increased temperature. Lower PCO2, fewer hydrogen ions or less 2,3-DPG all shift the curve left instead.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
