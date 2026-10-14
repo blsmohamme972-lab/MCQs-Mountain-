@@ -1,0 +1,103 @@
+{
+ "qid": "Q000007228",
+ "image": "Q000007228.png",
+ "takeaway": "Long thoracic nerve injury paralyses serratus anterior: the scapula wings and the arm cannot be raised above the horizontal.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "After a stab wound to the side of the right chest, a young man cannot raise his right arm above horizontal and his scapula protrudes. Which nerve is damaged?"
+ },
+ "answer": {
+  "text": "Long thoracic nerve"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 250,
+   "y": 440,
+   "z": 1.8,
+   "spot": [
+    185,
+    560,
+    110
+   ]
+  },
+  {
+   "x": 640,
+   "y": 400,
+   "z": 1.7,
+   "spot": [
+    640,
+    300,
+    140
+   ]
+  },
+  {
+   "x": 640,
+   "y": 430,
+   "z": 1.7,
+   "spot": [
+    620,
+    560,
+    170
+   ]
+  },
+  {
+   "x": 1200,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1070,
+    450,
+    120
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 430,
+   "z": 1.8,
+   "spot": [
+    1350,
+    490,
+    120
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A stab wound on the side of the chest, and an odd problem with the shoulder.",
+   "shot": 1,
+   "dir": "concerned, calm"
+  },
+  {
+   "text": "The long thoracic nerve runs superficially over the serratus anterior muscle.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "That makes it vulnerable, especially when the arm is raised. It supplies the serratus anterior.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Without it, the scapula moves laterally and backwards. This is a winged scapula.",
+   "shot": 4,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "And the serratus cannot rotate the glenoid upwards, so the arm will not go above the horizontal.",
+   "shot": 5,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "So the nerve damaged is the long thoracic nerve.",
+   "shot": 0,
+   "dir": "warm, relieved",
+   "say": "(sigh) So the nerve damaged is the long thoracic nerve."
+  }
+ ]
+}
