@@ -1,0 +1,98 @@
+{
+ "qid": "Q000007339",
+ "image": "Q000007339.png",
+ "takeaway": "PTH acts on osteoblasts, which raise RANKL; RANKL binds RANK on osteoclasts. The statement that PTH binds osteoclasts is the incorrect one.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following statements regarding calcium metabolism is incorrect?"
+ },
+ "answer": {
+  "text": "PTH binds to osteoclasts increasing their expression of RANKL.",
+  "say": "PTH binds to osteoclasts, increasing their expression of RANK ligand."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 230,
+   "y": 380,
+   "z": 1.9,
+   "spot": [
+    230,
+    380,
+    200
+   ]
+  },
+  {
+   "x": 560,
+   "y": 520,
+   "z": 1.9,
+   "spot": [
+    570,
+    500,
+    200
+   ]
+  },
+  {
+   "x": 850,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    830,
+    330,
+    170
+   ]
+  },
+  {
+   "x": 1200,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    1230,
+    500,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The parathyroid glands secrete PTH when calcium falls.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "But PTH does not bind the osteoclast directly.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It binds the osteoblast instead.",
+   "shot": 2,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "The osteoblast then raises its expression of RANKL.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "RANKL binds the RANK receptor on the osteoclast, and bone breakdown goes up.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the incorrect statement is the one saying PTH binds osteoclasts.",
+   "shot": 0,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Calcitonin does the opposite and lowers calcium.",
+   "shot": 0,
+   "dir": "calm, clear"
+  }
+ ]
+}
