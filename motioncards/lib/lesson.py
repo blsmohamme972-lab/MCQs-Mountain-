@@ -12,10 +12,12 @@ package, validate, bot upload, hosting and offline download all work unchanged:
   the speaker's name. The voice is the master clock in the app, so picture and sound cannot drift.
 - optional intro ("question" and "answer"): the picture is dimmed, a box shows the question (shortened when long) while
   the voice reads it, a second box below shows the answer while the voice says it, then both fade and the explanation
-  starts with the camera and spotlight.
+  starts with the camera and spotlight. While the voice reads a box, the word being said is highlighted (word times
+  come from the speech recogniser listening to the clip, so they follow the real voice).
 """
 from __future__ import annotations
-import base64, json, math, subprocess, sys
+import base64, json, math, re, subprocess, sys
+from difflib import SequenceMatcher
 from pathlib import Path
 
 W, H = 960, 540                       # landscape stage (16:9)
@@ -91,6 +93,60 @@ def voice_tool():
     return V
 
 
+_ASR = []                                                     # the recogniser, loaded once per run
+
+
+def _tok(w: str) -> str: return re.sub(r"[^a-z0-9]", "", w.lower())
+
+
+def _speech_span(clip, sr: int) -> tuple[float, float]:
+    """First and last moment the clip is louder than -40 dB (in ms), for the fallback timing."""
+    import numpy as np
+    hop = sr // 100; n = len(clip) // hop
+    if n < 2: return 0.0, len(clip) * 1000 / sr
+    rms = np.sqrt(np.mean(clip[:n * hop].reshape(n, hop) ** 2, axis=1)); on = np.nonzero(rms > max(1e-4, rms.max() * 0.01))[0]
+    return (float(on[0]) * 10, float(on[-1] + 1) * 10) if len(on) else (0.0, n * 10.0)
+
+
+def word_times(clip, sr: int, text: str) -> list[list[int]]:
+    """[start_ms, end_ms] in the clip for every word of `text` (split on spaces), as close to the voice as possible.
+
+    The recogniser (faster-whisper base.en, already in the voice venv) hears the clip with word timestamps; heard words
+    are matched to the shown words in order. Shown words it did not match (numbers, abbreviations spoken letter by
+    letter) share the time between their matched neighbours by length. Without the recogniser all words share the
+    spoken span by length."""
+    import numpy as np
+    shown = text.split(); toks = [_tok(w) for w in shown]
+    lo, hi = _speech_span(clip, sr); heard = []
+    try:
+        if not _ASR:
+            from faster_whisper import WhisperModel
+            _ASR.append(WhisperModel("base.en", device="cpu", compute_type="int8"))
+        x = np.interp(np.arange(0, len(clip), sr / 16000), np.arange(len(clip)), clip).astype(np.float32)
+        segs, _ = _ASR[0].transcribe(x, beam_size=5, temperature=0.0, word_timestamps=True, vad_filter=False, condition_on_previous_text=False)
+        heard = [(_tok(w.word), w.start * 1000, w.end * 1000) for sg in segs for w in (sg.words or []) if _tok(w.word)]
+    except Exception as exc:                                     # no recogniser: the length-based timing below still works
+        print(f"lesson: word timing without the recogniser ({type(exc).__name__}: {exc})", file=sys.stderr)
+    times: list = [None] * len(shown)
+    for blk in SequenceMatcher(None, toks, [h[0] for h in heard], autojunk=False).get_matching_blocks():
+        for j in range(blk.size): times[blk.a + j] = [heard[blk.b + j][1], heard[blk.b + j][2]]
+    i = 0                                                        # fill each gap between known words by word length
+    while i < len(shown):
+        if times[i] is not None: i += 1; continue
+        j = i
+        while j < len(shown) and times[j] is None: j += 1
+        a = times[i - 1][1] if i else lo; b = times[j][0] if j < len(shown) else hi
+        if b < a: b = a
+        size = [max(1, len(toks[k]) or 1) for k in range(i, j)]; tot, acc = sum(size), a
+        for k, n in zip(range(i, j), size):
+            d = (b - a) * n / tot; times[k] = [acc, acc + d]; acc += d
+        i = j
+    out, prev = [], 0.0
+    for s0, e0 in times:                                         # monotonic, never before the previous word
+        s0 = max(s0, prev); e0 = max(e0, s0 + 40); out.append([round(s0), round(e0)]); prev = s0
+    return out
+
+
 def build_voice(spec: dict, voice_dir: Path, qid: str) -> dict:
     """Speak every line, join them with gaps into one Opus track, write <QID>.opus and <QID>.track.json."""
     import numpy as np
@@ -103,7 +159,8 @@ def build_voice(spec: dict, voice_dir: Path, qid: str) -> dict:
         for k in ("question", "answer"):
             b = spec[k]; clip = V.speak(b.get("say") or b["text"], narrator, spec["lang"], float(spec["tempo"]), lex, engine, b.get("dir") or INTRO_DIR[k])
             ms = len(clip) * 1000 / V.SR
-            cues.append({"t_ms": round(t), "end_ms": round(t + ms), "text": b["text"], "kind": k})
+            words = [[round(t + a), round(t + e)] for a, e in word_times(clip, V.SR, b["text"])]
+            cues.append({"t_ms": round(t), "end_ms": round(t + ms), "text": b["text"], "kind": k, "words": words})
             pause = gap if k == "question" else gap + INTRO_HOLD_MS
             pcm += [clip, np.zeros(V.SR * pause // 1000, np.float32)]; t += ms + pause
     for i, ln in enumerate(spec["lines"]):
@@ -135,7 +192,8 @@ function setup(api) {
   el.ring = api.$("#lesson-ring"); el.cap = api.$("#lesson-cap"); el.capBox = api.$("#lesson-cap-box"); el.tag = api.$("#lesson-tag");
   el.tagText = api.$("#lesson-tag-text");
   if (L.intro) { el.dim = api.$("#lesson-dim"); el.qG = api.$("#lesson-q"); el.aG = api.$("#lesson-a"); el.qBox = api.$("#lesson-q-box");
-    el.aBox = api.$("#lesson-a-box"); el.qHead = api.$("#lesson-q-head"); el.aHead = api.$("#lesson-a-head"); }
+    el.aBox = api.$("#lesson-a-box"); el.qHead = api.$("#lesson-q-head"); el.aHead = api.$("#lesson-a-head");
+    el.qHl = api.$("#lesson-q-hl"); el.aHl = api.$("#lesson-a-hl"); }
   if (L.intro) runs.push({shot: L.shots.length - 1, start: 0});  // the intro shows the whole picture (last shot)
   L.cues.forEach(c => { if (!runs.length || runs[runs.length - 1].shot !== c.shot) runs.push({shot: c.shot, start: runs.length ? c.t - LEAD : 0}); });
   runs.forEach((r, i) => r.end = i + 1 < runs.length ? runs[i + 1].start : api.D);
@@ -161,16 +219,38 @@ function layoutIntro(api, probe) {
   };
   const q = wrap(L.intro.q.text, Q_FONT).slice(0, 6), a = wrap(L.intro.a.text, A_FONT).slice(0, 4);
   const qh = 62 + LH * q.length, ah = 62 + LH * a.length, top = Math.round((api.H - qh - 22 - ah) / 2), x0 = (api.W - bw) / 2;
-  const fill = (id, lines, y, size) => { const g = api.$(id); g.textContent = "";
-    lines.forEach((ln, i) => { api.el("tspan", {x: api.W / 2, y: y + i * LH, "font-size": size}, g).textContent = ln; }); };
+  // one tspan per word, so the word being said can be found and highlighted
+  const fill = (id, lines, y, size) => { const g = api.$(id); g.textContent = ""; const ws = [];
+    lines.forEach((ln, i) => { const row = api.el("tspan", {x: api.W / 2, y: y + i * LH, "font-size": size}, g);
+      ln.split(" ").forEach((w, j) => { const sp = api.el("tspan", {}, row); sp.textContent = (j ? " " : "") + w; ws.push({sp, lead: j ? 1 : 0, row: i}); }); });
+    return ws; };
   api.set(el.qBox, {x: x0, y: top, width: bw, height: qh}); api.set(el.qHead, {x: x0 + 26, y: top + 32});
-  fill("#lesson-q-text", q, top + 70, Q_FONT);
+  el.qWords = fill("#lesson-q-text", q, top + 70, Q_FONT);
   api.set(el.aBox, {x: x0, y: top + qh + 22, width: bw, height: ah}); api.set(el.aHead, {x: x0 + 26, y: top + qh + 54});
-  fill("#lesson-a-text", a, top + qh + 92, A_FONT);
+  el.aWords = fill("#lesson-a-text", a, top + qh + 92, A_FONT);
+  // the box behind each word, from the laid-out text (pure layout, read once)
+  const boxes = (id, ws, size) => { const tx = api.$(id); let ci = 0;
+    return ws.map(w => { const n = w.sp.textContent.length, s = ci + w.lead, e = ci + n - 1; ci += n;
+      const r0 = tx.getExtentOfChar(s), r1 = tx.getExtentOfChar(Math.max(s, e));
+      return {x: r0.x - 6, y: r0.y - 2, w: r1.x + r1.width - r0.x + 12, h: size * 1.25 + 4, row: w.row}; }); };
+  L.intro.q.boxes = boxes("#lesson-q-text", el.qWords, Q_FONT); L.intro.a.boxes = boxes("#lesson-a-text", el.aWords, A_FONT);
+}
+// the highlight glides from word to word in step with the voice; words already said keep a stronger colour
+function highlight(t, api, part, hl, ws, said, ahead) {
+  const W = part.words || [], B = part.boxes || []; let i = -1;
+  for (let j = 0; j < Math.min(W.length, B.length); j++) if (t >= W[j][0] - 40) i = j;
+  const end = W.length ? W[W.length - 1][1] + 250 : 0;
+  ws.forEach((w, j) => api.set(w.sp, {fill: !W.length || (j <= i && t <= end + 2000) ? said : ahead}));
+  if (i < 0 || t > end) { api.set(hl, {x: 0, y: 0, width: 10, height: 10, opacity: 0}); return; }   // fixed values: the frame depends only on t
+  const b = B[i], a = i && B[i - 1].row === b.row ? B[i - 1] : b, p = ease(clamp((t - W[i][0] + 40) / 110, 0, 1));
+  api.set(hl, {x: lerp(a.x, b.x, p).toFixed(1), y: b.y.toFixed(1), width: lerp(a.w, b.w, p).toFixed(1), height: b.h.toFixed(1),
+               opacity: (1 - ease(clamp((t - end + 250) / 250, 0, 1))).toFixed(3)});
 }
 function intro(t, api) {
   if (!L.intro) return;
   const I = L.intro, out = 1 - ease(clamp((t - I.out) / OUT, 0, 1));
+  highlight(t, api, I.q, el.qHl, el.qWords, "#1b2a4a", "#6d7690");
+  highlight(t, api, I.a, el.aHl, el.aWords, "#ffffff", "#a9cdb9");
   const qo = ease(clamp((t - I.q.t + 350) / IN, 0, 1)) * out, ao = ease(clamp((t - I.a.t + 250) / IN, 0, 1)) * out;
   api.set(el.dim, {opacity: (0.66 * ease(clamp(t / 500, 0, 1)) * out).toFixed(3)});
   api.set(el.qG, {opacity: qo.toFixed(3), transform: `translate(0 ${(14 * (1 - qo)).toFixed(2)})`});
@@ -238,17 +318,19 @@ def build_scene(spec: dict, qid: str, avif: bytes, iw: int, ih: int, track: dict
             for c, ln in zip(body, spec["lines"])]
     shots = list(spec["shots"]); intro = None
     if head:                                                             # the boxes fade out in the pause after the answer
-        a = head["answer"]; intro = {"q": {"t": head["question"]["t_ms"], "text": spec["question"]["text"]},
-                                     "a": {"t": a["t_ms"], "text": spec["answer"]["text"]}, "out": a["end_ms"] + 350}
+        a = head["answer"]; intro = {"q": {"t": head["question"]["t_ms"], "text": spec["question"]["text"], "words": head["question"].get("words", [])},
+                                     "a": {"t": a["t_ms"], "text": spec["answer"]["text"], "words": a.get("words", [])}, "out": a["end_ms"] + 350}
         shots.append({"x": iw / 2, "y": ih / 2, "z": 1})               # the whole picture behind the intro
     data = {"iw": iw, "ih": ih, "shots": shots, "cues": cues, "names": spec["names"], "intro": intro,
             "colors": {w: SPEAKER_COLORS[i % len(SPEAKER_COLORS)] for i, w in enumerate(who)}}
     font = 'font-family="system-ui, sans-serif"'
     intro_svg = ('<rect id="lesson-dim" x="0" y="0" width="%d" height="%d" fill="#0c0906" opacity="0"/>'
                  '<g id="lesson-q" opacity="0"><rect id="lesson-q-box" x="0" y="0" width="10" height="10" rx="18" fill="#fffaf0" stroke="#d9a441" stroke-width="3"/>'
+                 '<rect id="lesson-q-hl" x="0" y="0" width="10" height="10" rx="9" fill="#ffd27a" opacity="0"/>'
                  '<text id="lesson-q-head" x="0" y="0" font-size="20" font-weight="800" letter-spacing="2" fill="#a86f12" %s>QUESTION</text>'
                  '<text id="lesson-q-text" text-anchor="middle" font-weight="700" fill="#1b2a4a" %s></text></g>'
                  '<g id="lesson-a" opacity="0"><rect id="lesson-a-box" x="0" y="0" width="10" height="10" rx="18" fill="#123d2a" stroke="#4fd18b" stroke-width="3"/>'
+                 '<rect id="lesson-a-hl" x="0" y="0" width="10" height="10" rx="9" fill="#2f9e63" opacity="0"/>'
                  '<text id="lesson-a-head" x="0" y="0" font-size="20" font-weight="800" letter-spacing="2" fill="#7ee2a8" %s>ANSWER</text>'
                  '<text id="lesson-a-text" text-anchor="middle" font-weight="750" fill="#ffffff" %s></text></g>') % (W, H, font, font, font, font) if intro else ""
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg"><defs>'

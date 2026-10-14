@@ -43,7 +43,8 @@ READ FIRST: CLAUDE.md, motioncards/lib/lesson.py.
     "question":{"text","say"},"answer":{"text","say"},
     "shots":[{"x","y","z","spot":[x,y,r]}],"lines":[{"text","shot"}]}
    - Intro (owner's standard): the picture dims, a box shows the question while the voice reads it, a second box
-     shows the answer while the voice says it, then both fade and the explanation starts.
+     shows the answer while the voice says it, then both fade and the explanation starts. The word being said is
+     highlighted in the box (timed by the recogniser listening to the voice; nothing to write for it).
      "question.text" <= 220 characters: the stem as written when it fits, otherwise a short faithful version that
      keeps the clinical point and the lead-in (e.g. "Which is the best treatment of compartment syndrome?").
      "answer.text" <= 110 characters: the key's option text (shortened only if longer), never a different answer.
