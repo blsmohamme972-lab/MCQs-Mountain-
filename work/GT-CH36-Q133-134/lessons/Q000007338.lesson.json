@@ -1,0 +1,88 @@
+{
+ "qid": "Q000007338",
+ "image": "Q000007338.png",
+ "takeaway": "Level II axillary clearance reaches the pectoralis minor, level III the first rib. The thoracodorsal nerve runs along the posterior wall of the axilla.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "During a total mastectomy a consultant performs a level II axillary dissection. Which one of the following statements is correct?"
+ },
+ "answer": {
+  "text": "The thoracodorsal nerve passes along the posterior wall of the axilla."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 640,
+   "y": 380,
+   "z": 2.0,
+   "spot": [
+    620,
+    420,
+    180
+   ]
+  },
+  {
+   "x": 1060,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    1010,
+    430,
+    200
+   ]
+  },
+  {
+   "x": 1420,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    1420,
+    380,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Here is the axilla, cleared in three levels.",
+   "shot": 0,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Level one reaches the axillary vein, level two the pectoralis minor, and level three the first rib.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So level two does not reach the first rib or stop at the vein.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "During clearance, nerves are at risk, including the sensory intercostobrachial nerve.",
+   "shot": 0,
+   "dir": "warm, careful"
+  },
+  {
+   "text": "The thoracodorsal nerve supplies latissimus dorsi, so protect it.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It passes along the posterior wall of the axilla, that is our answer.",
+   "shot": 3,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "Remember the ladder, and keep the thoracodorsal nerve at the back.",
+   "shot": 0,
+   "say": "(sigh) Remember the ladder, and keep the thoracodorsal nerve at the back.",
+   "dir": "warm, relieved"
+  }
+ ]
+}
