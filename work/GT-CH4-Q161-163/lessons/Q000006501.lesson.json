@@ -1,0 +1,112 @@
+{
+ "qid": "Q000006501",
+ "image": "Q000006501.png",
+ "takeaway": "The femoral sheath has three compartments: lateral for the femoral artery, intermediate for the femoral vein and medial (the femoral canal) for lymphatics.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "On ultrasound for a femoral central line, several fascial planes are seen. In which compartment of the femoral sheath does the femoral vein lie?"
+ },
+ "answer": {
+  "text": "Intermediate compartment"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 930,
+   "y": 560,
+   "z": 2,
+   "spot": [
+    900,
+    560,
+    120
+   ]
+  },
+  {
+   "x": 590,
+   "y": 560,
+   "z": 2,
+   "spot": [
+    580,
+    570,
+    120
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 580,
+   "z": 2,
+   "spot": [
+    1290,
+    590,
+    130
+   ]
+  },
+  {
+   "x": 930,
+   "y": 560,
+   "z": 1.4,
+   "spot": [
+    930,
+    550,
+    260
+   ]
+  },
+  {
+   "x": 384,
+   "y": 560,
+   "z": 2,
+   "spot": [
+    190,
+    560,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "On ultrasound, the femoral sheath is a fascial tube in the femoral triangle.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "It continues down from the transversalis fascia of the abdominal wall.",
+   "shot": 4,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "It has only three compartments: lateral, intermediate and medial.",
+   "shot": 0,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "The femoral artery lies in the lateral compartment.",
+   "shot": 2,
+   "dir": "clear, steady"
+  },
+  {
+   "text": "The femoral vein sits in the intermediate compartment, right where the catheter goes.",
+   "shot": 1,
+   "dir": "bright, engaged"
+  },
+  {
+   "text": "The medial compartment, the femoral canal, holds the lymphatics.",
+   "shot": 3,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "The femoral nerve stays outside the sheath.",
+   "shot": 5,
+   "dir": "light, friendly"
+  },
+  {
+   "text": "So the vein lies in the intermediate compartment.",
+   "shot": 1,
+   "dir": "calm, confident"
+  }
+ ]
+}
