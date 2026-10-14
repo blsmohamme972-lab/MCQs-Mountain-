@@ -1,0 +1,109 @@
+{
+ "qid": "Q000007289",
+ "image": "Q000007289.png",
+ "takeaway": "Myeloma causes lytic bone lesions and cord compression. Urine contains Bence-Jones protein, free light chains filtered by the kidney, which confirms the diagnosis.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 65-year-old Afro-Caribbean man has back pain, tiredness and breathlessness, then cord compression. PSA is normal. Which investigation would confirm the diagnosis?",
+  "say": "A 65-year-old Afro-Caribbean man has back pain, tiredness and breathlessness, then cord compression. P S A is normal. Which investigation would confirm the diagnosis?"
+ },
+ "answer": {
+  "text": "Urine sample"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    430,
+    400,
+    200
+   ]
+  },
+  {
+   "x": 800,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    800,
+    330,
+    260
+   ]
+  },
+  {
+   "x": 780,
+   "y": 600,
+   "z": 1.8,
+   "spot": [
+    640,
+    720,
+    130
+   ]
+  },
+  {
+   "x": 1180,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1320,
+    480,
+    190
+   ]
+  },
+  {
+   "x": 1180,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    1310,
+    650,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "This man has back pain, tiredness and cord compression, with a normal PSA. Think myeloma.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Myeloma lytic lesions weaken the vertebrae and can compress the spinal cord.",
+   "shot": 1,
+   "dir": "clear, teaching"
+  },
+  {
+   "text": "In the marrow, crowded plasma cells make excess protein and crowd out normal blood cells.",
+   "shot": 2,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "That causes anaemia, so he is tired and breathless.",
+   "shot": 3,
+   "dir": "gently sympathetic",
+   "say": "That causes anaemia, so he is tired and breathless. (sigh)"
+  },
+  {
+   "text": "The kidney filters free light chains from the blood.",
+   "shot": 4,
+   "dir": "clear, teaching"
+  },
+  {
+   "text": "In about two thirds of cases they appear in the urine as Bence-Jones protein.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So a urine sample is the test that confirms the diagnosis.",
+   "shot": 5,
+   "dir": "calm, confident"
+  }
+ ]
+}

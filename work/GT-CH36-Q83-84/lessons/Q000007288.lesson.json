@@ -1,0 +1,98 @@
+{
+ "qid": "Q000007288",
+ "image": "Q000007288.png",
+ "takeaway": "The transpyloric plane of Addison lies midway between the jugular notch and the pubic symphysis, at L1. The duodenojejunal junction is found at this level.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following structures is found at the transpyloric plane of Addison?"
+ },
+ "answer": {
+  "text": "Duodenojejunal junction"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 230,
+   "y": 440,
+   "z": 1.8,
+   "spot": [
+    200,
+    520,
+    110
+   ]
+  },
+  {
+   "x": 700,
+   "y": 470,
+   "z": 2.0,
+   "spot": [
+    640,
+    430,
+    170
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 430,
+   "z": 2.0,
+   "spot": [
+    1260,
+    380,
+    170
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 500,
+   "z": 1.7,
+   "spot": [
+    1230,
+    430,
+    240
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The transpyloric plane of Addison sits halfway between the jugular notch and the pubic symphysis.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "On the body, it is the glowing ring, level with the body of the first lumbar vertebra.",
+   "shot": 2,
+   "dir": "clear, teaching"
+  },
+  {
+   "text": "The pylorus of the stomach opens right here, so the doorman guards this plane.",
+   "shot": 2,
+   "dir": "warm, curious",
+   "say": "The pylorus of the stomach opens right here, so the doorman guards this plane. (laugh)"
+  },
+  {
+   "text": "And the duodenojejunal junction is the train station on the ring. That is our answer.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The hila of both kidneys are marked with stars at the same level.",
+   "shot": 4,
+   "dir": "clear, teaching"
+  },
+  {
+   "text": "So is the neck of the pancreas, and the portal vein forms behind it.",
+   "shot": 4,
+   "dir": "clear, teaching"
+  },
+  {
+   "text": "Remember the ring: L1, pylorus, duodenojejunal junction, kidney hila and pancreas neck.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}
