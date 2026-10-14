@@ -1,0 +1,95 @@
+{
+ "takeaway": "The facial nerve gives taste, not general sensation, to the anterior two-thirds of the tongue; CN IX supplies the posterior third. So the sensation statement is false.",
+ "question": {
+  "text": "Which statement about the anatomy of the facial nerve is NOT true?",
+  "say": "Which statement about the anatomy of the facial nerve is not true?"
+ },
+ "answer": {
+  "text": "It supplies sensation to the posterior two-thirds of the tongue.",
+  "say": "It supplies sensation to the posterior two-thirds of the tongue."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 200,
+   "y": 480,
+   "z": 2,
+   "spot": [
+    250,
+    420,
+    200
+   ]
+  },
+  {
+   "x": 570,
+   "y": 460,
+   "z": 2,
+   "spot": [
+    560,
+    400,
+    240
+   ]
+  },
+  {
+   "x": 950,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    950,
+    380,
+    220
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 430,
+   "z": 2,
+   "spot": [
+    1320,
+    430,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The facial nerve leaves the skull through the stylomastoid foramen.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "It supplies the muscles of facial expression, including the platysma, and the stapedius in the ear.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It also gives parasympathetic supply to the sublingual gland.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "On the tongue, it carries taste from the anterior two-thirds.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Sensation to the posterior third of the tongue comes from the glossopharyngeal nerve, CN IX.",
+   "say": "Sensation to the posterior third of the tongue comes from the glossopharyngeal nerve, cranial nerve nine.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the facial nerve does not give sensation to the posterior tongue, and that statement is false.",
+   "shot": 4,
+   "dir": "calm, confident"
+  }
+ ],
+ "qid": "Q000007221",
+ "image": "Q000007221.png",
+ "engine": "breeze",
+ "tempo": 1.0
+}
