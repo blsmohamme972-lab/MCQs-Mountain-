@@ -1,0 +1,93 @@
+{
+ "qid": "Q000006526",
+ "image": "Q000006526.png",
+ "takeaway": "Peroneus tertius belongs to the anterior compartment, not the posterior compartment of the leg.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following muscles is not found within the posterior compartment of the leg?"
+ },
+ "answer": {
+  "text": "Peroneus tertius"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    500,
+    400,
+    300
+   ]
+  },
+  {
+   "x": 560,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    560,
+    330,
+    260
+   ]
+  },
+  {
+   "x": 560,
+   "y": 640,
+   "z": 1.8,
+   "spot": [
+    560,
+    640,
+    250
+   ]
+  },
+  {
+   "x": 1270,
+   "y": 540,
+   "z": 1.9,
+   "spot": [
+    1260,
+    540,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Imagine the back of the calf as a house with two floors.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Upstairs, the superficial compartment holds gastrocnemius, soleus and plantaris.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Downstairs, the deep compartment holds tibialis posterior, flexor digitorum longus, flexor hallucis longus and popliteus.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "All of these are supplied by the tibial nerve and the posterior tibial artery.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Now look next door: peroneus tertius is standing at a different front door.",
+   "shot": 3,
+   "dir": "gently amused",
+   "say": "Now look next door: peroneus tertius is standing at a different front door. (laugh)"
+  },
+  {
+   "text": "It lives in the anterior compartment of the leg.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the muscle not in the posterior compartment is peroneus tertius.",
+   "shot": 3,
+   "dir": "calm, confident"
+  }
+ ]
+}
