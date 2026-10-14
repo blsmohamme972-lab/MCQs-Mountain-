@@ -1,0 +1,107 @@
+{
+ "qid": "Q000007281",
+ "image": "Q000007281.png",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "takeaway": "Hamstrings: semimembranosus, semitendinosus, biceps femoris. The short head of biceps femoris arises from the linea aspera.",
+ "question": {
+  "text": "Which of the following statements regarding the hamstring muscles is correct?"
+ },
+ "answer": {
+  "text": "The short head of biceps femoris originates from the linea aspera."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1.0,
+   "spot": [
+    768,
+    70,
+    220
+   ]
+  },
+  {
+   "x": 320,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    300,
+    250,
+    170
+   ]
+  },
+  {
+   "x": 800,
+   "y": 480,
+   "z": 1.7,
+   "spot": [
+    800,
+    430,
+    230
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 480,
+   "z": 1.9,
+   "spot": [
+    1260,
+    440,
+    170
+   ]
+  },
+  {
+   "x": 1400,
+   "y": 520,
+   "z": 2.1,
+   "spot": [
+    1430,
+    520,
+    120
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The hamstrings are semimembranosus, semitendinosus and biceps femoris.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "They mostly hang from the ischial tuberosity, the sitting bone, not the anterior superior iliac spine.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Semimembranosus runs to the medial condyle of the tibia, the inner side, not the lateral one.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Semitendinosus runs beside it and inserts deep to gracilis on the upper tibia.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Biceps femoris has two heads. The long head arises with semitendinosus.",
+   "shot": 3,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "But the short head starts lower down, on the femur.",
+   "shot": 3,
+   "dir": "gently amused"
+  },
+  {
+   "text": "It arises from the linea aspera, the rough ridge on the thigh bone.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So: short head of biceps from the linea aspera.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}

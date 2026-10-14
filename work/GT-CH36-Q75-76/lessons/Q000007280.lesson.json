@@ -1,0 +1,98 @@
+{
+ "qid": "Q000007280",
+ "image": "Q000007280.png",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "takeaway": "Epistaxis with normal observations: first nasal compression and sucking an ice cube. Packing, cautery and ENT referral come later if bleeding persists.",
+ "question": {
+  "text": "A 55-year-old man has epistaxis with normal observations. Which management should be undertaken first?"
+ },
+ "answer": {
+  "text": "Sucking on an ice cube and compression"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1.0,
+   "spot": [
+    768,
+    70,
+    220
+   ]
+  },
+  {
+   "x": 380,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    390,
+    330,
+    170
+   ]
+  },
+  {
+   "x": 770,
+   "y": 430,
+   "z": 1.9,
+   "spot": [
+    790,
+    470,
+    150
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 450,
+   "z": 1.9,
+   "spot": [
+    1250,
+    430,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A nosebleed, but his observations are completely normal.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The monitor looks healthy, so after the ABC check nothing more urgent needs fixing.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the first step is simple first aid: pinch the soft part of the nose and suck an ice cube.",
+   "shot": 2,
+   "dir": "gently amused",
+   "say": "(laugh) So the first step is simple first aid: pinch the soft part of the nose and suck an ice cube."
+  },
+  {
+   "text": "Steady nasal compression is what stops most nosebleeds.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Only if it keeps bleeding do we move on. Nasal packing gives tamponade.",
+   "shot": 3,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "If the bleeding point is visible with little blood loss, cautery is possible.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Specialist steps like ENT referral wait behind the door.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So: ice cube sucking and compression comes first.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}
