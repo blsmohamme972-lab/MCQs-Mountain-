@@ -1,0 +1,107 @@
+{
+ "qid": "Q000007279",
+ "image": "Q000007279.png",
+ "takeaway": "GCS = eyes + motor + verbal. Eyes to speech 3, localizes pain 5, confused 4: total 12. The lowest possible score is 3 and the highest is 15.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 16-year-old girl, hit by a car while cycling, is confused, opens her eyes to speech and localizes to pain. What is her Glasgow Coma Scale?"
+ },
+ "answer": {
+  "text": "12"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    200,
+    450,
+    230
+   ]
+  },
+  {
+   "x": 560,
+   "y": 450,
+   "z": 2,
+   "spot": [
+    510,
+    420,
+    170
+   ]
+  },
+  {
+   "x": 745,
+   "y": 450,
+   "z": 2,
+   "spot": [
+    745,
+    420,
+    170
+   ]
+  },
+  {
+   "x": 975,
+   "y": 450,
+   "z": 2,
+   "spot": [
+    975,
+    420,
+    170
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    1340,
+    480,
+    220
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "She is confused and does not know where she is.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Score each scale separately. First, eyes: she opens them to speech, which scores three.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Motor response: she localizes to pain, which scores five.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Verbal response: confused conversation scores four.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Add them up: three plus five plus four equals twelve.",
+   "shot": 5,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "The Glasgow Coma Scale is a reliable, reproducible measure of consciousness. The lowest score is three and the highest is fifteen.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the answer is twelve.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}
