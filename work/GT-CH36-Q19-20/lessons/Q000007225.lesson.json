@@ -1,0 +1,93 @@
+{
+ "qid": "Q000007225",
+ "image": "Q000007225.png",
+ "takeaway": "Y descent: the right atrium empties into the ventricle as the tricuspid valve opens.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "What does the Y descent represent on the Jugular Venous Pressure (JVP) waveform?",
+  "say": "What does the Y descent represent on the jugular venous pressure waveform?"
+ },
+ "answer": {
+  "text": "Opening of the tricuspid valve"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 1290,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    1250,
+    500,
+    210
+   ]
+  },
+  {
+   "x": 250,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    260,
+    420,
+    150
+   ]
+  },
+  {
+   "x": 750,
+   "y": 380,
+   "z": 1.9,
+   "spot": [
+    740,
+    500,
+    190
+   ]
+  },
+  {
+   "x": 1280,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    1340,
+    730,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The JVP waveform follows the pressure in the right atrium, with waves a, c and v.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Here the tricuspid valve is shut, like a closed door between the atrium and the ventricle.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Then the door opens, and the right atrium empties into the right ventricle.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The atrial pressure falls, and that fall is the Y descent.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The c wave is different: it marks the closing of the tricuspid valve.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the answer is the opening of the tricuspid valve.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
