@@ -1,0 +1,110 @@
+{
+ "qid": "Q000007263",
+ "image": "Q000007263.png",
+ "takeaway": "Mottled, red wound with black spots, fever and an unwell patient: necrotizing fasciitis. Resuscitate, give IV antibiotics and go to theatre for debridement.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A young woman, after an open appendicectomy, has a red wound with mottled skin, black spots up to 6 cm away, fever of 38.9 and looks unwell. What is the best management?",
+  "say": "A young woman, after an open appendicectomy, has a red wound with mottled skin, black spots up to 6 centimetres away, a fever of 38.9, and looks unwell. What is the best management?"
+ },
+ "answer": {
+  "text": "a and d: theatre immediately and intravenous antibiotics",
+  "say": "A and D: theatre immediately, and intravenous antibiotics."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    420,
+    330
+   ]
+  },
+  {
+   "x": 330,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    400,
+    560,
+    230
+   ]
+  },
+  {
+   "x": 780,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    790,
+    540,
+    260
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    1060,
+    230,
+    190
+   ]
+  },
+  {
+   "x": 1350,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1380,
+    350,
+    230
+   ]
+  },
+  {
+   "x": 1400,
+   "y": 700,
+   "z": 1.8,
+   "spot": [
+    1400,
+    700,
+    160
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A fever, a red mottled wound, and black spots well beyond the scar: this woman is seriously unwell.",
+   "shot": 1,
+   "dir": "concerned, clear"
+  },
+  {
+   "text": "That points to necrotizing fasciitis, a rare infection of the deeper skin layers and subcutaneous tissue.",
+   "shot": 2,
+   "dir": "calm, serious"
+  },
+  {
+   "text": "The diagnosis is mainly clinical, so do not wait for tests.",
+   "shot": 2,
+   "dir": "firm, clear"
+  },
+  {
+   "text": "Resuscitate her aggressively and start intravenous antibiotics.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Then she goes to theatre for urgent surgical debridement.",
+   "shot": 4,
+   "dir": "firm, urgent"
+  },
+  {
+   "text": "Observing on the ward, like the slow snail, is wrong. The answer is theatre and intravenous antibiotics.",
+   "say": "(sigh) Observing on the ward, like the slow snail, is wrong. The answer is theatre and intravenous antibiotics.",
+   "shot": 5,
+   "dir": "calm, reassuring"
+  }
+ ]
+}
