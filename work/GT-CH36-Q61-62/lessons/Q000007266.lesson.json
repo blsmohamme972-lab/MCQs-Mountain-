@@ -1,0 +1,99 @@
+{
+ "qid": "Q000007266",
+ "image": "Q000007266.png",
+ "takeaway": "Open appendicectomy: the Lanz (gridiron) incision, a horizontal skin-crease cut over McBurney's point with a better cosmetic result; Kocher's subcostal is for the liver and gallbladder.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "In theatre your registrar asks you to perform an open appendicectomy. Which incision is commonly used?",
+  "say": "In theatre your registrar asks you to perform an open appendicectomy. Which incision is commonly used?"
+ },
+ "answer": {
+  "text": "Lanz.",
+  "say": "Lanz."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 500,
+   "z": 2.0,
+   "spot": [
+    290,
+    540,
+    140
+   ]
+  },
+  {
+   "x": 800,
+   "y": 430,
+   "z": 2.0,
+   "spot": [
+    790,
+    430,
+    200
+   ]
+  },
+  {
+   "x": 1280,
+   "y": 280,
+   "z": 2.0,
+   "spot": [
+    1300,
+    260,
+    190
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 600,
+   "z": 2.0,
+   "spot": [
+    1290,
+    620,
+    190
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Your registrar points to the right lower abdomen for an open appendicectomy.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The target is McBurney's point.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The Lanz incision is made horizontally over it, within a skin crease, like a neat smile line.",
+   "shot": 2,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "It gives a better cosmetic result.",
+   "shot": 2,
+   "dir": "pleased, clear"
+  },
+  {
+   "text": "It is also called the gridiron incision.",
+   "shot": 3,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Kocher's subcostal incision is different: it is used for the liver, gallbladder and biliary tree.",
+   "shot": 4,
+   "dir": "calm, contrasting"
+  },
+  {
+   "text": "So the answer is the Lanz incision.",
+   "shot": 0,
+   "dir": "pleased, confident"
+  }
+ ]
+}
