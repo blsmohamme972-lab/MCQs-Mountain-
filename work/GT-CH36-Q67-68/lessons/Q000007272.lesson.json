@@ -1,0 +1,112 @@
+{
+ "qid": "Q000007272",
+ "image": "Q000007272.png",
+ "takeaway": "Popliteal fossa: superomedial border = semimembranosus and semitendinosus; superolateral = biceps femoris; gastrocnemius heads form the lower borders; floor = femur.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which statement regarding the borders of the popliteal fossa is correct?"
+ },
+ "answer": {
+  "text": "The superomedial border is formed by semimembranosus and semitendinosus."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    512,
+    60
+   ]
+  },
+  {
+   "x": 880,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    880,
+    280,
+    210
+   ]
+  },
+  {
+   "x": 1320,
+   "y": 340,
+   "z": 2,
+   "spot": [
+    1290,
+    330,
+    190
+   ]
+  },
+  {
+   "x": 640,
+   "y": 640,
+   "z": 2,
+   "spot": [
+    640,
+    620,
+    190
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 650,
+   "z": 2,
+   "spot": [
+    1330,
+    640,
+    190
+   ]
+  },
+  {
+   "x": 870,
+   "y": 520,
+   "z": 2,
+   "spot": [
+    870,
+    520,
+    190
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Picture the popliteal fossa as a diamond behind the knee.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The top inner wall, the superomedial border, is semimembranosus and semitendinosus, holding hands.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Semimembranosus lies deep to semitendinosus.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The top outer wall is the biceps femoris.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Below, the lateral head of gastrocnemius forms the inferolateral border.",
+   "shot": 3,
+   "dir": "gently amused"
+  },
+  {
+   "text": "And the medial head forms the inferomedial border.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The floor is the popliteal surface of the femur, not the roof. So the answer is B.",
+   "shot": 5,
+   "dir": "warm, reassuring"
+  }
+ ]
+}
