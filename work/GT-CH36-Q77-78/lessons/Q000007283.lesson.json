@@ -1,0 +1,25 @@
+{
+ "qid": "Q000007283",
+ "image": "Q000007283.png",
+ "takeaway": "Parietal cells make intrinsic factor, which binds vitamin B12 for absorption in the ileum. After total gastrectomy they are absent, so B12 must be injected for life.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {"text": "Before a total gastrectomy he is told he needs lifelong B12 injections. Absence of which cell type is responsible?"},
+ "answer": {"text": "Parietal cells"},
+ "shots": [
+  {"x": 768, "y": 512, "z": 1},
+  {"x": 250, "y": 330, "z": 1.9, "spot": [200, 330, 170]},
+  {"x": 640, "y": 560, "z": 2.0, "spot": [620, 600, 190]},
+  {"x": 1000, "y": 420, "z": 1.9, "spot": [1000, 560, 150]},
+  {"x": 1300, "y": 380, "z": 1.9, "spot": [1380, 300, 170]}
+ ],
+ "lines": [
+  {"text": "A total gastrectomy removes the whole stomach.", "shot": 1, "dir": "calm, confident"},
+  {"text": "And with it go the parietal cells.", "shot": 2, "dir": "warm, clear"},
+  {"text": "Parietal cells make intrinsic factor.", "shot": 2, "dir": "calm, confident"},
+  {"text": "Intrinsic factor binds vitamin B twelve in the stomach, so it can be absorbed in the ileum.", "shot": 3, "say": "Intrinsic factor binds vitamin B twelve in the stomach, so it can be absorbed in the ileum. (sigh)", "dir": "calm, explaining"},
+  {"text": "Without it, the capsule has no key, and the ileum gate stays locked.", "shot": 3, "dir": "gently amused"},
+  {"text": "So the patient needs lifelong injections.", "shot": 4, "dir": "warm, reassuring"},
+  {"text": "G cells make gastrin, and goblet cells live in the bowel, so they are not the answer.", "shot": 0, "dir": "calm, confident"}
+ ]
+}

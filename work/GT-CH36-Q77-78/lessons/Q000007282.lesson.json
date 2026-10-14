@@ -1,0 +1,25 @@
+{
+ "qid": "Q000007282",
+ "image": "Q000007282.png",
+ "takeaway": "Dukes': A confined to the wall, B through the wall, C1 nodes not including the apical node, C2 including the apical node, D distant metastasis. Through the wall plus an apical node and no metastasis is C2.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {"text": "After a right hemicolectomy, the tumour invades through the bowel wall into adjacent structures and the apical node is involved. No metastasis on CT. Which Dukes' stage?"},
+ "answer": {"text": "Stage C2", "say": "Stage C two"},
+ "shots": [
+  {"x": 768, "y": 512, "z": 1},
+  {"x": 240, "y": 420, "z": 1.9, "spot": [200, 330, 170]},
+  {"x": 880, "y": 460, "z": 1.9, "spot": [920, 470, 190]},
+  {"x": 1300, "y": 330, "z": 2.0, "spot": [1380, 190, 120]},
+  {"x": 1300, "y": 480, "z": 1.9, "spot": [1330, 620, 130]}
+ ],
+ "lines": [
+  {"text": "Dr Cuthbert Dukes described this staging back in 1932.", "shot": 1, "dir": "warm, curious"},
+  {"text": "Stage A is a tumour confined to the bowel wall. Stage B is a tumour penetrating the wall.", "shot": 2, "dir": "calm, confident"},
+  {"text": "Our tumour is through the wall into adjacent structures, so it is at least stage B.", "shot": 2, "dir": "calm, confident"},
+  {"text": "Stage C is about nodes. C one means nodes, but not the apical node.", "shot": 4, "dir": "calm, clear"},
+  {"text": "C two means lymph node involvement including the apical node, the top bead on the ladder.", "shot": 3, "say": "C two means lymph node involvement including the apical node, the top bead on the ladder. (laugh)", "dir": "gently amused"},
+  {"text": "Stage D needs distant metastasis, and the CT showed none.", "shot": 4, "dir": "calm, confident"},
+  {"text": "So the answer is Dukes stage C two.", "shot": 0, "dir": "warm, reassuring"}
+ ]
+}
