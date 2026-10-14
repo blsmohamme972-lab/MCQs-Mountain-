@@ -1,0 +1,94 @@
+{
+ "qid": "Q000007304",
+ "image": "Q000007304.png",
+ "takeaway": "The Hering-Breuer reflex prevents overinflation of the lungs via stretch receptors; peripheral chemoreceptors (carotid bodies) respond mainly to low PO2.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following regarding the regulation of respiration is correct?",
+  "say": "Which of the following regarding the regulation of respiration is correct?"
+ },
+ "answer": {
+  "text": "The Hering–Breuer reflex prevents overinflation of the lungs.",
+  "say": "The Hering Breuer reflex prevents overinflation of the lungs."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 384,
+   "y": 380,
+   "z": 2.0,
+   "spot": [
+    200,
+    330,
+    190
+   ]
+  },
+  {
+   "x": 700,
+   "y": 380,
+   "z": 2.0,
+   "spot": [
+    690,
+    370,
+    230
+   ]
+  },
+  {
+   "x": 950,
+   "y": 480,
+   "z": 2.0,
+   "spot": [
+    930,
+    480,
+    200
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 420,
+   "z": 2.0,
+   "spot": [
+    1340,
+    400,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Breathing is conducted by the brain stem, in the pons and the medulla.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Stretch receptors in the lungs send signals back to the brain stem.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "When a lung is stretched too far, it is in danger of overinflation.",
+   "shot": 3,
+   "dir": "gently worried"
+  },
+  {
+   "text": "Then the Hering-Breuer reflex blows the whistle and stops the inflation.",
+   "shot": 4,
+   "dir": "pleased, playful"
+  },
+  {
+   "text": "Lungs protected: that is the correct statement.",
+   "shot": 4,
+   "dir": "pleased, confident"
+  },
+  {
+   "text": "Remember too, peripheral chemoreceptors in the carotid bodies respond mainly to low oxygen, and in part to pH.",
+   "shot": 0,
+   "dir": "calm, explaining"
+  }
+ ]
+}
