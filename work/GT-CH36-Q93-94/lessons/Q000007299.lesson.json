@@ -1,0 +1,107 @@
+{
+ "qid": "Q000007299",
+ "image": "Q000007299.png",
+ "takeaway": "Supraspinatus initiates abduction; infraspinatus and teres minor externally rotate; subscapularis internally rotates and inserts on the lesser tuberosity.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Concerning the rotator cuff muscles, which of the following statements is correct?"
+ },
+ "answer": {
+  "text": "Teres minor is an external rotator of the shoulder."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    512,
+    60
+   ]
+  },
+  {
+   "x": 290,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    290,
+    360,
+    230
+   ]
+  },
+  {
+   "x": 830,
+   "y": 230,
+   "z": 2,
+   "spot": [
+    830,
+    230,
+    170
+   ]
+  },
+  {
+   "x": 780,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    780,
+    420,
+    170
+   ]
+  },
+  {
+   "x": 780,
+   "y": 590,
+   "z": 2,
+   "spot": [
+    780,
+    590,
+    170
+   ]
+  },
+  {
+   "x": 1260,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    1260,
+    380,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Four muscles form the rotator cuff around the shoulder joint.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Supraspinatus inserts on the greater tuberosity and initiates abduction.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Infraspinatus also inserts on the greater tuberosity, and rotates the shoulder externally.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Teres minor sits below it, same insertion, same job: an external rotator.",
+   "shot": 4,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Subscapularis is the odd one out. It inserts on the lesser tuberosity and rotates internally.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the answer is A: teres minor is an external rotator.",
+   "shot": 4,
+   "dir": "warm, reassuring"
+  }
+ ]
+}

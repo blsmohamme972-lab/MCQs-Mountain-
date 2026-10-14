@@ -1,0 +1,107 @@
+{
+ "qid": "Q000007298",
+ "image": "Q000007298.png",
+ "takeaway": "Pulse pressure = systolic minus diastolic pressure. Narrow in blood loss, dehydration or aortic stenosis; wide in chronic aortic regurgitation.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which one of the following statements correctly defines pulse pressure?"
+ },
+ "answer": {
+  "text": "Difference between the systolic and diastolic blood pressure"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    512,
+    60
+   ]
+  },
+  {
+   "x": 450,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    450,
+    330,
+    190
+   ]
+  },
+  {
+   "x": 450,
+   "y": 600,
+   "z": 2,
+   "spot": [
+    450,
+    580,
+    170
+   ]
+  },
+  {
+   "x": 790,
+   "y": 430,
+   "z": 2,
+   "spot": [
+    790,
+    420,
+    260
+   ]
+  },
+  {
+   "x": 1240,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    1240,
+    300,
+    230
+   ]
+  },
+  {
+   "x": 1240,
+   "y": 680,
+   "z": 2,
+   "spot": [
+    1240,
+    640,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Let's read the pressure gauge. The top number is the systolic pressure.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The bottom number is the diastolic pressure.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Pulse pressure is simply the gap between them: systolic minus diastolic.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "A narrow pulse pressure suggests significant blood loss or dehydration, and can also come from aortic stenosis.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "A wide pulse pressure is seen in chronic aortic regurgitation, and in healthy people after exercise.",
+   "shot": 5,
+   "dir": "gently amused"
+  },
+  {
+   "text": "So the answer is A, the difference.",
+   "shot": 3,
+   "dir": "warm, reassuring"
+  }
+ ]
+}
