@@ -1,0 +1,114 @@
+{
+ "qid": "Q000007314",
+ "image": "Q000007314.png",
+ "takeaway": "Endothelial cells make thrombomodulin, which binds thrombin and activates protein C; only the cerebral microcirculation lacks it.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "The endothelial cells in all of the following circulations produce thrombomodulin except which one?"
+ },
+ "answer": {
+  "text": "Cerebral microcirculation lacks thrombomodulin."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 400,
+   "z": 2,
+   "spot": [
+    320,
+    430,
+    180
+   ]
+  },
+  {
+   "x": 700,
+   "y": 450,
+   "z": 1.9,
+   "spot": [
+    620,
+    480,
+    200
+   ]
+  },
+  {
+   "x": 860,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    880,
+    380,
+    150
+   ]
+  },
+  {
+   "x": 1260,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    1260,
+    300,
+    260
+   ]
+  },
+  {
+   "x": 1260,
+   "y": 700,
+   "z": 2,
+   "spot": [
+    1260,
+    650,
+    170
+   ]
+  },
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  }
+ ],
+ "lines": [
+  {
+   "text": "Endothelial cells line our vessels, and each one carries a little shield: thrombomodulin.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "When thrombin, the clotting villain, comes along, the shield grabs it and handcuffs it.",
+   "shot": 2,
+   "dir": "gently amused"
+  },
+  {
+   "text": "That slows the clotting, and it also switches on protein C, our policeman.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Activated protein C inactivates factors V and VIII, so the clot cannot keep growing.",
+   "shot": 3,
+   "dir": "calm, confident",
+   "say": "Activated protein C inactivates factors five and eight, so the clot cannot keep growing."
+  },
+  {
+   "text": "Liver, skin, kidney and lung vessels all make thrombomodulin, so they all get a tick.",
+   "shot": 4,
+   "dir": "warm, steady"
+  },
+  {
+   "text": "But the cerebral microcirculation is the odd one out: no thrombomodulin there.",
+   "shot": 5,
+   "dir": "curious, emphatic",
+   "say": "(laugh) But the cerebral microcirculation is the odd one out: no thrombomodulin there."
+  },
+  {
+   "text": "So the answer is cerebral microcirculation.",
+   "shot": 6,
+   "dir": "calm, confident"
+  }
+ ]
+}

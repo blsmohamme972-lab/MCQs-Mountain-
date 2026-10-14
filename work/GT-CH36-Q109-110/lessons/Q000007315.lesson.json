@@ -1,0 +1,108 @@
+{
+ "qid": "Q000007315",
+ "image": "Q000007315.png",
+ "takeaway": "AF with sudden severe abdominal pain, raised lactate and metabolic acidosis points to embolic bowel infarction, not pancreatitis.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 72-year-old woman on warfarin for atrial fibrillation has sudden central abdominal pain, vomiting, guarding, raised white cells, lactate 7.3 and pH 7.27. Most likely diagnosis?",
+  "say": "A 72-year-old woman on warfarin for atrial fibrillation has sudden central abdominal pain, vomiting, guarding, raised white cells, lactate 7.3 and pH 7.27. What is the most likely diagnosis?"
+ },
+ "answer": {
+  "text": "Infarcted bowel"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 260,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    240,
+    400,
+    200
+   ]
+  },
+  {
+   "x": 700,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    720,
+    330,
+    170
+   ]
+  },
+  {
+   "x": 780,
+   "y": 560,
+   "z": 2,
+   "spot": [
+    780,
+    600,
+    200
+   ]
+  },
+  {
+   "x": 1260,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    1260,
+    300,
+    220
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 650,
+   "z": 2,
+   "spot": [
+    1260,
+    640,
+    150
+   ]
+  },
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  }
+ ],
+ "lines": [
+  {
+   "text": "This woman has atrial fibrillation, so her heart can throw off a small clot.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "A small embolus passes into the arterial system and blocks the artery supplying the bowel.",
+   "shot": 2,
+   "dir": "calm, serious"
+  },
+  {
+   "text": "The bowel infarcts, which explains the sudden central pain, vomiting, guarding and rebound.",
+   "shot": 3,
+   "dir": "calm, serious"
+  },
+  {
+   "text": "The blood gas shows a low pH and low bicarbonate: a metabolic acidosis, with a high lactate.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Pancreatitis could also cause that, but she has had her gallbladder out, normal liver tests, and no alcohol.",
+   "shot": 5,
+   "dir": "thoughtful, steady"
+  },
+  {
+   "text": "So the answer is infarcted bowel.",
+   "shot": 6,
+   "dir": "calm, confident"
+  }
+ ]
+}
