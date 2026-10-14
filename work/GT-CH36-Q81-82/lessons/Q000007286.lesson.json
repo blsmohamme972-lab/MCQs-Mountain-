@@ -1,0 +1,102 @@
+{
+ "qid": "Q000007286",
+ "image": "Q000007286.png",
+ "takeaway": "Acute-phase proteins are made mainly in the liver in acute inflammation; examples are CRP, fibrinogen and serum amyloid A.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following is an acute-phase protein?"
+ },
+ "answer": {
+  "text": "Fibrinogen"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 150,
+   "y": 300,
+   "z": 1.9,
+   "spot": [
+    150,
+    230,
+    160
+   ]
+  },
+  {
+   "x": 768,
+   "y": 380,
+   "z": 1.7,
+   "spot": [
+    760,
+    260,
+    200
+   ]
+  },
+  {
+   "x": 840,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    600,
+    520,
+    150
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    1380,
+    260,
+    170
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 700,
+   "z": 2.2,
+   "spot": [
+    1370,
+    620,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "In acute inflammation, the body raises certain proteins to fight the insult.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "These acute-phase proteins are made mainly in the liver.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Fibrinogen is one of them. So are C-reactive protein, the most used in clinical practice, and serum amyloid A.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "They can rise several hundred-fold above normal.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The interleukins and interferon gamma are signalling molecules, not acute-phase proteins, so they are crossed out.",
+   "shot": 5,
+   "dir": "gently amused"
+  },
+  {
+   "text": "So the answer is fibrinogen.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}

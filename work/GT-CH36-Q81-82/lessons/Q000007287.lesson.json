@@ -1,0 +1,87 @@
+{
+ "qid": "Q000007287",
+ "image": "Q000007287.png",
+ "takeaway": "The portal vein forms behind the neck of the pancreas and ascends in the free edge of the lesser omentum, posterior to the bile duct and hepatic artery.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which one of the following statements is correct concerning the portal vein?"
+ },
+ "answer": {
+  "text": "It lies posterior to the bile duct in the free edge of the lesser omentum."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 270,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    300,
+    370,
+    200
+   ]
+  },
+  {
+   "x": 800,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    790,
+    430,
+    230
+   ]
+  },
+  {
+   "x": 940,
+   "y": 640,
+   "z": 2.0,
+   "spot": [
+    940,
+    540,
+    150
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    1340,
+    460,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The portal vein is formed by the superior mesenteric and splenic veins, behind the neck of the pancreas.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "It then ascends in the free edge of the lesser omentum, toward the liver.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "There, it lies behind both the hepatic artery and the bile duct.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "At the porta hepatis, it enters the liver as the three structures reach the gate together.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the answer is: it lies posterior to the bile duct in the free edge of the lesser omentum.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
