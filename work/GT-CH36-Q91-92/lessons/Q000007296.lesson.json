@@ -1,0 +1,107 @@
+{
+ "qid": "Q000007296",
+ "image": "Q000007296.png",
+ "takeaway": "Methotrexate blocks utilization of folate. The main cause of deficiency is malnutrition; increased requirements (pregnancy, haemolysis) and malabsorption (coeliac) are other causes.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which one of the following statements is true regarding folate deficiency?"
+ },
+ "answer": {
+  "text": "Methotrexate blocks utilization of folate."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 220,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    200,
+    470,
+    200
+   ]
+  },
+  {
+   "x": 700,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    660,
+    420,
+    200
+   ]
+  },
+  {
+   "x": 1230,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    1180,
+    430,
+    200
+   ]
+  },
+  {
+   "x": 1230,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    1280,
+    330,
+    150
+   ]
+  },
+  {
+   "x": 1230,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    1300,
+    680,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Folate deficiency has several causes.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The main one is malnutrition, as in alcoholics, or from overcooked food.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Malabsorption, as in coeliac disease or Crohn disease, is another cause.",
+   "shot": 5,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Requirements rise in pregnancy, malignancy and haemolysis.",
+   "shot": 5,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "And some drugs block folate use. Meet methotrexate, stopping folate at the door of the cell.",
+   "shot": 2,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "The result is a megaloblastic anaemia.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "So the true statement: methotrexate blocks utilization of folate.",
+   "shot": 2,
+   "dir": "calm, confident"
+  }
+ ]
+}
