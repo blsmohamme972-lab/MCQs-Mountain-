@@ -1,0 +1,99 @@
+{
+ "qid": "Q000007249",
+ "image": "Q000007249.png",
+ "takeaway": "The defecation reflex starts at an intrarectal pressure of 18 mmHg, afferents reach S1-3, and efferents activate parasympathetic myenteric neurons.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Concerning the defecation reflex, which statement is correct?",
+  "say": "Concerning the defecation reflex, which statement is correct?"
+ },
+ "answer": {
+  "text": "Efferent impulses activate post-ganglionic parasympathetic neurons of the myenteric plexus.",
+  "say": "Efferent impulses activate post-ganglionic parasympathetic neurons of the myenteric plexus."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1.0,
+   "spot": [
+    768,
+    300,
+    420
+   ]
+  },
+  {
+   "x": 260,
+   "y": 450,
+   "z": 1.9,
+   "spot": [
+    250,
+    330,
+    230
+   ]
+  },
+  {
+   "x": 700,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    760,
+    260,
+    240
+   ]
+  },
+  {
+   "x": 850,
+   "y": 640,
+   "z": 1.8,
+   "spot": [
+    880,
+    560,
+    260
+   ]
+  },
+  {
+   "x": 1290,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1280,
+    300,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The reflex is triggered when rectal pressure reaches 18 millimetres of mercury, not 80.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Afferent impulses travel to sacral segments one to three.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The efferent limb activates parasympathetic neurons in the myenteric plexus.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Parasympathetic stimulation relaxes the internal anal sphincter, not sympathetic.",
+   "shot": 4,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "To resist, the pudendal nerve increases the tone of the external sphincter.",
+   "shot": 4,
+   "dir": "gently amused"
+  },
+  {
+   "text": "So the correct statement is the efferent, myenteric plexus option.",
+   "shot": 3,
+   "dir": "relieved, confident"
+  }
+ ]
+}
