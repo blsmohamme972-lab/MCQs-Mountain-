@@ -1,4 +1,5 @@
 """Image lessons (motioncards/lib/lesson.py): spec checks and a scene that passes the real v2 validator."""
+import importlib.util
 import unittest
 from types import SimpleNamespace as NS
 from motioncards.lib import lesson
@@ -51,6 +52,7 @@ class Lessons(unittest.TestCase):
         self.assertIn('id="lesson-q-text"', scene["svg"]); self.assertIn("ANSWER", scene["svg"])
         self.assertIn('{"x":800.0,"y":450.0,"z":1}', scene["script"])   # the whole picture behind the intro
 
+    @unittest.skipUnless(importlib.util.find_spec("numpy"), "numpy is only installed in the voice venv")
     def test_word_times_follow_the_heard_words_and_fill_the_rest(self):
         import numpy as np
         clip = np.zeros(24000 * 3, np.float32); clip[2400:24000 * 3 - 2400] = 0.1     # speech from 100 to 2900 ms
