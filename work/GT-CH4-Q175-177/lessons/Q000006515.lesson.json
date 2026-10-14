@@ -1,0 +1,26 @@
+{
+ "qid": "Q000006515",
+ "image": "Q000006515.png",
+ "takeaway": "Psoas major joins iliacus to form the iliopsoas tendon, which inserts on the lesser trochanter of the femur, so its main action is flexing the thigh at the hip joint.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {"text": "Which one of the following is the main function of the psoas major muscle?"},
+ "answer": {"text": "Flexes the thigh at the hip joint"},
+ "shots": [
+  {"x": 768, "y": 512, "z": 1},
+  {"x": 300, "y": 360, "z": 2.0, "spot": [200, 250, 150]},
+  {"x": 420, "y": 420, "z": 2.0, "spot": [410, 430, 140]},
+  {"x": 760, "y": 420, "z": 2.0, "spot": [740, 380, 150]},
+  {"x": 900, "y": 640, "z": 2.0, "spot": [890, 660, 120]},
+  {"x": 1300, "y": 400, "z": 1.8, "spot": [1300, 380, 220]}
+ ],
+ "lines": [
+  {"text": "Meet psoas major, running down from the lumbar spine into the pelvis.", "shot": 1, "dir": "warm, curious"},
+  {"text": "It joins the iliacus, which arises broadly from the inner aspect of the iliac wing.", "shot": 2, "dir": "clear, steady"},
+  {"text": "Together they pass under the inguinal ligament as one strong tendon, the iliopsoas.", "shot": 3, "dir": "clear, steady"},
+  {"text": "That tendon inserts on the lesser trochanter of the femur.", "shot": 4, "dir": "focused, explaining"},
+  {"text": "Pulling on the lesser trochanter lifts the thigh forward, like a soldier marching.", "shot": 5, "dir": "gently amused", "say": "Pulling on the lesser trochanter lifts the thigh forward, (laugh) like a soldier marching."},
+  {"text": "So its main job is to flex the thigh at the hip joint.", "shot": 5, "dir": "confident, warm"},
+  {"text": "Remember the path: spine, under the ligament, lesser trochanter, hip flexion.", "shot": 0, "dir": "calm, confident"}
+ ]
+}

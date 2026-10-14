@@ -1,0 +1,26 @@
+{
+ "qid": "Q000006517",
+ "image": "Q000006517.png",
+ "takeaway": "Femoral triangle, lateral to medial (NAVY): femoral nerve, femoral artery, femoral vein, with the long saphenous vein, its main tributary, joining medially.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {"text": "Moving from lateral to medial, which of the following describes the order of the structures in the femoral triangle?"},
+ "answer": {"text": "Femoral nerve, femoral artery, femoral vein, long saphenous vein"},
+ "shots": [
+  {"x": 768, "y": 512, "z": 1},
+  {"x": 500, "y": 330, "z": 2.0, "spot": [520, 300, 130]},
+  {"x": 740, "y": 360, "z": 2.0, "spot": [760, 330, 130]},
+  {"x": 950, "y": 380, "z": 2.0, "spot": [960, 350, 130]},
+  {"x": 1200, "y": 430, "z": 2.0, "spot": [1160, 420, 130]},
+  {"x": 768, "y": 380, "z": 1.4, "spot": [768, 330, 380]}
+ ],
+ "lines": [
+  {"text": "Picture the femoral triangle as a ship, crewed from lateral to medial.", "shot": 0, "dir": "warm, playful"},
+  {"text": "First, most lateral, the femoral nerve with its branches.", "shot": 1, "dir": "clear, steady"},
+  {"text": "Next, the femoral artery and its branches, including the profunda femoris.", "shot": 2, "dir": "clear, steady"},
+  {"text": "Then the femoral vein.", "shot": 3, "dir": "clear, steady"},
+  {"text": "And joining it medially, its main tributary, the long saphenous vein.", "shot": 4, "dir": "focused, explaining"},
+  {"text": "So the order is nerve, artery, vein, then the long saphenous vein.", "shot": 5, "dir": "confident, warm"},
+  {"text": "Just remember NAVY, from lateral to medial, and you won't get lost at sea.", "shot": 5, "dir": "gently amused", "say": "Just remember NAVY, from lateral to medial, and you won't get lost at sea. (laugh)"}
+ ]
+}
