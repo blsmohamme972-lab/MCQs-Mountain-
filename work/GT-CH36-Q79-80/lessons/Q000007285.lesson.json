@@ -1,0 +1,97 @@
+{
+ "qid": "Q000007285",
+ "image": "Q000007285.png",
+ "takeaway": "Each action potential in a given cell is all-or-none: same amplitude and speed. Nernst gives equilibrium potentials, Goldman gives the resting potential (about -70 mV).",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Concerning action potentials, which of the following statements is correct?"
+ },
+ "answer": {
+  "text": "For any individual cell, each action potential has the same amplitude and speed."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 220,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    210,
+    330,
+    170
+   ]
+  },
+  {
+   "x": 740,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    740,
+    330,
+    170
+   ]
+  },
+  {
+   "x": 1340,
+   "y": 430,
+   "z": 1.9,
+   "spot": [
+    1340,
+    330,
+    170
+   ]
+  },
+  {
+   "x": 300,
+   "y": 600,
+   "z": 1.7,
+   "spot": [
+    210,
+    730,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Action potentials follow the all-or-none rule.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "For any one cell, every action potential has the same amplitude.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "And each one is propagated at the same speed.",
+   "shot": 3,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The other options are traps. An action potential is a rapid depolarization, then repolarization, not the reverse.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The resting potential of a neuron is about minus seventy millivolts, and the Goldman equation calculates it.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The Nernst equation is for an ion's equilibrium potential.",
+   "shot": 4,
+   "dir": "gently amused"
+  },
+  {
+   "text": "So same amplitude, same speed: that is the correct statement.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
