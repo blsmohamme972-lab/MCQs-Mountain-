@@ -5,8 +5,8 @@
  "engine": "breeze",
  "tempo": 1.0,
  "question": {
-  "text": "A 25-year-old woman is involved in a road traffic accident where her pelvis has fractured. It is thought her sciatic nerve has been injured as it exits the pelvis. Which muscle will lose its innervation?",
-  "say": "A twenty-five-year-old woman is involved in a road traffic accident where her pelvis has fractured. It is thought her sciatic nerve has been injured as it exits the pelvis. Which muscle will lose its innervation?"
+  "text": "A 25-year-old woman fractures her pelvis in a road traffic accident, and her sciatic nerve is thought to be injured as it exits the pelvis. Which muscle will lose its innervation?",
+  "say": "A twenty-five-year-old woman fractures her pelvis in a road traffic accident, and her sciatic nerve is thought to be injured as it exits the pelvis. Which muscle will lose its innervation?"
  },
  "answer": {
   "text": "Semimembranosus"

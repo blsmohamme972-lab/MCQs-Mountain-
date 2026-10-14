@@ -5,8 +5,8 @@
  "engine": "breeze",
  "tempo": 1.0,
  "question": {
-  "text": "A 67-year-old man walks into your orthopaedic clinic after his total hip replacement and you notice he has a Trendelenburg gait. Which muscles are most likely to have been damaged to cause this type of gait?",
-  "say": "A sixty-seven-year-old man walks into your orthopaedic clinic after his total hip replacement and you notice he has a Trendelenburg gait. Which muscles are most likely to have been damaged to cause this type of gait?"
+  "text": "A 67-year-old man walks into your orthopaedic clinic after his total hip replacement and you notice he has a Trendelenburg gait. Which muscles are most likely damaged to cause this gait?",
+  "say": "A sixty-seven-year-old man walks into your orthopaedic clinic after his total hip replacement and you notice he has a Trendelenburg gait. Which muscles are most likely damaged to cause this gait?"
  },
  "answer": {
   "text": "The gluteus minimus and medius"
