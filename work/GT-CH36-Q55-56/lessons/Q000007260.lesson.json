@@ -1,0 +1,99 @@
+{
+ "qid": "Q000007260",
+ "image": "Q000007260.png",
+ "takeaway": "Seven muscles attach the scapula to the chest wall; subclavius is not one of them. Serratus anterior paralysis (long thoracic nerve) causes winging.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following muscles is not attached to the scapula?",
+  "say": "Which of the following muscles is not attached to the scapula?"
+ },
+ "answer": {
+  "text": "Subclavius",
+  "say": "Subclavius."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 200,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    180,
+    480,
+    200
+   ]
+  },
+  {
+   "x": 700,
+   "y": 480,
+   "z": 1.5,
+   "spot": [
+    650,
+    520,
+    260
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    1320,
+    380,
+    160
+   ]
+  },
+  {
+   "x": 700,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    640,
+    260,
+    190
+   ]
+  },
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  }
+ ],
+ "lines": [
+  {
+   "text": "Here is the scapula, the friendly bone on the back, held by muscles on ropes.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Seven muscles attach the scapula to the chest wall. The two main ones are trapezius and serratus anterior.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The other five include levator scapulae, rhomboids, pectoralis minor and omohyoid. Each tied rope here has a green tick.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "But look at the small muscle under the collarbone. Subclavius holds the clavicle and the first rib, far from the scapula, so its rope is cut.",
+   "shot": 3,
+   "dir": "warm, clear"
+  },
+  {
+   "text": "One last point: paralysis of serratus anterior, supplied by the long thoracic nerve, gives a winged scapula.",
+   "shot": 4,
+   "dir": "calm, serious"
+  },
+  {
+   "text": "So the muscle not attached to the scapula is subclavius.",
+   "shot": 5,
+   "dir": "warm, confident"
+  }
+ ]
+}

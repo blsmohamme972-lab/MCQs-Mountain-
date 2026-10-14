@@ -1,0 +1,109 @@
+{
+ "qid": "Q000007261",
+ "image": "Q000007261.png",
+ "takeaway": "Adrenal arteries: superior from inferior phrenic, middle from abdominal aorta, inferior from renal artery. One adrenal vein per gland: left to left renal vein, right to IVC.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following statements is correct regarding the anatomy of the adrenal gland?",
+  "say": "Which of the following statements is correct regarding the anatomy of the adrenal gland?"
+ },
+ "answer": {
+  "text": "The middle adrenal artery is derived from the abdominal aorta.",
+  "say": "The middle adrenal artery is derived from the abdominal aorta."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    330,
+    400,
+    180
+   ]
+  },
+  {
+   "x": 650,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    640,
+    400,
+    190
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    1130,
+    220,
+    150
+   ]
+  },
+  {
+   "x": 1130,
+   "y": 560,
+   "z": 2,
+   "spot": [
+    1130,
+    600,
+    150
+   ]
+  },
+  {
+   "x": 400,
+   "y": 560,
+   "z": 2,
+   "spot": [
+    400,
+    620,
+    130
+   ]
+  },
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  }
+ ],
+ "lines": [
+  {
+   "text": "The adrenal gland, the yellow cap on the kidney, is usually supplied by three arteries: superior, middle and inferior.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The middle adrenal artery comes straight from the abdominal aorta. That is the correct statement.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The superior artery comes from the inferior phrenic artery, not from the renal artery.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "And the inferior adrenal artery comes from the renal artery, not from the inferior phrenic.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The gland drains by one adrenal vein, not three. On the left it joins the left renal vein, on the right the inferior vena cava.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the middle adrenal artery from the abdominal aorta is the right answer.",
+   "shot": 6,
+   "dir": "warm, confident"
+  }
+ ]
+}
