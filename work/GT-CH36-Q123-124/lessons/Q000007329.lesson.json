@@ -1,0 +1,108 @@
+{
+ "qid": "Q000007329",
+ "image": "Q000007329.png",
+ "takeaway": "The vagus is parasympathetic, rest and digest: it stimulates gastric chief cells to secrete pepsinogen and increases gut motility.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following statements regarding the vagus nerve is correct?"
+ },
+ "answer": {
+  "text": "Activation of the vagus nerve stimulates chief cells in the stomach."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 270,
+   "z": 2,
+   "spot": [
+    260,
+    230,
+    200
+   ]
+  },
+  {
+   "x": 210,
+   "y": 640,
+   "z": 2,
+   "spot": [
+    200,
+    620,
+    170
+   ]
+  },
+  {
+   "x": 640,
+   "y": 520,
+   "z": 2,
+   "spot": [
+    640,
+    510,
+    220
+   ]
+  },
+  {
+   "x": 1040,
+   "y": 520,
+   "z": 2,
+   "spot": [
+    1040,
+    520,
+    200
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    1380,
+    330,
+    230
+   ]
+  },
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  }
+ ],
+ "lines": [
+  {
+   "text": "The vagus nerve, cranial nerve X, starts in the medulla and wanders down into the abdomen.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "The vagus nerve, cranial nerve ten, starts in the medulla and wanders down into the abdomen."
+  },
+  {
+   "text": "Its stimulation is parasympathetic: rest and digest.",
+   "shot": 2,
+   "dir": "relaxed, warm"
+  },
+  {
+   "text": "It stimulates the chief cells in the stomach to secrete pepsinogen.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It also increases intestinal motility, so the option saying it decreases motility is wrong.",
+   "shot": 4,
+   "dir": "steady"
+  },
+  {
+   "text": "The parietal cells get only an indirect push, through gastrin and histamine, to make acid.",
+   "shot": 5,
+   "dir": "thoughtful, steady"
+  },
+  {
+   "text": "So the correct statement: vagal activation stimulates the chief cells.",
+   "shot": 6,
+   "dir": "calm, confident"
+  }
+ ]
+}
