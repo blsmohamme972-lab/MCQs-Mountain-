@@ -1,0 +1,98 @@
+{
+ "qid": "Q000007332",
+ "image": "Q000007332.png",
+ "takeaway": "The stretch reflex: a tendon tap passively stretches the muscle spindles, a sensory neuron synapses with an alpha motor neuron, and the muscle makes an isotonic contraction.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following statements regarding stretch reflexes is true?"
+ },
+ "answer": {
+  "text": "The reflex results in an isotonic muscle contraction."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 450,
+   "z": 2,
+   "spot": [
+    250,
+    470,
+    130
+   ]
+  },
+  {
+   "x": 540,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    540,
+    380,
+    170
+   ]
+  },
+  {
+   "x": 960,
+   "y": 400,
+   "z": 2,
+   "spot": [
+    980,
+    450,
+    180
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    1330,
+    380,
+    210
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Let's follow the stretch reflex from the tap to the kick.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "A light tap on the tendon stretches the whole muscle.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "That passively stretches the muscle spindles, so the tiny spring twangs. The stretch is passive, not active.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "A sensory neuron carries the signal to the ventral grey matter of the spinal cord.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "There it synapses with a fast alpha motor neuron, so the pathway is short, just two neurons.",
+   "shot": 3,
+   "say": "There it synapses with a fast alpha motor neuron, so the pathway is short, just two neurons. (laugh)",
+   "dir": "gently amused"
+  },
+  {
+   "text": "The alpha motor neuron stimulates the muscle, which contracts and the leg kicks.",
+   "shot": 4,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "That contraction is isotonic, the muscle shortens against a light load. So the true statement is isotonic contraction.",
+   "shot": 4,
+   "dir": "calm, confident"
+  }
+ ]
+}
