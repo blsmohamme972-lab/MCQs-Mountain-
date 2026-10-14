@@ -1,0 +1,95 @@
+{
+ "takeaway": "Carpal tunnel compresses the median nerve: thumb, index and middle tingling, worse at night. Froment's test checks the ulnar nerve, so failing it is not a feature.",
+ "question": {
+  "text": "Which of these clinical features is NOT associated with carpal tunnel syndrome?",
+  "say": "Which of these clinical features is not associated with carpal tunnel syndrome?"
+ },
+ "answer": {
+  "text": "Inability to perform Froment's test",
+  "say": "Inability to perform Froment's test."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 190,
+   "y": 470,
+   "z": 2,
+   "spot": [
+    190,
+    520,
+    170
+   ]
+  },
+  {
+   "x": 575,
+   "y": 470,
+   "z": 2,
+   "spot": [
+    575,
+    430,
+    170
+   ]
+  },
+  {
+   "x": 960,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    960,
+    380,
+    200
+   ]
+  },
+  {
+   "x": 1350,
+   "y": 520,
+   "z": 2,
+   "spot": [
+    1350,
+    500,
+    190
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Look at the picture: the median nerve runs through the carpal tunnel.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Anything that narrows the tunnel squeezes the median nerve, and that causes the symptoms.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The thumb, index and middle fingers tingle with pins and needles, and the pain can ache up the forearm.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Symptoms are worse at night and in the early morning, and the thenar muscles can waste.",
+   "shot": 3,
+   "say": "Symptoms are worse at night and in the early morning, and the thenar muscles can waste. (sigh)",
+   "dir": "gently sympathetic"
+  },
+  {
+   "text": "Now the odd one out: Froment's test checks adductor pollicis, which the ulnar nerve supplies.",
+   "shot": 4,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The ulnar nerve stays outside the tunnel, so failing Froment's test points away from carpal tunnel syndrome.",
+   "shot": 4,
+   "dir": "calm, confident"
+  }
+ ],
+ "qid": "Q000007324",
+ "image": "Q000007324.png",
+ "engine": "breeze",
+ "tempo": 1.0
+}
