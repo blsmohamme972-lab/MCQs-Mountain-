@@ -1,0 +1,102 @@
+{
+ "qid": "Q000007270",
+ "image": "Q000007270.png",
+ "takeaway": "A pulmonary artery catheter measures pressures, cardiac output and mixed venous oxygen saturation directly; pulmonary vascular resistance is a derived (calculated) value.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A pulmonary artery catheter passes through the right heart into the pulmonary artery. Which parameter is not measured directly by it?"
+ },
+ "answer": {
+  "text": "Pulmonary vascular resistance"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    360,
+    420,
+    170
+   ]
+  },
+  {
+   "x": 850,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    850,
+    300,
+    200
+   ]
+  },
+  {
+   "x": 1280,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1330,
+    260,
+    160
+   ]
+  },
+  {
+   "x": 1260,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    1260,
+    570,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A pulmonary artery catheter is threaded through the right heart into the pulmonary artery.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "It reads some things directly: mean arterial pressure,",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "cardiac output, and mixed venous oxygen saturation.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The book also lists heart rate and ejection fraction as direct measurements.",
+   "shot": 2,
+   "dir": "matter-of-fact"
+  },
+  {
+   "text": "Pulmonary vascular resistance is different. The catheter does not read it.",
+   "shot": 4,
+   "dir": "warm, emphatic"
+  },
+  {
+   "text": "It is calculated from the pressures and the cardiac output.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Other derived values include cardiac index, stroke volume and oxygen delivery.",
+   "shot": 3,
+   "dir": "matter-of-fact"
+  },
+  {
+   "text": "So the one not measured directly is pulmonary vascular resistance.",
+   "shot": 4,
+   "dir": "warm, satisfied"
+  }
+ ]
+}
