@@ -13,6 +13,11 @@ format both use.
 Lean storage (owner's rule): commit only the text of a lesson, lessons/<QID>.lesson.json, and selection.json.
 Never commit images, voice/, scenes/, input/ or the MCARDS ZIP (`.gitignore`); send the ZIP to the owner in chat.
 
+Temporary exception (owner's decision, 2026-10-14): to merge several finished ZIPs into one package, a builder session may
+push its own finished ZIP, and nothing else, to an orphan branch `zips/<package-id in lower case>` (`git checkout --orphan`,
+`git rm -rf --cached .`, `git add -f dist/MCARDS_<PKG>_r1.zip`, no PR). The Head Department merges them and deletes every
+`zips/*` branch right after. This applies only when the owner asks to merge ZIPs; never put a ZIP on any other branch.
+
 ## Voice-over: ask the owner which engine, every time
 
 Before generating any voice (a test clip or a batch), ask the owner which engine to use, and wait for the answer:
