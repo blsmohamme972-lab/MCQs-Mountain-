@@ -1,0 +1,82 @@
+{
+ "qid": "Q000006524",
+ "image": "Q000006524.png",
+ "takeaway": "Tibialis anterior and posterior together invert the foot; the peronei evert it.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following muscles act together to invert the foot?"
+ },
+ "answer": {
+  "text": "Tibialis anterior and tibialis posterior"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    790,
+    640,
+    220
+   ]
+  },
+  {
+   "x": 330,
+   "y": 300,
+   "z": 1.9,
+   "spot": [
+    300,
+    330,
+    200
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1250,
+    360,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Think of the foot as a car, and inversion as steering its sole inward, at the subtalar joint.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Two twins both wearing Tib caps are doing the steering: tibialis anterior and tibialis posterior.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Working alone, tibialis anterior dorsiflexes the foot, and tibialis posterior plantarflexes it.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Together, those opposite pulls cancel out, leaving pure inversion.",
+   "shot": 1,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Tibialis anterior is supplied by the deep peroneal nerve, and tibialis posterior by the tibial nerve.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "On the other side, the peroneus brothers pull the sole outward, which is eversion.",
+   "shot": 2,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "So the pair that inverts the foot is tibialis anterior and tibialis posterior.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}

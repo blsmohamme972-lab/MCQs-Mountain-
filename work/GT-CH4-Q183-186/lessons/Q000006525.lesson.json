@@ -1,0 +1,82 @@
+{
+ "qid": "Q000006525",
+ "image": "Q000006525.png",
+ "takeaway": "The saphenous nerve runs with the long saphenous vein on the medial leg, outside the popliteal fossa.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following structures is not found within the popliteal fossa?"
+ },
+ "answer": {
+  "text": "Saphenous nerve"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    600,
+    450,
+    330
+   ]
+  },
+  {
+   "x": 600,
+   "y": 400,
+   "z": 1.7,
+   "spot": [
+    600,
+    400,
+    300
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 480,
+   "z": 2,
+   "spot": [
+    1330,
+    420,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The popliteal fossa is the diamond-shaped space behind the knee.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Its main contents, from superficial to deep, are the tibial nerve, popliteal vein and popliteal artery.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Also in the fossa are the common peroneal nerve, the posterior cutaneous nerve of the thigh, and lymph nodes.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The small saphenous vein joins them, piercing the fascia to drain into the popliteal vein.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The saphenous nerve is different: it walks hand in hand with the long saphenous vein.",
+   "shot": 2,
+   "dir": "gently amused"
+  },
+  {
+   "text": "They run on the inner side of the leg, medial to the fossa, outside it.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the structure not found in the popliteal fossa is the saphenous nerve.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}

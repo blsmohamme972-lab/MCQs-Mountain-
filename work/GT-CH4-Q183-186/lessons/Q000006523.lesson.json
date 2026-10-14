@@ -1,0 +1,78 @@
+{
+ "qid": "Q000006523",
+ "image": "Q000006523.png",
+ "takeaway": "Quadratus femoris inserts below the greater trochanter; the other four hang on the trochanter itself.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following muscles does not insert into the greater trochanter of the femur?"
+ },
+ "answer": {
+  "text": "Quadratus femoris"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    1000,
+    350,
+    230
+   ]
+  },
+  {
+   "x": 1050,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    1000,
+    330,
+    250
+   ]
+  },
+  {
+   "x": 800,
+   "y": 680,
+   "z": 2,
+   "spot": [
+    790,
+    640,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Picture the greater trochanter as a tree stump on the outer side of the upper femur.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Four muscles tie their ropes right onto it: piriformis, superior gemellus, inferior gemellus and gluteus minimus.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Gluteus medius and obturator internus attach there too, and gluteus medius and minimus are hip abductors.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Quadratus femoris is a short external rotator of the hip, just like the others.",
+   "shot": 0,
+   "dir": "gently amused",
+   "say": "Quadratus femoris is a short external rotator of the hip, just like the others. (laugh)"
+  },
+  {
+   "text": "But look where it ties on: lower down, on a ridge below the stump, not on the trochanter itself.",
+   "shot": 2,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "So the muscle that does not insert into the greater trochanter is quadratus femoris.",
+   "shot": 2,
+   "dir": "calm, confident"
+  }
+ ]
+}
