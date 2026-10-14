@@ -1,0 +1,89 @@
+{
+ "qid": "Q000007214",
+ "image": "Q000007214.png",
+ "takeaway": "Ulcerative colitis predisposes to colon adenocarcinoma and bile duct carcinoma, not anal squamous cell carcinoma.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which premalignant condition is incorrectly matched with its associated malignant tumour?",
+  "say": "Which premalignant condition is incorrectly matched with its associated malignant tumour?"
+ },
+ "answer": {
+  "text": "Ulcerative colitis – squamous cell carcinoma of the anus"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    420,
+    330
+   ]
+  },
+  {
+   "x": 300,
+   "y": 400,
+   "z": 2,
+   "spot": [
+    290,
+    390,
+    260
+   ]
+  },
+  {
+   "x": 960,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    940,
+    420,
+    300
+   ]
+  },
+  {
+   "x": 1340,
+   "y": 560,
+   "z": 2,
+   "spot": [
+    1340,
+    590,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Look at the picture: one premalignant condition is paired with the wrong tumour.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Ulcerative colitis ulcerates the colon wall, and that raises the risk of cancer.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The tumours it really predisposes to are adenocarcinoma of the colon, and carcinoma of the bile duct.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Anal squamous cell carcinoma is not one of them, so this is the incorrect match.",
+   "shot": 3,
+   "dir": "firm, clear"
+  },
+  {
+   "text": "The other four pairings in the list are the correct ones.",
+   "shot": 0,
+   "dir": "calm, reassuring"
+  },
+  {
+   "text": "Remember it as colon and bile duct, never the anus. Done!",
+   "say": "(sigh) Remember it as colon and bile duct, never the anus. Done!",
+   "shot": 0,
+   "dir": "relieved, warm"
+  }
+ ]
+}

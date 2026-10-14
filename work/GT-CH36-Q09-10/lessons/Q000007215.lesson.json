@@ -1,0 +1,98 @@
+{
+ "qid": "Q000007215",
+ "image": "Q000007215.png",
+ "takeaway": "Gas under the skin with a sick patient and a wound points to Clostridium perfringens, gas gangrene.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A soldier has a rapidly enlarging 5-day-old shoulder wound, fever, hypotension and surgical emphysema. Which organism is most likely?"
+ },
+ "answer": {
+  "text": "Clostridium perfringens"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    420,
+    330
+   ]
+  },
+  {
+   "x": 330,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    400,
+    430,
+    170
+   ]
+  },
+  {
+   "x": 770,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    770,
+    430,
+    230
+   ]
+  },
+  {
+   "x": 1180,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    1170,
+    330,
+    220
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 620,
+   "z": 1.8,
+   "spot": [
+    1250,
+    640,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Our young soldier has a hot, red, enlarging wound on the deltoid, and he is feverish and hypotensive.",
+   "shot": 1,
+   "dir": "concerned, clear"
+  },
+  {
+   "text": "Palpating gas under the skin means surgical emphysema: crackle, crackle.",
+   "shot": 2,
+   "dir": "curious, engaged"
+  },
+  {
+   "text": "A clinically unwell patient with gas in the tissues points to Clostridium perfringens.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Perfringens, perfumes gas: a little cloud of bubbles.",
+   "say": "(laugh) Perfringens, perfumes gas: a little cloud of bubbles.",
+   "shot": 3,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Tetani causes tetanus, and botulinum causes botulism with spreading paralysis.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Staphylococcus aureus causes skin infections like cellulitis, so perfringens it is.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
