@@ -1,0 +1,123 @@
+{
+ "qid": "Q000006506",
+ "image": "Q000006506.png",
+ "takeaway": "Pain on passive stretch: anterior - plantarflex; lateral - invert; superficial posterior - dorsiflex; deep posterior - extend the great toe.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "If concerned about compartment syndrome following reperfusion of the lower leg, what action would you perform in order to test the deep part of the posterior compartment of the lower leg?"
+ },
+ "answer": {
+  "text": "Extension of the great toe"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 427,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    450,
+    560,
+    130
+   ]
+  },
+  {
+   "x": 900,
+   "y": 420,
+   "z": 2.0,
+   "spot": [
+    960,
+    440,
+    120
+   ]
+  },
+  {
+   "x": 700,
+   "y": 560,
+   "z": 2.0,
+   "spot": [
+    750,
+    590,
+    110
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    1340,
+    300,
+    150
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 640,
+   "z": 2.0,
+   "spot": [
+    1340,
+    560,
+    90
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 640,
+   "z": 2.0,
+   "spot": [
+    1340,
+    740,
+    90
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Pain on a passive stretch of a muscle is the key sign of compartment syndrome.",
+   "say": "(clears throat) Pain on a passive stretch of a muscle is the key sign of compartment syndrome.",
+   "shot": 2,
+   "dir": "warm, focused"
+  },
+  {
+   "text": "The lower leg has four compartments, and each can be tested on its own.",
+   "shot": 1,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "Anterior: plantarflex the foot. Lateral: invert it.",
+   "shot": 4,
+   "dir": "brisk, clear"
+  },
+  {
+   "text": "Superficial posterior: dorsiflex the foot.",
+   "shot": 5,
+   "dir": "brisk, clear"
+  },
+  {
+   "text": "Deep posterior: extend the great toe.",
+   "shot": 6,
+   "dir": "firm, emphatic"
+  },
+  {
+   "text": "That stretches flexor hallucis longus, in the deep posterior compartment.",
+   "shot": 3,
+   "dir": "curious, vivid"
+  },
+  {
+   "text": "Oedema blocks the veins, and pressure builds until the arterial supply fails.",
+   "shot": 1,
+   "dir": "serious, careful"
+  },
+  {
+   "text": "So, to test the deep posterior compartment, extend the great toe.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
