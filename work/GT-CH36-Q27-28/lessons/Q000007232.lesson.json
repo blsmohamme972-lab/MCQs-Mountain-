@@ -1,0 +1,103 @@
+{
+ "qid": "Q000007232",
+ "image": "Q000007232.png",
+ "takeaway": "A-delta fibres are thinly myelinated and carry pain, touch and temperature at 12-30 m/s. A-alpha is motor, A-beta touch and pressure, B pre-ganglionic autonomic, C dull ache and post-ganglionic.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which nerve type is associated with transmitting pain, touch and temperature?"
+ },
+ "answer": {
+  "text": "Aδ",
+  "say": "A delta"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 230,
+   "y": 470,
+   "z": 1.9,
+   "spot": [
+    220,
+    420,
+    200
+   ]
+  },
+  {
+   "x": 590,
+   "y": 470,
+   "z": 1.9,
+   "spot": [
+    600,
+    430,
+    170
+   ]
+  },
+  {
+   "x": 1020,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    1000,
+    330,
+    230
+   ]
+  },
+  {
+   "x": 1350,
+   "y": 520,
+   "z": 1.9,
+   "spot": [
+    1340,
+    500,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Nerve fibres are sorted by how fast they conduct, which depends on diameter and myelin.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "A alpha fibres are the big, fast, myelinated ones, for motor and proprioception.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "A alpha fibres are the big, fast, myelinated ones, for motor and proprioception."
+  },
+  {
+   "text": "A beta fibres carry touch and pressure.",
+   "shot": 2,
+   "dir": "calm, confident",
+   "say": "A beta fibres carry touch and pressure."
+  },
+  {
+   "text": "A delta fibres are thinly myelinated, and carry pain, touch and temperature.",
+   "shot": 3,
+   "dir": "warm, curious",
+   "say": "A delta fibres are thinly myelinated, and carry pain, touch and temperature."
+  },
+  {
+   "text": "That basket of pain, touch and temperature belongs to A delta.",
+   "shot": 3,
+   "dir": "gently amused",
+   "say": "That basket of pain, touch and temperature belongs to A delta."
+  },
+  {
+   "text": "C fibres have no myelin at all: slow, one metre per second, carrying dull ache.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So for pain, touch and temperature, the answer is A delta.",
+   "shot": 0,
+   "dir": "calm, confident",
+   "say": "So for pain, touch and temperature, the answer is A delta."
+  }
+ ]
+}
