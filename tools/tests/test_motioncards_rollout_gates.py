@@ -60,8 +60,9 @@ class MotionCardsRolloutGateTests(unittest.TestCase):
         activate=text.index("Advance durable active state pointer")
         segment=text[verify:activate]
         self.assertLess(promote,verify)
-        self.assertIn("for attempt in 1 2 3 4 5 6 7 8 9 10",segment)
-        self.assertIn("sleep 3",segment)
+        self.assertIn("for attempt in $(seq 1 24)",segment)
+        self.assertIn("sleep $(( attempt < 6 ? 3 : 8 ))",segment)
+        self.assertIn('"$attempt" -eq 24',segment)
         self.assertIn("MotionCards production smoke did not converge after promotion.",segment)
         self.assertIn("exit 1",segment)
         self.assertLess(verify,activate)
