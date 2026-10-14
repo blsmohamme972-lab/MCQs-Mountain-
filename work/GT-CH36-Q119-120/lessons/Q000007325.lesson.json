@@ -1,0 +1,94 @@
+{
+ "takeaway": "Physiological dead space includes alveolar dead space: ventilated alveoli with poor blood flow. Hypotension increases it; standing and bronchodilation raise anatomical dead space.",
+ "question": {
+  "text": "Which of the following increases the physiological dead space in the respiratory system?",
+  "say": "Which of the following increases the physiological dead space in the respiratory system?"
+ },
+ "answer": {
+  "text": "Hypotension",
+  "say": "Hypotension."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 190,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    190,
+    360,
+    200
+   ]
+  },
+  {
+   "x": 575,
+   "y": 360,
+   "z": 2,
+   "spot": [
+    575,
+    330,
+    200
+   ]
+  },
+  {
+   "x": 960,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    960,
+    340,
+    200
+   ]
+  },
+  {
+   "x": 1350,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    1350,
+    340,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Dead space is air that reaches the lungs but does not take part in gas exchange.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Anatomical dead space is the air-conveying ducts, and it grows when you stand or when the airways dilate.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Physiological dead space is bigger: it adds the alveoli that are ventilated but not perfused.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "With hypotension, blood flow falls, so the alveoli hold air but get no blood.",
+   "shot": 2,
+   "dir": "warm, concerned"
+  },
+  {
+   "text": "Air but no blood: the tap is closed, so alveolar dead space grows.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Emphysema, pulmonary embolism and positive pressure ventilation do the same, so hypotension is the answer.",
+   "shot": 4,
+   "dir": "calm, confident"
+  }
+ ],
+ "qid": "Q000007325",
+ "image": "Q000007325.png",
+ "engine": "breeze",
+ "tempo": 1.0
+}
