@@ -1,0 +1,107 @@
+{
+ "takeaway": "CN VI, the abducens, leaves the skull through the superior orbital fissure, not the foramen ovale, which carries the mandibular branch of CN V (V3).",
+ "question": {
+  "text": "All these cranial nerves are paired with their correct exit from the skull base EXCEPT which one?",
+  "say": "All these cranial nerves are paired with their correct exit from the base of the skull, except which one?"
+ },
+ "answer": {
+  "text": "CN VI – foramen ovale",
+  "say": "Cranial nerve six, foramen ovale."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 190,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    190,
+    380,
+    170
+   ]
+  },
+  {
+   "x": 700,
+   "y": 260,
+   "z": 2,
+   "spot": [
+    700,
+    250,
+    260
+   ]
+  },
+  {
+   "x": 650,
+   "y": 560,
+   "z": 2,
+   "spot": [
+    650,
+    580,
+    170
+   ]
+  },
+  {
+   "x": 1090,
+   "y": 660,
+   "z": 2,
+   "spot": [
+    1090,
+    680,
+    260
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    1330,
+    380,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Go through the exits one by one. The optic nerve uses the optic canal.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The trochlear nerve, CN IV, and the abducens nerve, CN VI, both leave through the superior orbital fissure.",
+   "say": "The trochlear nerve, cranial nerve four, and the abducens nerve, cranial nerve six, both leave through the superior orbital fissure.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The foramen ovale carries the mandibular branch of the trigeminal nerve, V3.",
+   "say": "The foramen ovale carries the mandibular branch of the trigeminal nerve, V three.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "CN XI leaves by the jugular foramen, and CN XII by the hypoglossal canal.",
+   "say": "Cranial nerve eleven leaves by the jugular foramen, and cranial nerve twelve by the hypoglossal canal.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the odd one out is the abducens nerve, which is placed at the foramen ovale.",
+   "shot": 5,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Its true exit is the superior orbital fissure, so that pairing is the wrong one.",
+   "shot": 5,
+   "dir": "calm, confident"
+  }
+ ],
+ "qid": "Q000007220",
+ "image": "Q000007220.png",
+ "engine": "breeze",
+ "tempo": 1.0
+}
