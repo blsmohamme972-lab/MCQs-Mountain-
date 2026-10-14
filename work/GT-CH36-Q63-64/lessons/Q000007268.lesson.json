@@ -1,0 +1,98 @@
+{
+ "qid": "Q000007268",
+ "image": "Q000007268.png",
+ "takeaway": "A Krukenberg tumour is an ovarian metastasis, most often from gastric carcinoma. Think stomach when histology shows a Krukenberg tumour.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 76-year-old woman has a peritonitic abdomen. At laparotomy a pelvic mass is biopsied and histology suggests a Krukenberg tumour. Which is the most likely primary source?"
+ },
+ "answer": {
+  "text": "Gastric carcinoma"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    380,
+    480,
+    170
+   ]
+  },
+  {
+   "x": 780,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    790,
+    500,
+    260
+   ]
+  },
+  {
+   "x": 1200,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    1250,
+    260,
+    190
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 600,
+   "z": 1.8,
+   "spot": [
+    1390,
+    540,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "This woman has a pelvic mass, found during her emergency laparotomy.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Histology shows a Krukenberg tumour: a secondary deposit in the ovary, full of signet ring cells.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the real question is, where did it come from?",
+   "shot": 0,
+   "dir": "curious"
+  },
+  {
+   "text": "Classically it comes from the stomach, a gastric carcinoma, spreading to the ovary.",
+   "shot": 3,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "Gastric cancer often presents late, which is why spread like this is seen.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Pancreas, lung and breast cancer can spread too, but they are not the classic source.",
+   "shot": 4,
+   "dir": "gently amused"
+  },
+  {
+   "text": "So remember: Krukenberg, think stomach.",
+   "shot": 0,
+   "say": "(sigh) So remember: Krukenberg, think stomach.",
+   "dir": "warm, relieved"
+  }
+ ]
+}
