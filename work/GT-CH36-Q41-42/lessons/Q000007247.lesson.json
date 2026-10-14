@@ -1,0 +1,123 @@
+{
+ "qid": "Q000007247",
+ "image": "Q000007247.png",
+ "takeaway": "The third part of the axillary artery, from pectoralis minor to teres major, gives off the subscapular, anterior circumflex humeral and posterior circumflex humeral arteries.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "The axillary artery is conventionally divided into three parts, each giving off its own branches. The third part divides into which of the following branches?"
+ },
+ "answer": {
+  "text": "Subscapular, anterior circumflex and posterior circumflex humeral arteries"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    330,
+    400,
+    200
+   ]
+  },
+  {
+   "x": 700,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    600,
+    300,
+    180
+   ]
+  },
+  {
+   "x": 880,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    860,
+    440,
+    150
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 320,
+   "z": 1.9,
+   "spot": [
+    1180,
+    190,
+    150
+   ]
+  },
+  {
+   "x": 1230,
+   "y": 440,
+   "z": 1.9,
+   "spot": [
+    1340,
+    350,
+    120
+   ]
+  },
+  {
+   "x": 1230,
+   "y": 440,
+   "z": 1.9,
+   "spot": [
+    1340,
+    520,
+    120
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The axillary artery begins at the border of the first rib and has three parts.",
+   "shot": 0,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The first part ends at pectoralis minor, giving off the superior thoracic artery.",
+   "shot": 1,
+   "dir": "matter-of-fact"
+  },
+  {
+   "text": "The second part lies deep to pectoralis minor, giving the thoracoacromial and lateral thoracic arteries.",
+   "shot": 2,
+   "dir": "matter-of-fact"
+  },
+  {
+   "text": "The third part runs from pectoralis minor to the lower border of teres major.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It gives off the subscapular artery,",
+   "shot": 4,
+   "dir": "warm, steady"
+  },
+  {
+   "text": "the anterior circumflex humeral artery,",
+   "shot": 5,
+   "dir": "warm, steady"
+  },
+  {
+   "text": "and the posterior circumflex humeral artery.",
+   "shot": 6,
+   "dir": "warm, satisfied",
+   "say": "and the posterior circumflex humeral artery. (sigh)"
+  },
+  {
+   "text": "So the answer: subscapular, anterior and posterior circumflex humeral. The lateral thoracic and superior thoracic come earlier.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
