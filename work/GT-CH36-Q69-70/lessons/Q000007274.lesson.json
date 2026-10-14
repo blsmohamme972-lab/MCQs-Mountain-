@@ -1,0 +1,99 @@
+{
+ "qid": "Q000007274",
+ "image": "Q000007274.png",
+ "takeaway": "Milroy disease is a congenital, hereditary primary lymphoedema (aplasia of the lymph trunks); surgery, radiotherapy, cancer and TB are secondary causes.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which one of the following conditions is a cause of primary lymphoedema?",
+  "say": "Which one of the following conditions is a cause of primary lymphoedema?"
+ },
+ "answer": {
+  "text": "Milroy disease.",
+  "say": "Milroy disease."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 600,
+   "z": 2.0,
+   "spot": [
+    320,
+    610,
+    170
+   ]
+  },
+  {
+   "x": 420,
+   "y": 300,
+   "z": 2.0,
+   "spot": [
+    400,
+    330,
+    170
+   ]
+  },
+  {
+   "x": 800,
+   "y": 450,
+   "z": 2.0,
+   "spot": [
+    800,
+    470,
+    230
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 400,
+   "z": 2.0,
+   "spot": [
+    1250,
+    400,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Primary lymphoedema has no outside cause.",
+   "shot": 0,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Milroy disease is the classic example: congenital and hereditary.",
+   "shot": 2,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The child is born with a swollen leg.",
+   "shot": 1,
+   "dir": "gentle, clear"
+  },
+  {
+   "text": "The lymph trunks of the leg never formed: aplasia, a closed gate, so the lymph cannot drain.",
+   "shot": 3,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "Swelling slowly progresses in one or both legs.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Secondary lymphoedema is different: surgery, radiotherapy, cancer or tuberculosis damage normal lymphatics.",
+   "shot": 4,
+   "dir": "calm, contrasting"
+  },
+  {
+   "text": "So the primary cause is Milroy disease.",
+   "shot": 0,
+   "dir": "pleased, confident"
+  }
+ ]
+}
