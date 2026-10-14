@@ -1,0 +1,122 @@
+{
+ "qid": "Q000007319",
+ "image": "Q000007319.png",
+ "takeaway": "Basal cell carcinoma is treated by curettage and cautery, cryotherapy, excision or watch and wait. Sentinel node biopsy belongs to melanoma, not BCC.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which one of the following is not a recognized treatment option for basal cell carcinoma?"
+ },
+ "answer": {
+  "text": "Sentinel node biopsy"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 450,
+   "z": 2,
+   "spot": [
+    230,
+    470,
+    110
+   ]
+  },
+  {
+   "x": 700,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    450,
+    420,
+    130
+   ]
+  },
+  {
+   "x": 760,
+   "y": 470,
+   "z": 1.8,
+   "spot": [
+    680,
+    480,
+    130
+   ]
+  },
+  {
+   "x": 900,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    870,
+    400,
+    130
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1070,
+    440,
+    140
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1380,
+    450,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "This pearly bump is basal cell carcinoma. Let us check each treatment.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Curettage and cautery is recognized.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So is cryotherapy, but it treats the lesion and gives no tissue for histology.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Surgical excision gives a specimen for histology, a closed wound, and proof of complete excision.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Larger lesions may need a skin graft or reconstructive surgery.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Watch and wait is also an accepted option.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Sentinel node biopsy is part of the treatment options for melanoma, not basal cell carcinoma.",
+   "shot": 6,
+   "dir": "gently firm"
+  },
+  {
+   "text": "So the answer is sentinel node biopsy.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}

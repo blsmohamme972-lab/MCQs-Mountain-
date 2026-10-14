@@ -1,0 +1,122 @@
+{
+ "qid": "Q000007318",
+ "image": "Q000007318.png",
+ "takeaway": "Auer rods on bone marrow are almost diagnostic of acute myeloid leukaemia. Owl eye nuclei mean CMV; Reed-Sternberg cells mean Hodgkin lymphoma.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 65-year-old man has fatigue, mouth ulcers, marked hepatosplenomegaly and neck and supraclavicular masses. Which bone marrow result would practically confirm the diagnosis?"
+ },
+ "answer": {
+  "text": "Auer rods"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 430,
+   "y": 470,
+   "z": 1.8,
+   "spot": [
+    250,
+    520,
+    200
+   ]
+  },
+  {
+   "x": 330,
+   "y": 380,
+   "z": 2,
+   "spot": [
+    240,
+    310,
+    110
+   ]
+  },
+  {
+   "x": 760,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    760,
+    480,
+    200
+   ]
+  },
+  {
+   "x": 800,
+   "y": 470,
+   "z": 2.2,
+   "spot": [
+    860,
+    470,
+    90
+   ]
+  },
+  {
+   "x": 1230,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1310,
+    260,
+    150
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    1390,
+    600,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Tiredness, mouth ulcers, a huge liver and spleen, and neck lumps: acute myeloid leukaemia.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It typically causes gross hepatosplenomegaly.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Masses in the neck and supraclavicular fossa fit too.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Now look inside the blast cell on the marrow aspirate.",
+   "shot": 3,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Auer rods, thin red needles, are almost diagnostic of the condition.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The median age at diagnosis is sixty-five, and it is more common in men.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Owl eye nuclei mean cytomegalovirus. Reed-Sternberg cells mean Hodgkin lymphoma, usually diagnosed on lymph node biopsy.",
+   "shot": 6,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the answer is Auer rods.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}
