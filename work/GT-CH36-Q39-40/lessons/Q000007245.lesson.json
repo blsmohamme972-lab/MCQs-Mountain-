@@ -1,0 +1,105 @@
+{
+ "qid": "Q000007245",
+ "image": "Q000007245.png",
+ "takeaway": "Littre hernia is incarceration of a Meckel's diverticulum within a hernial sac; Amyand and De Garengeot involve the appendix.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "What is incarceration of a Meckel's diverticulum into an inguinal hernia otherwise known as?",
+  "say": "What is incarceration of a Meckel's diverticulum into an inguinal hernia otherwise known as?"
+ },
+ "answer": {
+  "text": "Littre hernia",
+  "say": "Littray hernia"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    270,
+    480,
+    120
+   ]
+  },
+  {
+   "x": 640,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    650,
+    350,
+    110
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    900,
+    480,
+    100
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1360,
+    270,
+    120
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    1330,
+    540,
+    130
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Here is an inguinal hernia, and look what is stuck inside it.",
+   "shot": 1,
+   "dir": "curious, light"
+  },
+  {
+   "text": "It is a Meckel's diverticulum, trapped in the hernial sac, as if locked in with a chain.",
+   "shot": 2,
+   "dir": "warm, amused"
+  },
+  {
+   "text": "The wizard holds the key, and his hat gives it away: Littre.",
+   "shot": 3,
+   "dir": "gently amused",
+   "say": "(laugh) The wizard holds the key, and his hat gives it away: Littray."
+  },
+  {
+   "text": "So a Meckel's diverticulum incarcerated in a hernia is a Littre hernia.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Do not confuse it with Amyand, which traps the appendix in an inguinal hernia, or De Garengeot, the appendix in a femoral hernia.",
+   "shot": 5,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "And Richter is a hernia of only one side wall of the bowel.",
+   "shot": 0,
+   "dir": "calm, clear"
+  }
+ ]
+}
