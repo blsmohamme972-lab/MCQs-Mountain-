@@ -1,0 +1,89 @@
+{
+ "qid": "Q000007217",
+ "image": "Q000007217.png",
+ "takeaway": "ADH is released by the posterior pituitary and saves water at the distal tubule and collecting duct; lack of it causes cranial diabetes insipidus.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Concerning antidiuretic hormone (ADH), which statement is correct?",
+  "say": "Concerning antidiuretic hormone, A D H, which statement is correct?"
+ },
+ "answer": {
+  "text": "Lack of production causes cranial diabetes insipidus.",
+  "say": "Lack of production causes cranial diabetes insipidus."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1.0,
+   "spot": [
+    768,
+    300,
+    420
+   ]
+  },
+  {
+   "x": 300,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    300,
+    300,
+    220
+   ]
+  },
+  {
+   "x": 760,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    760,
+    300,
+    240
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    1250,
+    380,
+    250
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "ADH, also called vasopressin, is released by the posterior pituitary, not the anterior.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It acts mainly on the distal tubule and collecting duct, not the proximal tubule.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "There it makes the walls more permeable to water, so water is kept in the body.",
+   "shot": 2,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The result is a small volume of concentrated urine.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Without ADH, the tap runs and the kidney passes large volumes of dilute urine.",
+   "shot": 3,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Lack of production is cranial diabetes insipidus; a kidney that cannot respond is nephrogenic.",
+   "shot": 3,
+   "dir": "calm, confident"
+  }
+ ]
+}
