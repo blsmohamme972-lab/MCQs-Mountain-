@@ -1,0 +1,93 @@
+{
+ "qid": "Q000007235",
+ "image": "Q000007235.png",
+ "takeaway": "Venous ulcers sit in the gaiter area and are treated with elevation and four-layer bandaging; exclude coexisting ischaemia first. The correct statement is that elevation aids treatment.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 74-year-old man has a long history of bilateral leg ulceration. Which of the following statements regarding venous ulcers is correct?"
+ },
+ "answer": {
+  "text": "Elevation aids in treatment."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 260,
+   "y": 430,
+   "z": 2.0,
+   "spot": [
+    230,
+    430,
+    150
+   ]
+  },
+  {
+   "x": 780,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    790,
+    420,
+    260
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 350,
+   "z": 2.0,
+   "spot": [
+    1330,
+    270,
+    200
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 600,
+   "z": 2.0,
+   "spot": [
+    1280,
+    700,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Venous ulcers are typically found in the gaiter area, around the ankle.",
+   "shot": 1,
+   "dir": "clear, teaching"
+  },
+  {
+   "text": "They have a sloping edge, a sloughy base and a moderate amount of exudate.",
+   "shot": 1,
+   "dir": "clear, teaching"
+  },
+  {
+   "text": "The surrounding skin can be hyperpigmented, with lipodermatosclerosis.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Treatment is by elevation, so the correct statement is that elevation aids in treatment.",
+   "shot": 2,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "The other part is four-layer bandaging, with regular dressings.",
+   "shot": 3,
+   "dir": "clear, teaching"
+  },
+  {
+   "text": "But always exclude coexisting ischaemia first, and treat it if present, because compression can compromise the blood supply further.",
+   "shot": 4,
+   "dir": "gently cautious",
+   "say": "But always exclude coexisting ischaemia first, and treat it if present, because compression can compromise the blood supply further. (sigh)"
+  }
+ ]
+}

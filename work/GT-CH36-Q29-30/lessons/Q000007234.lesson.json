@@ -1,0 +1,108 @@
+{
+ "qid": "Q000007234",
+ "image": "Q000007234.png",
+ "takeaway": "In compartment syndrome, pain worsens on passive stretch of the affected muscles. Pain on passive big toe extension means flexor hallucis longus: the deep posterior compartment.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A man has had tibial nailing 3 h ago and has severe pain on passive extension of the big toe, with less pain at the ankle. What is the likely diagnosis?"
+ },
+ "answer": {
+  "text": "Compartment syndrome of the deep posterior compartment of the leg"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 200,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    190,
+    300,
+    140
+   ]
+  },
+  {
+   "x": 800,
+   "y": 540,
+   "z": 1.7,
+   "spot": [
+    800,
+    520,
+    200
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 330,
+   "z": 2.0,
+   "spot": [
+    1380,
+    260,
+    150
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 640,
+   "z": 2.0,
+   "spot": [
+    1280,
+    700,
+    200
+   ]
+  },
+  {
+   "x": 700,
+   "y": 430,
+   "z": 1.5,
+   "spot": [
+    700,
+    400,
+    300
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Three hours after a tibial nail, this man is in severe pain. Think compartment syndrome.",
+   "shot": 1,
+   "dir": "calm, concerned"
+  },
+  {
+   "text": "The key sign is pain on passive stretch of the muscles in the affected compartment.",
+   "shot": 3,
+   "dir": "clear, teaching"
+  },
+  {
+   "text": "Here, passively extending the big toe hurts the most. That stretches flexor hallucis longus.",
+   "shot": 3,
+   "dir": "clear, teaching"
+  },
+  {
+   "text": "Ankle dorsiflexion and plantar flexion cause much less pain.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Flexor hallucis longus sits in the deep posterior compartment, with flexor digitorum longus and tibialis posterior.",
+   "shot": 2,
+   "dir": "clear, teaching"
+  },
+  {
+   "text": "The anterior compartment holds tibialis anterior and the extensors, so it does not fit.",
+   "shot": 5,
+   "dir": "clear, teaching"
+  },
+  {
+   "text": "So the answer is the deep posterior compartment.",
+   "shot": 2,
+   "dir": "calm, confident",
+   "say": "So the answer is the deep posterior compartment. (clears throat)"
+  }
+ ]
+}
