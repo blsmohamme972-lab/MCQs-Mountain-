@@ -1,0 +1,76 @@
+{
+  "package_id": "GT-CH4-Q175-177",
+  "package_revision": 1,
+  "source": {
+    "kind": "published",
+    "catalog_url": "https://kafu-content-1.blsmohamme97.workers.dev/catalog.json",
+    "catalog_sha256": "b86f972c19cc9811f217e6f54591092df768c26c6d5072ab0ba520500cd61dfb",
+    "index_url": "https://kafu-content-1.blsmohamme97.workers.dev/books/GET-THROUGH-MRCS-A-SBA/v3/index.json",
+    "index_sha256": "878de8995eb62fb2d34a6d82b3f20cc407d8aa49f634b3872271e20b11ee2530",
+    "snapshot_pinned": true
+  },
+  "scope": {
+    "type": "records",
+    "book_id": "GET-THROUGH-MRCS-A-SBA",
+    "book_version": 3,
+    "chapter_ids": [
+      "4"
+    ],
+    "question_count": 35,
+    "qids": [
+      "Q000006495",
+      "Q000006496",
+      "Q000006497",
+      "Q000006498",
+      "Q000006499",
+      "Q000006500",
+      "Q000006501",
+      "Q000006502",
+      "Q000006503",
+      "Q000006504",
+      "Q000006505",
+      "Q000006506",
+      "Q000006507",
+      "Q000006508",
+      "Q000006509",
+      "Q000006510",
+      "Q000006511",
+      "Q000006512",
+      "Q000006513",
+      "Q000006514",
+      "Q000006515",
+      "Q000006516",
+      "Q000006517",
+      "Q000006518",
+      "Q000006519",
+      "Q000006520",
+      "Q000006521",
+      "Q000006522",
+      "Q000006523",
+      "Q000006524",
+      "Q000006525",
+      "Q000006526",
+      "Q000006527",
+      "Q000006528",
+      "Q000006529"
+    ]
+  },
+  "warnings": [],
+  "selected": [
+    {
+      "qid": "Q000006515",
+      "duration_ms": 30000,
+      "content_hash": "59b8ade0948468a510239778671da1160143fa9503f067534ee382e1100418ce"
+    },
+    {
+      "qid": "Q000006516",
+      "duration_ms": 30000,
+      "content_hash": "59a0167e55d9f93d65a9d4c5a00fd6876de15398ea4dd382d523b35587350d31"
+    },
+    {
+      "qid": "Q000006517",
+      "duration_ms": 30000,
+      "content_hash": "d08e31748959f9c58466068a3bdcab727e47401669e40bfd3b7d90836238ce9f"
+    }
+  ]
+}

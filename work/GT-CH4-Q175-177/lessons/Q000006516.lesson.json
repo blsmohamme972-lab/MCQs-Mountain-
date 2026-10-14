@@ -1,0 +1,98 @@
+{
+ "qid": "Q000006516",
+ "image": "Q000006516.png",
+ "takeaway": "A below-knee cast can compress the common peroneal nerve at the fibular neck. It supplies the anterior and lateral compartments, so dorsiflexion is lost (foot drop).",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "After 6 weeks in a below-knee cast for an ankle fracture, a patient develops common peroneal nerve palsy. Which statement about the examination is true?",
+  "say": "After six weeks in a below-knee cast for an ankle fracture, a patient develops common peroneal nerve palsy. Which statement about the examination is true?"
+ },
+ "answer": {
+  "text": "There would be no dorsiflexion of the foot."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 360,
+   "z": 1.9,
+   "spot": [
+    260,
+    240,
+    170
+   ]
+  },
+  {
+   "x": 280,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    260,
+    470,
+    200
+   ]
+  },
+  {
+   "x": 820,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    760,
+    640,
+    150
+   ]
+  },
+  {
+   "x": 1320,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    1360,
+    380,
+    180
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The trouble starts at the top of a below-knee cast.",
+   "shot": 2,
+   "dir": "calm, warm"
+  },
+  {
+   "text": "Here the common peroneal nerve winds around the fibular neck, where the cast can compress it.",
+   "shot": 1,
+   "dir": "focused, explaining"
+  },
+  {
+   "text": "This nerve supplies the anterior and lateral compartments of the leg.",
+   "shot": 1,
+   "dir": "clear, steady"
+  },
+  {
+   "text": "They dorsiflex the foot, ankle and toes, and evert the foot.",
+   "shot": 3,
+   "dir": "clear, steady"
+  },
+  {
+   "text": "So with a palsy there is no dorsiflexion: the foot drops.",
+   "shot": 3,
+   "dir": "confident, serious"
+  },
+  {
+   "text": "The superficial peroneal nerve supplies most of the dorsum; the deep peroneal, the first web space.",
+   "shot": 0,
+   "dir": "calm, explaining"
+  },
+  {
+   "text": "The sole is not its territory, so sole sensation stays normal.",
+   "shot": 4,
+   "dir": "gently reassuring"
+  }
+ ]
+}
