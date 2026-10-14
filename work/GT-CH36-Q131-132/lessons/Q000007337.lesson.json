@@ -1,0 +1,103 @@
+{
+ "qid": "Q000007337",
+ "image": "Q000007337.png",
+ "takeaway": "The SA node lies at the junction of the SVC and right atrium at the upper end of the sulcus terminalis, not medial to it.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following statements regarding the right atrium is false?"
+ },
+ "answer": {
+  "text": "Has the sinoatrial (SA) node medial to the sulcus terminalis",
+  "say": "Has the S A node medial to the sulcus terminalis"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 200,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    190,
+    420,
+    200
+   ]
+  },
+  {
+   "x": 600,
+   "y": 380,
+   "z": 1.8,
+   "spot": [
+    570,
+    400,
+    190
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 420,
+   "z": 1.9,
+   "spot": [
+    1060,
+    260,
+    160
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    1040,
+    620,
+    170
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 480,
+   "z": 1.9,
+   "spot": [
+    1400,
+    520,
+    190
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Let us check the right atrium. The right atrium forms the right heart border, so that statement is true.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The coronary sinus opens into it, between the inferior vena cava and the tricuspid valve.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Now the sinoatrial node. It lies near the opening of the superior vena cava, at the top of the sulcus terminalis.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It sits at the sulcus terminalis, it is not medial to it.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The interatrial septum forms the back wall, and the right atrium lies in front of the left atrium. Both are true.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the false statement is: the SA node is medial to the sulcus terminalis.",
+   "shot": 5,
+   "dir": "calm, confident"
+  }
+ ]
+}
