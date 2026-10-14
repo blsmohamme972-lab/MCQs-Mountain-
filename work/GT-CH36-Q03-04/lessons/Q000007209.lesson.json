@@ -1,0 +1,104 @@
+{
+ "qid": "Q000007209",
+ "image": "Q000007209.png",
+ "takeaway": "Hyperkalaemia (e.g. after massive blood transfusion) causes peaked T waves, reduced P waves and a broad QRS; it can end in arrhythmia and asystole.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "After several units of blood following a road traffic collision, which ECG change would you expect in hyperkalaemia?",
+  "say": "After several units of blood following a road traffic collision, which ECG change would you expect in hyperkalaemia?"
+ },
+ "answer": {
+  "text": "Peaked T waves",
+  "say": "Peaked T waves."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 250,
+   "y": 430,
+   "z": 1.8,
+   "spot": [
+    330,
+    260,
+    170
+   ]
+  },
+  {
+   "x": 740,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    740,
+    400,
+    210
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    1300,
+    330,
+    200
+   ]
+  },
+  {
+   "x": 1230,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    1230,
+    640,
+    160
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    1300,
+    330,
+    200
+   ]
+  },
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  }
+ ],
+ "lines": [
+  {
+   "text": "This patient has had several units of blood after a crash. Massive transfusion is a recognised cause of hyperkalaemia.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Meet the muscular potassium banana, overflowing from its cup. High potassium makes the cardiac cell membranes hyperpolarised.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "On the monitor, the T waves rise like tall circus tents. Peaked T waves are the classic ECG sign.",
+   "shot": 3,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "Look underneath: the P waves become small and reduced.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "So of the options, peaked T waves is the change you would expect.",
+   "shot": 6,
+   "dir": "warm, confident"
+  }
+ ]
+}

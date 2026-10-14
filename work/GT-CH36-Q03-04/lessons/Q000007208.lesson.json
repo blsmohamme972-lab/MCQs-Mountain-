@@ -1,0 +1,109 @@
+{
+ "qid": "Q000007208",
+ "image": "Q000007208.png",
+ "takeaway": "HPV causes cervical and anal carcinoma. EBV: Burkitt's lymphoma and nasopharyngeal cancer; HHV-8: Kaposi's sarcoma; hepatitis B: hepatocellular carcinoma.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following viruses is correctly paired with the tumours they may cause?",
+  "say": "Which of the following viruses is correctly paired with the tumours they may cause?"
+ },
+ "answer": {
+  "text": "Human papilloma virus – anal carcinoma",
+  "say": "Human papilloma virus, and anal carcinoma."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 330,
+   "y": 430,
+   "z": 1.8,
+   "spot": [
+    200,
+    380,
+    210
+   ]
+  },
+  {
+   "x": 740,
+   "y": 500,
+   "z": 2,
+   "spot": [
+    740,
+    470,
+    160
+   ]
+  },
+  {
+   "x": 1230,
+   "y": 480,
+   "z": 1.7,
+   "spot": [
+    1230,
+    270,
+    190
+   ]
+  },
+  {
+   "x": 1230,
+   "y": 480,
+   "z": 1.7,
+   "spot": [
+    1230,
+    490,
+    190
+   ]
+  },
+  {
+   "x": 1230,
+   "y": 620,
+   "z": 1.7,
+   "spot": [
+    1230,
+    740,
+    190
+   ]
+  },
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  }
+ ],
+ "lines": [
+  {
+   "text": "Look at the pink wart-covered character: that is the human papilloma virus, HPV.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "It points straight at the ring with the little crab. That is anal carcinoma, so HPV and anal carcinoma are correctly paired.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Now the crossed-out viruses. Human herpes virus 8 causes Kaposi's sarcoma, not hepatocellular carcinoma.",
+   "shot": 3,
+   "dir": "warm, clear"
+  },
+  {
+   "text": "Epstein–Barr virus causes Burkitt's lymphoma and nasopharyngeal cancer, so it is not the Kaposi's sarcoma virus.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Hepatitis B virus belongs with hepatocellular carcinoma, not with cervical carcinoma.",
+   "shot": 5,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "So the correct pair is human papilloma virus with anal carcinoma.",
+   "shot": 1,
+   "dir": "warm, confident"
+  }
+ ]
+}
