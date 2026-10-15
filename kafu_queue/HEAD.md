@@ -21,10 +21,13 @@ bot's own. In this checkout: `git fetch -q origin +refs/heads/main:refs/remotes/
 
 ## Stage 1: images (ChatGPT writes the prompts, then draws)
 
-1. `python3 kafu_queue/gpt_writer.py --prefix <BOOK>-CH<N> --out <scratchpad>/writer_<BOOK>-CH<N>.html` and send that file to the
-   owner (SendUserFile). One card = one ChatGPT chat of 16 questions (2 sets of 8).
-2. The owner pastes each card into a new ChatGPT chat; ChatGPT returns `painter_..._Q<a>-<b>.html`; the owner opens it in Chrome
-   and pastes each card (one set of 8 images) into a NEW chat, which draws and saves `<QID>.png` to Drive "Books".
+1. The owner's way (default): `python3 kafu_queue/gpt_writer.py --master --out <scratchpad>/master_prompt.html` and send it once
+   (SendUserFile). It is one fixed prompt: the owner attaches the app export to a new ChatGPT chat and pastes it. ChatGPT reads the
+   export with the master script, works in batches of 16 (2 sets of 8), and gives one `painter_batchNN_Q<a>-<b>.html` per batch;
+   the owner writes "next" for the next batch. The owner must send the same export to you too (Stage 0).
+   Alternative (questions inside each prompt, one chat per 16): `gpt_writer.py --prefix <BOOK>-CH<N> --out <scratchpad>/writer.html`.
+2. The owner opens each painter file in Chrome; each card is ONE message for 8 images, pasted into a NEW chat, which draws
+   them and saves `<QID>.png` to Drive "Books".
 3. When the owner asks how far it is: `python3 kafu_queue/watch.py missing` (question numbers and QIDs still missing, and the
    total). Missing images: the owner pastes the same set card again in a new chat (it skips images already saved), or writes
    "continue" in the old chat. A whole writer chat lost: `gpt_writer.py --prefix ... --qids Q..,Q.. --out ...` for those QIDs only.

@@ -62,7 +62,91 @@ FRESH = ('IMPORTANT - FRESH START: ignore any images, files or results from prev
          'link to or re-upload any old image. The ONLY truth is what is in the Google Drive folder "Books" right now (not the '
          'trash). Every image in this task must be newly generated in this chat.')
 
-# The script ChatGPT runs. The @@NAME@@ placeholders are filled here; ChatGPT edits DATA only.
+# Shared by both scripts ChatGPT may run: constants, the Copy page, and make_page (checks DATA, writes painter_*.html).
+CORE = r'''DRIVE = "@@DRIVE@@"
+STYLE = @@STYLE@@
+AVOID = @@AVOID@@
+FRESH = @@FRESH@@
+@@PAGE_CODE@@
+
+def make_page(DATA, EXPECT, SETS, OUTNAME):
+    import re
+    err = []
+    if len(DATA["sets"]) != len(SETS):
+        err.append(f"DATA['sets'] needs {len(SETS)} entries, has {len(DATA['sets'])}")
+    for k, s in enumerate(DATA["sets"]):
+        for f in ("cast", "story"):
+            if not str(s.get(f, "")).strip():
+                err.append(f"set {k + 1}: empty {f}")
+        if len(str(s.get("cast", "")).split()) > 70:
+            err.append(f"set {k + 1}: cast longer than 70 words")
+    items = DATA["items"]
+    for q in items:
+        if q not in EXPECT:
+            err.append(f"{q}: not one of the questions of this batch")
+    for q, e in EXPECT.items():
+        it = items.get(q)
+        if not it:
+            err.append(f"{q} (question {e['n']}): missing")
+            continue
+        title, scenes, banner = (str(it.get(f, "")).strip() for f in ("title", "scenes", "banner"))
+        if not title or len(title.split()) > 6:
+            err.append(f"{q}: title must be 1-6 words")
+        lines = [x for x in scenes.splitlines() if x.strip()]
+        if not 3 <= len(lines) <= 5:
+            err.append(f"{q}: scenes must be 3-5 lines, has {len(lines)}")
+        labels = re.findall(r'"([^"]+)"', scenes)
+        if not 3 <= len(labels) <= 12:
+            err.append(f"{q}: 3-12 quoted labels needed, has {len(labels)}")
+        for lab in labels:
+            if len(lab.split()) > 5:
+                err.append(f"{q}: label too long (max 5 words): {lab}")
+        if "Answer" in scenes or "banner" in scenes.lower():
+            err.append(f"{q}: put the answer only in 'banner', not in scenes")
+        if not banner:
+            err.append(f"{q}: empty banner")
+        elif e["exact"] is not None and banner != e["exact"]:
+            err.append(f"{q}: banner must be exactly: {e['exact']}")
+        elif e["exact"] is None and len(banner.split()) > 10:
+            err.append(f"{q}: banner longer than 10 words")
+        if '"' in banner or '"' in title:
+            err.append(f"{q}: no double quotes inside title or banner")
+    if err:
+        print("ERROR - fix DATA and run again:")
+        print("\n".join(err))
+    else:
+        cards = []
+        for k, qids in enumerate(SETS):
+            s = DATA["sets"][k]
+            nums = ", ".join(EXPECT[q]["n"] for q in qids)
+            msg = [FRESH, "",
+                   f'Task: generate {len(qids)} teaching illustrations and save each one to my Google Drive folder "Books" ({DRIVE}).',
+                   "Work one image at a time, in this order:",
+                   "1. If <QID>.png is already in \"Books\" now, skip that image.",
+                   "2. Otherwise generate it from its prompt exactly as written (landscape 3:2, 1536x1024).",
+                   "3. Check it: every quoted label present and spelled exactly; the bottom banner reads exactly as written. If not, regenerate once.",
+                   "4. Save it to \"Books\" in the same message, named exactly <QID>.png (capital Q, nine digits, .png, no other words). Then go on.",
+                   "Do not stop after generating: generate, check, save, next. No drafts or duplicates in the folder; to replace an image, overwrite the same name.",
+                   "If you stop before the end and I write \"continue\", continue from the first image that is not yet in \"Books\".",
+                   f"When finished, reply with one line: saved N/{len(qids)} and the QIDs you could not save. If you cannot save to Drive, say so plainly; never claim an image was saved when it was not.",
+                   "", "Recurring characters of this set (draw them the same way in every image): " + s["cast"].strip(),
+                   "Story of this set: " + s["story"].strip(), ""]
+            for i, q in enumerate(qids, 1):
+                it = items[q]
+                p = (f"Create a landscape 3:2 image (1536x1024). {STYLE}\n"
+                     f"Recurring characters: {s['cast'].strip()}\n"
+                     f"This is scene {i} of {len(qids)} of the story: {s['story'].strip()}\n"
+                     f"Title banner at the top: \"{it['title'].strip()}\".\n"
+                     f"{it['scenes'].strip()}\n"
+                     f"Bottom banner: \"Answer --> {it['banner'].strip()}\".\n{AVOID}")
+                msg += [f"===== IMAGE {i} of {len(qids)}: save as {q}.png (question {EXPECT[q]['n']}) =====", p, ""]
+            cards.append((f"Set {k + 1}: questions {nums}", "\n".join(msg)))
+        page = copy_page(OUTNAME[:-5], "Paste each card into a NEW ChatGPT chat (one card per chat). It draws the images and saves them to Google Drive.", cards)
+        open("/mnt/data/" + OUTNAME, "w", encoding="utf-8").write(page)
+        print(f"OK - {len(EXPECT)} prompts in {len(SETS)} sets. File: /mnt/data/{OUTNAME}")
+'''
+
+# Per-chat script (questions inside the prompt): ChatGPT edits DATA only.
 SCRIPT = r'''# ===== Kafu painter page builder. Edit ONLY the DATA block. Run it. Fix DATA until it prints OK. =====
 DATA = {
   "sets": [
@@ -81,86 +165,93 @@ DATA = {
 # ===== do not change anything below this line =====
 EXPECT = @@EXPECT@@
 SETS = @@SETS@@
-DRIVE = "@@DRIVE@@"
 OUTNAME = "@@OUTNAME@@"
-STYLE = @@STYLE@@
-AVOID = @@AVOID@@
-FRESH = @@FRESH@@
-@@PAGE_CODE@@
-import re
-err = []
-if len(DATA["sets"]) != len(SETS):
-    err.append(f"DATA['sets'] needs {len(SETS)} entries, has {len(DATA['sets'])}")
-for k, s in enumerate(DATA["sets"]):
-    for f in ("cast", "story"):
-        if not str(s.get(f, "")).strip():
-            err.append(f"set {k + 1}: empty {f}")
-    if len(str(s.get("cast", "")).split()) > 70:
-        err.append(f"set {k + 1}: cast longer than 70 words")
-items = DATA["items"]
-for q in items:
-    if q not in EXPECT:
-        err.append(f"{q}: not one of the questions of this chat")
-for q, e in EXPECT.items():
-    it = items.get(q)
-    if not it:
-        err.append(f"{q} (question {e['n']}): missing")
-        continue
-    title, scenes, banner = (str(it.get(f, "")).strip() for f in ("title", "scenes", "banner"))
-    if not title or len(title.split()) > 6:
-        err.append(f"{q}: title must be 1-6 words")
-    lines = [x for x in scenes.splitlines() if x.strip()]
-    if not 3 <= len(lines) <= 5:
-        err.append(f"{q}: scenes must be 3-5 lines, has {len(lines)}")
-    labels = re.findall(r'"([^"]+)"', scenes)
-    if not 3 <= len(labels) <= 12:
-        err.append(f"{q}: 3-12 quoted labels needed, has {len(labels)}")
-    for lab in labels:
-        if len(lab.split()) > 5:
-            err.append(f"{q}: label too long (max 5 words): {lab}")
-    if "Answer" in scenes or "banner" in scenes.lower():
-        err.append(f"{q}: put the answer only in 'banner', not in scenes")
-    if not banner:
-        err.append(f"{q}: empty banner")
-    elif e["exact"] is not None and banner != e["exact"]:
-        err.append(f"{q}: banner must be exactly: {e['exact']}")
-    elif e["exact"] is None and len(banner.split()) > 10:
-        err.append(f"{q}: banner longer than 10 words")
-    if '"' in banner or '"' in title:
-        err.append(f"{q}: no double quotes inside title or banner")
-if err:
-    print("ERROR - fix DATA and run again:")
-    print("\n".join(err))
-else:
-    cards = []
-    for k, qids in enumerate(SETS):
-        s = DATA["sets"][k]
-        nums = ", ".join(EXPECT[q]["n"] for q in qids)
-        msg = [FRESH, "",
-               f'Task: generate {len(qids)} teaching illustrations and save each one to my Google Drive folder "Books" ({DRIVE}).',
-               "Work one image at a time, in this order:",
-               "1. If <QID>.png is already in \"Books\" now, skip that image.",
-               "2. Otherwise generate it from its prompt exactly as written (landscape 3:2, 1536x1024).",
-               "3. Check it: every quoted label present and spelled exactly; the bottom banner reads exactly as written. If not, regenerate once.",
-               "4. Save it to \"Books\" in the same message, named exactly <QID>.png (capital Q, nine digits, .png, no other words). Then go on.",
-               "Do not stop after generating: generate, check, save, next. No drafts or duplicates in the folder; to replace an image, overwrite the same name.",
-               "If you stop before the end and I write \"continue\", continue from the first image that is not yet in \"Books\".",
-               f"When finished, reply with one line: saved N/{len(qids)} and the QIDs you could not save. If you cannot save to Drive, say so plainly; never claim an image was saved when it was not.",
-               "", "Recurring characters of this set (draw them the same way in every image): " + s["cast"].strip(),
-               "Story of this set: " + s["story"].strip(), ""]
-        for i, q in enumerate(qids, 1):
-            it = items[q]
-            p = (f"Create a landscape 3:2 image (1536x1024). {STYLE}\n"
-                 f"Recurring characters: {s['cast'].strip()}\n"
-                 f"This is scene {i} of {len(qids)} of the story: {s['story'].strip()}\n"
-                 f"Title banner at the top: \"{it['title'].strip()}\".\n"
-                 f"{it['scenes'].strip()}\n"
-                 f"Bottom banner: \"Answer --> {it['banner'].strip()}\".\n{AVOID}")
-            msg += [f"===== IMAGE {i} of {len(qids)}: save as {q}.png (question {EXPECT[q]['n']}) =====", p, ""]
-        cards.append((f"Set {k + 1}: questions {nums}", "\n".join(msg)))
-    page = copy_page(OUTNAME[:-5], "Paste each card into a NEW ChatGPT chat (one card per chat). It draws the images and saves them to Google Drive.", cards)
-    open("/mnt/data/" + OUTNAME, "w", encoding="utf-8").write(page)
-    print(f"OK - {len(EXPECT)} prompts in {len(SETS)} sets. File: /mnt/data/{OUTNAME}")
+@@CORE@@
+make_page(DATA, EXPECT, SETS, OUTNAME)
+'''
+
+# Master script (the owner attaches the app export to the chat): reads the export itself, batch by batch.
+MASTER_SCRIPT = r'''# ===== Kafu master script: run this whole block once, exactly as it is =====
+@@CORE@@
+import glob as _glob, math as _math
+BATCH_SIZE = @@BATCH@@
+SET_SIZE = @@SET@@
+EXACT_MAX = @@EXACT_MAX@@
+
+
+def _num(q):
+    s = str(q.get("source_number"))
+    return (0, int(s), "") if s.isdigit() else (1, 0, s)
+
+
+def _answer_text(q):
+    opts, a = q.get("options", []), str(q.get("answer", "")).strip().upper()
+    for i, o in enumerate(opts):
+        lab = (o.get("label") or o.get("key") or o.get("letter") or "ABCDEFGH"[i]) if isinstance(o, dict) else "ABCDEFGH"[i]
+        if str(lab).strip().upper() == a:
+            return ((o.get("text") or o.get("value") or "") if isinstance(o, dict) else str(o)).strip()
+    return ""
+
+
+def _load():
+    found = []
+    for f in sorted(_glob.glob("/mnt/data/**/*.json", recursive=True)):
+        try:
+            d = _json.load(open(f, encoding="utf-8"))
+        except Exception:
+            continue
+        if isinstance(d, dict) and d.get("export_type") == "kafu_mcq_text_export":
+            found.append(d)
+    if not found:
+        raise SystemExit("NO EXPORT FOUND: ask the owner to upload the app export JSON file again.")
+    qs = {}
+    for d in found:
+        for q in d.get("questions", []):
+            qs.setdefault(q["id"], q)
+    return sorted(qs.values(), key=_num)
+
+
+def show(n):
+    """Prints batch n (1, 2, 3...) of the export: the questions to write prompts for."""
+    global EXPECT, SETS, OUTNAME
+    qs = _load()
+    total = _math.ceil(len(qs) / BATCH_SIZE)
+    chunk = qs[(n - 1) * BATCH_SIZE: n * BATCH_SIZE]
+    if n < 1 or not chunk:
+        print(f"NO BATCH {n}: the export has {len(qs)} questions = {total} batches.")
+        EXPECT, SETS, OUTNAME = {}, [], ""
+        return
+    EXPECT, rows = {}, []
+    for q in chunk:
+        ans = _answer_text(q)
+        if not ans:
+            raise SystemExit(f"{q['id']}: the key {q.get('answer')!r} matches no option. Tell the owner; do not guess.")
+        exact = ans if len(ans) <= EXACT_MAX and '"' not in ans else None
+        EXPECT[q["id"]] = {"n": str(q.get("source_number")), "exact": exact}
+        opts = [(f"{o.get('label') or 'ABCDEFGH'[i]}. {(o.get('text') or o.get('value') or '').strip()}" if isinstance(o, dict)
+                 else f"{'ABCDEFGH'[i]}. {str(o).strip()}") for i, o in enumerate(q.get("options", []))]
+        row = {"qid": q["id"], "question_number": q.get("source_number"), "stem": q.get("stem", ""), "options": opts,
+               "key": q.get("answer"), "key_text": ans, "explanation": q.get("explanation", ""),
+               "has_book_images": bool(q.get("images"))}
+        if exact is not None:
+            row["banner"] = exact
+        rows.append(row)
+    SETS = [[q["id"] for q in chunk[i:i + SET_SIZE]] for i in range(0, len(chunk), SET_SIZE)]
+    first, last = chunk[0].get("source_number"), chunk[-1].get("source_number")
+    OUTNAME = f"painter_batch{n:02d}_Q{first}-{last}.html"
+    print(f"BATCH {n} of {total}: questions {first}-{last}, {len(chunk)} questions, {len(SETS)} set(s): {SETS}")
+    print(_json.dumps(rows, ensure_ascii=False, indent=1))
+
+
+def make(DATA):
+    """Checks DATA for the batch shown last and writes its painter file."""
+    if not SETS:
+        raise SystemExit("Run show(n) first.")
+    make_page(DATA, EXPECT, SETS, OUTNAME)
+
+
+SETS = []
+print("Master script loaded. Next: show(<batch number>).")
 '''
 
 WRITER = '''You write image prompts for a medical-education app (Kafu). Do NOT draw any image in this chat.
@@ -204,6 +295,61 @@ SCRIPT:
 ```python
 {SCRIPT}
 ```'''
+
+
+def core():
+    c = CORE
+    for k, v in {"@@DRIVE@@": CONFIG["drive_folder_url"], "@@STYLE@@": json.dumps(STYLE), "@@AVOID@@": json.dumps(AVOID),
+                 "@@FRESH@@": json.dumps(FRESH), "@@PAGE_CODE@@": PAGE_CODE.strip()}.items():
+        c = c.replace(k, v)
+    return c
+
+
+# The fixed prompt for the owner who attaches the app export to the ChatGPT chat himself.
+MASTER = """You write image prompts for a medical-education app (Kafu). Do NOT draw any image in this chat.
+I attached my app export (a JSON file, export_type kafu_mcq_text_export). Its keys are final: never change or contradict one.
+You work in batches of @@BATCH@@ questions (@@NSETS@@ sets of @@SET@@ images). For each batch you give me one downloadable HTML
+file, made by the master script below.
+
+HOW TO WORK
+1. Copy the master script below exactly into your Python tool and run it once (do not change any line of it).
+2. Run show(1). It prints batch 1: its questions (stem, options, key, explanation, sometimes an exact "banner") and its sets.
+3. Write the DATA for that batch (STEP 1 and STEP 2 below), then run make(DATA). If it prints ERROR, fix DATA and run
+   make(DATA) again until it prints OK. Reply with only the download link of the file it names, plus one line:
+   "batch n of N: questions a-b".
+4. Then stop and wait. When I write "next", do the next batch the same way (show(2), then make(DATA), ...).
+   When I write "batch 5", do batch 5. When show() says there is no such batch, tell me all batches are done.
+5. If Python was reset (NameError, or the file is gone), run the master script again; if it prints NO EXPORT FOUND,
+   ask me to upload the export again.
+
+DATA format (Python; use triple quotes \"\"\" for every text):
+DATA = {"sets": [{"cast": \"\"\"...\"\"\", "story": \"\"\"...\"\"\"}, ...one per set, in order],
+        "items": {"<QID>": {"title": \"\"\"...\"\"\", "scenes": \"\"\"LEFT: ... "Label".
+CENTER: ... "Label".
+RIGHT: ... "Label".\"\"\", "banner": \"\"\"...\"\"\"}, ...one per QID of the batch}}
+
+@@RULES@@
+
+MASTER SCRIPT:
+```python
+@@MASTER_SCRIPT@@
+```"""
+
+
+def master_text():
+    rules = WRITER[WRITER.index("STEP 1 - story"):WRITER.index("STEP 3 - copy")].strip()
+    rules = rules.replace("The questions are already split into {N_SETS} set(s) of up to {SET} (listed under SETS in the\nscript).",
+                          "show() lists the sets of the batch.")
+    ms = MASTER_SCRIPT.replace("@@CORE@@", core())
+    batch, set_size = CONFIG["gpt_writer_questions"], CONFIG["gpt_set_size"]
+    for k, v in {"@@BATCH@@": str(batch), "@@SET@@": str(set_size), "@@EXACT_MAX@@": str(EXACT_MAX)}.items():
+        ms = ms.replace(k, v)
+    text = MASTER
+    for k, v in {"@@BATCH@@": str(batch), "@@NSETS@@": str(-(-batch // set_size)), "@@SET@@": str(set_size),
+                 "@@RULES@@": rules, "@@MASTER_SCRIPT@@": ms.strip()}.items():
+        text = text.replace(k, v)
+    assert "@@" not in text and "{N_SETS}" not in text
+    return text, ms
 
 
 def packages(prefix):
@@ -259,10 +405,8 @@ def build(prefix, per_chat, set_size, only=None):
             if exact is not None:
                 row["banner"] = exact
             qs.append(row)
-        script = SCRIPT
-        for k, v in {"@@EXPECT@@": repr(expect), "@@SETS@@": repr(sets), "@@DRIVE@@": CONFIG["drive_folder_url"],
-                     "@@OUTNAME@@": outname, "@@STYLE@@": json.dumps(STYLE), "@@AVOID@@": json.dumps(AVOID),
-                     "@@FRESH@@": json.dumps(FRESH), "@@PAGE_CODE@@": PAGE_CODE.strip()}.items():
+        script = SCRIPT.replace("@@CORE@@", core())
+        for k, v in {"@@EXPECT@@": repr(expect), "@@SETS@@": repr(sets), "@@OUTNAME@@": outname}.items():
             script = script.replace(k, v)
         text = WRITER
         for k, v in {"{N}": str(len(chunk)), "{N_SETS}": str(len(sets)), "{SET}": str(set_size), "{OUTNAME}": outname,
@@ -275,16 +419,31 @@ def build(prefix, per_chat, set_size, only=None):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--prefix", required=True)
+    ap.add_argument("--prefix", help="per-chat mode: packages PREFIX-* from the queue (questions inside the prompts)")
+    ap.add_argument("--master", action="store_true", help="the one fixed prompt; the owner attaches the export in ChatGPT")
     ap.add_argument("--out", required=True)
     ap.add_argument("--per-chat", type=int, default=CONFIG["gpt_writer_questions"])
     ap.add_argument("--set", type=int, default=CONFIG["gpt_set_size"])
     ap.add_argument("--qids", help="only these QIDs, comma separated (e.g. to redo a few)")
     ap.add_argument("--dump-scripts", help="folder: also save each chat's script (for testing)")
     a = ap.parse_args()
-    cards = build(a.prefix, a.per_chat, a.set, set(a.qids.split(",")) if a.qids else None)
     ns = {}
     exec(PAGE_CODE, ns)
+    if a.master:
+        text, ms = master_text()
+        Path(a.out).write_text(ns["copy_page"](
+            "Kafu: ChatGPT master prompt",
+            "Open a NEW ChatGPT chat, attach the app export (JSON), press Copy, paste, send. ChatGPT gives one painter_batchNN "
+            "file per batch; write next for the next batch. Open each painter file in Chrome: each card goes into a NEW chat.",
+            [("Master prompt (attach the export JSON to the same message)", text)]), encoding="utf-8")
+        if a.dump_scripts:
+            Path(a.dump_scripts).mkdir(parents=True, exist_ok=True)
+            (Path(a.dump_scripts) / "master.py").write_text(ms)
+        print(f"{a.out}: master prompt, {len(text)} chars")
+        return
+    if not a.prefix:
+        sys.exit("--prefix or --master")
+    cards = build(a.prefix, a.per_chat, a.set, set(a.qids.split(",")) if a.qids else None)
     page = ns["copy_page"](f"Kafu {a.prefix}: ChatGPT writer prompts",
                            "Step 1. Paste each card into a NEW ChatGPT chat. ChatGPT gives you a painter_...html file: open it in "
                            "Chrome and paste each of its cards into a NEW chat (step 2), which draws and saves the images.",
