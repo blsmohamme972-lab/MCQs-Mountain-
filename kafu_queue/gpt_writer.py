@@ -5,7 +5,7 @@
 
 Reads queue/<PREFIX>-*.json (make_queue.py split) and writes one HTML page for the owner: one card per ChatGPT chat,
 each with a "Copy" button. A card holds the writing rules, the questions (stem, options, key, explanation) and a
-Python script. ChatGPT fills in only the DATA part of the script (cast and story for each set of 8 questions, a title,
+Python script. ChatGPT fills in only the DATA part of the script (per question: a title, Picmonic/Sketchy-style
 scenes and a banner per question) and runs it. The script checks the work (every QID once, every banner present, short
 answers copied exactly) and writes painter_<first>-<last>.html: one card per set of 8 images, each card a complete
 message for a NEW ChatGPT chat that draws the 8 images and saves them to Google Drive as <QID>.png.
@@ -63,7 +63,8 @@ FRESH = ('IMPORTANT - FRESH START: ignore any images, files or results from prev
          '(not the trash). Every image in this task must be newly generated in this chat.')
 
 # Shared by both scripts ChatGPT may run: constants, the Copy page, and make_page (checks DATA, writes painter_*.html).
-CORE = r'''DRIVE = "@@DRIVE@@"
+CORE = r'''EXACT_MAX = @@EXACT_MAX@@
+DRIVE = "@@DRIVE@@"
 DRIVE_NAME = "@@DRIVE_NAME@@"
 STYLE = @@STYLE@@
 AVOID = @@AVOID@@
@@ -77,17 +78,117 @@ def norm(t):
     return re.sub(r"[\s]+", " ", re.sub(r"[^\w%'\-./ ]+", " ", t)).strip()
 
 
+EVENTS = ("(laugh)", "(sigh)", "(clears throat)")
+VOICE_KEYS = {"question", "question_say", "answer", "answer_say", "lines", "remember", "takeaway"}
+LINE_KEYS = {"text", "say", "scene", "dir"}
+WORDS_PER_SECOND = 2.5          # Breeze reads about 2.5 words per second at tempo 1.0
+MAX_SECONDS = 60                # owner's rule: one question's voice is at most 60 seconds
+
+
+def _spoken(d):
+    return str(d.get("say") or d.get("text") or "")
+
+
+def voice_seconds(v):
+    """Rough length: the words spoken, plus the app's fixed pauses (lead 0.5 s, tail 0.6 s, 1.1 s after the answer,
+    0.45 s between parts)."""
+    import re
+    parts = [str(v.get("question_say") or v.get("question") or ""), str(v.get("answer_say") or v.get("answer") or "")]
+    parts += [_spoken(x) for x in v.get("lines") or [] if isinstance(x, dict)]
+    if isinstance(v.get("remember"), dict):
+        parts.append(_spoken(v["remember"]))
+    words = sum(len(re.sub(r"\([a-z ]+\)", " ", p).split()) for p in parts)
+    return round(words / WORDS_PER_SECOND + 2.2 + 0.45 * (len(parts) - 1), 1)
+
+
+def check_voice(q, v, key_text, nscenes):
+    """The owner's voice standard: stem, smart answer statement, short why, one thing to remember, at most 60 s."""
+    import re
+    if not isinstance(v, dict):
+        return [f"{q}: missing voice"]
+    err = [f"{q}: voice has an unknown field {k!r}" for k in sorted(set(v) - VOICE_KEYS)]
+    qt = str(v.get("question", "")).strip()
+    if not 1 <= len(qt) <= 220:
+        err.append(f"{q}: voice question must be 1-220 characters (has {len(qt)})")
+    at = str(v.get("answer", "")).strip()
+    if not 1 <= len(at) <= 110:
+        err.append(f"{q}: voice answer must be 1-110 characters (has {len(at)})")
+    elif len(key_text) <= EXACT_MAX and norm(key_text) not in norm(at):
+        err.append(f"{q}: the answer statement must contain the key's words exactly: {key_text}")
+    if re.search(r"\b(option|answer)\s+[A-E]\b", at + " " + qt, re.I):
+        err.append(f"{q}: never say option letters")
+    tk = str(v.get("takeaway", "")).strip()
+    if not 1 <= len(tk) <= 240:
+        err.append(f"{q}: takeaway must be 1-240 characters (has {len(tk)})")
+    ls = v.get("lines")
+    if not isinstance(ls, list) or not 2 <= len(ls) <= 4:
+        return err + [f"{q}: voice lines must be a list of 2-4 short explanation lines"]
+    rem = v.get("remember")
+    if not isinstance(rem, dict):
+        return err + [f"{q}: remember must be one line object (text, scene, dir)"]
+    if not str(rem.get("text", "")).strip().lower().startswith("remember"):
+        err.append(f"{q}: the remember line must start with \"Remember\"")
+    says = [str(v.get("question_say", "")), str(v.get("answer_say", ""))]
+    for i, ln in enumerate(ls + [rem], 1):
+        name = "remember line" if i == len(ls) + 1 else f"line {i}"
+        if not isinstance(ln, dict):
+            err.append(f"{q}: {name} must be an object")
+            continue
+        err += [f"{q}: {name} has an unknown field {k!r}" for k in sorted(set(ln) - LINE_KEYS)]
+        t = str(ln.get("text", "")).strip()
+        if not 1 <= len(t) <= 200:
+            err.append(f"{q}: {name} text must be 1-200 characters")
+        if re.search(r"\([a-z ]+\)", t.lower()) and any(x in t.lower() for x in EVENTS + ("(cough)",)):
+            err.append(f"{q}: {name}: vocal events go in 'say' only, never in 'text'")
+        sc = ln.get("scene")
+        if not isinstance(sc, int) or isinstance(sc, bool) or not 0 <= sc <= nscenes:
+            err.append(f"{q}: {name} scene must be a number 0-{nscenes} (0 = whole picture, 1 = first scene line ...)")
+        d = str(ln.get("dir", "")).strip()
+        if not 2 <= len(d.split()) <= 12:
+            err.append(f"{q}: {name} needs a dir: a short delivery instruction of 2-12 words (tone, emotion, pace)")
+        if re.search(r"\b(woman|man|female|male|girl|boy|accent|british|american|years? old)\b", d.lower()):
+            err.append(f"{q}: {name} dir must not describe the voice itself (the voice is chosen automatically)")
+        says.append(str(ln.get("say", "")))
+    events = 0
+    for sy in says:
+        for ev in re.findall(r"\([a-z ]+\)", sy.lower()):
+            if ev not in EVENTS:
+                err.append(f"{q}: {ev} is not allowed; only (laugh), (sigh), (clears throat)")
+        events += sum(sy.lower().count(x) for x in EVENTS)
+    if events > 1:
+        err.append(f"{q}: {events} vocal events; at most 1 per question")
+    secs = voice_seconds(v)
+    if secs > MAX_SECONDS:
+        err.append(f"{q}: the voice is about {secs} s; it must be at most {MAX_SECONDS} s: shorten the question part or the lines")
+    return err
+
+
+def voice_file(qids, items, EXPECT):
+    """(file name, text) of one card's voice script. 'check' shows the Head whether a single character changed on the way."""
+    import hashlib
+    out = {"format": "kafu-voice-v1", "items": {}}
+    for q in qids:
+        it, v = items[q], items[q]["voice"]
+        lesson = {"question": {"text": v["question"].strip()}, "answer": {"text": v["answer"].strip()},
+                  "takeaway": v["takeaway"].strip(), "lines": []}
+        for k in ("question", "answer"):
+            if str(v.get(k + "_say", "")).strip():
+                lesson[k]["say"] = v[k + "_say"].strip()
+        for ln in list(v["lines"]) + [v["remember"]]:
+            row = {"text": ln["text"].strip(), "scene": ln["scene"], "dir": ln["dir"].strip()}
+            if str(ln.get("say", "")).strip():
+                row["say"] = ln["say"].strip()
+            lesson["lines"].append(row)
+        out["items"][q] = {"n": EXPECT[q]["n"], "title": it["title"].strip(),
+                           "scenes": [x.strip() for x in it["scenes"].splitlines() if x.strip()], "lesson": lesson}
+    canon = _json.dumps(out, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+    out["check"] = hashlib.sha256(canon.encode()).hexdigest()[:16]
+    return f"VOICE_{qids[0]}-{qids[-1]}.txt", _json.dumps(out, indent=1, ensure_ascii=True)
+
+
 def make_page(DATA, EXPECT, SETS, OUTNAME):
     import re
     err, standard = [], []
-    if len(DATA["sets"]) != len(SETS):
-        err.append(f"DATA['sets'] needs {len(SETS)} entries, has {len(DATA['sets'])}")
-    for k, s in enumerate(DATA["sets"]):
-        for f in ("cast", "story"):
-            if not str(s.get(f, "")).strip():
-                err.append(f"set {k + 1}: empty {f}")
-        if len(str(s.get("cast", "")).split()) > 70:
-            err.append(f"set {k + 1}: cast longer than 70 words")
     items = DATA["items"]
     for q in items:
         if q not in EXPECT:
@@ -135,39 +236,47 @@ def make_page(DATA, EXPECT, SETS, OUTNAME):
                     err.append(f"{q}: scene {i}: evidence must quote 3 or more words")
                 elif norm(x) not in src:
                     err.append(f"{q}: scene {i}: this evidence is not in the question text, copy it exactly: {x}")
+        err += check_voice(q, it.get("voice"), e["key"], len(lines))
     if err:
         print("ERROR - fix DATA and run again:")
         print("\n".join(err))
     else:
         cards = []
         for k, qids in enumerate(SETS):
-            s = DATA["sets"][k]
             nums = ", ".join(EXPECT[q]["n"] for q in qids)
+            vname, vtext = voice_file(qids, items, EXPECT)
             msg = [FRESH, "",
-                   f'Task: generate {len(qids)} teaching illustrations and save each one to my Google Drive folder "{DRIVE_NAME}" ({DRIVE}).',
-                   "Work one image at a time, in this order:",
+                   f'Go make {len(qids)} images, then save one text file: {len(qids) + 1} things in total, all in my Google Drive '
+                   f'folder "{DRIVE_NAME}" ({DRIVE}).', "",
+                   f"PART 1 - the {len(qids)} images. Work one image at a time, in this order:",
                    f"1. If <QID>.png is already in \"{DRIVE_NAME}\" now, skip that image.",
                    "2. Otherwise generate it from its prompt exactly as written (landscape 3:2, 1536x1024).",
                    "3. Check it: every quoted label present and spelled exactly; the bottom banner reads exactly as written. If not, regenerate once.",
                    f"4. Save it to \"{DRIVE_NAME}\" in the same message, named exactly <QID>.png (capital Q, nine digits, .png, no other words). Then go on.",
                    "Do not stop after generating: generate, check, save, next. No drafts or duplicates in the folder; to replace an image, overwrite the same name.",
-                   f"If you stop before the end and I write \"continue\", continue from the first image that is not yet in \"{DRIVE_NAME}\".",
-                   f"When finished, reply with one line: saved N/{len(qids)} and the QIDs you could not save. If you cannot save to Drive, say so plainly; never claim an image was saved when it was not.",
-                   "", "Recurring characters of this set (draw them the same way in every image): " + s["cast"].strip(),
-                   "Story of this set: " + s["story"].strip(), ""]
+                   f"If you stop before the end and I write \"continue\", continue from the first image that is not yet in \"{DRIVE_NAME}\", then PART 2 if the text file is not there yet.",
+                   f"When finished, reply with one line: images saved N/{len(qids)}, text file saved yes/no, and anything you could not save. "
+                   "If you cannot save to Drive, say so plainly; never claim something was saved when it was not.",
+                   ""]
             for i, q in enumerate(qids, 1):
                 it = items[q]
                 p = (f"Create a landscape 3:2 image (1536x1024). {STYLE}\n"
-                     f"Recurring characters: {s['cast'].strip()}\n"
-                     f"This is scene {i} of {len(qids)} of the story: {s['story'].strip()}\n"
                      f"Title banner at the top: \"{it['title'].strip()}\".\n"
                      f"{it['scenes'].strip()}\n"
                      f"Bottom banner: \"Answer --> {it['banner'].strip()}\".\n{AVOID}")
                 msg += [f"===== IMAGE {i} of {len(qids)}: save as {q}.png (question {EXPECT[q]['n']}) =====", p, ""]
-            cards.append((f"Set {k + 1}: questions {nums}", "\n".join(msg)))
-        page = copy_page(OUTNAME[:-5], "Paste each card into a NEW ChatGPT chat (one card per chat). It draws the images and saves them to Google Drive.", cards)
+            msg += [f"PART 2 - the text file. After the images (even if one failed), save the text between the BEGIN and END lines "
+                    f"to \"{DRIVE_NAME}\" as a plain text file named exactly {vname} (a .txt file, not a Google Doc). It is already "
+                    "written: copy it character for character, do not fix, reformat, shorten or translate anything, and leave out the "
+                    "BEGIN and END lines themselves. If a file with that name is already there, replace it.",
+                    f"----- BEGIN {vname} -----", vtext, f"----- END {vname} -----"]
+            cards.append((f"Card {k + 1}: questions {nums} ({len(qids)} images + {vname})", "\n".join(msg)))
+        page = copy_page(OUTNAME[:-5], "Paste each card into a NEW ChatGPT chat (one card per chat). It draws the images and saves "
+                         "them and one voice text file to Google Drive. Keep this file: it is also the backup of the voice text.", cards)
         open("/mnt/data/" + OUTNAME, "w", encoding="utf-8").write(page)
-        print(f"OK - {len(EXPECT)} prompts in {len(SETS)} sets. File: /mnt/data/{OUTNAME}")
+        print(f"OK - {len(EXPECT)} image prompts and {len(EXPECT)} voice scripts, {len(SETS)} card(s). File: /mnt/data/{OUTNAME}")
+        for q in EXPECT:
+            print(f"{q} (question {EXPECT[q]['n']}): voice about {voice_seconds(items[q]['voice'])} s")
         if standard:
             print("Tell the owner: these scenes use a standard reason because the book's explanation did not support the key:")
             print("\n".join(standard))
@@ -176,10 +285,6 @@ def make_page(DATA, EXPECT, SETS, OUTNAME):
 # Per-chat script (questions inside the prompt): ChatGPT edits DATA only.
 SCRIPT = r'''# ===== Kafu painter page builder. Edit ONLY the DATA block. Run it. Fix DATA until it prints OK. =====
 DATA = {
-  "sets": [
-    # one entry per set, in order. Example:
-    # {"cast": """Captain Valve, a round red heart with a sailor cap ...""", "story": """The crew sails ..."""},
-  ],
   "items": {
     # one entry per QID. Example:
     # "Q000000001": {"title": """Oesophageal Hiatus""",
@@ -187,7 +292,9 @@ DATA = {
     # CENTER: ... Label: "Oesophagus".
     # RIGHT: ... labels "Anterior gastric nerve" and "Posterior gastric nerve".""",
     #                "banner": """T10""",
-    #                "evidence": ["""corresponds to the level of T10""", """The oesophagus traverses""", """anterior and posterior gastric nerves"""]},
+    #                "evidence": ["""corresponds to the level of T10""", """The oesophagus traverses""", """anterior and posterior gastric nerves"""],
+    #                "voice": {"question": """...""", "answer": """...""", "lines": [{"text": """...""", "scene": 1, "dir": """..."""}],
+    #                          "remember": {"text": """Remember: ...""", "scene": 0, "dir": """..."""}, "takeaway": """..."""}},
   },
 }
 # ===== do not change anything below this line =====
@@ -257,7 +364,7 @@ def show(n):
         exact = ans if len(ans) <= EXACT_MAX and '"' not in ans else None
         opts = [(f"{o.get('label') or 'ABCDEFGH'[i]}. {(o.get('text') or o.get('value') or '').strip()}" if isinstance(o, dict)
                  else f"{'ABCDEFGH'[i]}. {str(o).strip()}") for i, o in enumerate(q.get("options", []))]
-        EXPECT[q["id"]] = {"n": str(q.get("source_number")), "exact": exact,
+        EXPECT[q["id"]] = {"n": str(q.get("source_number")), "exact": exact, "key": ans,
                            "src": " ".join([q.get("stem", ""), *opts, q.get("explanation", "")])}
         row = {"qid": q["id"], "question_number": q.get("source_number"), "stem": q.get("stem", ""), "options": opts,
                "key": q.get("answer"), "key_text": ans, "explanation": q.get("explanation", ""),
@@ -283,46 +390,75 @@ SETS = []
 print("Master script loaded. Next: show(<batch number>).")
 '''
 
-WRITER = '''You write image prompts for a medical-education app (Kafu). Do NOT draw any image in this chat.
+WRITER = '''You write image prompts and voice scripts for a medical-education app (Kafu). Do NOT draw any image and make
+no audio in this chat.
 Your only output is ONE downloadable HTML file, made by running the Python script at the end in your Python tool.
 
 THE QUESTIONS ({N} multiple-choice questions, JSON below). The key is final: never change it, never contradict it.
 
-STEP 1 - story and characters. The questions are already split into {N_SETS} set(s) of up to {SET} (listed under SETS in the
-script). For each set invent:
-- "cast": 2-4 SMART recurring cartoon characters, at most 60 words in total. Each character's look must carry a medical idea
-  that keeps coming back in this set (e.g. a nerve as a yellow electric cable-man, a surgeon-owl with a scalpel quill, an
-  artery as a red runner), so the learner remembers the concept from the character itself. Give each a fixed look (body or
-  species, colours, clothes, one prop) and keep it identical in every scene. They act out the facts; they never decorate.
-- "story": one sentence, the adventure that links the scenes of the set (e.g. a hospital-ship voyage, a detective case),
-  chosen to fit the topics of these questions.
-
-STEP 2 - one picture plan per question:
+STEP 1 - one picture plan per question, in Picmonic / Sketchy Medical style. Every fact becomes a SMART character or object:
+a sound-alike or look-alike pun whose look, clothes or prop carries the fact (e.g. "T10" as a golfer's tee with a big 10, a
+nerve as a yellow electric cable-man, an abscess as a walled castle full of pus-goblins). Each image has its own characters,
+chosen for that question; they do not need to repeat across images. Characters act out the facts; nothing is decoration.
 - "title": 2-5 words, the topic of the question.
-- "scenes": 3-5 lines, one scene per line, left to right (start the lines with LEFT:, CENTER:, RIGHT: or similar). In each
-  scene a cast member acts out one fact as a memorable visual pun, and the scene ends with its label(s) in double quotes.
+- "scenes": 3-5 lines, one scene per line, left to right (start the lines with LEFT:, CENTER:, RIGHT: or similar). Each line
+  says which character or object shows which fact and how, and ends with its label(s) in double quotes.
 - "banner": the answer for the bottom banner (the script adds "Answer --> "). If the question lists an exact "banner", copy it
   character for character. Otherwise write the key's option text shortened faithfully to at most 8 words.
 - "evidence": one entry per scene line, in the same order: an EXACT quote of 3 or more words copied from that question's stem,
   options or explanation that proves the fact the scene shows. The script checks every quote against the question text.
   Only when the book's explanation is wrong or does not explain the key, write "STANDARD: <the standard reason in one
   sentence>" instead; the script lists those for the owner to check.
+- "voice": the narration that plays under the picture in the app (see THE VOICE below).
+
+THE VOICE (one narrated lesson per question, at most 60 seconds; the script estimates the length and refuses longer ones)
+The engine is Breeze TTS 2 (open weights by BreezeBlue; we run Breeze-TTS-2.cpp, model breeze-tts-2-q8_0.gguf, English).
+READ ONLY: you may read https://huggingface.co/BreezeBlue/Breeze-TTS-2 , https://raw.githubusercontent.com/HoppouAI/Breeze-TTS-2.cpp/main/README.md
+and our pronunciation list https://raw.githubusercontent.com/blsmohamme972-lab/MCQs-Mountain-/main/voiceover/lexicon.json
+to write lines that suit it. Never download, install or run the model or any audio tool, and make no audio. If a link does
+not open, the facts below are enough:
+- Each question gets one narrator, chosen automatically (6 designed voices: lecturer, doctor, student; women and men take
+  turns). Never choose, name or describe a voice.
+- "text" is what the screen shows; the voice reads "say" when there is one, otherwise "text". Use "say" only where the
+  spoken form differs: numbers, units, abbreviations ("T10" -> "tee ten", "3 x 4 cm" -> "three by four centimetres"),
+  a respelling listed under "say_breeze" in lexicon.json (e.g. proptosis -> "prop-TOE-sis"), or a vocal event.
+- "dir" is the delivery instruction Breeze follows for that line (we send it as --instruction with --cfg-scale 4, so it is
+  followed closely). Write it like the model card does: one short sentence about tone, emotion and pace, 2-12 words, e.g.
+  "Speak clearly with gentle curiosity." / "Calm and confident, slightly slower." / "Warm and encouraging, a light smile."
+  / "Firm and slow, stress the key words." Never describe the voice itself (no gender, age or accent).
+- Vocal events go inside "say" in round brackets: only (laugh), (sigh) or (clears throat), at most one per question, only
+  where it is natural (a light joke, a relief). Never (cough), never other tags.
+- Write for the ear: short sentences, present tense, no symbols or arrows, never option letters ("C is correct"), a comma
+  or colon for a natural pause. The voice speaks about 2.5 words per second.
+The owner's structure, in this order:
+1. "question" (on screen, max 220 characters, also read aloud): the stem. If it is long, only the important clinical
+   points and the lead-in, e.g. "A 47-year-old man has a 3 by 4 cm abscess. Which statement about abscesses is correct?"
+2. "answer" (on screen, max 110 characters, read aloud): THE MOST IMPORTANT PART. The correct answer as one smart, complete
+   statement that contains the key's words, e.g. key "T10" -> "The oesophagus crosses the diaphragm at T10." Never a
+   different answer, never weaker than the key.
+3. "lines": 2-4 short lines that explain WHY, each pointing at a scene of the picture ("scene": 0 = whole picture,
+   1 = first scene line, 2 = second ...). Facts only from the stem, key and explanation (the same rule as the evidence).
+4. "remember": one last line that starts with "Remember", the one thing to keep for the exam, pointing at a scene.
+5. "takeaway": the same key point as a short text for the end screen (max 240 characters).
+Each of "lines" and "remember" is {"text": ..., "scene": n, "dir": ..., "say": ... (only if needed)}.
+"question_say" and "answer_say" are optional spoken forms of the question and answer.
 
 RULES (learned from earlier runs; they decide whether the images come out right):
 - Facts only from the stem, the key and the explanation. Never invent numbers. If the explanation is wrong, contradictory or
   does not explain the key, show the short standard correct reason that supports the key.
 - 3 to 12 quoted labels per question, 1 to 4 words each. A long list in one label comes out garbled: give each item its own
   short label, or show it with colour and no text. No double quotes except around labels.
-- One story that flows left to right. Every arrow or path must reach where the scene says.
+- One scene that reads left to right. Every arrow or path must reach where the scene says.
 - Keep each character small enough (about a third of the width or less) to leave room for the other scenes.
 - Never use the same object for two meanings within one image.
 - The answer appears only on the banner, never inside the scenes.
 - "has_book_images": true means the book shows a picture: describe only what the stem and explanation say.
 - Nothing gory, no real photos, no brand names.
 - Before you run the script, check every question once more: does each scene show a fact from its evidence, is the banner
-  the key, is every label spelled as in the source? Correct anything wrong first. Being right matters more than being fast.
+  the key, is every label spelled as in the source, does the voice say only facts from the source, is the answer statement
+  the key? Correct anything wrong first. Being right matters more than being fast.
 
-STEP 3 - copy the script below exactly into your Python tool. Fill in only the DATA block (use triple quotes \"\"\" for
+STEP 2 - copy the script below exactly into your Python tool. Fill in only the DATA block (use triple quotes \"\"\" for
 every text). Run it. If it prints ERROR, fix DATA and run it again until it prints OK. Then reply with only the download
 link of the file {OUTNAME}. Never change the lines below "do not change anything below this line".
 
@@ -337,22 +473,23 @@ SCRIPT:
 
 def core():
     c = CORE
-    for k, v in {"@@DRIVE_NAME@@": CONFIG["drive_folder_name"], "@@DRIVE@@": CONFIG["drive_folder_url"], "@@STYLE@@": json.dumps(STYLE), "@@AVOID@@": json.dumps(AVOID),
+    for k, v in {"@@EXACT_MAX@@": str(EXACT_MAX), "@@DRIVE_NAME@@": CONFIG["drive_folder_name"], "@@DRIVE@@": CONFIG["drive_folder_url"], "@@STYLE@@": json.dumps(STYLE), "@@AVOID@@": json.dumps(AVOID),
                  "@@FRESH@@": json.dumps(FRESH.replace("@@DRIVE_NAME@@", CONFIG["drive_folder_name"])), "@@PAGE_CODE@@": PAGE_CODE.strip()}.items():
         c = c.replace(k, v)
     return c
 
 
 # The fixed prompt for the owner who attaches the app export to the ChatGPT chat himself.
-MASTER = """You write image prompts for a medical-education app (Kafu). Do NOT draw any image in this chat.
+MASTER = """You write image prompts and voice scripts for a medical-education app (Kafu). Do NOT draw any image and make no
+audio in this chat.
 I attached my app export (a JSON file, export_type kafu_mcq_text_export). Its keys are final: never change or contradict one.
 You work in batches of @@BATCH@@ questions (@@NSETS@@ card(s) of up to @@SET@@ images). For each batch you give me one downloadable HTML
 file, made by the master script below.
 
 HOW TO WORK
 1. Copy the master script below exactly into your Python tool and run it once (do not change any line of it).
-2. Run show(1). It prints batch 1: its questions (stem, options, key, explanation, sometimes an exact "banner") and its sets.
-3. Write the DATA for that batch (STEP 1 and STEP 2 below), then run make(DATA). If it prints ERROR, fix DATA and run
+2. Run show(1). It prints batch 1: its questions (stem, options, key, explanation, sometimes an exact "banner").
+3. Write the DATA for that batch (STEP 1 below), then run make(DATA). If it prints ERROR, fix DATA and run
    make(DATA) again until it prints OK. Reply with only the download link of the file it names, plus one line:
    "batch n of N: questions a-b".
 4. Then stop and wait. When I write "next", do the next batch the same way (show(2), then make(DATA), ...).
@@ -361,11 +498,14 @@ HOW TO WORK
    ask me to upload the export again.
 
 DATA format (Python; use triple quotes \"\"\" for every text):
-DATA = {"sets": [{"cast": \"\"\"...\"\"\", "story": \"\"\"...\"\"\"}, ...one per set, in order],
-        "items": {"<QID>": {"title": \"\"\"...\"\"\", "scenes": \"\"\"LEFT: ... "Label".
+DATA = {"items": {"<QID>": {"title": \"\"\"...\"\"\", "scenes": \"\"\"LEFT: ... "Label".
 CENTER: ... "Label".
 RIGHT: ... "Label".\"\"\", "banner": \"\"\"...\"\"\",
-                    "evidence": [\"\"\"exact quote for scene 1\"\"\", \"\"\"...scene 2\"\"\", \"\"\"...scene 3\"\"\"]}, ...one per QID of the batch}}
+                    "evidence": [\"\"\"exact quote for scene 1\"\"\", \"\"\"...scene 2\"\"\", \"\"\"...scene 3\"\"\"],
+                    "voice": {"question": \"\"\"...\"\"\", "answer": \"\"\"...\"\"\",
+                              "lines": [{"text": \"\"\"...\"\"\", "scene": 1, "dir": \"\"\"...\"\"\"}, ...2-4 lines],
+                              "remember": {"text": \"\"\"Remember: ...\"\"\", "scene": 0, "dir": \"\"\"...\"\"\"},
+                              "takeaway": \"\"\"...\"\"\"}}, ...one per QID of the batch}}
 
 @@RULES@@
 
@@ -376,9 +516,7 @@ MASTER SCRIPT:
 
 
 def master_text():
-    rules = WRITER[WRITER.index("STEP 1 - story"):WRITER.index("STEP 3 - copy")].strip()
-    rules = rules.replace("The questions are already split into {N_SETS} set(s) of up to {SET} (listed under SETS in the\nscript).",
-                          "show() lists the sets of the batch.")
+    rules = WRITER[WRITER.index("STEP 1 - one picture plan"):WRITER.index("STEP 2 - copy")].strip()
     ms = MASTER_SCRIPT.replace("@@CORE@@", core())
     batch, set_size = CONFIG["gpt_writer_questions"], CONFIG["gpt_set_size"]
     for k, v in {"@@BATCH@@": str(batch), "@@SET@@": str(set_size), "@@EXACT_MAX@@": str(EXACT_MAX)}.items():
@@ -437,7 +575,7 @@ def build(prefix, per_chat, set_size, only=None):
         for it in chunk:
             ans = it["answer_text"].strip()
             exact = ans if len(ans) <= EXACT_MAX and '"' not in ans else None
-            expect[it["qid"]] = {"n": str(it.get("number")), "exact": exact,
+            expect[it["qid"]] = {"n": str(it.get("number")), "exact": exact, "key": ans,
                                  "src": " ".join([it.get("stem", ""), *letter_options(it.get("options", [])), it.get("explanation", "")])}
             row = {"qid": it["qid"], "question_number": it.get("number"), "stem": it.get("stem", ""),
                    "options": letter_options(it.get("options", [])), "key": it.get("answer"), "key_text": ans,

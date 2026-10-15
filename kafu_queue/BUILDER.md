@@ -11,6 +11,13 @@ OWNER'S RULES (always)
 - A tool call refused by permissions: do not retry variations. Stop and give the exact refused command in one Arabic line.
 - Do not call add_repo (this repository is your own session's), do not message other sessions, never push to `@@QUEUE_BRANCH@@`.
 
+OWNER'S VOICE STANDARD (overrides the length in LESSON_PROMPT step 5: no 6-8 lines, no 70-90 words)
+- At most 60 seconds per question. Order: "question" = the stem (if long, only the important points and the lead-in);
+  "answer" = the correct answer as one smart, complete statement that contains the key's words (the most important part);
+  2-4 short lines that explain why, each pointing at its scene; one last line that starts with "Remember"; at most one
+  vocal event; "dir" = a short delivery instruction (tone, emotion, pace), never a voice description.
+- ChatGPT already wrote most of these (kafu_queue/voice/<QID>.json); you review them and write only the missing ones.
+
 SAVE USAGE (the owner pays for every turn; speed stays the same)
 - While the voice build runs there is nothing to do: sleep. Before ending the turn schedule ONE `send_later` sized to the work:
   delay_minutes = number of voice lines in the package + 3 (about 50 s per line), message "SLOT @@SLOT@@: continue". On waking,
@@ -55,6 +62,12 @@ c. Images (after scaffold, which may empty the folder): `python3 /home/user/kq/k
    (if that python lacks PIL, use `python3`). Look at each copy once: its "Answer -->" must match the key. A wrong or broken
    image: leave that QID out (scaffold without it) and name it in the final message; do not fail the package.
    Shot and spot coordinates are in the ORIGINAL image's pixels (1536x1024): scale what you see in the copy by 1.5.
+   Then the lessons from ChatGPT's voice scripts (run from the repository root):
+   `python3 /home/user/kq/kafu_queue/lesson_from_voice.py work/<PKG>/lessons <its QIDs>`
+   It writes <QID>.lesson.json for every QID that has a voice script and lists the ones without. Review each written lesson
+   (do not rewrite good ones): every line agrees with the stem, key and explanation (fix only a wrong line), the answer
+   statement is the key, and each shot/spot sits on its scene in the copy you looked at (move it if not). Write the listed
+   ones yourself in the OWNER'S VOICE STANDARD.
 d. If a stem contradicts its key (asks for the incorrect statement but only one option is true, etc.), keep the key, write the
    intro question the way it must read to be correct, and list the QID in the PR.
 e. As soon as the lesson JSONs and selection.json are written: commit them (exact paths) and push, BEFORE the voice build.

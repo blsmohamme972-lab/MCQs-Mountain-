@@ -44,7 +44,13 @@ bot's own. In this checkout: `git fetch -q origin +refs/heads/main:refs/remotes/
 3. When the owner asks how far it is: `python3 kafu_queue/watch.py missing` (question numbers and QIDs still missing, and the
    total). Missing images: the owner pastes the same set card again in a new chat (it skips images already saved), or writes
    "continue" in the old chat. A whole writer chat lost: `gpt_writer.py --prefix ... --qids Q..,Q.. --out ...` for those QIDs only.
-4. Gate: `python3 kafu_queue/preflight.py images <PREFIX>` (downloads and measures every image) must end
+4. Voice scripts: each painter card also makes ChatGPT save one `VOICE_<first>-<last>.txt` next to the images.
+   `python3 kafu_queue/voice_collect.py drive <PREFIX>` checks each file (its check code proves not one character changed;
+   every question passes the same rules as ChatGPT's script, against the key) and writes `kafu_queue/voice/<QID>.json`;
+   commit `kafu_queue/voice/` and push. A file missing or rejected: ask the owner for that painter page and run
+   `voice_collect.py file <PREFIX> <painter page>`. Questions still without a voice script do not block anything: their
+   builder writes them. Tell the owner the count (N/M with a voice script).
+5. Gate: `python3 kafu_queue/preflight.py images <PREFIX>` (downloads and measures every image) must end
    `PREFLIGHT images OK`: every QID exactly once, exact name `<QID>.png`, opens, landscape 3:2, at least 1200 px.
    Duplicates or wrong names: tell the owner exactly which file to delete or rename. **No builder starts before this is OK.**
 

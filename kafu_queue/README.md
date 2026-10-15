@@ -7,7 +7,8 @@ This folder lives only on branch `kafu-queue` of this repository. Builders read 
 owner: chapter export ──► Head: preflight.py export ──► make_queue.py split (packages of 6)
 Head: gpt_writer.py --master ──► master_prompt.html (one fixed prompt, Copy page) ──► owner
 owner: export + master prompt ──► ChatGPT writes prompts, 8 per batch = one card (story + characters per set of 8) ──► painter_batchNN.html
-owner: each painter card ──► new ChatGPT chat ──► draws ──► the owner's Drive folder (config.json)/<QID>.png
+owner: each painter card ──► new ChatGPT chat ──► draws ──► the owner's Drive folder (config.json): 8 × <QID>.png + VOICE_<first>-<last>.txt
+Head: voice_collect.py drive ──► voice/<QID>.json (checked) ──► builders review instead of writing
 Head: preflight.py images (gate) ──► assign.py split (N slots, N chosen by the owner) ──► N builder sessions (BUILDER.md)
 builder: images + export ──► LESSON_PROMPT.md (Breeze) ──► ZIP ──► owner's inbox + phone, PR to main
 Head: collect_zips.py ──► preflight.py zips ──► ledger ──► merge_zips.py (≤ 15 MB parts) ──► preflight.py coverage ──► owner ──► @KafuMcqsbot
@@ -22,6 +23,8 @@ Head: collect_zips.py ──► preflight.py zips ──► ledger ──► mer
 | `make_queue.py` | Head | `split` the export into packages, `check` them |
 | `gpt_writer.py` | Head | `--master`: the fixed ChatGPT prompt (owner attaches the export); `--prefix`: prompts with the questions inside |
 | `assign.py` | Head | `split` packages into slots, `prompt` per slot, `left` |
+| `voice_collect.py` | Head | reads ChatGPT's `VOICE_*.txt` from Drive (or a painter page), checks them, writes `voice/<QID>.json` |
+| `lesson_from_voice.py` | builders | turns `voice/<QID>.json` + the image into `<QID>.lesson.json` for review |
 | `watch.py` | all | Drive listing: `status`, `missing`, `get`, `download`; ledger: `state`, `claim`, `deliver`, `fail` |
 | `collect_zips.py` | Head | decode and check the base64 ZIPs downloaded from the inbox |
 | `merge_zips.py` | Head | merge package ZIPs into parts of at most 15 MB for the bot |
