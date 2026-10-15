@@ -1,0 +1,16 @@
+{
+  "drive_folder_id": "1A2_GAFmrM-EugAztWI6FgqbAuvXZWNSU",
+  "drive_folder_url": "https://drive.google.com/drive/folders/1A2_GAFmrM-EugAztWI6FgqbAuvXZWNSU",
+  "repo": "https://github.com/blsmohamme972-lab/MCQs-Mountain-",
+  "repo_slug": "blsmohamme972-lab/MCQs-Mountain-",
+  "queue_branch": "kafu-queue",
+  "lessons_base_branch": "main",
+  "batch_size": 4,
+  "gpt_set_size": 8,
+  "gpt_writer_questions": 16,
+  "builders": 8,
+  "voice_engine": "breeze",
+  "zip_inbox_url": "https://claude.ai/artifact/J5yRwS9degoyFckDzPTijN",
+  "max_package_zip_mb": 10,
+  "merge_part_mb": 15
+}

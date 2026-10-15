@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+"""Turn a chapter export into image-lesson packages (the image prompts are written by ChatGPT: gpt_writer.py).
+
+  make_queue.py split EXPORT --pkg-prefix GT-CH5 [--size 4] [--qids Q1,Q2] [--already-live]
+      Copies the export to exports/ and writes queue/<PKG>.json (config batch_size questions each, default 4)
+      with the question facts. Run preflight.py export EXPORT first: a broken export stops every builder.
+  make_queue.py check          Checks every package: QIDs unique, key letter valid, answer text found.
+"""
+import argparse
+import json
+import os
+import re
+import shutil
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+QUEUE = Path(os.environ.get("KAFU_QUEUE_DIR", HERE / "queue"))
+CONFIG = json.loads((HERE / "config.json").read_text())
+
+
+def answer_text(q):
+    for o in q.get("options", []):
+        label = (o.get("label") or o.get("key") or o.get("letter") or "") if isinstance(o, dict) else ""
+        text = (o.get("text") or o.get("value") or "") if isinstance(o, dict) else str(o)
+        if label.strip().upper() == str(q.get("answer", "")).strip().upper():
+            return text.strip()
+    letters = "ABCDEFGH"
+    a = str(q.get("answer", "")).strip().upper()
+    opts = q.get("options", [])
+    if a in letters and letters.index(a) < len(opts):
+        o = opts[letters.index(a)]
+        return (o.get("text") if isinstance(o, dict) else str(o)).strip()
+    return ""
+
+
+def split(a):
+    exp = json.loads(Path(a.export).read_text())
+    (HERE / "exports").mkdir(exist_ok=True)
+    dest = HERE / "exports" / Path(a.export).name
+    if Path(a.export).resolve() != dest.resolve():
+        shutil.copy(a.export, dest)
+    qs = exp["questions"]
+    if a.qids:
+        keep = set(a.qids.split(","))
+        qs = [q for q in qs if q["id"] in keep]
+    QUEUE.mkdir(exist_ok=True)
+    for i in range(0, len(qs), a.size):
+        chunk = qs[i:i + a.size]
+        first, last = chunk[0]["source_number"], chunk[-1]["source_number"]
+        pkg = f"{a.pkg_prefix}-Q{int(first):02d}-{int(last):02d}" if str(first).isdigit() and str(last).isdigit() \
+            else f"{a.pkg_prefix}-{i // a.size + 1:02d}"
+        items = [{
+            "qid": q["id"], "number": q.get("source_number"), "stem": q.get("stem", ""),
+            "options": q.get("options", []), "answer": q.get("answer"), "answer_text": answer_text(q),
+            "explanation": q.get("explanation", ""), "has_book_images": bool(q.get("images")),
+        } for q in chunk]
+        out = {"package_id": pkg, "book_id": exp["scope"]["book_id"], "chapter_id": exp["scope"]["chapter_id"],
+               "chapter_title": exp["scope"].get("chapter_title", ""), "export": f"exports/{dest.name}",
+               "already_live": a.already_live, "items": items}
+        path = QUEUE / f"{pkg}.json"
+        if path.exists():
+            print(f"skip {pkg}: exists")
+            continue
+        path.write_text(json.dumps(out, indent=1, ensure_ascii=False) + "\n")
+        print(f"{pkg}: {len(items)} questions")
+
+
+def problems(q, seen=None):
+    bad = []
+    for it in q["items"]:
+        if seen is not None:
+            if it["qid"] in seen:
+                bad.append(f"{it['qid']}: also in {seen[it['qid']]}")
+            seen[it["qid"]] = q["package_id"]
+        if not str(it.get("answer", "")).strip():
+            bad.append(f"{it['qid']}: no answer key")
+        if not it.get("answer_text", "").strip():
+            bad.append(f"{it['qid']}: answer text not found for key {it.get('answer')!r}")
+    return bad
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    s = sub.add_parser("split")
+    s.add_argument("export")
+    s.add_argument("--pkg-prefix", required=True)
+    s.add_argument("--size", type=int, default=CONFIG["batch_size"])
+    s.add_argument("--qids")
+    s.add_argument("--already-live", action="store_true")
+    sub.add_parser("check")
+    a = ap.parse_args()
+    if a.cmd == "split":
+        split(a)
+    else:
+        any_bad, seen = False, {}
+        for p in sorted(QUEUE.glob("*.json")):
+            bad = problems(json.loads(p.read_text()), seen)
+            print(f"{p.stem}: {'OK' if not bad else '; '.join(bad)}")
+            any_bad |= bool(bad)
+        sys.exit(1 if any_bad else 0)
+
+
+if __name__ == "__main__":
+    main()
