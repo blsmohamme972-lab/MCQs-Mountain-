@@ -224,18 +224,31 @@ def make_page(DATA, EXPECT, SETS, OUTNAME):
         if not isinstance(ev, list) or len(ev) != len(lines):
             err.append(f"{q}: evidence needs {len(lines)} entries, one per scene line")
         else:
-            src = norm(e["src"])
+            qa, ex, key = norm(e["stem"] + " " + e["key"]), norm(e["expl"]), norm(e["key"])
+            extra = 0
             for i, x in enumerate(ev, 1):
                 x = str(x).strip()
                 if x.upper().startswith("STANDARD:"):
+                    extra += 1
                     if len(x) < 25:
                         err.append(f"{q}: scene {i}: write the standard reason after STANDARD:")
                     else:
                         standard.append(f"{q} (question {e['n']}) scene {i}: {x[9:].strip()}")
+                elif key and norm(x) == key:
+                    pass                                      # the correct answer itself
                 elif len(x.split()) < 3:
-                    err.append(f"{q}: scene {i}: evidence must quote 3 or more words")
-                elif norm(x) not in src:
-                    err.append(f"{q}: scene {i}: this evidence is not in the question text, copy it exactly: {x}")
+                    err.append(f"{q}: scene {i}: evidence must quote 3 or more words (or the whole correct answer)")
+                elif norm(x) in qa:
+                    pass                                      # from the question or its correct answer
+                elif norm(x) in ex:
+                    extra += 1                                # from the book's explanation
+                else:
+                    err.append(f"{q}: scene {i}: this evidence is not in the stem, the correct answer or the explanation; "
+                               f"copy it exactly (wrong options do not count): {x}")
+            limit = max(1, round(0.3 * len(lines)))
+            if extra > limit:
+                err.append(f"{q}: {extra} of {len(lines)} scenes come from the explanation or your own knowledge; at most "
+                           f"{limit}. The rest must show the question and its correct answer (evidence from the stem or the key)")
         err += check_voice(q, it.get("voice"), e["key"], len(lines))
     if err:
         print("ERROR - fix DATA and run again:")
@@ -365,7 +378,7 @@ def show(n):
         opts = [(f"{o.get('label') or 'ABCDEFGH'[i]}. {(o.get('text') or o.get('value') or '').strip()}" if isinstance(o, dict)
                  else f"{'ABCDEFGH'[i]}. {str(o).strip()}") for i, o in enumerate(q.get("options", []))]
         EXPECT[q["id"]] = {"n": str(q.get("source_number")), "exact": exact, "key": ans,
-                           "src": " ".join([q.get("stem", ""), *opts, q.get("explanation", "")])}
+                           "stem": q.get("stem", ""), "expl": q.get("explanation", "")}
         row = {"qid": q["id"], "question_number": q.get("source_number"), "stem": q.get("stem", ""), "options": opts,
                "key": q.get("answer"), "key_text": ans, "explanation": q.get("explanation", ""),
                "has_book_images": bool(q.get("images"))}
@@ -405,10 +418,16 @@ chosen for that question; they do not need to repeat across images. Characters a
   says which character or object shows which fact and how, and ends with its label(s) in double quotes.
 - "banner": the answer for the bottom banner (the script adds "Answer --> "). If the question lists an exact "banner", copy it
   character for character. Otherwise write the key's option text shortened faithfully to at most 8 words.
-- "evidence": one entry per scene line, in the same order: an EXACT quote of 3 or more words copied from that question's stem,
-  options or explanation that proves the fact the scene shows. The script checks every quote against the question text.
-  Only when the book's explanation is wrong or does not explain the key, write "STANDARD: <the standard reason in one
-  sentence>" instead; the script lists those for the owner to check.
+- WHAT THE IMAGE SHOWS (owner's rule): about 70% the question and its correct answer, about 30% the reason why. The reason
+  comes from the book's explanation when possible; your own standard knowledge only when the explanation does not help.
+  In numbers: with 3 or 4 scenes at most 1, with 5 scenes at most 2, may come from the explanation or your knowledge; all
+  other scenes show what the stem asks and the correct answer. Never build a scene on a wrong option.
+- "evidence": one entry per scene line, in the same order, proving the fact the scene shows:
+  - from the question or the answer: an EXACT quote of 3 or more words from the stem, or the correct answer's text itself;
+  - from the explanation: an EXACT quote of 3 or more words from the explanation;
+  - from your own knowledge (only when the explanation is wrong or does not explain the key): "STANDARD: <the standard reason
+    in one sentence>"; the script lists those for the owner to check.
+  The script finds where each quote comes from and refuses a picture with too many explanation or knowledge scenes.
 - "voice": the narration that plays under the picture in the app (see THE VOICE below).
 
 THE VOICE (one narrated lesson per question, at most 60 seconds; the script estimates the length and refuses longer ones)
@@ -576,7 +595,7 @@ def build(prefix, per_chat, set_size, only=None):
             ans = it["answer_text"].strip()
             exact = ans if len(ans) <= EXACT_MAX and '"' not in ans else None
             expect[it["qid"]] = {"n": str(it.get("number")), "exact": exact, "key": ans,
-                                 "src": " ".join([it.get("stem", ""), *letter_options(it.get("options", [])), it.get("explanation", "")])}
+                                 "stem": it.get("stem", ""), "expl": it.get("explanation", "")}
             row = {"qid": it["qid"], "question_number": it.get("number"), "stem": it.get("stem", ""),
                    "options": letter_options(it.get("options", [])), "key": it.get("answer"), "key_text": ans,
                    "explanation": it.get("explanation", ""), "has_book_images": bool(it.get("has_book_images"))}
