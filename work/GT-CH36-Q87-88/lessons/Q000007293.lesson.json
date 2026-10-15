@@ -1,0 +1,94 @@
+{
+ "qid": "Q000007293",
+ "image": "Q000007293.png",
+ "takeaway": "Nitric oxide (NO) is a cell-signalling molecule: made on demand, diffuses out of nerve terminals (not in vesicles) and is released by endothelium as endothelium-derived relaxing factor.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which one of the following molecules is used for cell signalling?",
+  "say": "Which one of the following molecules is used for cell signalling?"
+ },
+ "answer": {
+  "text": "NO",
+  "say": "Nitric oxide."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 250,
+   "y": 350,
+   "z": 1.8,
+   "spot": [
+    260,
+    350,
+    200
+   ]
+  },
+  {
+   "x": 800,
+   "y": 420,
+   "z": 1.6,
+   "spot": [
+    800,
+    380,
+    260
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    1330,
+    320,
+    180
+   ]
+  },
+  {
+   "x": 770,
+   "y": 700,
+   "z": 1.6,
+   "spot": [
+    770,
+    770,
+    400
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Nitric oxide is a gas messenger. At the nerve terminal it is made instantly, as needed.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "It is not packed in vesicles. It simply diffuses out of the terminal over a few seconds.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Blood vessel endothelium also releases it, as endothelium-derived relaxing factor, loosening the muscle wall like an unbuckled belt.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It diffuses into the nearby nerve, especially in brain areas for long-term behaviour and memory.",
+   "shot": 3,
+   "dir": "warm, clear"
+  },
+  {
+   "text": "Carbon dioxide, oxygen, nitrogen and carbonic acid are not used this way, so they are crossed out.",
+   "shot": 4,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "The signalling molecule is nitric oxide.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}

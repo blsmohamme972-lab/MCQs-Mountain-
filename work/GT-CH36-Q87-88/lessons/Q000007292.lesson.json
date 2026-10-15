@@ -1,0 +1,104 @@
+{
+ "qid": "Q000007292",
+ "image": "Q000007292.png",
+ "takeaway": "Low calcium makes chief cells release PTH, which stimulates 1α-hydroxylase in the kidney to activate vitamin D, and reduces renal phosphate reabsorption.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following statements regarding calcium homeostasis is true?",
+  "say": "Which of the following statements regarding calcium homeostasis is true?"
+ },
+ "answer": {
+  "text": "Parathormone stimulates 1α-hydroxylase.",
+  "say": "Parathormone stimulates one alpha hydroxylase."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 190,
+   "y": 300,
+   "z": 1.8,
+   "spot": [
+    190,
+    260,
+    150
+   ]
+  },
+  {
+   "x": 200,
+   "y": 550,
+   "z": 1.7,
+   "spot": [
+    200,
+    560,
+    230
+   ]
+  },
+  {
+   "x": 800,
+   "y": 500,
+   "z": 1.8,
+   "spot": [
+    800,
+    520,
+    170
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 400,
+   "z": 1.7,
+   "spot": [
+    1240,
+    420,
+    200
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 650,
+   "z": 2,
+   "spot": [
+    1400,
+    730,
+    140
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Calcium is controlled by parathormone, calcitonin and vitamin D. Here the calcium level has fallen.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The chief cells of the parathyroid gland sense the fall and ring the alarm, releasing parathormone, PTH.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "In the kidney, PTH stimulates the enzyme one alpha hydroxylase, the little robot with the wrench.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It turns dull vitamin D into active vitamin D, and plasma calcium rises.",
+   "shot": 4,
+   "dir": "warm, clear"
+  },
+  {
+   "text": "PTH also reduces phosphate reabsorption in the kidney, so phosphate leaves in the urine.",
+   "shot": 5,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "So the true statement is that parathormone stimulates one alpha hydroxylase.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}
