@@ -159,12 +159,12 @@
   "selected": [
     {
       "qid": "Q000007310",
-      "duration_ms": 30000,
+      "duration_ms": 46700,
       "content_hash": "89b3f4f38a5b8680954032c445099f6a55f1bec5449026e084efad35e769463b"
     },
     {
       "qid": "Q000007311",
-      "duration_ms": 30000,
+      "duration_ms": 43000,
       "content_hash": "cd479e3b0c8bc002339129cf1d9016aa697379006850d0098bb9629327aed3b9"
     }
   ]

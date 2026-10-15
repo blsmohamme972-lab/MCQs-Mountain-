@@ -1,14 +1,11 @@
 {
- "qid": "Q000007311",
- "image": "Q000007311.png",
- "takeaway": "ADH comes from the supraoptic nucleus and rises with low pressure or high osmolality; high arterial pressure does not stimulate it.",
- "engine": "breeze",
- "tempo": 1.0,
+ "takeaway": "ADH is made in the supraoptic nucleus and rises with low arterial pressure or raised osmolality, not with high pressure. So the high-pressure statement is the incorrect one.",
  "question": {
-  "text": "Which statement regarding the regulation of sodium and water reabsorption is incorrect?"
+  "text": "Which statement regarding the regulation of sodium and water reabsorption is incorrect?",
+  "say": "Which statement regarding the regulation of sodium and water reabsorption is incorrect?"
  },
  "answer": {
-  "text": "ADH secretion is stimulated by an increased arterial pressure.",
+  "text": "Antidiuretic hormone secretion is stimulated by an increased arterial pressure.",
   "say": "Antidiuretic hormone secretion is stimulated by an increased arterial pressure."
  },
  "shots": [
@@ -18,92 +15,72 @@
    "z": 1
   },
   {
-   "x": 384,
-   "y": 300,
+   "x": 230,
+   "y": 420,
    "z": 2,
    "spot": [
-    220,
-    300,
+    230,
+    380,
     230
    ]
   },
   {
-   "x": 950,
-   "y": 300,
+   "x": 770,
+   "y": 400,
    "z": 2,
    "spot": [
-    900,
-    240,
-    200
+    820,
+    420,
+    260
    ]
   },
   {
-   "x": 880,
-   "y": 560,
+   "x": 1300,
+   "y": 420,
    "z": 2,
    "spot": [
-    880,
-    560,
-    220
+    1300,
+    360,
+    240
    ]
-  },
-  {
-   "x": 1152,
-   "y": 350,
-   "z": 2,
-   "spot": [
-    1290,
-    300,
-    230
-   ]
-  },
-  {
-   "x": 1152,
-   "y": 640,
-   "z": 2,
-   "spot": [
-    1290,
-    560,
-    220
-   ]
-  },
-  {
-   "x": 768,
-   "y": 512,
-   "z": 1
   }
  ],
  "lines": [
   {
-   "text": "Antidiuretic hormone is made in the supraoptic nucleus of the hypothalamus, so that statement is correct.",
+   "text": "Antidiuretic hormone, ADH, is produced in the supraoptic nucleus of the hypothalamus.",
+   "say": "Antidiuretic hormone, A D H, is produced in the supraoptic nucleus of the hypothalamus.",
    "shot": 1,
    "dir": "warm, curious"
   },
   {
-   "text": "It is stimulated by raised osmolality, a fall in circulating volume, or reduced arterial pressure.",
+   "text": "Osmoreceptors detect a rise in osmolality and switch it on.",
    "shot": 1,
-   "dir": "calm, confident",
-   "say": "It is stimulated by raised osmolality, a fall in circulating volume, or reduced arterial pressure."
+   "dir": "calm, confident"
   },
   {
-   "text": "Aldosterone stimulates sodium reabsorption in the distal tubule, also correct.",
-   "shot": 3,
-   "dir": "steady"
-  },
-  {
-   "text": "Renin is released from the juxtaglomerular cells when sodium or afferent arteriole pressure falls, correct again.",
+   "text": "In the kidney, renin is released when afferent arteriole pressure or sodium falls.",
    "shot": 2,
-   "dir": "steady"
+   "dir": "calm, confident"
   },
   {
-   "text": "But high arterial pressure does not raise antidiuretic hormone; it lowers it.",
-   "shot": 4,
-   "dir": "emphatic, calm"
+   "text": "Aldosterone then drives sodium reabsorption in the distal tubule.",
+   "shot": 2,
+   "dir": "calm, confident"
   },
   {
-   "text": "Low pressure means more of it, so the incorrect statement is the last one.",
-   "shot": 5,
+   "text": "ADH is also stimulated by a fall in circulating volume or arterial pressure.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So high arterial pressure does not stimulate ADH, and that statement is the incorrect one.",
+   "shot": 3,
+   "say": "So high arterial pressure does not stimulate ADH, and that statement is the incorrect one. (sigh)",
    "dir": "calm, confident"
   }
- ]
+ ],
+ "qid": "Q000007311",
+ "image": "Q000007311.png",
+ "engine": "breeze",
+ "tempo": 1.0
 }
