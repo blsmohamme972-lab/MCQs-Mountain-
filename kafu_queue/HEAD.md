@@ -22,6 +22,14 @@ the owner to share it as "Anyone with the link" (Viewer) and send the link again
 Set `KAFU_MOUNTAIN` to an up-to-date checkout of `main` when you run `preflight.py` or `merge_zips.py`, so the checks are the
 bot's own. In this checkout: `git fetch -q origin +refs/heads/main:refs/remotes/origin/main && git worktree add --detach /home/user/mm origin/main` and `export KAFU_MOUNTAIN=/home/user/mm`.
 
+## Clearing the images folder (owner's rule: same folder, emptied for every chapter)
+
+You can only READ the folder. The owner deletes the files himself. Tell him it is safe only when the previous chapter is
+finished: every package delivered (`assign.py left` says 0 left) and the merged parts are published by the bot. Builders
+download images from the folder, so clearing it earlier loses work. Before the next chapter's ChatGPT step, run
+`python3 kafu_queue/drive.py show`: it must list 0 files (the owner also empties the Drive trash). If files remain, tell the
+owner how many.
+
 ## Stage 0: the export (nothing else starts before this is OK)
 
 1. Save the owner's app export as `kafu_queue/exports/<BOOK>-ch<N>.export.json` (the full export: `export_metadata.question_integrity`,
