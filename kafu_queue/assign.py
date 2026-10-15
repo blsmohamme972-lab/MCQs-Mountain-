@@ -64,16 +64,17 @@ def prompt(slot, only=None, name=None):
     rows = []
     for p in lst:
         its = pk[p]["items"]
-        rows.append(f"- {p}: questions {', '.join(str(i.get('number')) for i in its)}; QIDs {' '.join(i['qid'] for i in its)}")
-    exports = {pk[p]["export"] for p in lst}
-    if len(exports) != 1:
-        sys.exit(f"packages use different exports: {exports}")
-    exp = exports.pop()
+        rows.append(f"- {p} (export {Path(pk[p]['export']).name}): questions {', '.join(str(i.get('number')) for i in its)}; "
+                    f"QIDs {' '.join(i['qid'] for i in its)}")
+    exports = sorted({pk[p]["export"] for p in lst})
     vals = {
         "@@SLOT@@": name or slot, "@@REPO_SLUG@@": CONFIG["repo_slug"], "@@NQ@@": str(sum(len(pk[p]["items"]) for p in lst)),
-        "@@CHAPTER@@": f"{first.get('book_id', '')} chapter {first.get('chapter_id', '')}: {first.get('chapter_title', '')}",
-        "@@PKG_TABLE@@": "\n".join(rows), "@@QUEUE_BRANCH@@": CONFIG["queue_branch"], "@@EXPORT@@": exp,
-        "@@EXPORT_NAME@@": Path(exp).name, "@@ALREADY_LIVE@@": "yes" if first.get("already_live") else "no",
+        "@@CHAPTER@@": "; ".join(sorted({f"{pk[p].get('book_id', '')} chapter {pk[p].get('chapter_id', '')}: {pk[p].get('chapter_title', '')}"
+                                         for p in lst})),
+        "@@PKG_TABLE@@": "\n".join(rows), "@@QUEUE_BRANCH@@": CONFIG["queue_branch"],
+        "@@EXPORT_CP@@": " ".join(f"/home/user/kq/kafu_queue/{e}" for e in exports),
+        "@@EXPORT_CHECK@@": " && ".join(f"KAFU_MOUNTAIN=$PWD python3 /home/user/kq/kafu_queue/preflight.py export work/input/{Path(e).name} | tail -n 1"
+                                        for e in exports), "@@ALREADY_LIVE@@": "yes" if first.get("already_live") else "no",
         "@@MAX_MB@@": str(CONFIG["max_package_zip_mb"]), "@@INBOX@@": CONFIG["zip_inbox_url"], "@@NPKG@@": str(len(lst)),
         "@@PREFIX@@": a["prefix"], "@@BRANCH@@": f"lessons/{a['prefix'].lower()}-s{name or slot}",
     }

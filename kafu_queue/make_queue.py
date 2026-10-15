@@ -4,6 +4,9 @@
   make_queue.py split EXPORT --pkg-prefix GT-CH5 [--size 4] [--qids Q1,Q2] [--already-live]
       Copies the export to exports/ and writes queue/<PKG>.json (config batch_size questions each, default 4)
       with the question facts. Run preflight.py export EXPORT first: a broken export stops every builder.
+  make_queue.py split-all BOOK EXPORT... [--size 4]
+      Many chapters at once (files or ZIPs of them): each chapter gets its own prefix BOOK-CH<chapter_id>
+      (e.g. GT-CH4, GT-CH36). Run preflight.py export on each file first.
   make_queue.py check          Checks every package: QIDs unique, key letter valid, answer text found.
 """
 import argparse
@@ -66,6 +69,37 @@ def split(a):
         print(f"{pkg}: {len(items)} questions")
 
 
+def split_all(a):
+    import tempfile
+    import zipfile
+    blobs = []
+    tmp = Path(tempfile.mkdtemp())
+    for f in a.exports:
+        if f.lower().endswith(".zip"):
+            with zipfile.ZipFile(f) as z:
+                blobs += [z.read(n) for n in z.namelist() if n.lower().endswith(".json")]
+        else:
+            blobs.append(Path(f).read_bytes())
+    done = set()
+    for b in blobs:
+        try:
+            exp = json.loads(b.decode("utf-8"))
+        except ValueError:
+            continue
+        if exp.get("export_type") != "kafu_mcq_text_export":
+            continue
+        book, ch = exp["scope"]["book_id"], exp["scope"]["chapter_id"]
+        if (book, ch) in done:
+            print(f"--- {book} chapter {ch}: already split from another file, skipped")
+            continue
+        done.add((book, ch))
+        f = tmp / f"{book}-ch{ch}.export.json"          # one clear name per chapter, whatever the file was called
+        f.write_bytes(b)
+        print(f"--- {f.name}: chapter {ch}")
+        split(argparse.Namespace(export=str(f), pkg_prefix=f"{a.book}-CH{ch}", size=a.size, qids=None,
+                                 already_live=a.already_live))
+
+
 def problems(q, seen=None):
     bad = []
     for it in q["items"]:
@@ -89,10 +123,17 @@ def main():
     s.add_argument("--size", type=int, default=CONFIG["batch_size"])
     s.add_argument("--qids")
     s.add_argument("--already-live", action="store_true")
+    m = sub.add_parser("split-all")
+    m.add_argument("book")
+    m.add_argument("exports", nargs="+")
+    m.add_argument("--size", type=int, default=CONFIG["batch_size"])
+    m.add_argument("--already-live", action="store_true")
     sub.add_parser("check")
     a = ap.parse_args()
     if a.cmd == "split":
         split(a)
+    elif a.cmd == "split-all":
+        split_all(a)
     else:
         any_bad, seen = False, {}
         for p in sorted(QUEUE.glob("*.json")):

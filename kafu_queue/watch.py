@@ -78,10 +78,14 @@ def download(fid):
 # ---------- queue + ledger ----------
 def packages():
     pk = {p.stem: json.loads(p.read_text()) for p in QUEUE.glob("*.json")}
+    def num(v):
+        s = str(v if v is not None else "")
+        return (0, int(s), "") if s.isdigit() else (1, 0, s)
+
     def first(k):
-        s = str(pk[k]["items"][0].get("number"))
-        return (k.rsplit("-Q", 1)[0], 0, int(s)) if s.isdigit() else (k, 1, 0)
-    return {k: pk[k] for k in sorted(pk, key=first)}   # in question order (Q9 before Q10 before Q101)
+        q = pk[k]
+        return (str(q.get("book_id", "")), num(q.get("chapter_id")), num(q["items"][0].get("number")), k)
+    return {k: pk[k] for k in sorted(pk, key=first)}   # book, chapter, question order (ch4 before ch36, Q9 before Q10)
 
 
 def ledger():

@@ -40,9 +40,9 @@ SETUP (once)
 3. While the setup runs (always fetch with these explicit refspecs: a single-branch clone does not create origin/<branch> otherwise):
    `git fetch -q origin +refs/heads/@@QUEUE_BRANCH@@:refs/remotes/origin/@@QUEUE_BRANCH@@ +refs/heads/main:refs/remotes/origin/main && git worktree add -q --detach /home/user/kq origin/@@QUEUE_BRANCH@@`
    `git checkout -q -B @@BRANCH@@ origin/main` (your one branch for all your packages)
-   `mkdir -p work/input && cp /home/user/kq/kafu_queue/@@EXPORT@@ work/input/`
-   `KAFU_MOUNTAIN=$PWD python3 /home/user/kq/kafu_queue/preflight.py export work/input/@@EXPORT_NAME@@ | tail -n 2` must end with
-   `PREFLIGHT export OK`. If not: final message "SLOT @@SLOT@@: export rejected" + the FAIL line, and stop.
+   `mkdir -p work/input && cp @@EXPORT_CP@@ work/input/`
+   `@@EXPORT_CHECK@@` must print `PREFLIGHT export OK` for every export. If not: final message "SLOT @@SLOT@@: export
+   rejected" + the FAIL line, and stop.
    Read CLAUDE.md, motioncards/LESSON_PROMPT.md and motioncards/lib/lesson.py (once).
    Read the inbox once: Artifact action "read" with url @@INBOX@@ (needed once per session before uploading to it).
 4. Voice smoke test, once `work/setup.log` shows the setup finished (sleep with `send_later` 10 until then):
@@ -55,7 +55,7 @@ FOR EACH PACKAGE, in the order of the list
 a. Skip it if done: `git fetch -q origin +refs/heads/@@QUEUE_BRANCH@@:refs/remotes/origin/@@QUEUE_BRANCH@@ && git -C /home/user/kq checkout -q --detach origin/@@QUEUE_BRANCH@@ &&
    python3 /home/user/kq/kafu_queue/watch.py state <PKG>` prints `delivered`.
 b. Follow motioncards/LESSON_PROMPT.md steps 3-8 on branch @@BRANCH@@ with: PACKAGE ID <PKG>, workspace `work/<PKG>`, export
-   `work/input/@@EXPORT_NAME@@`, ZIP `dist/MCARDS_<PKG>_r1.zip`, only that package's QIDs, ALREADY LIVE @@ALREADY_LIVE@@,
+   `work/input/<the export named in that package's row above>`, ZIP `dist/MCARDS_<PKG>_r1.zip`, only that package's QIDs, ALREADY LIVE @@ALREADY_LIVE@@,
    voice engine breeze.
 c. Images (after scaffold, which may empty the folder): `python3 /home/user/kq/kafu_queue/watch.py get work/<PKG>/lessons <its QIDs>`.
    Small copies to look at: `mkdir -p work/look && for f in work/<PKG>/lessons/Q*.png; do ~/.venvs/kafu-voice/bin/python -c "import sys;from PIL import Image;i=Image.open(sys.argv[1]);i.thumbnail((1024,1024));i.save(sys.argv[2])" $f work/look/$(basename $f); done`

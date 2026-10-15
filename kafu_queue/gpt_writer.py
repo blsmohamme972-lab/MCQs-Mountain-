@@ -327,9 +327,14 @@ SET_SIZE = @@SET@@
 EXACT_MAX = @@EXACT_MAX@@
 
 
-def _num(q):
-    s = str(q.get("source_number"))
+def _int(v):
+    s = str(v if v is not None else "")
     return (0, int(s), "") if s.isdigit() else (1, 0, s)
+
+
+def _num(q):
+    """Book, then chapter, then question number (9 before 10 before 101)."""
+    return (str(q.get("book_id") or ""), _int(q.get("chapter_id")), _int(q.get("source_number")))
 
 
 def _answer_text(q):
@@ -341,22 +346,43 @@ def _answer_text(q):
     return ""
 
 
-def _load():
+def _load(quiet=True):
+    """Every app export attached to the chat: JSON files, or ZIP files that hold them (any number of files)."""
+    import zipfile as _zip
+    blobs = []
+    for f in sorted(_glob.glob("/mnt/data/**/*", recursive=True)):
+        if f.lower().endswith(".json"):
+            blobs.append((f, open(f, "rb").read()))
+        elif f.lower().endswith(".zip"):
+            try:
+                with _zip.ZipFile(f) as z:
+                    blobs += [(f + ":" + n, z.read(n)) for n in z.namelist() if n.lower().endswith(".json")]
+            except Exception:
+                print(f"note: {f} is not a readable ZIP")
     found = []
-    for f in sorted(_glob.glob("/mnt/data/**/*.json", recursive=True)):
+    for name, b in blobs:
         try:
-            d = _json.load(open(f, encoding="utf-8"))
+            d = _json.loads(b.decode("utf-8"))
         except Exception:
             continue
         if isinstance(d, dict) and d.get("export_type") == "kafu_mcq_text_export":
             found.append(d)
     if not found:
-        raise SystemExit("NO EXPORT FOUND: ask the owner to upload the app export JSON file again.")
+        raise SystemExit("NO EXPORT FOUND: ask the owner to upload the app export JSON files (or a ZIP of them) again.")
     qs = {}
     for d in found:
         for q in d.get("questions", []):
             qs.setdefault(q["id"], q)
-    return sorted(qs.values(), key=_num)
+    qs = sorted(qs.values(), key=_num)
+    if not quiet:
+        chap = {}
+        for q in qs:
+            k = (str(q.get("book_id") or ""), str(q.get("chapter_id") or ""))
+            chap[k] = chap.get(k, 0) + 1
+        print(f"{len(found)} export file(s), {len(qs)} questions, {_math.ceil(len(qs) / BATCH_SIZE)} batches of {BATCH_SIZE}:")
+        for (b, c), n in sorted(chap.items(), key=lambda kv: (kv[0][0], _int(kv[0][1]))):
+            print(f"  {b} chapter {c}: {n} questions")
+    return qs
 
 
 def show(n):
@@ -387,8 +413,12 @@ def show(n):
         rows.append(row)
     SETS = [[q["id"] for q in chunk[i:i + SET_SIZE]] for i in range(0, len(chunk), SET_SIZE)]
     first, last = chunk[0].get("source_number"), chunk[-1].get("source_number")
-    OUTNAME = f"painter_batch{n:02d}_Q{first}-{last}.html"
-    print(f"BATCH {n} of {total}: questions {first}-{last}, {len(chunk)} questions, {len(SETS)} set(s): {SETS}")
+    chs = sorted({str(q.get("chapter_id")) for q in chunk}, key=_int)
+    tag = "ch" + "+".join(chs)
+    OUTNAME = f"painter_batch{n:02d}_{tag}_Q{first}-{last}.html"
+    span = (f"questions {first}-{last}" if len(chs) == 1 else
+            f"chapter {chunk[0].get('chapter_id')} question {first} to chapter {chunk[-1].get('chapter_id')} question {last}")
+    print(f"BATCH {n} of {total}: chapter {', '.join(chs)}, {span}, {len(chunk)} questions, {len(SETS)} card(s): {SETS}")
     print(_json.dumps(rows, ensure_ascii=False, indent=1))
 
 
@@ -400,6 +430,10 @@ def make(DATA):
 
 
 SETS = []
+try:
+    _load(quiet=False)
+except SystemExit as e:
+    print(e)
 print("Master script loaded. Next: show(<batch number>).")
 '''
 
@@ -501,12 +535,15 @@ def core():
 # The fixed prompt for the owner who attaches the app export to the ChatGPT chat himself.
 MASTER = """You write image prompts and voice scripts for a medical-education app (Kafu). Do NOT draw any image and make no
 audio in this chat.
-I attached my app export (a JSON file, export_type kafu_mcq_text_export). Its keys are final: never change or contradict one.
+I attached my app export(s): one or many JSON files (export_type kafu_mcq_text_export), or ZIP files that hold them; the
+master script reads them all, in order of book, chapter and question number. Their keys are final: never change or
+contradict one.
 You work in batches of @@BATCH@@ questions (@@NSETS@@ card(s) of up to @@SET@@ images). For each batch you give me one downloadable HTML
 file, made by the master script below.
 
 HOW TO WORK
-1. Copy the master script below exactly into your Python tool and run it once (do not change any line of it).
+1. Copy the master script below exactly into your Python tool and run it once (do not change any line of it). It prints how
+   many export files, chapters, questions and batches it found: tell me that summary in one short message first.
 2. Run show(1). It prints batch 1: its questions (stem, options, key, explanation, sometimes an exact "banner").
 3. Write the DATA for that batch (STEP 1 below), then run make(DATA). If it prints ERROR, fix DATA and run
    make(DATA) again until it prints OK. Reply with only the download link of the file it names, plus one line:

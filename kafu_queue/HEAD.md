@@ -37,7 +37,11 @@ owner how many.
 2. `python3 kafu_queue/preflight.py export kafu_queue/exports/<file>` must end `PREFLIGHT export OK`. Count the questions it
    prints and tell the owner that number (do not count by hand). Any number of questions works: every count below comes
    from the export.
-3. `python3 kafu_queue/make_queue.py split kafu_queue/exports/<file> --pkg-prefix <BOOK>-CH<N>` (6 questions per package),
+   Many chapters (many files, or ZIPs of them): run `preflight.py export` on each JSON, then split them all at once with
+   `python3 kafu_queue/make_queue.py split-all <BOOK> <files or zips>`: each chapter gets the prefix <BOOK>-CH<chapter>, and
+   `assign.py split <BOOK> <N>` then spreads all chapters over the N sessions (a session may hold two chapters; its prompt
+   lists both exports). Merge per chapter (`merge_zips.py ... <BOOK>-CH<N>`) if `merge_zips.py` refuses mixed provenance.
+3. One chapter: `python3 kafu_queue/make_queue.py split kafu_queue/exports/<file> --pkg-prefix <BOOK>-CH<N>` (6 questions per package),
    then `make_queue.py check` must be all OK. Commit `kafu_queue/` and push `kafu-queue`.
 
 ## Stage 1: images (ChatGPT writes the prompts, then draws)
