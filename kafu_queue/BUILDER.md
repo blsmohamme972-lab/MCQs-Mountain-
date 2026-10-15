@@ -24,8 +24,9 @@ SETUP (once)
 2. Start the voice setup in the background, nothing else chained to it, logging to a file:
    motioncards/LESSON_PROMPT.md step 1, as `( <step 1 commands> ) > work/setup.log 2>&1`. A failed download: run it again (it resumes).
 3. Queue folder (read only) and export, while the setup runs:
-   `git fetch -q origin @@QUEUE_BRANCH@@ main && git worktree add -q --detach /home/user/kq origin/@@QUEUE_BRANCH@@`
+   `git fetch -q origin +refs/heads/@@QUEUE_BRANCH@@:refs/remotes/origin/@@QUEUE_BRANCH@@ +refs/heads/main:refs/remotes/origin/main && git worktree add -q --detach /home/user/kq origin/@@QUEUE_BRANCH@@`
    `mkdir -p work/input && cp /home/user/kq/kafu_queue/@@EXPORT@@ work/input/`
+   (Always fetch with these explicit refspecs: a single-branch clone does not create origin/<branch> otherwise.)
    `KAFU_MOUNTAIN=$PWD python3 /home/user/kq/kafu_queue/preflight.py export work/input/@@EXPORT_NAME@@` must end with
    `PREFLIGHT export OK`. If not: final message "SLOT @@SLOT@@: export rejected" + the FAIL line, and stop.
    Read CLAUDE.md, motioncards/LESSON_PROMPT.md and motioncards/lib/lesson.py.
@@ -36,9 +37,9 @@ SETUP (once)
    The Head starts a fresh session for your packages.
 
 FOR EACH PACKAGE, in the order of the list
-a. Skip it if done: `git fetch -q origin @@QUEUE_BRANCH@@ && git -C /home/user/kq checkout -q --detach origin/@@QUEUE_BRANCH@@ &&
+a. Skip it if done: `git fetch -q origin +refs/heads/@@QUEUE_BRANCH@@:refs/remotes/origin/@@QUEUE_BRANCH@@ && git -C /home/user/kq checkout -q --detach origin/@@QUEUE_BRANCH@@ &&
    python3 /home/user/kq/kafu_queue/watch.py state <PKG>` prints `delivered`.
-b. Branch: `git fetch -q origin main && git checkout -q -B lessons/<pkg lower case>-s@@SLOT@@ origin/main`.
+b. Branch: `git fetch -q origin +refs/heads/main:refs/remotes/origin/main && git checkout -q -B lessons/<pkg lower case>-s@@SLOT@@ origin/main`.
 c. Follow motioncards/LESSON_PROMPT.md steps 3-8 with: PACKAGE ID <PKG>, workspace `work/<PKG>`, export
    `work/input/@@EXPORT_NAME@@`, ZIP `dist/MCARDS_<PKG>_r1.zip`, only that package's QIDs, ALREADY LIVE @@ALREADY_LIVE@@,
    voice engine breeze. Images (after scaffold, which may empty the folder):

@@ -8,7 +8,7 @@ Owner's rules: never change an answer key; lessons commit only `lesson.json` + `
 in chat or the repo; a refused tool call: stop and tell the owner the exact command, do not retry variations.
 
 Set `KAFU_MOUNTAIN` to an up-to-date checkout of `main` when you run `preflight.py` or `merge_zips.py`, so the checks are the
-bot's own. In this checkout: `git worktree add --detach /home/user/mm origin/main` and `export KAFU_MOUNTAIN=/home/user/mm`.
+bot's own. In this checkout: `git fetch -q origin +refs/heads/main:refs/remotes/origin/main && git worktree add --detach /home/user/mm origin/main` and `export KAFU_MOUNTAIN=/home/user/mm`.
 
 ## Stage 0: the export (nothing else starts before this is OK)
 
