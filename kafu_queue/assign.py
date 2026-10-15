@@ -98,7 +98,7 @@ def prompt(slot, only=None, name=None, bundle=None):
     print(text)
 
 
-def options(prefix, counts=(3, 5, 8, 10, 15, 20, 30)):
+def options(prefix, counts=(1, 2, 3, 5, 8, 10, 15, 20, 30, 40, 60)):
     pk = {k: v for k, v in watch.packages().items() if k.startswith(prefix + "-")}
     if not pk:
         sys.exit(f"no packages {prefix}-*")
@@ -112,13 +112,18 @@ def options(prefix, counts=(3, 5, 8, 10, 15, 20, 30)):
           f"Head (Opus) about ${head:.0f} per run. Money figures are estimates; waiting for images adds about "
           + ", ".join(f"${v['per_hour']:.2f} ({m})" for m, v in models.items()) + " per session per hour.")
     print("sessions | hours after the images exist | " + " | ".join(f"$ {m}" for m in models))
-    rows = sorted({c for c in counts if c <= npk} | ({npk} if npk <= max(counts) else set()))
+    size = dict(zip(names, sizes))
+    busiest = {n: max(sum(size[p] for p in v) for v in plan(names, sizes, n).values()) for n in range(1, npk + 1)}
+    asked = [c for c in counts if c <= npk] + ([npk] if npk <= max(counts) else [])
+    # each count is lowered to the fewest sessions that finish as early: more sessions would only cost more
+    rows = sorted({min(m for m in range(1, c + 1) if busiest[m] <= busiest[c]) for c in asked})
+    # a slot longer than 12 hours is not offered: one lost container would cost too much, and waiting for images needs
+    # room inside autobuild's 16-hour limit (if every count is longer, only the fastest is shown)
+    rows = [n for n in rows if busiest[n] * mpq / 60 <= 12] or rows[-1:]
     for n in rows:
-        slots = plan(names, sizes, n)
-        size = dict(zip(names, sizes))
-        hours = max(sum(size[p] for p in v) for v in slots.values()) * mpq / 60   # the busiest slot decides the finish
-        cost = [len(slots) * (v["session"] + hours * v["per_hour"]) + npk * v["per_package"] for v in models.values()]
-        print(f"{len(slots):>8} | {hours:>6.1f} | " + " | ".join(f"{x:>6.2f}" for x in cost))
+        hours = busiest[n] * mpq / 60                       # the busiest slot decides the finish
+        cost = [n * v["session"] + nq * mpq / 60 * v["per_hour"] + npk * v["per_package"] for v in models.values()]
+        print(f"{n:>8} | {hours:>6.1f} | " + " | ".join(f"{x:>6.2f}" for x in cost))
 
 
 def left():
