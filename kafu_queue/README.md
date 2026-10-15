@@ -8,10 +8,11 @@ folder (`kafu_data.py`, `bundle.py use`) and reaches the builders as one bundle 
 owner: export(s) ──► ChatGPT (master prompt) and ──► Head: preflight.py export ──► make_queue.py split-all (packages of 6)
 ChatGPT: 8 questions per batch ──► painter_batchNN.html (one card = one message)
 owner: each card ──► new ChatGPT chat ──► Drive folder: 8 × <QID>.png + VOICE_<first>-<last>.txt (9 things)
-Head: voice_collect.py (checked voice scripts) ──► preflight.py images (gate) ──► assign.py split (owner's N)
-Head: bundle.py pack ──► inbox asset ──► N builder sessions (BUILDER.md) each unpack it
-builder: images + voice script ──► lesson_from_voice.py ──► review ──► Breeze ──► validate ──► ZIP ──► inbox
-Head: collect_zips.py ──► preflight.py zips ──► ledger ──► merge_zips.py (≤ 15 MB) ──► preflight.py coverage ──► owner ──► @KafuMcqsbot
+Head (at the same time): bundle.py pack ──► inbox ──► N builder sessions start at once (BUILDER.md, cheap model)
+builder: autobuild.py in the background: voice_setup.py ──► for each package as soon as its images + voice are in Drive:
+         scaffold ──► images ──► lesson_from_voice.py ──► Breeze ──► lint ──► package ──► validate ──► ZIP ──► session uploads it
+Head (while drawing): watch.py missing, preflight.py sheet (every banner vs the key), voice_collect.py, collect the ZIPs
+Head (end): collect_zips.py ──► preflight.py zips ──► merge_zips.py (≤ 15 MB) ──► preflight.py coverage ──► owner ──► @KafuMcqsbot
 ```
 
 | File | For | What |
@@ -23,10 +24,12 @@ Head: collect_zips.py ──► preflight.py zips ──► ledger ──► mer
 | `bundle.py` | Head, builders | `use` the data folder, `pack` it into one file for the inbox, `unpack` it in a builder |
 | `gpt_writer.py` | Head | `--master`: the fixed ChatGPT prompt (owner attaches the exports); `--prefix`: prompts with the questions inside |
 | `make_queue.py` | Head | `split` / `split-all` the exports into packages, `check` them |
-| `preflight.py` | Head, builders | gates: `export`, `images`, `zips`, `coverage` |
+| `preflight.py` | Head, builders | gates: `export`, `images`, `zips`, `coverage`; `sheet`: review sheets of every answer banner |
 | `voice_collect.py` | Head | reads ChatGPT's `VOICE_*.txt` from Drive (or a painter page), checks them |
 | `lesson_from_voice.py` | builders | turns a voice script + image into `<QID>.lesson.json` for review |
 | `assign.py` | Head | `split` packages into the owner's N slots, `prompt` per slot, `left` |
+| `autobuild.py` | builders | the whole build of a slot in one background job; `status` says what to upload; `uploaded`, `retry` |
+| `voice_setup.py` | builders | Breeze setup that survives cut downloads (size-checked resume), then a 4-second test clip |
 | `drive.py` | Head | `set LINK`: the owner's Drive folder; `show` |
 | `watch.py` | all | Drive listing: `status`, `missing`, `get`, `download`; ledger: `state`, `deliver`, `fail` |
 | `collect_zips.py` | Head | decode and check the base64 ZIPs downloaded from the inbox |

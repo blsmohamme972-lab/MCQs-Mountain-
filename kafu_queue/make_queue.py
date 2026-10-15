@@ -7,7 +7,9 @@
   make_queue.py split-all BOOK EXPORT... [--size 4]
       Many chapters at once (files or ZIPs of them): each chapter gets its own prefix BOOK-CH<chapter_id>
       (e.g. GT-CH4, GT-CH36). Run preflight.py export on each file first.
-  make_queue.py check          Checks every package: QIDs unique, key letter valid, answer text found.
+  make_queue.py check          Checks every package: QIDs unique, key letter valid, answer text found; lists questions
+                               with book images (the Head must look at those images, then mark them).
+  make_queue.py inspected QID...   After LOOKING at a question's book images: mark it, so the builders may scaffold it.
 """
 import argparse
 import json
@@ -130,16 +132,33 @@ def main():
     m.add_argument("--size", type=int, default=CONFIG["batch_size"])
     m.add_argument("--already-live", action="store_true")
     sub.add_parser("check")
+    ins = sub.add_parser("inspected")
+    ins.add_argument("qids", nargs="+")
     a = ap.parse_args()
     if a.cmd == "split":
         split(a)
     elif a.cmd == "split-all":
         split_all(a)
+    elif a.cmd == "inspected":
+        require_data_folder()
+        left = set(a.qids)
+        for p in sorted(QUEUE.glob("*.json")):
+            q = json.loads(p.read_text())
+            hit = [it for it in q["items"] if it["qid"] in left]
+            for it in hit:
+                it["book_images_inspected"] = True
+                left.discard(it["qid"])
+            if hit:
+                p.write_text(json.dumps(q, indent=1, ensure_ascii=False) + "\n")
+                print(f"{p.stem}: marked {[it['qid'] for it in hit]}")
+        if left:
+            sys.exit(f"not found: {sorted(left)}")
     else:
         any_bad, seen = False, {}
         for p in sorted(QUEUE.glob("*.json")):
             bad = problems(json.loads(p.read_text()), seen)
-            print(f"{p.stem}: {'OK' if not bad else '; '.join(bad)}")
+            books = [it["qid"] for it in json.loads(p.read_text())["items"] if it.get("has_book_images") and not it.get("book_images_inspected")]
+            print(f"{p.stem}: {'OK' if not bad else '; '.join(bad)}" + (f"  BOOK IMAGES to look at: {books}" if books else ""))
             any_bad |= bool(bad)
         sys.exit(1 if any_bad else 0)
 

@@ -101,8 +101,27 @@ def voice_seconds(v):
     return round(words / WORDS_PER_SECOND + 2.2 + 0.45 * (len(parts) - 1), 1)
 
 
-def check_voice(q, v, key_text, nscenes):
-    """The owner's voice standard: stem, smart answer statement, short why, one thing to remember, at most 60 s."""
+def numbers_in(t):
+    """The numbers written in a text (T10 -> 10, 3 x 4 cm -> 3, 4)."""
+    import re
+    return set(re.findall(r"\d+(?:\.\d+)?", str(t)))
+
+
+def wrong_in(text, wrong, key_text):
+    """The wrong options whose words appear in text (whole words; options that are part of the key do not count)."""
+    import re
+    t, k, hit = norm(text), norm(key_text), []
+    for w in wrong or []:
+        n = norm(w)
+        if len(n) >= 2 and n not in k and re.search(r"(?<![\w])" + re.escape(n) + r"(?![\w])", t):
+            hit.append(str(w))
+    return hit
+
+
+def check_voice(q, v, key_text, nscenes, src=None, wrong=None):
+    """The owner's voice standard: stem, smart answer statement, short why, one thing to remember, at most 60 s.
+    src (stem + key + explanation) and wrong (the wrong options' texts) add the accuracy checks: no number that the source
+    does not have, no wrong option inside the answer statement."""
     import re
     if not isinstance(v, dict):
         return [f"{q}: missing voice"]
@@ -157,6 +176,15 @@ def check_voice(q, v, key_text, nscenes):
         events += sum(sy.lower().count(x) for x in EVENTS)
     if events > 1:
         err.append(f"{q}: {events} vocal events; at most 1 per question")
+    if src is not None:
+        texts = [qt, at, tk] + [str(x.get("text", "")) for x in ls + [rem] if isinstance(x, dict)]
+        extra = sorted(set().union(*(numbers_in(t) for t in texts)) - numbers_in(src))
+        if extra:
+            err.append(f"{q}: number(s) {', '.join(extra)} in the voice are not in the question, its answer or its explanation; "
+                       "never invent numbers")
+    bad = wrong_in(at, wrong, key_text)
+    if bad:
+        err.append(f"{q}: the answer statement contains a wrong option ({'; '.join(bad)}); say only the correct answer")
     secs = voice_seconds(v)
     if secs > MAX_SECONDS:
         err.append(f"{q}: the voice is about {secs} s; it must be at most {MAX_SECONDS} s: shorten the question part or the lines")
@@ -249,7 +277,15 @@ def make_page(DATA, EXPECT, SETS, OUTNAME):
             if extra > limit:
                 err.append(f"{q}: {extra} of {len(lines)} scenes come from the explanation or your own knowledge; at most "
                            f"{limit}. The rest must show the question and its correct answer (evidence from the stem or the key)")
-        err += check_voice(q, it.get("voice"), e["key"], len(lines))
+        allowed = e["stem"] + " " + e["key"] + " " + e["expl"]
+        extra = sorted(numbers_in(" ".join(labels) + " " + title) - numbers_in(allowed))
+        if extra:
+            err.append(f"{q}: number(s) {', '.join(extra)} in the labels or title are not in the question, its answer or its "
+                       "explanation; never invent numbers")
+        bad = wrong_in(banner, e.get("wrong"), e["key"])
+        if bad:
+            err.append(f"{q}: the banner contains a wrong option ({'; '.join(bad)}); the banner shows only the correct answer")
+        err += check_voice(q, it.get("voice"), e["key"], len(lines), allowed, e.get("wrong"))
     if err:
         print("ERROR - fix DATA and run again:")
         print("\n".join(err))
@@ -273,7 +309,11 @@ def make_page(DATA, EXPECT, SETS, OUTNAME):
                    ""]
             for i, q in enumerate(qids, 1):
                 it = items[q]
+                nz = len([x for x in it["scenes"].splitlines() if x.strip()])
                 p = (f"Create a landscape 3:2 image (1536x1024). {STYLE}\n"
+                     f"Layout: {nz} equal-width zones side by side from left to right, one scene per zone in the order below "
+                     f"(the first scene in the left zone), each with its own labels inside its zone; the title banner across "
+                     f"the top, the answer banner across the bottom.\n"
                      f"Title banner at the top: \"{it['title'].strip()}\".\n"
                      f"{it['scenes'].strip()}\n"
                      f"Bottom banner: \"Answer --> {it['banner'].strip()}\".\n{AVOID}")
@@ -403,7 +443,12 @@ def show(n):
         exact = ans if len(ans) <= EXACT_MAX and '"' not in ans else None
         opts = [(f"{o.get('label') or 'ABCDEFGH'[i]}. {(o.get('text') or o.get('value') or '').strip()}" if isinstance(o, dict)
                  else f"{'ABCDEFGH'[i]}. {str(o).strip()}") for i, o in enumerate(q.get("options", []))]
-        EXPECT[q["id"]] = {"n": str(q.get("source_number")), "exact": exact, "key": ans,
+        letters = "ABCDEFGH"
+        wrong = [((o.get("text") or o.get("value") or "") if isinstance(o, dict) else str(o)).strip()
+                 for i, o in enumerate(q.get("options", []))
+                 if str((o.get("label") or o.get("key") or o.get("letter") or letters[i]) if isinstance(o, dict) else letters[i]).strip().upper()
+                 != str(q.get("answer", "")).strip().upper()]
+        EXPECT[q["id"]] = {"n": str(q.get("source_number")), "exact": exact, "key": ans, "wrong": wrong,
                            "stem": q.get("stem", ""), "expl": q.get("explanation", "")}
         row = {"qid": q["id"], "question_number": q.get("source_number"), "stem": q.get("stem", ""), "options": opts,
                "key": q.get("answer"), "key_text": ans, "explanation": q.get("explanation", ""),
@@ -501,7 +546,10 @@ RULES (learned from earlier runs; they decide whether the images come out right)
   does not explain the key, show the short standard correct reason that supports the key.
 - 3 to 12 quoted labels per question, 1 to 4 words each. A long list in one label comes out garbled: give each item its own
   short label, or show it with colour and no text. No double quotes except around labels.
-- One scene that reads left to right. Every arrow or path must reach where the scene says.
+- The picture is split into equal-width zones from left to right, one per scene line (3 lines = left, middle, right thirds),
+  so the lesson camera can zoom on each scene. Every arrow or path must reach where the scene says.
+- Never write a number (in labels, title, banner or voice) that is not in the stem, the key or the explanation: the script
+  refuses it. Never let a wrong option appear in the banner or in the answer statement.
 - Keep each character small enough (about a third of the width or less) to leave room for the other scenes.
 - Never use the same object for two meanings within one image.
 - The answer appears only on the banner, never inside the scenes.
@@ -549,7 +597,8 @@ HOW TO WORK
    make(DATA) again until it prints OK. Reply with only the download link of the file it names, plus one line:
    "batch n of N: questions a-b".
 4. Then stop and wait. When I write "next", do the next batch the same way (show(2), then make(DATA), ...).
-   When I write "batch 5", do batch 5. When show() says there is no such batch, tell me all batches are done.
+   When I write "next 3", do the next 3 batches one after another in the same reply (each: show, DATA, make, link).
+   When I write "batch 5", do batch 5; "batches 5-8" does 5 to 8. When show() says there is no such batch, say all are done.
 5. If Python was reset (NameError, or the file is gone), run the master script again; if it prints NO EXPORT FOUND,
    ask me to upload the export again.
 
@@ -596,6 +645,16 @@ def num_key(n):
     return (0, int(s), "") if s.isdigit() else (1, 0, s)
 
 
+def wrong_options(it):
+    """The texts of the options that are not the key (for the accuracy checks)."""
+    letters, out = "ABCDEFGH", []
+    for i, o in enumerate(it.get("options", [])):
+        lab = (o.get("label") or o.get("key") or o.get("letter") or letters[i]) if isinstance(o, dict) else letters[i]
+        if str(lab).strip().upper() != str(it.get("answer", "")).strip().upper():
+            out.append(((o.get("text") or o.get("value") or "") if isinstance(o, dict) else str(o)).strip())
+    return out
+
+
 def letter_options(opts):
     res = []
     for i, o in enumerate(opts):
@@ -631,7 +690,7 @@ def build(prefix, per_chat, set_size, only=None):
         for it in chunk:
             ans = it["answer_text"].strip()
             exact = ans if len(ans) <= EXACT_MAX and '"' not in ans else None
-            expect[it["qid"]] = {"n": str(it.get("number")), "exact": exact, "key": ans,
+            expect[it["qid"]] = {"n": str(it.get("number")), "exact": exact, "key": ans, "wrong": wrong_options(it),
                                  "stem": it.get("stem", ""), "expl": it.get("explanation", "")}
             row = {"qid": it["qid"], "question_number": it.get("number"), "stem": it.get("stem", ""),
                    "options": letter_options(it.get("options", [])), "key": it.get("answer"), "key_text": ans,

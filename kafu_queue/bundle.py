@@ -29,6 +29,7 @@ def use(d):
     d = Path(d).resolve()
     for sub in ("queue", "voice", "exports"):
         (d / sub).mkdir(parents=True, exist_ok=True)
+    K.POINTER.parent.mkdir(parents=True, exist_ok=True)
     K.POINTER.write_text(str(d) + "\n")
     print(f"data folder: {d}")
 

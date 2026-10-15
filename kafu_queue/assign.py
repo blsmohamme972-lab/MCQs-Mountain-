@@ -79,7 +79,7 @@ def prompt(slot, only=None, name=None, bundle=None):
         "@@EXPORT_CHECK@@": " && ".join(f"KAFU_MOUNTAIN=$PWD python3 /home/user/kq/kafu_queue/preflight.py export work/input/{Path(e).name} | tail -n 1"
                                         for e in exports), "@@ALREADY_LIVE@@": "yes" if first.get("already_live") else "no",
         "@@MAX_MB@@": str(CONFIG["max_package_zip_mb"]), "@@INBOX@@": CONFIG["zip_inbox_url"], "@@NPKG@@": str(len(lst)),
-        "@@BUNDLE@@": bundle or "<BUNDLE ASSET ID>",
+        "@@BUNDLE@@": bundle or "<BUNDLE ASSET ID>", "@@PKG_LIST@@": ",".join(lst),
     }
     text = (HERE / "BUILDER.md").read_text()
     for k, v in vals.items():

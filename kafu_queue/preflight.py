@@ -9,6 +9,9 @@
                                       max_package_zip_mb, and holds exactly its package's QIDs; lists packages still missing
   preflight.py coverage DIR PREFIX    the merged parts in DIR pass validate_package, are at most merge_part_mb, and
                                       together hold every question of PREFIX exactly once; prints byte size and sha256
+  preflight.py sheet PREFIX OUTDIR [--qids Q,Q] [--images-dir DIR]
+                                      review sheets for the Head: one PNG per 8 questions, each row = question number, QID,
+                                      the key, then the image's own title strip and answer banner strip (cheap to look at)
 
 The project code is read from KAFU_MOUNTAIN (default: the repository this folder is in). Point it at an up-to-date
 checkout of main so the checks are the same as the bot's.
@@ -154,6 +157,56 @@ def check_coverage(d, prefix):
     return not bad
 
 
+def sheet(prefix, out, only=None, images_dir=None):
+    from PIL import Image, ImageDraw, ImageFont
+    items = [it for q in pkgs(prefix).values() for it in q["items"] if not only or it["qid"] in only]
+    imgs = {} if images_dir else watch.images_by_qid(watch.list_drive(CONFIG["drive_folder_id"]))
+    try:
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 26)
+    except OSError:
+        font = ImageFont.load_default()
+    out = Path(out)
+    out.mkdir(parents=True, exist_ok=True)
+    W, made, missing = 1000, [], []
+    for start in range(0, len(items), 8):
+        rows = []
+        for it in items[start:start + 8]:
+            qid = it["qid"].upper()
+            head = Image.new("RGB", (W, 44), "white")
+            d = ImageDraw.Draw(head)
+            d.text((10, 8), f"Q{it.get('number')}  {qid}   KEY: {it.get('answer_text', '')[:60]}", fill="black", font=font)
+            rows.append(head)
+            try:
+                if images_dir:
+                    im = Image.open(Path(images_dir) / f"{qid}.png")
+                else:
+                    im = Image.open(io.BytesIO(watch.download(imgs[qid][0])))
+                im = im.convert("RGB")
+            except Exception:  # noqa: BLE001
+                missing.append(qid)
+                rows.append(Image.new("RGB", (W, 60), (255, 220, 220)))
+                continue
+            w, h = im.size
+            for box in ((0, 0, w, int(h * 0.16)), (0, int(h * 0.80), w, h)):
+                crop = im.crop(box)
+                rows.append(crop.resize((W, max(1, int(crop.size[1] * W / w)))))
+            rows.append(Image.new("RGB", (W, 10), (40, 40, 40)))
+        sheet_img = Image.new("RGB", (W, sum(r.size[1] for r in rows)), "white")
+        y = 0
+        for r in rows:
+            sheet_img.paste(r, (0, y))
+            y += r.size[1]
+        f = out / f"sheet_{start // 8 + 1:02d}.png"
+        sheet_img.save(f)
+        made.append(f)
+    for f in made:
+        print(f)
+    if missing:
+        print("FAIL no image yet: " + " ".join(missing))
+    print(f"{len(made)} sheet(s) for {len(items)} questions: look at each; every answer banner must state the KEY")
+    return not missing
+
+
 def main(a):
     if not a:
         sys.exit(__doc__)
@@ -166,6 +219,10 @@ def main(a):
         ok = check_zips(a[1], a[2])
     elif cmd == "coverage":
         ok = check_coverage(a[1], a[2])
+    elif cmd == "sheet":
+        only = set(a[a.index("--qids") + 1].split(",")) if "--qids" in a else None
+        idir = a[a.index("--images-dir") + 1] if "--images-dir" in a else None
+        ok = sheet(a[1], a[2], only, idir)
     else:
         sys.exit(__doc__)
     print("PREFLIGHT", cmd, "OK" if ok else "FAILED")
