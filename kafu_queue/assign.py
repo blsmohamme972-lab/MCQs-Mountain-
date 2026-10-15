@@ -5,8 +5,9 @@ so every package is known in advance and nothing has to be dispatched while they
   assign.py split PREFIX N          assignments.json: the packages PREFIX-* in question order, cut into N slots (N = the
                                     number of builder sessions the OWNER chose) with nearly equal question counts, each slot
                                     a run of neighbouring packages. Refuses to overwrite a split that already has deliveries.
-  assign.py prompt SLOT             the full first message for that slot's builder session (BUILDER.md filled in)
-  assign.py prompt SLOT --packages P1,P2 [--as NN]
+  assign.py prompt SLOT --bundle ID the full first message for that slot's builder session (BUILDER.md filled in);
+                                    ID = the inbox asset id of the run's bundle (bundle.py pack, then upload it)
+  assign.py prompt SLOT --bundle ID --packages P1,P2 [--as NN]
                                     the same for a replacement session: only these packages, under slot name NN
   assign.py left                    per slot: packages not yet delivered in the ledger (what a replacement must do)
 """
@@ -18,11 +19,13 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import watch  # noqa: E402
 
-AF = HERE / "assignments.json"
+from kafu_data import ASSIGN as AF, export_path  # noqa: E402
 CONFIG = watch.CONFIG
 
 
 def split(prefix, n):
+    from kafu_data import require_data_folder
+    require_data_folder()
     pk = {k: v for k, v in watch.packages().items() if k.startswith(prefix + "-")}
     if not pk:
         sys.exit(f"no packages {prefix}-*")
@@ -53,7 +56,7 @@ def split(prefix, n):
     print(f"{len(names)} packages, {total} questions in {len(slots)} slots")
 
 
-def prompt(slot, only=None, name=None):
+def prompt(slot, only=None, name=None, bundle=None):
     a = json.loads(AF.read_text())
     pk = watch.packages()
     lst = only or a["slots"][slot]
@@ -72,11 +75,11 @@ def prompt(slot, only=None, name=None):
         "@@CHAPTER@@": "; ".join(sorted({f"{pk[p].get('book_id', '')} chapter {pk[p].get('chapter_id', '')}: {pk[p].get('chapter_title', '')}"
                                          for p in lst})),
         "@@PKG_TABLE@@": "\n".join(rows), "@@QUEUE_BRANCH@@": CONFIG["queue_branch"],
-        "@@EXPORT_CP@@": " ".join(f"/home/user/kq/kafu_queue/{e}" for e in exports),
+        "@@EXPORT_CP@@": " ".join(f"work/kq-data/exports/{Path(e).name}" for e in exports),
         "@@EXPORT_CHECK@@": " && ".join(f"KAFU_MOUNTAIN=$PWD python3 /home/user/kq/kafu_queue/preflight.py export work/input/{Path(e).name} | tail -n 1"
                                         for e in exports), "@@ALREADY_LIVE@@": "yes" if first.get("already_live") else "no",
         "@@MAX_MB@@": str(CONFIG["max_package_zip_mb"]), "@@INBOX@@": CONFIG["zip_inbox_url"], "@@NPKG@@": str(len(lst)),
-        "@@PREFIX@@": a["prefix"], "@@BRANCH@@": f"lessons/{a['prefix'].lower()}-s{name or slot}",
+        "@@BUNDLE@@": bundle or "<BUNDLE ASSET ID>",
     }
     text = (HERE / "BUILDER.md").read_text()
     for k, v in vals.items():
@@ -87,6 +90,8 @@ def prompt(slot, only=None, name=None):
 
 
 def left():
+    if not AF.exists():
+        sys.exit(f"no slot split in {AF}: run assign.py split first (Head only)")
     a = json.loads(AF.read_text())
     led = watch.ledger()
     n = 0
@@ -107,7 +112,10 @@ def main(a):
     elif a[0] == "prompt":
         only = a[a.index("--packages") + 1].split(",") if "--packages" in a else None
         name = a[a.index("--as") + 1] if "--as" in a else None
-        prompt(a[1], only, name)
+        bundle = a[a.index("--bundle") + 1] if "--bundle" in a else None
+        if not bundle:
+            sys.exit("--bundle <asset id> is required: bundle.py pack, upload it to the inbox, then pass its asset id")
+        prompt(a[1], only, name, bundle)
     elif a[0] == "left":
         left()
     else:

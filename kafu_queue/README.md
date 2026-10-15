@@ -1,41 +1,42 @@
 # Kafu image lessons: ChatGPT writes and draws, Claude narrates
 
-This folder lives only on branch `kafu-queue` of this repository. Builders read it through a read-only worktree; lessons go to
-`main` through PRs, as `motioncards/LESSON_PROMPT.md` says.
+These tools live on branch `kafu-queue` of this repository and are only READ during a run: nothing of a run is written to
+GitHub (owner's rule). A run's data (exports, packages, ledger, voice scripts, slot split, settings) lives in the Head's data
+folder (`kafu_data.py`, `bundle.py use`) and reaches the builders as one bundle file through the owner's inbox.
 
 ```
-owner: chapter export ──► Head: preflight.py export ──► make_queue.py split (packages of 6)
-Head: gpt_writer.py --master ──► master_prompt.html (one fixed prompt, Copy page) ──► owner
-owner: export + master prompt ──► ChatGPT writes prompts, 8 per batch = one card (story + characters per set of 8) ──► painter_batchNN.html
-owner: each painter card ──► new ChatGPT chat ──► draws ──► the owner's Drive folder (config.json): 8 × <QID>.png + VOICE_<first>-<last>.txt
-Head: voice_collect.py drive ──► voice/<QID>.json (checked) ──► builders review instead of writing
-Head: preflight.py images (gate) ──► assign.py split (N slots, N chosen by the owner) ──► N builder sessions (BUILDER.md)
-builder: images + export ──► LESSON_PROMPT.md (Breeze) ──► ZIP ──► owner's inbox + phone, PR to main
-Head: collect_zips.py ──► preflight.py zips ──► ledger ──► merge_zips.py (≤ 15 MB parts) ──► preflight.py coverage ──► owner ──► @KafuMcqsbot
+owner: export(s) ──► ChatGPT (master prompt) and ──► Head: preflight.py export ──► make_queue.py split-all (packages of 6)
+ChatGPT: 8 questions per batch ──► painter_batchNN.html (one card = one message)
+owner: each card ──► new ChatGPT chat ──► Drive folder: 8 × <QID>.png + VOICE_<first>-<last>.txt (9 things)
+Head: voice_collect.py (checked voice scripts) ──► preflight.py images (gate) ──► assign.py split (owner's N)
+Head: bundle.py pack ──► inbox asset ──► N builder sessions (BUILDER.md) each unpack it
+builder: images + voice script ──► lesson_from_voice.py ──► review ──► Breeze ──► validate ──► ZIP ──► inbox
+Head: collect_zips.py ──► preflight.py zips ──► ledger ──► merge_zips.py (≤ 15 MB) ──► preflight.py coverage ──► owner ──► @KafuMcqsbot
 ```
 
 | File | For | What |
 |---|---|---|
 | `HEAD.md` | Head session | the runbook, stage by stage, and the table of past failures and their prevention |
-| `OWNER_AR.md` | owner | the same steps in Iraqi Arabic, only the owner's part |
-| `BUILDER.md` | builder sessions | template filled by `assign.py prompt NN` |
+| `OWNER_AR.md` | owner | the owner's part in Iraqi Arabic |
+| `BUILDER.md` | builder sessions | template filled by `assign.py prompt NN --bundle ID` |
+| `kafu_data.py` | all tools | where the run's data lives (never the repository) and the settings |
+| `bundle.py` | Head, builders | `use` the data folder, `pack` it into one file for the inbox, `unpack` it in a builder |
+| `gpt_writer.py` | Head | `--master`: the fixed ChatGPT prompt (owner attaches the exports); `--prefix`: prompts with the questions inside |
+| `make_queue.py` | Head | `split` / `split-all` the exports into packages, `check` them |
 | `preflight.py` | Head, builders | gates: `export`, `images`, `zips`, `coverage` |
-| `make_queue.py` | Head | `split` the export into packages, `check` them |
-| `gpt_writer.py` | Head | `--master`: the fixed ChatGPT prompt (owner attaches the export); `--prefix`: prompts with the questions inside |
-| `assign.py` | Head | `split` packages into slots, `prompt` per slot, `left` |
-| `voice_collect.py` | Head | reads ChatGPT's `VOICE_*.txt` from Drive (or a painter page), checks them, writes `voice/<QID>.json` |
-| `lesson_from_voice.py` | builders | turns `voice/<QID>.json` + the image into `<QID>.lesson.json` for review |
-| `watch.py` | all | Drive listing: `status`, `missing`, `get`, `download`; ledger: `state`, `claim`, `deliver`, `fail` |
+| `voice_collect.py` | Head | reads ChatGPT's `VOICE_*.txt` from Drive (or a painter page), checks them |
+| `lesson_from_voice.py` | builders | turns a voice script + image into `<QID>.lesson.json` for review |
+| `assign.py` | Head | `split` packages into the owner's N slots, `prompt` per slot, `left` |
+| `drive.py` | Head | `set LINK`: the owner's Drive folder; `show` |
+| `watch.py` | all | Drive listing: `status`, `missing`, `get`, `download`; ledger: `state`, `deliver`, `fail` |
 | `collect_zips.py` | Head | decode and check the base64 ZIPs downloaded from the inbox |
 | `merge_zips.py` | Head | merge package ZIPs into parts of at most 15 MB for the bot |
-| `config.json` | all | Drive folder (set with `drive.py`), inbox, package size, set size, limits |
-| `drive.py` | Head | `set LINK`: the owner's Drive folder for the images; `show` |
-| `ledger.json` | all | delivered / failed per package (Head writes it) |
+| `config.json` | all | defaults: Drive folder, inbox, package size, batch size, limits |
 
 `exports/GET-THROUGH-MRCS-A-SBA-ch36.export.json` is the chapter 36 export (135 questions, already published) and serves as a
 test fixture for the scripts.
 
 Notes:
 - The Drive folder is read through its "anyone with the link" view; keep that sharing on.
-- This repository is public, so queue files and exports here are public (owner's choice).
+- No run data is stored in this repository; only the tools. The repository is public.
 - Voice engine: Breeze rotation (owner's choice).

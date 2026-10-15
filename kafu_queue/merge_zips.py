@@ -21,7 +21,8 @@ import zipfile
 from pathlib import Path
 
 MOUNT, IN, OUT, PREFIX = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3]), sys.argv[4]
-CONFIG = json.loads((Path(__file__).resolve().parent / "config.json").read_text())
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from kafu_data import CONFIG  # noqa: E402
 CAP = int(float(sys.argv[5] if len(sys.argv) > 5 else CONFIG["merge_part_mb"]) * 1024 * 1024)
 START = int(sys.argv[6]) if len(sys.argv) > 6 else 1
 sys.path.insert(0, str(MOUNT))

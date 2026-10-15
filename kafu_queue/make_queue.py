@@ -2,7 +2,7 @@
 """Turn a chapter export into image-lesson packages (the image prompts are written by ChatGPT: gpt_writer.py).
 
   make_queue.py split EXPORT --pkg-prefix GT-CH5 [--size 4] [--qids Q1,Q2] [--already-live]
-      Copies the export to exports/ and writes queue/<PKG>.json (config batch_size questions each, default 4)
+      Copies the export to <data>/exports/ and writes <data>/queue/<PKG>.json (config batch_size questions each, default 4)
       with the question facts. Run preflight.py export EXPORT first: a broken export stops every builder.
   make_queue.py split-all BOOK EXPORT... [--size 4]
       Many chapters at once (files or ZIPs of them): each chapter gets its own prefix BOOK-CH<chapter_id>
@@ -18,8 +18,8 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-QUEUE = Path(os.environ.get("KAFU_QUEUE_DIR", HERE / "queue"))
-CONFIG = json.loads((HERE / "config.json").read_text())
+sys.path.insert(0, str(HERE))
+from kafu_data import CONFIG, EXPORTS, QUEUE, require_data_folder  # noqa: E402
 
 
 def answer_text(q):
@@ -38,9 +38,10 @@ def answer_text(q):
 
 
 def split(a):
+    require_data_folder()
     exp = json.loads(Path(a.export).read_text())
-    (HERE / "exports").mkdir(exist_ok=True)
-    dest = HERE / "exports" / Path(a.export).name
+    EXPORTS.mkdir(parents=True, exist_ok=True)
+    dest = EXPORTS / Path(a.export).name
     if Path(a.export).resolve() != dest.resolve():
         shutil.copy(a.export, dest)
     qs = exp["questions"]
@@ -59,7 +60,7 @@ def split(a):
             "explanation": q.get("explanation", ""), "has_book_images": bool(q.get("images")),
         } for q in chunk]
         out = {"package_id": pkg, "book_id": exp["scope"]["book_id"], "chapter_id": exp["scope"]["chapter_id"],
-               "chapter_title": exp["scope"].get("chapter_title", ""), "export": f"exports/{dest.name}",
+               "chapter_title": exp["scope"].get("chapter_title", ""), "export": dest.name,
                "already_live": a.already_live, "items": items}
         path = QUEUE / f"{pkg}.json"
         if path.exists():

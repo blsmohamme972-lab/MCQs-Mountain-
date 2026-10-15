@@ -67,10 +67,11 @@ def main(argv):
                 problems.append("no motioncards-manifest.json")
             else:
                 named = out / f"MCARDS_{man['package_id']}_r{man.get('package_revision', 1)}.zip"
-                if named.exists() and named.read_bytes() != data:
+                if named.resolve() != zp.resolve() and named.exists() and named.read_bytes() != data:
                     problems.append(f"{named.name} already collected with different content (two builds of one package?)")
                 else:
-                    shutil.copyfile(zp, named)
+                    if named.resolve() != zp.resolve():
+                        shutil.copyfile(zp, named)
                     names = [named.name, f"{len(man.get('animations', []))} lessons"]
         except Exception as e:  # bad base64 or not a zip
             problems.append(f"{type(e).__name__}: {e}")

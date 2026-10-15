@@ -18,7 +18,8 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-VOICE = HERE / "voice"
+sys.path.insert(0, str(HERE))
+from kafu_data import VOICE  # noqa: E402
 
 
 def shots_for(w, h, n):

@@ -19,8 +19,8 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-QUEUE = Path(os.environ.get("KAFU_QUEUE_DIR", HERE / "queue"))
-CONFIG = json.loads((HERE / "config.json").read_text())
+sys.path.insert(0, str(HERE))
+from kafu_data import CONFIG, QUEUE  # noqa: E402
 EXACT_MAX = 60      # an answer up to this many characters must appear on the banner exactly as written
 
 # Builds a Copy page. Used here and pasted verbatim into the script ChatGPT runs. Plain Python, no imports beyond json/html.

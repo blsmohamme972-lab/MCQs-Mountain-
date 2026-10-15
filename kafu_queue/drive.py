@@ -6,8 +6,9 @@
                          (https://drive.google.com/drive/folders/<id>?usp=sharing) or its id.
                          The folder must be shared "Anyone with the link"; its name is read from Drive.
 
-After `set`: commit config.json, push, and make the master prompt again (gpt_writer.py --master): the painter cards carry the
-folder's link and name, so cards made before the change still point at the old folder.
+`set` writes the choice to the run's data folder (<data>/config.local.json); nothing is written to GitHub. Then make the
+master prompt again (gpt_writer.py --master): the painter cards carry the folder's link and name, so cards made before the
+change still point at the old folder.
 """
 import html
 import json
@@ -20,7 +21,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import watch  # noqa: E402
 
-CFG = HERE / "config.json"
+from kafu_data import LOCAL_CONFIG, load_config  # noqa: E402
 
 
 def folder_id(link):
@@ -49,7 +50,7 @@ def probe(fid):
 
 
 def main(a):
-    cfg = json.loads(CFG.read_text())
+    cfg = load_config()
     if not a or a[0] == "show":
         name, n = probe(cfg["drive_folder_id"])
         print(f'folder "{name}"  id {cfg["drive_folder_id"]}  files {n}\n{cfg["drive_folder_url"]}')
@@ -60,10 +61,14 @@ def main(a):
     name, n = probe(fid)
     if '"' in name:
         sys.exit("FAIL: rename the folder without double quotes")
-    cfg.update(drive_folder_id=fid, drive_folder_url=f"https://drive.google.com/drive/folders/{fid}", drive_folder_name=name)
-    CFG.write_text(json.dumps(cfg, indent=2, ensure_ascii=False) + "\n")
-    print(f'OK: images now go to folder "{name}" ({n} files in it now)\n{cfg["drive_folder_url"]}\n'
-          "Next: commit config.json, push, and send the owner a new master prompt (gpt_writer.py --master).")
+    from kafu_data import require_data_folder
+    require_data_folder()
+    local = json.loads(LOCAL_CONFIG.read_text()) if LOCAL_CONFIG.exists() else {}
+    local.update(drive_folder_id=fid, drive_folder_url=f"https://drive.google.com/drive/folders/{fid}", drive_folder_name=name)
+    LOCAL_CONFIG.parent.mkdir(parents=True, exist_ok=True)
+    LOCAL_CONFIG.write_text(json.dumps(local, indent=2, ensure_ascii=False) + "\n")
+    print(f'OK: images now go to folder "{name}" ({n} files in it now)\n{local["drive_folder_url"]}\n'
+          f"Saved in {LOCAL_CONFIG}. Next: send the owner a new master prompt (gpt_writer.py --master).")
 
 
 if __name__ == "__main__":

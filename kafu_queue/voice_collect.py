@@ -8,7 +8,7 @@ VOICE_<first QID>-<last QID>.txt, next to the images in the Drive folder.
 
 Every file must pass: its "check" code (proves not one character changed on the way), and for every question the same rules
 the ChatGPT script used (gpt_writer.py check_voice) against the key in the queue. Good questions are written to
-voice/<QID>.json (commit and push them; builders read them). A bad file or question is reported and skipped: its builder
+<data folder>/voice/<QID>.json (nothing goes to GitHub; bundle.py carries them to the builders). A bad file or question is reported and skipped: its builder
 writes that lesson itself, so nothing waits. Prints how many questions of PREFIX have a voice script.
 """
 import hashlib
@@ -23,7 +23,7 @@ sys.path.insert(0, str(HERE))
 import gpt_writer  # noqa: E402
 import watch  # noqa: E402
 
-OUT = HERE / "voice"
+from kafu_data import VOICE as OUT  # noqa: E402
 RULES = {}
 exec(gpt_writer.core(), RULES)          # the exact rules ChatGPT's script used (check_voice, norm, voice_seconds)
 
@@ -51,6 +51,8 @@ def parse(text):
 
 
 def collect(prefix, sources):
+    from kafu_data import require_data_folder
+    require_data_folder()
     items = {it["qid"]: it for k, q in watch.packages().items() if k.startswith(prefix + "-") for it in q["items"]}
     if not items:
         sys.exit(f"no packages {prefix}-*")

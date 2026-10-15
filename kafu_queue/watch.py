@@ -10,7 +10,7 @@ Builders start only when every package is complete (preflight.py images).
   watch.py state PKG             the package's ledger state (waiting / building / delivered / failed)
   watch.py download PKG DIR      save the package's images as DIR/<QID>.png
   watch.py get DIR QID...        save only these images as DIR/<QID>.png (split builds)
-  watch.py claim PKG [NOTE]      ledger: building (Head only; commit + push it right after)
+  watch.py claim PKG [NOTE]      ledger: building (Head only; the ledger lives in the data folder)
   watch.py deliver PKG [NOTE]    ledger: delivered
   watch.py fail PKG REASON       ledger: failed (a later run retries it)
 
@@ -29,9 +29,8 @@ import urllib.request
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-QUEUE = Path(os.environ.get("KAFU_QUEUE_DIR", HERE / "queue"))
-LEDGER = Path(os.environ.get("KAFU_LEDGER", HERE / "ledger.json"))
-CONFIG = json.loads((HERE / "config.json").read_text())
+sys.path.insert(0, str(HERE))
+from kafu_data import CONFIG, LEDGER, QUEUE  # noqa: E402  (the run's data folder, never the repository)
 STALE_HOURS = 3          # a "building" claim older than this is retried (a normal build takes about 40 minutes)
 IMAGE_EXT = (".png", ".jpg", ".jpeg", ".webp")
 
@@ -93,6 +92,8 @@ def ledger():
 
 
 def set_state(pkg, state, note=""):
+    from kafu_data import require_data_folder
+    require_data_folder()
     led = ledger()
     led[pkg] = {"state": state, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": note}
     LEDGER.write_text(json.dumps(led, indent=1, ensure_ascii=False) + "\n")
