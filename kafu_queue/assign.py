@@ -2,9 +2,9 @@
 """Fixed work split for the builder sessions (Head Department). Builders start only after preflight.py images is OK,
 so every package is known in advance and nothing has to be dispatched while they run.
 
-  assign.py split PREFIX [N]        assignments.json: the packages PREFIX-* in question order, cut into N slots
-                                    (default config "builders") with nearly equal question counts, each slot a run of
-                                    neighbouring packages. Refuses to overwrite a split that already has deliveries.
+  assign.py split PREFIX N          assignments.json: the packages PREFIX-* in question order, cut into N slots (N = the
+                                    number of builder sessions the OWNER chose) with nearly equal question counts, each slot
+                                    a run of neighbouring packages. Refuses to overwrite a split that already has deliveries.
   assign.py prompt SLOT             the full first message for that slot's builder session (BUILDER.md filled in)
   assign.py prompt SLOT --packages P1,P2 [--as NN]
                                     the same for a replacement session: only these packages, under slot name NN
@@ -34,6 +34,8 @@ def split(prefix, n):
     names = list(pk)
     sizes = [len(pk[p]["items"]) for p in names]
     total = sum(sizes)
+    if n > len(names):
+        print(f"note: {n} sessions asked but only {len(names)} packages: using {len(names)}")
     n = max(1, min(n, len(names)))
     slots, cur, acc, k = {}, [], 0, 1
     for i, (p, s) in enumerate(zip(names, sizes)):
@@ -73,6 +75,7 @@ def prompt(slot, only=None, name=None):
         "@@PKG_TABLE@@": "\n".join(rows), "@@QUEUE_BRANCH@@": CONFIG["queue_branch"], "@@EXPORT@@": exp,
         "@@EXPORT_NAME@@": Path(exp).name, "@@ALREADY_LIVE@@": "yes" if first.get("already_live") else "no",
         "@@MAX_MB@@": str(CONFIG["max_package_zip_mb"]), "@@INBOX@@": CONFIG["zip_inbox_url"], "@@NPKG@@": str(len(lst)),
+        "@@PREFIX@@": a["prefix"], "@@BRANCH@@": f"lessons/{a['prefix'].lower()}-s{name or slot}",
     }
     text = (HERE / "BUILDER.md").read_text()
     for k, v in vals.items():
@@ -97,7 +100,9 @@ def main(a):
     if not a:
         sys.exit(__doc__)
     if a[0] == "split":
-        split(a[1], int(a[2]) if len(a) > 2 else CONFIG["builders"])
+        if len(a) < 3:
+            sys.exit("assign.py split PREFIX N: N is the number of sessions the owner chose")
+        split(a[1], int(a[2]))
     elif a[0] == "prompt":
         only = a[a.index("--packages") + 1].split(",") if "--packages" in a else None
         name = a[a.index("--as") + 1] if "--as" in a else None

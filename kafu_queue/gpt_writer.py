@@ -59,11 +59,12 @@ STYLE = ("Picmonic-style visual mnemonic, fun and medically accurate, for medica
 AVOID = ("Avoid: garbled or misspelled text, extra text that is not in quotes here, duplicated characters, distorted faces, "
          "realistic gore, photographs, watermarks, cluttered dark background.")
 FRESH = ('IMPORTANT - FRESH START: ignore any images, files or results from previous chats or from your memory. Do not reuse, '
-         'link to or re-upload any old image. The ONLY truth is what is in the Google Drive folder "Books" right now (not the '
-         'trash). Every image in this task must be newly generated in this chat.')
+         'link to or re-upload any old image. The ONLY truth is what is in the Google Drive folder "@@DRIVE_NAME@@" right now '
+         '(not the trash). Every image in this task must be newly generated in this chat.')
 
 # Shared by both scripts ChatGPT may run: constants, the Copy page, and make_page (checks DATA, writes painter_*.html).
 CORE = r'''DRIVE = "@@DRIVE@@"
+DRIVE_NAME = "@@DRIVE_NAME@@"
 STYLE = @@STYLE@@
 AVOID = @@AVOID@@
 FRESH = @@FRESH@@
@@ -120,14 +121,14 @@ def make_page(DATA, EXPECT, SETS, OUTNAME):
             s = DATA["sets"][k]
             nums = ", ".join(EXPECT[q]["n"] for q in qids)
             msg = [FRESH, "",
-                   f'Task: generate {len(qids)} teaching illustrations and save each one to my Google Drive folder "Books" ({DRIVE}).',
+                   f'Task: generate {len(qids)} teaching illustrations and save each one to my Google Drive folder "{DRIVE_NAME}" ({DRIVE}).',
                    "Work one image at a time, in this order:",
-                   "1. If <QID>.png is already in \"Books\" now, skip that image.",
+                   f"1. If <QID>.png is already in \"{DRIVE_NAME}\" now, skip that image.",
                    "2. Otherwise generate it from its prompt exactly as written (landscape 3:2, 1536x1024).",
                    "3. Check it: every quoted label present and spelled exactly; the bottom banner reads exactly as written. If not, regenerate once.",
-                   "4. Save it to \"Books\" in the same message, named exactly <QID>.png (capital Q, nine digits, .png, no other words). Then go on.",
+                   f"4. Save it to \"{DRIVE_NAME}\" in the same message, named exactly <QID>.png (capital Q, nine digits, .png, no other words). Then go on.",
                    "Do not stop after generating: generate, check, save, next. No drafts or duplicates in the folder; to replace an image, overwrite the same name.",
-                   "If you stop before the end and I write \"continue\", continue from the first image that is not yet in \"Books\".",
+                   f"If you stop before the end and I write \"continue\", continue from the first image that is not yet in \"{DRIVE_NAME}\".",
                    f"When finished, reply with one line: saved N/{len(qids)} and the QIDs you could not save. If you cannot save to Drive, say so plainly; never claim an image was saved when it was not.",
                    "", "Recurring characters of this set (draw them the same way in every image): " + s["cast"].strip(),
                    "Story of this set: " + s["story"].strip(), ""]
@@ -299,8 +300,8 @@ SCRIPT:
 
 def core():
     c = CORE
-    for k, v in {"@@DRIVE@@": CONFIG["drive_folder_url"], "@@STYLE@@": json.dumps(STYLE), "@@AVOID@@": json.dumps(AVOID),
-                 "@@FRESH@@": json.dumps(FRESH), "@@PAGE_CODE@@": PAGE_CODE.strip()}.items():
+    for k, v in {"@@DRIVE_NAME@@": CONFIG["drive_folder_name"], "@@DRIVE@@": CONFIG["drive_folder_url"], "@@STYLE@@": json.dumps(STYLE), "@@AVOID@@": json.dumps(AVOID),
+                 "@@FRESH@@": json.dumps(FRESH.replace("@@DRIVE_NAME@@", CONFIG["drive_folder_name"])), "@@PAGE_CODE@@": PAGE_CODE.strip()}.items():
         c = c.replace(k, v)
     return c
 
