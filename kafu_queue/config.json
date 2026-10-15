@@ -12,5 +12,21 @@
   "voice_engine": "breeze",
   "zip_inbox_url": "https://claude.ai/artifact/J5yRwS9degoyFckDzPTijN",
   "max_package_zip_mb": 10,
-  "merge_part_mb": 15
+  "merge_part_mb": 15,
+  "minutes_per_question": 7,
+  "builder_cost_usd": {
+    "claude-haiku-5-5": {
+      "session": 0.03,
+      "per_hour": 0.01,
+      "per_package": 0.005
+    },
+    "claude-sonnet-5-5": {
+      "session": 0.25,
+      "per_hour": 0.12,
+      "per_package": 0.05
+    }
+  },
+  "head_cost_usd": {
+    "claude-opus-5-5": 5
+  }
 }

@@ -10,6 +10,8 @@ so every package is known in advance and nothing has to be dispatched while they
   assign.py prompt SLOT --bundle ID --packages P1,P2 [--as NN]
                                     the same for a replacement session: only these packages, under slot name NN
   assign.py left                    per slot: packages not yet delivered in the ledger (what a replacement must do)
+  assign.py options PREFIX          the owner's choice table: for several session counts, the time to build everything
+                                    once the images exist, and the estimated money per builder model (config.json numbers)
 """
 import json
 import sys
@@ -21,6 +23,22 @@ import watch  # noqa: E402
 
 from kafu_data import ASSIGN as AF, export_path  # noqa: E402
 CONFIG = watch.CONFIG
+
+
+def plan(names, sizes, n):
+    """Consecutive packages per slot, balanced by question count (the same split for 'split' and 'options')."""
+    total = sum(sizes)
+    n = max(1, min(n, len(names)))
+    slots, cur, acc, k = {}, [], 0, 1
+    for i, (p, s) in enumerate(zip(names, sizes)):
+        cur.append(p)
+        acc += s
+        left_pk, left_slots = len(names) - i - 1, n - k
+        if k < n and (acc >= total * k / n or left_pk == left_slots):
+            slots[f"{k:02d}"], cur, k = cur, [], k + 1
+    if cur:
+        slots[f"{k:02d}"] = cur
+    return slots
 
 
 def split(prefix, n):
@@ -39,16 +57,7 @@ def split(prefix, n):
     total = sum(sizes)
     if n > len(names):
         print(f"note: {n} sessions asked but only {len(names)} packages: using {len(names)}")
-    n = max(1, min(n, len(names)))
-    slots, cur, acc, k = {}, [], 0, 1
-    for i, (p, s) in enumerate(zip(names, sizes)):
-        cur.append(p)
-        acc += s
-        left_pk, left_slots = len(names) - i - 1, n - k
-        if k < n and (acc >= total * k / n or left_pk == left_slots):
-            slots[f"{k:02d}"], cur, k = cur, [], k + 1
-    if cur:
-        slots[f"{k:02d}"] = cur
+    slots = plan(names, sizes, n)
     AF.write_text(json.dumps({"prefix": prefix, "slots": slots}, indent=1) + "\n")
     for s, v in slots.items():
         print(f"slot {s}: {len(v)} packages, {sum(len(pk[p]['items']) for p in v)} questions  {v[0]} .. {v[-1]}")
@@ -89,6 +98,29 @@ def prompt(slot, only=None, name=None, bundle=None):
     print(text)
 
 
+def options(prefix, counts=(3, 5, 8, 10, 15, 20, 30)):
+    pk = {k: v for k, v in watch.packages().items() if k.startswith(prefix + "-")}
+    if not pk:
+        sys.exit(f"no packages {prefix}-*")
+    names = list(pk)
+    sizes = [len(pk[p]["items"]) for p in names]
+    nq, npk = sum(sizes), len(names)
+    mpq = CONFIG["minutes_per_question"]
+    models = CONFIG["builder_cost_usd"]
+    head = sum(CONFIG["head_cost_usd"].values())
+    print(f"{nq} questions in {npk} packages; build speed {mpq} min per question per session (measured); "
+          f"Head (Opus) about ${head:.0f} per run. Money figures are estimates; waiting for images adds about "
+          + ", ".join(f"${v['per_hour']:.2f} ({m})" for m, v in models.items()) + " per session per hour.")
+    print("sessions | hours after the images exist | " + " | ".join(f"$ {m}" for m in models))
+    rows = sorted({c for c in counts if c <= npk} | ({npk} if npk <= max(counts) else set()))
+    for n in rows:
+        slots = plan(names, sizes, n)
+        size = dict(zip(names, sizes))
+        hours = max(sum(size[p] for p in v) for v in slots.values()) * mpq / 60   # the busiest slot decides the finish
+        cost = [len(slots) * (v["session"] + hours * v["per_hour"]) + npk * v["per_package"] for v in models.values()]
+        print(f"{len(slots):>8} | {hours:>6.1f} | " + " | ".join(f"{x:>6.2f}" for x in cost))
+
+
 def left():
     if not AF.exists():
         sys.exit(f"no slot split in {AF}: run assign.py split first (Head only)")
@@ -118,6 +150,8 @@ def main(a):
         prompt(a[1], only, name, bundle)
     elif a[0] == "left":
         left()
+    elif a[0] == "options":
+        options(a[1])
     else:
         sys.exit(__doc__)
 

@@ -28,7 +28,7 @@ Keep checks short (`| tail`), do not reread files you already read, and answer t
   name, saves the choice in the data folder), then make a new master prompt (`gpt_writer.py --master`) and send it: painter
   cards made before the change still point at the old folder. `drive.py show` prints the folder in use and its file count.
 - Same folder, emptied for every run (owner's rule). You can only READ it; the owner deletes the files and empties the Drive
-  trash himself. Tell him it is safe only when the previous run is finished (every package delivered and the merged parts
+  trash. Tell the owner it is safe only when the previous run is finished (every package delivered and the merged parts
   published), because builders download images from the folder. Before a new run, `drive.py show` must list 0 files.
 
 ## How the run flows now (fast, cheap, checked)
@@ -41,7 +41,7 @@ coverage check.
 
 ## Stage 0: the exports (nothing else starts before this is OK)
 
-1. The owner sends the same export(s) he gives ChatGPT: one JSON, many JSONs, or ZIPs of them.
+1. The owner sends the same export(s) given to ChatGPT: one JSON, many JSONs, or ZIPs of them.
 2. `KAFU_MOUNTAIN=/home/user/mm python3 /home/user/kq/kafu_queue/preflight.py export <file>` for every JSON must end
    `PREFLIGHT export OK`. Tell the owner the counts it prints (never count by hand). A FAIL: ask for the full app export.
 3. Split: `make_queue.py split-all <BOOK> <files or zips>` (each chapter gets the prefix <BOOK>-CH<chapter>, 6 questions per
@@ -64,22 +64,25 @@ coverage check.
      read the Artifact <inbox url> with path <the test asset id>, call send_later with delay_minutes 1 and message 'probe',
      then answer in one line which of the two worked." Both must work; a refusal: tell the owner the exact command and setting.
    - Usage: start the builders at the start of a fresh 5-hour window when possible; a weekly-limit warning: tell the owner first.
-3. Sessions: the OWNER decides how many (ask if not said). Facts in one line: one builder makes about MINQ minutes of CPU per
-   question (measured), so N builders finish Q questions in about Q x MINQ / N minutes after the images exist; builders are
-   cheap now (one script, few turns), so more builders mostly buy speed. Then `assign.py split <PREFIX> <N>`.
+3. Sessions: the OWNER chooses the number and the builder model. Run `assign.py options <PREFIX>` and give the owner its table in
+   short Iraqi Arabic: for each number of sessions, the hours to build everything once the images exist and the estimated
+   money on Haiku and on Sonnet (Opus is never offered for builders); add your one-line recommendation (usually the fewest
+   sessions that finish in about 2 hours, on Haiku). Wait for the owner's choice, then `assign.py split <PREFIX> <N>`.
+   After the run, if the measured speed (autobuild status "speed: ... min per question") differs, tell the owner; the
+   numbers in config.json are only updated in the tools by a later change, never written from a run.
 4. Bundle: `bundle.py pack <scratchpad>/bundle.json` (exports, packages, the owner's settings; voice scripts that already
    exist), upload it to the inbox as an asset (Artifact publish, asset true, alone in the call) and note its asset id and time.
 5. For each slot: `create_session` with source_url `https://github.com/blsmohamme972-lab/MCQs-Mountain-`, source_revision
    `main`, title `Kafu · <PREFIX> · slot NN`, tags `["kafu-lessons"]`, `model` set explicitly (a child session otherwise
    inherits the Head's model, which costs more), prompt = the exact output of `assign.py prompt NN --bundle <asset id>`.
    Start them about one minute apart. Keep the session ids and their models in `<data>/sessions.json`.
-   Choosing the builder model is your decision, by cost (owner's rule: the Head runs on Opus, builders on the cheapest model
-   that does the job). Builder work is mechanical (start a script, upload files), so:
-   - Start slot 01 alone on "claude-haiku-5-5" (the cheapest). When its status shows the script RUNNING and its first upload
-     arrived in the inbox, start every other slot on Haiku too.
-   - A Haiku builder that fails a mechanical step (bundle, start command, upload, marking) or writes a WRITE_LESSONS lesson
-     that fails its checks: replace that slot with "claude-sonnet-5-5" (`assign.py prompt NN --bundle <id> --packages
-     <its left packages> --as NNb`). Never use Opus for builders.
+   Builder model = the owner's choice from step 3:
+   - Haiku ("claude-haiku-5-5", the cheapest): start slot 01 alone first; when its status shows the script RUNNING and its
+     first upload arrived in the inbox, start the other slots on Haiku too. A Haiku builder that fails a mechanical step
+     (bundle, start command, upload, marking) or writes a WRITE_LESSONS lesson that fails its checks: replace that slot with
+     "claude-sonnet-5-5" (`assign.py prompt NN --bundle <id> --packages <its left packages> --as NNb`) and tell the owner.
+   - Sonnet ("claude-sonnet-5-5"): start all slots at once.
+   - Never Opus for builders.
 
 ## Stage 2: while ChatGPT draws and the builders build (checks every 30-60 minutes, and whenever the owner asks)
 
