@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ChatGPT step 1: the prompts the owner pastes into ChatGPT so that it WRITES the image prompts.
 
-  python3 kafu_queue/gpt_writer.py --prefix GT-CH5 --out writer_GT-CH5.html [--per-chat 16] [--set 8] [--qids Q..,Q..]
+  python3 kafu_queue/gpt_writer.py --prefix GT-CH5 --out writer_GT-CH5.html [--per-chat 8] [--set 8] [--qids Q..,Q..]
 
 Reads queue/<PREFIX>-*.json (make_queue.py split) and writes one HTML page for the owner: one card per ChatGPT chat,
 each with a "Copy" button. A card holds the writing rules, the questions (stem, options, key, explanation) and a
@@ -309,7 +309,7 @@ def core():
 # The fixed prompt for the owner who attaches the app export to the ChatGPT chat himself.
 MASTER = """You write image prompts for a medical-education app (Kafu). Do NOT draw any image in this chat.
 I attached my app export (a JSON file, export_type kafu_mcq_text_export). Its keys are final: never change or contradict one.
-You work in batches of @@BATCH@@ questions (@@NSETS@@ sets of @@SET@@ images). For each batch you give me one downloadable HTML
+You work in batches of @@BATCH@@ questions (@@NSETS@@ card(s) of up to @@SET@@ images). For each batch you give me one downloadable HTML
 file, made by the master script below.
 
 HOW TO WORK

@@ -6,7 +6,7 @@ This folder lives only on branch `kafu-queue` of this repository. Builders read 
 ```
 owner: chapter export ──► Head: preflight.py export ──► make_queue.py split (packages of 6)
 Head: gpt_writer.py --master ──► master_prompt.html (one fixed prompt, Copy page) ──► owner
-owner: export + master prompt ──► ChatGPT writes prompts, 16 per batch (story + characters per set of 8) ──► painter_batchNN.html
+owner: export + master prompt ──► ChatGPT writes prompts, 8 per batch = one card (story + characters per set of 8) ──► painter_batchNN.html
 owner: each painter card ──► new ChatGPT chat ──► draws ──► the owner's Drive folder (config.json)/<QID>.png
 Head: preflight.py images (gate) ──► assign.py split (N slots, N chosen by the owner) ──► N builder sessions (BUILDER.md)
 builder: images + export ──► LESSON_PROMPT.md (Breeze) ──► ZIP ──► owner's inbox + phone, PR to main

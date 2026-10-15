@@ -8,7 +8,7 @@
   "lessons_base_branch": "main",
   "batch_size": 6,
   "gpt_set_size": 8,
-  "gpt_writer_questions": 16,
+  "gpt_writer_questions": 8,
   "voice_engine": "breeze",
   "zip_inbox_url": "https://claude.ai/artifact/J5yRwS9degoyFckDzPTijN",
   "max_package_zip_mb": 10,
