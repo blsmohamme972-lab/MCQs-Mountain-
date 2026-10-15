@@ -70,9 +70,16 @@ AVOID = @@AVOID@@
 FRESH = @@FRESH@@
 @@PAGE_CODE@@
 
+def norm(t):
+    import re
+    t = str(t).lower().replace("\u2019", "'").replace("\u2018", "'").replace("\u201c", '"').replace("\u201d", '"')
+    t = t.replace("\u2013", "-").replace("\u2014", "-")
+    return re.sub(r"[\s]+", " ", re.sub(r"[^\w%'\-./ ]+", " ", t)).strip()
+
+
 def make_page(DATA, EXPECT, SETS, OUTNAME):
     import re
-    err = []
+    err, standard = [], []
     if len(DATA["sets"]) != len(SETS):
         err.append(f"DATA['sets'] needs {len(SETS)} entries, has {len(DATA['sets'])}")
     for k, s in enumerate(DATA["sets"]):
@@ -112,6 +119,22 @@ def make_page(DATA, EXPECT, SETS, OUTNAME):
             err.append(f"{q}: banner longer than 10 words")
         if '"' in banner or '"' in title:
             err.append(f"{q}: no double quotes inside title or banner")
+        ev = it.get("evidence")
+        if not isinstance(ev, list) or len(ev) != len(lines):
+            err.append(f"{q}: evidence needs {len(lines)} entries, one per scene line")
+        else:
+            src = norm(e["src"])
+            for i, x in enumerate(ev, 1):
+                x = str(x).strip()
+                if x.upper().startswith("STANDARD:"):
+                    if len(x) < 25:
+                        err.append(f"{q}: scene {i}: write the standard reason after STANDARD:")
+                    else:
+                        standard.append(f"{q} (question {e['n']}) scene {i}: {x[9:].strip()}")
+                elif len(x.split()) < 3:
+                    err.append(f"{q}: scene {i}: evidence must quote 3 or more words")
+                elif norm(x) not in src:
+                    err.append(f"{q}: scene {i}: this evidence is not in the question text, copy it exactly: {x}")
     if err:
         print("ERROR - fix DATA and run again:")
         print("\n".join(err))
@@ -145,6 +168,9 @@ def make_page(DATA, EXPECT, SETS, OUTNAME):
         page = copy_page(OUTNAME[:-5], "Paste each card into a NEW ChatGPT chat (one card per chat). It draws the images and saves them to Google Drive.", cards)
         open("/mnt/data/" + OUTNAME, "w", encoding="utf-8").write(page)
         print(f"OK - {len(EXPECT)} prompts in {len(SETS)} sets. File: /mnt/data/{OUTNAME}")
+        if standard:
+            print("Tell the owner: these scenes use a standard reason because the book's explanation did not support the key:")
+            print("\n".join(standard))
 '''
 
 # Per-chat script (questions inside the prompt): ChatGPT edits DATA only.
@@ -160,7 +186,8 @@ DATA = {
     #                "scenes": """LEFT: ... Label: "T10".
     # CENTER: ... Label: "Oesophagus".
     # RIGHT: ... labels "Anterior gastric nerve" and "Posterior gastric nerve".""",
-    #                "banner": """T10"""},
+    #                "banner": """T10""",
+    #                "evidence": ["""corresponds to the level of T10""", """The oesophagus traverses""", """anterior and posterior gastric nerves"""]},
   },
 }
 # ===== do not change anything below this line =====
@@ -228,9 +255,10 @@ def show(n):
         if not ans:
             raise SystemExit(f"{q['id']}: the key {q.get('answer')!r} matches no option. Tell the owner; do not guess.")
         exact = ans if len(ans) <= EXACT_MAX and '"' not in ans else None
-        EXPECT[q["id"]] = {"n": str(q.get("source_number")), "exact": exact}
         opts = [(f"{o.get('label') or 'ABCDEFGH'[i]}. {(o.get('text') or o.get('value') or '').strip()}" if isinstance(o, dict)
                  else f"{'ABCDEFGH'[i]}. {str(o).strip()}") for i, o in enumerate(q.get("options", []))]
+        EXPECT[q["id"]] = {"n": str(q.get("source_number")), "exact": exact,
+                           "src": " ".join([q.get("stem", ""), *opts, q.get("explanation", "")])}
         row = {"qid": q["id"], "question_number": q.get("source_number"), "stem": q.get("stem", ""), "options": opts,
                "key": q.get("answer"), "key_text": ans, "explanation": q.get("explanation", ""),
                "has_book_images": bool(q.get("images"))}
@@ -262,9 +290,12 @@ THE QUESTIONS ({N} multiple-choice questions, JSON below). The key is final: nev
 
 STEP 1 - story and characters. The questions are already split into {N_SETS} set(s) of up to {SET} (listed under SETS in the
 script). For each set invent:
-- "cast": 2-4 recurring cartoon characters with a fixed look (body or species, colours, clothes, one prop each), at most 60
-  words in total. They are the actors of every scene in the set, so the images feel like one story.
-- "story": one sentence, the adventure that links the scenes of the set (e.g. a hospital-ship voyage, a detective case).
+- "cast": 2-4 SMART recurring cartoon characters, at most 60 words in total. Each character's look must carry a medical idea
+  that keeps coming back in this set (e.g. a nerve as a yellow electric cable-man, a surgeon-owl with a scalpel quill, an
+  artery as a red runner), so the learner remembers the concept from the character itself. Give each a fixed look (body or
+  species, colours, clothes, one prop) and keep it identical in every scene. They act out the facts; they never decorate.
+- "story": one sentence, the adventure that links the scenes of the set (e.g. a hospital-ship voyage, a detective case),
+  chosen to fit the topics of these questions.
 
 STEP 2 - one picture plan per question:
 - "title": 2-5 words, the topic of the question.
@@ -272,6 +303,10 @@ STEP 2 - one picture plan per question:
   scene a cast member acts out one fact as a memorable visual pun, and the scene ends with its label(s) in double quotes.
 - "banner": the answer for the bottom banner (the script adds "Answer --> "). If the question lists an exact "banner", copy it
   character for character. Otherwise write the key's option text shortened faithfully to at most 8 words.
+- "evidence": one entry per scene line, in the same order: an EXACT quote of 3 or more words copied from that question's stem,
+  options or explanation that proves the fact the scene shows. The script checks every quote against the question text.
+  Only when the book's explanation is wrong or does not explain the key, write "STANDARD: <the standard reason in one
+  sentence>" instead; the script lists those for the owner to check.
 
 RULES (learned from earlier runs; they decide whether the images come out right):
 - Facts only from the stem, the key and the explanation. Never invent numbers. If the explanation is wrong, contradictory or
@@ -284,6 +319,8 @@ RULES (learned from earlier runs; they decide whether the images come out right)
 - The answer appears only on the banner, never inside the scenes.
 - "has_book_images": true means the book shows a picture: describe only what the stem and explanation say.
 - Nothing gory, no real photos, no brand names.
+- Before you run the script, check every question once more: does each scene show a fact from its evidence, is the banner
+  the key, is every label spelled as in the source? Correct anything wrong first. Being right matters more than being fast.
 
 STEP 3 - copy the script below exactly into your Python tool. Fill in only the DATA block (use triple quotes \"\"\" for
 every text). Run it. If it prints ERROR, fix DATA and run it again until it prints OK. Then reply with only the download
@@ -327,7 +364,8 @@ DATA format (Python; use triple quotes \"\"\" for every text):
 DATA = {"sets": [{"cast": \"\"\"...\"\"\", "story": \"\"\"...\"\"\"}, ...one per set, in order],
         "items": {"<QID>": {"title": \"\"\"...\"\"\", "scenes": \"\"\"LEFT: ... "Label".
 CENTER: ... "Label".
-RIGHT: ... "Label".\"\"\", "banner": \"\"\"...\"\"\"}, ...one per QID of the batch}}
+RIGHT: ... "Label".\"\"\", "banner": \"\"\"...\"\"\",
+                    "evidence": [\"\"\"exact quote for scene 1\"\"\", \"\"\"...scene 2\"\"\", \"\"\"...scene 3\"\"\"]}, ...one per QID of the batch}}
 
 @@RULES@@
 
@@ -399,7 +437,8 @@ def build(prefix, per_chat, set_size, only=None):
         for it in chunk:
             ans = it["answer_text"].strip()
             exact = ans if len(ans) <= EXACT_MAX and '"' not in ans else None
-            expect[it["qid"]] = {"n": str(it.get("number")), "exact": exact}
+            expect[it["qid"]] = {"n": str(it.get("number")), "exact": exact,
+                                 "src": " ".join([it.get("stem", ""), *letter_options(it.get("options", [])), it.get("explanation", "")])}
             row = {"qid": it["qid"], "question_number": it.get("number"), "stem": it.get("stem", ""),
                    "options": letter_options(it.get("options", [])), "key": it.get("answer"), "key_text": ans,
                    "explanation": it.get("explanation", ""), "has_book_images": bool(it.get("has_book_images"))}
