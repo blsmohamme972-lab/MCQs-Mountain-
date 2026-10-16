@@ -29,6 +29,11 @@
 @media(min-width:760px){.k-study .stem,.k-study .opt,.k-study .tf p,.k-study .explain p{font-size:var(--text-study-wide)}.k-complete h2{font-size:var(--text-title-wide)}}
 @media(prefers-reduced-motion:reduce){.k-question-enter{animation:none}.k-confetti{display:none}}
 
+.k-jump-field{display:block;margin-top:var(--space-3)}
+.k-jump-field span{display:block;margin-bottom:var(--space-2);font-size:var(--text-sm);font-weight:700;color:var(--color-muted)}
+.k-jump-field input{display:block;width:100%;min-height:var(--tap-target);padding:var(--space-3);border:2px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface);color:var(--color-text);font:inherit;font-variant-numeric:tabular-nums}
+.k-jump-field input:focus{border-color:var(--color-primary)}
+
 
 /* DESIGN 1 Round 3: calm study zone and completion footer. */
 body[data-screen='study'] .top h1{
@@ -256,6 +261,14 @@ body[data-study-screen] .k-study-count{
 }
 body[data-study-screen] .k-study-count strong{color:var(--mcq-indigo)}
 body[data-study-screen] .k-study-count span{color:var(--mcq-muted)}
+body[data-study-screen] .k-study-jump{
+  cursor:pointer;
+  text-align:center;
+  appearance:none;
+  -webkit-appearance:none;
+}
+body[data-study-screen] .k-study-jump:hover{border-color:var(--mcq-indigo);}
+body[data-study-screen] .k-study-jump:active{transform:translateY(2px);box-shadow:0 1px 0 var(--mcq-drop)}
 body[data-study-screen] .k-study-progress .timer{
   min-height:44px;
   display:grid;

@@ -1233,6 +1233,27 @@ function reviewExam(i) {
   SHEET.get = () => chosen;
   render();
 }
+function normalizeQuestionDigits(value) {
+  return String(value || "")
+    .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 1632))
+    .replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 1776));
+}
+function jumpSheet() {
+  if (!SESSION || !SESSION.qids.length) return;
+  const total = SESSION.qids.length;
+  SHEET = () => `<div class="scrim" data-a="close-sheet"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="jump-question-title" data-stop="1">
+      <h4 id="jump-question-title">Go to question</h4><p class="note">Type a question number from 1 to ${total}.</p>
+      <label class="k-jump-field"><span>Question number</span><input id="jump-question-input" type="text" inputmode="numeric" pattern="[0-9٠-٩۰-۹]*" autocomplete="off" value="${SESSION.index + 1}" aria-label="Question number"></label>
+      <div class="btns"><button class="btn ghost" data-a="close-sheet">Cancel</button><button class="btn" data-a="jump-go">Go</button></div>
+    </div></div>`;
+  SHEET.kind = "jump";
+  render();
+  requestAnimationFrame(() => {
+    const input = $("#jump-question-input");
+    input?.focus();
+    input?.select();
+  });
+}
 const ACTIONS = {
   back, tab: (d) => tab(d.v),
   "open-spec": (d) => go("spec", { s: d.s }),
@@ -1252,6 +1273,20 @@ const ACTIONS = {
   tf: (d) => { const qid = SESSION.qids[SESSION.index]; const r = SESSION.resp[qid]; if (r.done) return; r.sel[+d.i] = d.v; haptic.tap(); render(); },
   "fav-q": () => { const qid = SESSION.qids[SESSION.index]; const i = S.fav.indexOf(qid); i >= 0 ? S.fav.splice(i, 1) : S.fav.push(qid); haptic.tap(); saveState(); CloudSync.push(); render(); toast(i >= 0 ? "Removed from starred." : "Starred."); },
   report: () => reportSheet(),
+  jump: () => jumpSheet(),
+  "jump-go": () => {
+    if (!SESSION || !SHEET || SHEET.kind !== "jump") return;
+    const raw = normalizeQuestionDigits($("#jump-question-input")?.value).trim();
+    const target = Number(raw);
+    if (!/^\d+$/.test(raw) || !Number.isInteger(target) || target < 1 || target > SESSION.qids.length) {
+      toast(`Enter a number from 1 to ${SESSION.qids.length}.`);
+      $("#jump-question-input")?.focus();
+      return;
+    }
+    SESSION.index = target - 1;
+    SHEET = null;
+    render(true);
+  },
   reason: (d) => { SHEET.set(d.r); render(); },
   "send-report": () => { const qid = SESSION.qids[SESSION.index]; S.reports.push({ q: qid, reason: SHEET.get(), t: Date.now() }); saveState(); SHEET = null; render(); toast("Report saved. It will be sent when reporting goes live."); },
   "close-sheet": (d, el, ev) => { if (ev && ev.target.closest("[data-stop]") && el.classList.contains("scrim")) return; SHEET = null; render(); },
@@ -1277,6 +1312,11 @@ document.addEventListener("click", (ev) => {
   const fn = ACTIONS[el.dataset.a]; if (!fn) return;
   if (el.dataset.a === "close-sheet" && el.classList.contains("scrim") && ev.target.closest("[data-stop]")) return;
   fn(el.dataset, el, ev);
+});
+document.addEventListener("keydown", (ev) => {
+  if (ev.key !== "Enter" || !SHEET || SHEET.kind !== "jump" || document.activeElement?.id !== "jump-question-input") return;
+  ev.preventDefault();
+  ACTIONS["jump-go"]();
 });
 
 /* ================================================================
