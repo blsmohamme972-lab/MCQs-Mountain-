@@ -1,0 +1,1 @@
+{"permissions":{"allow":["Bash(python3 /home/user/kq/kafu_queue/voice_setup.py:*)","Bash(~/.venvs/kafu-voice/bin/python work/render_job.py:*)","Bash(/root/.venvs/kafu-voice/bin/python work/render_job.py:*)"]}}
