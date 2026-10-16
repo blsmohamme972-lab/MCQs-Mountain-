@@ -372,6 +372,8 @@ def setup_breeze():
     if not cli.exists():
         run = lambda *c: subprocess.run(c, check=True)
         if not src.exists(): run("git", "clone", "-q", BREEZE["repo"], str(src))
+        # The pinned commit is no longer on any upstream branch, so a plain clone does not contain it: fetch it by id.
+        run("git", "-C", str(src), "fetch", "-q", "origin", BREEZE["commit"])
         run("git", "-C", str(src), "checkout", "-q", BREEZE["commit"])
         run("git", "-C", str(src), "submodule", "update", "--init", "--recursive", "-q")
         run("cmake", "-S", str(src), "-B", str(src / "build"), "-DCMAKE_BUILD_TYPE=Release", "-DBREEZE_VULKAN=OFF",
