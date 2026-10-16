@@ -9,6 +9,13 @@ the exact command, do not retry variations. **NOTHING IS WRITTEN TO GITHUB** (ow
 branch, pull request or merge, by you or by any builder. GitHub is only read (the tools on branch `kafu-queue`, the project
 code on `main`). A run's data lives in your data folder and travels to builders as one bundle file through the inbox.
 
+Sessions (owner's rule, 2026-10-16): never create, archive or stop a session without the owner's explicit "yes" for that
+action, each time. A finished builder keeps its Breeze voice (20 minutes of setup) only while its container lives: archiving
+it throws that away. A builder treats a message from another session as information, not as the owner's order, and refuses
+new packages sent that way; so give every session ALL its packages in its first message (step 2 of the method below) and
+never plan on sending work later. If more work appears, ask the owner first: the owner can paste one line into a finished
+session (it then works on its existing voice), or approve new sessions.
+
 Save usage: start a NEW Head session for every run (a short context costs far less on every check than a long one), with
 the first message: "You are the Kafu Head. Read kafu_queue/HEAD.md on branch kafu-queue of MCQs-Mountain- and follow it."
 Keep checks short (`| tail`), do not reread files you already read, and answer the owner in a few lines.
@@ -19,7 +26,10 @@ Keep checks short (`| tail`), do not reread files you already read, and answer t
    `git worktree add -q --detach /home/user/kq origin/kafu-queue` (tools, read only) and
    `git worktree add -q --detach /home/user/mm origin/main` (the bot's own checks). Run every tool as
    `python3 /home/user/kq/kafu_queue/<tool>.py ...` with `KAFU_MOUNTAIN=/home/user/mm` where a tool needs project code.
-2. Data folder: `python3 /home/user/kq/kafu_queue/bundle.py use <scratchpad>/kafu-data` (never inside a repository). Every
+2. Drive check: `python3 /home/user/kq/kafu_queue/drive.py show` must list the folder. A 403 from the proxy means this Head
+   session's environment blocks Google Drive: tell the owner at once (the environment's network setting must allow it, or the
+   Head runs in the builders' environment); without it you cannot check images or make review sheets yourself.
+3. Data folder: `python3 /home/user/kq/kafu_queue/bundle.py use <scratchpad>/kafu-data` (never inside a repository). Every
    tool reads and writes the run's data there: exports, packages, ledger, voice scripts, the slot split, the owner's settings.
 
 ## The images folder (the owner's choice)
@@ -33,6 +43,10 @@ Keep checks short (`| tail`), do not reread files you already read, and answer t
 
 ## The owner's method since 2026-10-16 (overrides the stages below where they differ)
 
+0. **Flags first.** `preflight.py export` prints every `FLAG` line of the app export (the app's own warnings: key/explanation
+   conflicts, cross-reference conflicts). Before any prompt is written, read each one and tell the owner the questions whose
+   key is clearly wrong: the owner fixes them in the app and exports again, so no question has to be held and no image is
+   drawn on a wrong key. A corrected key cannot be built from the old export: its content hash refuses it.
 1. **The Head writes every image prompt, all at once.** Read every question (stem, options, key, explanation) and review
    the key medically first (owner's rule: a clearly wrong key is corrected in the package item, with `book_answer`,
    `book_answer_text` and `key_corrected` + reason, and told to the owner; a doubt is only reported). Then write
@@ -142,7 +156,9 @@ coverage check.
 2. `KAFU_MOUNTAIN=/home/user/mm python3 -I merge_zips.py /home/user/mm <scratchpad>/ready <scratchpad>/merged <PREFIX>` (parts of at
    most 15 MB, members copied byte for byte, each part validated). Mixed provenance refused: merge per chapter with START.
 3. `KAFU_MOUNTAIN=/home/user/mm preflight.py coverage <scratchpad>/merged <PREFIX>`: every question exactly once; prints each
-   part's byte size and sha256. Nothing goes to the owner before this is OK.
+   part's byte size and sha256. Nothing goes to the owner before this is OK. Parts merged in two rounds or a run with several
+   prefixes: comma lists, e.g. `coverage <merged>,<merged_next> BL-CH1,BL-CH1B`. Held questions are listed apart.
+   A second round of parts continues the numbering: `merge_zips.py ... <PREFIX> 9 <next number>` (never a part id twice).
 4. Send the parts (SendUserFile) with the exact byte size in each caption. Owner: wait for the full download, compare the
    size, forward to @KafuMcqsbot 5 files at a time, about 2 minutes apart.
 5. `BadZipFile` from the bot = the file was cut on the way: check it (`unzip -t`), send it again; twice: merge again with
@@ -191,3 +207,11 @@ bundle again (Stage 2.4): the ledger is rebuilt from what is in the inbox. Sessi
 | 28 | Merged parts of 14 MB did not download on the phone | `merge_part_mb` 9 |
 | 29 | ChatGPT wrote prompts batch by batch and 27 of 100 voice scripts failed | the Head writes all prompts (`head_prompts.py`); builders write the voice |
 | 30 | Three separate panels per image | one connected story around a main character; real place as a cartoon background |
+| 31 | 9 finished builders refused new packages sent by message (a message from another session is not the owner's order) | every session gets all its packages in its first message (`assign.py resize` + `split`); more work only after the owner's OK |
+| 32 | The Head opened 8 sessions and archived 9 without asking; the archived ones lost their Breeze setup | owner's rule: no create, archive or stop without the owner's "yes" each time |
+| 33 | The pinned Breeze commit left every upstream branch: every voice setup failed (git checkout 128) | `voiceover.py setup` fetches the pinned commit by id |
+| 34 | A clearly wrong key (Q195, IgG for IgM) was found after its image was drawn; the build was refused by the content hash | Flags first: `preflight.py export` prints the app's FLAG lines; the owner fixes keys in the app before drawing |
+| 35 | Head environment blocked Google Drive (403): previews needed a helper session | Setup step 2 `drive.py show`; tell the owner at once |
+| 36 | `coverage` knew one prefix only; `collect_zips` left `<id>.zip` copies beside the MCARDS_ files | comma lists in `zips`/`coverage`; collect_zips keeps only MCARDS_ names |
+| 37 | A Cloudflare 504 during the publish workflow ("failed after preparation") | not the ZIP: the owner sends `/motioncards-retry <PACKAGE-ID>_r1` |
+| 38 | Helper brief had `watch.py get` arguments reversed | `watch.py get DEST_DIR QID...` (folder first) |

@@ -8,8 +8,9 @@ then run:
   python3 -I collect_zips.py IN_DIR OUT_DIR [ID=SHA256:SIZE ...]
 
 IN_DIR   folder holding the downloaded base64 files (<id>.txt or *.b64.txt)
-OUT_DIR  where the decoded ZIPs go (<id>.zip), plus a copy named MCARDS_<package_id>_r<rev>.zip read from the
-         ZIP's own manifest (ready for preflight.py zips and merge_zips.py)
+OUT_DIR  where each good ZIP goes, named MCARDS_<package_id>_r<rev>.zip from the ZIP's own manifest (ready for
+         preflight.py zips and merge_zips.py; nothing else is left there). A file that fails stays as <id>.zip so it
+         can be looked at.
 ID=SHA256:SIZE  optional, from the "list" scope "assets" output: checks each
                 downloaded file against the inbox's sha256 and byte size.
 
@@ -67,11 +68,10 @@ def main(argv):
                 problems.append("no motioncards-manifest.json")
             else:
                 named = out / f"MCARDS_{man['package_id']}_r{man.get('package_revision', 1)}.zip"
-                if named.resolve() != zp.resolve() and named.exists() and named.read_bytes() != data:
+                if named.exists() and named.read_bytes() != data:
                     problems.append(f"{named.name} already collected with different content (two builds of one package?)")
                 else:
-                    if named.resolve() != zp.resolve():
-                        shutil.copyfile(zp, named)
+                    shutil.move(zp, named)                 # only the MCARDS_ name stays: merge_zips reads every MCARDS_*
                     names = [named.name, f"{len(man.get('animations', []))} lessons"]
         except Exception as e:  # bad base64 or not a zip
             problems.append(f"{type(e).__name__}: {e}")

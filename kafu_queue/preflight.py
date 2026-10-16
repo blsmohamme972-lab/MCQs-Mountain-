@@ -5,10 +5,13 @@
                                       fingerprint, book identity) and every question has a key that resolves
   preflight.py images PREFIX [--fast] every question of the packages PREFIX-* has exactly one image in Drive named
                                       <QID>.png, and (without --fast) each opens and is landscape 3:2 of at least 1200 px
-  preflight.py zips DIR PREFIX        every MCARDS_<PKG>_r1.zip in DIR passes validate_package, is at most
+  preflight.py zips DIR PREFIX        (PREFIX may be a comma list) every MCARDS_<PKG>_r1.zip in DIR passes validate_package, is at most
                                       max_package_zip_mb, and holds exactly its package's QIDs; lists packages still missing
   preflight.py coverage DIR PREFIX    the merged parts in DIR pass validate_package, are at most merge_part_mb, and
-                                      together hold every question of PREFIX exactly once; prints byte size and sha256
+                                      together hold every question of PREFIX exactly once; prints byte size and sha256.
+                                      DIR and PREFIX may each be a comma list (parts merged in two rounds, a run split
+                                      over several prefixes such as BL-CH1,BL-CH1B); held questions (<data>/held) are
+                                      listed apart and do not fail the check
   preflight.py sheet PREFIX OUTDIR [--qids Q,Q] [--images-dir DIR]
                                       review sheets for the Head: one PNG per 8 questions, each row = question number, QID,
                                       the key, then the image's own title strip and answer banner strip (cheap to look at)
@@ -35,10 +38,17 @@ NAME_RE = re.compile(r"^Q\d{9}\.png$")
 
 
 def pkgs(prefix):
-    pk = {k: v for k, v in watch.packages().items() if k.startswith(prefix + "-")}
+    """The packages of one prefix or of a comma list of prefixes (a run cut into several splits)."""
+    pres = [x for x in prefix.split(",") if x]
+    pk = {k: v for k, v in watch.packages().items() if any(k.startswith(x + "-") for x in pres)}
     if not pk:
         sys.exit(f"no packages {prefix}-* in {watch.QUEUE}")
     return pk
+
+
+def held_qids():
+    from kafu_data import DATA
+    return sorted(f.stem for f in (DATA / "held").glob("Q*.json")) if (DATA / "held").is_dir() else []
 
 
 def check_export(path):
@@ -60,6 +70,12 @@ def check_export(path):
           f"book {ad.book.get('id') if isinstance(ad.book, dict) else ''}, numbers {nums[0]}..{nums[-1]}")
     if len(set(map(str, nums))) != len(nums):
         bad.append("duplicate source_number")
+    flagged = [q for q in env["questions"] if str(q.get("flag") or "").strip()]
+    for q in flagged:                                  # the app's own warnings: read them BEFORE any image is drawn
+        print(f"FLAG {q.get('id')} (number {q.get('source_number')}, key {q.get('answer')}): {q['flag']}")
+    if flagged:
+        print(f"{len(flagged)} flagged question(s): review each key now; a clearly wrong key is fixed by the owner in the app "
+              f"and exported again before the painter pages are made")
     for b in bad:
         print("FAIL", b)
     return not bad
@@ -134,9 +150,13 @@ def check_zips(d, prefix):
 def check_coverage(d, prefix):
     from motioncards.lib import package as P
     cap = CONFIG["merge_part_mb"] * 1024 * 1024
+    held = set(held_qids())
     want = [it["qid"] for q in pkgs(prefix).values() for it in q["items"]]
     seen, bad = [], []
-    for f in sorted(Path(d).glob("MCARDS_*_r1.zip")):
+    parts = sorted(f for x in d.split(",") if x for f in Path(x).glob("MCARDS_*_r1.zip"))
+    if not parts:
+        bad.append(f"no MCARDS_*_r1.zip in {d}")
+    for f in parts:
         m = P.validate_package(f)
         qs = [a["qid"] for a in m["animations"]]
         seen += qs
@@ -147,7 +167,9 @@ def check_coverage(d, prefix):
             bad.append(f"{f.name}: over {CONFIG['merge_part_mb']} MB")
     dup = sorted({q for q in seen if seen.count(q) > 1})
     miss = sorted(set(want) - set(seen))
-    extra = sorted(set(seen) - set(want))
+    extra = sorted(set(seen) - set(want) - held)
+    if held:
+        print(f"held (not built, the owner fixes the key in the app first): {sorted(held - set(seen))}")
     for label, xs in (("twice", dup), ("missing", miss), ("not in this chapter", extra)):
         if xs:
             bad.append(f"{label}: {xs}")
