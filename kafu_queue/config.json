@@ -10,7 +10,7 @@
   "gpt_set_size": 8,
   "gpt_writer_questions": 8,
   "voice_engine": "breeze",
-  "zip_inbox_url": "https://claude.ai/artifact/J5yRwS9degoyFckDzPTijN",
+  "zip_inbox_url": "https://claude.ai/artifact/BcZ7JpoXUHuokR2u1w9z1y",
   "max_package_zip_mb": 10,
   "merge_part_mb": 9,
   "minutes_per_question": 15,
