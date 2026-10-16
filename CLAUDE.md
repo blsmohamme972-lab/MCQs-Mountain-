@@ -2,6 +2,13 @@
 
 Start with `HANDOFF.md`. Voice-over: `voiceover/README.md`.
 
+## ⚠️🚨 Voice workers: the `Kafu Voice` environment first 🚨⚠️
+
+Before starting ANY new batch that uses voice workers, remind the owner, with this exact warning:
+"⚠️🚨 قبل ما نبدي المجموعة الجديدة: اختار بيئة Kafu Voice أو سوّيها إذا مو موجودة! 🎙️"
+Check it exists (`list_environments`) and open every worker in it. Steps and why: `tools/kafu_voice/README.md`.
+Without it the auto-mode permission check refuses the workers and the owner has to approve each one by hand.
+
 ## Make IMAGE LESSONS only; hand-animated MotionCards are retired
 
 New animation work is always an image lesson: follow `motioncards/LESSON_PROMPT.md` (`tools/motioncards.py lesson`).

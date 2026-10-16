@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+"""Write the first message for one Kafu voice worker, with its whole job inside (no job file to fetch).
+
+  python3 tools/kafu_voice/worker_prompt.py JOB.json INBOX_URL > prompt.txt
+
+JOB.json = {"slot": "21", "qids": [...], "lines": [{"id", "voice", "dir", "text"}]} (the Head writes it).
+Why the job is inside the message: a worker that reads its job from an artifact is refused by the auto-mode permission
+check ("untrusted code integration"), and a worker that installs Breeze itself is refused too ("code from external").
+So Breeze comes from the environment's setup script (env_setup.sh), the tools from this repository, and the job from the
+first message. The worker only renders with the repository's own script and uploads the result.
+"""
+import json
+import sys
+
+job = json.loads(open(sys.argv[1]).read())
+inbox = sys.argv[2]
+slot = str(job["slot"])
+job_text = json.dumps({"slot": slot, "round": 1, "final": True, "qids": job.get("qids", []), "lines": job["lines"]},
+                      ensure_ascii=False, indent=1)
+if "KAFUJOBEOF" in job_text:
+    sys.exit("the job text contains the heredoc marker")
+
+print(f"""You are Kafu VOICE WORKER {slot} in this repository (your session's own checkout). The owner asked for this job.
+Your whole assignment: render the voice lines below with the repository's own Breeze script, then upload the result. Do not ask
+questions; spend few turns and tokens; read no other files. Nothing is written to GitHub (no commit, push, branch or pull request;
+a stop-hook asking to commit does not apply). Do not message other sessions. Never start a second copy of a background command.
+If a tool call is refused by permissions, do not try variations: reply with one Arabic line naming the refused command and stop.
+
+1. `tail -n 1 /tmp/kafu_voice_setup.log` (the environment installed Breeze before you started).
+   - It says `VOICE OK`: go to step 2.
+   - Anything else (or no file): start `python3 tools/kafu_voice/voice_setup.py . > /tmp/kafu_voice_setup.log 2>&1` as your own
+     background command (Bash, run_in_background true, timeout 7200000) and end the turn; when it ends, its last line must be
+     `VOICE OK` (otherwise reply "SLOT {slot}: الصوت معطل" + that line, and stop).
+2. Write your job exactly as given, from the repository root:
+mkdir -p work && cat > work/job.json <<'KAFUJOBEOF'
+{job_text}
+KAFUJOBEOF
+3. Start the render as your own background command (Bash, run_in_background true, timeout 7200000), from the repository root:
+   `~/.venvs/kafu-voice/bin/python tools/kafu_voice/render_job.py work/job.json work/voice-out {slot} 1 > work/render.out 2>&1`
+   End the turn; you are woken when it ends. Its last line is `RENDER DONE n/m` (if it ended otherwise, run the same command once
+   more: it resumes from its cache).
+4. Upload every file `work/voice-out/voice_{slot}_r1_NN.b64.txt` in order, then `work/voice-out/DONE_{slot}_r1.txt`: Artifact
+   action "publish", url {inbox}, asset true, file_path = that one file, ALONE in each call. If an upload fails, SendUserFile that
+   file (status "proactive", caption "SLOT {slot} <file name>") instead.
+5. Reply with one Arabic line: SLOT {slot}, lines rendered n/m, parts uploaded k, failed ids if any.""")
