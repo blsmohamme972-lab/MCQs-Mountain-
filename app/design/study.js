@@ -80,7 +80,7 @@ globalThis.KafuEnhancements.installers.push({name:'study-polish',install(){
         progress=`<div class="k-pips-viewport" aria-hidden="true"><div class="k-pips">${pips}</div></div>`;
       }
       studyTop.className='study-top k-study-progress';
-      studyTop.innerHTML=`${progress}<span class="k-study-count" aria-label="Question ${pos} of ${total}"><strong>${pos}</strong><span>/${total}</span></span>${timer}`;
+      studyTop.innerHTML=`${progress}<button class="k-study-count k-study-jump" data-a="jump" aria-label="Jump to question ${pos} of ${total}" title="Jump to a question"><strong>${pos}</strong><span>/${total}</span></button>${timer}`;
       studyTop.setAttribute('role','progressbar');studyTop.setAttribute('aria-label','Question progress');studyTop.setAttribute('aria-valuemin','0');studyTop.setAttribute('aria-valuemax',String(total));studyTop.setAttribute('aria-valuenow',String(pos));
       const viewport=studyTop.querySelector('.k-pips-viewport'),current=viewport?.querySelector('[data-current]');
       if(viewport&&current){
