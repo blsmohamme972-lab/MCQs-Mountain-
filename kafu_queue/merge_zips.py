@@ -7,7 +7,7 @@ IN_DIR   folder with MCARDS_<PKG>_r1.zip files (each already valid)
 OUT_DIR  where MCARDS_<PREFIX>-M<k>_r1.zip files are written
 PREFIX   e.g. GT-CH36 -> package ids GT-CH36-M1, GT-CH36-M2, ...
 START    first number to use for the part ids (default 1; use 4 to continue after M1..M3)
-CAP_MB   size cap per merged ZIP in MiB (default merge_part_mb in config.json, 15: a smaller file survives the phone ->
+CAP_MB   size cap per merged ZIP in MiB (default merge_part_mb in config.json, 9: a smaller file survives the phone ->
          Telegram transfer; the validator's own ceiling is 19)
 
 The member files are copied byte for byte (their SHA-256 values stay valid). Only the manifest is rewritten:

@@ -2,15 +2,20 @@
 """Fixed work split for the builder sessions (Head Department). Builders start only after preflight.py images is OK,
 so every package is known in advance and nothing has to be dispatched while they run.
 
-  assign.py split PREFIX N          assignments.json: the packages PREFIX-* in question order, cut into N slots (N = the
+  assign.py split PREFIX N [--from Q]  assignments.json: the packages PREFIX-* in question order, cut into N slots (N = the
                                     number of builder sessions the OWNER chose) with nearly equal question counts, each slot
                                     a run of neighbouring packages. Refuses to overwrite a split that already has deliveries.
   assign.py prompt SLOT --bundle ID the full first message for that slot's builder session (BUILDER.md filled in);
                                     ID = the inbox asset id of the run's bundle (bundle.py pack, then upload it)
   assign.py prompt SLOT --bundle ID --packages P1,P2 [--as NN]
                                     the same for a replacement session: only these packages, under slot name NN
+  assign.py resize PREFIX N [--from Q]  repack the undelivered packages PREFIX-* into exactly N packages of nearly equal size
+                                    (sizes differ by at most one question), so that N sessions each get ONE package and
+                                    finish together. Run it after the owner picks N and before split. Keeps every item field
+                                    (key_corrected, picture_notes). --from Q: only packages whose first question number is >= Q (this
+                                    run). Refuses if a chosen package is already building or delivered.
   assign.py left                    per slot: packages not yet delivered in the ledger (what a replacement must do)
-  assign.py options PREFIX          the owner's choice table: for several session counts, the time to build everything
+  assign.py options PREFIX [--from Q]  the owner's choice table: for several session counts, the time to build everything
                                     once the images exist, and the estimated money per builder model (config.json numbers)
 """
 import json
@@ -41,17 +46,25 @@ def plan(names, sizes, n):
     return slots
 
 
-def split(prefix, n):
+def split(prefix, n, qmin=None):
     from kafu_data import require_data_folder
     require_data_folder()
     pk = {k: v for k, v in watch.packages().items() if k.startswith(prefix + "-")}
+    if qmin is not None:                               # a new run on the same prefix: only its questions
+        pk = {k: v for k, v in pk.items() if str(v["items"][0].get("number")).isdigit()
+              and int(v["items"][0]["number"]) >= qmin}
     if not pk:
         sys.exit(f"no packages {prefix}-*")
     if AF.exists():
         old = json.loads(AF.read_text())
         led = watch.ledger()
         if any(led.get(p, {}).get("state") == "delivered" for v in old["slots"].values() for p in v):
-            sys.exit("assignments.json already has delivered packages; use 'left' and 'prompt --packages' instead")
+            if qmin is None or set(p for v in old["slots"].values() for p in v) & set(pk):
+                sys.exit("assignments.json already has delivered packages; use 'left' and 'prompt --packages' instead "
+                         "(a NEW run on the same prefix: split PREFIX N --from <its first question number>)")
+            keep = AF.with_name(f"assignments.before_Q{qmin}.json")
+            AF.rename(keep)
+            print(f"previous run's split kept as {keep.name}")
     names = list(pk)
     sizes = [len(pk[p]["items"]) for p in names]
     total = sum(sizes)
@@ -98,32 +111,78 @@ def prompt(slot, only=None, name=None, bundle=None):
     print(text)
 
 
-def options(prefix, counts=(1, 2, 3, 5, 8, 10, 15, 20, 30, 40, 60)):
+def options(prefix, counts=(1, 2, 3, 5, 8, 10, 12, 15, 17, 20, 25, 30, 40, 50), qmin=None):
+    """The owner's choice table. Each row assumes 'resize PREFIX N' first: N packages of nearly equal size, one per
+    session, so every session finishes at about the same time (no idle sessions, no long tail)."""
+    import math
+    pk = {k: v for k, v in watch.packages().items() if k.startswith(prefix + "-")}
+    led = watch.ledger()
+    pk = {k: v for k, v in pk.items() if led.get(k, {}).get("state") != "delivered"}
+    if qmin is not None:
+        pk = {k: v for k, v in pk.items() if str(v["items"][0].get("number")).isdigit()
+              and int(v["items"][0]["number"]) >= qmin}
+    if not pk:
+        sys.exit(f"no undelivered packages {prefix}-*")
+    nq = sum(len(v["items"]) for v in pk.values())
+    mpq, setup = CONFIG["minutes_per_question"], CONFIG.get("setup_minutes", 0)
+    models = CONFIG["builder_cost_usd"]
+    head = sum(CONFIG["head_cost_usd"].values())
+    print(f"{nq} questions to build. Measured: {setup} min voice setup per session, then {mpq} min per question. "
+          f"Head about ${head:.0f} per run. Each row = resize to N equal packages, one per session.")
+    print("sessions | questions per session | hours after the images exist | " + " | ".join(f"$ {m}" for m in models))
+    for n in sorted({c for c in counts if c <= nq} | {nq} if nq <= max(counts) else {c for c in counts if c <= nq}):
+        per = math.ceil(nq / n)
+        if n > 1 and math.ceil(nq / (n - 1)) == per:
+            continue                                   # same finish time with one session fewer: not offered
+        hours = (setup + per * mpq) / 60
+        if hours > 12:
+            continue                                   # one lost container would cost too much; autobuild stops at 16 h
+        cost = [n * v["session"] + (n * setup + nq * mpq) / 60 * v["per_hour"] + n * v["per_package"]
+                for v in models.values()]
+        print(f"{n:>8} | {per:>4} | {hours:>6.1f} | " + " | ".join(f"{x:>6.2f}" for x in cost))
+
+
+def resize(prefix, n, qmin=None):
+    from kafu_data import QUEUE, require_data_folder
+    require_data_folder()
     pk = {k: v for k, v in watch.packages().items() if k.startswith(prefix + "-")}
     if not pk:
         sys.exit(f"no packages {prefix}-*")
-    names = list(pk)
-    sizes = [len(pk[p]["items"]) for p in names]
-    nq, npk = sum(sizes), len(names)
-    mpq = CONFIG["minutes_per_question"]
-    models = CONFIG["builder_cost_usd"]
-    head = sum(CONFIG["head_cost_usd"].values())
-    print(f"{nq} questions in {npk} packages; build speed {mpq} min per question per session (measured); "
-          f"Head (Opus) about ${head:.0f} per run. Money figures are estimates; waiting for images adds about "
-          + ", ".join(f"${v['per_hour']:.2f} ({m})" for m, v in models.items()) + " per session per hour.")
-    print("sessions | hours after the images exist | " + " | ".join(f"$ {m}" for m in models))
-    size = dict(zip(names, sizes))
-    busiest = {n: max(sum(size[p] for p in v) for v in plan(names, sizes, n).values()) for n in range(1, npk + 1)}
-    asked = [c for c in counts if c <= npk] + ([npk] if npk <= max(counts) else [])
-    # each count is lowered to the fewest sessions that finish as early: more sessions would only cost more
-    rows = sorted({min(m for m in range(1, c + 1) if busiest[m] <= busiest[c]) for c in asked})
-    # a slot longer than 12 hours is not offered: one lost container would cost too much, and waiting for images needs
-    # room inside autobuild's 16-hour limit (if every count is longer, only the fastest is shown)
-    rows = [n for n in rows if busiest[n] * mpq / 60 <= 12] or rows[-1:]
-    for n in rows:
-        hours = busiest[n] * mpq / 60                       # the busiest slot decides the finish
-        cost = [n * v["session"] + nq * mpq / 60 * v["per_hour"] + npk * v["per_package"] for v in models.values()]
-        print(f"{n:>8} | {hours:>6.1f} | " + " | ".join(f"{x:>6.2f}" for x in cost))
+    led = watch.ledger()
+    if qmin is not None:                               # only this run's questions (number >= qmin)
+        pk = {k: v for k, v in pk.items() if str(v["items"][0].get("number")).isdigit()
+              and int(v["items"][0]["number"]) >= qmin}
+    busy = [p for p in pk if led.get(p, {}).get("state") in ("building", "delivered")]
+    if busy:
+        sys.exit("refused: already building or delivered (use --from to pick only this run's questions): " + ",".join(busy))
+    if not pk:
+        sys.exit("no packages left to repack")
+    names = list(pk)                                   # question order (watch.packages sorts by first number)
+    head = {k: v for k, v in pk[names[0]].items() if k not in ("package_id", "items")}
+    if any(pk[p].get("export") != head.get("export") for p in names):
+        sys.exit("refused: the packages come from different exports; resize each export's prefix separately")
+    items = [it for p in names for it in pk[p]["items"]]
+    n = max(1, min(n, len(items)))
+    base, extra = divmod(len(items), n)
+    out, i = [], 0
+    for k in range(n):
+        size = base + (1 if k < extra else 0)
+        chunk = items[i:i + size]
+        i += size
+        a, b = str(chunk[0].get("number")), str(chunk[-1].get("number"))
+        name = f"{prefix}-Q{int(a):02d}-{int(b):02d}" if a.isdigit() and b.isdigit() else f"{prefix}-{k + 1:02d}"
+        out.append((name, chunk))
+    assert sum(len(c) for _, c in out) == len(items) and len({x for x, _ in out}) == n
+    for p in names:
+        (QUEUE / f"{p}.json").unlink()
+    for name, chunk in out:
+        (QUEUE / f"{name}.json").write_text(json.dumps({"package_id": name, **head, "items": chunk}, indent=1,
+                                                       ensure_ascii=False) + "\n")
+    sizes = sorted({len(c) for _, c in out})
+    print(f"{len(items)} questions repacked from {len(names)} into {n} packages of {' or '.join(map(str, sizes))} questions:")
+    for name, chunk in out:
+        print(f"  {name}: {len(chunk)}")
+    print(f"next: assign.py split {prefix} {n}   (one package per session)")
 
 
 def left():
@@ -145,7 +204,7 @@ def main(a):
     if a[0] == "split":
         if len(a) < 3:
             sys.exit("assign.py split PREFIX N: N is the number of sessions the owner chose")
-        split(a[1], int(a[2]))
+        split(a[1], int(a[2]), int(a[a.index("--from") + 1]) if "--from" in a else None)
     elif a[0] == "prompt":
         only = a[a.index("--packages") + 1].split(",") if "--packages" in a else None
         name = a[a.index("--as") + 1] if "--as" in a else None
@@ -153,10 +212,14 @@ def main(a):
         if not bundle:
             sys.exit("--bundle <asset id> is required: bundle.py pack, upload it to the inbox, then pass its asset id")
         prompt(a[1], only, name, bundle)
+    elif a[0] == "resize":
+        if len(a) < 3:
+            sys.exit("assign.py resize PREFIX N: N is the number of sessions the owner chose")
+        resize(a[1], int(a[2]), int(a[a.index("--from") + 1]) if "--from" in a else None)
     elif a[0] == "left":
         left()
     elif a[0] == "options":
-        options(a[1])
+        options(a[1], qmin=int(a[a.index("--from") + 1]) if "--from" in a else None)
     else:
         sys.exit(__doc__)
 

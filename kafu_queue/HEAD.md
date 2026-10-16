@@ -4,7 +4,7 @@ You are the main session ("Head Department"). The owner writes in Iraqi Arabic: 
 numbers (how many done / how many left). When the owner says "stop" (وقف), stop everything. Read this file, `README.md` and
 `BUILDER.md` (in `kafu_queue/` on branch `kafu-queue`) before acting.
 
-Owner's rules: never change an answer key; voice Breeze; never secrets in chat; a refused tool call: stop and tell the owner
+Owner's rules: never change an answer key EXCEPT where the book's key is clearly medically wrong (owner's rule, 2026-10-16): the Head then draws the image with the corrected answer, HOLDS the question (see the method section, step 4) and tells the owner; a mere doubt stays on the book's key and is only reported; voice Breeze; never secrets in chat; a refused tool call: stop and tell the owner
 the exact command, do not retry variations. **NOTHING IS WRITTEN TO GITHUB** (owner's rule, 2026-10-15): no commit, push,
 branch, pull request or merge, by you or by any builder. GitHub is only read (the tools on branch `kafu-queue`, the project
 code on `main`). A run's data lives in your data folder and travels to builders as one bundle file through the inbox.
@@ -30,6 +30,35 @@ Keep checks short (`| tail`), do not reread files you already read, and answer t
 - Same folder, emptied for every run (owner's rule). You can only READ it; the owner deletes the files and empties the Drive
   trash. Tell the owner it is safe only when the previous run is finished (every package delivered and the merged parts
   published), because builders download images from the folder. Before a new run, `drive.py show` must list 0 files.
+
+## The owner's method since 2026-10-16 (overrides the stages below where they differ)
+
+1. **The Head writes every image prompt, all at once.** Read every question (stem, options, key, explanation) and review
+   the key medically first (owner's rule: a clearly wrong key is corrected in the package item, with `book_answer`,
+   `book_answer_text` and `key_corrected` + reason, and told to the owner; a doubt is only reported). Then write
+   `<data>/prompts/<PREFIX>_<range>.json` (format in `head_prompts.py`): per question ONE connected story: line 1 the MAIN
+   CHARACTER (the patient, organ, molecule or hero of the question), every other character acts on it and carries one fact;
+   about 75 percent question + correct answer, up to 25 percent extra from the explanation; a familiar place in Iraq for each
+   question, about 30 percent real Iraqi hospitals or health places (check every hospital name with a web search first).
+   `head_prompts.py check FILE` must print OK, then `head_prompts.py page FILE <scratchpad>/painter_<PREFIX>_<range>.html`
+   and SendUserFile it. The card tells ChatGPT to think first (better characters, more connected, more memorable, Picmonic
+   and Sketchy ideas), to use a real photo of the place as a cartoon background, to adapt anything its image rules forbid
+   instead of refusing, and to save one `places_<first>-<last>.txt` notes file per card. ChatGPT writes NO voice.
+   Ask the owner to test ONE card before pasting all of them when the method or the style changed.
+2. **Even split for any session count.** After the owner picks N sessions: `assign.py options PREFIX --from <first number>`
+   shows the table; then `assign.py resize PREFIX N --from <first number>` (N packages of nearly equal size) and
+   `assign.py split PREFIX N --from <first number>` (one package per session). Never two packages per session when a
+   session is free: the busiest session decides the finish.
+3. **After the images are in:** `places_collect.py PREFIX` (adds ChatGPT's notes to the packages as `picture_notes`),
+   then `bundle.py pack`, upload, `assign.py prompt` per slot. Builders write every voice themselves (`--voice-grace-min 0`
+   in BUILDER.md step 4) from the package facts, the picture notes and the picture.
+4. **A corrected key:** the package validator (motioncards/lib/package.py) refuses a lesson whose final answer panel differs
+   from the export's key, and every lesson is bound to the question's content hash. So a question whose key the Head
+   corrected is HELD: moved out of its package into `<data>/held/<QID>.json` (with the reason) and not built. Its image is
+   made with the corrected answer. Tell the owner; when the owner has changed the key in the app and made a new export,
+   build the held questions as one small package. Never build a corrected question on the old export.
+5. **Checks:** read each builder's real state (`get_session`: status, `needs_action`, the latest `autobuild.py status`
+   lines), never the summary alone. Anything that is not RUNNING or DONE is handled at that check.
 
 ## How the run flows now (fast, cheap, checked)
 
@@ -142,8 +171,8 @@ bundle again (Stage 2.4): the ledger is rebuilt from what is in the inbox. Sessi
 | 8 | Head reminders came late | check at +30 min then hourly; builders never depend on the Head |
 | 9 | 12 images missing at the end | `watch.py missing` while drawing; per-package start, so one missing image blocks only its package |
 | 10 | Same package built twice | one package, one live session; replacements get only the left packages |
-| 11 | 68 packages of 2 questions | packages of 6 |
-| 12 | Merged part arrived cut (`BadZipFile`) | parts of at most 15 MB, byte size and sha256 in the caption |
+| 11 | 68 packages of 2 questions | packages sized to the session count (`assign.py resize`), never tiny ones |
+| 12 | Merged part arrived cut (`BadZipFile`) | parts of at most 9 MB, byte size and sha256 in the caption |
 | 13 | 30 MB asked, system ceiling 19 MB | `merge_part_mb` 15; `merge_zips.py` refuses a bigger part |
 | 14 | A message to a session refused; `pkill -f` killed my own shell | replace instead of retrying; no `pkill -f`/`pgrep -f` loops |
 | 15 | Inbox listing is paged (50 per page) | always read every page |
@@ -154,3 +183,11 @@ bundle again (Stage 2.4): the ledger is rebuilt from what is in the inbox. Sessi
 | 20 | GitHub grew complicated (many PRs and merges) | nothing is written to GitHub; data in the Head's data folder, bundle through the inbox |
 | 21 | Builders spent most tokens writing, waiting and waking | ChatGPT writes; autobuild.py does every step in one background job; builders only upload (cheap model) |
 | 22 | Invented numbers or a wrong option in a lesson | the writer script refuses any number not in the source and any wrong option in the banner or answer statement |
+| 23 | Builder scripts died when the session went idle (nohup) | BUILDER.md step 4: the session's own background command (run_in_background, 2 h, restarted on wake) |
+| 24 | Stop-hook "commit and push" on every turn stalled a builder 73 min | 1,071 old build files are tracked under work/ on main: BUILDER.md step 1 `skip-worktree`; the owner may untrack work/ once; builders never wait for the owner |
+| 25 | A stalled builder unseen for 73 min | every check reads each session's state and `needs_action`, not its summary |
+| 26 | 17 packages on 10 sessions: some idle, others twice as long | `assign.py resize` to exactly N packages, one per session |
+| 27 | Times and money badly underestimated | config.json measured numbers: 15 min per question, 20 min setup, Head about $30 |
+| 28 | Merged parts of 14 MB did not download on the phone | `merge_part_mb` 9 |
+| 29 | ChatGPT wrote prompts batch by batch and 27 of 100 voice scripts failed | the Head writes all prompts (`head_prompts.py`); builders write the voice |
+| 30 | Three separate panels per image | one connected story around a main character; real place as a cartoon background |

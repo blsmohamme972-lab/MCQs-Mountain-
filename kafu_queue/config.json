@@ -12,8 +12,8 @@
   "voice_engine": "breeze",
   "zip_inbox_url": "https://claude.ai/artifact/J5yRwS9degoyFckDzPTijN",
   "max_package_zip_mb": 10,
-  "merge_part_mb": 15,
-  "minutes_per_question": 7,
+  "merge_part_mb": 9,
+  "minutes_per_question": 15,
   "builder_cost_usd": {
     "claude-haiku-5-5": {
       "session": 0.03,
@@ -21,12 +21,14 @@
       "per_package": 0.005
     },
     "claude-sonnet-5-5": {
-      "session": 0.25,
-      "per_hour": 0.12,
+      "session": 0.2,
+      "per_hour": 0.25,
       "per_package": 0.05
     }
   },
   "head_cost_usd": {
-    "claude-opus-5-5": 5
-  }
+    "head session (measured, run 1)": 30
+  },
+  "setup_minutes": 20,
+  "_measured_2026_10_16": "Breeze on 4 CPU cores: 13-17 min per question (about 18 s of work per second of speech); voice setup about 20 min per session; Sonnet builders $0.4-1.2 per session; Head about $40 for run 1"
 }
