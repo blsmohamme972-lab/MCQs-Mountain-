@@ -1,0 +1,108 @@
+{
+ "qid": "Q000007301",
+ "image": "Q000007301.png",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "takeaway": "Massive transfusion: citrate binds calcium, giving hypocalcaemia, and hyperkalaemia occurs too; together they cause ECG and rhythm changes.",
+ "question": {
+  "text": "An 18-year-old shot and transfused 12 units of blood shows ECG changes. Which electrolyte abnormality is most likely?"
+ },
+ "answer": {
+  "text": "Low calcium and high potassium"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1.0,
+   "spot": [
+    768,
+    70,
+    220
+   ]
+  },
+  {
+   "x": 360,
+   "y": 280,
+   "z": 1.8,
+   "spot": [
+    330,
+    230,
+    200
+   ]
+  },
+  {
+   "x": 830,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    830,
+    420,
+    190
+   ]
+  },
+  {
+   "x": 1180,
+   "y": 300,
+   "z": 1.9,
+   "spot": [
+    1180,
+    280,
+    200
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 560,
+   "z": 1.9,
+   "spot": [
+    1360,
+    420,
+    190
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A young man is shot and needs twelve units of blood.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "That is a massive transfusion, so the blood bags matter.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Donor blood contains citrate, the anticoagulant, which binds the patient's calcium.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So calcium falls, giving hypocalcaemia.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Potassium rises as well, so he is likely hyperkalaemic.",
+   "shot": 3,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Both can cause cardiac rhythm abnormalities.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "That is why the anaesthetist sees the ECG change.",
+   "shot": 4,
+   "dir": "gently amused",
+   "say": "(sigh) That is why the anaesthetist sees the ECG change."
+  },
+  {
+   "text": "So: low calcium and high potassium.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}

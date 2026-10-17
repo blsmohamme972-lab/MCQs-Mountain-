@@ -1,0 +1,108 @@
+{
+ "qid": "Q000007300",
+ "image": "Q000007300.png",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "takeaway": "The rotator cuff is supraspinatus, infraspinatus, teres minor and subscapularis; their tendons stabilise the head of the humerus in the glenohumeral joint.",
+ "question": {
+  "text": "The rotator cuff consists of the tendinous insertions of supraspinatus, infraspinatus and which other two muscles?"
+ },
+ "answer": {
+  "text": "Teres minor and subscapularis"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1.0,
+   "spot": [
+    768,
+    70,
+    220
+   ]
+  },
+  {
+   "x": 300,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    260,
+    330,
+    200
+   ]
+  },
+  {
+   "x": 760,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    760,
+    330,
+    260
+   ]
+  },
+  {
+   "x": 1270,
+   "y": 260,
+   "z": 2.0,
+   "spot": [
+    1270,
+    200,
+    200
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 660,
+   "z": 1.9,
+   "spot": [
+    1100,
+    560,
+    160
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Meet the rotator cuff team around the head of the humerus.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Supraspinatus sits on top, and infraspinatus is behind.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Together their tendons surround the head anteriorly, posteriorly and superiorly.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The other two heroes are teres minor and subscapularis.",
+   "shot": 2,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Teres major, deltoid and rhomboid minor are not part of the cuff, so they sit on the bench.",
+   "shot": 3,
+   "dir": "gently amused",
+   "say": "(laugh) Teres major, deltoid and rhomboid minor are not part of the cuff, so they sit on the bench."
+  },
+  {
+   "text": "A strong cuff keeps the humeral head stable under the acromion.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "When it is deficient, the head migrates up and impinges, with weak abduction.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So: teres minor and subscapularis.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}
