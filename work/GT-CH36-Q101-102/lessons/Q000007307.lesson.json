@@ -1,0 +1,108 @@
+{
+ "qid": "Q000007307",
+ "image": "Q000007307.png",
+ "takeaway": "H. pylori is a Gram-negative spiral microaerophilic rod that makes urease, causes peptic ulcers, is diagnosed on biopsy and can be spread iatrogenically; Gram-positive is the exception.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 28-year-old man with gastritis is H. pylori positive. All of the following about H. pylori are true except:"
+ },
+ "answer": {
+  "text": "It is Gram-positive. H. pylori is actually Gram-negative.",
+  "say": "It is Gram-positive. H. pylori is actually Gram-negative."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    512,
+    60
+   ]
+  },
+  {
+   "x": 300,
+   "y": 500,
+   "z": 2,
+   "spot": [
+    300,
+    420,
+    230
+   ]
+  },
+  {
+   "x": 800,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    800,
+    330,
+    230
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 280,
+   "z": 2,
+   "spot": [
+    1290,
+    270,
+    180
+   ]
+  },
+  {
+   "x": 780,
+   "y": 690,
+   "z": 2,
+   "spot": [
+    780,
+    670,
+    200
+   ]
+  },
+  {
+   "x": 1290,
+   "y": 650,
+   "z": 2,
+   "spot": [
+    1290,
+    640,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Helicobacter pylori is a spiral, motile, microaerophilic organism living in the stomach.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "It makes urease, which breaks urea into ammonia and raises the surrounding pH.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Infection raises gastric acid and can lead to peptic ulceration.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It can be diagnosed with a biopsy at endoscopy, and the scope can even spread it iatrogenically.",
+   "shot": 4,
+   "dir": "gently amused"
+  },
+  {
+   "text": "But it is Gram-negative, not Gram-positive.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the exception is C.",
+   "shot": 5,
+   "dir": "warm, reassuring"
+  }
+ ]
+}

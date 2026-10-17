@@ -1,0 +1,107 @@
+{
+ "qid": "Q000007306",
+ "image": "Q000007306.png",
+ "takeaway": "The recurrent laryngeal nerve (from the vagus) ascends in the tracheo-oesophageal groove and enters the larynx deep to the inferior border of the inferior constrictor.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which statement regarding the recurrent laryngeal nerve, at risk in thyroid surgery, is true?"
+ },
+ "answer": {
+  "text": "It enters the larynx deep to the inferior border of the inferior constrictor of the pharynx."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    512,
+    60
+   ]
+  },
+  {
+   "x": 250,
+   "y": 480,
+   "z": 2,
+   "spot": [
+    250,
+    430,
+    230
+   ]
+  },
+  {
+   "x": 780,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    780,
+    420,
+    230
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    1230,
+    300,
+    200
+   ]
+  },
+  {
+   "x": 1260,
+   "y": 500,
+   "z": 2,
+   "spot": [
+    1260,
+    480,
+    200
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 700,
+   "z": 2,
+   "spot": [
+    1220,
+    640,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The recurrent laryngeal nerve is the structure to avoid in thyroid surgery.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "It comes from the vagus nerve, not the hypoglossal.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It ascends in the groove between the trachea and the oesophagus, not descends.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "On the left it hooks under the aortic arch, and on the right under the right subclavian artery.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Finally it reaches the larynx, passing deep to the inferior border of the inferior constrictor.",
+   "shot": 4,
+   "dir": "gently amused"
+  },
+  {
+   "text": "So the answer is D.",
+   "shot": 3,
+   "dir": "warm, reassuring"
+  }
+ ]
+}
