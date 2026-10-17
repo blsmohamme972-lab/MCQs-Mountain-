@@ -1,0 +1,98 @@
+{
+ "qid": "Q000007251",
+ "image": "Q000007251.png",
+ "takeaway": "Tumour suppressor genes: APC chromosome 5, p53 and NF1 chromosome 17, retinoblastoma chromosome 13, WT1 chromosome 11. Only APC with 5 is a correct pair here.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which tumour suppressor gene is correctly paired with its chromosome of origin?"
+ },
+ "answer": {
+  "text": "APC – chromosome 5",
+  "say": "APC, chromosome 5"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    512,
+    60
+   ]
+  },
+  {
+   "x": 230,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    230,
+    330,
+    200
+   ]
+  },
+  {
+   "x": 650,
+   "y": 470,
+   "z": 2,
+   "spot": [
+    650,
+    500,
+    200
+   ]
+  },
+  {
+   "x": 920,
+   "y": 440,
+   "z": 2,
+   "spot": [
+    920,
+    430,
+    200
+   ]
+  },
+  {
+   "x": 1290,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    1290,
+    440,
+    240
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Tumour suppressor genes are the police of the cell cycle, switching proliferation off in G1.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Both copies must be lost for cancer to develop.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "APC sits on chromosome five, and its loss causes colorectal cancer.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "p53 and NF1 are on chromosome seventeen, retinoblastoma is on thirteen, and WT1 is on eleven.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the pairings with p53 on thirteen, retinoblastoma on seventeen, NF1 on eleven or WT1 on seventeen are wrong.",
+   "shot": 4,
+   "dir": "gently amused"
+  },
+  {
+   "text": "The correct pair is APC, chromosome five.",
+   "shot": 3,
+   "dir": "warm, reassuring"
+  }
+ ]
+}

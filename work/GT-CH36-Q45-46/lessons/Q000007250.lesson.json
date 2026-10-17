@@ -1,0 +1,102 @@
+{
+ "qid": "Q000007250",
+ "image": "Q000007250.png",
+ "takeaway": "Alpha motor neurons sit in lamina IX of the spinal cord grey matter and innervate extrafusal muscle fibres.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "The spinal cord grey matter has 10 laminae on each side. Which lamina contains the alpha motor neurons?"
+ },
+ "answer": {
+  "text": "Lamina IX"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1,
+   "spot": [
+    768,
+    512,
+    60
+   ]
+  },
+  {
+   "x": 330,
+   "y": 330,
+   "z": 2,
+   "spot": [
+    330,
+    380,
+    260
+   ]
+  },
+  {
+   "x": 600,
+   "y": 620,
+   "z": 2,
+   "spot": [
+    610,
+    650,
+    170
+   ]
+  },
+  {
+   "x": 680,
+   "y": 300,
+   "z": 2,
+   "spot": [
+    700,
+    320,
+    210
+   ]
+  },
+  {
+   "x": 1350,
+   "y": 450,
+   "z": 2,
+   "spot": [
+    1350,
+    420,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The spinal cord grey matter is stacked in ten laminae.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Laminae one to six form the dorsal horn, so the upper steps are out.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Laminae seven to nine sit in the ventral horn.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Alpha motor neurons are big, strong cells, standing on lamina nine.",
+   "shot": 2,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Lamina ten only borders the central canal.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Their axons supply extrafusal muscle fibres.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the answer is lamina nine.",
+   "shot": 3,
+   "dir": "warm, reassuring"
+  }
+ ]
+}
