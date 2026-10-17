@@ -69,9 +69,9 @@ def check(out: Path, video: Path, reel: dict, cues: dict, layout: dict) -> dict:
         if x["bottom"] > 720: fails.append(f"headline '{x['id']}' runs to y={x['bottom']:.0f}, below the headline band")
     over = [x for x in layout.get("overflow", []) if x]
     if over: fails.append("text overflows its box: " + ", ".join(over))
-    L0 = reel["lesson"]["t0"]; E = reel["t"]["end"][0]
-    times = [("flag", 0.6), ("phone", 2.2), ("every", 3.0), ("video", 4.6), ("home", 5.9), ("podium", 7.3), ("list", 8.9),
-             ("back", 10.5), ("tap", L0 - 0.3), ("lesson", L0 + 4), ("lesson", L0 + (E - L0) * 0.5), ("lesson", E - 2), ("end", E + 2.5), ("end", T - 0.2)]
+    if layout.get("hidden"): fails.append("book covers hidden behind another layer: " + ", ".join(layout["hidden"]))
+    import reel as _r
+    times = [(k[2:], v) for k, v in sorted(_r.sample_times(reel, cues).items())] + [("final", T - 0.2)]
     s = sheet(video, times, out)
     report = {"pass": not fails, "fails": fails, "video": str(video), "seconds": round(vd, 2), "size_mb": round(size / 2 ** 20, 1),
               "loudness_lufs": i, "true_peak_dbtp": tp, "sheet": str(s),

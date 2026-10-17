@@ -40,6 +40,32 @@ def load_lesson(zip_path: Path, qid: str) -> dict:
             "book": q["book_id"], "chapter": int(q["chapter_id"]), "number": int(str(q["source_number"]).strip())}
 
 
+def lesson_marks(scene: dict) -> dict:
+    """The lesson's own clock (ms): question, answer reveal, first story line, the 'Remember' line."""
+    import re
+    m = re.search(r"const L = (\{.*?\});\n", scene.get("script", ""), re.S)
+    if not m:
+        raise SystemExit("this lesson's player script has no timeline (L); update tools/kafu_reel for the new lesson format")
+    L = json.loads(m.group(1))
+    intro, cues = L.get("intro") or {}, L.get("cues") or []
+    a = intro.get("a") or {}
+    rem = next((c for c in cues if str(c.get("text", "")).lower().startswith("remember")), cues[-1] if cues else None)
+    return {"question": (intro.get("q") or {}).get("t", 0), "answer": (a.get("words") or [[a.get("t", 0)]])[0][0],
+            "story": cues[0]["t"] if cues else None, "remember": rem["t"] if rem else None}
+
+
+def sample_times(reel: dict, cues: dict) -> dict:
+    """Labelled moments every check looks at (stills and the QA sheet use the same list)."""
+    c, L0, L1 = cues, cues["lesson"][0], cues["lesson"][1]
+    t = {"a_flag": 0.6, "b_books": c["covers"][2] + 0.12, "c_books": c["covers"][-1] + 0.15, "d_fall": c["collapse"] + 0.3,
+         "e_every": c["land"] + 0.5, "f_card": c["swipes"][0] + 1.6, "g_home": c["taps"][0] - 0.05, "h_podium": c["highlights"][0] + 0.5,
+         "i_list": c["swipes"][1] + 1.35, "j_tap": c["taps"][1] - 0.05, "k_try": L0 + 4.0}
+    if c.get("answer"):
+        t["l_got"] = c["answer"] + 1.2
+    t.update({"m_story": L0 + (L1 - L0) * 0.6, "n_last": L1 - 1.5, "o_end": c["end"] + 2.5})
+    return t
+
+
 def config(path: Path | None) -> dict:
     cfg = json.loads((HERE / "config.default.json").read_text())
     if path:
@@ -51,7 +77,7 @@ def config(path: Path | None) -> dict:
 
 def plan(out: Path, lesson: dict, cfg: dict, qid: str) -> tuple[dict, dict, str]:
     geo = json.loads((out / "cap" / "geometry.json").read_text())
-    reel, cues = tl.build(geo, int(lesson["scene"]["duration_ms"]), cfg, qid, rd.CHANNEL, rd.ORIGIN)
+    reel, cues = tl.build(geo, int(lesson["scene"]["duration_ms"]), cfg, qid, rd.CHANNEL, rd.ORIGIN, lesson_marks(lesson["scene"]))
     (out / "reel_data.js").write_text("window.REEL=" + json.dumps(reel, ensure_ascii=False) + ";")
     (out / "plan.json").write_text(json.dumps({"cues": cues, "t": reel["t"]}, indent=1))
     html = rd.compile_lesson(lesson["scene"])
@@ -76,15 +102,13 @@ def main():
     if a.cmd in ("make", "capture"):
         t0 = time.time()
         cap.capture(out / "cap", lesson["book"], lesson["chapter"], lesson["number"], lesson["stem"], lesson["answer_text"],
-                    cfg.get("students_now"), a.chromium)
+                    cfg.get("students_now"), a.chromium, cfg["covers"])
         print(f"capture OK ({time.time() - t0:.0f} s)")
         if a.cmd == "capture":
             return
     reel, cues, html = plan(out, lesson, cfg, a.qid)
     if a.cmd == "stills":
-        T = reel["t"]; L0 = reel["lesson"]["t0"]
-        times = {"a_flag": 0.6, "b_fly": 1.95, "c_every": 2.9, "d_card": 4.5, "e_home": 5.95, "f_podium": 7.3, "g_list": 8.95,
-                 "h_back": 10.4, "i_tap": L0 - 0.25, "j_lesson": L0 + 6, "k_lesson2": L0 + 25, "l_end": T["end"][0] + 2.5}
+        times = sample_times(reel, cues)
         rd.stills(out, a.qid, html, times, out, a.chromium)
         print("stills OK:", out)
         return

@@ -51,23 +51,39 @@ def _router(work: Path, qid: str, lesson_html: str, blocked: list):
     return route
 
 
-def open_page(p, work: Path, qid: str, lesson_html: str, chromium: str | None):
-    br = p.chromium.launch(executable_path=chromium, args=["--force-color-profile=srgb"]) if chromium else \
-        p.chromium.launch(args=["--force-color-profile=srgb"])
-    ctx = br.new_context(viewport={"width": 1080, "height": 1920}, device_scale_factor=1)
-    blocked: list = []
-    errors: list = []
-    ctx.route("**/*", _router(work, qid, lesson_html, blocked))
-    pg = ctx.new_page()
-    pg.on("pageerror", lambda e: errors.append(str(e)))
-    pg.goto(ORIGIN + "/reel.html")
-    layout = pg.evaluate("window.ready")
-    pg.wait_for_function("window.lessonReady===true||window.lessonErrors.length>0", timeout=20000)
-    if pg.evaluate("window.lessonErrors.length"):
-        raise RuntimeError("the lesson card reported an error")
-    if errors:
-        raise RuntimeError("page errors: " + "; ".join(errors[:3]))
-    return br, pg, layout, blocked, errors
+# The lesson card stays in the page's process. Out of process (Chromium's default for sandboxed frames) it starts at
+# 0x0 until the page's next frame tells it its size, so it sometimes measured its text before it had a layout and
+# failed (getExtentOfChar), and its pixels could lag the page by a frame. The sandbox itself is unchanged.
+ARGS = ["--force-color-profile=srgb", "--disable-features=IsolateSandboxedIframes"]
+
+
+def open_page(p, work: Path, qid: str, lesson_html: str, chromium: str | None, tries: int = 3):
+    for attempt in range(1, tries + 1):
+        br = p.chromium.launch(executable_path=chromium, args=ARGS) if chromium else p.chromium.launch(args=ARGS)
+        ctx = br.new_context(viewport={"width": 1080, "height": 1920}, device_scale_factor=1)
+        blocked: list = []
+        errors: list = []
+        card: list = []
+        ctx.route("**/*", _router(work, qid, lesson_html, blocked))
+        pg = ctx.new_page()
+        pg.on("pageerror", lambda e: errors.append(str(e)))
+        pg.on("console", lambda m: card.append(m.text) if "motioncards error" in m.text else None)
+        pg.goto(ORIGIN + "/reel.html")
+        layout = pg.evaluate("window.ready")
+        pg.wait_for_function("window.lessonReady===true||window.lessonErrors.length>0", timeout=20000)
+        if not pg.evaluate("window.lessonErrors.length") and not errors:
+            return br, pg, layout, blocked, errors
+        br.close()
+        why = (card or errors or ["no message"])[0]
+        if attempt == tries:
+            raise RuntimeError(f"the lesson card failed to load {tries} times: {why}")
+        print(f"lesson card failed to load (try {attempt}): {why}; retrying", file=sys.stderr)
+
+
+def warm(pg, t: float) -> None:
+    """Draw t once and throw the picture away: after a jump in time the card's frame is painted fresh, not stale."""
+    frame(pg, t)
+    pg.screenshot(type="jpeg", quality=30)
 
 
 def frame(pg, t: float) -> None:
@@ -81,6 +97,7 @@ def stills(work: Path, qid: str, lesson_html: str, times: dict, out: Path, chrom
     with sync_playwright() as p:
         br, pg, layout, blocked, errors = open_page(p, work, qid, lesson_html, chromium)
         for name, t in times.items():
+            warm(pg, t)
             frame(pg, t)
             pg.screenshot(path=str(out / f"still_{name}.jpg"), type="jpeg", quality=85)
         br.close()
@@ -98,6 +115,7 @@ def _chunk(args) -> str:
         enc = subprocess.Popen(["ffmpeg", "-y", "-v", "error", "-f", "image2pipe", "-framerate", str(FPS), "-c:v", "mjpeg", "-i", "-",
                                 "-c:v", "libx264", "-preset", "slow", "-crf", "17", "-pix_fmt", "yuv420p", "-profile:v", "high",
                                 "-r", str(FPS), "-g", str(FPS * 2), str(path)], stdin=subprocess.PIPE)
+        warm(pg, a / FPS)
         for i in range(a, b):
             frame(pg, i / FPS)
             enc.stdin.write(pg.screenshot(type="jpeg", quality=95))

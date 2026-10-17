@@ -5,24 +5,91 @@
   "intro_ar": "البورد العراقي",
   "intro_en": "IRAQI BOARD",
   "every_en": "Every MCQ",
-  "every_hl": ["MCQ"],
+  "every_hl": [
+   "MCQ"
+  ],
   "video_en": "with a video explanation",
-  "video_hl": ["video", "explanation"],
+  "video_hl": [
+   "video",
+   "explanation"
+  ],
   "video_ar": "كل سؤال… مع شرح بالفيديو",
-  "video_ar_hl": ["بالفيديو"],
+  "video_ar_hl": [
+   "بالفيديو"
+  ],
   "leagues_en": "Weekly leagues",
-  "leagues_hl": ["leagues"],
+  "leagues_hl": [
+   "leagues"
+  ],
   "leagues_ar": "دوري أسبوعي · تنافس على الصدارة",
   "count_en": "{n} students studying now",
   "watch_en": "Tap to watch",
-  "watch_hl": ["watch"],
+  "watch_hl": [
+   "watch"
+  ],
   "watch_ar": "اضغط وشوف الشرح",
-  "lesson_en": "Every MCQ · video explanation",
-  "lesson_hl": ["video", "explanation"],
-  "lesson_ar": "شرح فيديو لكل سؤال",
   "end_iraqi": "تطبيق عراقي",
   "end_tag": "Every MCQ<br><span class=\"g\">Video explanation</span>",
-  "end_free": "Free · Link in bio",
-  "end_send": "Send to a friend sitting MRCS"
- }
+  "end_tag_ar": "كل سؤال… مع شرح بالفيديو",
+  "end_free_ar": "مجاني · الرابط بالبايو",
+  "end_free_en": "Free · Link in bio",
+  "end_send_ar": "دزّها لصاحبك اللي يدرس للبورد",
+  "books_en": "All your Board books",
+  "books_hl": [
+   "Board"
+  ],
+  "books_ar": "كل كتب البورد… بمكان واحد",
+  "mcq_word": "MCQs",
+  "try_en": "Answer before the video",
+  "try_hl": [
+   "before"
+  ],
+  "try_ar": "جاوب قبل لا يجاوب الفيديو",
+  "got_en": "Did you get it right?",
+  "got_hl": [
+   "right?"
+  ],
+  "got_ar": "جاوبت صح؟ اكتب جوابك بالتعليقات",
+  "trick_en": "Now the trick to never forget it",
+  "trick_hl": [
+   "never",
+   "forget"
+  ],
+  "trick_ar": "هسه الحيلة اللي تخليك ما تنساها",
+  "remember_en": "Remember this",
+  "remember_hl": [
+   "this"
+  ],
+  "remember_ar": "احفظ هاي"
+ },
+ "covers": [
+  [
+   "RUSH-SURGERY-6E",
+   "RUSH"
+  ],
+  [
+   "BAILEY-LOVE-MRCS-A-2E-2019",
+   "BAILEY"
+  ],
+  [
+   "SURGERY-REVIEW-ILLUSTRATED",
+   "ILLUSTRATED"
+  ],
+  [
+   "PASTEST-SHAHZAD-MRCS-PARTA-2E",
+   "PASTEST"
+  ],
+  [
+   "OXFORD-MRCS-A",
+   "OXFORD"
+  ],
+  [
+   "ABSITE-SLAYER-2013",
+   "ABSITE"
+  ],
+  [
+   "RAINS-1001-SURGERY-2E",
+   "1001"
+  ]
+ ]
 }

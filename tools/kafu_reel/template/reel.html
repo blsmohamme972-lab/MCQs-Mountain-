@@ -18,6 +18,10 @@ body{font-family:Fredoka,Nunito,sans-serif;color:#fff;-webkit-font-smoothing:ant
 #iqb{left:0;right:0;top:1090px;text-align:center}
 #iqb .ar{font-family:Cairo,sans-serif;font-weight:800;font-size:150px;line-height:1.08;text-shadow:0 10px 40px rgba(0,0,0,.65)}
 #iqb .en{font-family:Fredoka;font-weight:600;font-size:64px;letter-spacing:16px;color:var(--gold);margin-top:2px;text-shadow:0 6px 20px rgba(0,0,0,.6)}
+#deck .cover{position:absolute;left:310px;top:440px;width:460px;height:672px;border-radius:22px;background-size:cover;background-position:center;
+ box-shadow:0 34px 80px rgba(0,0,0,.65),0 0 0 5px rgba(255,255,255,.92)}
+#bword{left:0;right:0;top:1160px;text-align:center;font-family:Fredoka;font-weight:600;letter-spacing:-1px;line-height:1;text-shadow:0 8px 30px rgba(0,0,0,.7)}
+#bword .m{color:var(--gold)}
 /* phone */
 #scene3d{position:absolute;inset:0;perspective:2600px;perspective-origin:540px 960px}
 #phone{position:absolute;left:0;top:0;width:418px;height:940px;transform-origin:209px 470px;transform-style:preserve-3d}
@@ -58,23 +62,28 @@ iframe.lesson{position:absolute;border:0;background:#000}
 #brand .fl{width:50px;height:34px;border-radius:5px;background:url(img/flag_iq.svg) center/cover;box-shadow:0 2px 8px rgba(0,0,0,.4)}
 /* end card */
 #end{inset:0;background:radial-gradient(1200px 1000px at 50% 30%,#2a2f6b 0%,#161a3d 40%,#090c19 100%);opacity:0}
-#endlogo{left:0;right:0;top:250px;display:flex;align-items:center;justify-content:center;gap:26px;font-family:Fredoka;font-weight:600;font-size:118px}
+#endlogo{left:0;right:0;top:270px;display:flex;align-items:center;justify-content:center;gap:26px;font-family:Fredoka;font-weight:600;font-size:118px}
 #endlogo img{width:136px;height:136px;border-radius:34px;box-shadow:0 14px 40px rgba(0,0,0,.45)}
-#endiq{left:0;right:0;top:430px;display:flex;align-items:center;justify-content:center;gap:18px;font-family:Cairo;font-weight:800;font-size:58px;direction:rtl}
+#endiq{left:0;right:0;top:420px;display:flex;align-items:center;justify-content:center;gap:18px;font-family:Cairo;font-weight:800;font-size:58px;direction:rtl}
 #endiq .fl{width:78px;height:52px;border-radius:7px;background:url(img/flag_iq.svg) center/cover;box-shadow:0 3px 10px rgba(0,0,0,.4)}
-#endtag{left:40px;right:40px;top:540px;text-align:center;font-family:Fredoka;font-weight:600;font-size:76px;line-height:1.05}
+#endtag{left:40px;right:40px;top:538px;text-align:center;font-family:Fredoka;font-weight:600;font-size:76px;line-height:1.05}
 #endtag .g{color:var(--gold)}
-#endcta{left:0;right:0;top:1420px;display:flex;flex-direction:column;align-items:center;gap:22px}
-.pill{padding:18px 42px;border-radius:999px;font-family:Fredoka;font-weight:600;font-size:44px}
-.pill.free{background:#fff;color:#1b1f45}
-.pill.send{background:rgba(255,255,255,.12);border:3px solid rgba(255,255,255,.5);font-size:36px;display:flex;align-items:center;gap:14px}
+#endtagar{left:40px;right:40px;top:706px;text-align:center;font-family:Cairo,sans-serif;font-weight:800;font-size:50px;color:var(--soft);direction:rtl}
+/* the call to action stays above Instagram's caption and clear of its buttons (y <= 1560) */
+#endcta{left:0;right:0;top:1325px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.pill{padding:12px 46px;border-radius:999px;font-family:Cairo,sans-serif;font-weight:800;font-size:46px;line-height:1.35;direction:rtl}
+.pill.free{background:#fff;color:#1b1f45;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.ctaen{font-family:Fredoka;font-weight:600;font-size:34px;color:var(--soft)}
+.pill.send{background:rgba(255,255,255,.12);border:3px solid rgba(255,255,255,.5);font-size:36px;display:flex;align-items:center;gap:14px;margin-top:6px}
 .mini{position:absolute;width:418px;height:940px;transform-origin:209px 470px}
-#flash{inset:0;background:#fff;opacity:0;z-index:100}
-#wipe{inset:0;opacity:0;z-index:90;background:linear-gradient(90deg,rgba(124,108,255,0),rgba(124,108,255,.6),rgba(124,108,255,0))}
+/* full-frame overlays are not hit-tested, so the gate's cover check sees what lies under them */
+#flash{inset:0;background:#fff;opacity:0;z-index:100;pointer-events:none}
+#wipe{inset:0;opacity:0;z-index:90;pointer-events:none;background:linear-gradient(90deg,rgba(124,108,255,0),rgba(124,108,255,.6),rgba(124,108,255,0))}
 </style></head>
 <body><div id="stage">
  <div id="glow" class="abs"></div>
  <div id="flagbg" class="abs"><canvas id="flagbgc" width="1200" height="900"></canvas></div>
+ <div id="deck" class="abs" style="inset:0"></div><div id="bword" class="abs"></div>
  <div id="scene3d"><div id="phone"><div id="phShadow" class="abs"></div><div id="phBack" class="abs"></div>
   <div id="phBody" class="abs"><div class="btn" style="left:-4px;top:200px;width:6px;height:44px"></div><div class="btn" style="left:-4px;top:268px;width:6px;height:80px"></div>
    <div class="btn" style="left:-4px;top:362px;width:6px;height:80px"></div><div class="btn" style="right:-4px;top:300px;width:6px;height:120px"></div>
@@ -89,8 +98,8 @@ iframe.lesson{position:absolute;border:0;background:#000}
  <div id="scrim" class="abs" style="left:0;right:0;top:0;height:780px;background:linear-gradient(180deg,rgba(9,12,25,.97) 0%,rgba(9,12,25,.93) 58%,rgba(9,12,25,.6) 80%,rgba(9,12,25,0) 100%);opacity:0"></div><div id="texts"></div>
  <div id="brand" class="abs"><img class="logo"><span>kafu</span><i class="fl"></i></div>
  <div id="end" class="abs"><div id="minis"></div><div id="endlogo" class="abs"><img class="logo"><span>Kafu</span></div>
-  <div id="endiq" class="abs"><span id="endiqt"></span><i class="fl"></i></div><div id="endtag" class="abs"></div>
-  <div id="endcta" class="abs"><div class="pill free" id="endfree"></div><div class="pill send"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg><span id="endsend"></span></div></div></div>
+  <div id="endiq" class="abs"><span id="endiqt"></span><i class="fl"></i></div><div id="endtag" class="abs"></div><div id="endtagar" class="abs"></div>
+  <div id="endcta" class="abs"><div class="pill free" id="endfree"></div><div class="ctaen" id="endfreeen"></div><div class="pill send"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg><span id="endsend"></span></div></div></div>
  <div id="wipe" class="abs"></div><div id="flash" class="abs"></div>
 </div>
 <script src="reel_data.js"></script>
@@ -108,7 +117,8 @@ function track(keys,t){if(t<=keys[0].t)return keys[0];if(t>=keys[keys.length-1].
 // ---------- static DOM
 document.querySelectorAll('img.logo').forEach(i=>i.src='img/kafu.svg');
 $('iqb').querySelector('.ar').textContent=R.text.intro_ar;$('iqb').querySelector('.en').textContent=R.text.intro_en;
-$('endiqt').textContent=R.text.end_iraqi;$('endtag').innerHTML=R.text.end_tag;$('endfree').textContent=R.text.end_free;$('endsend').textContent=R.text.end_send;
+$('endiqt').textContent=R.text.end_iraqi;$('endtag').innerHTML=R.text.end_tag;$('endtagar').textContent=R.text.end_tag_ar;
+$('endfree').textContent=R.text.end_free_ar;$('endfreeen').textContent=R.text.end_free_en;$('endsend').textContent=R.text.end_send_ar;
 const SC={};
 for(const [name,s] of Object.entries(R.screens)){
  const d=document.createElement('div');d.className='scr';d.style.background=s.bg;
@@ -130,12 +140,16 @@ if(R.lesson){const P=SC[R.lesson.screen],st=R.lesson.stage;
  P.ov.appendChild(t);P.time=t;
  const r=R.lesson.range,rg=document.createElement('div');rg.className='prange';Object.assign(rg.style,{left:r.x+'px',top:r.y+'px',width:r.w+'px',height:r.h+'px'});
  rg.innerHTML=`<div class="tr" style="background:${R.lesson.colors.track};opacity:.35"></div><div class="fi" style="background:${R.lesson.colors.thumb}"></div><div class="th" style="background:${R.lesson.colors.thumb};box-shadow:0 0 0 3px rgba(255,255,255,.9)"></div>`;
- P.ov.appendChild(rg);P.range=rg}
-let port=null,pending=null;window.lessonReady=false;window.lessonErrors=[];
+ P.ov.appendChild(rg);P.range=rg;
+ // while the card loads it must be on screen: Chromium throttles a hidden or off-screen cross-origin frame, and the card
+ // then cannot measure its text (getExtentOfChar fails). So its screen sits on top, scrolled to the stage, until 'ready'.
+ P.doc.style.transform=`translateY(${-R.lesson.sy}px)`;P.el.style.zIndex=99}
+let port=null,pending=null,lessonDone=null;window.lessonReady=false;window.lessonErrors=[];
+const lessonLoaded=new Promise(res=>{lessonDone=res;if(!R.lesson)res()});
 addEventListener('message',ev=>{const m=ev.data;if(!lessonFrame||ev.source!==lessonFrame.contentWindow||!m||m.type!=='kafu-motioncards-ready')return;
  const ch=new MessageChannel();port=ch.port1;port.onmessage=e=>{const x=e.data;
-  if(x.type==='ready')window.lessonReady=true;
-  else if(x.type==='error'){window.lessonErrors.push('card error');if(pending)pending.rej(new Error('card_error'))}
+  if(x.type==='ready'){window.lessonReady=true;lessonDone()}
+  else if(x.type==='error'){window.lessonErrors.push('card error');lessonDone();if(pending)pending.rej(new Error('card_error'))}
   else if((x.type==='state'||x.type==='ended')&&pending&&x.time_ms===pending.ms){const p=pending;pending=null;p.res(x.type)}};
  port.start();lessonFrame.contentWindow.postMessage({type:'connect',protocol:1,channel_id:R.lesson.channel,qid:R.lesson.qid},'*',[ch.port2])});
 window.lessonSeek=ms=>new Promise((res,rej)=>{pending={ms,res,rej};port.postMessage({type:'seek',protocol:1,channel_id:R.lesson.channel,qid:R.lesson.qid,time_ms:ms});setTimeout(()=>rej(new Error('seek_timeout')),5000)});
@@ -146,6 +160,9 @@ const TX=R.texts.map(x=>{const box=document.createElement('div');box.className='
   r.text.split(' ').forEach(w=>{const s=document.createElement('span');s.className='w';const hl=(r.hl||[]).includes(w.replace(/[.,!…]/g,''));
    s.textContent=w;if(hl)s.style.color=r.hlColor||'var(--gold)';row.appendChild(s);words.push({el:s,i:words.length})});box.appendChild(row)});
  $('texts').appendChild(box);return{x,box,words}});
+// book covers (the opening montage); each word punches in from PUNCH x its size
+const PUNCH=1.2;
+const COV=(R.covers||[]).map((c,i)=>{const d=document.createElement('div');d.className='cover';d.style.backgroundImage=`url(${c.file})`;$('deck').appendChild(d);return{d,c}});
 // flag canvases
 const FW=1180,FH=787,FS=2,fsrc=document.createElement('canvas');fsrc.width=FW*FS;fsrc.height=FH*FS;let flagReady=false;
 const fimg=new Image();fimg.src='img/flag_iq.svg';
@@ -168,7 +185,7 @@ const minis=(R.end.phones||[]).map(m=>{const ph=document.createElement('div');ph
 // ---------- frame
 let lastScreens='';
 window.render=function(t){
- const T=R.t;
+ const T=R.t,M=R.montage;
  // background flag (faint) + glow
  const fbv=R.flagbg?Math.min(seg(t,R.flagbg[0],R.flagbg[0]+.6),1-seg(t,R.flagbg[1]-.6,R.flagbg[1]))*R.flagbg[2]:0;
  $('flagbg').style.opacity=fbv;if(fbv>0)drawFlag(fbctx,1200,900,t,1,.7);
@@ -178,9 +195,26 @@ window.render=function(t){
  const fz=lerp(1.32,1,EASE.out5(seg(t,0,.7)))*lerp(1,.42,EASE.io(seg(t,T.flag_out[0],T.flag_out[1])));
  const fy=lerp(0,-560,EASE.io(seg(t,T.flag_out[0],T.flag_out[1])));
  $('flag').style.transform=`translateY(${fy}px) scale(${fz}) rotate(${-2+1.5*Math.sin(t*1.3)}deg)`;
- if(fo>0)drawFlag(fctx,FW,887,t,1,1);
- const iv=Math.min(seg(t,.06,.22),1-seg(t,T.flag_out[0]-.1,T.flag_out[0]+.15));$('iqb').style.opacity=iv;
- $('iqb').style.transform=`translateY(${(1-EASE.out5(seg(t,.06,.4)))*40}px) scale(${lerp(1.35,1,EASE.out5(seg(t,.06,.34)))})`;
+ if(fo>0)drawFlag(fctx,FW,887,t,M?1-.5*seg(t,M.covers0-.1,M.covers0+.2):1,1);
+ // the title leaves just before the first book lands, so the book's word never sits on top of it
+ const c0=M?M.covers0:T.flag_out[0],ix=seg(t,c0-.2,c0-.02),iv=Math.min(seg(t,.06,.22),1-ix);$('iqb').style.opacity=iv;
+ $('iqb').style.transform=`translateY(${(1-EASE.out5(seg(t,.06,.4)))*40}px) scale(${lerp(1.35,1,EASE.out5(seg(t,.06,.34)))*lerp(1,.92,EASE.in(ix))})`;
+ // book covers slam in over the dimmed flag, then fall into the phone
+ let shake=0,flashK=0,wi=-1;
+ COV.forEach(({d,c},i)=>{const a=c.t,p=seg(t,a,a+.16),col=M?seg(t,M.collapse[0],M.collapse[1]):0;
+  const after=clamp((t-a)/.25,0,8),depth=Math.max(0,after-1),ce=EASE.in(col);
+  const sc=lerp(1.45,1,EASE.out5(p))*(1-.06*Math.min(depth,4))*lerp(1,.12,ce);
+  const rot=c.rot*(1-EASE.out5(p))*3+c.rot*(1-ce);
+  const dx=c.dx*Math.min(1,depth)*(1-ce),dy=c.dy*Math.min(1,depth)*(1-ce)+ce*(M?M.toY:0);
+  // z-index from 1: every book (the first one too) sits above the flag, which comes later in the page
+  d.style.opacity=t<a?0:Math.min(seg(t,a,a+.05),1-seg(t,M.collapse[1]-.08,M.collapse[1]));d.style.zIndex=i+1;
+  d.style.transform=`translate(${dx}px,${dy}px) rotate(${rot}deg) scale(${sc})`;d.style.filter=p<1?`blur(${(1-p)*7}px)`:'none';
+  if(t>=a&&t<a+.12){shake=Math.max(shake,1-(t-a)/.12);flashK=Math.max(flashK,.2*(1-(t-a)/.12))}if(t>=a)wi=i});
+ // the book's word, gone before the phone flies up through it
+ const wv=M&&wi>=0?1-seg(t,T.phone_in,T.phone_in+.1):0;$('bword').style.opacity=wv;
+ if(wv>0){const c=COV[wi].c;if($('bword').dataset.i!=wi){$('bword').dataset.i=wi;$('bword').innerHTML=`${c.word} <span class="m">${R.text.mcq_word}</span>`;$('bword').style.fontSize=c.fs+'px'}
+  $('bword').style.transform=`scale(${lerp(PUNCH,1,EASE.out5(seg(t,c.t,c.t+.12)))})`}
+ $('stage').style.transform=shake?`translate(${Math.sin(t*90)*12*shake}px,${Math.cos(t*77)*12*shake}px)`:'none';
  // phone pose
  const pv=Math.min(seg(t,T.phone_in-.05,T.phone_in+.12),1-seg(t,T.end[0]-.05,T.end[0]+.3));
  const P=track(R.phone,t);
@@ -192,8 +226,9 @@ window.render=function(t){
  let lessonMs=null;
  const vis=[];
  R.segments.forEach((sg,i)=>{if(t<sg.t0-0.001||t>sg.t1+(sg.out||0))return;vis.push([sg,i])});
- for(const s of Object.values(SC))s.el.style.display='none';
- vis.forEach(([sg,i])=>{const S=SC[sg.screen],el=S.el;el.style.display='block';
+ // hidden screens keep their layout (visibility, not display): the lesson card measures its text while loading
+ for(const s of Object.values(SC))s.el.style.visibility='hidden';
+ vis.forEach(([sg,i])=>{const S=SC[sg.screen],el=S.el;el.style.visibility='visible';
   const sc=track(sg.scroll,t).y;S.doc.style.transform=`translateY(${-sc}px)`;
   const fn=clamp(sc/14,0,1);S.f0.style.opacity=1-fn;S.fN.style.opacity=fn;
   // enter transition
@@ -226,17 +261,32 @@ window.render=function(t){
  // end card
  const ev=seg(t,T.end[0],T.end[0]+.4);$('end').style.opacity=ev;
  $('endlogo').style.transform=`scale(${lerp(.82,1,EASE.back(seg(t,T.end[0]+.05,T.end[0]+.6)))})`;
- $('endiq').style.opacity=seg(t,T.end[0]+.3,T.end[0]+.6);$('endtag').style.opacity=seg(t,T.end[0]+.45,T.end[0]+.8);
+ $('endiq').style.opacity=seg(t,T.end[0]+.3,T.end[0]+.6);$('endtag').style.opacity=seg(t,T.end[0]+.45,T.end[0]+.8);$('endtagar').style.opacity=seg(t,T.end[0]+.6,T.end[0]+.95);
  $('endcta').style.opacity=seg(t,T.end[0]+.7,T.end[0]+1.1);
  minis.forEach(({ph,m},k)=>{const p=EASE.out5(seg(t,T.end[0]+.15+.12*k,T.end[0]+.95+.12*k)),dr=Math.sin((t-T.end[0])*1.1+k)*8;
   ph.style.opacity=p;ph.style.transform=`translate3d(${m.x-209}px,${m.y-470+(1-p)*260+dr}px,0) rotateY(${m.ry}deg) rotateZ(${m.rz}deg) scale(${m.s})`});
  // wipe flashes
- let fl=0;for(const k of R.flashes||[])if(t>=k[0]&&t<k[0]+k[1])fl=Math.max(fl,k[2]*(1-(t-k[0])/k[1]));$('flash').style.opacity=fl;
+ let fl=flashK;for(const k of R.flashes||[])if(t>=k[0]&&t<k[0]+k[1])fl=Math.max(fl,k[2]*(1-(t-k[0])/k[1]));$('flash').style.opacity=fl;
  return lessonMs};
-const pre=[...document.images].map(i=>i.decode().catch(()=>0));
-window.ready=Promise.all([document.fonts.ready,flagLoad,...pre]).then(()=>{const overflow=[];
+const pre=[...document.images].map(i=>i.decode().catch(()=>0)).concat((R.covers||[]).map(c=>{const i=new Image();i.src=c.file;return i.decode().catch(()=>0)}));
+// the first frame (which hides the card's screen) waits for the card, or for 20 s (then Python reports the failure)
+const lessonWait=Promise.race([lessonLoaded,new Promise(r=>setTimeout(r,20000))]);
+window.ready=Promise.all([document.fonts.ready,flagLoad,...pre,lessonWait]).then(()=>{const overflow=[];
  const texts=TX.map(({x,box})=>{box.style.display='block';const r=box.getBoundingClientRect();
   box.querySelectorAll('.w').forEach(w=>{const b=w.getBoundingClientRect();if(b.left<40||b.right>1040)overflow.push(x.id+':'+w.textContent)});
   box.style.display='none';return{id:x.id,top:r.top,bottom:r.bottom,height:r.height}});
- render(0);return{texts,overflow}});
+ // each book's word: the largest size (up to 128 px) that still fits the frame at the punch-in scale
+ COV.forEach(({c})=>{const b=$('bword');b.innerHTML=`${c.word} <span class="m">${R.text.mcq_word}</span>`;b.style.fontSize='100px';
+  const g=document.createRange();g.selectNodeContents(b);c.fs=Math.min(128,Math.floor(100*980/(g.getBoundingClientRect().width*PUNCH)))});
+ delete $('bword').dataset.i;
+ // end card: every line on one line inside the frame, the call to action above Instagram's caption
+ const lines=(el,n)=>{const g=document.createRange();g.selectNodeContents(el);const rs=[...g.getClientRects()],ys=new Set(rs.map(b=>Math.round(b.top/10)));
+  if(rs.some(b=>b.left<40||b.right>1040)||ys.size>n)overflow.push('end:'+el.textContent.replace(/\s+/g,' ').trim())};
+ lines($('endiqt'),1);lines($('endtag'),2);lines($('endtagar'),1);lines($('endfree'),1);lines($('endfreeen'),1);lines($('endsend'),1);
+ if($('endcta').getBoundingClientRect().bottom>1565)overflow.push('end: the call to action runs below y=1565 (Instagram caption)');
+ // every book must be on top while it is shown (the first one was once hidden behind the flag)
+ const shown=e=>{for(;e;e=e.parentElement)if(+getComputedStyle(e).opacity===0)return false;return true};
+ const hidden=[];COV.forEach(({d,c})=>{render(c.t+.2);const b=d.getBoundingClientRect();
+  if(document.elementsFromPoint(b.left+b.width/2,b.top+b.height/2).find(shown)!==d)hidden.push(c.word)});
+ render(0);return{texts,overflow,hidden}});
 </script></body></html>

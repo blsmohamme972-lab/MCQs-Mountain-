@@ -105,13 +105,35 @@ def _tab(pg, v: str, wait: int):
     pg.wait_for_timeout(wait)
 
 
+def covers(out: Path, wanted: list) -> list:
+    """Download the book covers the opening shows (the app's own catalogue images)."""
+    req = urllib.request.Request(CATALOG_URL, headers={"User-Agent": "kafu-reel/1.0 (+capture)"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        books = {b["id"]: b for b in json.load(r).get("books", [])}
+    got = []
+    (out / "covers").mkdir(parents=True, exist_ok=True)
+    for book_id, word in wanted:
+        b = books.get(book_id)
+        if not b or not b.get("cover_url"):
+            continue
+        ext = b["cover_url"].split("?")[0].rsplit(".", 1)[-1]
+        f = out / "covers" / f"{book_id}.{ext}"
+        rq = urllib.request.Request(b["cover_url"], headers={"User-Agent": "kafu-reel/1.0 (+capture)"})
+        with urllib.request.urlopen(rq, timeout=30) as r:
+            f.write_bytes(r.read())
+        got.append({"id": book_id, "word": word, "file": f"cap/covers/{f.name}"})
+    if len(got) < 5:
+        raise CaptureError(f"only {len(got)} book covers could be downloaded (5 or more needed)")
+    return got
+
+
 def capture(out: Path, book_id: str, chapter_id: int, number: int, stem: str, answer_text: str,
-            students_now: int | None = None, chromium: str | None = None) -> dict:
+            students_now: int | None = None, chromium: str | None = None, cover_list: list | None = None) -> dict:
     from playwright.sync_api import sync_playwright
     out.mkdir(parents=True, exist_ok=True)
     book_title, chapter_title = catalog_entry(book_id, chapter_id)
     geo: dict = {"view": VIEW, "dpr": 3, "app": APP_URL, "book": book_title, "chapter": chapter_title, "number": number,
-                 "students_now": students_now}
+                 "students_now": students_now, "covers": covers(out, cover_list or [])}
     with sync_playwright() as p:
         br, pg = _open(p, chromium)
         try:

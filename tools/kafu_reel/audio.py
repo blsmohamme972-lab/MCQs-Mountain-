@@ -170,7 +170,9 @@ def mix(voice_bytes: bytes, cues: dict, cfg: dict, out: Path) -> Path:
     sfx = np.zeros(N, np.float32)
     _put(sfx, kick(100, 30, 1.1, 0.6), cues["boom"], 1.4); _put(sfx, tone(46, 1.6, 0.002, 0.7) * 0.8, cues["boom"])
     _put(sfx, whoosh(0.7, False, 0.8), cues["boom"] - 0.02)
-    _put(sfx, riser(0.55), cues["phone_in"] - 0.5, 0.6); _put(sfx, whoosh(0.75, True, 0.9), cues["phone_in"])
+    for t in cues.get("covers", []):
+        _put(sfx, kick(150, 46, 0.32, 0.4), t, 0.75); _put(sfx, hat(), t + 0.125, 0.7)
+    _put(sfx, riser(0.5), cues["collapse"] - 0.45, 0.55); _put(sfx, whoosh(0.75, True, 0.9), cues["phone_in"])
     _put(sfx, kick(90, 40, 0.3, 0.1), cues["land"], 0.5)
     for t in cues["texts"]:
         _put(sfx, pop(620), t, 0.28)
@@ -183,8 +185,10 @@ def mix(voice_bytes: bytes, cues: dict, cfg: dict, out: Path) -> Path:
     for t in cues["highlights"]:
         _put(sfx, sparkle(), t, 0.8)
     _put(sfx, pop(880), cues["play"], 0.45)
+    if cues.get("answer"):
+        _put(sfx, chime([659.3, 830.6, 987.8], 0.06, 0.5), cues["answer"], 0.55)
     _put(sfx, whoosh(0.6, True, 0.6), cues["end"] - 0.1); _put(sfx, chime([523.3, 659.3, 784.0, 1046.5], 0.09, 0.7), cues["end"] + 0.15, 0.9)
-    bed = music(T, groove=[(0.0, L0 - 0.2), (cues["end"], T)], pad_on=[(0.0, T)])
+    bed = music(T, groove=[(cues["land"] - 0.1, L0 - 0.2), (cues["end"], T)], pad_on=[(0.0, T)])
     # duck the bed under the voice
     env = _lp(np.abs(voice), 4800); env /= env.max() + 1e-9
     bed *= 1 - 0.78 * np.clip(env * 4, 0, 1)
