@@ -1,0 +1,107 @@
+{
+ "slot": "38",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000281",
+  "Q000000282"
+ ],
+ "lines": [
+  {
+   "id": "Q000000281-q",
+   "voice": "student-man",
+   "dir": "clear, curious",
+   "text": "A thirty-year-old man has polyuria and polydipsia, with a fasting glucose of four point seven. His calcium is high at two point eight five, his phosphate is low at zero point four, and his parathyroid hormone is four point two, inside the normal range. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000281-a",
+   "voice": "student-man",
+   "dir": "calm, confident",
+   "text": "The answer is primary hyperparathyroidism."
+  },
+  {
+   "id": "Q000000281-01",
+   "voice": "student-man",
+   "dir": "warm, curious",
+   "text": "This thirsty man gulps from the jug. That is polydipsia."
+  },
+  {
+   "id": "Q000000281-02",
+   "voice": "student-man",
+   "dir": "warm, amused",
+   "text": "(laugh) And the toilet chases after him. That is polyuria."
+  },
+  {
+   "id": "Q000000281-03",
+   "voice": "student-man",
+   "dir": "clear, steady",
+   "text": "His glucose is normal, so this is not diabetes. But calcium is high, two point eight five."
+  },
+  {
+   "id": "Q000000281-04",
+   "voice": "student-man",
+   "dir": "clear, explanatory",
+   "text": "High calcium should switch parathyroid hormone off. Yet P T H keeps shouting at four point two."
+  },
+  {
+   "id": "Q000000281-05",
+   "voice": "student-man",
+   "dir": "calm, explanatory",
+   "text": "The high calcium fails to suppress P T H, so a parathyroid adenoma is the most likely cause."
+  },
+  {
+   "id": "Q000000281-06",
+   "voice": "student-man",
+   "dir": "slow, firm",
+   "text": "Remember: high calcium with an unsuppressed parathyroid hormone is primary hyperparathyroidism."
+  },
+  {
+   "id": "Q000000282-q",
+   "voice": "lecturer-woman",
+   "dir": "clear, curious",
+   "text": "A fifty-year-old woman has tingling in her hands and feet, and her hand goes into carpal spasm when her blood pressure is taken. Her calcium is low at one point eight five, and her parathyroid hormone is high at eighty. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000282-a",
+   "voice": "lecturer-woman",
+   "dir": "calm, confident",
+   "text": "The answer is secondary hyperparathyroidism."
+  },
+  {
+   "id": "Q000000282-01",
+   "voice": "lecturer-woman",
+   "dir": "warm, concerned",
+   "text": "Sparks of tingling run through her hands and feet: pins and needles in the peripheries."
+  },
+  {
+   "id": "Q000000282-02",
+   "voice": "lecturer-woman",
+   "dir": "clear, steady",
+   "text": "When the blood pressure cuff goes up, her hand clenches into carpal spasm. That is Trousseau's sign."
+  },
+  {
+   "id": "Q000000282-03",
+   "voice": "lecturer-woman",
+   "dir": "clear, steady",
+   "text": "Her calcium is low, one point eight five. This is symptomatic hypocalcaemia."
+  },
+  {
+   "id": "Q000000282-04",
+   "voice": "lecturer-woman",
+   "dir": "clear, explanatory",
+   "text": "The parathyroid hormone shouts back at eighty, far above normal, answering the low calcium."
+  },
+  {
+   "id": "Q000000282-05",
+   "voice": "lecturer-woman",
+   "dir": "calm, explanatory",
+   "text": "(sigh) Tap gently over her facial nerve, and her face would twitch. That is Chvostek's sign."
+  },
+  {
+   "id": "Q000000282-06",
+   "voice": "lecturer-woman",
+   "dir": "slow, firm",
+   "text": "Remember: low calcium with a high parathyroid hormone is secondary hyperparathyroidism."
+  }
+ ]
+}

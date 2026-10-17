@@ -1,0 +1,113 @@
+{
+ "slot": "39",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000289",
+  "Q000000290"
+ ],
+ "lines": [
+  {
+   "id": "Q000000289-q",
+   "voice": "doctor-man",
+   "dir": "clear, curious",
+   "text": "In wound healing, which cells are responsible for wound contraction?"
+  },
+  {
+   "id": "Q000000289-a",
+   "voice": "doctor-man",
+   "dir": "calm, confident",
+   "text": "The answer is fibroblasts."
+  },
+  {
+   "id": "Q000000289-01",
+   "voice": "doctor-man",
+   "dir": "warm, playful",
+   "text": "Meet the purple fibroblasts. Each one grabs a rope tied across the wound."
+  },
+  {
+   "id": "Q000000289-02",
+   "voice": "doctor-man",
+   "dir": "clear, steady",
+   "text": "Together they pull hard from both sides. This is wound contraction."
+  },
+  {
+   "id": "Q000000289-03",
+   "voice": "doctor-man",
+   "dir": "warm, amused",
+   "text": "(laugh) The two smiling wound edges are drawn together, and the gap closes."
+  },
+  {
+   "id": "Q000000289-04",
+   "voice": "doctor-man",
+   "dir": "calm, explanatory",
+   "text": "Macrophages have another job. They engulf foreign matter by phagocytosis and release cytokines for inflammation and healing."
+  },
+  {
+   "id": "Q000000289-05",
+   "voice": "doctor-man",
+   "dir": "calm, explanatory",
+   "text": "Reticulocytes are immature red blood cells, with no real role in wound contraction."
+  },
+  {
+   "id": "Q000000289-06",
+   "voice": "doctor-man",
+   "dir": "slow, firm",
+   "text": "Remember: in wound contraction, fibroblasts pull the two wound edges together."
+  },
+  {
+   "id": "Q000000290-q",
+   "voice": "student-woman",
+   "dir": "clear, curious",
+   "text": "Which is a feature of an adenoma?"
+  },
+  {
+   "id": "Q000000290-a",
+   "voice": "student-woman",
+   "dir": "calm, confident",
+   "text": "The answer is: typically encapsulated."
+  },
+  {
+   "id": "Q000000290-01",
+   "voice": "student-woman",
+   "dir": "warm, curious",
+   "text": "Here is a calm adenoma, a benign tumour, resting on its red cushion."
+  },
+  {
+   "id": "Q000000290-02",
+   "voice": "student-woman",
+   "dir": "clear, steady",
+   "text": "It sits inside a clear bubble. Adenomas are typically encapsulated."
+  },
+  {
+   "id": "Q000000290-03",
+   "voice": "student-woman",
+   "dir": "warm, explanatory",
+   "text": "(sigh) Look at the squashed cells below. As it grows slowly, it compresses the normal tissue around it."
+  },
+  {
+   "id": "Q000000290-04",
+   "voice": "student-woman",
+   "dir": "clear, steady",
+   "text": "That compressed tissue forms a pseudocapsule."
+  },
+  {
+   "id": "Q000000290-05",
+   "voice": "student-woman",
+   "dir": "calm, explanatory",
+   "text": "Some cells may be dysplastic, but they cannot invade the basement membrane or metastasize, so it is still benign."
+  },
+  {
+   "id": "Q000000290-06",
+   "voice": "student-woman",
+   "dir": "serious, steady",
+   "text": "Dysplasia is a step toward malignancy, and severe dysplasia is the same as carcinoma in situ."
+  },
+  {
+   "id": "Q000000290-07",
+   "voice": "student-woman",
+   "dir": "slow, firm",
+   "text": "Remember: an adenoma is a slow-growing, benign tumour, typically encapsulated."
+  }
+ ]
+}

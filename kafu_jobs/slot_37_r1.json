@@ -1,0 +1,119 @@
+{
+ "slot": "37",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000273",
+  "Q000000274"
+ ],
+ "lines": [
+  {
+   "id": "Q000000273-q",
+   "voice": "lecturer-man",
+   "dir": "clear, curious",
+   "text": "An eighteen-year-old footballer has sudden pain in his right testicle, with no trauma and no fever. There is a small, very tender lump on its upper pole, and the testicle lies normally. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000273-a",
+   "voice": "lecturer-man",
+   "dir": "calm, confident",
+   "text": "The answer is torsion of the hydatid of Morgagni."
+  },
+  {
+   "id": "Q000000273-01",
+   "voice": "lecturer-man",
+   "dir": "warm, concerned",
+   "text": "This young footballer is suddenly in pain, with no trauma."
+  },
+  {
+   "id": "Q000000273-02",
+   "voice": "lecturer-man",
+   "dir": "clear, steady",
+   "text": "The pain in his right testicle came on suddenly."
+  },
+  {
+   "id": "Q000000273-03",
+   "voice": "lecturer-man",
+   "dir": "clear, steady",
+   "text": "The testicle sits in its normal position."
+  },
+  {
+   "id": "Q000000273-04",
+   "voice": "lecturer-man",
+   "dir": "clear, curious",
+   "text": "On its upper pole sits a small, very tender lump."
+  },
+  {
+   "id": "Q000000273-05",
+   "voice": "lecturer-man",
+   "dir": "warm, playful",
+   "text": "(laugh) Meet the blue appendix testis, or hydatid of Morgagni: a Mullerian duct remnant at the top of the testis, now twisted."
+  },
+  {
+   "id": "Q000000273-06",
+   "voice": "lecturer-man",
+   "dir": "calm, explanatory",
+   "text": "It is comparable to the fimbriated end of the fallopian tube in females."
+  },
+  {
+   "id": "Q000000273-07",
+   "voice": "lecturer-man",
+   "dir": "slow, firm",
+   "text": "Remember: a tender upper pole lump with a normal testis is torsion of the hydatid of Morgagni."
+  },
+  {
+   "id": "Q000000274-q",
+   "voice": "doctor-woman",
+   "dir": "clear, curious",
+   "text": "A thirty-year-old man with seven years of ulcerative colitis has had fluctuating jaundice, right upper quadrant pain, and weight loss for six months. His alkaline phosphatase is twenty. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000274-a",
+   "voice": "doctor-woman",
+   "dir": "calm, confident",
+   "text": "The answer is primary sclerosing cholangitis."
+  },
+  {
+   "id": "Q000000274-01",
+   "voice": "doctor-woman",
+   "dir": "warm, curious",
+   "text": "He has had ulcerative colitis for seven years. His colon friend never leaves his side."
+  },
+  {
+   "id": "Q000000274-02",
+   "voice": "doctor-woman",
+   "dir": "clear, steady",
+   "text": "His jaundice comes and goes, flickering like this yellow light bulb."
+  },
+  {
+   "id": "Q000000274-03",
+   "voice": "doctor-woman",
+   "dir": "clear, steady",
+   "text": "He has pain in the right upper quadrant."
+  },
+  {
+   "id": "Q000000274-04",
+   "voice": "doctor-woman",
+   "dir": "grave, steady",
+   "text": "(sigh) And for six months he has been losing weight. His belt hangs loose."
+  },
+  {
+   "id": "Q000000274-05",
+   "voice": "doctor-woman",
+   "dir": "calm, explanatory",
+   "text": "Inside, the bile ducts are inflamed and scarred, so bile cannot flow to the gut. The cause is thought to be autoimmune."
+  },
+  {
+   "id": "Q000000274-06",
+   "voice": "doctor-woman",
+   "dir": "serious, steady",
+   "text": "This can lead to cirrhosis, liver failure and liver cancer."
+  },
+  {
+   "id": "Q000000274-07",
+   "voice": "doctor-woman",
+   "dir": "slow, firm",
+   "text": "Remember: ulcerative colitis with fluctuating jaundice points to primary sclerosing cholangitis."
+  }
+ ]
+}
