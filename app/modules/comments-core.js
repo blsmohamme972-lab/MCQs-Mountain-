@@ -5,7 +5,7 @@
   'use strict';
   const HEX=/^[a-f0-9]{64}$/,SHARD=/^Q\d{6}$/,AT=/^20\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ$/;
   const KINDS={tip:'Tip',mnemonic:'Mnemonic',clinical:'Clinical pearl',exam:'Exam tip'};
-  const REACTIONS=['👍','❤️','🔥','💯','🧠','👏','😂','😮'];
+  const REACTIONS=['👍','❤️','🔥','👏','🤣','🤔','🤯','🙏','💯','🤓','👀'];   // Telegram's own
   const VISIBLE=3,REPLIES=2,MAX_TOP=12,MAX_REPLIES=6,MAX_TEXT=600,MAX_LIKES=20;
   const shardOf=qid=>String(qid).slice(0,7);
   function validIndex(d,book){

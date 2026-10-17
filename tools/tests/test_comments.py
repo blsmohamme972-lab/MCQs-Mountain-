@@ -156,16 +156,16 @@ class ActivityTests(unittest.TestCase):
                     QIDS[1]: [{"author": B, "text": f"Fixture note {i}."} for i in range(12)]})
 
     def test_given_values_are_kept_and_checked(self):
-        given = {"at": "2026-10-01T08:30:00Z", "likes": 0, "react": ["❤", "🧠"]}
+        given = {"at": "2026-10-01T08:30:00Z", "likes": 0, "react": ["❤", "🤓"]}
         _, _, questions = C.validate_document(self.thread(**given), NAMES)
-        self.assertEqual({k: questions[QIDS[0]][0][k] for k in given}, {**given, "react": ["❤️", "🧠"]})
+        self.assertEqual({k: questions[QIDS[0]][0][k] for k in given}, {**given, "react": ["❤️", "🤓"]})
         filled = C.fill_activity("TEST-BOOK", questions, C.pack_time(NOW))
-        self.assertEqual({k: filled[QIDS[0]][0][k] for k in given}, {**given, "react": ["❤️", "🧠"]})
+        self.assertEqual({k: filled[QIDS[0]][0][k] for k in given}, {**given, "react": ["❤️", "🤓"]})
         for extra, needle in [({"at": "2026-10-17 10:00"}, "at must be"), ({"at": "2026-10-17T10:00:00"}, "at must be"),
                               ({"at": "2026-10-17T10:00:00.000Z"}, "at must be"), ({"at": "2019-12-31T10:00:00Z"}, "at must be"),
                               ({"at": "2026-02-30T10:00:00Z"}, "at must be"), ({"likes": 21}, "likes must be"),
                               ({"likes": -1}, "likes must be"), ({"likes": True}, "likes must be"), ({"likes": 3.0}, "likes must be"),
-                              ({"react": []}, "react must"), ({"react": ["👍", "🔥", "💯", "🧠"]}, "react must"),
+                              ({"react": []}, "react must"), ({"react": ["👍", "🔥", "💯", "🤓"]}, "react must"),
                               ({"react": ["👍", "👍"]}, "react must"), ({"react": ["🤡"]}, "react must"), ({"react": "👍"}, "react must")]:
             with self.subTest(extra=extra), self.assertRaisesRegex(C.PackError, needle):
                 C.validate_document(self.thread(**extra), NAMES)
@@ -215,6 +215,32 @@ class ActivityTests(unittest.TestCase):
         filled = C.fill_activity("TEST-BOOK", C.validate_document(source, NAMES)[2], C.pack_time(NOW))
         self.assertEqual([r["at"] for r in filled[QIDS[0]][0]["replies"]], ["2026-10-17T11:58:00Z", "2026-10-17T11:58:00Z"])
         self.assertLessEqual(filled[QIDS[1]][0]["at"], "2026-10-17T11:00:00Z", "a comment is never after its replies")
+
+    def test_reactions_and_likes_fit_what_a_comment_says(self):
+        cases = {"Fixture: why is the loop stronger?": "question", "شكراً دكتورة 🙏": "thanks", "Saved it, thanks guys": "thanks",
+                 "آني چنت ناسية النسب لحد ما حفظتها 😂": "funny", "مو بالضبط، الـ PCT استثناء": "correction",
+                 "ما چنت أعرف هالمعلومة": "wow", "Fixture pearl for the ward.": "clinical"}
+        for text, expected in cases.items():
+            self.assertEqual(C.tone({"text": text, "kind": "clinical"}), expected, text)
+        self.assertEqual(C.tone({"text": "Plain fixture note."}), "note")
+        questions = {f"Q00000{i:04d}": [{"author": A, "text": text, "kind": "clinical",
+                                         "replies": [{"author": B, "text": f"شكراً {i}"}, {"author": D, "text": f"Fixture {i}: but why?"}]}]
+                     for i, text in enumerate(list(cases) * 6)}
+        filled = C.fill_activity("TEST-BOOK", C.validate_document(doc(questions), NAMES)[2], C.pack_time(NOW))
+        for comments in filled.values():
+            for item in [comments[0], *comments[0]["replies"]]:
+                pool = C.TONES[C.tone(item)][0]
+                own = [e for e in C.REACTIONS if e in item["text"].replace("😂", "🤣")][:1]
+                self.assertTrue(set(item["react"]) <= set(pool) | set(own), item)
+                self.assertIn(own[0] if own else pool[0], item["react"], "the fitting emoji is always there")
+                low, high, _ = C.TONES[C.tone(item)][1]
+                self.assertTrue(1 <= item["likes"] <= high, item)
+        asking = [c[0]["replies"][1]["react"] for c in filled.values()]
+        self.assertTrue(all("🤔" in r for r in asking), "a question gets 🤔")
+        thanks = [r["likes"] for c in filled.values() for r in c[0]["replies"][:1]]
+        clinical = [c[0]["likes"] for c in filled.values() if C.tone(c[0]) == "clinical"]
+        self.assertLess(sum(thanks) / len(thanks), sum(clinical) / len(clinical), "a thank-you gets fewer likes than a pearl")
+        self.assertEqual(filled["Q000000001"][0]["react"][0], "🙏", "the emoji a comment uses comes first")
 
     def test_old_packs_without_activity_still_publish(self):
         with tempfile.TemporaryDirectory() as td:

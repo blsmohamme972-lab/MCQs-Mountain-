@@ -1,6 +1,6 @@
-/* Question comments: a bar above the question (locked until it is answered) and the comments after the explanation,
-   with posting times, likes and reactions. They are written by the Kafu characters (the Leaders personas, same
-   names and pictures); one line under the card's title says so. Students cannot post: the composer says comments
+/* Question comments: a bar above the question (locked until it is answered) and a row after the explanation open a
+   comments sheet, with posting times, likes and reactions. They are written by the Kafu characters (the Leaders
+   personas, same names and pictures); one line under the sheet's title says so. Students cannot post: the composer says comments
    are temporarily closed. Packs come from COMMENTS_<BOOK-ID>_rN.zip through the bot (docs/COMMENTS.md).
    Loaded lazily by comments-loader.js. Data: one small index per book, then the shard holding the question
    (content-addressed, so a cached copy is checked by its SHA-256). Everything fetched is kept in Cache Storage
@@ -77,10 +77,11 @@
       .finally(()=>pendingShards.delete(e.sha256)));
     return pendingShards.get(e.sha256);
   }
-  // What is known right now, without waiting: undefined = not loaded yet, null = no comments.
+  // What is known right now, without waiting: undefined = not loaded yet, null = the book has no comments (nothing
+  // shows), [] = the book has comments but this question none yet.
   function known(book,qid){
     const hit=indexes.get(book);if(!hit||hit.value===undefined)return undefined;
-    const idx=hit.value,key=Core().shardOf(qid),e=idx?.shards[key];if(!e)return null;
+    const idx=hit.value,key=Core().shardOf(qid),e=idx?.shards[key];if(!idx)return null;if(!e)return[];
     const data=shards.get(e.sha256);
     if(!data)return Date.now()-(failedShards.get(e.sha256)||0)<FAIL_TTL?null:undefined;
     const id=e.sha256+'|'+qid;if(!lists.has(id))lists.set(id,Core().clean(data.questions[qid],person,qid));
@@ -112,15 +113,19 @@
   }
 
   /* ---------- view ---------- */
-  // A bar above the question (locked until the answer) and the card after the explanation.
-  const open=new Set(),noted=new Set(),seen=new Set(),seenBar=new Set(),loading=new Set(),threads=new Set();
-  let visit={qid:null,t:0};   // when the question on screen opened
-  const LATE=1200,LIKES='kafu-comment-likes-v1',KEEP_LIKES=500;
+  // Above the question, a bar with the discussion's activity (locked until the answer); after the explanation, an entry
+  // row. Both open the comments sheet, the way a comments screen opens in Telegram or Facebook.
+  const seenBar=new Set(),loading=new Set(),threads=new Set();
+  const LATE=1200,LIKES='kafu-comment-likes-v1',KEEP_LIKES=500,MARK=Object.assign(()=>'',{kind:'comments'});
+  let visit={qid:null,t:0},layer=null,opener='',noted=false;   // visit: when the question on screen opened
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const reduced=()=>!!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   const ICONS={
     lock:'<svg class="kc-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="currentColor"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>',
-    down:'<svg class="kc-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9.5 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    compose:'<svg class="kc-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.6c-.6.5-1.3.1-1.3-.6V16A2.5 2.5 0 0 1 4 13.5v-8Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>'
+    next:'<svg class="kc-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    close:'<svg class="kc-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5l11 11m0-11-11 11" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>',
+    bubble:'<svg class="kc-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.6c-.6.5-1.3.1-1.3-.6V16A2.5 2.5 0 0 1 4 13.5v-8Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    send:'<svg class="kc-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12 19.5 4.5l-3.6 15-4.4-6.1L4.5 12Zm7 1.4 8-8.9" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>'
   };
   // The student's own likes stay on this phone only.
   let liked=null;
@@ -141,6 +146,7 @@
       return entry?{qid,book:String(entry.b)}:null;
     }catch(_){return null;}
   }
+  const listFor=qid=>{const now=current();return now?.qid===qid?known(now.book,qid):undefined;};
   function avatar(who,size){
     // Same face as on the Leaders board: Telegram-style initials, with the picture on top when it loads.
     return '<span class="kc-av'+(size?' '+size:'')+'" aria-hidden="true"><span style="background:linear-gradient('+esc(who.gradient[0])+','+esc(who.gradient[1])+')">'+esc(who.initials)+'</span>'+
@@ -165,45 +171,95 @@
         '<span aria-hidden="true"></span>View '+c.hiddenReplies+' more '+(c.hiddenReplies===1?'reply':'replies')+'</button>':'')+
     '</div></li>';
   }
-  function bar(qid,list,answered){
-    const s=Core().stats(list,isLiked),el=document.createElement('button'),when=active(s.last);
-    el.type='button';el.className='kc-bar '+(answered?'kc-open':'kc-locked')+(seenBar.has(qid)?'':' kc-enter');seenBar.add(qid);
-    el.dataset.a='comments-bar';el.dataset.q=qid;
-    el.setAttribute('aria-label',plural(s.comments,'comment')+', '+plural(s.reactions,'reaction')+(when?', '+when.toLowerCase():'')+
-      (answered?'. Read the discussion':'. Answer the question to open the discussion'));
-    el.innerHTML='<span class="kc-faces" aria-hidden="true">'+s.faces.map(w=>avatar(w,'xs')).join('')+'</span>'+
-      '<span class="kc-bar-main" aria-hidden="true"><strong>'+plural(s.comments,'comment')+'</strong>'+
-        '<small><span class="kc-icons">'+emoji(s.icons)+'</span><b>'+s.reactions+'</b>'+(when?'<i class="kc-dot"></i>'+
-          (Date.now()-s.last<864e5?'<i class="kc-live"></i>':'')+when.replace('Active ','<span class="kc-wide">Active </span>'):'')+'</small></span>'+
-      '<span class="kc-bar-cta" aria-hidden="true">'+(answered?'<span>Read</span>'+ICONS.down:ICONS.lock+'<span>Answer first</span>')+'</span>';
+  // The bar (above the question) or the entry row (after the explanation). Empty: the book has comments, this question none.
+  function bar(qid,list,answered,entry){
+    const s=Core().stats(list,isLiked),el=document.createElement('button'),when=active(s.last),empty=!list.length,locked=!answered&&!empty;
+    el.type='button';el.className=(entry?'kc-bar kc-entry':'kc-bar')+(locked?' kc-locked':' kc-open')+(empty?' kc-empty':'')+(entry||seenBar.has(qid)?'':' kc-enter');
+    if(!entry)seenBar.add(qid);
+    el.dataset.a='comments-open';el.dataset.q=qid;el.setAttribute('aria-haspopup','dialog');
+    el.setAttribute('aria-label',empty?'Comments: none yet':plural(s.comments,'comment')+', '+plural(s.reactions,'reaction')+(when?', '+when.toLowerCase():'')+
+      (locked?'. Answer the question to open the discussion':'. Open the comments'));
+    el.innerHTML=(empty?'<span class="kc-faces kc-faces-empty" aria-hidden="true">'+ICONS.bubble+'</span>':'<span class="kc-faces" aria-hidden="true">'+s.faces.map(w=>avatar(w,'xs')).join('')+'</span>')+
+      '<span class="kc-bar-main" aria-hidden="true"><strong>'+(empty?'Comments':plural(s.comments,'comment'))+'</strong>'+
+        (empty?'<small>No comments yet</small>':'<small><span class="kc-icons">'+emoji(s.icons)+'</span><b>'+s.reactions+'</b>'+(when?'<i class="kc-dot"></i>'+
+          (Date.now()-s.last<864e5?'<i class="kc-live"></i>':'')+when.replace('Active ','<span class="kc-wide">Active </span>'):'')+'</small>')+'</span>'+
+      '<span class="kc-bar-cta" aria-hidden="true">'+(locked?ICONS.lock+'<span>Answer first</span>':entry||empty?ICONS.next:'<span>View</span>'+ICONS.next)+'</span>';
     return el;
   }
-  function build(qid,list){
-    const v=Core().view(list,open.has(qid),threads),s=Core().stats(list,isLiked),el=document.createElement('section'),note='kc-note-'+qid;
-    el.className='kc'+(seen.has(qid)?'':' kc-enter');seen.add(qid);
-    el.dataset.q=qid;el.setAttribute('aria-labelledby','kc-title-'+qid);
-    el.innerHTML='<div class="kc-top"><h3 class="kc-title" id="kc-title-'+qid+'" tabindex="-1">Comments <span class="kc-count">'+v.total+'</span></h3>'+
-        '<span class="kc-sum" aria-label="'+plural(s.reactions,'reaction')+'"><span class="kc-icons" aria-hidden="true">'+emoji(s.icons)+'</span><b>'+s.reactions+'</b></span></div>'+
-      '<p class="kc-by">By Kafu characters</p>'+
-      '<ol class="kc-list">'+v.shown.map(c=>item(c,qid,false)).join('')+'</ol>'+
-      (v.hidden?'<button type="button" class="kc-more" data-a="comments-more" data-q="'+qid+'">Show '+v.hidden+' more comment'+(v.hidden===1?'':'s')+'</button>':'')+
-      '<button type="button" class="kc-compose" data-a="comments-compose" data-q="'+qid+'" aria-expanded="'+noted.has(qid)+'" aria-controls="'+note+'">'+
-        ICONS.compose+'<span>Add a comment…</span></button>'+
-      '<p class="kc-note" id="'+note+'" role="status" lang="ar" dir="rtl"'+(noted.has(qid)?'':' hidden')+'>التعليقات مغلقة مؤقتاً</p>';
-    return el;
+  function sheetBody(qid,list){
+    if(!list.length)return '<div class="kc-empty-state">'+ICONS.bubble+'<strong>No comments yet</strong><p>Nobody has commented on this question yet.</p></div>';
+    return '<ol class="kc-list">'+Core().view(list,true,threads).shown.map(c=>item(c,qid,false)).join('')+'</ol>';
+  }
+  function sheetHead(qid,list){
+    const s=Core().stats(list,isLiked);
+    return '<div class="kc-grab" aria-hidden="true"></div><div class="kc-top"><h2 class="kc-title" id="kc-title" tabindex="-1">Comments <span class="kc-count">'+s.comments+'</span></h2>'+
+      (s.reactions?'<span class="kc-sum" aria-label="'+plural(s.reactions,'reaction')+'"><span class="kc-icons" aria-hidden="true">'+emoji(s.icons)+'</span><b>'+s.reactions+'</b></span>':'')+
+      '<button type="button" class="kc-close" data-a="comments-close" aria-label="Close comments">'+ICONS.close+'</button></div>'+
+      '<p class="kc-by">By Kafu characters</p>';
+  }
+  function openSheet(qid,from){
+    const list=listFor(qid);if(!Array.isArray(list))return;
+    closeSheet(true);
+    opener=from;noted=false;
+    const wrap=document.createElement('div');wrap.className='kc-layer';wrap.dataset.q=qid;
+    wrap.innerHTML='<div class="kc-scrim" data-a="comments-close"></div><section class="kc-sheet" role="dialog" aria-modal="true" aria-labelledby="kc-title">'+
+      '<header class="kc-sheet-head">'+sheetHead(qid,list)+'</header><div class="kc-scroll">'+sheetBody(qid,list)+'</div>'+
+      '<footer class="kc-foot"><p class="kc-note" id="kc-note" role="status" lang="ar" dir="rtl" hidden>التعليقات مغلقة مؤقتاً</p>'+
+        '<button type="button" class="kc-compose" data-a="comments-compose" aria-expanded="false" aria-controls="kc-note">'+ICONS.bubble+'<span>Add a comment…</span>'+ICONS.send+'</button></footer></section>';
+    document.body.appendChild(wrap);layer=wrap;
+    SHEET=MARK;   // the app's back (Telegram's Back button too) closes sheets first, and hides the main button
+    const app=document.getElementById('app');if(app)app.inert=true;
+    document.documentElement.classList.add('kc-lock');
+    try{syncTelegramButtons(STACK.length>1,null);}catch(_){}
+    if(reduced())wrap.classList.add('kc-in');else requestAnimationFrame(()=>requestAnimationFrame(()=>wrap.classList.add('kc-in')));
+    wrap.querySelector('.kc-title').focus({preventScroll:true});
+    drag(wrap.querySelector('.kc-sheet-head'),wrap.querySelector('.kc-sheet'));
+  }
+  function closeSheet(instant){
+    const wrap=layer;if(!wrap)return;layer=null;
+    if(SHEET===MARK)SHEET=null;
+    const app=document.getElementById('app');if(app)app.inert=false;
+    document.documentElement.classList.remove('kc-lock');
+    try{syncTelegramButtons(STACK.length>1,null);}catch(_){}
+    if(instant===true||reduced())wrap.remove();
+    else{wrap.classList.remove('kc-in');setTimeout(()=>wrap.remove(),240);}
+    if(instant!==true)requestAnimationFrame(()=>document.querySelector(opener+'[data-q="'+wrap.dataset.q+'"]')?.focus({preventScroll:true}));   // after the bars are back
+  }
+  // Pull the sheet down by its top to close it, as in the apps students know.
+  function drag(handle,panel){
+    let y0=null,dy=0,t0=0;
+    handle.addEventListener('pointerdown',e=>{if(e.button>0||e.target.closest('button'))return;y0=e.clientY;dy=0;t0=performance.now();handle.setPointerCapture?.(e.pointerId);panel.style.transition='none';});
+    handle.addEventListener('pointermove',e=>{if(y0===null)return;dy=Math.max(0,e.clientY-y0);panel.style.transform=dy?'translateY('+dy+'px)':'';});
+    const end=()=>{
+      if(y0===null)return;y0=null;panel.style.transition='';
+      if(dy>110||dy>36&&dy/(performance.now()-t0)>.6){panel.style.transform='';closeSheet();}else panel.style.transform='';
+    };
+    handle.addEventListener('pointerup',end);handle.addEventListener('pointercancel',end);
+  }
+  // After a like or "more replies": the sheet's list, header and the screen's bars follow, keeping the scroll.
+  function update(qid,focus){
+    const list=listFor(qid);if(!Array.isArray(list))return;
+    if(layer?.dataset.q===qid){
+      const scroll=layer.querySelector('.kc-scroll'),top=scroll.scrollTop;
+      layer.querySelector('.kc-sheet-head').innerHTML=sheetHead(qid,list);scroll.innerHTML=sheetBody(qid,list);scroll.scrollTop=top;
+      if(focus)layer.querySelector(focus)?.focus({preventScroll:true});
+    }
+    const answered=!!document.querySelector('.k-study .explain');
+    for(const old of document.querySelectorAll('.kc-bar[data-q="'+qid+'"]'))old.replaceWith(bar(qid,list,answered,old.classList.contains('kc-entry')));
   }
   // Above the question: before the question card's number tab, so the card itself stays whole.
   const anchor=section=>section.querySelector(':scope>.k-question-head')||section.querySelector(':scope>.k-question-card')||section.querySelector('.qmeta')||section.querySelector('.stem');
   function place(){
     deps().then(()=>{try{
-      const section=document.querySelector('.k-study');if(!section)return;
-      const now=current();
-      for(const el of section.querySelectorAll('.kc,.kc-bar'))if(!now||el.dataset.q!==now.qid)el.remove();
+      const section=document.querySelector('.k-study'),now=section&&current();
+      if(layer&&(SHEET!==MARK||layer.dataset.q!==now?.qid))closeSheet(layer.dataset.q!==now?.qid);   // by back, a tab or another question
+      if(!section)return;
+      for(const el of section.querySelectorAll('.kc-bar'))if(!now||el.dataset.q!==now.qid)el.remove();
       if(!now)return;
       if(visit.qid!==now.qid)visit={qid:now.qid,t:Date.now()};
       const list=known(now.book,now.qid);
       if(list===undefined){
-        // Fetched while the question is open: the bar shows as soon as it arrives, the card with the explanation.
+        // Fetched while the question is open: the bar shows as soon as it arrives.
         if(!loading.has(now.qid)){
           loading.add(now.qid);
           load(now.book,now.qid).catch(()=>{}).finally(()=>{
@@ -215,14 +271,14 @@
       }
       index(now.book).catch(()=>{});   // refreshes in the background once the index is old
       prefetch();
-      if(!list?.length)return;
+      if(!list)return;   // a book without comments shows no comments section at all
       const answered=!!section.querySelector('.explain');
       // No spoilers before the answer: the bar only counts. It is not pushed in late above a question being read.
       const at=anchor(section);
-      if(at&&!section.querySelector('.kc-bar[data-q="'+now.qid+'"]')&&(answered||seenBar.has(now.qid)||Date.now()-visit.t<=LATE))
-        at.parentNode.insertBefore(bar(now.qid,list,answered),at);
-      if(!answered||section.querySelector('.kc[data-q="'+now.qid+'"]'))return;
-      section.appendChild(build(now.qid,list));
+      if(at&&!section.querySelector('.kc-bar:not(.kc-entry)')&&(answered||seenBar.has(now.qid)||Date.now()-visit.t<=LATE))
+        at.parentNode.insertBefore(bar(now.qid,list,answered,false),at);
+      const explain=section.querySelector('.explain');
+      if(explain&&!section.querySelector('.kc-entry'))explain.after(bar(now.qid,list,true,true));
       if(!warmed)(globalThis.requestIdleCallback||(f=>setTimeout(f,1500)))(()=>warm().catch(()=>{}));
     }catch(_){}},()=>{});
   }
@@ -233,32 +289,30 @@
       if(entry&&known(String(entry.b),qid)===undefined)load(String(entry.b),qid).catch(()=>{});
     }catch(_){}
   }
-  function refresh(qid,focus){
-    const old=document.querySelector('.kc[data-q="'+qid+'"]'),now=current(),list=now?.qid===qid?known(now.book,qid):null;
-    if(!old||!list?.length)return;
-    const el=build(qid,list);old.replaceWith(el);
-    const oldBar=document.querySelector('.kc-bar[data-q="'+qid+'"]');
-    if(oldBar)oldBar.replaceWith(bar(qid,list,true));
-    if(focus)el.querySelector(focus)?.focus({preventScroll:true});
-  }
-  ACTIONS['comments-more']=d=>{open.add(d.q);refresh(d.q,'.kc-list>.kc-item:nth-child('+(Core().VISIBLE+1)+')');};
-  ACTIONS['comments-replies']=d=>{threads.add(d.k);refresh(d.q,'.kc-item[data-k="'+d.k+'"] .kc-replies>.kc-item:nth-child('+(Core().REPLIES+1)+')');};
-  ACTIONS['comments-compose']=d=>{noted.has(d.q)?noted.delete(d.q):noted.add(d.q);refresh(d.q,'.kc-compose');};
+  ACTIONS['comments-open']=(d,el)=>{
+    const entry=el?.classList.contains('kc-entry');
+    if(el?.classList.contains('kc-locked')){
+      el.classList.remove('kc-shake');void el.offsetWidth;el.classList.add('kc-shake');
+      try{haptic.no();}catch(_){}
+      if(typeof toast==='function')toast('Answer the question to open the discussion.');
+      return;
+    }
+    try{haptic.tap();}catch(_){}
+    openSheet(d.q,entry?'.kc-entry':'.kc-bar:not(.kc-entry)');
+  };
+  ACTIONS['comments-close']=()=>closeSheet();
+  ACTIONS['comments-replies']=d=>{threads.add(d.k);update(d.q,'.kc-item[data-k="'+d.k+'"] .kc-replies>.kc-item:nth-child('+(Core().REPLIES+1)+')');};
+  ACTIONS['comments-compose']=()=>{
+    if(!layer)return;noted=!noted;
+    layer.querySelector('.kc-note').hidden=!noted;layer.querySelector('.kc-compose').setAttribute('aria-expanded',String(noted));
+  };
   ACTIONS['comments-like']=d=>{
     setLiked(d.k,!isLiked(d.k));
     try{haptic.tap();}catch(_){}
-    refresh(d.q,'.kc-like[data-k="'+d.k+'"]');
-    const button=document.querySelector('.kc-like[data-k="'+d.k+'"]');
-    if(button&&isLiked(d.k))button.classList.add('kc-pop');
+    update(d.q,'.kc-like[data-k="'+d.k+'"]');
+    if(isLiked(d.k))layer?.querySelector('.kc-like[data-k="'+d.k+'"]')?.classList.add('kc-pop');
   };
-  ACTIONS['comments-bar']=d=>{
-    const card=document.querySelector('.kc[data-q="'+d.q+'"]'),reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    if(card){card.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});card.querySelector('.kc-title')?.focus({preventScroll:true});return;}
-    const el=document.querySelector('.kc-bar[data-q="'+d.q+'"]');
-    if(el){el.classList.remove('kc-shake');void el.offsetWidth;el.classList.add('kc-shake');}
-    try{haptic.no();}catch(_){}
-    if(typeof toast==='function')toast('Answer the question to open the discussion.');
-  };
+  document.addEventListener('keydown',e=>{if(layer&&e.key==='Escape'){e.preventDefault();closeSheet();}});
   if(typeof deleteChapter==='function'){
     const del=deleteChapter;
     deleteChapter=async key=>{

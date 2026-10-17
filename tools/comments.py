@@ -54,12 +54,30 @@ BIDI_CONTROLS = set("‪‫‬‭‮⁦⁧⁨⁩")
 MAX_ERRORS = 50
 KEEP_SNAPSHOTS = 20   # revisions per book that /comments-restore can bring back
 LIKES_MAX = 20
-REACTIONS = ("👍", "❤️", "🔥", "💯", "🧠", "👏", "😂", "😮")
+REACTIONS = ("👍", "❤️", "🔥", "👏", "🤣", "🤔", "🤯", "🙏", "💯", "🤓", "👀")   # Telegram's own reactions
 MAX_REACT = 3
 AT = re.compile(r"^(20[2-9]\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)Z$")
-# Reactions people tend to leave on each kind of comment, most likely first.
-REACT_BY_KIND = {"mnemonic": ("😂", "🧠", "🔥", "👍"), "clinical": ("💯", "🧠", "👏", "❤️"), "exam": ("🔥", "💯", "👍", "😮"),
-                 "tip": ("👍", "❤️", "🔥", "💯"), "note": ("👍", "❤️", "👏", "🧠"), "reply": ("👍", "❤️", "😂", "👏")}
+# What a comment is, read from its kind and its words; the first match wins.
+TONE_CUES = (
+    ("thanks", re.compile(r"(?i)شكر|تسلم|عاشت\s*ايد|مشكور|ممنون|\bthanks?\b|\bthx\b|\bty\b")),
+    ("funny", re.compile(r"(?i)😂|🤣|😅|😆|ههه|\blol\b|\blmao\b")),
+    ("question", re.compile(r"[?؟]\s*\S{0,3}\s*$")),
+    ("correction", re.compile(r"(?i)^\s*(لا[ ،,]|مو بالضبط|مو صح|بالعكس|صح بس|بس انتب|انتبه|actually|not exactly|careful|correction)")),
+    ("wow", re.compile(r"(?i)ما\s*[چك]نت|ما\s*ادري|ما أدري|توني|صدمة|واو|\bwow\b|didn'?t know|🤯|😮|😳")),
+)
+# Reactions people leave on each tone, most likely first, and how its likes are spread (low, high, most likely).
+TONES = {
+    "thanks": (("❤️", "🙏", "👍"), (1, 8, 2)),
+    "funny": (("🤣", "❤️", "👍", "🔥"), (2, 20, 11)),
+    "question": (("🤔", "👍", "👀"), (1, 12, 4)),
+    "correction": (("💯", "👍", "👏"), (2, 20, 9)),
+    "wow": (("🤯", "🔥", "👀", "👍"), (1, 20, 8)),
+    "mnemonic": (("🔥", "🤓", "👍", "🤣"), (2, 20, 12)),
+    "clinical": (("💯", "👏", "🔥", "🤯"), (2, 20, 12)),
+    "exam": (("🔥", "💯", "👀", "👍"), (2, 20, 13)),
+    "tip": (("👍", "🔥", "❤️", "🙏"), (1, 20, 9)),
+    "note": (("👍", "❤️", "💯", "👏"), (1, 20, 6)),
+}
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS question_comments (
@@ -368,11 +386,25 @@ def _between(rng: random.Random, low: float, high: float) -> float:
     return math.exp(rng.uniform(math.log(low), math.log(high)))
 
 
-def _reactions(rng: random.Random, kind: str, likes: int) -> list[str]:
-    pool = REACT_BY_KIND[kind]
+def tone(item: dict[str, Any]) -> str:
+    """thanks, funny, question, correction or wow from the words; otherwise the comment's kind."""
+    return next((name for name, cue in TONE_CUES if cue.search(item["text"])), item.get("kind", "note"))
+
+
+def _likes(rng: random.Random, name: str, reply: bool) -> int:
+    low, high, mode = TONES[name][1]
+    if reply:   # replies are seen by fewer people
+        high, mode = max(low + 1, round(high * 0.75)), max(low, mode * 0.6)
+    return max(1, min(LIKES_MAX, round(rng.triangular(low, high, mode))))
+
+
+def _reactions(rng: random.Random, item: dict[str, Any], name: str, likes: int) -> list[str]:
+    """1–3 reactions that fit the comment: an emoji the comment itself uses, the tone's main one, then others."""
+    own = [e for e in REACTIONS if e in item["text"].replace("😂", "🤣")]
+    pool = tuple(dict.fromkeys([*own[:1], *TONES[name][0]]))
     size = 1 if likes < 5 else rng.randint(1, 2) if likes < 12 else rng.randint(2, 3)
     weights = [len(pool) - i for i in range(len(pool))]
-    picked: list[str] = []
+    picked: list[str] = list(dict.fromkeys([*own[:1], TONES[name][0][0]]))[:size]
     while len(picked) < size:
         choice = rng.choices(pool, weights)[0]
         if choice not in picked:
@@ -381,7 +413,7 @@ def _reactions(rng: random.Random, kind: str, likes: int) -> list[str]:
 
 
 def fill_activity(book_id: str, questions: dict[str, list[dict[str, Any]]], now: datetime) -> dict[str, list[dict[str, Any]]]:
-    """Give every comment a posting time, likes (1–20) and reactions; values the writer gave are kept.
+    """Give every comment a posting time, likes (1–20) and reactions that fit what it says; given values are kept.
 
     Each value is seeded by the comment itself, so editing one comment never reshuffles the others.
     Comments were posted over the last weeks; replies follow their comment, in order, before now."""
@@ -391,20 +423,17 @@ def fill_activity(book_id: str, questions: dict[str, list[dict[str, Any]]], now:
         seed = hashlib.sha256(f"{book_id}|{qid}|{i}|{j}|{item['author']}|{item['text']}".encode("utf-8")).digest()
         return random.Random(int.from_bytes(seed[:8], "big"))
 
-    def likes(r: random.Random, mode: float) -> int:
-        return max(1, min(LIKES_MAX, round(r.triangular(1, LIKES_MAX, mode))))
-
     out: dict[str, list[dict[str, Any]]] = {}
     for qid, comments in questions.items():
         filled = []
         for i, comment in enumerate(comments):
-            r, kind = rng(qid, i, 0, comment), comment.get("kind", "note")
+            r, name = rng(qid, i, 0, comment), tone(comment)
             top = {k: v for k, v in comment.items() if k != "replies"}
             if "at" not in top:   # never after a reply time the writer gave
                 given = [parse_at(x["at"]) for x in comment.get("replies") or [] if "at" in x]
                 top["at"] = _stamp(min([(now - timedelta(minutes=_between(r, 45, 75 * 24 * 60))).replace(second=0, microsecond=0), *given]))
-            top.setdefault("likes", likes(r, 6 if kind == "note" else 12))
-            top.setdefault("react", _reactions(r, kind, top["likes"]))
+            top.setdefault("likes", _likes(r, name, False))
+            top.setdefault("react", _reactions(r, top, name, top["likes"]))
             previous = parse_at(top["at"])
             replies = []
             for k, reply in enumerate(comment.get("replies") or []):
@@ -413,8 +442,9 @@ def fill_activity(book_id: str, questions: dict[str, list[dict[str, Any]]], now:
                     gap, room = timedelta(minutes=_between(r, 3, 2 * 24 * 60)), latest - previous
                     when = previous + (gap if gap <= room else max(timedelta(0), room) * r.uniform(0.3, 0.9))
                     item["at"] = _stamp(max(previous, when.replace(second=0, microsecond=0)))
-                item.setdefault("likes", likes(r, 3))
-                item.setdefault("react", _reactions(r, "reply", item["likes"]))
+                name = tone(item)
+                item.setdefault("likes", _likes(r, name, True))
+                item.setdefault("react", _reactions(r, item, name, item["likes"]))
                 previous = parse_at(item["at"])
                 replies.append(item)
             if replies:

@@ -1,6 +1,8 @@
-"""Built-app question comments: published index/shards through the real tools; a locked bar above the question
-(counts only) and the comments after the explanation once answered; one "By Kafu characters" line; posting times,
-likes and reactions; the student's own like; closed composer; offline copy, taken-away comments and phone geometry."""
+"""Built-app question comments: published index/shards through the real tools; a bar above the question (counts only,
+locked until the answer) and an entry row after the explanation, both opening the comments sheet; one "By Kafu
+characters" line; posting times, likes and reactions; the student's own like; closing by Escape, back, the scrim and a
+pull down; an empty question in a book with comments; nothing in a book without them, during an exam or once taken
+away; offline copy and phone geometry."""
 from __future__ import annotations
 import json
 import tempfile
@@ -65,37 +67,49 @@ def start(page, pack, mode='study'):
     page.wait_for_selector('.k-study .stem')
 
 
-def check_section(page, questions, people, qid):
-    section = page.locator('.kc[data-q="%s"]' % qid)
-    section.wait_for(timeout=8000)
-    assert page.locator('.kc').count() == 1
-    total = sum(1 + len(c.get('replies', [])) for c in questions[qid])
-    assert section.locator('.kc-count').inner_text() == str(total)
-    names = section.locator('.kc-name').all_inner_texts()
-    assert section.locator('.kc-by').all_inner_texts() == ['By Kafu characters'] and section.locator('.kc-badge').count() == 0
-    for name, av in zip(names, section.locator('.kc-av').all()):
-        person = people[name]
-        img = av.locator('img')
-        assert (img.get_attribute('src') if img.count() else None) == person['photo'], name
-    # The explanation stays first: comments sit after it, at the end of the study screen.
-    assert page.evaluate("()=>{const e=document.querySelector('.k-study .explain'),c=document.querySelector('.kc');return !!(e.compareDocumentPosition(c)&Node.DOCUMENT_POSITION_FOLLOWING)}")
-    check_bar(page, questions, qid, True)
-    return section
+TOP = '.kc-bar:not(.kc-entry)'
 
 
 def check_bar(page, questions, qid, answered):
     """The bar above the question: counts and faces only, never a comment's words."""
-    bar = page.locator('.kc-bar[data-q="%s"]' % qid)
+    bar = page.locator(TOP + '[data-q="%s"]' % qid)
     bar.wait_for(timeout=8000)
-    assert page.locator('.kc-bar').count() == 1
+    assert page.locator(TOP).count() == 1
     assert ('kc-open' if answered else 'kc-locked') in bar.get_attribute('class')
     items = [c for t in questions[qid] for c in [t, *t.get('replies', [])]]
     mine = page.evaluate("q=>JSON.parse(localStorage.getItem('kafu-comment-likes-v1')||'[]').filter(k=>k.startsWith(q+':')).length", qid)
     text = bar.inner_text()
-    assert bar.locator('.kc-bar-main strong').inner_text() == '%d comment%s' % (len(items), '' if len(items) == 1 else 's') and bar.locator('.kc-bar-main b').inner_text() == str(sum(c['likes'] for c in items) + mine), text
+    assert bar.locator('.kc-bar-main strong').inner_text() == '%d comment%s' % (len(items), '' if len(items) == 1 else 's'), text
+    assert bar.locator('.kc-bar-main b').inner_text() == str(sum(c['likes'] for c in items) + mine), text
     assert not any(c['text'][:12] in text for c in items)
-    assert page.evaluate("()=>{const b=document.querySelector('.kc-bar'),q=document.querySelector('.k-question-card');return !!(b.compareDocumentPosition(q)&Node.DOCUMENT_POSITION_FOLLOWING)}"), 'above the question'
+    assert page.evaluate("()=>{const b=document.querySelector('.kc-bar:not(.kc-entry)'),q=document.querySelector('.k-question-card');return !!(b.compareDocumentPosition(q)&Node.DOCUMENT_POSITION_FOLLOWING)}"), 'above the question'
+    if answered:   # and the entry row right after the explanation
+        assert page.evaluate("()=>document.querySelector('.k-study .explain').nextElementSibling?.classList.contains('kc-entry')")
+    else:
+        assert page.locator('.kc-entry').count() == 0
     return bar
+
+
+def check_sheet(page, questions, people, qid):
+    """The open comments sheet: a modal over an inert page, with every thread."""
+    sheet = page.locator('.kc-layer[data-q="%s"] .kc-sheet[role="dialog"]' % qid)
+    sheet.wait_for(timeout=5000)
+    assert page.locator('.kc-layer').count() == 1
+    assert page.evaluate("()=>document.getElementById('app').inert&&document.documentElement.classList.contains('kc-lock')&&SHEET?.kind==='comments'")
+    assert page.evaluate("()=>document.activeElement===document.querySelector('.kc-sheet .kc-title')")
+    total = sum(1 + len(c.get('replies', [])) for c in questions[qid])
+    assert sheet.locator('.kc-count').inner_text() == str(total)
+    assert sheet.locator('.kc-by').all_inner_texts() == ['By Kafu characters'] and sheet.locator('.kc-badge').count() == 0
+    assert sheet.locator('.kc-list>.kc-item').count() == len(questions[qid])
+    for name, av in zip(sheet.locator('.kc-name').all_inner_texts(), sheet.locator('.kc-av').all()):
+        img = av.locator('img')
+        assert (img.get_attribute('src') if img.count() else None) == people[name]['photo'], name
+    return sheet
+
+
+def closed(page):
+    page.wait_for_function("()=>!document.querySelector('.kc-layer')", timeout=3000)
+    assert page.evaluate("()=>!document.getElementById('app').inert&&!document.documentElement.classList.contains('kc-lock')&&!SHEET")
 
 
 # WCAG contrast of each selector's text against the first painted background behind it.
@@ -117,86 +131,108 @@ def run(browser, origin, pack, out, helpers):
         start(page, pack)
         page.wait_for_function("()=>typeof KafuComments==='object'")
         page.wait_for_function("q=>KafuComments._known('DESIGN-CARDIO',q)!==undefined", arg=q1, timeout=8000)
-        assert page.locator('.kc').count() == 0, 'no comments before the answer'
+        # Before the answer: the bar only counts, and it stays locked.
         bar = check_bar(page, questions, q1, False)
         ratios = {'locked ' + k: v for k, v in page.evaluate(CONTRAST, ['.kc-bar-main strong', '.kc-bar-main small', '.kc-bar-cta']).items()}
-        bar.click()   # locked: it says to answer first and opens nothing
+        bar.click()
         page.wait_for_function("()=>document.querySelector('.toast')?.textContent==='Answer the question to open the discussion.'")
-        assert page.locator('.kc').count() == 0
+        assert page.locator('.kc-layer').count() == 0
         page.screenshot(path=str(out / f'comments-{device}-{theme}-locked.png'))
         helpers['study_answer'](page, True)
-        section = check_section(page, questions, people, q1)
-        assert section.locator('.kc-list>.kc-item').count() == 3
-        assert section.locator('.kc-more').inner_text() == 'Show 2 more comments'
-        # Times from the fixed clock; likes and reactions from the pack; two replies, then "View 2 more replies".
-        first = section.locator('.kc-list>.kc-item').first
+        check_bar(page, questions, q1, True)
+        # The entry row opens the sheet with every thread; two replies, then "View 2 more replies".
+        page.locator('.kc-entry').click()
+        sheet = check_sheet(page, questions, people, q1)
+        first = sheet.locator('.kc-list>.kc-item').first
+        top = questions[q1][0]
         assert first.locator(':scope>.kc-body>.kc-replies>.kc-item').count() == 2
         assert first.locator('.kc-more-replies').inner_text() == 'View 2 more replies'
-        top = questions[q1][0]
         assert first.locator('.kc-time').first.get_attribute('datetime') == top['at'].replace('Z', '.000Z')
         assert first.locator('.kc-reacts b').first.inner_text() == str(top['likes'])
+        page.screenshot(path=str(out / f'comments-{device}-{theme}.png'))
         ratios.update(page.evaluate(CONTRAST, ['.kc-more-replies']))
         first.locator('.kc-more-replies').click()
-        assert page.locator('.kc-list>.kc-item').first.locator('.kc-replies>.kc-item').count() == 4
+        first = sheet.locator('.kc-list>.kc-item').first
+        assert first.locator('.kc-replies>.kc-item').count() == 4
         assert page.evaluate("document.activeElement===document.querySelector('.kc-list>.kc-item .kc-replies>.kc-item:nth-child(3)')")
-        third = page.locator('.kc-list>.kc-item').first.locator('.kc-replies>.kc-item').nth(2)
+        third = first.locator('.kc-replies>.kc-item').nth(2)
         assert third.locator('.kc-time').inner_text() == '30m' and third.locator('.kc-reacts i').all_inner_texts() == ['🔥']
         assert third.locator('.kc-reacts b').inner_text() == '4'
-        # The student's own like: one more and a 👍, kept on this phone; a comment with no likes shows no count.
-        like = page.locator('.kc-list>.kc-item').first.locator('.kc-like').first
-        assert like.get_attribute('aria-pressed') == 'false'
+        # Likes: one more and a 👍, kept on this phone, and the list does not jump.
+        fourth = sheet.locator('.kc-list>.kc-item').nth(3)
+        assert fourth.locator('.kc-time').first.inner_text() == '2d' and fourth.locator('.kc-reacts').first.is_hidden()
+        like = fourth.locator('.kc-like').first
+        like.scroll_into_view_if_needed()
+        scrolled = page.evaluate("document.querySelector('.kc-scroll').scrollTop")
         like.click()
-        like = page.locator('.kc-list>.kc-item').first.locator('.kc-like').first
-        assert like.get_attribute('aria-pressed') == 'true'
-        reacts = page.locator('.kc-list>.kc-item').first.locator('.kc-reacts').first
-        assert reacts.locator('i').first.inner_text() == '👍' and reacts.locator('b').inner_text() == str(top['likes'] + 1)
+        fourth = sheet.locator('.kc-list>.kc-item').nth(3)
+        assert fourth.locator('.kc-like').first.get_attribute('aria-pressed') == 'true'
+        assert fourth.locator('.kc-reacts i').first.inner_text() == '👍' and fourth.locator('.kc-reacts b').first.inner_text() == '1'
+        assert page.evaluate("document.querySelector('.kc-scroll').scrollTop") == scrolled
         assert len(page.evaluate("JSON.parse(localStorage.getItem('kafu-comment-likes-v1'))")) == 1
-        page.locator('.kc-bar').click()   # open: jumps to the comments
-        page.wait_for_function("()=>document.activeElement===document.querySelector('.kc-title')")
-        page.evaluate('scrollTo(0,0)')
-        page.screenshot(path=str(out / f'comments-{device}-{theme}.png'), full_page=True)
+        # The closed composer.
+        compose = sheet.locator('.kc-compose')
+        assert compose.get_attribute('aria-expanded') == 'false' and sheet.locator('.kc-note').is_hidden()
+        compose.click()
+        assert compose.get_attribute('aria-expanded') == 'true' and sheet.locator('.kc-note').inner_text() == 'التعليقات مغلقة مؤقتاً'
+        ratios.update(page.evaluate(CONTRAST, ['.kc-title', '.kc-by', '.kc-count', '.kc-tag', '.kc-text', '.kc-kind', '.kc-time', '.kc-like',
+                                               '.kc-like.on', '.kc-reacts b', '.kc-sum b', '.kc-compose', '.kc-note', '.kc-close']))
+        page.screenshot(path=str(out / f'comments-{device}-{theme}-open.png'))
         if device == 'phone':
             for width in (360, 430):
                 page.set_viewport_size({'width': width, 'height': 844})
-                geometry = page.evaluate("()=>({scroll:document.documentElement.scrollWidth,w:innerWidth,right:Math.max(...[...document.querySelectorAll('.kc *')].map(e=>e.getBoundingClientRect().right))})")
+                geometry = page.evaluate("()=>({scroll:document.documentElement.scrollWidth,w:innerWidth,right:Math.max(...[...document.querySelectorAll('.kc-layer *')].map(e=>e.getBoundingClientRect().right))})")
                 assert geometry['scroll'] <= geometry['w'] + 1 and geometry['right'] <= geometry['w'] + 1, (width, geometry)
             page.set_viewport_size({'width': 390, 'height': 844})
-        # Text contrast (WCAG AA) for the label, count, tag, "Show more" and composer, in both themes.
-        ratios.update(page.evaluate(CONTRAST, ['.kc-by', '.kc-count', '.kc-tag', '.kc-more', '.kc-compose', '.kc-text', '.kc-kind', '.kc-time', '.kc-like',
-                                               '.kc-like.on', '.kc-reacts b', '.kc-sum b', '.kc-bar-main strong', '.kc-bar-main small', '.kc-bar-cta']))
-        assert all(v >= 4.5 for v in ratios.values()), (theme, ratios)
-        page.locator('.kc-more').click()
-        assert page.locator('.kc-list>.kc-item').count() == 5 and page.locator('.kc-more').count() == 0
-        assert page.evaluate("document.activeElement===document.querySelector('.kc-list>.kc-item:nth-child(4)')")
-        fourth = page.locator('.kc-list>.kc-item').nth(3)
-        assert fourth.locator('.kc-time').first.inner_text() == '2d' and fourth.locator('.kc-reacts').first.is_hidden()
-        compose = page.locator('.kc-compose')
-        assert compose.get_attribute('aria-expanded') == 'false' and page.locator('.kc-note').is_hidden()
-        compose.click()
-        assert page.locator('.kc-compose').get_attribute('aria-expanded') == 'true'
-        assert page.locator('.kc-note').inner_text() == 'التعليقات مغلقة مؤقتاً'
-        page.screenshot(path=str(out / f'comments-{device}-{theme}-open.png'), full_page=True)
-        # A full re-render (starring the question) keeps one section with the same state.
-        page.locator('.k-study-topbar [data-a="fav-q"]').click()
-        page.wait_for_function("()=>document.querySelectorAll('.kc').length===1&&document.querySelectorAll('.kc-list>.kc-item').length===5")
-        assert page.locator('.kc-note').is_visible() and 'kc-enter' not in (page.locator('.kc').get_attribute('class') or '')
-        assert page.locator('.kc-bar').count() == 1 and 'kc-enter' not in page.locator('.kc-bar').get_attribute('class')
+        # A re-render under the sheet keeps it, then Escape closes it and focus goes back.
+        page.evaluate('render()')
+        page.wait_for_function("()=>document.querySelectorAll('.kc-bar').length===2")
+        assert page.locator('.kc-layer').count() == 1 and page.locator('.kc-note').is_visible()
+        page.keyboard.press('Escape')
+        closed(page)
+        page.wait_for_function("()=>document.activeElement?.classList.contains('kc-entry')")
+        # The bar opens it too; the app's back (Telegram's Back button) closes it and stays on the question.
+        page.locator(TOP).click()
+        check_sheet(page, questions, people, q1)
         assert page.locator('.kc-like.on').count() == 1 and page.locator('.kc-list>.kc-item').first.locator('.kc-replies>.kc-item').count() == 4
+        page.evaluate('back()')
+        closed(page)
+        assert page.locator('.k-study .stem').count() == 1
+        # Tapping outside, and pulling the sheet down by its top, close it.
+        page.locator(TOP).click()
+        page.locator('.kc-scrim').click(position={'x': 20, 'y': 20})
+        closed(page)
+        page.locator(TOP).click()
+        head = page.locator('.kc-sheet-head').bounding_box()
+        page.mouse.move(head['x'] + head['width'] / 2, head['y'] + 8)
+        page.mouse.down()
+        page.mouse.move(head['x'] + head['width'] / 2, head['y'] + 220, steps=8)
+        page.mouse.up()
+        closed(page)
+        ratios.update(page.evaluate(CONTRAST, ['.kc-entry .kc-bar-main small', '.kc-bar-cta']))
+        assert all(v >= 4.5 for v in ratios.values()), (theme, ratios)
+        # A question without comments in a book with comments: the section is there, empty.
         page.locator('[data-a="action"]').last.click()
         page.wait_for_selector('.k-study .stem')
+        empty = page.locator(TOP + '.kc-empty')
+        empty.wait_for(timeout=5000)
+        assert empty.inner_text().split('\n')[-1] == 'No comments yet'
+        empty.click()
+        page.locator('.kc-empty-state').wait_for(timeout=3000)
+        assert page.locator('.kc-sheet .kc-count').inner_text() == '0' and page.locator('.kc-sheet .kc-list').count() == 0
+        page.screenshot(path=str(out / f'comments-{device}-{theme}-empty.png'))
+        page.keyboard.press('Escape')
+        closed(page)
         helpers['study_answer'](page, False)
-        page.wait_for_timeout(300)
-        assert page.locator('.kc,.kc-bar').count() == 0, 'a question without comments shows nothing'
         page.locator('[data-a="action"]').last.click()
         helpers['study_answer'](page, True)
-        check_section(page, questions, people, q3)
-        assert page.locator('.kc-more').count() == 0
+        check_bar(page, questions, q3, True)
         if device == 'phone' and theme == 'light':
             # Exam: nothing during the exam itself.
             start(page, pack, 'exam')
             page.locator('[data-a="pick"]').first.click()
             page.wait_for_timeout(300)
-            assert page.locator('.kc,.kc-bar').count() == 0
+            assert page.locator('.kc-bar,.kc-layer').count() == 0
             # Offline: the comments fetched while studying stay on the device.
             stored = page.evaluate("async()=>{const c=await caches.open('kafu-comments-v1');return (await c.keys()).length}")
             assert stored == 2, stored
@@ -208,20 +244,25 @@ def run(browser, origin, pack, out, helpers):
             page.wait_for_function("typeof CATALOG!=='undefined'&&CATALOG.books.some(b=>b.id==='DESIGN-CARDIO')")
             start(page, pack)
             helpers['study_answer'](page, True)
-            check_section(page, questions, people, q1)
+            check_bar(page, questions, q1, True)
+            page.locator('.kc-entry').click()
+            check_sheet(page, questions, people, q1)
+            page.keyboard.press('Escape')
             assert len(state['requests']) == before, 'offline study read the saved copy'
             ctx.set_offline(False)
             state['offline'] = False
-            # Taken away by the owner (index 404): gone from the screen and from the device.
+            # Taken away by the owner (index 404): a book without comments shows no comments section at all.
             state['gone'] = True
             page.evaluate("()=>{location.reload()}")
             page.wait_for_selector("nav[aria-label='Main']", timeout=15000)
             page.wait_for_function("typeof CATALOG!=='undefined'&&CATALOG.books.some(b=>b.id==='DESIGN-CARDIO')")
             start(page, pack)
             page.wait_for_function("q=>typeof KafuComments==='object'&&KafuComments._known('DESIGN-CARDIO',q)===null", arg=q1, timeout=8000)
+            page.wait_for_timeout(300)
+            assert page.locator('.kc-bar').count() == 0
             helpers['study_answer'](page, True)
             page.wait_for_timeout(300)
-            assert page.locator('.kc,.kc-bar').count() == 0
+            assert page.locator('.kc-bar,.kc-layer').count() == 0
             page.wait_for_function("async()=>{const c=await caches.open('kafu-comments-v1');return (await c.keys()).length===0}", timeout=5000)
             passed.append('comments offline copy, exam, taken-away removal')
         assert not errors, errors

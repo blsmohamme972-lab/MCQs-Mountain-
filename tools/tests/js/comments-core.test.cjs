@@ -62,7 +62,7 @@ test('times read like a social app, and a clock behind the server reads "now"',(
 });
 test('the student\'s own like adds one and a 👍, and the activity line sums every comment',()=>{
   const list=C.clean([
-    {author:A,text:'One.',at:'2026-10-17T09:00:00Z',likes:10,react:['❤️','🔥'],replies:[{author:B,text:'Two.',at:'2026-10-17T11:00:00Z',likes:2,react:['😂']}]},
+    {author:A,text:'One.',at:'2026-10-17T09:00:00Z',likes:10,react:['❤️','🔥'],replies:[{author:B,text:'Two.',at:'2026-10-17T11:00:00Z',likes:2,react:['🤣']}]},
     {author:B,text:'Three.',at:'2026-10-16T09:00:00Z',likes:4,react:['🔥']},
   ],L.person,'Q1');
   assert.deepEqual(C.reactions(list[0],false),{count:10,icons:['❤️','🔥']});
@@ -70,7 +70,7 @@ test('the student\'s own like adds one and a 👍, and the activity line sums ev
   assert.deepEqual(C.reactions({likes:0,react:[]},true),{count:1,icons:['👍']});
   const s=C.stats(list),mine=C.stats(list,key=>key===list[1].key);
   assert.equal(s.comments,3);assert.equal(s.reactions,16);assert.equal(s.last,Date.parse('2026-10-17T11:00:00Z'));
-  assert.deepEqual(s.icons,['❤️','🔥','😂']);assert.deepEqual(s.faces.map(w=>w.name),[A,B]);
+  assert.deepEqual(s.icons,['❤️','🔥','🤣']);assert.deepEqual(s.faces.map(w=>w.name),[A,B]);
   assert.equal(mine.reactions,17);
 });
 test('a thread shows two replies (three when that is all) and opens the rest on demand',()=>{
