@@ -1,0 +1,118 @@
+{
+ "qid": "Q000000261",
+ "image": "Q000000261.png",
+ "takeaway": "Addison's disease: adrenal insufficiency with low blood pressure and high potassium, often autoimmune and linked to pernicious anaemia.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 30-year-old woman with pernicious anaemia has dizzy spells, fatigue and lethargy. Her BP is low and her potassium is high. Likely diagnosis?",
+  "say": "A thirty-year-old woman with known pernicious anaemia has dizzy spells, fatigue and lethargy. Her investigations show a low blood pressure and a high serum potassium. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Addison’s disease",
+  "say": "The answer is Addison’s disease.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 750,
+   "y": 385,
+   "z": 1.9,
+   "spot": [
+    750,
+    330,
+    260
+   ]
+  },
+  {
+   "x": 384,
+   "y": 472,
+   "z": 2.0,
+   "spot": [
+    330,
+    420,
+    230
+   ]
+  },
+  {
+   "x": 1050,
+   "y": 547,
+   "z": 2.2,
+   "spot": [
+    1050,
+    500,
+    200
+   ]
+  },
+  {
+   "x": 1187,
+   "y": 567,
+   "z": 2.2,
+   "spot": [
+    1380,
+    520,
+    200
+   ]
+  },
+  {
+   "x": 740,
+   "y": 602,
+   "z": 2.0,
+   "spot": [
+    740,
+    580,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 30-year-old woman who is dizzy, tired and lethargic.",
+   "shot": 1,
+   "dir": "gentle, curious",
+   "say": "This thirty-year-old woman is dizzy, tired and lethargic."
+  },
+  {
+   "text": "She has known pernicious anaemia.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "She has known pernicious anaemia, an autoimmune condition."
+  },
+  {
+   "text": "Her blood pressure is low.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "Her blood pressure is low."
+  },
+  {
+   "text": "The potassium is high: the banana king!",
+   "shot": 4,
+   "dir": "warm, amused",
+   "say": "(laugh) And her serum potassium is high. The banana is crowned king!"
+  },
+  {
+   "text": "The tired adrenals fail: adrenocortical insufficiency.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "The tired adrenals are failing. This is adrenocortical insufficiency, called Addison's disease."
+  },
+  {
+   "text": "In 60 per cent of cases it is autoimmune, linked to other autoimmune diseases.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "In sixty per cent of cases it is autoimmune, and it is associated with other autoimmune conditions."
+  },
+  {
+   "text": "Remember: low blood pressure, high potassium and pernicious anaemia mean Addison's disease.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: low blood pressure, high potassium and pernicious anaemia mean Addison's disease."
+  }
+ ]
+}

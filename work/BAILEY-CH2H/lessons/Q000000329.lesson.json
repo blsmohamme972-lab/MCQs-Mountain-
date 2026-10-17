@@ -1,0 +1,128 @@
+{
+ "qid": "Q000000329",
+ "image": "Q000000329.png",
+ "takeaway": "Vital capacity = inspiratory reserve volume + tidal volume + expiratory reserve volume, or total lung capacity minus residual volume.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which one of the following statements concerning lung volumes is true?",
+  "say": "Which one of the following statements concerning lung volumes is true?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Vital capacity = inspiratory reserve volume + expiratory reserve volume + tidal volume",
+  "say": "The answer is: the vital capacity is the sum of the inspiratory reserve volume, the expiratory reserve volume, and the tidal volume.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 1050,
+   "y": 315,
+   "z": 1.6,
+   "spot": [
+    1050,
+    250,
+    280
+   ]
+  },
+  {
+   "x": 870,
+   "y": 282,
+   "z": 2.0,
+   "spot": [
+    870,
+    230,
+    170
+   ]
+  },
+  {
+   "x": 1045,
+   "y": 277,
+   "z": 2.2,
+   "spot": [
+    1045,
+    230,
+    150
+   ]
+  },
+  {
+   "x": 1187,
+   "y": 307,
+   "z": 2.2,
+   "spot": [
+    1230,
+    260,
+    150
+   ]
+  },
+  {
+   "x": 690,
+   "y": 618,
+   "z": 1.8,
+   "spot": [
+    690,
+    560,
+    250
+   ]
+  },
+  {
+   "x": 800,
+   "y": 720,
+   "z": 2.2,
+   "spot": [
+    800,
+    700,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The lung holds three balloons.",
+   "shot": 1,
+   "dir": "warm, playful",
+   "say": "The happy lung holds three balloons."
+  },
+  {
+   "text": "Red: the inspiratory reserve volume.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The red one is the inspiratory reserve volume, extra air you can still breathe in."
+  },
+  {
+   "text": "Blue: the tidal volume.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "The blue one is the tidal volume, the air of a normal breath."
+  },
+  {
+   "text": "Yellow: the expiratory reserve volume.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "The yellow one is the expiratory reserve volume, extra air you can still breathe out."
+  },
+  {
+   "text": "Add all three: the vital capacity.",
+   "shot": 5,
+   "dir": "clear, confident",
+   "say": "Add the three together: that is the vital capacity, on the lung's sign."
+  },
+  {
+   "text": "The purple balloon stays out: not residual volume.",
+   "shot": 6,
+   "dir": "calm, explanatory",
+   "say": "The grumpy purple balloon is the residual volume. It stays out, so vital capacity is total lung capacity minus residual volume."
+  },
+  {
+   "text": "Remember: VC = IRV + tidal volume + ERV.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: vital capacity equals inspiratory reserve, plus tidal volume, plus expiratory reserve."
+  }
+ ]
+}

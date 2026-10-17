@@ -1,0 +1,118 @@
+{
+ "qid": "Q000000278",
+ "image": "Q000000278.png",
+ "takeaway": "Renal cell carcinoma: the classical triad of haematuria, flank pain and a loin mass, seen in 10 to 15 per cent of patients.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 45-year-old man has loin pain and haematuria, and a palpable mass in his loin. What is the likely diagnosis?",
+  "say": "A forty-five-year-old man presents with loin pain and haematuria. He has a palpable mass in his loin. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Renal cell carcinoma",
+  "say": "The answer is renal cell carcinoma.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 900,
+   "y": 491,
+   "z": 1.7,
+   "spot": [
+    900,
+    430,
+    300
+   ]
+  },
+  {
+   "x": 452,
+   "y": 621,
+   "z": 1.7,
+   "spot": [
+    330,
+    560,
+    300
+   ]
+  },
+  {
+   "x": 1030,
+   "y": 407,
+   "z": 2.2,
+   "spot": [
+    1030,
+    360,
+    200
+   ]
+  },
+  {
+   "x": 1140,
+   "y": 772,
+   "z": 2.0,
+   "spot": [
+    1140,
+    750,
+    200
+   ]
+  },
+  {
+   "x": 590,
+   "y": 697,
+   "z": 2.2,
+   "spot": [
+    590,
+    650,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Three little characters make the classic triad.",
+   "shot": 2,
+   "dir": "warm, curious",
+   "say": "Three little friends make the classic triad. Haematuria, flank pain, and a loin mass."
+  },
+  {
+   "text": "Haematuria: red urine pours into the glass.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "The sick kidney pours red urine into a glass. That is haematuria."
+  },
+  {
+   "text": "Flank pain.",
+   "shot": 5,
+   "dir": "gentle, concerned",
+   "say": "The little kidney clutches its side. That is flank pain."
+  },
+  {
+   "text": "And the loin mass: the tumour on the kidney.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "And on the big kidney, a tumour you can feel as a loin mass."
+  },
+  {
+   "text": "Renal cell carcinoma is also called hypernephroma, Grawitz tumour or clear cell carcinoma.",
+   "shot": 1,
+   "dir": "calm, explanatory",
+   "say": "Renal cell carcinoma is also known as hypernephroma, Grawitz tumour, or clear cell carcinoma."
+  },
+  {
+   "text": "The full triad occurs in only 10 to 15 per cent of patients.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "The complete triad is seen in only ten to fifteen per cent of patients."
+  },
+  {
+   "text": "Remember: haematuria, flank pain and a loin mass mean renal cell carcinoma.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: haematuria, flank pain, and a loin mass mean renal cell carcinoma."
+  }
+ ]
+}

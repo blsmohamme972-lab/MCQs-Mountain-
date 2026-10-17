@@ -1,0 +1,128 @@
+{
+ "qid": "Q000000330",
+ "image": "Q000000330.png",
+ "takeaway": "Tuberculosis damage comes mainly from the host's delayed (type IV) hypersensitivity reaction: immune pathology.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "The pathogenicity of the tubercle bacillus is primarily due to which one of the following?",
+  "say": "The pathogenicity of the tubercle bacillus is primarily due to which one of the following?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Delayed hypersensitivity reaction against the bacteria",
+  "say": "The answer is a delayed hypersensitivity reaction against the bacteria.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 830,
+   "y": 670,
+   "z": 2.2,
+   "spot": [
+    830,
+    650,
+    150
+   ]
+  },
+  {
+   "x": 384,
+   "y": 622,
+   "z": 2.0,
+   "spot": [
+    380,
+    600,
+    220
+   ]
+  },
+  {
+   "x": 860,
+   "y": 585,
+   "z": 1.6,
+   "spot": [
+    860,
+    520,
+    280
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 352,
+   "z": 2.0,
+   "spot": [
+    1380,
+    300,
+    180
+   ]
+  },
+  {
+   "x": 384,
+   "y": 302,
+   "z": 2.0,
+   "spot": [
+    380,
+    250,
+    180
+   ]
+  },
+  {
+   "x": 800,
+   "y": 332,
+   "z": 2.0,
+   "spot": [
+    800,
+    280,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The tubercle bacillus hides in the lung.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "Deep in the lung hides the green tubercle bacillus."
+  },
+  {
+   "text": "T cells sound the alarm: cell-mediated immunity.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The T cells sound the alarm. Mycobacteria stimulate a specific T cell response of cell-mediated immunity."
+  },
+  {
+   "text": "They build a granuloma around it.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "They build a fortress around it: a granuloma, which reduces the infection."
+  },
+  {
+   "text": "The snail clock: a delayed, type IV reaction.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "The snail clock shows it is slow. This is delayed hypersensitivity, a type four reaction."
+  },
+  {
+   "text": "But the T cells also damage the lung itself.",
+   "shot": 5,
+   "dir": "serious, steady",
+   "say": "But the same T cells pour damage onto the lung tissue itself."
+  },
+  {
+   "text": "The damage comes from our own immune response: immune pathology.",
+   "shot": 6,
+   "dir": "grave, steady",
+   "say": "(sigh) So the damage comes mainly from the host's own immune response. This is called immune pathology."
+  },
+  {
+   "text": "Remember: in TB, our own delayed hypersensitivity does the harm.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: the tubercle bacillus harms us mainly through our own delayed hypersensitivity reaction."
+  }
+ ]
+}

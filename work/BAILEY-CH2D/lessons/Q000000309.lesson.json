@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000309",
+ "image": "Q000000309.png",
+ "takeaway": "The adaptive immune response discriminates self from non-self thanks to immunological tolerance, and works through humoral and cell-mediated mechanisms.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following is a feature of the adaptive (acquired) immune response?",
+  "say": "Which of the following is a feature of the adaptive, or acquired, immune response?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Self/non-self discrimination",
+  "say": "The answer is self versus non-self discrimination.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 640,
+   "y": 675,
+   "z": 1.9,
+   "spot": [
+    640,
+    620,
+    280
+   ]
+  },
+  {
+   "x": 384,
+   "y": 432,
+   "z": 2.0,
+   "spot": [
+    260,
+    380,
+    260
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 638,
+   "z": 1.8,
+   "spot": [
+    1000,
+    580,
+    300
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 672,
+   "z": 2.0,
+   "spot": [
+    1330,
+    620,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The adaptive immunity guard checks every ID.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "The adaptive immunity guard checks every ID at the gate."
+  },
+  {
+   "text": "A friendly self cell is let through.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "The self card passes with a smile."
+  },
+  {
+   "text": "The angry non-self cell is stopped at the rope.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "The angry non-self intruder is stopped at the rope."
+  },
+  {
+   "text": "Tolerance is learned in foetal life.",
+   "shot": 2,
+   "dir": "calm, explanatory",
+   "say": "He learned the faces in the picture frame. Exposure to self-components in foetal life leads to immunological tolerance."
+  },
+  {
+   "text": "In adulthood the system can discriminate self from non-self.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "In adulthood the adaptive system can discriminate self from non-self, so it does not attack the body's own tissues."
+  },
+  {
+   "text": "Remember: adaptive immunity discriminates self from non-self.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: adaptive immunity discriminates self from non-self."
+  }
+ ]
+}

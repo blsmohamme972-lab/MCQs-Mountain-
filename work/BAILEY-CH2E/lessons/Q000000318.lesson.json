@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000318",
+ "image": "Q000000318.png",
+ "takeaway": "Hepatitis B is the second most common human carcinogen worldwide after tobacco; it is prevented by vaccination.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "With regard to hepatitis B:",
+  "say": "With regard to hepatitis B, which statement is true?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "It is the second most common human carcinogen worldwide",
+  "say": "The answer: it is the second most common human carcinogen worldwide.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 630,
+   "y": 552,
+   "z": 2.0,
+   "spot": [
+    630,
+    500,
+    260
+   ]
+  },
+  {
+   "x": 910,
+   "y": 362,
+   "z": 2.0,
+   "spot": [
+    910,
+    310,
+    250
+   ]
+  },
+  {
+   "x": 375,
+   "y": 720,
+   "z": 2.2,
+   "spot": [
+    375,
+    700,
+    200
+   ]
+  },
+  {
+   "x": 1084,
+   "y": 541,
+   "z": 1.7,
+   "spot": [
+    1300,
+    480,
+    300
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The hepatitis B virus wins the silver medal.",
+   "shot": 1,
+   "dir": "warm, amused",
+   "say": "(laugh) The hepatitis B virus proudly wears the silver medal."
+  },
+  {
+   "text": "Tobacco stands first on the podium.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "Tobacco stands on the top step, as the most common human carcinogen."
+  },
+  {
+   "text": "Hepatitis B is the second most common carcinogen worldwide.",
+   "shot": 3,
+   "dir": "clear, confident",
+   "say": "After tobacco smoking, hepatitis B is the second most common human carcinogen worldwide."
+  },
+  {
+   "text": "It is prevented by vaccination, not treated.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "Hepatitis B is effectively prevented, not treated, by hepatitis B vaccination."
+  },
+  {
+   "text": "Vaccination is mandatory for healthcare professionals who meet blood products.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "Vaccination is mandatory for all healthcare professionals who regularly come into contact with blood products."
+  },
+  {
+   "text": "Remember: hepatitis B is second only to tobacco as a carcinogen.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: hepatitis B is second only to tobacco as a human carcinogen."
+  }
+ ]
+}

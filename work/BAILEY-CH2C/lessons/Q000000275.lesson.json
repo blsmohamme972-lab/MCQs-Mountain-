@@ -1,0 +1,118 @@
+{
+ "qid": "Q000000275",
+ "image": "Q000000275.png",
+ "takeaway": "Gilbert's syndrome: a common hereditary cause of mild intermittent jaundice with unconjugated hyperbilirubinaemia and otherwise normal liver tests.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 25-year-old man has had mild intermittent jaundice for 6 years. Blood tests show moderate unconjugated hyperbilirubinaemia, with normal liver function tests and histology. Likely diagnosis?",
+  "say": "A twenty-five-year-old man has noticed mild intermittent jaundice for the past six years. His blood tests show a moderate unconjugated hyperbilirubinaemia, with otherwise normal liver function tests and normal hepatic histology. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Gilbert’s syndrome",
+  "say": "The answer is Gilbert’s syndrome.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 680,
+   "y": 322,
+   "z": 2.0,
+   "spot": [
+    680,
+    270,
+    230
+   ]
+  },
+  {
+   "x": 750,
+   "y": 682,
+   "z": 2.0,
+   "spot": [
+    750,
+    660,
+    260
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 612,
+   "z": 2.0,
+   "spot": [
+    1150,
+    560,
+    260
+   ]
+  },
+  {
+   "x": 384,
+   "y": 622,
+   "z": 2.0,
+   "spot": [
+    260,
+    600,
+    230
+   ]
+  },
+  {
+   "x": 900,
+   "y": 262,
+   "z": 2.0,
+   "spot": [
+    900,
+    210,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 25-year-old man with mild, intermittent jaundice for 6 years.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "This twenty-five-year-old man has had mild, intermittent jaundice for six years. A gentle yellow glow."
+  },
+  {
+   "text": "His blood has unconjugated bilirubin.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "His blood shows a moderate rise in unconjugated bilirubin."
+  },
+  {
+   "text": "But the liver tests are normal.",
+   "shot": 3,
+   "dir": "warm, amused",
+   "say": "(laugh) But the liver is smiling, because the liver function tests and the histology are normal."
+  },
+  {
+   "text": "Fasting can bring the jaundice on.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "Mild jaundice may appear with fasting and exertion."
+  },
+  {
+   "text": "So can stress and infections.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "It may also appear with stress and infections."
+  },
+  {
+   "text": "It is a common hereditary condition, autosomal dominant.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Gilbert's syndrome is a common hereditary cause of unconjugated bilirubin, with an autosomal dominant pattern."
+  },
+  {
+   "text": "Remember: mild intermittent jaundice with normal liver tests is Gilbert's syndrome.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: mild intermittent jaundice with normal liver tests is Gilbert's syndrome."
+  }
+ ]
+}

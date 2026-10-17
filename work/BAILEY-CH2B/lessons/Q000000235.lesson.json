@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000235",
+ "image": "Q000000235.png",
+ "takeaway": "Over 40 per cent blood loss with extreme tachycardia, a collapsing pressure and unconsciousness is Class IV shock.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 45-year-old man arrives after a road accident: pulse 160 beats/min, BP 75/50 mmHg, unresponsive. Which degree of haemorrhagic shock?",
+  "say": "A forty-five-year-old man arrives after a road traffic accident. His pulse is one hundred and sixty beats per minute, his blood pressure is seventy-five over fifty, and he is unresponsive. Which degree of haemorrhagic shock is this?",
+  "dir": "tense, clear"
+ },
+ "answer": {
+  "text": "Class IV",
+  "say": "The answer is class four.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 850,
+   "y": 327,
+   "z": 2.2,
+   "spot": [
+    850,
+    280,
+    200
+   ]
+  },
+  {
+   "x": 384,
+   "y": 612,
+   "z": 2.0,
+   "spot": [
+    190,
+    560,
+    230
+   ]
+  },
+  {
+   "x": 700,
+   "y": 661,
+   "z": 1.7,
+   "spot": [
+    700,
+    600,
+    300
+   ]
+  },
+  {
+   "x": 1109,
+   "y": 424,
+   "z": 1.8,
+   "spot": [
+    1330,
+    400,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The heart drums frantically: pulse 160, an extreme tachycardia.",
+   "shot": 1,
+   "dir": "urgent, tense",
+   "say": "The heart is drumming frantically. The pulse is one hundred and sixty beats per minute, an extreme tachycardia."
+  },
+  {
+   "text": "The blood pressure gauge is collapsing: 75/50.",
+   "shot": 2,
+   "dir": "serious, steady",
+   "say": "The blood pressure gauge is collapsing: seventy-five over fifty."
+  },
+  {
+   "text": "And he is unresponsive, unconscious on the trolley.",
+   "shot": 3,
+   "dir": "serious, steady",
+   "say": "He is unresponsive, lying unconscious on the trolley while the team rushes around him."
+  },
+  {
+   "text": "The drip bag is almost empty: over 40 per cent of the blood is lost.",
+   "shot": 4,
+   "dir": "grave, calm",
+   "say": "(sigh) The drip bag is almost empty. More than forty per cent of the circulating blood is gone."
+  },
+  {
+   "text": "That is Class IV shock.",
+   "shot": 0,
+   "dir": "calm, confident",
+   "say": "That is class four shock, the most severe degree."
+  },
+  {
+   "text": "Remember: extreme tachycardia, collapsing pressure, unconscious means Class IV.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: extreme tachycardia, a collapsing pressure and unconsciousness mean class four shock."
+  }
+ ]
+}

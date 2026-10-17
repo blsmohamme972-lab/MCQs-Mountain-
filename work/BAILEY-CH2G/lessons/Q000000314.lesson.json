@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000314",
+ "image": "Q000000314.png",
+ "takeaway": "Neutrophils live only a few hours in inflamed tissue; a severe infection becomes a graveyard of neutrophils whose enzymes can damage host tissue.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "With regard to neutrophils (polymorphonuclear leucocytes), which statement is true?",
+  "say": "With regard to neutrophils, the polymorphonuclear leucocytes, which statement is true?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "They have a lifespan of only a few hours in inflamed tissue",
+  "say": "The answer is: they have a lifespan of only a few hours in inflamed tissue.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 540,
+   "y": 522,
+   "z": 2.0,
+   "spot": [
+    540,
+    470,
+    200
+   ]
+  },
+  {
+   "x": 860,
+   "y": 432,
+   "z": 2.0,
+   "spot": [
+    860,
+    380,
+    220
+   ]
+  },
+  {
+   "x": 1010,
+   "y": 317,
+   "z": 2.2,
+   "spot": [
+    1010,
+    270,
+    160
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 662,
+   "z": 2.0,
+   "spot": [
+    1300,
+    640,
+    220
+   ]
+  },
+  {
+   "x": 650,
+   "y": 784,
+   "z": 1.8,
+   "spot": [
+    650,
+    780,
+    250
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Neutrophils: brave soldiers in the inflamed tissue.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "Meet the neutrophils, brave little soldiers rushing into the inflamed tissue."
+  },
+  {
+   "text": "But their hourglass runs out fast.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "But look at the hourglass beside them. Their time runs out fast."
+  },
+  {
+   "text": "Only a few hours in an inflammatory lesion, sometimes less.",
+   "shot": 3,
+   "dir": "clear, firm",
+   "say": "In an inflammatory lesion, a neutrophil lives only a few hours, and sometimes less."
+  },
+  {
+   "text": "A severe infection becomes a graveyard of thousands of neutrophils.",
+   "shot": 4,
+   "dir": "grave, steady",
+   "say": "(sigh) So a severe local infection quickly becomes a graveyard of thousands of neutrophils."
+  },
+  {
+   "text": "Their contents, especially enzymes, spill out and may damage host tissue.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "As they fall, their contents, especially their enzymes, spill out and may cause additional damage to host tissues."
+  },
+  {
+   "text": "Remember: neutrophils live only a few hours in inflamed tissue.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: neutrophils have a lifespan of only a few hours in inflamed tissue."
+  }
+ ]
+}

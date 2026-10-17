@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000304",
+ "image": "Q000000304.png",
+ "takeaway": "Ejection fraction is the ratio of stroke volume to end-diastolic volume.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A patient with a 6 cm abdominal aortic aneurysm has an echocardiogram before elective repair. The ejection fraction is defined as what?",
+  "say": "A patient with a six centimetre abdominal aortic aneurysm is scheduled for elective repair, and an echocardiogram is requested. The ejection fraction is defined as what?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "The ratio of stroke volume to end-diastolic volume",
+  "say": "The answer is the ratio of stroke volume to end-diastolic volume.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 1152,
+   "y": 492,
+   "z": 2.0,
+   "spot": [
+    1370,
+    440,
+    220
+   ]
+  },
+  {
+   "x": 1030,
+   "y": 427,
+   "z": 2.2,
+   "spot": [
+    1030,
+    380,
+    180
+   ]
+  },
+  {
+   "x": 384,
+   "y": 522,
+   "z": 2.0,
+   "spot": [
+    330,
+    470,
+    230
+   ]
+  },
+  {
+   "x": 650,
+   "y": 700,
+   "z": 2.2,
+   "spot": [
+    650,
+    680,
+    160
+   ]
+  },
+  {
+   "x": 680,
+   "y": 388,
+   "z": 1.8,
+   "spot": [
+    680,
+    330,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Our patient has a 6 cm aneurysm.",
+   "shot": 1,
+   "dir": "warm, steady",
+   "say": "Our smiling patient has a six centimetre aortic aneurysm, waiting for elective repair."
+  },
+  {
+   "text": "The echocardiogram checks the heart first.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "Before surgery, the echocardiogram checks how well his heart pumps."
+  },
+  {
+   "text": "The full bucket: end-diastolic volume, about 120 mL.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "In diastole the ventricle fills to about one hundred and twenty millilitres. This full bucket is the end-diastolic volume."
+  },
+  {
+   "text": "The cup: stroke volume, about 70 mL.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "In systole the heart pours out about seventy millilitres into the cup. That is the stroke volume."
+  },
+  {
+   "text": "Ejection fraction = stroke volume / end-diastolic volume.",
+   "shot": 5,
+   "dir": "warm, amused",
+   "say": "(laugh) So the ejection fraction is simply the cup divided by the bucket."
+  },
+  {
+   "text": "Remember: EF is stroke volume over end-diastolic volume.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: ejection fraction is the ratio of stroke volume to end-diastolic volume."
+  }
+ ]
+}

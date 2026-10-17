@@ -1,0 +1,92 @@
+{
+ "qid": "Q000000236",
+ "image": "Q000000236.png",
+ "takeaway": "Wallace's rule of nines: each arm 9 per cent, each leg 18 per cent, the back of the trunk 18 per cent, the face and head 9 per cent, the perineum 1 per cent.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Using Wallace's rules of nines, which of these burn descriptions gives the correct degree of burn?",
+  "say": "Using Wallace's rules of nines, which of these burn descriptions gives the correct degree of burn?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "A man suffers full-thickness burns to the whole of his left arm. Degree of burns 9 per cent",
+  "say": "The answer: full-thickness burns to the whole of the left arm are nine per cent.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 500,
+   "y": 302,
+   "z": 2.0,
+   "spot": [
+    500,
+    250,
+    260
+   ]
+  },
+  {
+   "x": 950,
+   "y": 522,
+   "z": 2.0,
+   "spot": [
+    950,
+    470,
+    240
+   ]
+  },
+  {
+   "x": 384,
+   "y": 752,
+   "z": 2.0,
+   "spot": [
+    360,
+    700,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Wallace the wizard counts in nines: the rule of 9s.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "Here is Wallace the wizard, counting in nines. This is the rule of nines."
+  },
+  {
+   "text": "The whole left arm is burned: each arm is 9 per cent.",
+   "shot": 2,
+   "dir": "clear, confident",
+   "say": "This man has burns to the whole of his left arm. In Wallace's rules, each arm is nine per cent."
+  },
+  {
+   "text": "The giant puzzle piece is a leg: each leg is 18 per cent.",
+   "shot": 3,
+   "dir": "warm, amused",
+   "say": "(laugh) And this giant puzzle piece is a leg. Each leg is eighteen per cent."
+  },
+  {
+   "text": "Perineum 1 per cent, face and head 9, back of the trunk 18.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Also remember: perineum one per cent, face and head nine, back of the trunk eighteen."
+  },
+  {
+   "text": "Burns can release myoglobin, which may block the kidneys and raise potassium.",
+   "shot": 0,
+   "dir": "serious, steady",
+   "say": "A warning: burns can release myoglobin, which may block the renal tubules and cause hyperkalaemia."
+  },
+  {
+   "text": "Remember: each arm is 9 per cent, each leg 18 per cent.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: each arm is nine per cent, and each leg is eighteen per cent."
+  }
+ ]
+}

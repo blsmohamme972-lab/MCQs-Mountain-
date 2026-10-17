@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000311",
+ "image": "Q000000311.png",
+ "takeaway": "Suxamethonium is a depolarizing neuromuscular blocker; blockers relax skeletal muscles so light anaesthesia can be used for surgery.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which one of the following is a depolarizing neuromuscular blocker?",
+  "say": "Which one of the following is a depolarizing neuromuscular blocker?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Suxamethonium",
+  "say": "The answer is suxamethonium.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 430,
+   "y": 352,
+   "z": 2.0,
+   "spot": [
+    430,
+    300,
+    260
+   ]
+  },
+  {
+   "x": 780,
+   "y": 632,
+   "z": 2.0,
+   "spot": [
+    780,
+    610,
+    230
+   ]
+  },
+  {
+   "x": 960,
+   "y": 587,
+   "z": 2.2,
+   "spot": [
+    960,
+    540,
+    200
+   ]
+  },
+  {
+   "x": 990,
+   "y": 770,
+   "z": 2.2,
+   "spot": [
+    990,
+    750,
+    200
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 532,
+   "z": 2.0,
+   "spot": [
+    1100,
+    480,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Sux the superhero flies into the operating theatre.",
+   "shot": 1,
+   "dir": "warm, amused",
+   "say": "(laugh) Sux the superhero flies into the operating theatre, as a lightning bolt in goggles."
+  },
+  {
+   "text": "He hits the neuromuscular junction.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "He strikes the neuromuscular junction, the meeting point of nerve and muscle."
+  },
+  {
+   "text": "Suxamethonium is a depolarizing blocker.",
+   "shot": 3,
+   "dir": "clear, confident",
+   "say": "Suxamethonium is a depolarizing neuromuscular blocker."
+  },
+  {
+   "text": "The muscles relax and the patient is paralysed.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "Blocking the junction relaxes the skeletal muscles and induces paralysis."
+  },
+  {
+   "text": "So light anaesthesia can be used, with relaxed abdominal muscles and diaphragm.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "That lets the anaesthetist use light levels of anaesthesia, with relaxation of the abdominal muscles and the diaphragm, which makes surgery easier."
+  },
+  {
+   "text": "Remember: suxamethonium is the depolarizing blocker.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: suxamethonium is the depolarizing neuromuscular blocker."
+  }
+ ]
+}

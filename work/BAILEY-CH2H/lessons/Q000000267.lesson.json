@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000267",
+ "image": "Q000000267.png",
+ "takeaway": "Acute appendicitis: anorexia, abdominal pain that settles in the right lower quadrant, vomiting, low-grade fever, and lower abdominal and rectal tenderness.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 25-year-old woman has 24 hours of anorexia, abdominal pain and diarrhoea. She has vomited and has a low-grade fever. She is tender in the lower abdomen and on rectal exam. Diagnosis?",
+  "say": "A twenty-five-year-old woman has had anorexia, abdominal pain and diarrhoea for twenty-four hours. She has vomited and has a low-grade fever. She is tender in the lower abdomen and on rectal examination. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Acute appendicitis",
+  "say": "The answer is acute appendicitis.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 440,
+   "y": 312,
+   "z": 2.0,
+   "spot": [
+    440,
+    260,
+    230
+   ]
+  },
+  {
+   "x": 1180,
+   "y": 660,
+   "z": 2.2,
+   "spot": [
+    1180,
+    640,
+    200
+   ]
+  },
+  {
+   "x": 1010,
+   "y": 467,
+   "z": 2.2,
+   "spot": [
+    1010,
+    420,
+    200
+   ]
+  },
+  {
+   "x": 500,
+   "y": 532,
+   "z": 2.0,
+   "spot": [
+    500,
+    480,
+    220
+   ]
+  },
+  {
+   "x": 720,
+   "y": 527,
+   "z": 2.2,
+   "spot": [
+    720,
+    480,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 25-year-old woman in pain.",
+   "shot": 1,
+   "dir": "warm, concerned",
+   "say": "This twenty-five-year-old woman has been unwell for twenty-four hours."
+  },
+  {
+   "text": "She has no appetite: anorexia.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "She cannot face her lunch. Anorexia is an early clue."
+  },
+  {
+   "text": "A low-grade fever.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "The thermometer shows a low-grade fever."
+  },
+  {
+   "text": "Pain starts generalized, then moves to the right lower quadrant.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "Her pain began everywhere, then settled low on the right, at McBurney's point."
+  },
+  {
+   "text": "The appendix is acutely inflamed.",
+   "shot": 5,
+   "dir": "grave, steady",
+   "say": "(sigh) Here is the reason. The appendix is acutely inflamed and very angry, and it is tender on rectal examination too."
+  },
+  {
+   "text": "Remember: anorexia, fever and lower abdominal tenderness mean acute appendicitis.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: anorexia, vomiting, low fever and lower abdominal tenderness mean acute appendicitis."
+  }
+ ]
+}

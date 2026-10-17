@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000265",
+ "image": "Q000000265.png",
+ "takeaway": "Mesenteric adenitis: a child with a sore throat, pus on the tonsils and central abdominal pain; a self-limiting viral inflammation of the mesenteric nodes.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 6-year-old boy has vomiting, central abdominal pain, a sore throat, and pus on enlarged tonsils. He is apyrexial, but his mother reports 38°C yesterday. Diagnosis?",
+  "say": "A six-year-old boy has two episodes of vomiting and central abdominal pain. He has a sore throat, and his tonsils are enlarged with pus. He is apyrexial, but his mother reports a temperature of thirty-eight degrees yesterday. What is the diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Mesenteric adenitis",
+  "say": "The answer is mesenteric adenitis.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 700,
+   "y": 392,
+   "z": 2.0,
+   "spot": [
+    700,
+    340,
+    250
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 492,
+   "z": 2.0,
+   "spot": [
+    1190,
+    440,
+    220
+   ]
+  },
+  {
+   "x": 640,
+   "y": 762,
+   "z": 2.0,
+   "spot": [
+    640,
+    740,
+    260
+   ]
+  },
+  {
+   "x": 850,
+   "y": 752,
+   "z": 2.0,
+   "spot": [
+    850,
+    730,
+    220
+   ]
+  },
+  {
+   "x": 720,
+   "y": 592,
+   "z": 2.0,
+   "spot": [
+    720,
+    540,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 6-year-old boy with a sore throat and pus on his tonsils.",
+   "shot": 1,
+   "dir": "gentle, curious",
+   "say": "This six-year-old boy has a sore throat and enlarged tonsils, with obvious pus."
+  },
+  {
+   "text": "His mother reports 38°C yesterday.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "He seems apyrexial now, but his mother reports a temperature of thirty-eight degrees yesterday."
+  },
+  {
+   "text": "He vomited and has central abdominal pain.",
+   "shot": 3,
+   "dir": "gentle, concerned",
+   "say": "He has vomited twice, and he has central abdominal pain."
+  },
+  {
+   "text": "The swollen mesenteric nodes are the cause.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "The tonsils talk to the tummy. Swollen mesenteric lymph nodes cause the pain."
+  },
+  {
+   "text": "It is a self-limiting inflammation, frequently caused by a virus.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "This is a self-limiting inflammatory process, frequently caused by a viral pathogen."
+  },
+  {
+   "text": "Remember: a sore throat with central abdominal pain in a child is mesenteric adenitis.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: a sore throat with central abdominal pain in a child suggests mesenteric adenitis."
+  }
+ ]
+}

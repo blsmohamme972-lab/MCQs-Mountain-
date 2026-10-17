@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000250",
+ "image": "Q000000250.png",
+ "takeaway": "Superficial peroneal nerve injury: sensory loss on the front and lateral leg and foot with loss of eversion but no foot drop.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A construction worker loses sensation over the front and lateral side of his leg and foot. There is no foot drop, but he cannot evert his foot. Which nerve?",
+  "say": "A construction worker has lost sensation over the front and lateral side of his leg and foot. There is no foot drop, but he is unable to evert his foot. Which nerve is involved?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Superficial peroneal nerve",
+  "say": "The answer is the superficial peroneal nerve.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 900,
+   "y": 612,
+   "z": 2.0,
+   "spot": [
+    900,
+    560,
+    260
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 687,
+   "z": 2.2,
+   "spot": [
+    1100,
+    640,
+    200
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 828,
+   "z": 2.2,
+   "spot": [
+    1100,
+    800,
+    200
+   ]
+  },
+  {
+   "x": 640,
+   "y": 747,
+   "z": 2.2,
+   "spot": [
+    640,
+    700,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Sensation is lost over the front and lateral leg and foot.",
+   "shot": 1,
+   "dir": "gentle, curious",
+   "say": "A construction worker has lost sensation over the front and the lateral side of his leg and foot."
+  },
+  {
+   "text": "But there is no foot drop: his toes still lift.",
+   "shot": 2,
+   "dir": "gentle, steady",
+   "say": "(sigh) But there is no foot drop. His toes still lift up happily."
+  },
+  {
+   "text": "What he cannot do is evert his foot.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "What he cannot do is evert his foot."
+  },
+  {
+   "text": "The peroneal muscles are supplied by the superficial peroneal nerve.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "The peroneal muscles are supplied by the superficial peroneal nerve, so ankle eversion is lost."
+  },
+  {
+   "text": "A common peroneal injury would affect both branches.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "A common peroneal injury would affect both the superficial and the deep peroneal nerves."
+  },
+  {
+   "text": "Remember: no foot drop but no eversion means the superficial peroneal nerve.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: no foot drop, but no eversion, means the superficial peroneal nerve."
+  }
+ ]
+}

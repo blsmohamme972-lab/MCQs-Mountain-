@@ -1,0 +1,118 @@
+{
+ "qid": "Q000000274",
+ "image": "Q000000274.png",
+ "takeaway": "Primary sclerosing cholangitis: ulcerative colitis with fluctuating jaundice, right upper quadrant pain and weight loss from scarred bile ducts.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 30-year-old man with 7 years of ulcerative colitis has 6 months of fluctuating jaundice, right upper quadrant pain and weight loss. ALP is 20 U/L (normal 30–130). Diagnosis?",
+  "say": "A thirty-year-old man with seven years of ulcerative colitis has had fluctuating jaundice, right upper quadrant pain, and weight loss for six months. His alkaline phosphatase is twenty. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Primary sclerosing cholangitis",
+  "say": "The answer is primary sclerosing cholangitis.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 352,
+   "z": 2.0,
+   "spot": [
+    400,
+    300,
+    220
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 272,
+   "z": 2.0,
+   "spot": [
+    1100,
+    220,
+    200
+   ]
+  },
+  {
+   "x": 830,
+   "y": 558,
+   "z": 1.8,
+   "spot": [
+    830,
+    500,
+    240
+   ]
+  },
+  {
+   "x": 620,
+   "y": 722,
+   "z": 2.0,
+   "spot": [
+    620,
+    700,
+    200
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 762,
+   "z": 2.0,
+   "spot": [
+    1250,
+    740,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "7 years of ulcerative colitis.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "He has had ulcerative colitis for seven years. His colon friend never leaves his side."
+  },
+  {
+   "text": "Fluctuating jaundice, on and off.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "His jaundice comes and goes, flickering like this yellow light bulb."
+  },
+  {
+   "text": "Right upper quadrant pain.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "He has pain in the right upper quadrant."
+  },
+  {
+   "text": "And 6 months of weight loss.",
+   "shot": 5,
+   "dir": "grave, steady",
+   "say": "(sigh) And for six months he has been losing weight. His belt hangs loose."
+  },
+  {
+   "text": "The bile ducts are inflamed and scarred.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "Inside, the bile ducts are inflamed and scarred, so bile cannot flow to the gut. The cause is thought to be autoimmune."
+  },
+  {
+   "text": "It can lead to cirrhosis, liver failure and liver cancer.",
+   "shot": 0,
+   "dir": "serious, steady",
+   "say": "This can lead to cirrhosis, liver failure and liver cancer."
+  },
+  {
+   "text": "Remember: ulcerative colitis with fluctuating jaundice points to primary sclerosing cholangitis.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: ulcerative colitis with fluctuating jaundice points to primary sclerosing cholangitis."
+  }
+ ]
+}

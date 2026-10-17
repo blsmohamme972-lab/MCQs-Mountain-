@@ -1,0 +1,96 @@
+{
+ "qid": "Q000000315",
+ "image": "Q000000315.png",
+ "takeaway": "Myoglobin binds and stores oxygen in muscle for rapid release when the PO2 falls, as in exercise.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which one of the following regarding myoglobin in skeletal muscle is correct?",
+  "say": "Which one of the following regarding myoglobin in skeletal muscle is correct?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "It binds and stores oxygen for rapid release during falling Po2",
+  "say": "The answer: it binds and stores oxygen for rapid release during falling PO2.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 1000,
+   "y": 481,
+   "z": 1.7,
+   "spot": [
+    1000,
+    420,
+    300
+   ]
+  },
+  {
+   "x": 550,
+   "y": 382,
+   "z": 2.0,
+   "spot": [
+    550,
+    330,
+    260
+   ]
+  },
+  {
+   "x": 800,
+   "y": 592,
+   "z": 2.0,
+   "spot": [
+    800,
+    540,
+    250
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 672,
+   "z": 2.0,
+   "spot": [
+    1200,
+    650,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The muscle sprints with an oxygen backpack.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "The muscle is sprinting, carrying a backpack full of oxygen bottles."
+  },
+  {
+   "text": "The backpack is myoglobin: it stores oxygen.",
+   "shot": 2,
+   "dir": "clear, confident",
+   "say": "The backpack is myoglobin. It binds and stores oxygen inside the muscle."
+  },
+  {
+   "text": "The oxygen is released fast when the muscle needs it.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "When the PO2 falls during exercise, the oxygen is released rapidly to the working muscle."
+  },
+  {
+   "text": "Its function is to store oxygen for times of need.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "Its function is to store oxygen in muscle tissue for rapid release during times of need, as in exercise."
+  },
+  {
+   "text": "Remember: myoglobin stores oxygen in muscle.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: myoglobin stores oxygen in muscle, ready for rapid release."
+  }
+ ]
+}

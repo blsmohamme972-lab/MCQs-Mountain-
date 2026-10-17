@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000310",
+ "image": "Q000000310.png",
+ "takeaway": "Thyroglobulin is stored as colloid in the follicles; T4 is the principal hormone, T3 is more potent but shorter, and calcitonin comes from C-cells.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "With regard to the thyroid gland, which of the following is true?",
+  "say": "With regard to the thyroid gland, which of the following is true?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Thyroglobulin is stored in the colloid of follicles",
+  "say": "The answer: thyroglobulin is stored in the colloid of follicles.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 760,
+   "y": 569,
+   "z": 1.5,
+   "spot": [
+    760,
+    500,
+    350
+   ]
+  },
+  {
+   "x": 630,
+   "y": 572,
+   "z": 2.0,
+   "spot": [
+    630,
+    520,
+    230
+   ]
+  },
+  {
+   "x": 680,
+   "y": 780,
+   "z": 2.2,
+   "spot": [
+    680,
+    760,
+    200
+   ]
+  },
+  {
+   "x": 1080,
+   "y": 612,
+   "z": 2.0,
+   "spot": [
+    1080,
+    560,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The thyroid follicle is a storeroom.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "The thyroid follicle is a big storeroom."
+  },
+  {
+   "text": "The golden jars hold thyroglobulin.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The golden jars hold thyroglobulin."
+  },
+  {
+   "text": "It is stored as colloid in the follicles.",
+   "shot": 3,
+   "dir": "clear, confident",
+   "say": "Thyroglobulin molecules are stored as colloid in the follicles."
+  },
+  {
+   "text": "The king is T4, the principal hormone.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "The king on the throne is T4, the principal hormone."
+  },
+  {
+   "text": "T3 is shorter-acting but more potent; calcitonin comes from C-cells.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "T3 acts for a shorter time but is more potent. Calcitonin comes from parafollicular C-cells and is involved in calcium balance."
+  },
+  {
+   "text": "Remember: thyroglobulin is stored in the colloid of follicles.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: thyroglobulin is stored in the colloid of follicles."
+  }
+ ]
+}

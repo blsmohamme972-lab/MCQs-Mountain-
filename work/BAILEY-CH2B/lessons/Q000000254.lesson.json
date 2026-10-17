@@ -1,0 +1,108 @@
+{
+ "qid": "Q000000254",
+ "image": "Q000000254.png",
+ "takeaway": "Left lower rib fractures with hypotension and tachycardia after trauma suggest a ruptured spleen, with left shoulder tip pain (Kehr's sign).",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 39-year-old pedestrian hit by a car has BP 86/32, pulse 145, left rib fractures (ribs 8–10) and guarding in the left upper quadrant. What is the likely diagnosis?",
+  "say": "A thirty-nine-year-old woman is hit by a car. Her blood pressure is eighty-six over thirty-two and her pulse is one hundred and forty-five. She has left rib fractures, ribs eight to ten, and guarding over the left upper quadrant. What is the likely diagnosis?",
+  "dir": "tense, clear"
+ },
+ "answer": {
+  "text": "Ruptured spleen",
+  "say": "The answer is a ruptured spleen.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 550,
+   "y": 652,
+   "z": 2.0,
+   "spot": [
+    550,
+    600,
+    250
+   ]
+  },
+  {
+   "x": 850,
+   "y": 592,
+   "z": 2.0,
+   "spot": [
+    850,
+    540,
+    220
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 572,
+   "z": 2.0,
+   "spot": [
+    1200,
+    520,
+    220
+   ]
+  },
+  {
+   "x": 1187,
+   "y": 767,
+   "z": 2.2,
+   "spot": [
+    1340,
+    720,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The chest X-ray shows left rib fractures: ribs 8 to 10.",
+   "shot": 1,
+   "dir": "serious, steady",
+   "say": "The chest X-ray shows left rib fractures, ribs eight to ten, and the spleen underneath is cracked."
+  },
+  {
+   "text": "The doctor finds rebound tenderness and guarding in the left upper quadrant.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "On examination there is rebound tenderness and guarding over the left upper quadrant."
+  },
+  {
+   "text": "The blood pressure is falling: 86/32.",
+   "shot": 3,
+   "dir": "grave, calm",
+   "say": "(sigh) The blood pressure is falling: eighty-six over thirty-two."
+  },
+  {
+   "text": "And the heart is racing: pulse 145.",
+   "shot": 4,
+   "dir": "urgent, steady",
+   "say": "And the heart is racing, one hundred and forty-five a minute."
+  },
+  {
+   "text": "Left lower rib fractures with hypotension mean a ruptured spleen.",
+   "shot": 1,
+   "dir": "calm, confident",
+   "say": "Left lower rib fractures with hypotension point to a ruptured spleen after trauma."
+  },
+  {
+   "text": "Classically there is left shoulder tip pain: Kehr's sign.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Classically there is left shoulder tip pain, called Kehr's sign."
+  },
+  {
+   "text": "Remember: left lower rib fractures plus shock mean a ruptured spleen.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: left lower rib fractures plus shock mean a ruptured spleen."
+  }
+ ]
+}

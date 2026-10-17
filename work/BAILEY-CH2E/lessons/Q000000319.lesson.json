@@ -1,0 +1,96 @@
+{
+ "qid": "Q000000319",
+ "image": "Q000000319.png",
+ "takeaway": "The ilium, ischium and pubis, held by Y-shaped cartilage, are completely fused at the acetabulum by about 23 years of age.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A skydiver lands on his right lower limb and fractures the acetabulum. The ilium, ischium and pubis are completely fused by:",
+  "say": "A skydiver lands forcefully on his right lower limb and fractures the acetabulum, with the femoral head dislocated into the pelvis. The acetabulum is formed by the ilium, ischium, and pubis. These three bones are completely fused by what age?",
+  "dir": "tense, clear"
+ },
+ "answer": {
+  "text": "23 years of age",
+  "say": "The answer: twenty-three years of age.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 384,
+   "y": 352,
+   "z": 2.0,
+   "spot": [
+    330,
+    300,
+    260
+   ]
+  },
+  {
+   "x": 730,
+   "y": 532,
+   "z": 2.0,
+   "spot": [
+    730,
+    480,
+    230
+   ]
+  },
+  {
+   "x": 720,
+   "y": 617,
+   "z": 2.2,
+   "spot": [
+    720,
+    570,
+    200
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 802,
+   "z": 2.0,
+   "spot": [
+    1280,
+    780,
+    250
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The skydiver lands hard on his hip.",
+   "shot": 1,
+   "dir": "serious, steady",
+   "say": "The skydiver hits the ground hard, and his hip takes the force."
+  },
+  {
+   "text": "Three bones form the acetabulum: ilium, ischium, pubis.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "Three bones form the acetabulum: the ilium, the ischium, and the pubis."
+  },
+  {
+   "text": "They are held together by Y-shaped cartilage.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "From birth to the early twenties, they are held together by a Y-shaped cartilage."
+  },
+  {
+   "text": "The calendar shows when they fuse: 23 years.",
+   "shot": 4,
+   "dir": "clear, confident",
+   "say": "Fusion at the acetabulum is usually complete by the age of twenty-three."
+  },
+  {
+   "text": "Remember: the acetabulum is fully fused by 23.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: the three hip bones are completely fused by twenty-three."
+  }
+ ]
+}

@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000263",
+ "image": "Q000000263.png",
+ "takeaway": "A scrotal swelling that appears in the day and resolves at night, and is transilluminable with no bowel sounds, is a communicating hydrocele.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 2-year-old boy has a scrotal swelling in the day that resolves at night. It is fluctuant and transilluminable, you cannot get above it, and there are no bowel sounds. Diagnosis?",
+  "say": "A two-year-old boy has a scrotal swelling during the day. At night it resolves. It is fluctuant and transilluminable, it is not possible to get above it, and no bowel sounds are heard in it. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Communicating hydrocele",
+  "say": "The answer is a communicating hydrocele.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 384,
+   "y": 482,
+   "z": 2.0,
+   "spot": [
+    330,
+    430,
+    230
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 432,
+   "z": 2.0,
+   "spot": [
+    1220,
+    380,
+    250
+   ]
+  },
+  {
+   "x": 520,
+   "y": 712,
+   "z": 2.0,
+   "spot": [
+    520,
+    690,
+    230
+   ]
+  },
+  {
+   "x": 780,
+   "y": 572,
+   "z": 2.0,
+   "spot": [
+    780,
+    520,
+    230
+   ]
+  },
+  {
+   "x": 1050,
+   "y": 662,
+   "z": 2.0,
+   "spot": [
+    1050,
+    640,
+    250
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "In the day, the little boy has a scrotal swelling.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "In the daytime, this little boy has a swelling in his scrotum."
+  },
+  {
+   "text": "At night, it is gone.",
+   "shot": 2,
+   "dir": "warm, amused",
+   "say": "(laugh) But at night, it is gone! Sleeping flat, the swelling resolves."
+  },
+  {
+   "text": "The torch shines through it: it transilluminates.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "The torch shines straight through it. The swelling transilluminates, and it is fluctuant."
+  },
+  {
+   "text": "A channel links the sac to the peritoneal cavity, so peritoneal fluid fills the sac.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "A channel links the sac to the peritoneal cavity, so peritoneal fluid fills it when he stands."
+  },
+  {
+   "text": "The doctor hears no bowel sounds, so it is not a hernia.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "The doctor hears no bowel sounds in the swelling. If the sac filled with bowel, it would be an inguinal hernia."
+  },
+  {
+   "text": "Remember: a swelling that comes in the day and goes at night is a communicating hydrocele.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: a swelling that grows in the day and resolves at night is a communicating hydrocele."
+  }
+ ]
+}

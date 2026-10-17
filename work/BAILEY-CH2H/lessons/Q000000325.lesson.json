@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000325",
+ "image": "Q000000325.png",
+ "takeaway": "Mutations in haemagglutinin cause antigenic drift in influenza epidemics, letting the virus escape host antibodies.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "With regard to influenza:",
+  "say": "With regard to influenza, which statement is true?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Mutations in the haemagglutinin molecule are responsible for antigenic drift",
+  "say": "The answer: mutations in the haemagglutinin molecule are responsible for antigenic drift.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 550,
+   "y": 621,
+   "z": 1.7,
+   "spot": [
+    550,
+    560,
+    300
+   ]
+  },
+  {
+   "x": 800,
+   "y": 307,
+   "z": 2.2,
+   "spot": [
+    800,
+    260,
+    220
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 382,
+   "z": 2.0,
+   "spot": [
+    1360,
+    330,
+    260
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 692,
+   "z": 2.0,
+   "spot": [
+    1290,
+    640,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The flu virus drifts down the river on a boat.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "The influenza virus drifts down the river in a boat. This is antigenic drift."
+  },
+  {
+   "text": "The wrench changes the spike: a haemagglutinin mutation.",
+   "shot": 2,
+   "dir": "warm, amused",
+   "say": "(laugh) He uses a wrench to change his spike. That is a mutation in the haemagglutinin molecule."
+  },
+  {
+   "text": "The antibodies no longer recognise him.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "The host antibodies no longer recognise the new shape, and the virus escapes them."
+  },
+  {
+   "text": "Epidemics occur through such mutations of HA and NA.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Epidemics occur through mutations, resulting in amino acid substitutions of the HA and NA."
+  },
+  {
+   "text": "Pandemics need both replaced: antigenic shift.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Pandemics may occur when both are replaced by recombination with animal viruses. That is antigenic shift, and the notable ones were in 1918, 1957 and 1968."
+  },
+  {
+   "text": "Remember: haemagglutinin mutations cause antigenic drift.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: haemagglutinin mutations cause antigenic drift."
+  }
+ ]
+}

@@ -1,0 +1,118 @@
+{
+ "qid": "Q000000320",
+ "image": "Q000000320.png",
+ "takeaway": "Interstitial fluid hydrostatic pressure is normally negative, because the lymphatics suck fluid back to the circulation.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "With regard to the microcirculation and formation of lymph, which statement is true?",
+  "say": "With regard to the microcirculation and the formation of lymph, which statement is true?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Interstitial fluid hydrostatic pressure is normally negative",
+  "say": "The answer is: interstitial fluid hydrostatic pressure is normally negative.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 500,
+   "y": 612,
+   "z": 2.0,
+   "spot": [
+    500,
+    560,
+    200
+   ]
+  },
+  {
+   "x": 520,
+   "y": 752,
+   "z": 2.0,
+   "spot": [
+    520,
+    730,
+    200
+   ]
+  },
+  {
+   "x": 770,
+   "y": 660,
+   "z": 2.2,
+   "spot": [
+    770,
+    640,
+    180
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 622,
+   "z": 2.0,
+   "spot": [
+    1350,
+    570,
+    200
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 784,
+   "z": 1.8,
+   "spot": [
+    1000,
+    800,
+    250
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Fluid leaks out of the microcirculation.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "Here is the microcirculation, with little drops of fluid leaking out of the blood vessel."
+  },
+  {
+   "text": "It enters the interstitial spaces between the cells.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The fluid drips into the interstitial spaces between the cells."
+  },
+  {
+   "text": "The lymphatic sucks the fluid back to the circulation.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "Now the lymphatic opens its mouth and sucks the fluid back, returning it to the circulation."
+  },
+  {
+   "text": "The gauge reads below zero: negative pressure.",
+   "shot": 4,
+   "dir": "clear, firm",
+   "say": "That suction pulls the gauge below zero. Interstitial fluid hydrostatic pressure is normally subatmospheric, or negative."
+  },
+  {
+   "text": "This keeps the tissues intact and the spaces small.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "This keeps the tissues structurally intact and the interstitial spaces small."
+  },
+  {
+   "text": "Short distances make diffusion easy.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "And small spaces mean short distances for diffusion."
+  },
+  {
+   "text": "Remember: lymphatic suction makes interstitial pressure negative.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: lymphatic suction makes interstitial fluid hydrostatic pressure normally negative."
+  }
+ ]
+}

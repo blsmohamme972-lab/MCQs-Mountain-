@@ -1,0 +1,108 @@
+{
+ "qid": "Q000000306",
+ "image": "Q000000306.png",
+ "takeaway": "Raised intracranial pressure raises BP, slows the heart and lowers cerebral perfusion pressure, since CPP = MABP - ICP.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 40-year-old with a head injury is brought to A&E. The cardiovascular effects of raised intracranial pressure include (BP, HR, CPP):",
+  "say": "A forty-year-old is brought into A and E with a head injury. What are the cardiovascular effects of raised intracranial pressure?",
+  "dir": "serious, clear"
+ },
+ "answer": {
+  "text": "↑ BP, ↓ HR, ↓ CPP",
+  "say": "The answer is: blood pressure up, heart rate down, and cerebral perfusion pressure down.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 680,
+   "y": 352,
+   "z": 2.0,
+   "spot": [
+    680,
+    300,
+    230
+   ]
+  },
+  {
+   "x": 1040,
+   "y": 472,
+   "z": 2.0,
+   "spot": [
+    1040,
+    420,
+    200
+   ]
+  },
+  {
+   "x": 384,
+   "y": 572,
+   "z": 2.0,
+   "spot": [
+    330,
+    520,
+    190
+   ]
+  },
+  {
+   "x": 920,
+   "y": 692,
+   "z": 2.0,
+   "spot": [
+    920,
+    670,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "His skull is a pressure cooker: raised ICP.",
+   "shot": 1,
+   "dir": "serious, steady",
+   "say": "His skull is a steaming pressure cooker. The intracranial pressure is rising."
+  },
+  {
+   "text": "The skull is a rigid box.",
+   "shot": 1,
+   "dir": "calm, explanatory",
+   "say": "The adult brain sits in a rigid box, so the volume inside must stay constant."
+  },
+  {
+   "text": "CPP = MABP − ICP.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "He holds the formula. Cerebral perfusion pressure equals mean arterial pressure minus intracranial pressure."
+  },
+  {
+   "text": "As ICP rises, CPP falls.",
+   "shot": 2,
+   "dir": "grave, steady",
+   "say": "So as the intracranial pressure rises, perfusion pressure and cerebral blood flow fall."
+  },
+  {
+   "text": "BP goes up.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "The gauge shows blood pressure going up."
+  },
+  {
+   "text": "HR goes down: the heart crawls like a snail.",
+   "shot": 4,
+   "dir": "grave, steady",
+   "say": "(sigh) And the tired heart rides a snail. The heart rate goes down."
+  },
+  {
+   "text": "Remember: raised ICP means BP up, HR down, CPP down.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: raised intracranial pressure means blood pressure up, heart rate down, and perfusion pressure down."
+  }
+ ]
+}

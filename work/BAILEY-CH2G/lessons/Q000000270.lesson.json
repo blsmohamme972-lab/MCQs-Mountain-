@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000270",
+ "image": "Q000000270.png",
+ "takeaway": "Oesophageal carcinoma: progressive dysphagia, from solids to fluids, in an older smoker; upper two-thirds squamous, lower third adenocarcinoma.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 75-year-old woman presents with a 4-month history of difficulty swallowing. She is now having difficulty swallowing fluids. Of note, she is a regular smoker. Select the likely diagnosis.",
+  "say": "A seventy-five-year-old woman has had difficulty swallowing for four months. Now she has difficulty swallowing even fluids. Of note, she is a regular smoker. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Oesophageal carcinoma",
+  "say": "The answer is oesophageal carcinoma.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 700,
+   "y": 252,
+   "z": 2.0,
+   "spot": [
+    700,
+    200,
+    230
+   ]
+  },
+  {
+   "x": 740,
+   "y": 497,
+   "z": 2.2,
+   "spot": [
+    740,
+    450,
+    200
+   ]
+  },
+  {
+   "x": 870,
+   "y": 642,
+   "z": 2.0,
+   "spot": [
+    870,
+    620,
+    220
+   ]
+  },
+  {
+   "x": 580,
+   "y": 670,
+   "z": 2.2,
+   "spot": [
+    580,
+    650,
+    200
+   ]
+  },
+  {
+   "x": 1090,
+   "y": 612,
+   "z": 2.0,
+   "spot": [
+    1090,
+    590,
+    220
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "She cannot even swallow her tea.",
+   "shot": 1,
+   "dir": "warm, concerned",
+   "say": "This seventy-five-year-old woman cannot even swallow her tea."
+  },
+  {
+   "text": "Progressive dysphagia: first solids, now fluids.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "Her dysphagia has grown over four months. First solids, and now even fluids get stuck."
+  },
+  {
+   "text": "A tumour squeezes the oesophagus.",
+   "shot": 3,
+   "dir": "grave, steady",
+   "say": "(sigh) A tumour is clamping her food pipe tighter and tighter."
+  },
+  {
+   "text": "She is a regular smoker.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "And she is a regular smoker. Tobacco and alcohol excess are linked to squamous cell carcinoma."
+  },
+  {
+   "text": "Upper two-thirds: squamous. Lower third: adenocarcinoma.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "In general, cancer in the upper two-thirds is squamous cell carcinoma, and in the lower third it is adenocarcinoma."
+  },
+  {
+   "text": "Remember: progressive dysphagia to fluids in a smoker is oesophageal carcinoma.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: progressive dysphagia, even to fluids, in an older smoker means oesophageal carcinoma."
+  }
+ ]
+}

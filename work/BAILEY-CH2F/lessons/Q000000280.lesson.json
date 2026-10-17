@@ -1,0 +1,128 @@
+{
+ "qid": "Q000000280",
+ "image": "Q000000280.png",
+ "takeaway": "An open cholecystectomy breaches a hollow viscus other than the colon, so the wound is clean contaminated, Class II.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Select the best pairing of wound classification with the description.",
+  "say": "Select the best pairing of wound classification with the description.",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "A 42-year-old woman underwent an open cholecystectomy. Classification of wound: Clean Contaminated Class II",
+  "say": "The answer: a forty-two-year-old woman underwent an open cholecystectomy. The wound is clean contaminated, Class two.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 384,
+   "y": 332,
+   "z": 2.0,
+   "spot": [
+    360,
+    280,
+    230
+   ]
+  },
+  {
+   "x": 400,
+   "y": 662,
+   "z": 2.0,
+   "spot": [
+    400,
+    640,
+    260
+   ]
+  },
+  {
+   "x": 740,
+   "y": 492,
+   "z": 2.0,
+   "spot": [
+    740,
+    440,
+    230
+   ]
+  },
+  {
+   "x": 1010,
+   "y": 475,
+   "z": 2.3,
+   "spot": [
+    1010,
+    430,
+    180
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 382,
+   "z": 2.0,
+   "spot": [
+    1250,
+    330,
+    260
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 712,
+   "z": 2.0,
+   "spot": [
+    1190,
+    690,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 42-year-old woman has an open cholecystectomy.",
+   "shot": 1,
+   "dir": "clear, steady",
+   "say": "A forty-two-year-old woman has an open cholecystectomy. The gallbladder is lifted out."
+  },
+  {
+   "text": "The incision opens into the abdomen.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The wound opens the abdomen, and the surgeon breaches a hollow viscus."
+  },
+  {
+   "text": "A hollow viscus, but not the colon.",
+   "shot": 3,
+   "dir": "warm, amused",
+   "say": "(laugh) The little door is the hollow viscus, and the sign says it is not the colon."
+  },
+  {
+   "text": "Wounds that breach a hollow viscus other than the colon are clean contaminated.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "Incisions that breach a hollow viscus other than the colon are clean contaminated wounds."
+  },
+  {
+   "text": "The infection rate is below 10 per cent.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "The infection rate is below ten per cent."
+  },
+  {
+   "text": "The Wound Judge stamps it Class II.",
+   "shot": 6,
+   "dir": "clear, confident",
+   "say": "The Wound Judge stamps it: Class two."
+  },
+  {
+   "text": "Remember: open cholecystectomy is a clean contaminated wound, Class II.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: open cholecystectomy is a clean contaminated wound, Class two."
+  }
+ ]
+}

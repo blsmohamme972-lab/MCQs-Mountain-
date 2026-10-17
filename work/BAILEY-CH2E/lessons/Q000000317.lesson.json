@@ -1,0 +1,86 @@
+{
+ "qid": "Q000000317",
+ "image": "Q000000317.png",
+ "takeaway": "Blood clotting is reversed by plasmin (fibrinolysin); platelets come from megakaryocytes in the bone marrow.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "With regard to blood clotting:",
+  "say": "With regard to blood clotting, which statement is true?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "It is reversed by plasmin (fibrinolysin)",
+  "say": "The answer: it is reversed by plasmin, also called fibrinolysin.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 384,
+   "y": 312,
+   "z": 2.0,
+   "spot": [
+    200,
+    260,
+    230
+   ]
+  },
+  {
+   "x": 760,
+   "y": 502,
+   "z": 2.0,
+   "spot": [
+    760,
+    450,
+    260
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 472,
+   "z": 2.0,
+   "spot": [
+    1250,
+    420,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The circulation is high-pressure, so a small vessel injury can bleed fast.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "We have a high-pressure circulation, so even slight vessel damage can lead to a rapid loss of blood volume."
+  },
+  {
+   "text": "The body answers with a complicated clotting response.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "To stop bleeding, the body has developed quite complicated responses to vessel damage."
+  },
+  {
+   "text": "Platelets come from megakaryocytes in the bone marrow.",
+   "shot": 1,
+   "dir": "calm, explanatory",
+   "say": "Blood platelets are formed from megakaryocytes in the bone marrow."
+  },
+  {
+   "text": "Plasmin cuts the clot net: the clot is reversed.",
+   "shot": 3,
+   "dir": "warm, amused",
+   "say": "(laugh) And here comes plasmin, with golden scissors, cutting the net of the clot. The clot is reversed by plasmin, also called fibrinolysin."
+  },
+  {
+   "text": "Remember: plasmin reverses clotting.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: plasmin, or fibrinolysin, reverses clotting."
+  }
+ ]
+}

@@ -1,0 +1,92 @@
+{
+ "qid": "Q000000252",
+ "image": "Q000000252.png",
+ "takeaway": "Keratocanthoma: a benign volcano-like lesion on sun-exposed skin that grows over weeks and resolves spontaneously over 4 to 6 months.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "An 82-year-old retired woman had a facial skin lesion for 2 months. It has now disappeared. What is the diagnosis?",
+  "say": "An eighty-two-year-old retired woman presents with a two-month history of a facial skin lesion. The lesion has now disappeared. What is the diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Keratocanthoma",
+  "say": "The answer is keratocanthoma.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 384,
+   "y": 650,
+   "z": 2.0,
+   "spot": [
+    190,
+    650,
+    230
+   ]
+  },
+  {
+   "x": 880,
+   "y": 447,
+   "z": 2.2,
+   "spot": [
+    880,
+    400,
+    200
+   ]
+  },
+  {
+   "x": 400,
+   "y": 382,
+   "z": 2.0,
+   "spot": [
+    400,
+    330,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A facial skin lesion that lasted 2 months.",
+   "shot": 1,
+   "dir": "gentle, curious",
+   "say": "This eighty-two-year-old retired woman had a facial skin lesion for two months."
+  },
+  {
+   "text": "A volcano-like bump on sun-exposed skin, typical of middle-aged and elderly people.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "It was a volcano-like bump on sun-exposed skin, typical of middle-aged and elderly people."
+  },
+  {
+   "text": "A keratocanthoma grows rapidly over a few weeks to months.",
+   "shot": 2,
+   "dir": "clear, confident",
+   "say": "A keratocanthoma grows rapidly, over a few weeks to months."
+  },
+  {
+   "text": "Then it resolves by itself over 4 to 6 months: goodbye, volcano!",
+   "shot": 3,
+   "dir": "warm, amused",
+   "say": "(laugh) Then it simply resolves by itself, over four to six months. Goodbye, volcano!"
+  },
+  {
+   "text": "It is benign and arises from the pilosebaceous glands, but it looks like squamous cell carcinoma.",
+   "shot": 2,
+   "dir": "calm, explanatory",
+   "say": "It is benign, arising from the pilosebaceous glands, though it closely resembles squamous cell carcinoma."
+  },
+  {
+   "text": "Remember: a volcano-like bump that vanishes by itself is a keratocanthoma.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: a volcano-like bump that vanishes by itself is a keratocanthoma."
+  }
+ ]
+}

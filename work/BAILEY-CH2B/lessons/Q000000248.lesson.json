@@ -1,0 +1,92 @@
+{
+ "qid": "Q000000248",
+ "image": "Q000000248.png",
+ "takeaway": "Ewing's sarcoma: a young person with a hot, hard swelling and an onion-skin lesion in the medulla of a long bone.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 16-year-old boy has right upper arm pain with no trauma and a hot, hard swelling. X-ray: an onion-skin lesion in the medulla of the humerus. What is the diagnosis?",
+  "say": "A sixteen-year-old boy has right upper arm pain with no trauma, and a hot, hard swelling. The X-ray shows an onion-skin lesion in the medulla of the humerus. What is the diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Ewing’s sarcoma",
+  "say": "The answer is Ewing’s sarcoma.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 382,
+   "z": 2.0,
+   "spot": [
+    400,
+    330,
+    260
+   ]
+  },
+  {
+   "x": 850,
+   "y": 828,
+   "z": 2.2,
+   "spot": [
+    850,
+    790,
+    200
+   ]
+  },
+  {
+   "x": 1050,
+   "y": 398,
+   "z": 1.8,
+   "spot": [
+    1050,
+    340,
+    280
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 16-year-old boy with a hot, hard swelling in his arm.",
+   "shot": 1,
+   "dir": "gentle, curious",
+   "say": "This sixteen-year-old boy has pain in his right upper arm, with a hot, hard swelling in the middle of it."
+  },
+  {
+   "text": "There was no trauma: the banana skin is crossed out.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "There is no history of trauma, so the banana skin is crossed out."
+  },
+  {
+   "text": "The X-ray shows an onion-skin lesion in the medulla of the humerus.",
+   "shot": 3,
+   "dir": "warm, amused",
+   "say": "(laugh) And the X-ray shows an onion in the bone. This onion-skin lesion sits in the medulla of the humerus."
+  },
+  {
+   "text": "That is Ewing's sarcoma, a rare malignant bone tumour.",
+   "shot": 3,
+   "dir": "calm, confident",
+   "say": "That is Ewing's sarcoma, a rare malignant bone tumour of the medullary cavity."
+  },
+  {
+   "text": "More common in males, with a peak between 10 and 20 years.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "It is more common in males, with a peak between ten and twenty years."
+  },
+  {
+   "text": "Remember: an onion-skin lesion in the medulla of a teenager's bone means Ewing's sarcoma.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: an onion-skin lesion in the medulla of a teenager's bone means Ewing's sarcoma."
+  }
+ ]
+}

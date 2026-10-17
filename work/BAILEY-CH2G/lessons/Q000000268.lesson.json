@@ -1,0 +1,128 @@
+{
+ "qid": "Q000000268",
+ "image": "Q000000268.png",
+ "takeaway": "Amoebic dysentery: Entamoeba histolytica from contaminated food and water causes fever and bloody diarrhoea with an abnormal colonic mucosa after travel.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 70-year-old man recently returned from Bangladesh is admitted with a high temperature and persistent bloody diarrhoea with a grossly abnormal rectal mucosa on sigmoidoscopy. Diagnosis?",
+  "say": "A seventy-year-old man has just returned from Bangladesh. He is admitted with a high temperature and persistent bloody diarrhoea, and sigmoidoscopy shows a grossly abnormal rectal mucosa. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Amoebic dysentery",
+  "say": "The answer is amoebic dysentery.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 702,
+   "z": 2.0,
+   "spot": [
+    400,
+    680,
+    230
+   ]
+  },
+  {
+   "x": 870,
+   "y": 292,
+   "z": 2.0,
+   "spot": [
+    870,
+    240,
+    220
+   ]
+  },
+  {
+   "x": 1030,
+   "y": 247,
+   "z": 2.2,
+   "spot": [
+    1030,
+    200,
+    200
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 452,
+   "z": 2.0,
+   "spot": [
+    1360,
+    400,
+    220
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 712,
+   "z": 2.0,
+   "spot": [
+    1290,
+    690,
+    220
+   ]
+  },
+  {
+   "x": 360,
+   "y": 497,
+   "z": 2.2,
+   "spot": [
+    360,
+    450,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Just back from Bangladesh.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "This seventy-year-old traveller has just come home from Bangladesh."
+  },
+  {
+   "text": "He looks unwell and sweaty.",
+   "shot": 2,
+   "dir": "clear, concerned",
+   "say": "He looks sweaty and miserable, clutching his tummy."
+  },
+  {
+   "text": "A high fever.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "The thermometer is burning. He has a high fever."
+  },
+  {
+   "text": "Persistent bloody diarrhoea.",
+   "shot": 4,
+   "dir": "grave, steady",
+   "say": "(sigh) And persistent, bloodstained diarrhoea."
+  },
+  {
+   "text": "Sigmoidoscopy: a grossly abnormal rectal mucosa.",
+   "shot": 5,
+   "dir": "clear, steady",
+   "say": "The sigmoidoscope shows a raw, grossly abnormal rectal mucosa. The sigmoid colon is a favourite site."
+  },
+  {
+   "text": "The stowaway: Entamoeba histolytica.",
+   "shot": 6,
+   "dir": "calm, explanatory",
+   "say": "The stowaway on his suitcase is Entamoeba histolytica, caught from contaminated food and water."
+  },
+  {
+   "text": "Remember: fever and bloody diarrhoea after travel is amoebic dysentery.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: fever and bloody diarrhoea after travel point to amoebic dysentery."
+  }
+ ]
+}

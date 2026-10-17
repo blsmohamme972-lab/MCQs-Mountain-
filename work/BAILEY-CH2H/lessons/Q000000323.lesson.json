@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000323",
+ "image": "Q000000323.png",
+ "takeaway": "Cystic fibrosis is an autosomal recessive disease from a CFTR mutation on chromosome 7, the most common inherited disease in Caucasians.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "With regard to cystic fibrosis:",
+  "say": "With regard to cystic fibrosis, which statement is true?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "It is the most common inherited disease in Caucasians",
+  "say": "The answer: it is the most common inherited disease in Caucasians.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 700,
+   "y": 565,
+   "z": 1.6,
+   "spot": [
+    700,
+    500,
+    330
+   ]
+  },
+  {
+   "x": 480,
+   "y": 672,
+   "z": 2.0,
+   "spot": [
+    480,
+    650,
+    230
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 412,
+   "z": 2.0,
+   "spot": [
+    1210,
+    360,
+    260
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 612,
+   "z": 2.0,
+   "spot": [
+    1300,
+    560,
+    250
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The sticky mucus child holds the trophy.",
+   "shot": 1,
+   "dir": "warm, amused",
+   "say": "(laugh) The sticky mucus child proudly holds the trophy of cystic fibrosis."
+  },
+  {
+   "text": "The trophy says: most common inherited.",
+   "shot": 3,
+   "dir": "clear, confident",
+   "say": "The trophy says it all. Cystic fibrosis is the most common inherited disease in Caucasians."
+  },
+  {
+   "text": "It affects 1 in 2500 children.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "It affects one in two thousand five hundred children."
+  },
+  {
+   "text": "A worker fixes chromosome 7: the CFTR mutation.",
+   "shot": 2,
+   "dir": "calm, explanatory",
+   "say": "The worker repairs chromosome seven, where the CFTR gene is mutated. It is autosomal recessive."
+  },
+  {
+   "text": "Carriers may be more resistant to cholera.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Carriers are believed to be relatively more resistant to cholera."
+  },
+  {
+   "text": "Remember: cystic fibrosis is the most common inherited disease in Caucasians.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: cystic fibrosis is the most common inherited disease in Caucasians."
+  }
+ ]
+}

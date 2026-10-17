@@ -1,0 +1,96 @@
+{
+ "qid": "Q000000238",
+ "image": "Q000000238.png",
+ "takeaway": "Courvoisier's law: a palpable gallbladder with jaundice is more likely malignancy, such as carcinoma of the head of the pancreas, than gallstones.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 65-year-old woman has malaise, grumbling abdominal pain and looks a little yellow. A mass is felt in the right upper quadrant. What is the likely diagnosis?",
+  "say": "A sixty-five-year-old woman has general malaise and grumbling abdominal pain. Her daughter thinks she looks a little yellow. A mass is felt in the right upper quadrant. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Carcinoma of head of pancreas",
+  "say": "The answer is carcinoma of the head of the pancreas.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 332,
+   "z": 2.0,
+   "spot": [
+    400,
+    280,
+    240
+   ]
+  },
+  {
+   "x": 560,
+   "y": 572,
+   "z": 2.0,
+   "spot": [
+    560,
+    520,
+    230
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 402,
+   "z": 2.0,
+   "spot": [
+    1230,
+    350,
+    240
+   ]
+  },
+  {
+   "x": 940,
+   "y": 551,
+   "z": 2.0,
+   "spot": [
+    940,
+    560,
+    240
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Her daughter thinks she looks a little yellow: jaundice.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "Meet the grandmother. Her daughter thinks she is looking a little yellow, so she is jaundiced."
+  },
+  {
+   "text": "The doctor feels a palpable mass in the right upper quadrant: her gallbladder.",
+   "shot": 2,
+   "dir": "clear, confident",
+   "say": "On examination there is a palpable mass in the right upper quadrant. That is her gallbladder."
+  },
+  {
+   "text": "Courvoisier's law: a palpable gallbladder with jaundice is more likely malignancy than stones.",
+   "shot": 3,
+   "dir": "amused, firm",
+   "say": "(laugh) And here comes the judge with Courvoisier's law. A palpable gallbladder with jaundice is more likely malignancy than gallstones."
+  },
+  {
+   "text": "So the culprit is a tumour on the head of the pancreas.",
+   "shot": 4,
+   "dir": "calm, confident",
+   "say": "So the culprit is the crab on the head of the pancreas: carcinoma of the head of the pancreas."
+  },
+  {
+   "text": "Remember: jaundice plus a palpable gallbladder points to cancer, not stones.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: jaundice with a palpable gallbladder points to malignancy, not gallstones."
+  }
+ ]
+}

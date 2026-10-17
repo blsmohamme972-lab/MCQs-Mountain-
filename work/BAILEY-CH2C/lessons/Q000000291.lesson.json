@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000291",
+ "image": "Q000000291.png",
+ "takeaway": "The external branch of the superior laryngeal nerve supplies cricothyroid, which controls pitch; injury in thyroidectomy loses high notes.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A singer cannot sing high notes after her thyroidectomy. What is the likely cause?",
+  "say": "A singer complains of not being able to sing high notes following her thyroidectomy. What is the likely cause?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Damage to the external laryngeal nerve",
+  "say": "The answer is damage to the external laryngeal nerve.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 500,
+   "y": 458,
+   "z": 1.8,
+   "spot": [
+    500,
+    400,
+    280
+   ]
+  },
+  {
+   "x": 570,
+   "y": 603,
+   "z": 2.4,
+   "spot": [
+    570,
+    560,
+    150
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 652,
+   "z": 2.0,
+   "spot": [
+    1000,
+    600,
+    220
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 572,
+   "z": 2.0,
+   "spot": [
+    1250,
+    520,
+    260
+   ]
+  },
+  {
+   "x": 349,
+   "y": 287,
+   "z": 2.2,
+   "spot": [
+    200,
+    240,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A singer cannot reach her high notes.",
+   "shot": 1,
+   "dir": "gentle, concerned",
+   "say": "This singer cannot reach her high notes since her thyroidectomy."
+  },
+  {
+   "text": "The thyroidectomy scar on her neck.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "Here is the scar of the thyroidectomy."
+  },
+  {
+   "text": "The cricothyroid muscle controls pitch.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "The cricothyroid muscle lengthens and shortens the vocal cords, and so controls voice pitch."
+  },
+  {
+   "text": "The scissors threaten the external branch of the superior laryngeal nerve, which supplies it.",
+   "shot": 4,
+   "dir": "clear, confident",
+   "say": "The external branch of the superior laryngeal nerve supplies the cricothyroid, and here it has been cut."
+  },
+  {
+   "text": "The recurrent laryngeal nerve is the other nerve at risk: hoarseness.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "The other nerve at risk is the recurrent laryngeal nerve. Damage to it causes hoarseness, not lost high notes."
+  },
+  {
+   "text": "Remember: lost high notes after thyroidectomy mean external laryngeal nerve damage.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: lost high notes after a thyroidectomy mean damage to the external laryngeal nerve."
+  }
+ ]
+}

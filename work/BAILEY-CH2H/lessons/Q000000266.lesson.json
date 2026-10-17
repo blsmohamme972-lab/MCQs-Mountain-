@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000266",
+ "image": "Q000000266.png",
+ "takeaway": "Meckel's diverticulum: dark-red rectal bleeding and pallor in a young boy, from a remnant of the vitelline duct.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 2-year-old boy presents with dark-red rectal bleeding and general pallor. There has been no vomiting and abdominal examination is unremarkable. Select the likely diagnosis.",
+  "say": "A two-year-old boy presents with dark-red rectal bleeding and general pallor. There has been no vomiting, and abdominal examination is unremarkable. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Meckel’s diverticulum",
+  "say": "The answer is Meckel’s diverticulum.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 540,
+   "y": 352,
+   "z": 2.0,
+   "spot": [
+    540,
+    300,
+    220
+   ]
+  },
+  {
+   "x": 580,
+   "y": 660,
+   "z": 2.2,
+   "spot": [
+    580,
+    640,
+    200
+   ]
+  },
+  {
+   "x": 1187,
+   "y": 700,
+   "z": 2.2,
+   "spot": [
+    1290,
+    680,
+    200
+   ]
+  },
+  {
+   "x": 900,
+   "y": 427,
+   "z": 2.2,
+   "spot": [
+    900,
+    380,
+    200
+   ]
+  },
+  {
+   "x": 900,
+   "y": 580,
+   "z": 2.2,
+   "spot": [
+    900,
+    560,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A pale 2-year-old boy.",
+   "shot": 1,
+   "dir": "warm, gentle",
+   "say": "This little two-year-old boy looks pale and worried."
+  },
+  {
+   "text": "Dark-red rectal bleeding.",
+   "shot": 2,
+   "dir": "clear, concerned",
+   "say": "His nappy shows dark-red rectal bleeding. That explains the pallor."
+  },
+  {
+   "text": "No vomiting, and a normal abdomen.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "But there is no vomiting, and his abdomen feels normal. So no obstruction."
+  },
+  {
+   "text": "The culprit: a small pouch off the small bowel.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "The culprit is this cheerful pouch, Meckel's diverticulum, the most common congenital anomaly of the small intestine."
+  },
+  {
+   "text": "It is a leftover of the vitelline duct.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "It comes from incomplete obliteration of the vitelline duct. About two per cent of people have one, more often males."
+  },
+  {
+   "text": "Remember: dark-red rectal bleeding and pallor in a toddler is Meckel's diverticulum.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: dark-red rectal bleeding and pallor in a toddler, with a quiet abdomen, mean Meckel's diverticulum."
+  }
+ ]
+}
