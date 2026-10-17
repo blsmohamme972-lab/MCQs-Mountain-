@@ -193,7 +193,14 @@
     const left=Math.max(0,clock(now).weekEnd-now),d=Math.floor(left/DAY),h=Math.floor(left%DAY/HOUR),m=Math.floor(left%HOUR/60000);
     return d?d+'d '+h+'h':h?h+'h '+m+'m':m+'m';
   }
-  const api={NAMES,GRADIENTS,PHOTOS,LEAGUES,COHORT,PROMOTE,DEMOTE,STAR,clock,initials,board,outcome,card,ownXp,countdown,activeNow,hash};
+  // One persona as the board shows it (same picture, colours and tag), for the comments under questions.
+  const BY_NAME=new Map(RIVALS.map(p=>[p.name,p]));
+  function person(name){
+    const p=BY_NAME.get(String(name));
+    return p?{id:p.id,name:p.name,photo:p.photo,gradient:p.gradient,initials:p.initials,tag:p.short,line:p.line,woman:p.woman,kind:p.kind,city:p.city}:null;
+  }
+  const people=()=>NAMES.map(person);
+  const api={NAMES,GRADIENTS,PHOTOS,LEAGUES,COHORT,PROMOTE,DEMOTE,STAR,clock,initials,board,outcome,card,ownXp,countdown,activeNow,hash,person,people};
   root.KafuLeadersCore=api;
   if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

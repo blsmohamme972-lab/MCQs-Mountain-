@@ -29,3 +29,6 @@ __pycache__/
 /work/*/input/
 /work/input/
 /dist/MCARDS_*.zip
+
+# Comment packs: commit only comments.json; the COMMENTS_*.zip goes to the owner in chat (docs/COMMENTS.md).
+COMMENTS_*.zip

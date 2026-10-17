@@ -16,6 +16,8 @@ def remove(root: Path, db: Path, book_id: str) -> None:
         # Keep ID mappings and publication history so an ID is never reused.
         conn.execute("UPDATE questions SET status='removed' WHERE book_id=?", (book_id,))
         conn.execute("UPDATE id_map SET status='removed' WHERE book_id=?", (book_id,))
+        if conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='question_comments'").fetchone():
+            conn.execute("DELETE FROM question_comments WHERE book_id=?", (book_id,))
         conn.commit()
 
 

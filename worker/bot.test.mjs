@@ -17,6 +17,7 @@ function testDB() {
   db.exec(readFileSync(new URL("../migrations/0004_leaderboard_compact.sql", import.meta.url), "utf8"));
   db.exec(readFileSync(new URL("../migrations/0005_leaderboard_read_bounds.sql", import.meta.url), "utf8"));
   db.exec(readFileSync(new URL("../migrations/0006_motioncards_queue.sql", import.meta.url), "utf8"));
+  db.exec(readFileSync(new URL("../migrations/0007_comment_jobs.sql", import.meta.url), "utf8"));
   return {
     sql: db,
     prepare(sql) {
@@ -970,4 +971,132 @@ test("MotionCards internal endpoints require the existing queue token", () => ha
   assert.equal(forbidden.status,403);
   const method=await h.internal("motioncards/claim",{},"unit-queue","GET");
   assert.equal(method.status,405);
+}));
+
+const commentDoc = (name, unique = name, size = 100) => ({ ...document(name, unique), file_size: size });
+const commentJob = (h, revision) => h.DB.sql.prepare("SELECT * FROM comment_jobs WHERE action='publish' AND revision=?").get(revision);
+
+test("comment packs queue only well-named small ZIPs, dispatch the publisher and can replace a failed upload", () => harness(async h => {
+  await h.send(commentDoc("COMMENTS_TEST_r1.zip"));
+  assert.equal(h.messages.at(-1).text, "📥 received COMMENTS_TEST_r1");
+  assert.equal(h.dispatches.length, 1);
+  assert.match(h.dispatchUrls.at(-1), /publish-queue\.yml/);
+  assert.equal(commentJob(h, 1).status, "ready");
+  await h.send(commentDoc("COMMENTS_TEST_r1.zip"));
+  assert.match(h.messages.at(-1).text, /already received COMMENTS_TEST_r1 \(ready\)/);
+  assert.equal(h.dispatches.length, 1, "a repeated upload does not start another run");
+  await h.send(commentDoc("COMMENTS_TEST_r1.zip", "other"));
+  assert.match(h.messages.at(-1).text, /already ready\. Send the new comments as COMMENTS_TEST_r2\.zip/);
+  for (const [doc, needle] of [[commentDoc("comments_test.zip"), /Filename must be COMMENTS_BOOK-ID_rN\.zip/],
+    [commentDoc("COMMENTS_TEST_r2.zip", "big", 2 * 1024 * 1024 + 1), /up to 2 MB/], [commentDoc("COMMENTS_TEST_v1.zip"), /Filename must be/]]) {
+    await h.send(doc); assert.match(h.messages.at(-1).text, needle);
+  }
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM comment_jobs").get().n, 1);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM publish_groups").get().n, 0, "comment packs never enter the book queue");
+  const item = await (await h.internal("claim")).json();
+  assert.equal(item.kind, "comments"); assert.equal(item.job.book_id, "TEST"); assert.equal(item.job.revision, 1);
+  await h.internal("finish", { kind: "comments", id: item.job.id, ok: false, error: "bad author Bearer unit-queue" });
+  assert.equal(commentJob(h, 1).status, "failed"); assert.doesNotMatch(commentJob(h, 1).error_summary, /unit-queue/);
+  await h.send(commentDoc("COMMENTS_TEST_r1.zip", "fixed"));
+  assert.equal(h.messages.at(-1).text, "📥 replaced failed COMMENTS_TEST_r1");
+  assert.equal(commentJob(h, 1).telegram_file_id, "file-fixed"); assert.equal(commentJob(h, 1).status, "ready");
+  assert.equal(h.dispatches.length, 2);
+}));
+
+test("comment jobs are claimed after books and admin jobs and finish with identity-checked counts", () => harness(async h => {
+  await h.send(commentDoc("COMMENTS_TEST_r1.zip"));
+  await h.send(document("TEST_v1.zip"));
+  await h.send("/remove OTHER");
+  assert.equal((await (await h.internal("claim")).json()).kind, "publish");
+  assert.equal((await (await h.internal("claim")).json()).kind, "admin");
+  const item = await (await h.internal("claim")).json();
+  assert.equal(item.kind, "comments");
+  assert.equal((await (await h.internal("claim")).json()).kind, "empty");
+  const ok = { kind: "comments", id: item.job.id, ok: true, action: "publish", book_id: "TEST", revision: 1, questions: 2, comments: 5, book_questions: 2, book_comments: 5 };
+  assert.equal((await h.internal("finish", { ...ok, revision: 2 })).status, 400);
+  assert.equal((await h.internal("finish", { ...ok, comments: -1 })).status, 400);
+  assert.equal((await h.internal("finish", ok)).status, 200);
+  assert.equal((await h.internal("finish", ok)).status, 409, "a stale completion cannot change a finished job");
+  assert.equal(commentJob(h, 1).status, "published"); assert.equal(commentJob(h, 1).book_comments, 5);
+  await h.send("/comments TEST");
+  assert.match(h.messages.at(-1).text, /5 comments on 2 questions — students see r1\.\nNext upload: COMMENTS_TEST_r2\.zip/);
+  assert.deepEqual(h.messages.at(-1).reply_markup.inline_keyboard.flat().map(b => b.text), ["🚫 Remove from students"]);
+  await h.send("/comments");
+  assert.match(h.messages.at(-1).text, /✅ COMMENTS_TEST_r1: 5 comments on 2 questions/);
+  await h.send("/queue");
+  assert.match(h.messages.at(-1).text, /COMMENTS_TEST_r1: published/);
+}));
+
+test("comments-off needs CONFIRM, queues one clear job and /comments-retry requeues only failures", () => harness(async h => {
+  await h.send("/comments-off TEST");
+  assert.match(h.messages.at(-1).text, /Re-run exactly: \/comments-off TEST CONFIRM/);
+  assert.equal(h.dispatches.length, 0);
+  await h.send("/comments-off TEST CONFIRM");
+  assert.equal(h.messages.at(-1).text, "📥 comments-off TEST queued"); assert.equal(h.dispatches.length, 1);
+  await h.send("/comments-off TEST CONFIRM");
+  assert.match(h.messages.at(-1).text, /already received/); assert.equal(h.dispatches.length, 1);
+  let item = await (await h.internal("claim")).json();
+  assert.equal(item.job.action, "clear");
+  assert.equal((await h.internal("finish", { kind: "comments", id: item.job.id, ok: true, action: "clear", book_id: "TEST", book_questions: 0, book_comments: 0 })).status, 200);
+  await h.send("/comments TEST"); assert.match(h.messages.at(-1).text, /Comments are off for students/);
+  await h.send("/comments-retry COMMENTS_TEST_r1"); assert.match(h.messages.at(-1).text, /No failed upload/);
+  await h.send(commentDoc("COMMENTS_TEST_r1.zip"));
+  item = await (await h.internal("claim")).json();
+  await h.internal("finish", { kind: "comments", id: item.job.id, ok: false, error: "step=comments.publish" });
+  await h.send("/comments-retry COMMENTS_TEST_r1.zip");
+  assert.equal(h.messages.at(-1).text, "📥 retry queued: COMMENTS_TEST_r1");
+  assert.equal(commentJob(h, 1).status, "ready");
+  await h.send("/comments other book"); assert.match(h.messages.at(-1).text, /OTHER\nNo published comments yet/);
+  await h.send("/help"); assert.match(h.messages.at(-1).text, /COMMENTS_BOOK-ID_rN\.zip/);
+}));
+
+async function publishComments(h, revision, comments) {
+  await h.send(commentDoc(`COMMENTS_TEST_r${revision}.zip`));
+  const item = await (await h.internal("claim")).json();
+  assert.equal((await h.internal("finish", { kind: "comments", id: item.job.id, ok: true, action: "publish", book_id: "TEST", revision,
+    questions: 1, comments, book_questions: 1, book_comments: comments })).status, 200);
+  return item.job.id;
+}
+
+test("comment revisions can be restored from buttons or a command, with a confirmation first", () => harness(async h => {
+  const first = await publishComments(h, 1, 3);
+  await publishComments(h, 2, 5);
+  await h.send("/comments TEST");
+  let view = h.messages.at(-1);
+  assert.match(view.text, /5 comments on 1 questions — students see r2\./);
+  assert.deepEqual(view.reply_markup.inline_keyboard.flat().map(b => [b.text, b.callback_data]),
+    [["↩️ Restore r1", `cmrestore:${first}`], ["🚫 Remove from students", `cmoff:${first + 1}`]]);
+  const dispatched = h.dispatches.length;
+  await h.cb(`cmrestore:${first}`);
+  assert.match(h.messages.at(-1).text, /Restore the comments of TEST to r1\? .*\(3 comments on 1 questions\)/);
+  assert.equal(h.messages.at(-1).reply_markup.inline_keyboard[0][0].callback_data, `cmrestore-ok:${first}`);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM comment_jobs WHERE action='restore'").get().n, 0, "the first tap only asks");
+  await h.cb(`cmrestore-ok:${first}`);
+  assert.equal(h.messages.at(-1).text, "📥 comments-restore TEST r1 queued");
+  assert.equal(h.dispatches.length, dispatched + 1);
+  await h.cb(`cmrestore-ok:${first}`);
+  assert.match(h.messages.at(-1).text, /already received comments-restore TEST r1/);
+  assert.equal(h.dispatches.length, dispatched + 1);
+  const item = await (await h.internal("claim")).json();
+  assert.equal(item.job.action, "restore"); assert.equal(item.job.revision, 1);
+  const done = { kind: "comments", id: item.job.id, ok: true, action: "restore", book_id: "TEST", revision: 1, book_questions: 1, book_comments: 3 };
+  assert.equal((await h.internal("finish", { ...done, revision: 2 })).status, 400);
+  assert.equal((await h.internal("finish", done)).status, 200);
+  await h.send("/comments TEST");
+  view = h.messages.at(-1);
+  assert.match(view.text, /3 comments on 1 questions — students see r1 \(restored\)/);
+  assert.deepEqual(view.reply_markup.inline_keyboard.flat().map(b => b.text), ["↩️ Restore r2", "🚫 Remove from students"]);
+  await h.send("/comments"); assert.match(h.messages.at(-1).text, /↩️ comments-restore TEST r1: done — TEST now has 3 comments/);
+  // Command form, and the remove button with its confirmation.
+  await h.send("/comments-restore TEST r9"); assert.match(h.messages.at(-1).text, /TEST has no published comments r9/);
+  await h.send("/comments-restore TEST r2"); assert.match(h.messages.at(-1).text, /Re-run exactly: \/comments-restore TEST r2 CONFIRM/);
+  await h.send("/comments-restore TEST 2 CONFIRM"); assert.equal(h.messages.at(-1).text, "📥 comments-restore TEST r2 queued");
+  await h.cb(`cmoff:${first}`); assert.match(h.messages.at(-1).text, /Take every comment of TEST away/);
+  await h.cb(`cmoff-ok:${first}`); assert.equal(h.messages.at(-1).text, "📥 comments-off TEST queued");
+  await h.cb("cmrestore:99999"); assert.match(h.messages.at(-1).text, /no longer in the queue history/);
+  await h.cb(`cmrestore:${item.job.id}`); assert.match(h.messages.at(-1).text, /Only a published comment pack can be restored/);
+  const sent = h.messages.length;
+  await h.cb(`cmrestore-ok:${first}`, 999);
+  assert.equal(h.messages.length, sent, "other users are ignored");
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM comment_jobs WHERE action='restore' AND status='ready'").get().n, 1);
 }));

@@ -15,9 +15,11 @@ def remove_book(root: Path, book_id: str) -> None:
     catalog["removed_books"]=sorted(removed)
     catalog_path.write_text(json.dumps(catalog,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
 
-    for p in [root/"books"/book_id, root/"packs"/book_id]:
+    # The book's question comments (tools/comments.py) go with it.
+    for p in [root/"books"/book_id, root/"packs"/book_id, root/"packs"/"_comments"/book_id]:
         if p.exists():
             shutil.rmtree(p)
+    (root/"comments"/f"{book_id}.json").unlink(missing_ok=True)
     covers=root/"covers"
     if covers.exists():
         for p in covers.glob(f"{book_id}-v*.webp"):
