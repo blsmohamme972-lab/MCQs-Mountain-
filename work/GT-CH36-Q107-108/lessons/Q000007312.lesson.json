@@ -1,0 +1,86 @@
+{
+ "takeaway": "T3 and T4 raise oxygen consumption in most active tissues, but not the anterior pituitary, where it falls with reduced TSH. So only the T4 pituitary statement is correct.",
+ "question": {
+  "text": "Concerning the physiological effects of thyroid hormones, which statement is correct?",
+  "say": "Concerning the physiological effects of thyroid hormones, which statement is correct?"
+ },
+ "answer": {
+  "text": "Thyroxine (T₄) decreases oxygen consumption in the anterior pituitary gland.",
+  "say": "Thyroxine, T four, decreases oxygen consumption in the anterior pituitary gland."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 230,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    230,
+    380,
+    230
+   ]
+  },
+  {
+   "x": 800,
+   "y": 430,
+   "z": 2,
+   "spot": [
+    800,
+    440,
+    260
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 470,
+   "z": 2,
+   "spot": [
+    1280,
+    470,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The thyroid pours out T3 and T4, and they speed up metabolism.",
+   "say": "The thyroid pours out T three and T four, and they speed up metabolism.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Most metabolically active tissues, like the heart and muscle, then use more oxygen.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "But a few tissues are exceptions, including the spleen, testes, uterus and the adult brain.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The anterior pituitary is one too: its oxygen use actually falls.",
+   "shot": 3,
+   "dir": "warm, interested"
+  },
+  {
+   "text": "That happens because TSH secretion decreases.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the correct statement is that thyroxine decreases oxygen consumption in the anterior pituitary.",
+   "shot": 3,
+   "say": "So the correct statement is that thyroxine decreases oxygen consumption in the anterior pituitary. (clears throat)",
+   "dir": "calm, confident"
+  }
+ ],
+ "qid": "Q000007312",
+ "image": "Q000007312.png",
+ "engine": "breeze",
+ "tempo": 1.0
+}

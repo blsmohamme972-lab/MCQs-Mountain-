@@ -1,0 +1,85 @@
+{
+ "takeaway": "The caval opening at T8 lies in the central tendon. In inspiration the diaphragm contracts and the inferior vena cava dilates, helping blood return to the heart.",
+ "question": {
+  "text": "Which statement regarding the apertures of the diaphragm is correct?",
+  "say": "Which statement regarding the apertures of the diaphragm is correct?"
+ },
+ "answer": {
+  "text": "During inspiration the inferior vena cava dilates facilitating blood flow to the heart.",
+  "say": "During inspiration the inferior vena cava dilates, facilitating blood flow to the heart."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 400,
+   "z": 2,
+   "spot": [
+    300,
+    400,
+    230
+   ]
+  },
+  {
+   "x": 770,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    770,
+    420,
+    250
+   ]
+  },
+  {
+   "x": 1270,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    1270,
+    430,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The diaphragm is a dome of muscle with a central tendon in the middle.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The caval opening is at the level of T8, in that central tendon, to the right of the midline.",
+   "shot": 2,
+   "say": "The caval opening is at the level of T eight, in that central tendon, to the right of the midline.",
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The inferior vena cava passes through it, with terminal branches of the right phrenic nerve.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "When you breathe in, the diaphragm contracts and flattens.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "That makes the inferior vena cava dilate, which helps blood flow back to the heart.",
+   "shot": 3,
+   "dir": "warm, interested"
+  },
+  {
+   "text": "So this is the correct statement.",
+   "shot": 3,
+   "dir": "calm, confident"
+  }
+ ],
+ "qid": "Q000007313",
+ "image": "Q000007313.png",
+ "engine": "breeze",
+ "tempo": 1.0
+}
