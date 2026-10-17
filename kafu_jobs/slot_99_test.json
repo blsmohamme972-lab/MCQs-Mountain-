@@ -1,0 +1,24 @@
+{
+ "slot": "99",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000278",
+  "Q000000279",
+  "Q000000280"
+ ],
+ "lines": [
+  {
+   "id": "Q000000278-q",
+   "voice": "student-woman",
+   "dir": "clear, curious",
+   "text": "A forty-five-year-old man presents with loin pain and haematuria. He has a palpable mass in his loin. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000278-a",
+   "voice": "student-woman",
+   "dir": "calm, confident",
+   "text": "The answer is renal cell carcinoma."
+  }
+ ]
+}
