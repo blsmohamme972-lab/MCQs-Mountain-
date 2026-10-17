@@ -1,0 +1,99 @@
+{
+ "qid": "Q000007290",
+ "image": "Q000007290.png",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "takeaway": "Unfractionated heparin is a tangle of chains of varying size; LMWH contains only short chains and reduces DVT extension and recurrence by 38%.",
+ "question": {
+  "text": "Comparing LMWH with unfractionated heparin, which one of the following statements is correct?"
+ },
+ "answer": {
+  "text": "LMWH reduces the risk of extension or recurrence of DVT by 38% compared with unfractionated heparin.",
+  "say": "LMWH reduces the risk of extension or recurrence of DVT by thirty-eight percent compared with unfractionated heparin."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1.0,
+   "spot": [
+    768,
+    70,
+    220
+   ]
+  },
+  {
+   "x": 330,
+   "y": 560,
+   "z": 1.7,
+   "spot": [
+    330,
+    450,
+    230
+   ]
+  },
+  {
+   "x": 900,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    930,
+    500,
+    200
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 380,
+   "z": 1.9,
+   "spot": [
+    1300,
+    330,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Here is heparin, side by side with its low molecular weight cousin.",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Unfractionated heparin is a tangle of polymers of varying molecular weights.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It needs regular APTT monitoring, not a once-daily infusion.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "LMWH is fractionated, cut down to short chains only.",
+   "shot": 2,
+   "dir": "gently amused",
+   "say": "(laugh) LMWH is fractionated, cut down to short chains only."
+  },
+  {
+   "text": "That is why it is used for DVT prophylaxis in surgery.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It is also better at stopping a DVT from extending or coming back, by thirty-eight percent.",
+   "shot": 3,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "And it carries a lower risk of heparin-induced thrombocytopenia.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So: the thirty-eight percent reduction.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}

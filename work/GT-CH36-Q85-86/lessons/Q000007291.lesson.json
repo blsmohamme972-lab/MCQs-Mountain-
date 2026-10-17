@@ -1,0 +1,98 @@
+{
+ "qid": "Q000007291",
+ "image": "Q000007291.png",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "takeaway": "Splenectomy is done for unstable or high-grade splenic trauma, ITP, hereditary spherocytosis and autoimmune haemolytic anaemia; in sickle cell sequestration crisis transfusion is preferred.",
+ "question": {
+  "text": "A splenectomy is indicated for all but which one of the following conditions?"
+ },
+ "answer": {
+  "text": "Sickle cell disease"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1.0,
+   "spot": [
+    768,
+    70,
+    220
+   ]
+  },
+  {
+   "x": 260,
+   "y": 480,
+   "z": 1.7,
+   "spot": [
+    260,
+    380,
+    220
+   ]
+  },
+  {
+   "x": 780,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    820,
+    300,
+    230
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1290,
+    340,
+    220
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Which conditions need the spleen out, and which do not?",
+   "shot": 0,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "An injured spleen is managed conservatively for lower grades.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "But if the patient is unstable, or the injury is above grade three, it comes out.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The green ticks are ITP, hereditary spherocytosis and autoimmune haemolytic anaemia.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "In all three, splenectomy is performed.",
+   "shot": 2,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Sickle cell disease is the odd one out.",
+   "shot": 3,
+   "dir": "gently amused"
+  },
+  {
+   "text": "In an acute sequestration crisis there is little evidence for surgery over a blood transfusion.",
+   "shot": 3,
+   "dir": "calm, confident",
+   "say": "(sigh) In an acute sequestration crisis there is little evidence for surgery over a blood transfusion."
+  },
+  {
+   "text": "So: sickle cell disease.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}
