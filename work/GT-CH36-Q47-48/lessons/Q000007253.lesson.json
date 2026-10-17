@@ -1,0 +1,102 @@
+{
+ "qid": "Q000007253",
+ "image": "Q000007253.png",
+ "takeaway": "The cutaneous branches of the radial nerve cross the roof of the anatomical snuffbox; the radial artery lies in its floor.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of these statements about the anatomical snuffbox is correct?"
+ },
+ "answer": {
+  "text": "The cutaneous branch of the radial nerve lies in the roof of the snuffbox."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 220,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    180,
+    430,
+    170
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 340,
+   "z": 1.8,
+   "spot": [
+    900,
+    330,
+    190
+   ]
+  },
+  {
+   "x": 900,
+   "y": 560,
+   "z": 1.8,
+   "spot": [
+    780,
+    590,
+    190
+   ]
+  },
+  {
+   "x": 1380,
+   "y": 400,
+   "z": 1.8,
+   "spot": [
+    1450,
+    140,
+    150
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    1450,
+    560,
+    190
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The anatomical snuffbox is a hollow at the base of the thumb.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The tendons of extensor pollicis brevis and abductor pollicis longus form its radial side.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The roof is crossed by the cutaneous branches of the radial nerve. This is the correct statement.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The radial artery lies in the floor, deep to the tendons, not in the roof.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Tenderness here suggests a scaphoid fracture.",
+   "shot": 5,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the answer is the cutaneous branch of the radial nerve in the roof.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
