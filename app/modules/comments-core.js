@@ -36,11 +36,13 @@
   }
   const count=list=>list.reduce((n,c)=>n+1+(c.replies?c.replies.length:0),0);
   const all=list=>list.flatMap(c=>[c,...(c.replies||[])]);
-  // How long ago, the way social apps write it: now, 5m, 3h, 2d, 4w, 1y. A time ahead of the phone's clock is "now".
+  // How long ago, the way social apps write it: now, 5m, 3h, 2d, then weeks up to 11w, months to 11mo, then years.
+  // A time ahead of the phone's clock is "now".
   function ago(at,now){
     if(!Number.isFinite(at))return'';
-    const m=Math.floor(Math.max(0,now-at)/60000);
-    return m<1?'now':m<60?m+'m':m<1440?Math.floor(m/60)+'h':m<10080?Math.floor(m/1440)+'d':m<525600?Math.floor(m/10080)+'w':Math.floor(m/525600)+'y';
+    const m=Math.floor(Math.max(0,now-at)/60000),d=m/1440;
+    return m<1?'now':m<60?m+'m':m<1440?Math.floor(m/60)+'h':d<7?Math.floor(d)+'d':d<84?Math.floor(d/7)+'w':
+      d<350?Math.round(d/30.44)+'mo':Math.max(1,Math.floor((d+15)/365))+'y';
   }
   // Likes and reaction icons as shown, with the student's own like (a 👍) added.
   function reactions(c,liked){
@@ -68,7 +70,9 @@
     });
     return{shown,hidden:count(list.slice(shown.length)),total:count(list)};
   }
-  const api={KINDS,REACTIONS,VISIBLE,REPLIES,shardOf,validIndex,validShard,hash,clean,count,ago,reactions,stats,view};
+  // 999, then 1.2K, 12K, as the apps write counts.
+  const compact=n=>n<1000?String(n):(n<1e4?(Math.floor(n/100)/10).toFixed(1).replace(/\.0$/,''):String(Math.floor(n/1000)))+'K';
+  const api={KINDS,REACTIONS,VISIBLE,REPLIES,shardOf,validIndex,validShard,hash,clean,count,ago,reactions,stats,view,compact};
   root.KafuCommentsCore=api;
   if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

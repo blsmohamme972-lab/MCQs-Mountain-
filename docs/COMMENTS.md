@@ -42,9 +42,12 @@ How to write comments for a book: `docs/COMMENTS_PROMPT.md`. Owner commands: `do
 - `text`: 2–600 characters, line breaks allowed, no links. Up to 12 comments per question and 6 replies per comment
   (replies have no replies). `kind` is optional: `note` (default), `tip`, `mnemonic`, `clinical`, `exam`.
 - `at`, `likes`, `react` are optional and writers normally leave them out: `pack` fills them on every comment and
-  reply, seeded by the comment itself (the same file and `--now` give the same ZIP; editing one comment leaves the
-  others as they were). `at` is the posting time in UTC (`YYYY-MM-DDTHH:MM:SSZ`): comments within the 75 days before
-  `--now` (default: the start of the current hour), each reply after the one before it and never before its comment.
+  reply, seeded by the question and the comment (the same file and `--now` give the same ZIP; editing one comment
+  leaves the others as they were). `at` is a real posting date in UTC (`YYYY-MM-DDTHH:MM:SSZ`), fixed in the pack, so
+  comments age naturally after publishing. Each question gets its own stretch of weeks to months, ending 4 days to 4
+  months before `--now` (default: the start of the current hour), and its comments fall anywhere in it: never all in
+  one week, nothing from the last 4 days, nothing older than 18 months. A reply follows its comment by hours to a
+  month, the next replies by up to two weeks, and never comes before its comment. Older comments get more likes.
   `likes` is 0–20; `react` is 1–3 different of Telegram's 👍 ❤️ 🔥 👏 🤣 🤔 🤯 🙏 💯 🤓 👀 (more when a comment has more
   likes). Filled values fit what the comment says (`tone()`): a question gets 🤔, a thank-you ❤️ 🙏 and few likes, a
   joke 🤣, a correction 💯, a surprise 🤯, otherwise its kind (a pearl 💯 👏, a mnemonic 🔥 🤓, an exam trap 🔥 💯 👀);
@@ -59,7 +62,8 @@ python tools/comments.py pack comments.json --out work/comments --catalog https:
 python tools/comments.py validate work/comments/COMMENTS_BOOK-ID_r1.zip --export kafu-export.json
 ```
 
-`pack` writes the same bytes for the same input and refuses a bad file with every problem listed. Commit only the
+`pack` writes the same bytes for the same input and refuses a bad file with every problem listed. It also warns (and
+still packs) when "ال" stands right before an English term ("الـ PCT", "بالـ ECG"): Iraqi students write "PCT". Commit only the
 `comments.json` text if it should be kept; send the ZIP in chat (lean storage).
 
 ## Publishing path
@@ -106,8 +110,9 @@ restored later (once the book is published again).
   a tap outside, a pull down on its top, or the app's Back (Telegram's Back button), which closes sheets first; the
   question stays where it was and focus goes back to the bar or row that opened it. While it is open Telegram's main
   button is hidden. A full-screen sheet on phones, a centred panel on iPad.
-- Each comment is a bubble (name, training, kind, text) with its reactions on the corner and its time ("now", "5m",
-  "3h", "2d", "4w", "1y") and **Like** under it. A student's like adds one and a 👍 and is kept on that phone only
+- Each comment is a bubble (name, training, kind, text) with its reactions on the corner, and under it its time ("3d",
+  "9w", "5mo", "1y": weeks up to 11w, then months; "now", "5m", "3h" exist for writer-given times), **Like** and **Reply** (Reply shows that posting is
+  closed). Counts from 1,000 read "1.2K". A student's like adds one and a 👍 and is kept on that phone only
   (`localStorage` `kafu-comment-likes-v1`, the last 500).
 - A thread shows two replies (three if that is all), then **View N more replies**. Likes and opened threads survive
   re-renders and keep the list's scroll; the bar's entrance animation plays once.

@@ -56,8 +56,8 @@ test('posting times, likes and reactions are read safely; older packs without th
 });
 test('times read like a social app, and a clock behind the server reads "now"',()=>{
   const now=Date.parse('2026-10-17T12:00:00Z'),at=s=>now-s*1000;
-  assert.deepEqual([30,90,3599,3600,86399,86400,6*86400,7*86400,364*86400,400*86400,-600].map(s=>C.ago(at(s),now)),
-    ['now','1m','59m','1h','23h','1d','6d','1w','52w','1y','now']);
+  assert.deepEqual([30,90,3599,3600,86399,86400,6*86400,7*86400,34*86400,66*86400,83*86400,84*86400,200*86400,349*86400,364*86400,800*86400,-600].map(s=>C.ago(at(s),now)),
+    ['now','1m','59m','1h','23h','1d','6d','1w','4w','9w','11w','3mo','7mo','11mo','1y','2y','now']);
   assert.equal(C.ago(null,now),'');
 });
 test('the student\'s own like adds one and a 👍, and the activity line sums every comment',()=>{
@@ -80,4 +80,7 @@ test('a thread shows two replies (three when that is all) and opens the rest on 
   assert.deepEqual(closed.shown.map(c=>[c.shownReplies.length,c.hiddenReplies]),[[3,0],[2,3]]);
   assert.deepEqual(open.shown.map(c=>[c.shownReplies.length,c.hiddenReplies]),[[3,0],[5,0]]);
   assert.equal(closed.total,10);
+});
+test('big counts read like the apps write them',()=>{
+  assert.deepEqual([0,7,999,1000,1250,9999,12345].map(C.compact),['0','7','999','1K','1.2K','9.9K','12K']);
 });

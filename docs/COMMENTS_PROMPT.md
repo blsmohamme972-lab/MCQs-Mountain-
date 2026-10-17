@@ -25,17 +25,45 @@ format and commands: `docs/COMMENTS.md`.
 
 ## Voice
 
-- Iraqi medical students and board residents talking under a question. Mostly Iraqi Arabic mixed with English
-  medical terms the way they are really typed (English terms stay in English, often with الـ before them); some
-  comments fully English, a few fully Arabic.
-- Short and natural: one idea per comment, usually 20–250 characters, a line break at most once or twice. At most
-  one emoji, and not in most comments.
-- The author fits the comment: a stage-4 student asks or shares how they memorised it; residents give clinical
-  pearls and exam advice, from their own specialty when it matches the question. Women speak about themselves in
-  the feminine form, men in the masculine.
+Iraqi medical students and board residents talking under a question, typed on a phone. Mostly Iraqi Arabic mixed
+with English medical terms; some comments fully English, a few fully Arabic. Short and natural: one idea per comment,
+usually 20–250 characters, a line break at most once or twice. At most one emoji, and not in most comments.
+
+**English terms are written as they are, without ال** (the owner's rule; `pack` warns about it):
+
+| Write | Not |
+|---|---|
+| `PCT ياخذ اكثر صوديوم` | `الـ PCT ياخذ اكثر صوديوم` |
+| `شفتها ب ECG` · `بالتخطيط` | `بالـ ECG` |
+| `furosemide يشتغل على loop` | `الـ furosemide يشتغل على الـ loop` |
+| `ننتبه على fluids` | `للـ fluids` |
+
+Medical words already said in Arabic letters keep ال as usual: السيرجري، الخفارة، الردهة، الاوسكي، الفاينل.
+
+**Typed the Iraqi way, not in formal Arabic:**
+
+- Iraqi words: شنو، شلون، ليش، شكد، هواية، كلش، اكو، ماكو، هسه، هيج، علمود، مال/مالت، يمعود، اي، لا والله، خوش، زين، صدك.
+  Never Egyptian, Levantine or Gulf words (مش، ايش، كده، هيك، وايد، شو، ليه، دلوقتي).
+- Hamza and diacritics are mostly left out: اكثر، اني، انو، اعرف، اسئلة. Most people type چ and گ as ج and ك
+  (جنت، كال، شكد); a few use چ/گ. Mix both across a chapter, never both in one comment.
+- Light punctuation, often no full stop at the end; «؟» or «?»; laughing as ههههه or 😂; «شكرا» without the tanween.
+- What students talk about: السنوية، الفاينل، الاوسكي، اسئلة السنوات، اجانا هذا السؤال، الملزمة، الردهة، الخفارة،
+  الراوند، الكيس (a patient case), المحاضرة. Residents: الخفارة، الطوارئ، الستاف، السنيور، البورد، المريض اجانا.
+- Addressing: students call residents دكتور / دكتورة; students call each other شباب، بنات، خوية، اختي، حبيبي، عيوني.
+
+**The author fits the comment** (see the table under Authors): a 4th-stage student asks or shares how they
+memorised it; 5th–6th stage talk about finals, the ward and the OSCE; residents give clinical pearls and exam
+advice, from their own specialty when it matches the question, and never claim what their stage cannot do (a
+student does not treat patients alone).
+
+**Gender is right every time.** Verbs in the first person do not show it, adjectives do: a woman writes «اني متأكدة،
+جنت خايفة، فاهمة»; a man «متأكد، خايف، فاهم». Addressing a woman: دكتورة، كلامج، شرحج، الج، عليج; a man: دكتور، كلامك،
+شرحك، الك، عليك. A reply addresses its parent's author by their gender.
+
 - `kind`: `tip` (exam/study tip), `mnemonic`, `clinical` (clinical pearl), `exam` (exam trap or pattern); leave it
   out for an ordinary note. Mix them; most comments have none.
-- Leave out `at`, `likes` and `react`: `pack` gives every comment a posting time, likes and reactions.
+- Leave out `at`, `likes` and `react`: `pack` gives every comment a posting time, likes and reactions that fit what
+  it says (a question gets 🤔, a thank-you ❤️🙏, a joke 🤣, a correction 💯).
 
 ## How many
 

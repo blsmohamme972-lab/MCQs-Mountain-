@@ -152,11 +152,11 @@
     return '<span class="kc-av'+(size?' '+size:'')+'" aria-hidden="true"><span style="background:linear-gradient('+esc(who.gradient[0])+','+esc(who.gradient[1])+')">'+esc(who.initials)+'</span>'+
       (who.photo?'<img src="'+esc(who.photo)+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'</span>';
   }
-  const plural=(n,word)=>n+' '+word+(n===1?'':'s'),emoji=icons=>icons.map(e=>'<i>'+e+'</i>').join('');
+  const plural=(n,word)=>n+' '+word+(n===1?'':'s'),emoji=icons=>icons.map(e=>'<i>'+e+'</i>').join(''),num=n=>Core().compact(n);
   const active=at=>{const t=Core().ago(at,Date.now());return t?t==='now'?'Active now':'Active '+t+' ago':'';};
   function reacts(c){
     const r=Core().reactions(c,isLiked(c.key));
-    return '<span class="kc-reacts'+(r.count?'':' kc-none')+'" aria-label="'+plural(r.count,'reaction')+'"><span class="kc-icons" aria-hidden="true">'+emoji(r.icons)+'</span><b>'+r.count+'</b></span>';
+    return '<span class="kc-reacts'+(r.count?'':' kc-none')+'" aria-label="'+plural(r.count,'reaction')+'"><span class="kc-icons" aria-hidden="true">'+emoji(r.icons)+'</span><b>'+num(r.count)+'</b></span>';
   }
   function item(c,qid,reply){
     const when=Core().ago(c.at,Date.now()),on=isLiked(c.key);
@@ -165,7 +165,8 @@
         (c.kind?'<span class="kc-kind kc-kind-'+c.kind+'">'+esc(Core().KINDS[c.kind])+'</span>':'')+
         '<p class="kc-text" dir="auto">'+esc(c.text)+'</p>'+reacts(c)+'</div>'+
       '<div class="kc-meta">'+(when?'<time class="kc-time" datetime="'+new Date(c.at).toISOString()+'">'+when+'</time>':'')+
-        '<button type="button" class="kc-like'+(on?' on':'')+'" data-a="comments-like" data-q="'+qid+'" data-k="'+esc(c.key)+'" aria-pressed="'+on+'">Like</button></div>'+
+        '<button type="button" class="kc-like'+(on?' on':'')+'" data-a="comments-like" data-q="'+qid+'" data-k="'+esc(c.key)+'" aria-pressed="'+on+'">Like</button>'+
+        '<button type="button" class="kc-reply-btn" data-a="comments-compose" data-open="1" aria-controls="kc-note">Reply</button></div>'+
       (!reply&&c.shownReplies.length?'<ol class="kc-replies">'+c.shownReplies.map(r=>item(r,qid,true)).join('')+'</ol>':'')+
       (!reply&&c.hiddenReplies?'<button type="button" class="kc-more-replies" data-a="comments-replies" data-q="'+qid+'" data-k="'+esc(c.key)+'">'+
         '<span aria-hidden="true"></span>View '+c.hiddenReplies+' more '+(c.hiddenReplies===1?'reply':'replies')+'</button>':'')+
@@ -181,7 +182,7 @@
       (locked?'. Answer the question to open the discussion':'. Open the comments'));
     el.innerHTML=(empty?'<span class="kc-faces kc-faces-empty" aria-hidden="true">'+ICONS.bubble+'</span>':'<span class="kc-faces" aria-hidden="true">'+s.faces.map(w=>avatar(w,'xs')).join('')+'</span>')+
       '<span class="kc-bar-main" aria-hidden="true"><strong>'+(empty?'Comments':plural(s.comments,'comment'))+'</strong>'+
-        (empty?'<small>No comments yet</small>':'<small><span class="kc-icons">'+emoji(s.icons)+'</span><b>'+s.reactions+'</b>'+(when?'<i class="kc-dot"></i>'+
+        (empty?'<small>No comments yet</small>':'<small><span class="kc-icons">'+emoji(s.icons)+'</span><b>'+num(s.reactions)+'</b>'+(when?'<i class="kc-dot"></i>'+
           (Date.now()-s.last<864e5?'<i class="kc-live"></i>':'')+when.replace('Active ','<span class="kc-wide">Active </span>'):'')+'</small>')+'</span>'+
       '<span class="kc-bar-cta" aria-hidden="true">'+(locked?ICONS.lock+'<span>Answer first</span>':entry||empty?ICONS.next:'<span>View</span>'+ICONS.next)+'</span>';
     return el;
@@ -193,7 +194,7 @@
   function sheetHead(qid,list){
     const s=Core().stats(list,isLiked);
     return '<div class="kc-grab" aria-hidden="true"></div><div class="kc-top"><h2 class="kc-title" id="kc-title" tabindex="-1">Comments <span class="kc-count">'+s.comments+'</span></h2>'+
-      (s.reactions?'<span class="kc-sum" aria-label="'+plural(s.reactions,'reaction')+'"><span class="kc-icons" aria-hidden="true">'+emoji(s.icons)+'</span><b>'+s.reactions+'</b></span>':'')+
+      (s.reactions?'<span class="kc-sum" aria-label="'+plural(s.reactions,'reaction')+'"><span class="kc-icons" aria-hidden="true">'+emoji(s.icons)+'</span><b>'+num(s.reactions)+'</b></span>':'')+
       '<button type="button" class="kc-close" data-a="comments-close" aria-label="Close comments">'+ICONS.close+'</button></div>'+
       '<p class="kc-by">By Kafu characters</p>';
   }
@@ -208,6 +209,7 @@
         '<button type="button" class="kc-compose" data-a="comments-compose" aria-expanded="false" aria-controls="kc-note">'+ICONS.bubble+'<span>Add a comment…</span>'+ICONS.send+'</button></footer></section>';
     document.body.appendChild(wrap);layer=wrap;
     SHEET=MARK;   // the app's back (Telegram's Back button too) closes sheets first, and hides the main button
+    swipes(false);
     const app=document.getElementById('app');if(app)app.inert=true;
     document.documentElement.classList.add('kc-lock');
     try{syncTelegramButtons(STACK.length>1,null);}catch(_){}
@@ -218,6 +220,7 @@
   function closeSheet(instant){
     const wrap=layer;if(!wrap)return;layer=null;
     if(SHEET===MARK)SHEET=null;
+    swipes(true);
     const app=document.getElementById('app');if(app)app.inert=false;
     document.documentElement.classList.remove('kc-lock');
     try{syncTelegramButtons(STACK.length>1,null);}catch(_){}
@@ -225,7 +228,16 @@
     else{wrap.classList.remove('kc-in');setTimeout(()=>wrap.remove(),240);}
     if(instant!==true)requestAnimationFrame(()=>document.querySelector(opener+'[data-q="'+wrap.dataset.q+'"]')?.focus({preventScroll:true}));   // after the bars are back
   }
-  // Pull the sheet down by its top to close it, as in the apps students know.
+  // In Telegram a downward swipe minimises the Mini App; it is off while the sheet is open, so pulling closes the sheet.
+  let swipesWereOn=false;
+  function swipes(on){
+    try{
+      const tg=globalThis.Telegram?.WebApp;if(typeof tg?.disableVerticalSwipes!=='function')return;
+      if(!on){swipesWereOn=tg.isVerticalSwipesEnabled!==false;if(swipesWereOn)tg.disableVerticalSwipes();}
+      else if(swipesWereOn){swipesWereOn=false;tg.enableVerticalSwipes();}
+    }catch(_){}
+  }
+  // Pull the sheet down by its top, or by the list once it is scrolled to the top, to close it.
   function drag(handle,panel){
     let y0=null,dy=0,t0=0;
     handle.addEventListener('pointerdown',e=>{if(e.button>0||e.target.closest('button'))return;y0=e.clientY;dy=0;t0=performance.now();handle.setPointerCapture?.(e.pointerId);panel.style.transition='none';});
@@ -235,6 +247,15 @@
       if(dy>110||dy>36&&dy/(performance.now()-t0)>.6){panel.style.transform='';closeSheet();}else panel.style.transform='';
     };
     handle.addEventListener('pointerup',end);handle.addEventListener('pointercancel',end);
+    const list=panel.querySelector('.kc-scroll');let ty=null,pulling=false;
+    list.addEventListener('touchstart',e=>{ty=list.scrollTop<=0&&e.touches.length===1?e.touches[0].clientY:null;pulling=false;dy=0;t0=performance.now();},{passive:true});
+    list.addEventListener('touchmove',e=>{
+      if(ty===null)return;const d=e.touches[0].clientY-ty;
+      if(!pulling&&(d<=4||list.scrollTop>0)){if(d<0)ty=null;return;}
+      pulling=true;e.preventDefault();dy=Math.max(0,d);panel.style.transition='none';panel.style.transform=dy?'translateY('+dy+'px)':'';
+    },{passive:false});
+    list.addEventListener('touchend',()=>{if(!pulling){ty=null;return;}ty=null;pulling=false;y0=0;end();});
+    list.addEventListener('touchcancel',()=>{if(pulling){ty=null;pulling=false;y0=0;end();}});
   }
   // After a like or "more replies": the sheet's list, header and the screen's bars follow, keeping the scroll.
   function update(qid,focus){
@@ -302,9 +323,10 @@
   };
   ACTIONS['comments-close']=()=>closeSheet();
   ACTIONS['comments-replies']=d=>{threads.add(d.k);update(d.q,'.kc-item[data-k="'+d.k+'"] .kc-replies>.kc-item:nth-child('+(Core().REPLIES+1)+')');};
-  ACTIONS['comments-compose']=()=>{
-    if(!layer)return;noted=!noted;
+  ACTIONS['comments-compose']=d=>{   // the composer, or Reply under a comment: posting is closed for now
+    if(!layer)return;noted=d?.open?true:!noted;
     layer.querySelector('.kc-note').hidden=!noted;layer.querySelector('.kc-compose').setAttribute('aria-expanded',String(noted));
+    if(d?.open)layer.querySelector('.kc-compose').focus({preventScroll:true});
   };
   ACTIONS['comments-like']=d=>{
     setLiked(d.k,!isLiked(d.k));

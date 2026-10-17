@@ -54,9 +54,13 @@ BIDI_CONTROLS = set("‪‫‬‭‮⁦⁧⁨⁩")
 MAX_ERRORS = 50
 KEEP_SNAPSHOTS = 20   # revisions per book that /comments-restore can bring back
 LIKES_MAX = 20
+# A question bank's comments build up over months: nothing looks posted in the last days, nothing older than 18 months.
+MIN_AGE, MAX_AGE = timedelta(days=4), timedelta(days=540)
 REACTIONS = ("👍", "❤️", "🔥", "👏", "🤣", "🤔", "🤯", "🙏", "💯", "🤓", "👀")   # Telegram's own reactions
 MAX_REACT = 3
 AT = re.compile(r"^(20[2-9]\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)Z$")
+# Iraqis write an English term as it is ("PCT ياخذ", "بـ ECG"), not "الـ PCT": "ال" (after و ف ب, or لل) right before Latin.
+AL_LATIN = re.compile(r"(?:^|(?<=[\s(«\"'،,:؛.\-]))(?:و?لل|[وفب]?ال)ـ*\s?(?=[A-Za-z])", re.M)
 # What a comment is, read from its kind and its words; the first match wins.
 TONE_CUES = (
     ("thanks", re.compile(r"(?i)شكر|تسلم|عاشت\s*ايد|مشكور|ممنون|\bthanks?\b|\bthx\b|\bty\b")),
@@ -391,10 +395,11 @@ def tone(item: dict[str, Any]) -> str:
     return next((name for name, cue in TONE_CUES if cue.search(item["text"])), item.get("kind", "note"))
 
 
-def _likes(rng: random.Random, name: str, reply: bool) -> int:
+def _likes(rng: random.Random, name: str, reply: bool, age: timedelta) -> int:
     low, high, mode = TONES[name][1]
     if reply:   # replies are seen by fewer people
         high, mode = max(low + 1, round(high * 0.75)), max(low, mode * 0.6)
+    mode = low + (mode - low) * (0.55 + 0.45 * min(1.0, age.days / 120))   # older comments have been seen more
     return max(1, min(LIKES_MAX, round(rng.triangular(low, high, mode))))
 
 
@@ -412,38 +417,60 @@ def _reactions(rng: random.Random, item: dict[str, Any], name: str, likes: int) 
     return sorted(picked, key=pool.index)
 
 
+def style_warnings(questions: dict[str, list[dict[str, Any]]]) -> list[str]:
+    """Habits that make a comment read unlike an Iraqi student; pack prints them and still packs."""
+    out = []
+    for qid, comments in questions.items():
+        for i, comment in enumerate(comments):
+            for j, item in enumerate([comment, *(comment.get("replies") or [])]):
+                hits = [m.group(0) + item["text"][m.end():].split(None, 1)[0] for m in AL_LATIN.finditer(item["text"])]
+                if hits:
+                    where = f"{qid}[{i}]" + ("" if j == 0 else f".replies[{j - 1}]")
+                    out.append(f"{where}: {', '.join(hits[:3])} — write English terms without ال (PCT, not الـ PCT)")
+    return out
+
+
 def fill_activity(book_id: str, questions: dict[str, list[dict[str, Any]]], now: datetime) -> dict[str, list[dict[str, Any]]]:
     """Give every comment a posting time, likes (1–20) and reactions that fit what it says; given values are kept.
 
-    Each value is seeded by the comment itself, so editing one comment never reshuffles the others.
-    Comments were posted over the last weeks; replies follow their comment, in order, before now."""
-    latest = now - timedelta(minutes=1)
+    Times are real dates, fixed in the pack. Each question has its own stretch of weeks to months (ending 4 days to 4
+    months before now) and its comments fall anywhere in it, so they never all arrive together; replies follow their
+    comment by hours to weeks, in order. Values are seeded by the question and the comment, so editing one comment
+    never reshuffles the others. Older comments have more likes."""
+    latest = now - MIN_AGE
 
-    def rng(qid: str, i: int, j: int, item: dict[str, Any]) -> random.Random:
-        seed = hashlib.sha256(f"{book_id}|{qid}|{i}|{j}|{item['author']}|{item['text']}".encode("utf-8")).digest()
-        return random.Random(int.from_bytes(seed[:8], "big"))
+    def seeded(*parts: Any) -> random.Random:
+        return random.Random(int.from_bytes(hashlib.sha256("|".join(map(str, parts)).encode("utf-8")).digest()[:8], "big"))
+
+    def minute(moment: datetime) -> datetime:
+        return moment.replace(second=0, microsecond=0)
 
     out: dict[str, list[dict[str, Any]]] = {}
     for qid, comments in questions.items():
+        w = seeded(book_id, qid)
+        newest = timedelta(days=_between(w, MIN_AGE.days, 120))
+        oldest = min(MAX_AGE, newest + timedelta(days=w.uniform(45, 330)))
         filled = []
         for i, comment in enumerate(comments):
-            r, name = rng(qid, i, 0, comment), tone(comment)
+            r, name = seeded(book_id, qid, i, 0, comment["author"], comment["text"]), tone(comment)
             top = {k: v for k, v in comment.items() if k != "replies"}
             if "at" not in top:   # never after a reply time the writer gave
                 given = [parse_at(x["at"]) for x in comment.get("replies") or [] if "at" in x]
-                top["at"] = _stamp(min([(now - timedelta(minutes=_between(r, 45, 75 * 24 * 60))).replace(second=0, microsecond=0), *given]))
-            top.setdefault("likes", _likes(r, name, False))
+                age = timedelta(seconds=r.uniform(newest.total_seconds(), oldest.total_seconds()))
+                top["at"] = _stamp(min([minute(now - age), *given]))
+            top.setdefault("likes", _likes(r, name, False, now - parse_at(top["at"])))
             top.setdefault("react", _reactions(r, top, name, top["likes"]))
             previous = parse_at(top["at"])
             replies = []
             for k, reply in enumerate(comment.get("replies") or []):
-                r, item = rng(qid, i, k + 1, reply), dict(reply)
-                if "at" not in item:
-                    gap, room = timedelta(minutes=_between(r, 3, 2 * 24 * 60)), latest - previous
+                r, item = seeded(book_id, qid, i, k + 1, reply["author"], reply["text"]), dict(reply)
+                if "at" not in item:   # the first answer within hours to a month, the talk after it within days
+                    gap = timedelta(minutes=_between(r, 180, 30 * 24 * 60) if k == 0 else _between(r, 30, 14 * 24 * 60))
+                    room = latest - previous
                     when = previous + (gap if gap <= room else max(timedelta(0), room) * r.uniform(0.3, 0.9))
-                    item["at"] = _stamp(max(previous, when.replace(second=0, microsecond=0)))
+                    item["at"] = _stamp(max(previous, minute(when)))
                 name = tone(item)
-                item.setdefault("likes", _likes(r, name, True))
+                item.setdefault("likes", _likes(r, name, True, now - parse_at(item["at"])))
                 item.setdefault("react", _reactions(r, item, name, item["likes"]))
                 previous = parse_at(item["at"])
                 replies.append(item)
@@ -737,6 +764,8 @@ def main(argv: list[str] | None = None) -> int:
             doc = loads(args.source.read_bytes())
             book_id, _, questions = validate_document(doc, personas())
             note = _check_against(book_id, questions, args)
+            for warning in style_warnings(questions):
+                print(f"⚠️ {warning}", file=sys.stderr)
             target = write_package(doc, args.out, now=args.now)
             pack = read_package(target)
             print(f"OK {target}: {pack.comments} comments on {len(pack.questions)} questions, {target.stat().st_size} bytes{note}")

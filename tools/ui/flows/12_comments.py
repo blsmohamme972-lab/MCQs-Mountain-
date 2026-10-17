@@ -173,9 +173,13 @@ def run(browser, origin, pack, out, helpers):
         # The closed composer.
         compose = sheet.locator('.kc-compose')
         assert compose.get_attribute('aria-expanded') == 'false' and sheet.locator('.kc-note').is_hidden()
+        sheet.locator('.kc-reply-btn').first.click()   # Reply: posting is closed, the composer says so
+        assert sheet.locator('.kc-note').is_visible() and page.evaluate("document.activeElement===document.querySelector('.kc-compose')")
+        compose.click()
+        assert sheet.locator('.kc-note').is_hidden()
         compose.click()
         assert compose.get_attribute('aria-expanded') == 'true' and sheet.locator('.kc-note').inner_text() == 'التعليقات مغلقة مؤقتاً'
-        ratios.update(page.evaluate(CONTRAST, ['.kc-title', '.kc-by', '.kc-count', '.kc-tag', '.kc-text', '.kc-kind', '.kc-time', '.kc-like',
+        ratios.update(page.evaluate(CONTRAST, ['.kc-title', '.kc-by', '.kc-count', '.kc-tag', '.kc-text', '.kc-kind', '.kc-time', '.kc-like', '.kc-reply-btn',
                                                '.kc-like.on', '.kc-reacts b', '.kc-sum b', '.kc-compose', '.kc-note', '.kc-close']))
         page.screenshot(path=str(out / f'comments-{device}-{theme}-open.png'))
         if device == 'phone':

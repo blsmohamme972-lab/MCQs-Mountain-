@@ -187,7 +187,7 @@ class ActivityTests(unittest.TestCase):
         for qid, comments in pack.questions.items():
             for i, comment in enumerate(comments):
                 at = C.parse_at(comment["at"])
-                self.assertTrue(now - timedelta(days=75) <= at <= now - timedelta(minutes=45), comment["at"])
+                self.assertTrue(now - C.MAX_AGE <= at <= now - C.MIN_AGE, comment["at"])
                 self.assertEqual(moved.questions[qid][i]["likes"], comment["likes"])
                 self.assertEqual(C.parse_at(moved.questions[qid][i]["at"]) - at, timedelta(days=1))
                 previous = at
@@ -196,10 +196,25 @@ class ActivityTests(unittest.TestCase):
                     size = len(item["react"])
                     self.assertTrue(size == 1 if item["likes"] < 5 else 1 <= size <= 2 if item["likes"] < 12 else 2 <= size <= 3)
                     self.assertTrue(set(item["react"]) <= set(C.REACTIONS))
-                    self.assertTrue(previous <= C.parse_at(item["at"]) <= now - timedelta(minutes=1))
+                    self.assertTrue(previous <= C.parse_at(item["at"]) <= now - C.MIN_AGE)
                     previous = C.parse_at(item["at"])
         likes = [c["likes"] for c in pack.questions[QIDS[1]]]
         self.assertGreater(len(set(likes)), 3, "likes vary between comments")
+        times = sorted(C.parse_at(c["at"]) for c in pack.questions[QIDS[1]])
+        self.assertGreater(times[-1] - times[0], timedelta(days=21), "a question's comments come over weeks to months")
+
+    def test_questions_get_their_own_stretch_of_time_and_older_comments_more_likes(self):
+        questions = {f"Q00000{i:04d}": [{"author": NAMES[(i + j) % 40], "text": f"Fixture {i}-{j}."} for j in range(8)] for i in range(40)}
+        filled = C.fill_activity("TEST-BOOK", C.validate_document(doc(questions), NAMES)[2], C.pack_time(NOW))
+        now = C.pack_time(NOW)
+        newest = [min(now - C.parse_at(c["at"]) for c in cs) for cs in filled.values()]
+        self.assertGreater(len({age.days // 7 for age in newest}), 8, "questions were last active in different weeks")
+        spans = [max(C.parse_at(c["at"]) for c in cs) - min(C.parse_at(c["at"]) for c in cs) for cs in filled.values()]
+        self.assertTrue(all(span > timedelta(days=7) for span in spans), "never all in one week")
+        pairs = [(now - C.parse_at(c["at"]), c["likes"]) for cs in filled.values() for c in cs]
+        old = [likes for age, likes in pairs if age > timedelta(days=200)]
+        new = [likes for age, likes in pairs if age < timedelta(days=40)]
+        self.assertGreater(sum(old) / len(old), sum(new) / len(new))
 
     def test_editing_one_comment_keeps_the_others(self):
         source = self.thread()
@@ -241,6 +256,28 @@ class ActivityTests(unittest.TestCase):
         clinical = [c[0]["likes"] for c in filled.values() if C.tone(c[0]) == "clinical"]
         self.assertLess(sum(thanks) / len(thanks), sum(clinical) / len(clinical), "a thank-you gets fewer likes than a pearl")
         self.assertEqual(filled["Q000000001"][0]["react"][0], "🙏", "the emoji a comment uses comes first")
+
+    def test_english_terms_after_al_are_flagged(self):
+        flagged = ["الـ PCT ياخذ اكثر صوديوم", "شفتها بالـ ECG", "الـloop اقوى", "والـ distal هم", "فننتبه للـ fluids",
+                   "فالـ thiazide اضعف", "شي بال ECG", "سطر اول\nالـ PCT"]
+        clean = ["PCT ياخذ اكثر صوديوم", "بالسيرجري نشوفها", "بالخفارة اجتني", "ب ECG تبين", "الدكتور كال PCT", "هذا بال", "Fixture note."]
+        questions = {QIDS[0]: [{"author": A, "text": t} for t in flagged], QIDS[1]: [{"author": A, "text": t} for t in clean]}
+        warnings = C.style_warnings(questions)
+        self.assertEqual(len(warnings), len(flagged), warnings)
+        self.assertTrue(all(w.startswith(QIDS[0]) for w in warnings))
+        self.assertIn("الـ PCT", warnings[0])
+        reply = C.style_warnings({QIDS[2]: [{"author": A, "text": "Fixture.", "replies": [{"author": B, "text": "بالـ ECG"}]}]})
+        self.assertEqual(reply, [f"{QIDS[2]}[0].replies[0]: بالـ ECG — write English terms without ال (PCT, not الـ PCT)"])
+
+    def test_cli_pack_warns_and_still_packs(self):
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            (td / "comments.json").write_text(json.dumps(doc({QIDS[0]: [{"author": A, "text": "الـ PCT ياخذ اكثر صوديوم"}]})), encoding="utf-8")
+            run = subprocess.run(["python3", "tools/comments.py", "pack", str(td / "comments.json"), "--out", str(td / "out"), "--now", NOW],
+                                 cwd=ROOT, capture_output=True, text=True)
+            self.assertEqual(run.returncode, 0, run.stderr)
+            self.assertIn("⚠️ Q000000101[0]: الـ PCT", run.stderr)
+            self.assertTrue((td / "out/COMMENTS_TEST-BOOK_r1.zip").exists())
 
     def test_old_packs_without_activity_still_publish(self):
         with tempfile.TemporaryDirectory() as td:
