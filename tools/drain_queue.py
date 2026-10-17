@@ -23,8 +23,10 @@ from pathlib import Path
 from PIL import Image, UnidentifiedImageError
 
 try:
+    from tools import comments as comments_tool
     from tools.http_client import HttpStepError, download, request_bytes, request_json
 except ModuleNotFoundError:
+    import comments as comments_tool
     from http_client import HttpStepError, download, request_bytes, request_json
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -75,7 +77,7 @@ class Queue:
         self.call("notify", {"text": text[:3500]})
 
 
-def telegram_file(file_id: str, target: Path) -> None:
+def telegram_file(file_id: str, target: Path, max_bytes: int = MAX_ZIP) -> None:
     token = os.environ["BOT_TOKEN"]
     data = request_json(
         f"https://api.telegram.org/bot{token}/getFile",
@@ -86,7 +88,7 @@ def telegram_file(file_id: str, target: Path) -> None:
     if not data.get("ok") or not data.get("result", {}).get("file_path"):
         raise ValueError("Telegram getFile failed")
     url = f"https://api.telegram.org/file/bot{token}/{data['result']['file_path']}"
-    download(url, target, step="telegram.download", timeout=90, max_bytes=MAX_ZIP)
+    download(url, target, step="telegram.download", timeout=90, max_bytes=max_bytes)
 
 
 def image_count_and_validate(packages: list[Path]) -> int:
@@ -221,7 +223,28 @@ def restore(root: Path) -> tuple[Path, Path]:
     return state, build / "content"
 
 
-def candidate(root: Path, content: Path, expected_book: str | None = None) -> None:
+def verify_comments(preview: str, content: Path, book_id: str) -> None:
+    """The candidate serves exactly the comment index and shards just built (or none after a clear)."""
+    path = content / "comments" / f"{book_id}.json"
+    url = f"{preview}/comments/{book_id}.json"
+    if not path.exists():
+        try:
+            request_bytes(url, step="candidate.comments")
+        except HttpStepError as exc:
+            if exc.status == 404:
+                return
+            raise
+        raise RuntimeError(f"Candidate still serves comments for {book_id}")
+    local = json.loads(path.read_text(encoding="utf-8"))
+    if request_json(url, step="candidate.comments") != local:
+        raise RuntimeError("Candidate comments index does not match")
+    for entry in local["shards"].values():
+        raw = request_bytes(preview + entry["url"], step="candidate.comments")
+        if hashlib.sha256(raw).hexdigest() != entry["sha256"]:
+            raise RuntimeError(f"Candidate comments shard mismatch: {entry['url']}")
+
+
+def candidate(root: Path, content: Path, expected_book: str | None = None, comments_book: str | None = None) -> None:
     active = ROOT / "content-worker/dist/content"
     if active.exists():
         shutil.rmtree(active)
@@ -254,6 +277,8 @@ def candidate(root: Path, content: Path, expected_book: str | None = None) -> No
                 with zipfile.ZipFile(BytesIO(raw)) as zf:
                     if zf.testzip():
                         raise RuntimeError(f"Candidate image ZIP corrupt: {path}")
+    if comments_book:
+        verify_comments(preview, content, comments_book)
     run("npx", "--yes", "wrangler@4", "versions", "deploy", "--config",
         "content-worker/wrangler.jsonc", "--version-tag", tag, "--percentage", "100", "--yes",
         failure_context=("candidate.promote", "POST", "api.cloudflare.com", "/client/v4/accounts/<account>/workers/scripts/kafu-content-1/deployments"))
@@ -386,6 +411,45 @@ def process_admin(item: dict, root: Path, queue: Queue) -> dict:
     return {"book_id": job["book_id"], "version": job["version"]}
 
 
+def comments_title(job: dict) -> str:
+    return f"comments-off {job['book_id']}" if job["action"] == "clear" else f"COMMENTS_{job['book_id']}_r{job['revision']}"
+
+
+def process_comments(item: dict, root: Path, queue: Queue) -> dict:
+    """Publish a comment pack (or take a book's comments away), then smoke-test and promote the content."""
+    job = item["job"]
+    state, content = restore(root)
+    db = state / "content.sqlite"
+    if job["action"] == "publish":
+        target = root / f"COMMENTS_{job['book_id']}_r{job['revision']}.zip"
+        telegram_file(job["telegram_file_id"], target, max_bytes=comments_tool.MAX_ZIP)
+        if target.stat().st_size != job["file_size"]:
+            raise ValueError(f"Telegram file size changed: {job['filename']}")
+        result = comments_tool.publish(db, content, target)
+    elif job["action"] == "clear":
+        result = comments_tool.clear(db, content, job["book_id"])
+    else:
+        raise ValueError("Unsupported comments operation")
+    counts = {key: result.get(key, 0) for key in ("questions", "cleared", "comments", "book_questions", "book_comments")}
+    summary = {"action": job["action"], "book_id": job["book_id"], "revision": job["revision"], **counts}
+    if result.get("duplicate"):
+        return {**summary, "duplicate": True}
+    candidate(root, content, job["book_id"], comments_book=job["book_id"])
+    save_state(state, content)
+    return summary
+
+
+def comments_notice(job: dict, result: dict) -> str:
+    title = comments_title(job)
+    if result.get("duplicate"):
+        return f"✅ {title} already published (same ZIP)."
+    if job["action"] == "clear":
+        return f"🧹 Comments are off for {job['book_id']}."
+    cleared = f" ({result['cleared']} questions cleared)" if result.get("cleared") else ""
+    return (f"✅ {title} published: {result['comments']} comments on {result['questions']} questions{cleared}. "
+            f"{job['book_id']} now has {result['book_comments']} comments on {result['book_questions']} questions.")
+
+
 def send_report(path: Path) -> None:
     token = os.environ["BOT_TOKEN"]
     boundary = "kafu-report-boundary"
@@ -437,6 +501,11 @@ def main() -> None:
                             f" published: {result['questions']} questions, {result.get('warnings', 0)} with warnings, "
                             f"{result['skipped']} skipped." + skipped_lines
                         )
+                elif item["kind"] == "comments":
+                    result = process_comments(item, root, queue)
+                    queue.call("finish", {"kind": "comments", "id": item["job"]["id"], "ok": True,
+                                          **{k: v for k, v in result.items() if k not in {"cleared", "duplicate"}}})
+                    queue.notify(comments_notice(item["job"], result))
                 else:
                     result = process_admin(item, root, queue)
                     queue.call("finish", {"kind": "admin", "id": item["job"]["id"], "ok": True,
@@ -444,10 +513,16 @@ def main() -> None:
                     queue.notify(f"✅ {item['job']['kind']} {item['job']['book_id']} complete.")
             except Exception as exc:
                 failed += 1
-                title = item["group"]["group_key"] if item["kind"] == "publish" else item["job"]["book_id"]
+                title = (item["group"]["group_key"] if item["kind"] == "publish"
+                         else comments_title(item["job"]) if item["kind"] == "comments" else item["job"]["book_id"])
                 report = root / "repair_report.md"
-                report.write_text(f"# Kafu repair report\n\nJob: {title}\n\n❌ {type(exc).__name__}: {exc}\n")
-                safe_error = str(exc) if isinstance(exc, (StepFailure, HttpStepError)) else f"step=processing method=LOCAL host=- path=- — {type(exc).__name__}: {str(exc)[:240]}"
+                if isinstance(exc, comments_tool.PackError):
+                    problems = "".join(f"- {line}\n" for line in exc.problems)
+                    report.write_text(f"# Kafu repair report\n\nJob: {title}\n\n❌ The comment pack was not published:\n\n{problems}")
+                else:
+                    report.write_text(f"# Kafu repair report\n\nJob: {title}\n\n❌ {type(exc).__name__}: {exc}\n")
+                safe_error = (str(exc) if isinstance(exc, (StepFailure, HttpStepError, comments_tool.PackError))
+                              else f"step=processing method=LOCAL host=- path=- — {type(exc).__name__}: {str(exc)[:240]}")
                 payload = {"kind": item["kind"], "ok": False, "error": safe_error[:400]}
                 payload.update({"group_key": title} if item["kind"] == "publish" else {"id": item["job"]["id"]})
                 queue.call("finish", payload)

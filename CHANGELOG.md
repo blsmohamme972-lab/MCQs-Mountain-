@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Question comments
+- A Comments card after the explanation, written by the Kafu characters (the Leaders personas: same names, pictures and tags), each labelled "Kafu character". Nothing shows before the answer or during an exam; three threads show, then "Show N more". Students cannot post yet: the composer says "Writing comments opens soon." Saved for offline study; removed from the phone when the owner takes a book's comments away. See `docs/COMMENTS.md`.
+- `COMMENTS_BOOK-ID_rN.zip` packs (one `comments.json`, up to 2 MB) go through the bot and the existing publish run, after books. A pack replaces only the questions it lists. `tools/comments.py` packs and checks them; bot commands `/comments`, `/comments-retry`, `/comments-off`. D1 migration `0007_comment_jobs.sql`. Writing guide: `docs/COMMENTS_PROMPT.md`.
+- Start-up cost: one ~0.5 KB inline loader; the rest loads on the first study screen.
+
 ### MotionCards trusted library improvement
 - Added `motioncards.py library-check` (`motioncards/lib/library_gate.py`) and the `MotionCards library auto-merge` workflow. A PR from a `library/…` branch by the repository owner merges automatically only when it is purely additive inside `motioncards/library/` and the MotionCards tests pass. Each new drawing must have a safe licence, a source, a reason and the QIDs that use it, and must import, validate, render and not duplicate existing art. Each new recipe needs a demo that renders deterministically. Everything else is left for the owner.
 

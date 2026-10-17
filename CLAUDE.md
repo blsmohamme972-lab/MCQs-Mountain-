@@ -26,6 +26,12 @@ every other character acts on it with one pun per fact, no panels. Review every 
 Lean storage (owner's rule): commit only the text of a lesson, lessons/<QID>.lesson.json, and selection.json.
 Never commit images, voice/, scenes/, input/ or the MCARDS ZIP (`.gitignore`); send the ZIP to the owner in chat.
 
+## Question comments
+
+Comments under questions come from `COMMENTS_<BOOK-ID>_rN.zip` packs: write them with `docs/COMMENTS_PROMPT.md`,
+build and check them with `tools/comments.py pack … --export …`, send the ZIP to the owner in chat (`docs/COMMENTS.md`).
+Every comment keeps its "Kafu character" label in the app, and the composer stays honest ("Writing comments opens soon.").
+
 ## Voice-over: ask the owner who renders, every time
 
 Before any voice batch, ask the owner this (with the engine question below), and wait for the answer:

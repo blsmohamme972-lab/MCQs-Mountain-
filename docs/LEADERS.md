@@ -26,6 +26,7 @@ The fifth main tab, **Leaders**, sits between Review and Me. It replaced the ser
 | `app/modules/leaders.js` | the view, live FLIP animation, league settlement, profile card, cheers |
 | `app/modules/leaders.css` | styles (app tokens, light/dark) |
 | `app/modules/xp-ledger.js` | inline; the single XP ledger (see below) |
+| `leaders-core.js` `person(name)` / `people()` | one persona's picture, colours, initials and tag; the question comments (`docs/COMMENTS.md`) use the same faces |
 | `app/assets/avatars/` | 47 pictures without people + `SOURCES.txt` (Unsplash licence / Openverse CC0, CC BY credits) |
 | `tools/tests/js/leaders-core.test.cjs`, `xp-ledger.test.cjs` | unit tests; UI flows `04_study.py`, `07_account_switch.py`, `09_phone_geometry.py` |
 

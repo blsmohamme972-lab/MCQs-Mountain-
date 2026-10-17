@@ -69,6 +69,20 @@ A successful remove/restore is published through the MotionCards state/deploymen
 
 MotionCards queue recovery is lease/token protected and bounded. Do not manipulate `motioncards_` D1 rows, release assets, or hashes manually to force a replacement or restoration.
 
+## Question comments
+
+Comments under the explanation are written by the Kafu characters (the Leaders personas) and labelled as such; see
+`docs/COMMENTS.md`. Send `COMMENTS_BOOK-ID_rN.zip` (up to 2 MB, one `comments.json`) to the bot like a book. It goes
+through the same publish run, after books and admin jobs, and the bot reports the result.
+
+- `/comments` — the last ten comment packs and their results.
+- `/comments BOOK-ID` — how many comments a book has now, and the next file name to use (`COMMENTS_BOOK-ID_r<N+1>.zip`).
+- `/comments-retry COMMENTS_BOOK-ID_rN` — requeue a **failed** comment pack. Sending a corrected ZIP with the same name also replaces a failed one.
+- `/comments-off BOOK-ID` — preview only; `/comments-off BOOK-ID CONFIRM` takes every comment of that book away from students (phones remove their saved copy the next time they are online).
+
+A pack only changes the questions it lists. A revision must be newer than the last one published for that book; the same
+ZIP again is a no-op. Removing a book (`/remove`) removes its comments too.
+
 ## When you see ❌
 
 1. Send `/queue` and read the failing `step=...`, method, host, path and status. These diagnostics intentionally contain no secrets.

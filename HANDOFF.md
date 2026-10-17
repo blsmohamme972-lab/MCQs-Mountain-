@@ -6,6 +6,10 @@
 > **Leaders and XP (Oct 2026):** a fifth tab with on-device weekly leagues and one XP ledger. Zero server cost.
 > See `docs/LEADERS.md`.
 
+> **Question comments (Oct 2026):** a Comments card after the explanation, written by the Kafu characters (the Leaders
+> personas) and labelled as such; students cannot post yet. Packs are `COMMENTS_BOOK-ID_rN.zip` through the bot.
+> See `docs/COMMENTS.md` and, to write them, `docs/COMMENTS_PROMPT.md`.
+
 Updated: 2026-09-28 (Asia/Baghdad)
 
 ## Start here

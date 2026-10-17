@@ -2,6 +2,7 @@ import { meterDatabase, logD1Request } from './d1-metrics.mjs';
 // Kafu control plane. Heavy publishing work stays in GitHub Actions.
 import { parsePackageName, queueDocument, retryGroup, clearGroup } from "./queue-state.mjs";
 import { looksMotioncardsFilename, parseMotioncardsName, queueMotioncardsDocument, claimMotioncards, finishMotioncards, finishMotioncardsOperation, recoverMotioncards, motioncardsStatus, hasReadyMotioncards, stageReplacementConfirmation, getMotioncardManagement, createMotioncardConfirmation, confirmMotioncardAction } from "./motioncards-queue.mjs";
+import { looksCommentsFilename, queueCommentsDocument, commentsCommand, claimComments, finishComments, commentJobKey } from "./comments-queue.mjs";
 import { handleLeaderboard } from "./leaderboard.mjs";
 import { handleAdmin } from "./admin.mjs";
 export { parsePackageName, retryGroup, clearGroup, parseMotioncardsName };
@@ -87,12 +88,14 @@ async function bookForQuestion(env, qid) {
 async function command(env, raw) {
   const [cmd, arg, arg2, arg3] = raw.trim().split(/\s+/);
   switch (cmd.toLowerCase().split("@")[0]) {
-    case "/help": return "/queue /books /status /warnings BOOK-ID /flags [/flags approve-all BOOK-ID CONFIRM] /hold QID PAGE /retry BOOK-ID_vN /clear BOOK-ID_vN /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID /motioncards QID /motioncards-status /motioncards-retry PACKAGE-ID_rN /motioncards-clear PACKAGE-ID_rN — retry renews an expired replacement confirmation; clear cancels a pending replacement";
+    case "/help": return "/queue /books /status /warnings BOOK-ID /flags [/flags approve-all BOOK-ID CONFIRM] /hold QID PAGE /retry BOOK-ID_vN /clear BOOK-ID_vN /republish BOOK-ID_vN /rollback BOOK-ID VERSION /remove BOOK-ID /motioncards QID /motioncards-status /motioncards-retry PACKAGE-ID_rN /motioncards-clear PACKAGE-ID_rN — retry renews an expired replacement confirmation; clear cancels a pending replacement. Comments: send COMMENTS_BOOK-ID_rN.zip, then /comments [BOOK-ID] /comments-retry COMMENTS_BOOK-ID_rN /comments-off BOOK-ID";
     case "/queue": {
       const r = await env.DB.prepare("SELECT group_key,status,part_total,error_summary FROM publish_groups ORDER BY created_at DESC LIMIT 15").all();
       const a = await env.DB.prepare("SELECT kind,book_id,status,error_summary FROM admin_jobs ORDER BY id DESC LIMIT 5").all();
+      const c = await env.DB.prepare("SELECT action,book_id,revision,status,error_summary FROM comment_jobs ORDER BY id DESC LIMIT 5").all();
       return [...(r.results || []).map(x => `${x.group_key}: ${x.status}${x.error_summary ? ` — ${safeText(env, x.error_summary)}` : ""}`),
-        ...(a.results || []).map(x => `${x.kind} ${x.book_id}: ${x.status}${x.error_summary ? ` — ${safeText(env, x.error_summary)}` : ""}`)].join("\n") || "Queue empty.";
+        ...(a.results || []).map(x => `${x.kind} ${x.book_id}: ${x.status}${x.error_summary ? ` — ${safeText(env, x.error_summary)}` : ""}`),
+        ...(c.results || []).map(x => `${commentJobKey(x)}: ${x.status}${x.error_summary ? ` — ${safeText(env, x.error_summary)}` : ""}`)].join("\n") || "Queue empty.";
     }
     case "/books": {
       try {
@@ -160,6 +163,8 @@ async function command(env, raw) {
     }
     case "/rollback": return arg && arg2 ? adminJob(env, "rollback", arg.toUpperCase(), Number(arg2)) : "Usage: /rollback BOOK-ID VERSION";
     case "/remove": return arg ? adminJob(env, "remove", arg.toUpperCase()) : "Usage: /remove BOOK-ID";
+    case "/comments": case "/comments-retry": case "/comments-off":
+      return commentsCommand(env, cmd.toLowerCase().split("@")[0], arg, arg2, value => safeText(env, value));
     case "/motioncards-status": return motioncardsStatus(env);
     case "/motioncards-retry": return recoverMotioncards(env,"retry",arg);
     case "/motioncards-clear": return recoverMotioncards(env,"clear",arg);
@@ -256,7 +261,8 @@ async function webhook(request, env, ctx) {
   }
   let text, dispatchKind = null, motioncardsHandled = false;
   if (m.document) {
-    if (looksMotioncardsFilename(m.document.file_name)) {
+    if (looksCommentsFilename(m.document.file_name)) text = await queueCommentsDocument(env, m.document);
+    else if (looksMotioncardsFilename(m.document.file_name)) {
       motioncardsHandled = true;
       const result = await queueMotioncardsDocument(env, m.document);
       text = result.text; if (result.dispatch) dispatchKind = "motioncards";
@@ -343,7 +349,10 @@ async function internal(request, env, path) {
       return reply({ kind: "publish", group, parts: parts.results || [] });
     }
     const job = await env.DB.prepare("UPDATE admin_jobs SET status='running',claimed_at=datetime('now') WHERE id=(SELECT id FROM admin_jobs WHERE status='ready' ORDER BY created_at,id LIMIT 1) AND status='ready' RETURNING *").first();
-    return reply(job ? { kind: "admin", job } : { kind: "empty" });
+    if (job) return reply({ kind: "admin", job });
+    // Comment packs come last, so a book uploaded together with its comments is published first.
+    const comments = await claimComments(env);
+    return reply(comments ? { kind: "comments", job: comments } : { kind: "empty" });
   }
   const body = await request.json();
   if (path === "/internal/recover") {
@@ -379,6 +388,9 @@ async function internal(request, env, path) {
       writes.push(env.DB.prepare("UPDATE admin_jobs SET status=?,finished_at=datetime('now'),error_summary=? WHERE id=? AND status='running'").bind(status, error, job.id));
       const results = await env.DB.batch(writes);
       if (!results.at(-1)?.meta?.changes) return reply({ error: "job_not_running" }, 409);
+    } else if (body.kind === "comments") {
+      const result = await finishComments(env, body, error);
+      if (!result.ok) return reply({ error: result.error }, result.status);
     } else return reply("Invalid kind", 400);
     return reply({ ok: true });
   }
