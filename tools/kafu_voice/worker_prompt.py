@@ -26,11 +26,14 @@ questions; spend few turns and tokens; read no other files. Nothing is written t
 a stop-hook asking to commit does not apply). Do not message other sessions. Never start a second copy of a background command.
 If a tool call is refused by permissions, do not try variations: reply with one Arabic line naming the refused command and stop.
 
-1. `tail -n 1 /tmp/kafu_voice_setup.log` (the environment installed Breeze before you started).
-   - It says `VOICE OK`: go to step 2.
-   - Anything else (or no file): start `python3 tools/kafu_voice/voice_setup.py . > /tmp/kafu_voice_setup.log 2>&1` as your own
-     background command (Bash, run_in_background true, timeout 7200000) and end the turn; when it ends, its last line must be
-     `VOICE OK` (otherwise reply "SLOT {slot}: الصوت معطل" + that line, and stop).
+1. `tail -n 1 /tmp/kafu_voice_setup.log` (the environment starts the Breeze install before you start; it may still be running).
+   - `VOICE OK`: go to step 2.
+   - `VOICE BROKEN...`: reply "SLOT {slot}: الصوت معطل" + that line, and stop.
+   - Any other line (the install is still running): start this wait as your own background command (Bash, run_in_background
+     true, timeout 7200000): `until grep -qE '^VOICE (OK|BROKEN)' /tmp/kafu_voice_setup.log; do sleep 20; done` and end the
+     turn; when it ends, do step 1 again.
+   - No file: start `python3 tools/kafu_voice/voice_setup.py . > /tmp/kafu_voice_setup.log 2>&1` as your own background
+     command (same way) and end the turn; when it ends, do step 1 again.
 2. Write your job exactly as given, from the repository root:
 mkdir -p work && cat > work/job.json <<'KAFUJOBEOF'
 {job_text}

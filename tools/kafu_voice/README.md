@@ -36,7 +36,7 @@
    `python3 tools/kafu_voice/worker_prompt.py JOB.json INBOX_URL > prompt.txt`
 3. الرأس يفتح العمال بـ `create_session` مع `environment_id` حق **Kafu Voice** والفرع `main`.
    أول دفعة بالبيئة: عامل واحد تجربة، وإذا خلص بدون أي رسالة منك يفتح الباقي.
-4. العامل: يتأكد من `VOICE OK` بـ `/tmp/kafu_voice_setup.log`، يكتب مهمته، يشغّل `render_job.py`، ويرفع الأجزاء و`DONE`
+4. العامل: ينتظر `VOICE OK` بـ `/tmp/kafu_voice_setup.log` (سكربت البيئة ينقتل بعد حوالي 5 دقائق، فالتنصيب يكمل بالخلفية)، يكتب مهمته، يشغّل `render_job.py`، ويرفع الأجزاء و`DONE`
    للـ inbox. الرأس يستورد بـ `import_voice.py` ويبني الدروس.
 
 ## Files
