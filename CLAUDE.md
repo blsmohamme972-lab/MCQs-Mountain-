@@ -19,6 +19,10 @@ folder describes it: those are marked RETIRED and kept only as background. The s
 are shared with lessons and stay in use. "MotionCards" in the bot and filenames (`MCARDS_*.zip`) is just the package
 format both use.
 
+Image prompts (for ChatGPT to draw): only with the tools on branch `kafu-queue` (`kafu_queue/head_prompts.py`,
+`gpt_master_prompts.py`). Every prompt must carry `STORY_RULES`: Picmonic / Sketchy, ONE story around ONE MAIN CHARACTER,
+every other character acts on it with one pun per fact, no panels. Review every character line before sending.
+
 Lean storage (owner's rule): commit only the text of a lesson, lessons/<QID>.lesson.json, and selection.json.
 Never commit images, voice/, scenes/, input/ or the MCARDS ZIP (`.gitignore`); send the ZIP to the owner in chat.
 
