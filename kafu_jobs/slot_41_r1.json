@@ -1,0 +1,58 @@
+{
+ "slot": "41",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000296"
+ ],
+ "lines": [
+  {
+   "id": "Q000000296-q",
+   "voice": "student-woman",
+   "dir": "clear, curious",
+   "text": "Which of these displaces the oxygen–haemoglobin dissociation curve to the left?"
+  },
+  {
+   "id": "Q000000296-a",
+   "voice": "student-woman",
+   "dir": "calm, confident",
+   "text": "The answer is a fall in p C O two."
+  },
+  {
+   "id": "Q000000296-01",
+   "voice": "student-woman",
+   "dir": "warm, curious",
+   "text": "A left shift means haemoglobin grips its oxygen tightly, like this strong hero hugging every ball."
+  },
+  {
+   "id": "Q000000296-02",
+   "voice": "student-woman",
+   "dir": "clear, steady",
+   "text": "The carbon dioxide balloon deflates. A fall in p C O two shifts the curve left."
+  },
+  {
+   "id": "Q000000296-03",
+   "voice": "student-woman",
+   "dir": "warm, amused",
+   "text": "(laugh) His friend waves the flag for a rise in p H, another left shift."
+  },
+  {
+   "id": "Q000000296-04",
+   "voice": "student-woman",
+   "dir": "calm, explanatory",
+   "text": "So do a fall in temperature, less two three D P G, fetal haemoglobin, and carbon monoxide."
+  },
+  {
+   "id": "Q000000296-05",
+   "voice": "student-woman",
+   "dir": "calm, explanatory",
+   "text": "Acidosis, heat, a rise in p C O two, and exercise push it right."
+  },
+  {
+   "id": "Q000000296-06",
+   "voice": "student-woman",
+   "dir": "slow, firm",
+   "text": "Remember: a fall in p C O two shifts the curve to the left."
+  }
+ ]
+}

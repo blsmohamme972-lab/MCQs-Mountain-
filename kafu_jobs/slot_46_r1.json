@@ -1,0 +1,113 @@
+{
+ "slot": "46",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000321",
+  "Q000000322"
+ ],
+ "lines": [
+  {
+   "id": "Q000000321-q",
+   "voice": "lecturer-man",
+   "dir": "clear, curious",
+   "text": "Which statement about the human immunodeficiency virus, HIV, is true?"
+  },
+  {
+   "id": "Q000000321-a",
+   "voice": "lecturer-man",
+   "dir": "calm, confident",
+   "text": "The answer is: it establishes persistence through antigenic variation."
+  },
+  {
+   "id": "Q000000321-01",
+   "voice": "lecturer-man",
+   "dir": "warm, playful",
+   "text": "Here is HIV, grinning as it tries on yet another mask."
+  },
+  {
+   "id": "Q000000321-02",
+   "voice": "lecturer-man",
+   "dir": "clear, steady",
+   "text": "Behind it hangs a whole wall of masks. This is antigenic variation: the virus keeps changing its surface antigens."
+  },
+  {
+   "id": "Q000000321-03",
+   "voice": "lecturer-man",
+   "dir": "clear, steady",
+   "text": "In the mirror, it hides behind a disguise, so the immune system cannot recognise it."
+  },
+  {
+   "id": "Q000000321-04",
+   "voice": "lecturer-man",
+   "dir": "calm, explanatory",
+   "text": "One infected patient carries a huge number of HIV variants during the course of infection."
+  },
+  {
+   "id": "Q000000321-05",
+   "voice": "lecturer-man",
+   "dir": "grave, steady",
+   "text": "(sigh) The immune cells are buried under the masks. The immune system is swamped, and finally collapses."
+  },
+  {
+   "id": "Q000000321-06",
+   "voice": "lecturer-man",
+   "dir": "slow, firm",
+   "text": "Remember: HIV establishes persistence through antigenic variation."
+  },
+  {
+   "id": "Q000000322-q",
+   "voice": "doctor-woman",
+   "dir": "clear, curious",
+   "text": "Typical physical and laboratory findings in hyperthyroidism include which of the following?"
+  },
+  {
+   "id": "Q000000322-a",
+   "voice": "doctor-woman",
+   "dir": "calm, confident",
+   "text": "The answer is tremor."
+  },
+  {
+   "id": "Q000000322-01",
+   "voice": "doctor-woman",
+   "dir": "warm, curious",
+   "text": "Look at his neck. The thyroid is on fire. This man has hyperthyroidism."
+  },
+  {
+   "id": "Q000000322-02",
+   "voice": "doctor-woman",
+   "dir": "clear, steady",
+   "text": "His hand shakes so much that the tea spills from the glass. That is tremor."
+  },
+  {
+   "id": "Q000000322-03",
+   "voice": "doctor-woman",
+   "dir": "warm, amused",
+   "text": "(laugh) And the other hand is trembling too."
+  },
+  {
+   "id": "Q000000322-04",
+   "voice": "doctor-woman",
+   "dir": "clear, steady",
+   "text": "Inside, his heart beats a fast drum. That is tachycardia."
+  },
+  {
+   "id": "Q000000322-05",
+   "voice": "doctor-woman",
+   "dir": "calm, explanatory",
+   "text": "Hyperthyroidism also brings a low serum cholesterol and brisk reflexes, called hyperreflexia."
+  },
+  {
+   "id": "Q000000322-06",
+   "voice": "doctor-woman",
+   "dir": "calm, explanatory",
+   "text": "All the other options are classical findings of hypothyroidism, the opposite state."
+  },
+  {
+   "id": "Q000000322-07",
+   "voice": "doctor-woman",
+   "dir": "slow, firm",
+   "text": "Remember: an overactive thyroid shakes the hands. Tremor is a typical finding in hyperthyroidism."
+  }
+ ]
+}

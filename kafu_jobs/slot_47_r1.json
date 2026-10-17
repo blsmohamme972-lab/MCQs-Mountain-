@@ -1,0 +1,168 @@
+{
+ "slot": "47",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000328",
+  "Q000000329",
+  "Q000000330"
+ ],
+ "lines": [
+  {
+   "id": "Q000000328-q",
+   "voice": "doctor-woman",
+   "dir": "clear, curious",
+   "text": "With regard to the facial nerve, which statement is true?"
+  },
+  {
+   "id": "Q000000328-a",
+   "voice": "doctor-woman",
+   "dir": "calm, confident",
+   "text": "The answer is: it is secreto-motor to the lacrimal gland."
+  },
+  {
+   "id": "Q000000328-01",
+   "voice": "doctor-woman",
+   "dir": "warm, curious",
+   "text": "Meet the facial nerve, the seventh cranial nerve, smiling in the onion market."
+  },
+  {
+   "id": "Q000000328-02",
+   "voice": "doctor-woman",
+   "dir": "clear, steady",
+   "text": "Its branches spread across the face. It has a variety of different functions, and it is important clinically."
+  },
+  {
+   "id": "Q000000328-03",
+   "voice": "doctor-woman",
+   "dir": "clear, steady",
+   "text": "One branch runs up like a pipe. This is the greater petrosal nerve."
+  },
+  {
+   "id": "Q000000328-04",
+   "voice": "doctor-woman",
+   "dir": "clear, confident",
+   "text": "Through it, the facial nerve carries secreto-motor fibres to the lacrimal gland, and turns on the tap."
+  },
+  {
+   "id": "Q000000328-05",
+   "voice": "doctor-woman",
+   "dir": "warm, amused",
+   "text": "(laugh) And out flow the tears, onions or no onions."
+  },
+  {
+   "id": "Q000000328-06",
+   "voice": "doctor-woman",
+   "dir": "slow, firm",
+   "text": "Remember: the facial nerve is secreto-motor to the lacrimal gland, through the greater petrosal nerve."
+  },
+  {
+   "id": "Q000000329-q",
+   "voice": "student-man",
+   "dir": "clear, curious",
+   "text": "Which one of the following statements concerning lung volumes is true?"
+  },
+  {
+   "id": "Q000000329-a",
+   "voice": "student-man",
+   "dir": "calm, confident",
+   "text": "The answer is: the vital capacity is the sum of the inspiratory reserve volume, the expiratory reserve volume, and the tidal volume."
+  },
+  {
+   "id": "Q000000329-01",
+   "voice": "student-man",
+   "dir": "warm, playful",
+   "text": "The happy lung holds three balloons."
+  },
+  {
+   "id": "Q000000329-02",
+   "voice": "student-man",
+   "dir": "clear, steady",
+   "text": "The red one is the inspiratory reserve volume, extra air you can still breathe in."
+  },
+  {
+   "id": "Q000000329-03",
+   "voice": "student-man",
+   "dir": "clear, steady",
+   "text": "The blue one is the tidal volume, the air of a normal breath."
+  },
+  {
+   "id": "Q000000329-04",
+   "voice": "student-man",
+   "dir": "clear, steady",
+   "text": "The yellow one is the expiratory reserve volume, extra air you can still breathe out."
+  },
+  {
+   "id": "Q000000329-05",
+   "voice": "student-man",
+   "dir": "clear, confident",
+   "text": "Add the three together: that is the vital capacity, on the lung's sign."
+  },
+  {
+   "id": "Q000000329-06",
+   "voice": "student-man",
+   "dir": "calm, explanatory",
+   "text": "The grumpy purple balloon is the residual volume. It stays out, so vital capacity is total lung capacity minus residual volume."
+  },
+  {
+   "id": "Q000000329-07",
+   "voice": "student-man",
+   "dir": "slow, firm",
+   "text": "Remember: vital capacity equals inspiratory reserve, plus tidal volume, plus expiratory reserve."
+  },
+  {
+   "id": "Q000000330-q",
+   "voice": "lecturer-woman",
+   "dir": "clear, curious",
+   "text": "The pathogenicity of the tubercle bacillus is primarily due to which one of the following?"
+  },
+  {
+   "id": "Q000000330-a",
+   "voice": "lecturer-woman",
+   "dir": "calm, confident",
+   "text": "The answer is a delayed hypersensitivity reaction against the bacteria."
+  },
+  {
+   "id": "Q000000330-01",
+   "voice": "lecturer-woman",
+   "dir": "warm, curious",
+   "text": "Deep in the lung hides the green tubercle bacillus."
+  },
+  {
+   "id": "Q000000330-02",
+   "voice": "lecturer-woman",
+   "dir": "clear, steady",
+   "text": "The T cells sound the alarm. Mycobacteria stimulate a specific T cell response of cell-mediated immunity."
+  },
+  {
+   "id": "Q000000330-03",
+   "voice": "lecturer-woman",
+   "dir": "clear, steady",
+   "text": "They build a fortress around it: a granuloma, which reduces the infection."
+  },
+  {
+   "id": "Q000000330-04",
+   "voice": "lecturer-woman",
+   "dir": "calm, explanatory",
+   "text": "The snail clock shows it is slow. This is delayed hypersensitivity, a type four reaction."
+  },
+  {
+   "id": "Q000000330-05",
+   "voice": "lecturer-woman",
+   "dir": "serious, steady",
+   "text": "But the same T cells pour damage onto the lung tissue itself."
+  },
+  {
+   "id": "Q000000330-06",
+   "voice": "lecturer-woman",
+   "dir": "grave, steady",
+   "text": "(sigh) So the damage comes mainly from the host's own immune response. This is called immune pathology."
+  },
+  {
+   "id": "Q000000330-07",
+   "voice": "lecturer-woman",
+   "dir": "slow, firm",
+   "text": "Remember: the tubercle bacillus harms us mainly through our own delayed hypersensitivity reaction."
+  }
+ ]
+}

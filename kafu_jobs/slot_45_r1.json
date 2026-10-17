@@ -1,0 +1,113 @@
+{
+ "slot": "45",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000314",
+  "Q000000320"
+ ],
+ "lines": [
+  {
+   "id": "Q000000314-q",
+   "voice": "student-woman",
+   "dir": "clear, curious",
+   "text": "With regard to neutrophils, the polymorphonuclear leucocytes, which statement is true?"
+  },
+  {
+   "id": "Q000000314-a",
+   "voice": "student-woman",
+   "dir": "calm, confident",
+   "text": "The answer is: they have a lifespan of only a few hours in inflamed tissue."
+  },
+  {
+   "id": "Q000000314-01",
+   "voice": "student-woman",
+   "dir": "warm, curious",
+   "text": "Meet the neutrophils, brave little soldiers rushing into the inflamed tissue."
+  },
+  {
+   "id": "Q000000314-02",
+   "voice": "student-woman",
+   "dir": "clear, steady",
+   "text": "But look at the hourglass beside them. Their time runs out fast."
+  },
+  {
+   "id": "Q000000314-03",
+   "voice": "student-woman",
+   "dir": "clear, firm",
+   "text": "In an inflammatory lesion, a neutrophil lives only a few hours, and sometimes less."
+  },
+  {
+   "id": "Q000000314-04",
+   "voice": "student-woman",
+   "dir": "grave, steady",
+   "text": "(sigh) So a severe local infection quickly becomes a graveyard of thousands of neutrophils."
+  },
+  {
+   "id": "Q000000314-05",
+   "voice": "student-woman",
+   "dir": "calm, explanatory",
+   "text": "As they fall, their contents, especially their enzymes, spill out and may cause additional damage to host tissues."
+  },
+  {
+   "id": "Q000000314-06",
+   "voice": "student-woman",
+   "dir": "slow, firm",
+   "text": "Remember: neutrophils have a lifespan of only a few hours in inflamed tissue."
+  },
+  {
+   "id": "Q000000320-q",
+   "voice": "student-woman",
+   "dir": "clear, curious",
+   "text": "With regard to the microcirculation and the formation of lymph, which statement is true?"
+  },
+  {
+   "id": "Q000000320-a",
+   "voice": "student-woman",
+   "dir": "calm, confident",
+   "text": "The answer is: interstitial fluid hydrostatic pressure is normally negative."
+  },
+  {
+   "id": "Q000000320-01",
+   "voice": "student-woman",
+   "dir": "warm, curious",
+   "text": "Here is the microcirculation, with little drops of fluid leaking out of the blood vessel."
+  },
+  {
+   "id": "Q000000320-02",
+   "voice": "student-woman",
+   "dir": "clear, steady",
+   "text": "The fluid drips into the interstitial spaces between the cells."
+  },
+  {
+   "id": "Q000000320-03",
+   "voice": "student-woman",
+   "dir": "clear, steady",
+   "text": "Now the lymphatic opens its mouth and sucks the fluid back, returning it to the circulation."
+  },
+  {
+   "id": "Q000000320-04",
+   "voice": "student-woman",
+   "dir": "clear, firm",
+   "text": "That suction pulls the gauge below zero. Interstitial fluid hydrostatic pressure is normally subatmospheric, or negative."
+  },
+  {
+   "id": "Q000000320-05",
+   "voice": "student-woman",
+   "dir": "calm, explanatory",
+   "text": "This keeps the tissues structurally intact and the interstitial spaces small."
+  },
+  {
+   "id": "Q000000320-06",
+   "voice": "student-woman",
+   "dir": "calm, explanatory",
+   "text": "And small spaces mean short distances for diffusion."
+  },
+  {
+   "id": "Q000000320-07",
+   "voice": "student-woman",
+   "dir": "slow, firm",
+   "text": "Remember: lymphatic suction makes interstitial fluid hydrostatic pressure normally negative."
+  }
+ ]
+}

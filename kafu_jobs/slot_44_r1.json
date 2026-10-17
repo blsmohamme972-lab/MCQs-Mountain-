@@ -1,0 +1,107 @@
+{
+ "slot": "44",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000312",
+  "Q000000313"
+ ],
+ "lines": [
+  {
+   "id": "Q000000312-q",
+   "voice": "lecturer-woman",
+   "dir": "clear, curious",
+   "text": "With regard to genital development, which statement is true?"
+  },
+  {
+   "id": "Q000000312-a",
+   "voice": "lecturer-woman",
+   "dir": "calm, confident",
+   "text": "The answer is: the testes and ovaries descend from their original position at the 10th thoracic level. That is the tenth thoracic level."
+  },
+  {
+   "id": "Q000000312-01",
+   "voice": "lecturer-woman",
+   "dir": "warm, curious",
+   "text": "Both gonads start high up, at the tenth thoracic level, T ten."
+  },
+  {
+   "id": "Q000000312-02",
+   "voice": "lecturer-woman",
+   "dir": "clear, steady",
+   "text": "The testis and the ovary ride the lift down together. Both descend in embryonic and fetal life."
+  },
+  {
+   "id": "Q000000312-03",
+   "voice": "lecturer-woman",
+   "dir": "warm, amused",
+   "text": "(laugh) The gubernaculum climbs the rope. This ligamentous cord guides the descent."
+  },
+  {
+   "id": "Q000000312-04",
+   "voice": "lecturer-woman",
+   "dir": "calm, explanatory",
+   "text": "Their blood vessels trail down from above. That is why the gonadal arteries take such a long course."
+  },
+  {
+   "id": "Q000000312-05",
+   "voice": "lecturer-woman",
+   "dir": "calm, explanatory",
+   "text": "It also explains why pain from the gonads is referred to the umbilicus, the T ten dermatome."
+  },
+  {
+   "id": "Q000000312-06",
+   "voice": "lecturer-woman",
+   "dir": "slow, firm",
+   "text": "Remember: the testes and ovaries both descend from the tenth thoracic level."
+  },
+  {
+   "id": "Q000000313-q",
+   "voice": "doctor-man",
+   "dir": "clear, curious",
+   "text": "With regard to visual field pathways, which statement is true?"
+  },
+  {
+   "id": "Q000000313-a",
+   "voice": "doctor-man",
+   "dir": "calm, confident",
+   "text": "The answer is: the macula region is grossly over-represented in the visual cortex."
+  },
+  {
+   "id": "Q000000313-01",
+   "voice": "doctor-man",
+   "dir": "warm, curious",
+   "text": "This eye is the projector. Rods and cones in the retina turn light into electrical impulses."
+  },
+  {
+   "id": "Q000000313-02",
+   "voice": "doctor-man",
+   "dir": "clear, steady",
+   "text": "The macula is a tiny spot on the retina, the centre of sharp vision."
+  },
+  {
+   "id": "Q000000313-03",
+   "voice": "doctor-man",
+   "dir": "calm, explanatory",
+   "text": "At the optic chiasm, the fibres cross only partly. Nasal fibres cross, while temporal fibres stay on the same side."
+  },
+  {
+   "id": "Q000000313-04",
+   "voice": "doctor-man",
+   "dir": "warm, amused",
+   "text": "(laugh) But look at the screen. That tiny macula fills almost all of it."
+  },
+  {
+   "id": "Q000000313-05",
+   "voice": "doctor-man",
+   "dir": "clear, steady",
+   "text": "The visual cortex gives the macula far more space than its size."
+  },
+  {
+   "id": "Q000000313-06",
+   "voice": "doctor-man",
+   "dir": "slow, firm",
+   "text": "Remember: the macula is grossly over-represented in the visual cortex."
+  }
+ ]
+}

@@ -1,0 +1,107 @@
+{
+ "slot": "42",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000298",
+  "Q000000304"
+ ],
+ "lines": [
+  {
+   "id": "Q000000298-q",
+   "voice": "doctor-woman",
+   "dir": "clear, curious",
+   "text": "Resection of the terminal ileum is associated with malabsorption of which of the following substances?"
+  },
+  {
+   "id": "Q000000298-a",
+   "voice": "doctor-woman",
+   "dir": "calm, confident",
+   "text": "The answer is bile salts."
+  },
+  {
+   "id": "Q000000298-01",
+   "voice": "doctor-woman",
+   "dir": "warm, curious",
+   "text": "Meet the terminal ileum, the recycling truck of the gut. It carries bile salts back home."
+  },
+  {
+   "id": "Q000000298-02",
+   "voice": "doctor-woman",
+   "dir": "serious, steady",
+   "text": "Then the scissors cut it away. That is a resection, for example in Crohn's disease."
+  },
+  {
+   "id": "Q000000298-03",
+   "voice": "doctor-woman",
+   "dir": "grave, steady",
+   "text": "(sigh) The yellow bile salts spill out and are lost."
+  },
+  {
+   "id": "Q000000298-04",
+   "voice": "doctor-woman",
+   "dir": "calm, explanatory",
+   "text": "Without the terminal ileum, the enterohepatic circulation breaks, so bile salts become deficient."
+  },
+  {
+   "id": "Q000000298-05",
+   "voice": "doctor-woman",
+   "dir": "clear, steady",
+   "text": "The worried gallbladder fills with cholesterol gallstones, the clinical consequence."
+  },
+  {
+   "id": "Q000000298-06",
+   "voice": "doctor-woman",
+   "dir": "slow, firm",
+   "text": "Remember: resect the terminal ileum and you lose bile salts, with a higher risk of cholesterol gallstones."
+  },
+  {
+   "id": "Q000000304-q",
+   "voice": "doctor-woman",
+   "dir": "clear, curious",
+   "text": "A patient with a six centimetre abdominal aortic aneurysm is scheduled for elective repair, and an echocardiogram is requested. The ejection fraction is defined as what?"
+  },
+  {
+   "id": "Q000000304-a",
+   "voice": "doctor-woman",
+   "dir": "calm, confident",
+   "text": "The answer is the ratio of stroke volume to end-diastolic volume."
+  },
+  {
+   "id": "Q000000304-01",
+   "voice": "doctor-woman",
+   "dir": "warm, steady",
+   "text": "Our smiling patient has a six centimetre aortic aneurysm, waiting for elective repair."
+  },
+  {
+   "id": "Q000000304-02",
+   "voice": "doctor-woman",
+   "dir": "clear, steady",
+   "text": "Before surgery, the echocardiogram checks how well his heart pumps."
+  },
+  {
+   "id": "Q000000304-03",
+   "voice": "doctor-woman",
+   "dir": "calm, explanatory",
+   "text": "In diastole the ventricle fills to about one hundred and twenty millilitres. This full bucket is the end-diastolic volume."
+  },
+  {
+   "id": "Q000000304-04",
+   "voice": "doctor-woman",
+   "dir": "calm, explanatory",
+   "text": "In systole the heart pours out about seventy millilitres into the cup. That is the stroke volume."
+  },
+  {
+   "id": "Q000000304-05",
+   "voice": "doctor-woman",
+   "dir": "warm, amused",
+   "text": "(laugh) So the ejection fraction is simply the cup divided by the bucket."
+  },
+  {
+   "id": "Q000000304-06",
+   "voice": "doctor-woman",
+   "dir": "slow, firm",
+   "text": "Remember: ejection fraction is the ratio of stroke volume to end-diastolic volume."
+  }
+ ]
+}
