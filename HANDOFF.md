@@ -8,7 +8,7 @@
 
 > **Question comments (Oct 2026):** a bar above the question (locked until the answer) and a row after the explanation
 > open a Telegram-style comments sheet with posting times, likes and reactions, written by the Kafu characters (the
-> Leaders personas), one "By Kafu characters" line; posting is closed. Only books with comments show the section. Packs are `COMMENTS_BOOK-ID_rN.zip` through the bot, and
+> Leaders personas), with no line saying so; posting is closed. Only books with comments show the section. Packs are `COMMENTS_BOOK-ID_rN.zip` through the bot, and
 > any recent revision can be restored.
 > See `docs/COMMENTS.md` and, to write them, `docs/COMMENTS_PROMPT.md`.
 

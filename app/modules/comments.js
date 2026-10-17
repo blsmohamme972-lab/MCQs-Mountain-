@@ -1,6 +1,6 @@
 /* Question comments: a bar above the question (locked until it is answered) and a row after the explanation open a
    comments sheet, with posting times, likes and reactions. They are written by the Kafu characters (the Leaders
-   personas, same names and pictures); one line under the sheet's title says so. Students cannot post: the composer says comments
+   personas, same names and pictures); no line says so (owner's decision). Students cannot post: the composer says comments
    are temporarily closed. Packs come from COMMENTS_<BOOK-ID>_rN.zip through the bot (docs/COMMENTS.md).
    Loaded lazily by comments-loader.js. Data: one small index per book, then the shard holding the question
    (content-addressed, so a cached copy is checked by its SHA-256). Everything fetched is kept in Cache Storage
@@ -195,8 +195,7 @@
     const s=Core().stats(list,isLiked);
     return '<div class="kc-grab" aria-hidden="true"></div><div class="kc-top"><h2 class="kc-title" id="kc-title" tabindex="-1">Comments <span class="kc-count">'+s.comments+'</span></h2>'+
       (s.reactions?'<span class="kc-sum" aria-label="'+plural(s.reactions,'reaction')+'"><span class="kc-icons" aria-hidden="true">'+emoji(s.icons)+'</span><b>'+num(s.reactions)+'</b></span>':'')+
-      '<button type="button" class="kc-close" data-a="comments-close" aria-label="Close comments">'+ICONS.close+'</button></div>'+
-      '<p class="kc-by">By Kafu characters</p>';
+      '<button type="button" class="kc-close" data-a="comments-close" aria-label="Close comments">'+ICONS.close+'</button></div>';
   }
   function openSheet(qid,from){
     const list=listFor(qid);if(!Array.isArray(list))return;

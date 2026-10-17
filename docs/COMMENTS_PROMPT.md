@@ -1,7 +1,7 @@
 # Writing Kafu question comments
 
 Instructions for the AI (or person) who writes the comments shown under Kafu questions. The app shows each comment
-with the author's picture and tag, under a "By Kafu characters" line; the authors are the Leaders personas below. System,
+with the author's picture and tag, like a real student's comment; the authors are the Leaders personas below. System,
 format and commands: `docs/COMMENTS.md`.
 
 ## Input and output

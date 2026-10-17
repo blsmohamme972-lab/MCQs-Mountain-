@@ -5,9 +5,8 @@ Two ways in: a **bar above the question** (three faces, the number of comments a
 active, a green dot when within a day), which never shows a comment's words and stays locked (🔒) until the question
 is answered, and an **entry row after the explanation**. A book shows the comments section only once it has comments;
 then a question without any shows "No comments yet". The comments are written by the **Kafu characters**: the same
-names, pictures and tags as the Leaders personas (`app/modules/leaders-core.js`). One small line under the sheet's
-title, **By Kafu characters**, says who wrote them (owner's decision: no label on each comment, it distracted
-students). Students cannot post: the "Add a comment…" field at the bottom shows "التعليقات مغلقة مؤقتاً" when tapped. The owner adds a note to the terms of use as well.
+names, pictures and tags as the Leaders personas (`app/modules/leaders-core.js`). The app does not say so: the owner
+removed the label on each comment (it distracted students) and then the "By Kafu characters" line too. Students cannot post: the "Add a comment…" field at the bottom shows "التعليقات مغلقة مؤقتاً" when tapped. The owner adds a note to the terms of use as well.
 
 How to write comments for a book: `docs/COMMENTS_PROMPT.md`. Owner commands: `docs/ADMIN.md` → Question comments.
 

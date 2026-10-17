@@ -99,7 +99,7 @@ def check_sheet(page, questions, people, qid):
     assert page.evaluate("()=>document.activeElement===document.querySelector('.kc-sheet .kc-title')")
     total = sum(1 + len(c.get('replies', [])) for c in questions[qid])
     assert sheet.locator('.kc-count').inner_text() == str(total)
-    assert sheet.locator('.kc-by').all_inner_texts() == ['By Kafu characters'] and sheet.locator('.kc-badge').count() == 0
+    assert 'Kafu characters' not in page.locator('body').inner_text() and sheet.locator('.kc-badge').count() == 0   # owner removed the line
     assert sheet.locator('.kc-list>.kc-item').count() == len(questions[qid])
     for name, av in zip(sheet.locator('.kc-name').all_inner_texts(), sheet.locator('.kc-av').all()):
         img = av.locator('img')
@@ -179,7 +179,7 @@ def run(browser, origin, pack, out, helpers):
         assert sheet.locator('.kc-note').is_hidden()
         compose.click()
         assert compose.get_attribute('aria-expanded') == 'true' and sheet.locator('.kc-note').inner_text() == 'التعليقات مغلقة مؤقتاً'
-        ratios.update(page.evaluate(CONTRAST, ['.kc-title', '.kc-by', '.kc-count', '.kc-tag', '.kc-text', '.kc-kind', '.kc-time', '.kc-like', '.kc-reply-btn',
+        ratios.update(page.evaluate(CONTRAST, ['.kc-title', '.kc-count', '.kc-tag', '.kc-text', '.kc-kind', '.kc-time', '.kc-like', '.kc-reply-btn',
                                                '.kc-like.on', '.kc-reacts b', '.kc-sum b', '.kc-compose', '.kc-note', '.kc-close']))
         page.screenshot(path=str(out / f'comments-{device}-{theme}-open.png'))
         if device == 'phone':

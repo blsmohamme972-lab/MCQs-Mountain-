@@ -71,8 +71,8 @@ MotionCards queue recovery is lease/token protected and bounded. Do not manipula
 
 ## Question comments
 
-Comments under the explanation are written by the Kafu characters (the Leaders personas), with one "By Kafu
-characters" line on the card; see `docs/COMMENTS.md`. Send `COMMENTS_BOOK-ID_rN.zip` (up to 2 MB, one `comments.json`) to the bot like a book. It goes
+Comments open in a sheet from a bar above the question and a row after the explanation; they are written by the
+Kafu characters (the Leaders personas); see `docs/COMMENTS.md`. Send `COMMENTS_BOOK-ID_rN.zip` (up to 2 MB, one `comments.json`) to the bot like a book. It goes
 through the same publish run, after books and admin jobs, and the bot reports the result.
 
 - `/comments` — the last ten comment packs and their results.

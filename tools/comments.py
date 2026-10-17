@@ -4,7 +4,7 @@
 A pack holds one file, comments.json. It adds or replaces the comments of the questions it lists
 (an empty list removes that question's comments); questions it does not list keep theirs, so a
 book can be covered chapter by chapter. Every author is one of the Kafu characters, the Leaders
-personas in app/modules/leaders-core.js, and the app says the comments are written by them.
+personas in app/modules/leaders-core.js (the app shows their names and pictures).
 
 Each comment also has a posting time, a like count (1–20) and up to three emoji reactions. Writers
 leave them out: pack fills them once, seeded by the comment itself, so the same file and the same
