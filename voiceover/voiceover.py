@@ -363,7 +363,7 @@ def cmd_setup(a):
 
 def breeze_paths() -> tuple[Path, Path]:
     d = CACHE / "breeze"
-    return d / "src" / "build" / "breeze-cli", d / "breeze-tts-2-q8_0.gguf"
+    return d / "src" / "build-portable" / "breeze-cli", d / "breeze-tts-2-q8_0.gguf"
 
 
 def setup_breeze():
@@ -376,9 +376,11 @@ def setup_breeze():
         run("git", "-C", str(src), "fetch", "-q", "origin", BREEZE["commit"])
         run("git", "-C", str(src), "checkout", "-q", BREEZE["commit"])
         run("git", "-C", str(src), "submodule", "update", "--init", "--recursive", "-q")
-        run("cmake", "-S", str(src), "-B", str(src / "build"), "-DCMAKE_BUILD_TYPE=Release", "-DBREEZE_VULKAN=OFF",
-            "-DBREEZE_BUILD_SERVER=OFF")
-        run("cmake", "--build", str(src / "build"), "-j", str(os.cpu_count() or 2))
+        # GGML_NATIVE=OFF: a portable AVX2 build. The default (-march=native) crashes without a message ("Breeze failed: ")
+        # when the built binary is reused on another machine, e.g. a cloud environment's cached container on a different CPU.
+        run("cmake", "-S", str(src), "-B", str(cli.parent), "-DCMAKE_BUILD_TYPE=Release", "-DBREEZE_VULKAN=OFF",
+            "-DBREEZE_BUILD_SERVER=OFF", "-DGGML_NATIVE=OFF")
+        run("cmake", "--build", str(cli.parent), "-j", str(os.cpu_count() or 2))
     print("ok breeze-cli", BREEZE["commit"][:12])
     fetch_pinned(*BREEZE["model"], model)
 
