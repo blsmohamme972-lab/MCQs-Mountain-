@@ -30,7 +30,7 @@ Never commit images, voice/, scenes/, input/ or the MCARDS ZIP (`.gitignore`); s
 
 Comments under questions come from `COMMENTS_<BOOK-ID>_rN.zip` packs: write them with `docs/COMMENTS_PROMPT.md`,
 build and check them with `tools/comments.py pack … --export …`, send the ZIP to the owner in chat (`docs/COMMENTS.md`).
-Every comment keeps its "Kafu character" label in the app, and the composer stays honest ("Writing comments opens soon.").
+Keep the card's one "By Kafu characters" line (owner removed the per-comment label); the composer says "التعليقات مغلقة مؤقتاً".
 
 ## Voice-over: ask the owner who renders, every time
 

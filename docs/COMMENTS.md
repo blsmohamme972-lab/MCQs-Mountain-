@@ -2,8 +2,9 @@
 
 A **Comments** card sits at the end of the study screen, after the explanation, once a question is answered. The
 comments are written by the **Kafu characters**: the same names, pictures and tags as the Leaders personas
-(`app/modules/leaders-core.js`). Every comment and reply carries a small **Kafu character** label. Students cannot
-post yet: the "Add a comment…" field shows "Writing comments opens soon." when tapped.
+(`app/modules/leaders-core.js`). One small line under the card's title, **By Kafu characters**, says who wrote them
+(owner's decision: no label on each comment, it distracted students). Students cannot post: the "Add a comment…" field
+shows "التعليقات مغلقة مؤقتاً" when tapped. The owner adds a note to the terms of use as well.
 
 How to write comments for a book: `docs/COMMENTS_PROMPT.md`. Owner commands: `docs/ADMIN.md` → Question comments.
 
@@ -30,6 +31,9 @@ How to write comments for a book: `docs/COMMENTS_PROMPT.md`. Owner commands: `do
 - A pack changes **only the questions it lists**: their comments are replaced; `[]` removes a question's comments.
   Other questions keep theirs, so a book can be covered chapter by chapter (r1, r2, r3 …).
 - `revision` must be newer than the last one published for that book; the same ZIP sent again changes nothing.
+- Every published revision can be **restored** (the last 20 per book): students then see exactly what they saw right
+  after it. `/comments BOOK-ID` shows **↩️ Restore rN** and **🚫 Remove from students** buttons (each asks to confirm),
+  or use `/comments-restore BOOK-ID rN CONFIRM`.
 - `author` must be a persona name exactly (`python tools/comments.py personas`).
 - `text`: 2–600 characters, line breaks allowed, no links. Up to 12 comments per question and 6 replies per comment
   (replies have no replies). `kind` is optional: `note` (default), `tip`, `mnemonic`, `clinical`, `exam`.
@@ -51,8 +55,9 @@ python tools/comments.py validate work/comments/COMMENTS_BOOK-ID_r1.zip --export
    publish run (`publish-queue.yml`). It never reads the ZIP.
 2. `tools/drain_queue.py` claims comment jobs **after** books and admin jobs, so a book sent with its comments is
    published first. `tools/comments.py publish` validates the ZIP, checks every QID against the active catalog,
-   stores the comments per question in the content state database (`question_comments`, `comment_uploads`) and
-   rebuilds the book's files.
+   stores the comments per question in the content state database (`question_comments`, `comment_uploads`), keeps a
+   compressed snapshot of the whole book's comments for restore (`comment_snapshots`, `comment_books` = what students
+   see now) and rebuilds the book's files. A restore job (`tools/comments.py restore`) swaps in a snapshot.
 3. The content candidate is uploaded, its catalog/chapters **and** comment files are checked on the preview URL, then
    it is promoted and the state is saved. A failure changes nothing for students; the bot sends `repair_report.md`
    with every problem.
@@ -66,7 +71,8 @@ Files on `kafu-content-1`:
 
 Shards follow the question ID (first 7 characters), not chapters, so a new book version never moves them; questions
 retired from the book drop out the next time the book's comments are rebuilt. `/remove BOOK-ID` deletes the book's
-comment files and rows; `/comments-off BOOK-ID CONFIRM` deletes them but keeps the upload history.
+comment files and rows; `/comments-off BOOK-ID CONFIRM` deletes them too. Both keep the snapshots, so a revision can be
+restored later (once the book is published again).
 
 ## In the app
 
@@ -93,5 +99,5 @@ comment files and rows; `/comments-off BOOK-ID CONFIRM` deletes them but keeps t
 `tools/tests/test_comments.py` (pack format, every rejection, publish/upsert/clear/remove), `test_drain_comments.py`
 (publisher job, candidate check, failure report), `worker/bot.test.mjs` (upload, commands, claim order, finish),
 `tools/tests/js/comments-core.test.cjs`, and the browser flow `tools/ui/flows/12_comments.py` (after-answer only,
-labels and pictures, show more, composer, re-render, exam, offline copy, taken away, 360–430 px, AA contrast in light
-and dark).
+pictures and the title line, show more, closed composer, re-render, exam, offline copy, taken away, 360–430 px, AA
+contrast in light and dark). Restore: `test_comments.py`, `test_drain_comments.py`, `bot.test.mjs`.

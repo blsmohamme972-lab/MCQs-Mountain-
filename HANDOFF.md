@@ -7,7 +7,8 @@
 > See `docs/LEADERS.md`.
 
 > **Question comments (Oct 2026):** a Comments card after the explanation, written by the Kafu characters (the Leaders
-> personas) and labelled as such; students cannot post yet. Packs are `COMMENTS_BOOK-ID_rN.zip` through the bot.
+> personas), one "By Kafu characters" line; posting is closed. Packs are `COMMENTS_BOOK-ID_rN.zip` through the bot, and
+> any recent revision can be restored.
 > See `docs/COMMENTS.md` and, to write them, `docs/COMMENTS_PROMPT.md`.
 
 Updated: 2026-09-28 (Asia/Baghdad)

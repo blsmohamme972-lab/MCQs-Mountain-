@@ -14,9 +14,10 @@ body[data-study-screen] .kc{
 .kc.kc-enter{animation:kc-in .26s ease-out both}
 @keyframes kc-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.kc.kc-enter{animation:none}}
-.kc-title{display:flex;align-items:center;gap:var(--space-2);margin:0 0 var(--space-2);font-family:var(--font-display);font-size:20px;font-weight:600;color:var(--mcq-text)}
+.kc-title{display:flex;align-items:center;gap:var(--space-2);margin:0;font-family:var(--font-display);font-size:20px;font-weight:600;color:var(--mcq-text)}
 .kc-count{min-width:26px;height:24px;padding:0 8px;border-radius:12px;display:inline-grid;place-items:center;font-family:var(--font-ui);font-size:13px;font-weight:800;
   color:var(--kc-ink);background:var(--mcq-indigo-tint);font-variant-numeric:tabular-nums}
+.kc-by{margin:2px 0 var(--space-2);color:var(--mcq-muted);font-size:12px;font-weight:700}
 .kc-list,.kc-replies{list-style:none;margin:0;padding:0}
 .kc-item{display:flex;gap:var(--space-3);padding:var(--space-3) 0;min-width:0;border-radius:12px}
 .kc-list>.kc-item+.kc-item{border-top:2px dashed var(--mcq-edge-soft)}
@@ -30,7 +31,6 @@ body[data-study-screen] .kc{
 .kc-head{display:flex;align-items:center;flex-wrap:wrap;gap:4px var(--space-2);min-width:0}
 .kc-name{min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:800;font-size:15px;line-height:1.3;unicode-bidi:isolate;
   font-family:var(--font-ui),"SF Arabic","Noto Sans Arabic","Segoe UI",Tahoma,sans-serif}
-.kc-badge{flex:none;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:800;line-height:18px;letter-spacing:.01em;color:var(--kc-ink);background:var(--mcq-indigo-tint)}
 .kc-tag{display:block;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--mcq-muted);font-size:12px;font-weight:600}
 .kc-kind{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:1px 8px;border-radius:8px;font-size:12px;font-weight:800;line-height:20px;color:var(--mcq-text);background:var(--mcq-card-2);border:1px solid var(--mcq-edge-soft)}
 .kc-kind::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--kc-dot,var(--mcq-indigo))}
@@ -48,6 +48,7 @@ body[data-study-screen] .kc{
 .kc-compose:hover{border-color:var(--mcq-edge)}
 .kc-compose-icon{flex:none;width:20px;height:20px}
 .kc-more:focus-visible,.kc-compose:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px}
-.kc-note{margin:var(--space-2) var(--space-2) 0;color:var(--mcq-muted);font-size:12.5px;font-weight:700;text-align:center}
+.kc-note{margin:var(--space-2) var(--space-2) 0;color:var(--mcq-muted);font-size:13px;font-weight:700;text-align:center;
+  font-family:"SF Arabic","Noto Sans Arabic","Segoe UI",Tahoma,var(--font-ui),sans-serif}
 .kc-note[hidden]{display:none}
 @media(min-width:760px){.kc-text{font-size:16.5px}}

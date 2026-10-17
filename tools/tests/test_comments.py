@@ -209,6 +209,46 @@ class PublishTests(unittest.TestCase):
         self.assertFalse((self.root / "comments/TEST-BOOK.json").exists())
         self.assertFalse((self.root / "packs/_comments/TEST-BOOK").exists())
 
+    def shard_questions(self):
+        out = {}
+        for entry in self.index()["shards"].values():
+            out.update(json.loads((self.root / entry["url"].lstrip("/")).read_bytes())["questions"])
+        return out
+
+    def test_restore_brings_back_exactly_what_a_revision_showed(self):
+        r1 = self.pack(doc())
+        C.publish(self.db, self.root, r1, NAMES)
+        after_r1 = self.shard_questions()
+        C.publish(self.db, self.root, self.pack(doc({QIDS[0]: [], QIDS[1]: [{"author": B, "text": "Fixture six."}]}, revision=2)), NAMES)
+        self.assertNotEqual(self.shard_questions(), after_r1)
+        result = C.restore(self.db, self.root, "TEST-BOOK", 1)
+        self.assertEqual((result["revision"], result["book_questions"], result["book_comments"]), (1, 2, 3))
+        self.assertEqual(self.shard_questions(), after_r1)
+        self.assertEqual(self.index()["revision"], 1)
+        # After a clear, a kept revision still comes back; new uploads still number after the newest one.
+        C.clear(self.db, self.root, "TEST-BOOK")
+        self.assertFalse((self.root / "comments/TEST-BOOK.json").exists())
+        C.restore(self.db, self.root, "TEST-BOOK", 2)
+        self.assertEqual(sorted(self.shard_questions()), [QIDS[1], QIDS[2]])
+        with self.assertRaisesRegex(C.PackError, "send it again as COMMENTS_TEST-BOOK_r3.zip"):
+            C.publish(self.db, self.root, self.pack(doc({QIDS[1]: []}, revision=2)), NAMES)
+        with self.assertRaisesRegex(C.PackError, "/comments-restore TEST-BOOK r1"):
+            C.publish(self.db, self.root, r1, NAMES)
+
+    def test_restore_refuses_unknown_revisions_and_unpublished_books_and_keeps_twenty(self):
+        with self.assertRaisesRegex(C.PackError, "kept revisions: none"):
+            C.restore(self.db, self.root, "TEST-BOOK", 1)
+        for revision in range(1, C.KEEP_SNAPSHOTS + 3):
+            C.publish(self.db, self.root, self.pack(doc({QIDS[0]: [{"author": A, "text": f"Fixture {revision}."}]}, revision=revision)), NAMES)
+        with sqlite3.connect(self.db) as conn:
+            self.assertEqual(C.kept_revisions(conn, "TEST-BOOK"), list(range(3, C.KEEP_SNAPSHOTS + 3)))
+        with self.assertRaisesRegex(C.PackError, "r2 of TEST-BOOK cannot be restored; kept revisions: r3, r4"):
+            C.restore(self.db, self.root, "TEST-BOOK", 2)
+        C.restore(self.db, self.root, "TEST-BOOK", 3)
+        self.assertEqual(self.shard_questions()[QIDS[0]][0]["text"], "Fixture 3.")
+        with self.assertRaisesRegex(C.PackError, "book OTHER is not published"):
+            C.restore(self.db, self.root, "OTHER", 3)
+
     def test_removing_a_book_removes_its_comments(self):
         C.publish(self.db, self.root, self.pack(doc()), NAMES)
         with sqlite3.connect(self.db) as conn:

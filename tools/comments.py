@@ -21,6 +21,7 @@ import subprocess
 import sys
 import unicodedata
 import zipfile
+import zlib
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
@@ -44,6 +45,7 @@ TEXT_MIN, TEXT_MAX = 2, 600
 LINK = re.compile(r"(?i)(?:https?://|www\.|\bt\.me/|\btelegram\.me/)")
 BIDI_CONTROLS = set("‪‫‬‭‮⁦⁧⁨⁩")
 MAX_ERRORS = 50
+KEEP_SNAPSHOTS = 20   # revisions per book that /comments-restore can bring back
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS question_comments (
@@ -62,6 +64,21 @@ CREATE TABLE IF NOT EXISTS comment_uploads (
   comments INTEGER NOT NULL,
   published_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY(book_id, revision)
+);
+-- The whole book's comments right after each upload, so any kept revision can be restored exactly.
+CREATE TABLE IF NOT EXISTS comment_snapshots (
+  book_id TEXT NOT NULL,
+  revision INTEGER NOT NULL,
+  state BLOB NOT NULL,
+  questions INTEGER NOT NULL,
+  comments INTEGER NOT NULL,
+  PRIMARY KEY(book_id, revision)
+);
+-- Which revision students see now (after an upload, a restore or a clear).
+CREATE TABLE IF NOT EXISTS comment_books (
+  book_id TEXT PRIMARY KEY,
+  revision INTEGER NOT NULL,
+  source TEXT NOT NULL CHECK(source IN ('upload','restore','clear'))
 );
 """
 
@@ -342,13 +359,38 @@ def book_totals(conn: sqlite3.Connection, book_id: str, visible: set[str] | None
     return len(rows), count_comments(dict(rows))
 
 
+def _current(conn: sqlite3.Connection, book_id: str) -> tuple[int, str] | None:
+    row = conn.execute("SELECT revision,source FROM comment_books WHERE book_id=?", (book_id,)).fetchone()
+    return (row[0], row[1]) if row else None
+
+
+def _set_current(conn: sqlite3.Connection, book_id: str, revision: int, source: str) -> None:
+    conn.execute("INSERT INTO comment_books(book_id,revision,source) VALUES(?,?,?) ON CONFLICT(book_id) DO UPDATE SET "
+                 "revision=excluded.revision,source=excluded.source", (book_id, revision, source))
+
+
+def _snapshot(conn: sqlite3.Connection, book_id: str, revision: int) -> None:
+    state = {q: json.loads(c) for q, c in conn.execute(
+        "SELECT qid,comments_json FROM question_comments WHERE book_id=? ORDER BY qid", (book_id,))}
+    raw = zlib.compress(json.dumps(state, ensure_ascii=False, separators=(",", ":")).encode("utf-8"), 9)
+    conn.execute("INSERT OR REPLACE INTO comment_snapshots(book_id,revision,state,questions,comments) VALUES(?,?,?,?,?)",
+                 (book_id, revision, raw, len(state), count_comments(state)))
+    conn.execute("DELETE FROM comment_snapshots WHERE book_id=? AND revision NOT IN "
+                 "(SELECT revision FROM comment_snapshots WHERE book_id=? ORDER BY revision DESC LIMIT ?)",
+                 (book_id, book_id, KEEP_SNAPSHOTS))
+
+
+def kept_revisions(conn: sqlite3.Connection, book_id: str) -> list[int]:
+    return [r for (r,) in conn.execute("SELECT revision FROM comment_snapshots WHERE book_id=? ORDER BY revision", (book_id,))]
+
+
 def rebuild(conn: sqlite3.Connection, root: Path, book_id: str, visible: set[str]) -> dict[str, Any]:
     """Write the book's index and shards from the database; questions no longer published are left out."""
     shards: dict[str, dict[str, Any]] = defaultdict(dict)
     for qid, raw in conn.execute("SELECT qid,comments_json FROM question_comments WHERE book_id=? ORDER BY qid", (book_id,)):
         if qid in visible:
             shards[qid[:7]][qid] = json.loads(raw)
-    revision = conn.execute("SELECT MAX(revision) FROM comment_uploads WHERE book_id=?", (book_id,)).fetchone()[0] or 0
+    revision = (_current(conn, book_id) or (0, ""))[0]
     shard_dir = root / "packs" / "_comments" / book_id
     index_path = root / "comments" / f"{book_id}.json"
     entries: dict[str, Any] = {}
@@ -380,10 +422,13 @@ def rebuild(conn: sqlite3.Connection, root: Path, book_id: str, visible: set[str
     return {"book_questions": questions, "book_comments": comments, "shards": len(entries)}
 
 
+def _catalog_qids(root: Path, book_id: str) -> set[str]:
+    return book_qids_from_catalog(json.loads((root / "catalog.json").read_text(encoding="utf-8")), book_id)
+
+
 def publish(db: Path, root: Path, package: Path, names: list[str] | None = None) -> dict[str, Any]:
     pack = read_package(package, names)
-    catalog = json.loads((root / "catalog.json").read_text(encoding="utf-8"))
-    visible = book_qids_from_catalog(catalog, pack.book_id)
+    visible = _catalog_qids(root, pack.book_id)
     check_qids(pack.questions, visible, pack.book_id)
     conn = _connect(db)
     try:
@@ -393,6 +438,9 @@ def publish(db: Path, root: Path, package: Path, names: list[str] | None = None)
         same = conn.execute("SELECT revision FROM comment_uploads WHERE book_id=? AND sha256=?",
                             (pack.book_id, pack.sha256)).fetchone()
         if same:
+            if _current(conn, pack.book_id) != (same[0], "upload"):
+                raise PackError(f"COMMENTS_{pack.book_id}_r{same[0]} was published before and students now see another "
+                                f"version; to bring it back use /comments-restore {pack.book_id} r{same[0]}")
             q, c = book_totals(conn, pack.book_id, visible)
             return {**summary, "duplicate": True, "book_questions": q, "book_comments": c}
         last = conn.execute("SELECT MAX(revision) FROM comment_uploads WHERE book_id=?", (pack.book_id,)).fetchone()[0]
@@ -411,19 +459,48 @@ def publish(db: Path, root: Path, package: Path, names: list[str] | None = None)
                     conn.execute("DELETE FROM question_comments WHERE qid=? AND book_id=?", (qid, pack.book_id))
             conn.execute("INSERT INTO comment_uploads(book_id,revision,sha256,questions,comments) VALUES(?,?,?,?,?)",
                          (pack.book_id, pack.revision, pack.sha256, summary["questions"], pack.comments))
+            _snapshot(conn, pack.book_id, pack.revision)
+            _set_current(conn, pack.book_id, pack.revision, "upload")
         return {**summary, "duplicate": False, **rebuild(conn, root, pack.book_id, visible)}
     finally:
         conn.close()
 
 
+def restore(db: Path, root: Path, book_id: str, revision: int) -> dict[str, Any]:
+    """Bring back a book's comments exactly as students saw them right after upload r<revision>."""
+    if not BOOK_ID.fullmatch(book_id) or type(revision) is not int or revision < 1:
+        raise PackError("invalid book ID or revision")
+    visible = _catalog_qids(root, book_id)
+    conn = _connect(db)
+    try:
+        row = conn.execute("SELECT state FROM comment_snapshots WHERE book_id=? AND revision=?", (book_id, revision)).fetchone()
+        if not row:
+            kept = kept_revisions(conn, book_id)
+            raise PackError(f"r{revision} of {book_id} cannot be restored; kept revisions: "
+                            + (", ".join(f"r{r}" for r in kept) if kept else "none"))
+        state = json.loads(zlib.decompress(row[0]).decode("utf-8"))
+        with conn:
+            conn.execute("DELETE FROM question_comments WHERE book_id=?", (book_id,))
+            for qid, comments in state.items():
+                conn.execute("INSERT INTO question_comments(qid,book_id,revision,comments_json) VALUES(?,?,?,?)",
+                             (qid, book_id, revision, json.dumps(comments, ensure_ascii=False, separators=(",", ":"))))
+            _set_current(conn, book_id, revision, "restore")
+        return {"book_id": book_id, "revision": revision, **rebuild(conn, root, book_id, visible)}
+    finally:
+        conn.close()
+
+
 def clear(db: Path, root: Path, book_id: str) -> dict[str, Any]:
-    """Take every comment of a book away from students (the upload history is kept)."""
+    """Take every comment of a book away from students; kept revisions can still be restored."""
     if not BOOK_ID.fullmatch(book_id):
         raise PackError("invalid book ID")
     conn = _connect(db)
     try:
         with conn:
             removed = conn.execute("DELETE FROM question_comments WHERE book_id=?", (book_id,)).rowcount
+            current = _current(conn, book_id)
+            if current:
+                _set_current(conn, book_id, current[0], "clear")
         catalog_path = root / "catalog.json"
         catalog = json.loads(catalog_path.read_text(encoding="utf-8")) if catalog_path.exists() else {}
         visible = {q for b in catalog.get("books") or [] if b.get("id") == book_id
@@ -471,6 +548,11 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--db", type=Path, required=True)
     p.add_argument("--out", type=Path, required=True)
     p.add_argument("--package", type=Path, required=True)
+    p = sub.add_parser("restore")
+    p.add_argument("--db", type=Path, required=True)
+    p.add_argument("--out", type=Path, required=True)
+    p.add_argument("--book-id", required=True)
+    p.add_argument("--revision", type=int, required=True)
     p = sub.add_parser("clear")
     p.add_argument("--db", type=Path, required=True)
     p.add_argument("--out", type=Path, required=True)
@@ -495,6 +577,8 @@ def main(argv: list[str] | None = None) -> int:
             print(f"OK {target}: {pack.comments} comments on {len(pack.questions)} questions, {target.stat().st_size} bytes{note}")
         elif args.cmd == "publish":
             print(json.dumps(publish(args.db, args.out, args.package), ensure_ascii=False))
+        elif args.cmd == "restore":
+            print(json.dumps(restore(args.db, args.out, args.book_id.upper(), args.revision), ensure_ascii=False))
         else:
             print(json.dumps(clear(args.db, args.out, args.book_id.upper()), ensure_ascii=False))
     except PackError as exc:

@@ -1019,7 +1019,8 @@ test("comment jobs are claimed after books and admin jobs and finish with identi
   assert.equal((await h.internal("finish", ok)).status, 409, "a stale completion cannot change a finished job");
   assert.equal(commentJob(h, 1).status, "published"); assert.equal(commentJob(h, 1).book_comments, 5);
   await h.send("/comments TEST");
-  assert.match(h.messages.at(-1).text, /TEST: 5 comments on 2 questions \(latest COMMENTS_TEST_r1\)\.\nNext upload: COMMENTS_TEST_r2\.zip/);
+  assert.match(h.messages.at(-1).text, /5 comments on 2 questions — students see r1\.\nNext upload: COMMENTS_TEST_r2\.zip/);
+  assert.deepEqual(h.messages.at(-1).reply_markup.inline_keyboard.flat().map(b => b.text), ["🚫 Remove from students"]);
   await h.send("/comments");
   assert.match(h.messages.at(-1).text, /✅ COMMENTS_TEST_r1: 5 comments on 2 questions/);
   await h.send("/queue");
@@ -1037,7 +1038,7 @@ test("comments-off needs CONFIRM, queues one clear job and /comments-retry reque
   let item = await (await h.internal("claim")).json();
   assert.equal(item.job.action, "clear");
   assert.equal((await h.internal("finish", { kind: "comments", id: item.job.id, ok: true, action: "clear", book_id: "TEST", book_questions: 0, book_comments: 0 })).status, 200);
-  await h.send("/comments TEST"); assert.match(h.messages.at(-1).text, /TEST: comments are off/);
+  await h.send("/comments TEST"); assert.match(h.messages.at(-1).text, /Comments are off for students/);
   await h.send("/comments-retry COMMENTS_TEST_r1"); assert.match(h.messages.at(-1).text, /No failed upload/);
   await h.send(commentDoc("COMMENTS_TEST_r1.zip"));
   item = await (await h.internal("claim")).json();
@@ -1045,6 +1046,57 @@ test("comments-off needs CONFIRM, queues one clear job and /comments-retry reque
   await h.send("/comments-retry COMMENTS_TEST_r1.zip");
   assert.equal(h.messages.at(-1).text, "📥 retry queued: COMMENTS_TEST_r1");
   assert.equal(commentJob(h, 1).status, "ready");
-  await h.send("/comments other book"); assert.match(h.messages.at(-1).text, /OTHER has no published comments/);
+  await h.send("/comments other book"); assert.match(h.messages.at(-1).text, /OTHER\nNo published comments yet/);
   await h.send("/help"); assert.match(h.messages.at(-1).text, /COMMENTS_BOOK-ID_rN\.zip/);
+}));
+
+async function publishComments(h, revision, comments) {
+  await h.send(commentDoc(`COMMENTS_TEST_r${revision}.zip`));
+  const item = await (await h.internal("claim")).json();
+  assert.equal((await h.internal("finish", { kind: "comments", id: item.job.id, ok: true, action: "publish", book_id: "TEST", revision,
+    questions: 1, comments, book_questions: 1, book_comments: comments })).status, 200);
+  return item.job.id;
+}
+
+test("comment revisions can be restored from buttons or a command, with a confirmation first", () => harness(async h => {
+  const first = await publishComments(h, 1, 3);
+  await publishComments(h, 2, 5);
+  await h.send("/comments TEST");
+  let view = h.messages.at(-1);
+  assert.match(view.text, /5 comments on 1 questions — students see r2\./);
+  assert.deepEqual(view.reply_markup.inline_keyboard.flat().map(b => [b.text, b.callback_data]),
+    [["↩️ Restore r1", `cmrestore:${first}`], ["🚫 Remove from students", `cmoff:${first + 1}`]]);
+  const dispatched = h.dispatches.length;
+  await h.cb(`cmrestore:${first}`);
+  assert.match(h.messages.at(-1).text, /Restore the comments of TEST to r1\? .*\(3 comments on 1 questions\)/);
+  assert.equal(h.messages.at(-1).reply_markup.inline_keyboard[0][0].callback_data, `cmrestore-ok:${first}`);
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM comment_jobs WHERE action='restore'").get().n, 0, "the first tap only asks");
+  await h.cb(`cmrestore-ok:${first}`);
+  assert.equal(h.messages.at(-1).text, "📥 comments-restore TEST r1 queued");
+  assert.equal(h.dispatches.length, dispatched + 1);
+  await h.cb(`cmrestore-ok:${first}`);
+  assert.match(h.messages.at(-1).text, /already received comments-restore TEST r1/);
+  assert.equal(h.dispatches.length, dispatched + 1);
+  const item = await (await h.internal("claim")).json();
+  assert.equal(item.job.action, "restore"); assert.equal(item.job.revision, 1);
+  const done = { kind: "comments", id: item.job.id, ok: true, action: "restore", book_id: "TEST", revision: 1, book_questions: 1, book_comments: 3 };
+  assert.equal((await h.internal("finish", { ...done, revision: 2 })).status, 400);
+  assert.equal((await h.internal("finish", done)).status, 200);
+  await h.send("/comments TEST");
+  view = h.messages.at(-1);
+  assert.match(view.text, /3 comments on 1 questions — students see r1 \(restored\)/);
+  assert.deepEqual(view.reply_markup.inline_keyboard.flat().map(b => b.text), ["↩️ Restore r2", "🚫 Remove from students"]);
+  await h.send("/comments"); assert.match(h.messages.at(-1).text, /↩️ comments-restore TEST r1: done — TEST now has 3 comments/);
+  // Command form, and the remove button with its confirmation.
+  await h.send("/comments-restore TEST r9"); assert.match(h.messages.at(-1).text, /TEST has no published comments r9/);
+  await h.send("/comments-restore TEST r2"); assert.match(h.messages.at(-1).text, /Re-run exactly: \/comments-restore TEST r2 CONFIRM/);
+  await h.send("/comments-restore TEST 2 CONFIRM"); assert.equal(h.messages.at(-1).text, "📥 comments-restore TEST r2 queued");
+  await h.cb(`cmoff:${first}`); assert.match(h.messages.at(-1).text, /Take every comment of TEST away/);
+  await h.cb(`cmoff-ok:${first}`); assert.equal(h.messages.at(-1).text, "📥 comments-off TEST queued");
+  await h.cb("cmrestore:99999"); assert.match(h.messages.at(-1).text, /no longer in the queue history/);
+  await h.cb(`cmrestore:${item.job.id}`); assert.match(h.messages.at(-1).text, /Only a published comment pack can be restored/);
+  const sent = h.messages.length;
+  await h.cb(`cmrestore-ok:${first}`, 999);
+  assert.equal(h.messages.length, sent, "other users are ignored");
+  assert.equal(h.DB.sql.prepare("SELECT COUNT(*) n FROM comment_jobs WHERE action='restore' AND status='ready'").get().n, 1);
 }));

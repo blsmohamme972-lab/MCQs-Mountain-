@@ -412,11 +412,15 @@ def process_admin(item: dict, root: Path, queue: Queue) -> dict:
 
 
 def comments_title(job: dict) -> str:
-    return f"comments-off {job['book_id']}" if job["action"] == "clear" else f"COMMENTS_{job['book_id']}_r{job['revision']}"
+    if job["action"] == "clear":
+        return f"comments-off {job['book_id']}"
+    if job["action"] == "restore":
+        return f"comments-restore {job['book_id']} r{job['revision']}"
+    return f"COMMENTS_{job['book_id']}_r{job['revision']}"
 
 
 def process_comments(item: dict, root: Path, queue: Queue) -> dict:
-    """Publish a comment pack (or take a book's comments away), then smoke-test and promote the content."""
+    """Publish a comment pack, restore a kept revision or take a book's comments away, then smoke-test and promote."""
     job = item["job"]
     state, content = restore(root)
     db = state / "content.sqlite"
@@ -426,6 +430,8 @@ def process_comments(item: dict, root: Path, queue: Queue) -> dict:
         if target.stat().st_size != job["file_size"]:
             raise ValueError(f"Telegram file size changed: {job['filename']}")
         result = comments_tool.publish(db, content, target)
+    elif job["action"] == "restore":
+        result = comments_tool.restore(db, content, job["book_id"], job["revision"])
     elif job["action"] == "clear":
         result = comments_tool.clear(db, content, job["book_id"])
     else:
@@ -445,6 +451,9 @@ def comments_notice(job: dict, result: dict) -> str:
         return f"✅ {title} already published (same ZIP)."
     if job["action"] == "clear":
         return f"🧹 Comments are off for {job['book_id']}."
+    if job["action"] == "restore":
+        return (f"↩️ Comments of {job['book_id']} restored to r{job['revision']}: "
+                f"{result['book_comments']} comments on {result['book_questions']} questions.")
     cleared = f" ({result['cleared']} questions cleared)" if result.get("cleared") else ""
     return (f"✅ {title} published: {result['comments']} comments on {result['questions']} questions{cleared}. "
             f"{job['book_id']} now has {result['book_comments']} comments on {result['book_questions']} questions.")

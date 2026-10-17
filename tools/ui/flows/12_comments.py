@@ -1,5 +1,5 @@
 """Built-app question comments: published index/shards through the real tools, shown only after answering,
-labelled as Kafu characters, honest composer, offline copy, taken-away comments and phone geometry."""
+one "By Kafu characters" line, closed composer, offline copy, taken-away comments and phone geometry."""
 from __future__ import annotations
 import json
 import tempfile
@@ -67,7 +67,7 @@ def check_section(page, questions, people, qid):
     total = sum(1 + len(c.get('replies', [])) for c in questions[qid])
     assert section.locator('.kc-count').inner_text() == str(total)
     names = section.locator('.kc-name').all_inner_texts()
-    assert section.locator('.kc-badge').count() == len(names) and set(section.locator('.kc-badge').all_inner_texts()) == {'Kafu character'}
+    assert section.locator('.kc-by').all_inner_texts() == ['By Kafu characters'] and section.locator('.kc-badge').count() == 0
     for name, av in zip(names, section.locator('.kc-av').all()):
         person = people[name]
         img = av.locator('img')
@@ -105,7 +105,7 @@ def run(browser, origin, pack, out, helpers):
         ratios = page.evaluate("""() => {const p=s=>s.match(/[\\d.]+/g).slice(0,3).map(Number),lum=c=>{c=c.map(v=>v/255).map(v=>v<=.03928?v/12.92:((v+.055)/1.055)**2.4);return .2126*c[0]+.7152*c[1]+.0722*c[2]},
           bg=e=>{for(;e;e=e.parentElement){const c=getComputedStyle(e).backgroundColor;if(!/rgba\\(.*, 0\\)$/.test(c)&&c!=='transparent')return c}return 'rgb(255,255,255)'},
           r=sel=>{const e=document.querySelector(sel),a=lum(p(getComputedStyle(e).color)),b=lum(p(bg(e)));return (Math.max(a,b)+.05)/(Math.min(a,b)+.05)};
-          return Object.fromEntries(['.kc-badge','.kc-count','.kc-tag','.kc-more','.kc-compose','.kc-text','.kc-kind'].map(s=>[s,r(s)]))}""")
+          return Object.fromEntries(['.kc-by','.kc-count','.kc-tag','.kc-more','.kc-compose','.kc-text','.kc-kind'].map(s=>[s,r(s)]))}""")
         assert all(v >= 4.5 for v in ratios.values()), (theme, ratios)
         section.locator('.kc-more').click()
         assert page.locator('.kc-list>.kc-item').count() == 5 and page.locator('.kc-more').count() == 0
@@ -114,7 +114,7 @@ def run(browser, origin, pack, out, helpers):
         assert compose.get_attribute('aria-expanded') == 'false' and page.locator('.kc-note').is_hidden()
         compose.click()
         assert page.locator('.kc-compose').get_attribute('aria-expanded') == 'true'
-        assert page.locator('.kc-note').inner_text() == 'Writing comments opens soon.'
+        assert page.locator('.kc-note').inner_text() == 'التعليقات مغلقة مؤقتاً'
         page.screenshot(path=str(out / f'comments-{device}-{theme}-open.png'), full_page=True)
         # A full re-render (starring the question) keeps one section with the same state.
         page.locator('.k-study-topbar [data-a="fav-q"]').click()

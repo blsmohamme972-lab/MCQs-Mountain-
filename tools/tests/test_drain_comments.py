@@ -115,6 +115,21 @@ class DrainCommentsTests(unittest.TestCase):
         self.assertEqual(queue.notified[-1], "🧹 Comments are off for TEST-BOOK.")
 
 
+    def test_restore_jobs_bring_back_a_kept_revision(self):
+        size = self.source.stat().st_size
+        queue, error = self.run_main([{"kind": "comments", "job": job(file_size=size)},
+                                      {"kind": "comments", "job": {"id": 8, "action": "clear", "book_id": "TEST-BOOK", "revision": None}},
+                                      {"kind": "comments", "job": {"id": 9, "action": "restore", "book_id": "TEST-BOOK", "revision": 1}},
+                                      {"kind": "comments", "job": {"id": 10, "action": "restore", "book_id": "TEST-BOOK", "revision": 4}}])
+        self.assertRegex(str(error), "1 queue job")
+        self.assertEqual(queue.finished[2], {"kind": "comments", "id": 9, "ok": True, "action": "restore", "book_id": "TEST-BOOK",
+                                             "revision": 1, "questions": 0, "comments": 0, "book_questions": 1, "book_comments": 1})
+        self.assertEqual(queue.notified[2], "↩️ Comments of TEST-BOOK restored to r1: 1 comments on 1 questions.")
+        self.assertTrue((self.content / "comments/TEST-BOOK.json").exists())
+        self.assertIn("r4 of TEST-BOOK cannot be restored; kept revisions: r1", queue.finished[3]["error"])
+        self.assertEqual(queue.notified[3], "❌ comments-restore TEST-BOOK r4 failed. repair_report.md is attached.")
+
+
 class VerifyCommentsTests(unittest.TestCase):
     def test_candidate_must_serve_the_exact_index_and_shards(self):
         with tempfile.TemporaryDirectory() as td:

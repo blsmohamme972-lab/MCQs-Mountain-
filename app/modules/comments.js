@@ -1,6 +1,6 @@
 /* Comments under a question's explanation. They are written by the Kafu characters (the Leaders personas, same
-   names and pictures) and every one carries a "Kafu character" label; students cannot post yet, and the composer
-   says so. Packs come from COMMENTS_<BOOK-ID>_rN.zip through the bot (docs/COMMENTS.md).
+   names and pictures); one line under the card's title says so. Students cannot post: the composer says comments
+   are temporarily closed. Packs come from COMMENTS_<BOOK-ID>_rN.zip through the bot (docs/COMMENTS.md).
    Loaded lazily by comments-loader.js. Data: one small index per book, then the shard holding the question
    (content-addressed, so a cached copy is checked by its SHA-256). Everything fetched is kept in Cache Storage
    for offline study; a book whose comments are taken away (index 404) is removed from the device too. */
@@ -127,7 +127,7 @@
   }
   function item(c,reply){
     return '<li class="kc-item'+(reply?' kc-reply':'')+'"'+(reply?'':' tabindex="-1"')+'>'+avatar(c.who,reply)+'<div class="kc-body">'+
-      '<div class="kc-head"><span class="kc-name" dir="auto">'+esc(c.who.name)+'</span><span class="kc-badge">Kafu character</span></div>'+
+      '<div class="kc-head"><span class="kc-name" dir="auto">'+esc(c.who.name)+'</span></div>'+
       '<small class="kc-tag">'+esc(c.who.tag)+'</small>'+
       (c.kind?'<span class="kc-kind kc-kind-'+c.kind+'">'+esc(Core().KINDS[c.kind])+'</span>':'')+
       '<p class="kc-text" dir="auto">'+esc(c.text)+'</p>'+
@@ -139,11 +139,12 @@
     el.className='kc'+(seen.has(qid)?'':' kc-enter');seen.add(qid);
     el.dataset.q=qid;el.setAttribute('aria-labelledby','kc-title-'+qid);
     el.innerHTML='<h3 class="kc-title" id="kc-title-'+qid+'">Comments <span class="kc-count">'+v.total+'</span></h3>'+
+      '<p class="kc-by">By Kafu characters</p>'+
       '<ol class="kc-list">'+v.shown.map(c=>item(c,false)).join('')+'</ol>'+
       (v.hidden?'<button type="button" class="kc-more" data-a="comments-more" data-q="'+qid+'">Show '+v.hidden+' more comment'+(v.hidden===1?'':'s')+'</button>':'')+
       '<button type="button" class="kc-compose" data-a="comments-compose" data-q="'+qid+'" aria-expanded="'+noted.has(qid)+'" aria-controls="'+note+'">'+
         '<svg class="kc-compose-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.6c-.6.5-1.3.1-1.3-.6V16A2.5 2.5 0 0 1 4 13.5v-8Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Add a comment…</span></button>'+
-      '<p class="kc-note" id="'+note+'" role="status"'+(noted.has(qid)?'':' hidden')+'>Writing comments opens soon.</p>';
+      '<p class="kc-note" id="'+note+'" role="status" lang="ar" dir="rtl"'+(noted.has(qid)?'':' hidden')+'>التعليقات مغلقة مؤقتاً</p>';
     return el;
   }
   function place(){
