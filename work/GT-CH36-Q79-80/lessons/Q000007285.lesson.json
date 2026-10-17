@@ -1,0 +1,92 @@
+{
+ "qid": "Q000007285",
+ "image": "Q000007285.png",
+ "takeaway": "Each action potential of a cell has the same amplitude and speed (all or none). Nernst gives equilibrium potential; Goldman gives resting potential (about -70 mV).",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Concerning action potentials, which statement is correct?"
+ },
+ "answer": {
+  "text": "For any individual cell, each action potential has the same amplitude and speed."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 220,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    200,
+    430,
+    150
+   ]
+  },
+  {
+   "x": 760,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    760,
+    330,
+    170
+   ]
+  },
+  {
+   "x": 1320,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1320,
+    380,
+    200
+   ]
+  },
+  {
+   "x": 1320,
+   "y": 640,
+   "z": 1.8,
+   "spot": [
+    1320,
+    640,
+    160
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Let us follow one action potential from rest.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "At rest, a neuron sits near minus seventy millivolts. The Goldman equation gives this resting potential.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Then comes rapid depolarization, followed by repolarization back to rest.",
+   "shot": 2,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The key rule is all or none: in a given cell, every action potential has the same amplitude.",
+   "shot": 3,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "(clears throat) And each one travels at the same speed along the axon.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the Nernst equation gives equilibrium potential, and the correct statement is the same amplitude and speed.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
