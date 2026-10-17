@@ -1,0 +1,162 @@
+{
+ "slot": "25",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000299",
+  "Q000000300",
+  "Q000000301"
+ ],
+ "lines": [
+  {
+   "id": "Q000000299-q",
+   "voice": "student-man",
+   "dir": "clear, curious",
+   "text": "Which is a feature of the action of insulin?"
+  },
+  {
+   "id": "Q000000299-a",
+   "voice": "student-man",
+   "dir": "calm, confident",
+   "text": "The answer is: it promotes protein synthesis."
+  },
+  {
+   "id": "Q000000299-01",
+   "voice": "student-man",
+   "dir": "warm, curious",
+   "text": "Insulin is the builder, stacking bricks of protein, one on top of the other."
+  },
+  {
+   "id": "Q000000299-02",
+   "voice": "student-man",
+   "dir": "clear, confident",
+   "text": "That is protein synthesis, and insulin promotes it."
+  },
+  {
+   "id": "Q000000299-03",
+   "voice": "student-man",
+   "dir": "warm, amused",
+   "text": "(laugh) Look at the potassium ions running through the door. Insulin drives potassium into cells."
+  },
+  {
+   "id": "Q000000299-04",
+   "voice": "student-man",
+   "dir": "calm, explanatory",
+   "text": "That is why insulin is used to treat hyperkalaemia."
+  },
+  {
+   "id": "Q000000299-05",
+   "voice": "student-man",
+   "dir": "calm, explanatory",
+   "text": "Calcium and phosphate metabolism belongs to parathyroid hormone and activated vitamin D, not insulin."
+  },
+  {
+   "id": "Q000000299-06",
+   "voice": "student-man",
+   "dir": "slow, firm",
+   "text": "Remember: insulin promotes protein synthesis."
+  },
+  {
+   "id": "Q000000300-q",
+   "voice": "lecturer-woman",
+   "dir": "clear, curious",
+   "text": "Which change is caused by prolonged vomiting due to pyloric stenosis?"
+  },
+  {
+   "id": "Q000000300-a",
+   "voice": "lecturer-woman",
+   "dir": "calm, confident",
+   "text": "The answer is a rise in arterial pCO2."
+  },
+  {
+   "id": "Q000000300-01",
+   "voice": "lecturer-woman",
+   "dir": "gentle, concerned",
+   "text": "This baby has prolonged vomiting, and the acid keeps pouring into the basin."
+  },
+  {
+   "id": "Q000000300-02",
+   "voice": "lecturer-woman",
+   "dir": "clear, steady",
+   "text": "Losing the stomach acid causes a hypochloraemic metabolic alkalosis, with a rise in pH and raised bicarbonate."
+  },
+  {
+   "id": "Q000000300-03",
+   "voice": "lecturer-woman",
+   "dir": "calm, explanatory",
+   "text": "Gastric juice is rich in potassium, so hypokalaemia follows, with a hypovolaemic state and raised urea."
+  },
+  {
+   "id": "Q000000300-04",
+   "voice": "lecturer-woman",
+   "dir": "gentle, explanatory",
+   "text": "(sigh) To compensate, the tired lungs breathe slowly. This is hypoventilation."
+  },
+  {
+   "id": "Q000000300-05",
+   "voice": "lecturer-woman",
+   "dir": "clear, confident",
+   "text": "And slow breathing lets the carbon dioxide build up, so arterial pCO2 rises."
+  },
+  {
+   "id": "Q000000300-06",
+   "voice": "lecturer-woman",
+   "dir": "slow, firm",
+   "text": "Remember: prolonged vomiting gives alkalosis, and a rise in arterial pCO2."
+  },
+  {
+   "id": "Q000000301-q",
+   "voice": "doctor-man",
+   "dir": "clear, curious",
+   "text": "A patient on the surgical ward has chronic renal impairment. The plasma creatinine is two hundred and twenty-five, and the glomerular filtration rate is twenty-five millilitres per minute. Which statement is correct regarding the patient's renal function?"
+  },
+  {
+   "id": "Q000000301-a",
+   "voice": "doctor-man",
+   "dir": "calm, confident",
+   "text": "The answer: inulin clearance can be used to estimate GFR."
+  },
+  {
+   "id": "Q000000301-01",
+   "voice": "doctor-man",
+   "dir": "grave, steady",
+   "text": "The kidney filter is struggling. The GFR is only twenty-five."
+  },
+  {
+   "id": "Q000000301-02",
+   "voice": "doctor-man",
+   "dir": "clear, steady",
+   "text": "And the creatinine flag is raised, two hundred and twenty-five."
+  },
+  {
+   "id": "Q000000301-03",
+   "voice": "doctor-man",
+   "dir": "calm, explanatory",
+   "text": "A normal adult GFR averages one hundred and twenty-five millilitres a minute, or 180 litres a day."
+  },
+  {
+   "id": "Q000000301-04",
+   "voice": "doctor-man",
+   "dir": "clear, confident",
+   "text": "Inulin is filtered freely, so inulin clearance can be used to estimate GFR."
+  },
+  {
+   "id": "Q000000301-05",
+   "voice": "doctor-man",
+   "dir": "calm, explanatory",
+   "text": "The entire plasma volume, about 3 litres, is filtered about 60 times each day."
+  },
+  {
+   "id": "Q000000301-06",
+   "voice": "doctor-man",
+   "dir": "calm, explanatory",
+   "text": "But the rate of urine production is dominated by tubular function, not by GFR."
+  },
+  {
+   "id": "Q000000301-07",
+   "voice": "doctor-man",
+   "dir": "slow, firm",
+   "text": "Remember: inulin clearance estimates the GFR."
+  }
+ ]
+}

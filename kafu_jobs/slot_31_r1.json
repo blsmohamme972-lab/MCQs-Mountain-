@@ -1,0 +1,156 @@
+{
+ "slot": "31",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000326",
+  "Q000000327",
+  "Q000000331"
+ ],
+ "lines": [
+  {
+   "id": "Q000000326-q",
+   "voice": "student-woman",
+   "dir": "clear, curious",
+   "text": "Risk factors for developing osteoporosis include which of the following?"
+  },
+  {
+   "id": "Q000000326-a",
+   "voice": "student-woman",
+   "dir": "calm, confident",
+   "text": "The answer is low calcium intake."
+  },
+  {
+   "id": "Q000000326-01",
+   "voice": "student-woman",
+   "dir": "gentle, curious",
+   "text": "This thin, porous bone looks very sad. It is osteoporosis."
+  },
+  {
+   "id": "Q000000326-02",
+   "voice": "student-woman",
+   "dir": "clear, steady",
+   "text": "Next to it stands an empty glass. That is low calcium intake."
+  },
+  {
+   "id": "Q000000326-03",
+   "voice": "student-woman",
+   "dir": "calm, explanatory",
+   "text": "A high dietary calcium intake promotes calcium absorption and suppresses PTH release and bone dissolution, so it protects bone."
+  },
+  {
+   "id": "Q000000326-04",
+   "voice": "student-woman",
+   "dir": "calm, explanatory",
+   "text": "Excess alcohol, a sedentary lifestyle, early menopause, and a thin body habitus also promote bone loss."
+  },
+  {
+   "id": "Q000000326-05",
+   "voice": "student-woman",
+   "dir": "slow, firm",
+   "text": "Remember: low calcium intake is a risk factor for osteoporosis."
+  },
+  {
+   "id": "Q000000327-q",
+   "voice": "lecturer-man",
+   "dir": "clear, curious",
+   "text": "Which statement about haemophilia A is true?"
+  },
+  {
+   "id": "Q000000327-a",
+   "voice": "lecturer-man",
+   "dir": "calm, confident",
+   "text": "The answer: it affects the intrinsic, rather than the extrinsic, pathway of coagulation."
+  },
+  {
+   "id": "Q000000327-01",
+   "voice": "lecturer-man",
+   "dir": "gentle, concerned",
+   "text": "This boy has bruises, and they come easily, even after small knocks."
+  },
+  {
+   "id": "Q000000327-02",
+   "voice": "lecturer-man",
+   "dir": "clear, steady",
+   "text": "The intrinsic road is blocked, and one brick is missing."
+  },
+  {
+   "id": "Q000000327-03",
+   "voice": "lecturer-man",
+   "dir": "clear, confident",
+   "text": "The missing brick is clotting factor eight, a member of the intrinsic pathway."
+  },
+  {
+   "id": "Q000000327-04",
+   "voice": "lecturer-man",
+   "dir": "calm, explanatory",
+   "text": "Haemophilia A is X-linked recessive, so it primarily affects males. Female carriers usually do not bleed."
+  },
+  {
+   "id": "Q000000327-05",
+   "voice": "lecturer-man",
+   "dir": "calm, explanatory",
+   "text": "There is a tendency toward easy bruising and haemorrhage after trauma or operations."
+  },
+  {
+   "id": "Q000000327-06",
+   "voice": "lecturer-man",
+   "dir": "slow, firm",
+   "text": "Remember: haemophilia A affects the intrinsic pathway."
+  },
+  {
+   "id": "Q000000331-q",
+   "voice": "doctor-man",
+   "dir": "clear, curious",
+   "text": "A thirty-six-year-old man has a neck tumour. It has damaged his left cervical sympathetic chain ganglion. Which of the following physical signs would you expect?"
+  },
+  {
+   "id": "Q000000331-a",
+   "voice": "doctor-man",
+   "dir": "calm, confident",
+   "text": "The answer is ptosis on the left."
+  },
+  {
+   "id": "Q000000331-01",
+   "voice": "doctor-man",
+   "dir": "serious, steady",
+   "text": "This thirty-six-year-old man has a neck tumour on the left side."
+  },
+  {
+   "id": "Q000000331-02",
+   "voice": "doctor-man",
+   "dir": "clear, steady",
+   "text": "The tumour has damaged the left cervical sympathetic chain, shown by the spark."
+  },
+  {
+   "id": "Q000000331-03",
+   "voice": "doctor-man",
+   "dir": "clear, confident",
+   "text": "And look at his left eye. The lid droops. That is ptosis on the left."
+  },
+  {
+   "id": "Q000000331-04",
+   "voice": "doctor-man",
+   "dir": "clear, steady",
+   "text": "The pupil is constricted. That is miosis."
+  },
+  {
+   "id": "Q000000331-05",
+   "voice": "doctor-man",
+   "dir": "calm, explanatory",
+   "text": "This is Horner's syndrome. Loss of sympathetic supply also gives anhidrosis, facial flushing, and enophthalmos."
+  },
+  {
+   "id": "Q000000331-06",
+   "voice": "doctor-man",
+   "dir": "calm, explanatory",
+   "text": "Lateral deviation of the eye would suggest damage to the third cranial nerve instead."
+  },
+  {
+   "id": "Q000000331-07",
+   "voice": "doctor-man",
+   "dir": "slow, firm",
+   "text": "Remember: sympathetic chain damage gives ptosis and a small pupil on the same side."
+  }
+ ]
+}

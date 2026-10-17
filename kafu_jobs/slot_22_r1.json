@@ -1,0 +1,168 @@
+{
+ "slot": "22",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000283",
+  "Q000000284",
+  "Q000000285"
+ ],
+ "lines": [
+  {
+   "id": "Q000000283-q",
+   "voice": "doctor-man",
+   "dir": "clear, curious",
+   "text": "A fifty-year-old Asian woman complains of nocturia and dizziness. Her fasting glucose is three point nine, her sodium is low at one hundred and thirty-one, and her potassium is high at six point one. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000283-a",
+   "voice": "doctor-man",
+   "dir": "calm, confident",
+   "text": "The answer is Addison’s disease."
+  },
+  {
+   "id": "Q000000283-01",
+   "voice": "doctor-man",
+   "dir": "gentle, curious",
+   "text": "This woman is dizzy, and she keeps getting up at night. That is nocturia."
+  },
+  {
+   "id": "Q000000283-02",
+   "voice": "doctor-man",
+   "dir": "clear, steady",
+   "text": "The salt is pouring away. Her sodium is low, one hundred and thirty-one."
+  },
+  {
+   "id": "Q000000283-03",
+   "voice": "doctor-man",
+   "dir": "warm, amused",
+   "text": "(laugh) And the potassium bananas pile up. Her potassium is high, six point one."
+  },
+  {
+   "id": "Q000000283-04",
+   "voice": "doctor-man",
+   "dir": "calm, explanatory",
+   "text": "Add hypoglycaemia and hypotension, from a lack of mineralocorticoid and glucocorticoid."
+  },
+  {
+   "id": "Q000000283-05",
+   "voice": "doctor-man",
+   "dir": "calm, explanatory",
+   "text": "The tired adrenals are tested with the short synACTHen test. An absent or impaired cortisol response confirms it."
+  },
+  {
+   "id": "Q000000283-06",
+   "voice": "doctor-man",
+   "dir": "slow, firm",
+   "text": "Remember: low sodium, high potassium, and low glucose mean Addison's disease."
+  },
+  {
+   "id": "Q000000284-q",
+   "voice": "student-woman",
+   "dir": "clear, curious",
+   "text": "A sixty-year-old man complains of knee pain, and there is a moderate effusion. The fluid is withdrawn, and microscopy shows crystals that are positively birefringent under polarized light. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000284-a",
+   "voice": "student-woman",
+   "dir": "calm, confident",
+   "text": "The answer is pseudogout."
+  },
+  {
+   "id": "Q000000284-01",
+   "voice": "student-woman",
+   "dir": "warm, curious",
+   "text": "This sixty-year-old man has a painful knee."
+  },
+  {
+   "id": "Q000000284-02",
+   "voice": "student-woman",
+   "dir": "clear, steady",
+   "text": "The knee holds a moderate effusion."
+  },
+  {
+   "id": "Q000000284-03",
+   "voice": "student-woman",
+   "dir": "clear, steady",
+   "text": "The doctor withdraws the fluid, and the syringe is full of crystals."
+  },
+  {
+   "id": "Q000000284-04",
+   "voice": "student-woman",
+   "dir": "warm, amused",
+   "text": "(laugh) Look at the crystals, they are having a party in the joint!"
+  },
+  {
+   "id": "Q000000284-05",
+   "voice": "student-woman",
+   "dir": "clear, confident",
+   "text": "Under polarized light, the crystals are positively birefringent."
+  },
+  {
+   "id": "Q000000284-06",
+   "voice": "student-woman",
+   "dir": "calm, explanatory",
+   "text": "Crystals in a joint cause synovitis. There are two main forms, gout and pseudogout. Gout is the more common."
+  },
+  {
+   "id": "Q000000284-07",
+   "voice": "student-woman",
+   "dir": "slow, firm",
+   "text": "Remember: positively birefringent crystals in a knee effusion mean pseudogout."
+  },
+  {
+   "id": "Q000000285-q",
+   "voice": "lecturer-man",
+   "dir": "tense, clear",
+   "text": "A twenty-one-year-old footballer has a stabbing pain above his right knee that came on suddenly while he was sprinting. He is unable to extend the leg, and walks with a limp. There is suprapatellar swelling and an absent knee jerk. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000285-a",
+   "voice": "lecturer-man",
+   "dir": "calm, confident",
+   "text": "The answer is a tear of the quadriceps tendon."
+  },
+  {
+   "id": "Q000000285-01",
+   "voice": "lecturer-man",
+   "dir": "urgent, steady",
+   "text": "This twenty-one-year-old footballer feels a sudden stabbing pain while sprinting."
+  },
+  {
+   "id": "Q000000285-02",
+   "voice": "lecturer-man",
+   "dir": "clear, steady",
+   "text": "The pain is just above the knee, where the tendon has snapped."
+  },
+  {
+   "id": "Q000000285-03",
+   "voice": "lecturer-man",
+   "dir": "clear, steady",
+   "text": "There is suprapatellar swelling above the kneecap."
+  },
+  {
+   "id": "Q000000285-04",
+   "voice": "lecturer-man",
+   "dir": "grave, steady",
+   "text": "He cannot extend his leg, he limps, and the knee jerk is absent."
+  },
+  {
+   "id": "Q000000285-05",
+   "voice": "lecturer-man",
+   "dir": "calm, explanatory",
+   "text": "The quadriceps muscles in the front of the thigh are the principal extensors of the knee joint."
+  },
+  {
+   "id": "Q000000285-06",
+   "voice": "lecturer-man",
+   "dir": "calm, explanatory",
+   "text": "The mechanism of injury is inconsistent with a fractured patella."
+  },
+  {
+   "id": "Q000000285-07",
+   "voice": "lecturer-man",
+   "dir": "slow, firm",
+   "text": "Remember: sudden pain while sprinting, with no leg extension, means a quadriceps tendon tear."
+  }
+ ]
+}

@@ -1,0 +1,174 @@
+{
+ "slot": "21",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000278",
+  "Q000000279",
+  "Q000000280"
+ ],
+ "lines": [
+  {
+   "id": "Q000000278-q",
+   "voice": "student-woman",
+   "dir": "clear, curious",
+   "text": "A forty-five-year-old man presents with loin pain and haematuria. He has a palpable mass in his loin. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000278-a",
+   "voice": "student-woman",
+   "dir": "calm, confident",
+   "text": "The answer is renal cell carcinoma."
+  },
+  {
+   "id": "Q000000278-01",
+   "voice": "student-woman",
+   "dir": "warm, curious",
+   "text": "Three little friends make the classic triad. Haematuria, flank pain, and a loin mass."
+  },
+  {
+   "id": "Q000000278-02",
+   "voice": "student-woman",
+   "dir": "clear, steady",
+   "text": "The sick kidney pours red urine into a glass. That is haematuria."
+  },
+  {
+   "id": "Q000000278-03",
+   "voice": "student-woman",
+   "dir": "gentle, concerned",
+   "text": "The little kidney clutches its side. That is flank pain."
+  },
+  {
+   "id": "Q000000278-04",
+   "voice": "student-woman",
+   "dir": "clear, steady",
+   "text": "And on the big kidney, a tumour you can feel as a loin mass."
+  },
+  {
+   "id": "Q000000278-05",
+   "voice": "student-woman",
+   "dir": "calm, explanatory",
+   "text": "Renal cell carcinoma is also known as hypernephroma, Grawitz tumour, or clear cell carcinoma."
+  },
+  {
+   "id": "Q000000278-06",
+   "voice": "student-woman",
+   "dir": "calm, explanatory",
+   "text": "The complete triad is seen in only ten to fifteen per cent of patients."
+  },
+  {
+   "id": "Q000000278-07",
+   "voice": "student-woman",
+   "dir": "slow, firm",
+   "text": "Remember: haematuria, flank pain, and a loin mass mean renal cell carcinoma."
+  },
+  {
+   "id": "Q000000279-q",
+   "voice": "lecturer-man",
+   "dir": "clear, curious",
+   "text": "A sixty-eight-year-old man has acute painless frank haematuria. He had a similar episode several months ago, and has now noticed clots in his urine. His abdomen is soft and non-tender. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000279-a",
+   "voice": "lecturer-man",
+   "dir": "calm, confident",
+   "text": "The answer is transitional cell carcinoma."
+  },
+  {
+   "id": "Q000000279-01",
+   "voice": "lecturer-man",
+   "dir": "warm, curious",
+   "text": "This sixty-eight-year-old man passes frank red urine, and it is painless."
+  },
+  {
+   "id": "Q000000279-02",
+   "voice": "lecturer-man",
+   "dir": "clear, steady",
+   "text": "The bladder is full of frank blood. Painless haematuria is the key clue."
+  },
+  {
+   "id": "Q000000279-03",
+   "voice": "lecturer-man",
+   "dir": "clear, steady",
+   "text": "Lately he has noticed clots in his urine."
+  },
+  {
+   "id": "Q000000279-04",
+   "voice": "lecturer-man",
+   "dir": "clear, steady",
+   "text": "And the calendar remembers a similar episode several months ago."
+  },
+  {
+   "id": "Q000000279-05",
+   "voice": "lecturer-man",
+   "dir": "calm, explanatory",
+   "text": "Transitional epithelium lines the entire urinary tract, from the renal pelvis to the urethra."
+  },
+  {
+   "id": "Q000000279-06",
+   "voice": "lecturer-man",
+   "dir": "calm, confident",
+   "text": "Transitional cell carcinoma of the bladder is the most common cause of painless haematuria."
+  },
+  {
+   "id": "Q000000279-07",
+   "voice": "lecturer-man",
+   "dir": "slow, firm",
+   "text": "Remember: painless frank haematuria means transitional cell carcinoma until proven otherwise."
+  },
+  {
+   "id": "Q000000280-q",
+   "voice": "doctor-woman",
+   "dir": "clear, curious",
+   "text": "Select the best pairing of wound classification with the description."
+  },
+  {
+   "id": "Q000000280-a",
+   "voice": "doctor-woman",
+   "dir": "calm, confident",
+   "text": "The answer: a forty-two-year-old woman underwent an open cholecystectomy. The wound is clean contaminated, Class two."
+  },
+  {
+   "id": "Q000000280-01",
+   "voice": "doctor-woman",
+   "dir": "clear, steady",
+   "text": "A forty-two-year-old woman has an open cholecystectomy. The gallbladder is lifted out."
+  },
+  {
+   "id": "Q000000280-02",
+   "voice": "doctor-woman",
+   "dir": "clear, steady",
+   "text": "The wound opens the abdomen, and the surgeon breaches a hollow viscus."
+  },
+  {
+   "id": "Q000000280-03",
+   "voice": "doctor-woman",
+   "dir": "warm, amused",
+   "text": "(laugh) The little door is the hollow viscus, and the sign says it is not the colon."
+  },
+  {
+   "id": "Q000000280-04",
+   "voice": "doctor-woman",
+   "dir": "calm, explanatory",
+   "text": "Incisions that breach a hollow viscus other than the colon are clean contaminated wounds."
+  },
+  {
+   "id": "Q000000280-05",
+   "voice": "doctor-woman",
+   "dir": "calm, explanatory",
+   "text": "The infection rate is below ten per cent."
+  },
+  {
+   "id": "Q000000280-06",
+   "voice": "doctor-woman",
+   "dir": "clear, confident",
+   "text": "The Wound Judge stamps it: Class two."
+  },
+  {
+   "id": "Q000000280-07",
+   "voice": "doctor-woman",
+   "dir": "slow, firm",
+   "text": "Remember: open cholecystectomy is a clean contaminated wound, Class two."
+  }
+ ]
+}

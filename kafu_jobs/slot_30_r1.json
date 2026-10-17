@@ -1,0 +1,156 @@
+{
+ "slot": "30",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000323",
+  "Q000000324",
+  "Q000000325"
+ ],
+ "lines": [
+  {
+   "id": "Q000000323-q",
+   "voice": "student-man",
+   "dir": "clear, curious",
+   "text": "With regard to cystic fibrosis, which statement is true?"
+  },
+  {
+   "id": "Q000000323-a",
+   "voice": "student-man",
+   "dir": "calm, confident",
+   "text": "The answer: it is the most common inherited disease in Caucasians."
+  },
+  {
+   "id": "Q000000323-01",
+   "voice": "student-man",
+   "dir": "warm, amused",
+   "text": "(laugh) The sticky mucus child proudly holds the trophy of cystic fibrosis."
+  },
+  {
+   "id": "Q000000323-02",
+   "voice": "student-man",
+   "dir": "clear, confident",
+   "text": "The trophy says it all. Cystic fibrosis is the most common inherited disease in Caucasians."
+  },
+  {
+   "id": "Q000000323-03",
+   "voice": "student-man",
+   "dir": "clear, steady",
+   "text": "It affects one in two thousand five hundred children."
+  },
+  {
+   "id": "Q000000323-04",
+   "voice": "student-man",
+   "dir": "calm, explanatory",
+   "text": "The worker repairs chromosome seven, where the CFTR gene is mutated. It is autosomal recessive."
+  },
+  {
+   "id": "Q000000323-05",
+   "voice": "student-man",
+   "dir": "calm, explanatory",
+   "text": "Carriers are believed to be relatively more resistant to cholera."
+  },
+  {
+   "id": "Q000000323-06",
+   "voice": "student-man",
+   "dir": "slow, firm",
+   "text": "Remember: cystic fibrosis is the most common inherited disease in Caucasians."
+  },
+  {
+   "id": "Q000000324-q",
+   "voice": "lecturer-woman",
+   "dir": "clear, curious",
+   "text": "With regard to the cerebral circulation, which statement is true?"
+  },
+  {
+   "id": "Q000000324-a",
+   "voice": "lecturer-woman",
+   "dir": "calm, confident",
+   "text": "The answer: cerebral blood flow is very sensitive to changes in the pCO2 of the perfusing blood."
+  },
+  {
+   "id": "Q000000324-01",
+   "voice": "lecturer-woman",
+   "dir": "warm, curious",
+   "text": "The brain sits above a busy roundabout. This is the circle of Willis, around the base of the brain."
+  },
+  {
+   "id": "Q000000324-02",
+   "voice": "lecturer-woman",
+   "dir": "clear, steady",
+   "text": "All the main arteries to the brain connect to this rich anastomosis."
+  },
+  {
+   "id": "Q000000324-03",
+   "voice": "lecturer-woman",
+   "dir": "calm, explanatory",
+   "text": "So if one artery blocks, the brain is still supplied by the others. There are no functional end-arteries."
+  },
+  {
+   "id": "Q000000324-04",
+   "voice": "lecturer-woman",
+   "dir": "warm, amused",
+   "text": "(laugh) And the carbon dioxide character turns the tap. Cerebral blood flow is very sensitive to changes in pCO2."
+  },
+  {
+   "id": "Q000000324-05",
+   "voice": "lecturer-woman",
+   "dir": "calm, explanatory",
+   "text": "Cerebral blood flow is little affected by cardiovascular reflexes."
+  },
+  {
+   "id": "Q000000324-06",
+   "voice": "lecturer-woman",
+   "dir": "slow, firm",
+   "text": "Remember: cerebral blood flow is very sensitive to the pCO2 of the blood."
+  },
+  {
+   "id": "Q000000325-q",
+   "voice": "doctor-man",
+   "dir": "clear, curious",
+   "text": "With regard to influenza, which statement is true?"
+  },
+  {
+   "id": "Q000000325-a",
+   "voice": "doctor-man",
+   "dir": "calm, confident",
+   "text": "The answer: mutations in the haemagglutinin molecule are responsible for antigenic drift."
+  },
+  {
+   "id": "Q000000325-01",
+   "voice": "doctor-man",
+   "dir": "warm, curious",
+   "text": "The influenza virus drifts down the river in a boat. This is antigenic drift."
+  },
+  {
+   "id": "Q000000325-02",
+   "voice": "doctor-man",
+   "dir": "warm, amused",
+   "text": "(laugh) He uses a wrench to change his spike. That is a mutation in the haemagglutinin molecule."
+  },
+  {
+   "id": "Q000000325-03",
+   "voice": "doctor-man",
+   "dir": "clear, steady",
+   "text": "The host antibodies no longer recognise the new shape, and the virus escapes them."
+  },
+  {
+   "id": "Q000000325-04",
+   "voice": "doctor-man",
+   "dir": "calm, explanatory",
+   "text": "Epidemics occur through mutations, resulting in amino acid substitutions of the HA and NA."
+  },
+  {
+   "id": "Q000000325-05",
+   "voice": "doctor-man",
+   "dir": "calm, explanatory",
+   "text": "Pandemics may occur when both are replaced by recombination with animal viruses. That is antigenic shift, and the notable ones were in 1918, 1957 and 1968."
+  },
+  {
+   "id": "Q000000325-06",
+   "voice": "doctor-man",
+   "dir": "slow, firm",
+   "text": "Remember: haemagglutinin mutations cause antigenic drift."
+  }
+ ]
+}
