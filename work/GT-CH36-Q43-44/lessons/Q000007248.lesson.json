@@ -1,0 +1,104 @@
+{
+ "qid": "Q000007248",
+ "image": "Q000007248.png",
+ "takeaway": "A young woman with cerebral and ophthalmic artery ischaemia has Takayasu disease; temporal arteritis is for the elderly and Buerger's disease affects the limbs.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 20-year-old woman has ischaemia in her cerebral and ophthalmic arteries. Which arterial disease is most likely?",
+  "say": "A 20-year-old woman has ischaemia in her cerebral and ophthalmic arteries. Which arterial disease is most likely?"
+ },
+ "answer": {
+  "text": "Takayasu disease",
+  "say": "Takayasu disease."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1.0,
+   "spot": [
+    768,
+    300,
+    420
+   ]
+  },
+  {
+   "x": 200,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    200,
+    330,
+    230
+   ]
+  },
+  {
+   "x": 680,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    680,
+    330,
+    260
+   ]
+  },
+  {
+   "x": 1290,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1280,
+    330,
+    260
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 720,
+   "z": 2.0,
+   "spot": [
+    1250,
+    700,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Our patient is a young woman, dizzy from cerebral ischaemia.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "The narrowed vessels are her cerebral and ophthalmic arteries.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "That pattern points to Takayasu disease, a rare condition of young women.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "It involves the cerebral, ophthalmic or carotid arteries.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Temporal arteritis is a disease of the elderly, with facial pain and headache.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Buerger's disease is the one that hits the small arteries of the limbs.",
+   "shot": 4,
+   "dir": "gently amused"
+  },
+  {
+   "text": "So the answer is Takayasu disease.",
+   "shot": 3,
+   "dir": "relieved, confident"
+  }
+ ]
+}
