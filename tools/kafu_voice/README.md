@@ -33,11 +33,12 @@
 
 1. 🔎 تأكد أن بيئة **Kafu Voice** موجودة (الرأس يشوفها بـ `list_environments`).
 2. الرأس يكتب مهمة كل عامل (`{"slot", "qids", "lines"}`) ويولّد رسالته:
-   `python3 tools/kafu_voice/worker_prompt.py JOB.json INBOX_URL > prompt.txt`
+   `python3 tools/kafu_voice/worker_prompt.py JOB.json > prompt.txt`
 3. الرأس يفتح العمال بـ `create_session` مع `environment_id` حق **Kafu Voice** والفرع `main`.
    أول دفعة بالبيئة: عامل واحد تجربة، وإذا خلص بدون أي رسالة منك يفتح الباقي.
-4. العامل: ينتظر `VOICE OK` بـ `/tmp/kafu_voice_setup.log` (سكربت البيئة ينقتل بعد حوالي 5 دقائق، فالتنصيب يكمل بالخلفية)، يكتب مهمته، يشغّل `render_job.py`، ويرفع الأجزاء و`DONE`
-   للـ inbox. الرأس يستورد بـ `import_voice.py` ويبني الدروس.
+4. العامل: ينتظر `VOICE OK` بـ `/tmp/kafu_voice_setup.log` (سكربت البيئة ينقتل بعد حوالي 5 دقائق، فالتنصيب يكمل بالخلفية)، يكتب مهمته، يشغّل `render_job.py`، وينشر الأجزاء و`DONE`
+   بصفحة (artifact) خاصة جديدة باسمه، مو بالـ inbox المشترك (الرفع هناك انرفض: "Live-Shared Artifact Sensitive Delta").
+   الرأس يقرأ الملفات من رابط العامل، يستورد بـ `import_voice.py` ويبني الدروس.
 
 ## Files
 
