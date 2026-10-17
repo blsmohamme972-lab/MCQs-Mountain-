@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000313",
+ "image": "Q000000313.png",
+ "takeaway": "The macula, the centre of fine vision, is grossly over-represented in the visual cortex.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "With regard to visual field pathways, which statement is true?",
+  "say": "With regard to visual field pathways, which statement is true?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "The macula region is grossly over-represented in the visual cortex",
+  "say": "The answer is: the macula region is grossly over-represented in the visual cortex.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 384,
+   "y": 502,
+   "z": 2.0,
+   "spot": [
+    300,
+    450,
+    200
+   ]
+  },
+  {
+   "x": 860,
+   "y": 515,
+   "z": 1.6,
+   "spot": [
+    860,
+    450,
+    300
+   ]
+  },
+  {
+   "x": 440,
+   "y": 682,
+   "z": 2.0,
+   "spot": [
+    440,
+    660,
+    200
+   ]
+  },
+  {
+   "x": 1109,
+   "y": 258,
+   "z": 1.8,
+   "spot": [
+    1110,
+    200,
+    250
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The eye projects its film.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "This eye is the projector. Rods and cones in the retina turn light into electrical impulses."
+  },
+  {
+   "text": "The macula is a tiny spot.",
+   "shot": 1,
+   "dir": "clear, steady",
+   "say": "The macula is a tiny spot on the retina, the centre of sharp vision."
+  },
+  {
+   "text": "At the chiasm, nasal fibres cross.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "At the optic chiasm, the fibres cross only partly. Nasal fibres cross, while temporal fibres stay on the same side."
+  },
+  {
+   "text": "But the macula fills the big screen.",
+   "shot": 2,
+   "dir": "warm, amused",
+   "say": "(laugh) But look at the screen. That tiny macula fills almost all of it."
+  },
+  {
+   "text": "The visual cortex gives it the most space.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "The visual cortex gives the macula far more space than its size."
+  },
+  {
+   "text": "Remember: the macula is grossly over-represented in the visual cortex.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: the macula is grossly over-represented in the visual cortex."
+  }
+ ]
+}

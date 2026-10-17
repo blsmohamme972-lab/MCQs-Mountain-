@@ -1,0 +1,128 @@
+{
+ "qid": "Q000000271",
+ "image": "Q000000271.png",
+ "takeaway": "Pharyngeal pouch: mucosa bulges through Killian's dehiscence between thyropharyngeus and cricopharyngeus, giving a neck lump and recurrent throat symptoms.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 73-year-old homeless man has recurrent sore throats that did not improve with antibiotics. He presents to A&E with a lump on the left side of his neck. Select the likely diagnosis.",
+  "say": "A seventy-three-year-old homeless man has recurrent sore throats that did not improve after a course of antibiotics. He comes to A and E with a lump on the left side of his neck. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Pharyngeal pouch",
+  "say": "The answer is a pharyngeal pouch.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 570,
+   "y": 352,
+   "z": 2.0,
+   "spot": [
+    570,
+    300,
+    230
+   ]
+  },
+  {
+   "x": 349,
+   "y": 377,
+   "z": 2.2,
+   "spot": [
+    190,
+    330,
+    200
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 752,
+   "z": 2.0,
+   "spot": [
+    1260,
+    730,
+    220
+   ]
+  },
+  {
+   "x": 680,
+   "y": 447,
+   "z": 2.2,
+   "spot": [
+    680,
+    400,
+    200
+   ]
+  },
+  {
+   "x": 940,
+   "y": 282,
+   "z": 2.0,
+   "spot": [
+    940,
+    230,
+    220
+   ]
+  },
+  {
+   "x": 1080,
+   "y": 407,
+   "z": 2.2,
+   "spot": [
+    1080,
+    360,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 73-year-old man with recurrent sore throats.",
+   "shot": 1,
+   "dir": "warm, concerned",
+   "say": "This seventy-three-year-old man keeps getting sore throats, again and again."
+  },
+  {
+   "text": "The sore throats keep coming back.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The grey cloud of sore throat keeps circling back."
+  },
+  {
+   "text": "Antibiotics did not help.",
+   "shot": 3,
+   "dir": "gentle, wry",
+   "say": "(sigh) He finished his antibiotics, but they did not help at all."
+  },
+  {
+   "text": "A lump on the left of his neck.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "Now he points to a lump on the left side of his neck."
+  },
+  {
+   "text": "The inferior constrictor has two parts: thyropharyngeus above, cricopharyngeus below.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "Here is why. The inferior constrictor has two parts, thyropharyngeus above and cricopharyngeus below."
+  },
+  {
+   "text": "Mucosa bulges through the gap: Killian's dehiscence.",
+   "shot": 6,
+   "dir": "clear, confident",
+   "say": "Between them is a weak gap, Killian's dehiscence. The mucosa pouches out through it."
+  },
+  {
+   "text": "Remember: a neck lump with stubborn throat symptoms is a pharyngeal pouch.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: an older patient with a neck lump and stubborn throat symptoms has a pharyngeal pouch."
+  }
+ ]
+}

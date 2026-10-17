@@ -1,0 +1,118 @@
+{
+ "qid": "Q000000285",
+ "image": "Q000000285.png",
+ "takeaway": "Sudden pain above the knee while sprinting, with an inability to extend the leg and suprapatellar swelling, is a quadriceps tendon tear.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 21-year-old footballer has sudden stabbing pain above his right knee while sprinting. He cannot extend the leg, with suprapatellar swelling and an absent knee jerk. Diagnosis?",
+  "say": "A twenty-one-year-old footballer has a stabbing pain above his right knee that came on suddenly while he was sprinting. He is unable to extend the leg, and walks with a limp. There is suprapatellar swelling and an absent knee jerk. What is the likely diagnosis?",
+  "dir": "tense, clear"
+ },
+ "answer": {
+  "text": "Tear of quadriceps tendon",
+  "say": "The answer is a tear of the quadriceps tendon.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 630,
+   "y": 352,
+   "z": 2.0,
+   "spot": [
+    630,
+    300,
+    260
+   ]
+  },
+  {
+   "x": 850,
+   "y": 477,
+   "z": 2.2,
+   "spot": [
+    850,
+    430,
+    220
+   ]
+  },
+  {
+   "x": 1110,
+   "y": 437,
+   "z": 2.2,
+   "spot": [
+    1110,
+    390,
+    200
+   ]
+  },
+  {
+   "x": 500,
+   "y": 630,
+   "z": 2.2,
+   "spot": [
+    500,
+    610,
+    200
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 662,
+   "z": 2.0,
+   "spot": [
+    1100,
+    640,
+    220
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 21-year-old footballer feels a sudden snap while sprinting.",
+   "shot": 1,
+   "dir": "urgent, steady",
+   "say": "This twenty-one-year-old footballer feels a sudden stabbing pain while sprinting."
+  },
+  {
+   "text": "The tendon above the knee has torn.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The pain is just above the knee, where the tendon has snapped."
+  },
+  {
+   "text": "There is swelling above the kneecap.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "There is suprapatellar swelling above the kneecap."
+  },
+  {
+   "text": "He cannot extend the leg, and the knee jerk is absent.",
+   "shot": 5,
+   "dir": "grave, steady",
+   "say": "He cannot extend his leg, he limps, and the knee jerk is absent."
+  },
+  {
+   "text": "The quadriceps are the principal extensors of the knee.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "The quadriceps muscles in the front of the thigh are the principal extensors of the knee joint."
+  },
+  {
+   "text": "A fractured patella does not fit this mechanism.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "The mechanism of injury is inconsistent with a fractured patella."
+  },
+  {
+   "text": "Remember: sudden pain while sprinting, with no leg extension, is a quadriceps tendon tear.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: sudden pain while sprinting, with no leg extension, means a quadriceps tendon tear."
+  }
+ ]
+}

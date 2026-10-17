@@ -1,0 +1,118 @@
+{
+ "qid": "Q000000241",
+ "image": "Q000000241.png",
+ "takeaway": "Intussusception: an infant with vomiting, rectal bleeding (redcurrant jelly stool) and a sausage-shaped abdominal mass; bowel telescopes into bowel.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "An 8-month-old boy presents with vomiting and rectal bleeding. There is a sausage-shaped mass palpable in the left side of the abdomen. Select the appropriate diagnosis.",
+  "say": "An eight-month-old boy presents with vomiting and rectal bleeding. There is a sausage-shaped mass palpable in the left side of the abdomen. What is the diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Intussusception",
+  "say": "The answer is intussusception.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 600,
+   "y": 352,
+   "z": 2.0,
+   "spot": [
+    600,
+    300,
+    230
+   ]
+  },
+  {
+   "x": 390,
+   "y": 467,
+   "z": 2.2,
+   "spot": [
+    390,
+    420,
+    200
+   ]
+  },
+  {
+   "x": 870,
+   "y": 487,
+   "z": 2.2,
+   "spot": [
+    870,
+    440,
+    200
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 622,
+   "z": 2.0,
+   "spot": [
+    1190,
+    600,
+    230
+   ]
+  },
+  {
+   "x": 480,
+   "y": 720,
+   "z": 2.2,
+   "spot": [
+    480,
+    700,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "An 8-month-old boy, crying in his cot.",
+   "shot": 1,
+   "dir": "warm, concerned",
+   "say": "Meet this eight-month-old boy, crying in his cot. Young children are the classic patients."
+  },
+  {
+   "text": "He is vomiting.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "First, he is vomiting into the bowl."
+  },
+  {
+   "text": "A sausage-shaped mass in the abdomen.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "Then the doctor feels a sausage-shaped mass in his abdomen."
+  },
+  {
+   "text": "Bowel slides into bowel, like a telescope.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "Here is why. One segment of bowel invaginates into the next, like a telescope folding shut."
+  },
+  {
+   "text": "Bleeding gives redcurrant jelly stool.",
+   "shot": 5,
+   "dir": "grave, steady",
+   "say": "(sigh) The trapped bowel bleeds, giving the classic redcurrant jelly stool."
+  },
+  {
+   "text": "It is most often idiopathic.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "In young children it is most often idiopathic."
+  },
+  {
+   "text": "Remember: vomiting, redcurrant jelly stool and a sausage mass in a baby is intussusception.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: vomiting, redcurrant jelly stool and a sausage-shaped mass in a baby mean intussusception."
+  }
+ ]
+}

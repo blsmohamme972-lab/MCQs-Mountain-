@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000312",
+ "image": "Q000000312.png",
+ "takeaway": "Testes and ovaries both descend from the T10 level, guided by the gubernaculum; hence long gonadal arteries and pain referred to the umbilicus.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "With regard to genital development, which statement is true?",
+  "say": "With regard to genital development, which statement is true?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "The testes and ovaries descend from their original position at the 10th thoracic level",
+  "say": "The answer is: the testes and ovaries descend from their original position at the 10th thoracic level. That is the tenth thoracic level.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 750,
+   "y": 222,
+   "z": 2.2,
+   "spot": [
+    750,
+    175,
+    160
+   ]
+  },
+  {
+   "x": 750,
+   "y": 622,
+   "z": 2.0,
+   "spot": [
+    750,
+    600,
+    200
+   ]
+  },
+  {
+   "x": 990,
+   "y": 382,
+   "z": 2.0,
+   "spot": [
+    990,
+    330,
+    180
+   ]
+  },
+  {
+   "x": 750,
+   "y": 372,
+   "z": 2.0,
+   "spot": [
+    750,
+    320,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Both gonads start high, at the T10 level.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "Both gonads start high up, at the tenth thoracic level, T ten."
+  },
+  {
+   "text": "The testis and ovary ride the lift down together.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The testis and the ovary ride the lift down together. Both descend in embryonic and fetal life."
+  },
+  {
+   "text": "The gubernaculum guides the descent.",
+   "shot": 3,
+   "dir": "warm, amused",
+   "say": "(laugh) The gubernaculum climbs the rope. This ligamentous cord guides the descent."
+  },
+  {
+   "text": "Their arteries trail down from above.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "Their blood vessels trail down from above. That is why the gonadal arteries take such a long course."
+  },
+  {
+   "text": "Gonadal pain is referred to the umbilicus, the T10 dermatome.",
+   "shot": 1,
+   "dir": "calm, explanatory",
+   "say": "It also explains why pain from the gonads is referred to the umbilicus, the T ten dermatome."
+  },
+  {
+   "text": "Remember: testes and ovaries descend from the T10 level.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: the testes and ovaries both descend from the tenth thoracic level."
+  }
+ ]
+}

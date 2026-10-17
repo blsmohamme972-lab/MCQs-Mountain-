@@ -1,0 +1,96 @@
+{
+ "qid": "Q000000326",
+ "image": "Q000000326.png",
+ "takeaway": "Low calcium intake is a risk factor for osteoporosis, as are alcohol excess, sedentary life, early menopause and a thin build.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Risk factors for developing osteoporosis include:",
+  "say": "Risk factors for developing osteoporosis include which of the following?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Low calcium intake",
+  "say": "The answer is low calcium intake.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 790,
+   "y": 505,
+   "z": 1.6,
+   "spot": [
+    790,
+    440,
+    330
+   ]
+  },
+  {
+   "x": 500,
+   "y": 672,
+   "z": 2.0,
+   "spot": [
+    500,
+    650,
+    250
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 541,
+   "z": 1.7,
+   "spot": [
+    1000,
+    480,
+    300
+   ]
+  },
+  {
+   "x": 384,
+   "y": 402,
+   "z": 2.0,
+   "spot": [
+    260,
+    350,
+    250
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The thin, porous bone is sad: osteoporosis.",
+   "shot": 1,
+   "dir": "gentle, curious",
+   "say": "This thin, porous bone looks very sad. It is osteoporosis."
+  },
+  {
+   "text": "Next to it, the empty milk glass: low calcium intake.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "Next to it stands an empty glass. That is low calcium intake."
+  },
+  {
+   "text": "The calcium hero protects the bone.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "A high dietary calcium intake promotes calcium absorption and suppresses PTH release and bone dissolution, so it protects bone."
+  },
+  {
+   "text": "Other risks: alcohol excess, inactivity, early menopause, a thin body.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Excess alcohol, a sedentary lifestyle, early menopause, and a thin body habitus also promote bone loss."
+  },
+  {
+   "text": "Remember: low calcium intake is a risk factor for osteoporosis.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: low calcium intake is a risk factor for osteoporosis."
+  }
+ ]
+}

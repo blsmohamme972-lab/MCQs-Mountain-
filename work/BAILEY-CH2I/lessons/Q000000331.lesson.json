@@ -1,0 +1,118 @@
+{
+ "qid": "Q000000331",
+ "image": "Q000000331.png",
+ "takeaway": "A neck tumour damaging the cervical sympathetic chain causes Horner's syndrome: ptosis, miosis, anhidrosis, flushing and enophthalmos.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 36-year-old man has a neck tumour damaging his left cervical sympathetic chain ganglion. Which physical sign would you expect?",
+  "say": "A thirty-six-year-old man has a neck tumour. It has damaged his left cervical sympathetic chain ganglion. Which of the following physical signs would you expect?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Ptosis on the left",
+  "say": "The answer is ptosis on the left.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 460,
+   "y": 622,
+   "z": 2.0,
+   "spot": [
+    460,
+    600,
+    220
+   ]
+  },
+  {
+   "x": 680,
+   "y": 658,
+   "z": 2.4,
+   "spot": [
+    680,
+    640,
+    150
+   ]
+  },
+  {
+   "x": 790,
+   "y": 397,
+   "z": 2.2,
+   "spot": [
+    790,
+    350,
+    200
+   ]
+  },
+  {
+   "x": 870,
+   "y": 433,
+   "z": 2.4,
+   "spot": [
+    870,
+    390,
+    150
+   ]
+  },
+  {
+   "x": 900,
+   "y": 572,
+   "z": 2.0,
+   "spot": [
+    900,
+    520,
+    220
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A man with a neck tumour on the left.",
+   "shot": 1,
+   "dir": "serious, steady",
+   "say": "This thirty-six-year-old man has a neck tumour on the left side."
+  },
+  {
+   "text": "It damages the sympathetic chain.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The tumour has damaged the left cervical sympathetic chain, shown by the spark."
+  },
+  {
+   "text": "The left eyelid droops: ptosis.",
+   "shot": 3,
+   "dir": "clear, confident",
+   "say": "And look at his left eye. The lid droops. That is ptosis on the left."
+  },
+  {
+   "text": "The pupil is small: miosis.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "The pupil is constricted. That is miosis."
+  },
+  {
+   "text": "This is Horner's syndrome, with a dry face.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "This is Horner's syndrome. Loss of sympathetic supply also gives anhidrosis, facial flushing, and enophthalmos."
+  },
+  {
+   "text": "Lateral deviation of the eye would mean the third cranial nerve.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Lateral deviation of the eye would suggest damage to the third cranial nerve instead."
+  },
+  {
+   "text": "Remember: sympathetic chain damage gives ptosis on the same side.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: sympathetic chain damage gives ptosis and a small pupil on the same side."
+  }
+ ]
+}

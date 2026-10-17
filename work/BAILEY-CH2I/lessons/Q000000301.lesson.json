@@ -1,0 +1,118 @@
+{
+ "qid": "Q000000301",
+ "image": "Q000000301.png",
+ "takeaway": "Inulin clearance can be used to estimate GFR; the normal GFR is about 125 mL/min and urine volume depends mostly on the tubules.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A ward patient has chronic renal impairment: creatinine 225 μmol/L, GFR 25 mL/min. Which statement about renal function is correct?",
+  "say": "A patient on the surgical ward has chronic renal impairment. The plasma creatinine is two hundred and twenty-five, and the glomerular filtration rate is twenty-five millilitres per minute. Which statement is correct regarding the patient's renal function?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Inulin clearance can be used to estimate GFR",
+  "say": "The answer: inulin clearance can be used to estimate GFR.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 770,
+   "y": 561,
+   "z": 1.7,
+   "spot": [
+    770,
+    500,
+    300
+   ]
+  },
+  {
+   "x": 770,
+   "y": 232,
+   "z": 2.0,
+   "spot": [
+    770,
+    180,
+    230
+   ]
+  },
+  {
+   "x": 1130,
+   "y": 302,
+   "z": 2.0,
+   "spot": [
+    1130,
+    250,
+    250
+   ]
+  },
+  {
+   "x": 400,
+   "y": 472,
+   "z": 2.0,
+   "spot": [
+    400,
+    420,
+    260
+   ]
+  },
+  {
+   "x": 1060,
+   "y": 642,
+   "z": 2.0,
+   "spot": [
+    1060,
+    620,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The filter is struggling: GFR 25.",
+   "shot": 2,
+   "dir": "grave, steady",
+   "say": "The kidney filter is struggling. The GFR is only twenty-five."
+  },
+  {
+   "text": "The creatinine flag is up: 225.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "And the creatinine flag is raised, two hundred and twenty-five."
+  },
+  {
+   "text": "Normal GFR averages 125 mL/min.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "A normal adult GFR averages one hundred and twenty-five millilitres a minute, or 180 litres a day."
+  },
+  {
+   "text": "Inulin clearance can be used to estimate GFR.",
+   "shot": 4,
+   "dir": "clear, confident",
+   "say": "Inulin is filtered freely, so inulin clearance can be used to estimate GFR."
+  },
+  {
+   "text": "The whole plasma is filtered about 60 times a day.",
+   "shot": 1,
+   "dir": "calm, explanatory",
+   "say": "The entire plasma volume, about 3 litres, is filtered about 60 times each day."
+  },
+  {
+   "text": "Urine production depends on tubular function, not on GFR.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "But the rate of urine production is dominated by tubular function, not by GFR."
+  },
+  {
+   "text": "Remember: inulin clearance estimates GFR.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: inulin clearance estimates the GFR."
+  }
+ ]
+}
