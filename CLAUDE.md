@@ -22,6 +22,15 @@ format both use.
 Lean storage (owner's rule): commit only the text of a lesson, lessons/<QID>.lesson.json, and selection.json.
 Never commit images, voice/, scenes/, input/ or the MCARDS ZIP (`.gitignore`); send the ZIP to the owner in chat.
 
+## Voice-over: ask the owner who renders, every time
+
+Before any voice batch, ask the owner this (with the engine question below), and wait for the answer:
+"تريد أشتغلهن كلهن بنفسي، الصوت وكل شيء، بدون عمال وبدون أي موافقة منك؟ ممكن ياخذ حوالي 6 ساعات لكل 100 درس.
+لو نفتح عمال؟ أسرع (أقل من ساعة) بس ممكن الفاحص يرفض الرفع وترجع ترسل لهم رسالة."
+- Head renders itself: `voiceover.py make --engine <engine> --workspace work/<batch>` in this session, in the background.
+  No workers, no approvals. Slow on Breeze (about 10 s of CPU per second of speech).
+- Workers: follow `tools/kafu_voice/HEAD_RUNBOOK.md` (Kafu Voice environment, one test worker first).
+
 ## Voice-over: ask the owner which engine, every time
 
 Before generating any voice (a test clip or a batch), ask the owner which engine to use, and wait for the answer:
