@@ -90,6 +90,8 @@ for i in range(0, len(data), part):
     shas.append(hashlib.sha256(txt.encode()).hexdigest())
 (out / f"DONE_{tag}.txt").write_text(json.dumps({"slot": slot, "round": rnd, "parts": n, "part_sha256": shas, "lines": len(manifest),
                                                  "failed": failed, "tar_sha256": hashlib.sha256(data).hexdigest()}))
+(out / "index.html").write_text(f"<title>Kafu voice {tag}</title><p>Voice recordings for the Head: slot {slot}, round {rnd}, "
+                                 f"{n} part(s). Files: " + ", ".join([f"voice_{tag}_{i:02d}.b64.txt" for i in range(1, n + 1)] + [f"DONE_{tag}.txt"]))
 print(f"parts {n}, tar sha256 {hashlib.sha256(data).hexdigest()}")
 print(f"RENDER DONE {len(manifest)}/{len(job['lines'])}" + (f" FAILED {failed}" if failed else ""))
 sys.exit(1 if failed else 0)
