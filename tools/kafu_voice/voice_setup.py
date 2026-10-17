@@ -116,7 +116,25 @@ def preload_recogniser(repo, env):
     return False
 
 
+def detach_if_environment_setup():
+    """The cloud environment's setup script is killed after about 5 minutes (exit code -1), and the Breeze download takes
+    longer. Outside Claude Code (no CLAUDECODE variable: the setup script runs before it starts) the setup therefore goes on
+    in the background, detached, writing to the same log; the worker waits for "VOICE OK" there."""
+    if os.environ.get("CLAUDECODE") or os.environ.get("KAFU_SETUP_DETACHED"):
+        return False
+    if os.fork():
+        print("setup continues in the background (environment setup script)", flush=True)
+        return True
+    os.setsid()
+    if os.fork():
+        os._exit(0)
+    os.environ["KAFU_SETUP_DETACHED"] = "1"
+    return False
+
+
 def main():
+    if detach_if_environment_setup():
+        return 0
     repo = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
     env = {**os.environ, "MOTIONCARDS_CHROMIUM": CHROME}
     for target, (url, digest) in pinned(repo).items():
