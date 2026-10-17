@@ -1,0 +1,119 @@
+{
+ "slot": "36",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000271",
+  "Q000000272"
+ ],
+ "lines": [
+  {
+   "id": "Q000000271-q",
+   "voice": "doctor-man",
+   "dir": "clear, curious",
+   "text": "A seventy-three-year-old homeless man has recurrent sore throats that did not improve after a course of antibiotics. He comes to A and E with a lump on the left side of his neck. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000271-a",
+   "voice": "doctor-man",
+   "dir": "calm, confident",
+   "text": "The answer is a pharyngeal pouch."
+  },
+  {
+   "id": "Q000000271-01",
+   "voice": "doctor-man",
+   "dir": "warm, concerned",
+   "text": "This seventy-three-year-old man keeps getting sore throats, again and again."
+  },
+  {
+   "id": "Q000000271-02",
+   "voice": "doctor-man",
+   "dir": "clear, steady",
+   "text": "The grey cloud of sore throat keeps circling back."
+  },
+  {
+   "id": "Q000000271-03",
+   "voice": "doctor-man",
+   "dir": "gentle, wry",
+   "text": "(sigh) He finished his antibiotics, but they did not help at all."
+  },
+  {
+   "id": "Q000000271-04",
+   "voice": "doctor-man",
+   "dir": "clear, steady",
+   "text": "Now he points to a lump on the left side of his neck."
+  },
+  {
+   "id": "Q000000271-05",
+   "voice": "doctor-man",
+   "dir": "calm, explanatory",
+   "text": "Here is why. The inferior constrictor has two parts, thyropharyngeus above and cricopharyngeus below."
+  },
+  {
+   "id": "Q000000271-06",
+   "voice": "doctor-man",
+   "dir": "clear, confident",
+   "text": "Between them is a weak gap, Killian's dehiscence. The mucosa pouches out through it."
+  },
+  {
+   "id": "Q000000271-07",
+   "voice": "doctor-man",
+   "dir": "slow, firm",
+   "text": "Remember: an older patient with a neck lump and stubborn throat symptoms has a pharyngeal pouch."
+  },
+  {
+   "id": "Q000000272-q",
+   "voice": "student-woman",
+   "dir": "clear, curious",
+   "text": "A twenty-five-year-old man discovers a hard lump on his left testicle. His GP arranges a beta-hCG blood test, which is positive. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000272-a",
+   "voice": "student-woman",
+   "dir": "calm, confident",
+   "text": "The answer is teratoma."
+  },
+  {
+   "id": "Q000000272-01",
+   "voice": "student-woman",
+   "dir": "warm, concerned",
+   "text": "This twenty-five-year-old man has just found something worrying."
+  },
+  {
+   "id": "Q000000272-02",
+   "voice": "student-woman",
+   "dir": "clear, steady",
+   "text": "It is a hard lump in his left testicle."
+  },
+  {
+   "id": "Q000000272-03",
+   "voice": "student-woman",
+   "dir": "clear, steady",
+   "text": "His beta-hCG blood test comes back positive."
+  },
+  {
+   "id": "Q000000272-04",
+   "voice": "student-woman",
+   "dir": "warm, amused",
+   "text": "(laugh) Meet the teratoma, a tumour made of many cell types, with tooth, hair, bone and muscle all mixed together."
+  },
+  {
+   "id": "Q000000272-05",
+   "voice": "student-woman",
+   "dir": "calm, explanatory",
+   "text": "These cells come from one or more of the three germ layers, from abnormal pluripotent cells."
+  },
+  {
+   "id": "Q000000272-06",
+   "voice": "student-woman",
+   "dir": "calm, explanatory",
+   "text": "Teratomas belong to the non-seminomatous germ cell tumours."
+  },
+  {
+   "id": "Q000000272-07",
+   "voice": "student-woman",
+   "dir": "slow, firm",
+   "text": "Remember: a hard testicular lump in a young man with a positive beta-hCG suggests teratoma."
+  }
+ ]
+}

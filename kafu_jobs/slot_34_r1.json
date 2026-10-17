@@ -1,0 +1,162 @@
+{
+ "slot": "34",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000257",
+  "Q000000266",
+  "Q000000267"
+ ],
+ "lines": [
+  {
+   "id": "Q000000257-q",
+   "voice": "student-man",
+   "dir": "clear, curious",
+   "text": "An eighty-year-old retired cook has had an ulcer above the medial malleolus for seventeen years. Recently its edge has become heaped up, and it bleeds easily on contact. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000257-a",
+   "voice": "student-man",
+   "dir": "calm, confident",
+   "text": "The answer is squamous cell carcinoma."
+  },
+  {
+   "id": "Q000000257-01",
+   "voice": "student-man",
+   "dir": "warm, curious",
+   "text": "This eighty-year-old retired cook points at an old friend, his leg ulcer."
+  },
+  {
+   "id": "Q000000257-02",
+   "voice": "student-man",
+   "dir": "clear, steady",
+   "text": "The hourglass says it all. This ulcer has been there for seventeen years."
+  },
+  {
+   "id": "Q000000257-03",
+   "voice": "student-man",
+   "dir": "clear, concerned",
+   "text": "But now the edge has built itself up like a wall. It is heaped up."
+  },
+  {
+   "id": "Q000000257-04",
+   "voice": "student-man",
+   "dir": "grave, steady",
+   "text": "(sigh) And it bleeds easily on contact."
+  },
+  {
+   "id": "Q000000257-05",
+   "voice": "student-man",
+   "dir": "calm, explanatory",
+   "text": "A chronic ulcer may rarely turn malignant. This is Marjolin's ulcer, first described in eighteen twenty-eight."
+  },
+  {
+   "id": "Q000000257-06",
+   "voice": "student-man",
+   "dir": "clear, steady",
+   "text": "The angry crabs are squamous cells. Burns, osteomyelitis and radiotherapy scars can do this too."
+  },
+  {
+   "id": "Q000000257-07",
+   "voice": "student-man",
+   "dir": "slow, firm",
+   "text": "Remember: a heaped-up, bleeding edge on a chronic ulcer means squamous cell carcinoma."
+  },
+  {
+   "id": "Q000000266-q",
+   "voice": "student-woman",
+   "dir": "clear, curious",
+   "text": "A two-year-old boy presents with dark-red rectal bleeding and general pallor. There has been no vomiting, and abdominal examination is unremarkable. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000266-a",
+   "voice": "student-woman",
+   "dir": "calm, confident",
+   "text": "The answer is Meckel’s diverticulum."
+  },
+  {
+   "id": "Q000000266-01",
+   "voice": "student-woman",
+   "dir": "warm, gentle",
+   "text": "This little two-year-old boy looks pale and worried."
+  },
+  {
+   "id": "Q000000266-02",
+   "voice": "student-woman",
+   "dir": "clear, concerned",
+   "text": "His nappy shows dark-red rectal bleeding. That explains the pallor."
+  },
+  {
+   "id": "Q000000266-03",
+   "voice": "student-woman",
+   "dir": "clear, steady",
+   "text": "But there is no vomiting, and his abdomen feels normal. So no obstruction."
+  },
+  {
+   "id": "Q000000266-04",
+   "voice": "student-woman",
+   "dir": "calm, explanatory",
+   "text": "The culprit is this cheerful pouch, Meckel's diverticulum, the most common congenital anomaly of the small intestine."
+  },
+  {
+   "id": "Q000000266-05",
+   "voice": "student-woman",
+   "dir": "calm, explanatory",
+   "text": "It comes from incomplete obliteration of the vitelline duct. About two per cent of people have one, more often males."
+  },
+  {
+   "id": "Q000000266-06",
+   "voice": "student-woman",
+   "dir": "slow, firm",
+   "text": "Remember: dark-red rectal bleeding and pallor in a toddler, with a quiet abdomen, mean Meckel's diverticulum."
+  },
+  {
+   "id": "Q000000267-q",
+   "voice": "lecturer-man",
+   "dir": "clear, curious",
+   "text": "A twenty-five-year-old woman has had anorexia, abdominal pain and diarrhoea for twenty-four hours. She has vomited and has a low-grade fever. She is tender in the lower abdomen and on rectal examination. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000267-a",
+   "voice": "lecturer-man",
+   "dir": "calm, confident",
+   "text": "The answer is acute appendicitis."
+  },
+  {
+   "id": "Q000000267-01",
+   "voice": "lecturer-man",
+   "dir": "warm, concerned",
+   "text": "This twenty-five-year-old woman has been unwell for twenty-four hours."
+  },
+  {
+   "id": "Q000000267-02",
+   "voice": "lecturer-man",
+   "dir": "clear, steady",
+   "text": "She cannot face her lunch. Anorexia is an early clue."
+  },
+  {
+   "id": "Q000000267-03",
+   "voice": "lecturer-man",
+   "dir": "clear, steady",
+   "text": "The thermometer shows a low-grade fever."
+  },
+  {
+   "id": "Q000000267-04",
+   "voice": "lecturer-man",
+   "dir": "calm, explanatory",
+   "text": "Her pain began everywhere, then settled low on the right, at McBurney's point."
+  },
+  {
+   "id": "Q000000267-05",
+   "voice": "lecturer-man",
+   "dir": "grave, steady",
+   "text": "(sigh) Here is the reason. The appendix is acutely inflamed and very angry, and it is tender on rectal examination too."
+  },
+  {
+   "id": "Q000000267-06",
+   "voice": "lecturer-man",
+   "dir": "slow, firm",
+   "text": "Remember: anorexia, vomiting, low fever and lower abdominal tenderness mean acute appendicitis."
+  }
+ ]
+}

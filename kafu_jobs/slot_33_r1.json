@@ -1,0 +1,162 @@
+{
+ "slot": "33",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000241",
+  "Q000000249",
+  "Q000000256"
+ ],
+ "lines": [
+  {
+   "id": "Q000000241-q",
+   "voice": "doctor-man",
+   "dir": "clear, curious",
+   "text": "An eight-month-old boy presents with vomiting and rectal bleeding. There is a sausage-shaped mass palpable in the left side of the abdomen. What is the diagnosis?"
+  },
+  {
+   "id": "Q000000241-a",
+   "voice": "doctor-man",
+   "dir": "calm, confident",
+   "text": "The answer is intussusception."
+  },
+  {
+   "id": "Q000000241-01",
+   "voice": "doctor-man",
+   "dir": "warm, concerned",
+   "text": "Meet this eight-month-old boy, crying in his cot. Young children are the classic patients."
+  },
+  {
+   "id": "Q000000241-02",
+   "voice": "doctor-man",
+   "dir": "clear, steady",
+   "text": "First, he is vomiting into the bowl."
+  },
+  {
+   "id": "Q000000241-03",
+   "voice": "doctor-man",
+   "dir": "clear, steady",
+   "text": "Then the doctor feels a sausage-shaped mass in his abdomen."
+  },
+  {
+   "id": "Q000000241-04",
+   "voice": "doctor-man",
+   "dir": "calm, explanatory",
+   "text": "Here is why. One segment of bowel invaginates into the next, like a telescope folding shut."
+  },
+  {
+   "id": "Q000000241-05",
+   "voice": "doctor-man",
+   "dir": "grave, steady",
+   "text": "(sigh) The trapped bowel bleeds, giving the classic redcurrant jelly stool."
+  },
+  {
+   "id": "Q000000241-06",
+   "voice": "doctor-man",
+   "dir": "calm, explanatory",
+   "text": "In young children it is most often idiopathic."
+  },
+  {
+   "id": "Q000000241-07",
+   "voice": "doctor-man",
+   "dir": "slow, firm",
+   "text": "Remember: vomiting, redcurrant jelly stool and a sausage-shaped mass in a baby mean intussusception."
+  },
+  {
+   "id": "Q000000249-q",
+   "voice": "lecturer-man",
+   "dir": "clear, curious",
+   "text": "A market trader has three months of low back pain, now radiating down the back of his left leg. Raising the leg hurts, his heel and lateral foot are numb, and the ankle jerk is absent. Which nerve root?"
+  },
+  {
+   "id": "Q000000249-a",
+   "voice": "lecturer-man",
+   "dir": "calm, confident",
+   "text": "The answer is the first sacral nerve root."
+  },
+  {
+   "id": "Q000000249-01",
+   "voice": "lecturer-man",
+   "dir": "warm, concerned",
+   "text": "Our market trader clutches his aching lower back."
+  },
+  {
+   "id": "Q000000249-02",
+   "voice": "lecturer-man",
+   "dir": "clear, curious",
+   "text": "The culprit is the first sacral nerve root, squeezed as it leaves the spine."
+  },
+  {
+   "id": "Q000000249-03",
+   "voice": "lecturer-man",
+   "dir": "clear, steady",
+   "text": "Now the pain shoots down the back of his leg, and raising the leg makes it worse."
+  },
+  {
+   "id": "Q000000249-04",
+   "voice": "lecturer-man",
+   "dir": "calm, explanatory",
+   "text": "The heel and the lateral border of the foot go numb."
+  },
+  {
+   "id": "Q000000249-05",
+   "voice": "lecturer-man",
+   "dir": "grave, steady",
+   "text": "(sigh) The hammer taps, but the ankle jerk is absent. The first sacral root carries that reflex."
+  },
+  {
+   "id": "Q000000249-06",
+   "voice": "lecturer-man",
+   "dir": "slow, firm",
+   "text": "Remember: posterior leg pain, a numb lateral foot and no ankle jerk mean the first sacral root."
+  },
+  {
+   "id": "Q000000256-q",
+   "voice": "doctor-woman",
+   "dir": "clear, curious",
+   "text": "A seventy-two-year-old woman has an ulcer over the anteromedial lower leg. It is flat, with edges sloping towards the centre, and it oozes seropurulent discharge. She has ached for years from varicose veins, and the skin has turned brown over two months. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000256-a",
+   "voice": "doctor-woman",
+   "dir": "calm, confident",
+   "text": "The answer is a venous ulcer."
+  },
+  {
+   "id": "Q000000256-01",
+   "voice": "doctor-woman",
+   "dir": "warm, gentle",
+   "text": "This seventy-two-year-old woman sips her tea and shows us her leg."
+  },
+  {
+   "id": "Q000000256-02",
+   "voice": "doctor-woman",
+   "dir": "calm, explanatory",
+   "text": "Her varicose veins have ached for years. They cause venous stasis."
+  },
+  {
+   "id": "Q000000256-03",
+   "voice": "doctor-woman",
+   "dir": "clear, steady",
+   "text": "Over two months the skin has turned brown, a sign of long venous stasis."
+  },
+  {
+   "id": "Q000000256-04",
+   "voice": "doctor-woman",
+   "dir": "clear, steady",
+   "text": "The ulcer is flat, with edges sloping gently towards the centre, and a seropurulent discharge."
+  },
+  {
+   "id": "Q000000256-05",
+   "voice": "doctor-woman",
+   "dir": "calm, explanatory",
+   "text": "It sits over the anteromedial lower leg. She recalls no trauma, which is common."
+  },
+  {
+   "id": "Q000000256-06",
+   "voice": "doctor-woman",
+   "dir": "slow, firm",
+   "text": "Remember: varicose veins, brown skin and a flat, sloping-edged ulcer mean a venous ulcer."
+  }
+ ]
+}

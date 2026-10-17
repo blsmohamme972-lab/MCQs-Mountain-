@@ -1,0 +1,113 @@
+{
+ "slot": "35",
+ "round": 1,
+ "final": true,
+ "qids": [
+  "Q000000268",
+  "Q000000270"
+ ],
+ "lines": [
+  {
+   "id": "Q000000268-q",
+   "voice": "doctor-woman",
+   "dir": "clear, curious",
+   "text": "A seventy-year-old man has just returned from Bangladesh. He is admitted with a high temperature and persistent bloody diarrhoea, and sigmoidoscopy shows a grossly abnormal rectal mucosa. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000268-a",
+   "voice": "doctor-woman",
+   "dir": "calm, confident",
+   "text": "The answer is amoebic dysentery."
+  },
+  {
+   "id": "Q000000268-01",
+   "voice": "doctor-woman",
+   "dir": "warm, curious",
+   "text": "This seventy-year-old traveller has just come home from Bangladesh."
+  },
+  {
+   "id": "Q000000268-02",
+   "voice": "doctor-woman",
+   "dir": "clear, concerned",
+   "text": "He looks sweaty and miserable, clutching his tummy."
+  },
+  {
+   "id": "Q000000268-03",
+   "voice": "doctor-woman",
+   "dir": "clear, steady",
+   "text": "The thermometer is burning. He has a high fever."
+  },
+  {
+   "id": "Q000000268-04",
+   "voice": "doctor-woman",
+   "dir": "grave, steady",
+   "text": "(sigh) And persistent, bloodstained diarrhoea."
+  },
+  {
+   "id": "Q000000268-05",
+   "voice": "doctor-woman",
+   "dir": "clear, steady",
+   "text": "The sigmoidoscope shows a raw, grossly abnormal rectal mucosa. The sigmoid colon is a favourite site."
+  },
+  {
+   "id": "Q000000268-06",
+   "voice": "doctor-woman",
+   "dir": "calm, explanatory",
+   "text": "The stowaway on his suitcase is Entamoeba histolytica, caught from contaminated food and water."
+  },
+  {
+   "id": "Q000000268-07",
+   "voice": "doctor-woman",
+   "dir": "slow, firm",
+   "text": "Remember: fever and bloody diarrhoea after travel point to amoebic dysentery."
+  },
+  {
+   "id": "Q000000270-q",
+   "voice": "lecturer-woman",
+   "dir": "clear, curious",
+   "text": "A seventy-five-year-old woman has had difficulty swallowing for four months. Now she has difficulty swallowing even fluids. Of note, she is a regular smoker. What is the likely diagnosis?"
+  },
+  {
+   "id": "Q000000270-a",
+   "voice": "lecturer-woman",
+   "dir": "calm, confident",
+   "text": "The answer is oesophageal carcinoma."
+  },
+  {
+   "id": "Q000000270-01",
+   "voice": "lecturer-woman",
+   "dir": "warm, concerned",
+   "text": "This seventy-five-year-old woman cannot even swallow her tea."
+  },
+  {
+   "id": "Q000000270-02",
+   "voice": "lecturer-woman",
+   "dir": "clear, steady",
+   "text": "Her dysphagia has grown over four months. First solids, and now even fluids get stuck."
+  },
+  {
+   "id": "Q000000270-03",
+   "voice": "lecturer-woman",
+   "dir": "grave, steady",
+   "text": "(sigh) A tumour is clamping her food pipe tighter and tighter."
+  },
+  {
+   "id": "Q000000270-04",
+   "voice": "lecturer-woman",
+   "dir": "clear, steady",
+   "text": "And she is a regular smoker. Tobacco and alcohol excess are linked to squamous cell carcinoma."
+  },
+  {
+   "id": "Q000000270-05",
+   "voice": "lecturer-woman",
+   "dir": "calm, explanatory",
+   "text": "In general, cancer in the upper two-thirds is squamous cell carcinoma, and in the lower third it is adenocarcinoma."
+  },
+  {
+   "id": "Q000000270-06",
+   "voice": "lecturer-woman",
+   "dir": "slow, firm",
+   "text": "Remember: progressive dysphagia, even to fluids, in an older smoker means oesophageal carcinoma."
+  }
+ ]
+}
