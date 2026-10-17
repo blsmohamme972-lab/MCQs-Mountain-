@@ -53,9 +53,11 @@ def copy_page(title, intro, cards):
     return "".join(out)
 '''
 
+STORY_RULES = ("STORY RULES FOR THIS IMAGE (must, not optional): this is a Picmonic / Sketchy visual mnemonic. ONE story with ONE MAIN CHARACTER in the centre of the picture. Every other character is part of that same story: it touches, helps, attacks, feeds, chases or talks to the MAIN CHARACTER, all in one place at one moment. Each character is a clever sound-alike or look-alike pun whose look, clothes or prop shows its ONE fact, so a student who remembers the story remembers every fact. Make the characters wonderful: funny, expressive, exaggerated, with a small joke. No character stands alone or unrelated; no separate panels; no list of icons.")
+# Every image prompt carries STYLE, so the story rules travel with it (owner's rule: Picmonic / Sketchy, one story, one main character).
 STYLE = ("Picmonic-style visual mnemonic, fun and medically accurate, for medical students: cute cartoon characters with big "
          "friendly eyes, bright flat colors, thick dark outlines, clean pale background, each fact drawn as a memorable visual pun. "
-         "All text sits in rounded white label boxes with dark navy bold letters, crisp and spelled exactly as given.")
+         "All text sits in rounded white label boxes with dark navy bold letters, crisp and spelled exactly as given. " + STORY_RULES)
 AVOID = ("Avoid: garbled or misspelled text, extra text that is not in quotes here, duplicated characters, distorted faces, "
          "realistic gore, photographs, watermarks, cluttered dark background.")
 FRESH = ('IMPORTANT - FRESH START: ignore any images, files or results from previous chats or from your memory. Do not reuse, '
@@ -300,7 +302,7 @@ def make_page(DATA, EXPECT, SETS, OUTNAME):
                    f"PART 1 - the {len(qids)} images. Work one image at a time, in this order:",
                    f"1. If <QID>.png is already in \"{DRIVE_NAME}\" now, skip that image.",
                    "2. Otherwise generate it from its prompt exactly as written (landscape 3:2, 1536x1024).",
-                   "3. Check it: every quoted label present and spelled exactly; the bottom banner reads exactly as written. If not, regenerate once.",
+                   "3. Check it: every quoted label present and spelled exactly; the bottom banner reads exactly as written; ONE story around ONE MAIN CHARACTER in the centre, every other character acting on it (Picmonic / Sketchy), no panels. If not, regenerate once.",
                    f"4. Save it to \"{DRIVE_NAME}\" in the same message, named exactly <QID>.png (capital Q, nine digits, .png, no other words). Then go on.",
                    "Do not stop after generating: generate, check, save, next. No drafts or duplicates in the folder; to replace an image, overwrite the same name.",
                    f"If you stop before the end and I write \"continue\", continue from the first image that is not yet in \"{DRIVE_NAME}\", then PART 2 if the text file is not there yet.",
@@ -311,9 +313,8 @@ def make_page(DATA, EXPECT, SETS, OUTNAME):
                 it = items[q]
                 nz = len([x for x in it["scenes"].splitlines() if x.strip()])
                 p = (f"Create a landscape 3:2 image (1536x1024). {STYLE}\n"
-                     f"Layout: {nz} equal-width zones side by side from left to right, one scene per zone in the order below "
-                     f"(the first scene in the left zone), each with its own labels inside its zone; the title banner across "
-                     f"the top, the answer banner across the bottom.\n"
+                     f"Layout: ONE single connected scene (no separate panels or zones): the {nz} story beats below all happen "
+                     f"together around the MAIN CHARACTER; the title banner across the top, the answer banner across the bottom.\n"
                      f"Title banner at the top: \"{it['title'].strip()}\".\n"
                      f"{it['scenes'].strip()}\n"
                      f"Bottom banner: \"Answer --> {it['banner'].strip()}\".\n{AVOID}")
