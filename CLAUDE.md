@@ -23,6 +23,9 @@ Image prompts (for ChatGPT to draw): only with the tools on branch `kafu-queue` 
 `gpt_master_prompts.py`). Every prompt must carry `STORY_RULES`: Picmonic / Sketchy, ONE story around ONE MAIN CHARACTER,
 every other character acts on it with one pun per fact, no panels. Review every character line before sending.
 
+Instagram reels (adverts): only with `tools/kafu_reel/reel.py make` and its README; send only a reel whose quality gate
+passed. Never invent a "students studying now" number (the app computes its own on the device).
+
 Lean storage (owner's rule): commit only the text of a lesson, lessons/<QID>.lesson.json, and selection.json.
 Never commit images, voice/, scenes/, input/ or the MCARDS ZIP (`.gitignore`); send the ZIP to the owner in chat.
 

@@ -1,0 +1,28 @@
+{
+ "rate": 1.1,
+ "students_now": null,
+ "text": {
+  "intro_ar": "البورد العراقي",
+  "intro_en": "IRAQI BOARD",
+  "every_en": "Every MCQ",
+  "every_hl": ["MCQ"],
+  "video_en": "with a video explanation",
+  "video_hl": ["video", "explanation"],
+  "video_ar": "كل سؤال… مع شرح بالفيديو",
+  "video_ar_hl": ["بالفيديو"],
+  "leagues_en": "Weekly leagues",
+  "leagues_hl": ["leagues"],
+  "leagues_ar": "دوري أسبوعي · تنافس على الصدارة",
+  "count_en": "{n} students studying now",
+  "watch_en": "Tap to watch",
+  "watch_hl": ["watch"],
+  "watch_ar": "اضغط وشوف الشرح",
+  "lesson_en": "Every MCQ · video explanation",
+  "lesson_hl": ["video", "explanation"],
+  "lesson_ar": "شرح فيديو لكل سؤال",
+  "end_iraqi": "تطبيق عراقي",
+  "end_tag": "Every MCQ<br><span class=\"g\">Video explanation</span>",
+  "end_free": "Free · Link in bio",
+  "end_send": "Send to a friend sitting MRCS"
+ }
+}
