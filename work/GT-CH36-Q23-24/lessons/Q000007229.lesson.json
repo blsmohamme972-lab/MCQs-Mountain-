@@ -1,0 +1,104 @@
+{
+ "qid": "Q000007229",
+ "image": "Q000007229.png",
+ "takeaway": "Keloids extend beyond the wound edges and usually do not settle; hypertrophic scars stay within the wound and usually settle within 18 months.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Regarding wound healing on the skin, all of the following statements are true EXCEPT which one?",
+  "say": "Regarding wound healing on the skin, all of the following statements are true, except which one?"
+ },
+ "answer": {
+  "text": "Not true: a keloid scar usually settles spontaneously in up to 18 months."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 520,
+   "z": 1.8,
+   "spot": [
+    200,
+    620,
+    150
+   ]
+  },
+  {
+   "x": 690,
+   "y": 420,
+   "z": 1.7,
+   "spot": [
+    690,
+    480,
+    150
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 420,
+   "z": 1.8,
+   "spot": [
+    1090,
+    500,
+    120
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 440,
+   "z": 1.8,
+   "spot": [
+    1380,
+    520,
+    150
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1390,
+    190,
+    100
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Here the question is an except: we are hunting the false statement.",
+   "shot": 0,
+   "dir": "calm, curious"
+  },
+  {
+   "text": "A wound closed surgically heals by primary intention. True.",
+   "shot": 1,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "In secondary intention the wound is left open, and epithelium grows in from the edges towards the centre. True.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "A hypertrophic scar does not extend beyond the wound edges, and usually settles within eighteen months. True.",
+   "shot": 3,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "But a keloid has excessive collagen and fibroblasts, extends beyond the wound, and usually does not settle.",
+   "shot": 4,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "So the false statement is that a keloid usually settles spontaneously.",
+   "shot": 5,
+   "dir": "gently amused",
+   "say": "(clears throat) So the false statement is that a keloid usually settles spontaneously."
+  }
+ ]
+}
