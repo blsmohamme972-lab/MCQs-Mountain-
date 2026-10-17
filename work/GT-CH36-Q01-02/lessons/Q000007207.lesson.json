@@ -1,0 +1,99 @@
+{
+ "qid": "Q000007207",
+ "image": "Q000007207.png",
+ "takeaway": "Pus contains a mixture of dead and live neutrophils, plus fibrin, lipid, coagulation and complement factors.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 47-year-old man has a 3 x 4 cm superficial abdominal wall abscess. Which statement regarding the pathology of abscesses is correct?",
+  "say": "A 47-year-old man has a 3 by 4 centimetre superficial abdominal wall abscess. Which statement regarding the pathology of abscesses is correct?"
+ },
+ "answer": {
+  "text": "Pus contains a mixture of dead and live neutrophils."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 300,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    230,
+    540,
+    110
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 330,
+   "z": 1.8,
+   "spot": [
+    1010,
+    220,
+    110
+   ]
+  },
+  {
+   "x": 850,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    760,
+    520,
+    190
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 480,
+   "z": 1.8,
+   "spot": [
+    1320,
+    570,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Here is the man with a small abscess on his abdominal wall.",
+   "shot": 1,
+   "dir": "calm, curious"
+  },
+  {
+   "text": "Zoom in, and the cavity is full of pus.",
+   "shot": 2,
+   "dir": "warm, light"
+  },
+  {
+   "text": "Pus is not just bacteria. It holds fibrin, lipid, and coagulation and complement factors.",
+   "shot": 2,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "And it holds a mixture of neutrophils. Some are still alive and fighting.",
+   "shot": 3,
+   "dir": "warm, amused"
+  },
+  {
+   "text": "Others are dead, lying in the pus.",
+   "shot": 4,
+   "dir": "gently amused",
+   "say": "(laugh) Others are dead, lying in the pus."
+  },
+  {
+   "text": "So pus has dead and live neutrophils. That is our answer.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "A pilonidal abscess is usually colonised with coliforms, while a psoas abscess is most often caused by Staphylococcus aureus or tuberculosis.",
+   "shot": 0,
+   "dir": "calm, clear"
+  }
+ ]
+}
