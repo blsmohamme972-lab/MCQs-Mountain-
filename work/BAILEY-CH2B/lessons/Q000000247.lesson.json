@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000247",
+ "image": "Q000000247.png",
+ "takeaway": "Osteosarcoma: a teenager with night pain, bone destruction in the metaphysis and periosteal elevation; it peaks at 10 to 20 years.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 14-year-old boy has constant left knee pain for a month that keeps him awake at night. X-ray: metaphyseal bone destruction, new bone formation and periosteal elevation. Diagnosis?",
+  "say": "A fourteen-year-old boy has constant left knee pain, worse over a month, that keeps him awake at night. The X-ray shows bone destruction in the metaphysis of the femur, with new bone formation and periosteal elevation. What is the diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Osteosarcoma",
+  "say": "The answer is osteosarcoma.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 384,
+   "y": 282,
+   "z": 2.0,
+   "spot": [
+    260,
+    230,
+    200
+   ]
+  },
+  {
+   "x": 384,
+   "y": 612,
+   "z": 2.0,
+   "spot": [
+    360,
+    560,
+    220
+   ]
+  },
+  {
+   "x": 760,
+   "y": 412,
+   "z": 2.0,
+   "spot": [
+    760,
+    360,
+    230
+   ]
+  },
+  {
+   "x": 1050,
+   "y": 352,
+   "z": 2.0,
+   "spot": [
+    1050,
+    300,
+    230
+   ]
+  },
+  {
+   "x": 1109,
+   "y": 558,
+   "z": 1.8,
+   "spot": [
+    1350,
+    500,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 14-year-old footballer with constant knee pain that keeps him awake at night.",
+   "shot": 1,
+   "dir": "gentle, curious",
+   "say": "This fourteen-year-old footballer has constant left knee pain, getting worse over a month, and it keeps him awake at night."
+  },
+  {
+   "text": "The skin over his knee is warm and shiny.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The skin over his knee is warm and shiny."
+  },
+  {
+   "text": "On the X-ray a monster chews the metaphysis of the femur.",
+   "shot": 3,
+   "dir": "warm, amused",
+   "say": "(laugh) On the X-ray, a monster is chewing the metaphysis of the femur: bone destruction."
+  },
+  {
+   "text": "New bone forms in a sunburst, with periosteal elevation.",
+   "shot": 4,
+   "dir": "clear, confident",
+   "say": "There is new bone formation in a sunburst pattern, with periosteal elevation."
+  },
+  {
+   "text": "This highly malignant tumour peaks between 10 and 20 years.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "This highly malignant tumour appears between ten and twenty years of age, and again after fifty, secondary to Paget's disease."
+  },
+  {
+   "text": "Remember: a teenager with metaphysis destruction and periosteal elevation has osteosarcoma.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: a teenager with metaphysis destruction and periosteal elevation has an osteosarcoma."
+  }
+ ]
+}

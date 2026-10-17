@@ -1,0 +1,128 @@
+{
+ "qid": "Q000000246",
+ "image": "Q000000246.png",
+ "takeaway": "Osteoarthritis is degenerative: worn cartilage with a narrowed joint space, osteophytes, sclerosis and bone cysts.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 60-year-old woman has had gradual pain and swelling in both knees for 2 years. X-ray: reduced joint space, sclerosis, cysts and osteophytes. What is the likely diagnosis?",
+  "say": "A sixty-year-old woman has had pain and swelling in both knees, of gradual onset, for two years. The X-ray shows a reduced joint space, sclerosis, cysts and osteophytes. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Osteoarthritis",
+  "say": "The answer is osteoarthritis.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 452,
+   "y": 361,
+   "z": 1.7,
+   "spot": [
+    350,
+    300,
+    260
+   ]
+  },
+  {
+   "x": 400,
+   "y": 697,
+   "z": 2.2,
+   "spot": [
+    400,
+    650,
+    200
+   ]
+  },
+  {
+   "x": 990,
+   "y": 502,
+   "z": 2.0,
+   "spot": [
+    990,
+    450,
+    260
+   ]
+  },
+  {
+   "x": 1187,
+   "y": 607,
+   "z": 2.2,
+   "spot": [
+    1250,
+    560,
+    200
+   ]
+  },
+  {
+   "x": 800,
+   "y": 747,
+   "z": 2.2,
+   "spot": [
+    800,
+    700,
+    200
+   ]
+  },
+  {
+   "x": 1187,
+   "y": 747,
+   "z": 2.2,
+   "spot": [
+    1200,
+    700,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Gradual pain and swelling in both knees for 2 years.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "This woman has had gradual pain and swelling in both knees for two years."
+  },
+  {
+   "text": "Her knees are tender, with excess synovial fluid.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "Her knees are tender, with excess synovial fluid and synovial thickening."
+  },
+  {
+   "text": "The golden spikes are osteophytes: new bone at the joint margins.",
+   "shot": 3,
+   "dir": "warm, amused",
+   "say": "(laugh) The golden spikes are osteophytes, new bone forming at the joint margins."
+  },
+  {
+   "text": "The cartilage is worn, so the joint space is narrowed.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "The cartilage is worn away, so the joint space is narrowed."
+  },
+  {
+   "text": "Beneath it the bone shows sclerosis.",
+   "shot": 5,
+   "dir": "clear, steady",
+   "say": "Beneath it, the bone shows sclerosis."
+  },
+  {
+   "text": "And there are cysts in the bone.",
+   "shot": 6,
+   "dir": "clear, steady",
+   "say": "And there are cysts in the bone."
+  },
+  {
+   "text": "Remember: osteophytes, sclerosis and cysts with a narrow joint space mean osteoarthritis.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: osteophytes, sclerosis and cysts with a narrow joint space mean osteoarthritis."
+  }
+ ]
+}

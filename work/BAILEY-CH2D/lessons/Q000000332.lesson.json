@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000332",
+ "image": "Q000000332.png",
+ "takeaway": "Sickle cell anaemia is more common where malaria is endemic, because HbS gives slight protection against Plasmodium falciparum.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "With regard to sickle cell anaemia:",
+  "say": "With regard to sickle cell anaemia, which statement is true?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "It is more common in regions of the world in which malaria is endemic",
+  "say": "The answer: it is more common in regions of the world in which malaria is endemic.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 560,
+   "y": 561,
+   "z": 1.7,
+   "spot": [
+    560,
+    500,
+    300
+   ]
+  },
+  {
+   "x": 850,
+   "y": 572,
+   "z": 2.0,
+   "spot": [
+    850,
+    520,
+    230
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 382,
+   "z": 2.0,
+   "spot": [
+    1100,
+    330,
+    250
+   ]
+  },
+  {
+   "x": 1084,
+   "y": 621,
+   "z": 1.7,
+   "spot": [
+    1260,
+    560,
+    300
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The sickle cell holds a golden shield.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "The sickle cell holds up a golden shield."
+  },
+  {
+   "text": "The malaria parasite and the mosquitoes bounce off.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The Plasmodium falciparum parasite and the mosquitoes bounce right off it."
+  },
+  {
+   "text": "HbS gives slight protection against falciparum malaria.",
+   "shot": 3,
+   "dir": "clear, confident",
+   "say": "HbS affords slight protection against falciparum malaria."
+  },
+  {
+   "text": "Where malaria is endemic, up to 30 per cent of black Africans are carriers.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "Where malaria is endemic, as many as thirty per cent of black Africans are heterozygous."
+  },
+  {
+   "text": "Symptoms start at 3 to 6 months, after the switch from foetal haemoglobin.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Clinical manifestations start around three to six months after birth, when foetal haemoglobin switches to adult haemoglobin."
+  },
+  {
+   "text": "Remember: sickle cell is more common where malaria is endemic.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: sickle cell is more common where malaria is endemic."
+  }
+ ]
+}

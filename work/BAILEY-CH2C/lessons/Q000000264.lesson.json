@@ -1,0 +1,128 @@
+{
+ "qid": "Q000000264",
+ "image": "Q000000264.png",
+ "takeaway": "Haematemesis in an alcoholic with hepatomegaly, spider naevi and palmar erythema suggests oesophageal varices from portal hypertension.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 55-year-old writer has abdominal pain and haematemesis. He is ethanolic with hepatomegaly, spider naevi and palmar erythema. What is the diagnosis?",
+  "say": "A fifty-five-year-old writer comes to A and E with abdominal pain and haematemesis. He is ethanolic, with hepatomegaly. He also has spider naevi and palmar erythema. What is the diagnosis?",
+  "dir": "tense, clear"
+ },
+ "answer": {
+  "text": "Oesophageal varices",
+  "say": "The answer is oesophageal varices.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 540,
+   "y": 442,
+   "z": 2.0,
+   "spot": [
+    540,
+    390,
+    260
+   ]
+  },
+  {
+   "x": 660,
+   "y": 272,
+   "z": 2.0,
+   "spot": [
+    660,
+    220,
+    230
+   ]
+  },
+  {
+   "x": 950,
+   "y": 513,
+   "z": 2.4,
+   "spot": [
+    950,
+    470,
+    170
+   ]
+  },
+  {
+   "x": 1187,
+   "y": 567,
+   "z": 2.2,
+   "spot": [
+    1190,
+    520,
+    200
+   ]
+  },
+  {
+   "x": 790,
+   "y": 532,
+   "z": 2.0,
+   "spot": [
+    790,
+    480,
+    250
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 742,
+   "z": 2.0,
+   "spot": [
+    1200,
+    720,
+    250
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 55-year-old writer is vomiting blood: haematemesis.",
+   "shot": 1,
+   "dir": "urgent, steady",
+   "say": "This fifty-five-year-old writer is vomiting blood. That is haematemesis."
+  },
+  {
+   "text": "He is ethanolic, with an enlarged liver.",
+   "shot": 2,
+   "dir": "grave, steady",
+   "say": "(sigh) He is ethanolic, with hepatomegaly, an enlarged liver."
+  },
+  {
+   "text": "Spider naevi on his chest.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "He has spider naevi on his chest."
+  },
+  {
+   "text": "And palmar erythema in his palm.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "And palmar erythema, red palms."
+  },
+  {
+   "text": "The veins in the lower oesophagus are dilated: oesophageal varices.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "The bleeding comes from oesophageal varices, dilated submucosal veins in the lower oesophagus."
+  },
+  {
+   "text": "They are a consequence of portal hypertension.",
+   "shot": 6,
+   "dir": "calm, explanatory",
+   "say": "They are often a consequence of portal hypertension."
+  },
+  {
+   "text": "Remember: a chronic liver patient who vomits blood has oesophageal varices.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: a patient with liver disease who vomits blood has oesophageal varices."
+  }
+ ]
+}

@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000287",
+ "image": "Q000000287.png",
+ "takeaway": "Renal tubular cells cannot regenerate, so acute tubular necrosis is serious and can lead to dialysis or transplantation.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which cells cannot regenerate?",
+  "say": "Which cells cannot regenerate?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Renal tubular cells",
+  "say": "The answer is renal tubular cells.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 700,
+   "y": 532,
+   "z": 2.0,
+   "spot": [
+    700,
+    480,
+    260
+   ]
+  },
+  {
+   "x": 420,
+   "y": 642,
+   "z": 2.0,
+   "spot": [
+    420,
+    620,
+    220
+   ]
+  },
+  {
+   "x": 1084,
+   "y": 581,
+   "z": 1.7,
+   "spot": [
+    1100,
+    520,
+    300
+   ]
+  },
+  {
+   "x": 740,
+   "y": 800,
+   "z": 2.2,
+   "spot": [
+    740,
+    800,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The tubule is crying over its broken cells.",
+   "shot": 1,
+   "dir": "gentle, serious",
+   "say": "The renal tubule is crying over its broken cells."
+  },
+  {
+   "text": "The seedling is crossed out: no regeneration.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The little seedling is crossed out. Renal tubular cells lack the ability to regenerate after injury."
+  },
+  {
+   "text": "So renal blood flow is carefully autoregulated.",
+   "shot": 1,
+   "dir": "calm, explanatory",
+   "say": "That is why renal blood flow is so carefully autoregulated."
+  },
+  {
+   "text": "Acute tubular necrosis is taken seriously.",
+   "shot": 1,
+   "dir": "grave, steady",
+   "say": "It is also why acute tubular necrosis is taken so seriously. The damage is irreversible."
+  },
+  {
+   "text": "It can lead to end-stage renal failure, needing dialysis or transplantation.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "It can lead to end-stage renal failure, needing dialysis or transplantation."
+  },
+  {
+   "text": "Remember: renal tubular cells cannot regenerate.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: renal tubular cells cannot regenerate."
+  }
+ ]
+}

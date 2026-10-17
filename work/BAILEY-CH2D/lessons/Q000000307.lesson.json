@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000307",
+ "image": "Q000000307.png",
+ "takeaway": "Aldosterone is secreted by the zona glomerulosa, the outer layer of the adrenal cortex; the medulla makes adrenaline and noradrenaline.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A patient has Conn's syndrome. Aldosterone is secreted from where?",
+  "say": "A patient is diagnosed with Conn's syndrome. Aldosterone is secreted from where?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Zona glomerulosa of the adrenal cortex",
+  "say": "The answer is the zona glomerulosa of the adrenal cortex.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 480,
+   "y": 522,
+   "z": 2.0,
+   "spot": [
+    480,
+    470,
+    260
+   ]
+  },
+  {
+   "x": 850,
+   "y": 378,
+   "z": 1.8,
+   "spot": [
+    850,
+    320,
+    300
+   ]
+  },
+  {
+   "x": 1060,
+   "y": 347,
+   "z": 2.2,
+   "spot": [
+    1060,
+    300,
+    200
+   ]
+  },
+  {
+   "x": 900,
+   "y": 625,
+   "z": 1.7,
+   "spot": [
+    900,
+    600,
+    300
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A patient with Conn's syndrome hugs a salty cake.",
+   "shot": 1,
+   "dir": "warm, amused",
+   "say": "(laugh) A patient with Conn's syndrome, hugging a big salty cake, the adrenal gland."
+  },
+  {
+   "text": "The chef on the top layer is the zona glomerulosa.",
+   "shot": 2,
+   "dir": "clear, confident",
+   "say": "The chef on the top layer is the zona glomerulosa, in the outer cortex."
+  },
+  {
+   "text": "He makes the aldosterone.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "He keeps making bottles of aldosterone."
+  },
+  {
+   "text": "The adrenal cortex has three zones, and the medulla sits inside.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "The adrenal gland has an outer cortex and an inner medulla. The cortex consists of three layers, or zones."
+  },
+  {
+   "text": "The medulla secretes adrenaline, 70 per cent, and noradrenaline, 30 per cent.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "The medulla secretes adrenaline, seventy per cent, and noradrenaline, thirty per cent."
+  },
+  {
+   "text": "Remember: aldosterone comes from the zona glomerulosa.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: aldosterone comes from the zona glomerulosa."
+  }
+ ]
+}

@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000259",
+ "image": "Q000000259.png",
+ "takeaway": "A widened mediastinum on chest X-ray means a thoracic aortic aneurysm must be excluded; CT is the quick, non-invasive test.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 67-year-old man has a palpable expansive epigastric mass and thoracic back pain. His BP is normal and the chest X-ray shows gross mediastinal widening. Most appropriate investigation?",
+  "say": "A sixty-seven-year-old man is admitted with a palpable, expansive epigastric mass and thoracic back pain. His blood pressure is normal, and the chest X-ray shows gross widening of the mediastinum. Select the most appropriate investigation.",
+  "dir": "tense, clear"
+ },
+ "answer": {
+  "text": "Immediate CT chest scan",
+  "say": "The answer is an immediate CT chest scan.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 740,
+   "y": 302,
+   "z": 2.0,
+   "spot": [
+    740,
+    250,
+    230
+   ]
+  },
+  {
+   "x": 740,
+   "y": 658,
+   "z": 1.8,
+   "spot": [
+    740,
+    600,
+    270
+   ]
+  },
+  {
+   "x": 1187,
+   "y": 607,
+   "z": 2.2,
+   "spot": [
+    1330,
+    560,
+    200
+   ]
+  },
+  {
+   "x": 384,
+   "y": 382,
+   "z": 2.0,
+   "spot": [
+    180,
+    330,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 67-year-old man with thoracic back pain and an expansive epigastric mass.",
+   "shot": 1,
+   "dir": "serious, steady",
+   "say": "A sixty-seven-year-old man has thoracic back pain and an expansive epigastric mass."
+  },
+  {
+   "text": "On the X-ray the mediastinum is grossly widened.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "But look at his chest X-ray. The mediastinum is grossly widened."
+  },
+  {
+   "text": "His blood pressure is normal.",
+   "shot": 3,
+   "dir": "calm, steady",
+   "say": "His blood pressure is normal, so he is stable enough for a scan."
+  },
+  {
+   "text": "A thoracic aortic aneurysm must be excluded.",
+   "shot": 2,
+   "dir": "clear, confident",
+   "say": "A widened mediastinum means a thoracic aortic aneurysm must be excluded."
+  },
+  {
+   "text": "Angiography is the gold standard, but CT is easier and non-invasive.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "An angiogram is the gold standard, but a CT scan is easier, faster, and non-invasive."
+  },
+  {
+   "text": "Remember: a widened mediastinum needs an immediate CT chest scan.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: a widened mediastinum needs an immediate CT chest scan."
+  }
+ ]
+}

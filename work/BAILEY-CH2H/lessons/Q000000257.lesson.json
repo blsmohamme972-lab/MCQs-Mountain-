@@ -1,0 +1,128 @@
+{
+ "qid": "Q000000257",
+ "image": "Q000000257.png",
+ "takeaway": "Marjolin's ulcer: a squamous cell carcinoma arising in a chronic ulcer or scar; a heaped-up edge that bleeds on contact is the warning sign.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "An 80-year-old retired cook notices the edge of an ulcer above the medial malleolus, present for 17 years, has become ‘heaped up’ and bleeds easily on contact. Likely diagnosis?",
+  "say": "An eighty-year-old retired cook has had an ulcer above the medial malleolus for seventeen years. Recently its edge has become heaped up, and it bleeds easily on contact. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Squamous cell carcinoma",
+  "say": "The answer is squamous cell carcinoma.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 384,
+   "y": 352,
+   "z": 2.0,
+   "spot": [
+    380,
+    300,
+    230
+   ]
+  },
+  {
+   "x": 880,
+   "y": 297,
+   "z": 2.2,
+   "spot": [
+    880,
+    250,
+    200
+   ]
+  },
+  {
+   "x": 960,
+   "y": 452,
+   "z": 2.0,
+   "spot": [
+    960,
+    400,
+    220
+   ]
+  },
+  {
+   "x": 1110,
+   "y": 477,
+   "z": 2.2,
+   "spot": [
+    1110,
+    430,
+    180
+   ]
+  },
+  {
+   "x": 980,
+   "y": 610,
+   "z": 2.2,
+   "spot": [
+    980,
+    590,
+    200
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 782,
+   "z": 2.0,
+   "spot": [
+    1250,
+    760,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "An 80-year-old retired cook points at his old ulcer.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "This eighty-year-old retired cook points at an old friend, his leg ulcer."
+  },
+  {
+   "text": "It has been there for 17 years.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The hourglass says it all. This ulcer has been there for seventeen years."
+  },
+  {
+   "text": "Now its edge is heaped up.",
+   "shot": 3,
+   "dir": "clear, concerned",
+   "say": "But now the edge has built itself up like a wall. It is heaped up."
+  },
+  {
+   "text": "And it bleeds on contact.",
+   "shot": 4,
+   "dir": "grave, steady",
+   "say": "(sigh) And it bleeds easily on contact."
+  },
+  {
+   "text": "A chronic ulcer can turn into cancer: Marjolin's ulcer.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "A chronic ulcer may rarely turn malignant. This is Marjolin's ulcer, first described in eighteen twenty-eight."
+  },
+  {
+   "text": "The invaders are squamous cells.",
+   "shot": 6,
+   "dir": "clear, steady",
+   "say": "The angry crabs are squamous cells. Burns, osteomyelitis and radiotherapy scars can do this too."
+  },
+  {
+   "text": "Remember: a heaped-up, bleeding edge on a chronic ulcer is squamous cell carcinoma.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: a heaped-up, bleeding edge on a chronic ulcer means squamous cell carcinoma."
+  }
+ ]
+}

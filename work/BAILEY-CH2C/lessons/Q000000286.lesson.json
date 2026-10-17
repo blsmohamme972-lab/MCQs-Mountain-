@@ -1,0 +1,96 @@
+{
+ "qid": "Q000000286",
+ "image": "Q000000286.png",
+ "takeaway": "In strenuous exercise heart rate, stroke volume and cardiac output all rise, and hyperventilation lowers PCO2.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "During strenuous exercise, what else occurs besides tachycardia?",
+  "say": "During strenuous exercise, what else occurs besides tachycardia?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Increased stroke volume",
+  "say": "The answer is increased stroke volume.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 800,
+   "y": 481,
+   "z": 1.7,
+   "spot": [
+    800,
+    420,
+    300
+   ]
+  },
+  {
+   "x": 400,
+   "y": 552,
+   "z": 2.0,
+   "spot": [
+    400,
+    500,
+    250
+   ]
+  },
+  {
+   "x": 830,
+   "y": 658,
+   "z": 2.4,
+   "spot": [
+    830,
+    640,
+    150
+   ]
+  },
+  {
+   "x": 1060,
+   "y": 532,
+   "z": 2.0,
+   "spot": [
+    1060,
+    480,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The running heart: tachycardia.",
+   "shot": 3,
+   "dir": "warm, curious",
+   "say": "Here is a heart out for a run, with tachycardia, a fast heart rate."
+  },
+  {
+   "text": "But look at the bucket: a bigger stroke volume.",
+   "shot": 2,
+   "dir": "clear, confident",
+   "say": "But look at the bucket. Each beat pumps more blood, a bigger stroke volume."
+  },
+  {
+   "text": "Cardiac output is heart rate times stroke volume.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "Cardiac output is a function of heart rate and stroke volume, so it rises too."
+  },
+  {
+   "text": "Breathing speeds up too: hyperventilation lowers PCO2.",
+   "shot": 1,
+   "dir": "calm, explanatory",
+   "say": "(sigh) Breathing gets faster as well. This hyperventilation lowers the PCO2."
+  },
+  {
+   "text": "Remember: exercise raises heart rate, stroke volume and cardiac output.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: exercise raises heart rate, stroke volume, and cardiac output."
+  }
+ ]
+}

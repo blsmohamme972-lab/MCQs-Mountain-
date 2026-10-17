@@ -1,0 +1,92 @@
+{
+ "qid": "Q000000251",
+ "image": "Q000000251.png",
+ "takeaway": "Basal cell carcinoma: the commonest skin cancer, a slowly enlarging pearly white lesion with telangiectasia, usually on the head and neck, destroying tissue locally.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "An 80-year-old retired builder has a chronic, slowly enlarging skin lesion on his left cheek. It is pearly white with telangiectasia. What is the diagnosis?",
+  "say": "An eighty-year-old retired builder has a chronic and slowly enlarging skin lesion on his left cheek. It is pearly white, with an associated telangiectasia. What is the diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Basal cell carcinoma",
+  "say": "The answer is basal cell carcinoma.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 800,
+   "y": 430,
+   "z": 1.8,
+   "spot": [
+    800,
+    430,
+    260
+   ]
+  },
+  {
+   "x": 870,
+   "y": 430,
+   "z": 2.4,
+   "spot": [
+    870,
+    430,
+    170
+   ]
+  },
+  {
+   "x": 1180,
+   "y": 547,
+   "z": 2.2,
+   "spot": [
+    1180,
+    500,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A retired builder with a chronic, slowly enlarging lesion on his left cheek.",
+   "shot": 1,
+   "dir": "gentle, curious",
+   "say": "This eighty-year-old retired builder has a chronic, slowly enlarging skin lesion on his left cheek."
+  },
+  {
+   "text": "The lesion is pearly white.",
+   "shot": 1,
+   "dir": "warm, amused",
+   "say": "(laugh) The lesion is pearly white, like a little pearl on his cheek."
+  },
+  {
+   "text": "Tiny red vessels run across it: telangiectasia.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "Tiny red vessels run across it. That is telangiectasia."
+  },
+  {
+   "text": "The little excavator shows local destruction of the tissue around it.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "The little excavator shows local destruction. It invades and destroys the surrounding tissues."
+  },
+  {
+   "text": "It is the most common skin cancer, mostly on the head and neck: 80 per cent.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "It is the most common type of skin cancer, and most lesions are on the head and neck, about eighty per cent."
+  },
+  {
+   "text": "Remember: a pearly white lesion with telangiectasia is basal cell carcinoma.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: a pearly white lesion with telangiectasia is a basal cell carcinoma."
+  }
+ ]
+}

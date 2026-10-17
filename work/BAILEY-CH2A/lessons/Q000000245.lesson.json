@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000245",
+ "image": "Q000000245.png",
+ "takeaway": "Rheumatoid arthritis: symmetrical small joint arthritis of the hands, sparing the DIP joints, with narrowed joint space, osteopenia and marginal erosions on X-ray.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 35-year-old woman has painful, stiff, swollen hands. Two years on, the MCP joints are swollen and tender; X-ray shows narrowed joint space, osteoporosis and marginal erosions. Diagnosis?",
+  "say": "A thirty-five-year-old woman develops pain, swelling and stiffness of her hands. Two years on, the metacarpophalangeal joints are swollen and tender. X-rays show a narrowed joint space, osteoporosis, and marginal erosions. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Rheumatoid arthritis",
+  "say": "The answer is rheumatoid arthritis.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 384,
+   "y": 612,
+   "z": 2.0,
+   "spot": [
+    330,
+    560,
+    260
+   ]
+  },
+  {
+   "x": 1070,
+   "y": 408,
+   "z": 2.0,
+   "spot": [
+    1070,
+    430,
+    230
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 612,
+   "z": 2.0,
+   "spot": [
+    1300,
+    560,
+    230
+   ]
+  },
+  {
+   "x": 880,
+   "y": 702,
+   "z": 2.0,
+   "spot": [
+    880,
+    650,
+    200
+   ]
+  },
+  {
+   "x": 1187,
+   "y": 317,
+   "z": 2.2,
+   "spot": [
+    1330,
+    270,
+    190
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Pain and swelling at the MCP joints of both hands.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "This woman has swelling and tenderness at the metacarpophalangeal joints of both hands."
+  },
+  {
+   "text": "On the X-ray, little monsters nibble the joint margins: marginal erosions.",
+   "shot": 2,
+   "dir": "warm, amused",
+   "say": "(laugh) On the X-ray, little monsters are nibbling the joint margins. These are marginal erosions."
+  },
+  {
+   "text": "The joint space is narrowed.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "The joint space is narrowed."
+  },
+  {
+   "text": "The bones are thin too: osteoporosis.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "The bones are thin too: osteoporosis, also called periarticular osteopenia."
+  },
+  {
+   "text": "The DIP joints are spared.",
+   "shot": 5,
+   "dir": "warm, explanatory",
+   "say": "And look at the little fingertip, happily spared. The distal interphalangeal joints are spared."
+  },
+  {
+   "text": "Remember: symmetrical small joint arthritis sparing the DIP is rheumatoid arthritis.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: symmetrical arthritis of the small joints of the hands, sparing the distal joints, is rheumatoid arthritis."
+  }
+ ]
+}

@@ -1,0 +1,96 @@
+{
+ "qid": "Q000000244",
+ "image": "Q000000244.png",
+ "takeaway": "Meconium ileus: most patients have cystic fibrosis; impacted meconium in the ileum causes a mass and dilated small bowel loops.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 3-day-old girl with cystic fibrosis has a palpable mass in the right lower quadrant. A plain abdominal X-ray shows dilated small bowel loops. What is the diagnosis?",
+  "say": "A three-day-old girl with cystic fibrosis has a palpable mass in the right lower quadrant. A plain abdominal X-ray reveals dilated small bowel loops. What is the diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Meconium ileus",
+  "say": "The answer is meconium ileus.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 560,
+   "y": 482,
+   "z": 2.0,
+   "spot": [
+    560,
+    430,
+    250
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 752,
+   "z": 2.0,
+   "spot": [
+    1150,
+    700,
+    230
+   ]
+  },
+  {
+   "x": 780,
+   "y": 747,
+   "z": 2.2,
+   "spot": [
+    780,
+    700,
+    200
+   ]
+  },
+  {
+   "x": 920,
+   "y": 622,
+   "z": 2.0,
+   "spot": [
+    920,
+    570,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 3-day-old girl with cystic fibrosis.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "This is a three-day-old girl with cystic fibrosis. Most patients with meconium ileus have cystic fibrosis."
+  },
+  {
+   "text": "The doctor feels a palpable mass in the right lower quadrant.",
+   "shot": 2,
+   "dir": "clear, confident",
+   "say": "The doctor feels a palpable mass in the right lower quadrant."
+  },
+  {
+   "text": "The mass is meconium, the foetal stool, impacted in the ileum.",
+   "shot": 3,
+   "dir": "gentle, explanatory",
+   "say": "(sigh) That mass is meconium, the foetal stool, impacted in the ileum."
+  },
+  {
+   "text": "Behind the blockage the small bowel loops dilate.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "The obstructing meconium makes the small bowel loops dilate, more proximally, as the X-ray shows."
+  },
+  {
+   "text": "Remember: cystic fibrosis, a right lower quadrant mass and dilated small bowel mean meconium ileus.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: cystic fibrosis, a mass in the right lower quadrant and dilated small bowel mean meconium ileus."
+  }
+ ]
+}

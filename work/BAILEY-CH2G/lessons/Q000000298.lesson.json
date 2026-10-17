@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000298",
+ "image": "Q000000298.png",
+ "takeaway": "The terminal ileum recycles bile salts; resecting it breaks the enterohepatic circulation and raises the risk of cholesterol gallstones.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Resection of the terminal ileum is associated with malabsorption of which of the following substances?",
+  "say": "Resection of the terminal ileum is associated with malabsorption of which of the following substances?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Bile salts",
+  "say": "The answer is bile salts.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 480,
+   "y": 445,
+   "z": 1.6,
+   "spot": [
+    450,
+    380,
+    300
+   ]
+  },
+  {
+   "x": 1080,
+   "y": 282,
+   "z": 2.0,
+   "spot": [
+    1080,
+    230,
+    200
+   ]
+  },
+  {
+   "x": 950,
+   "y": 662,
+   "z": 2.0,
+   "spot": [
+    950,
+    640,
+    230
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 582,
+   "z": 2.0,
+   "spot": [
+    1330,
+    560,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The terminal ileum is the recycling truck.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "Meet the terminal ileum, the recycling truck of the gut. It carries bile salts back home."
+  },
+  {
+   "text": "The scissors cut it away.",
+   "shot": 2,
+   "dir": "serious, steady",
+   "say": "Then the scissors cut it away. That is a resection, for example in Crohn's disease."
+  },
+  {
+   "text": "Bile salts are lost.",
+   "shot": 3,
+   "dir": "grave, steady",
+   "say": "(sigh) The yellow bile salts spill out and are lost."
+  },
+  {
+   "text": "The enterohepatic circulation is broken.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Without the terminal ileum, the enterohepatic circulation breaks, so bile salts become deficient."
+  },
+  {
+   "text": "Cholesterol gallstones form.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "The worried gallbladder fills with cholesterol gallstones, the clinical consequence."
+  },
+  {
+   "text": "Remember: no terminal ileum means bile salt loss and gallstones.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: resect the terminal ileum and you lose bile salts, with a higher risk of cholesterol gallstones."
+  }
+ ]
+}

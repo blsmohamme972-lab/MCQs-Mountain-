@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000237",
+ "image": "Q000000237.png",
+ "takeaway": "Mirizzi syndrome: a gallstone in the gallbladder compresses the common bile duct, causing obstructive jaundice, often with cholecystitis.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 45-year-old woman has epigastric pain, jaundice, vomiting and fever. Ultrasound: gallstones, gallbladder wall 5 mm, common bile duct 9 mm, prominent intrahepatic ducts. Diagnosis?",
+  "say": "A forty-five-year-old woman has epigastric pain, jaundice, vomiting and fever. Ultrasound shows gallstones, a gallbladder wall of five millimetres, a common bile duct of nine millimetres, and prominent intrahepatic ducts. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Mirizzi syndrome",
+  "say": "The answer is Mirizzi syndrome.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 427,
+   "y": 578,
+   "z": 1.8,
+   "spot": [
+    330,
+    520,
+    240
+   ]
+  },
+  {
+   "x": 830,
+   "y": 552,
+   "z": 2.0,
+   "spot": [
+    830,
+    500,
+    230
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 312,
+   "z": 2.0,
+   "spot": [
+    1000,
+    260,
+    200
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 572,
+   "z": 2.0,
+   "spot": [
+    1250,
+    520,
+    240
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A gallbladder full of gallstones, with a thick wall.",
+   "shot": 1,
+   "dir": "calm, curious",
+   "say": "Look at the gallbladder, full of gallstones. The ultrasound also shows a gallbladder wall of five millimetres."
+  },
+  {
+   "text": "One stone squeezes the common bile duct from outside.",
+   "shot": 2,
+   "dir": "clear, confident",
+   "say": "One stone is squeezing the common bile duct from outside. That is the Mirizzi squeeze."
+  },
+  {
+   "text": "Above the squeeze the duct is dilated: 9 mm, with prominent ducts.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "Above the squeeze the duct is dilated, nine millimetres, and the intrahepatic ducts are prominent."
+  },
+  {
+   "text": "The patient has obstructive jaundice, fever and pain.",
+   "shot": 4,
+   "dir": "gentle, serious",
+   "say": "(sigh) The poor patient has obstructive jaundice, with fever, vomiting and epigastric pain."
+  },
+  {
+   "text": "There is gallstone cholecystitis here as well.",
+   "shot": 1,
+   "dir": "calm, steady",
+   "say": "There is gallstone cholecystitis here as well."
+  },
+  {
+   "text": "Remember: a gallstone compressing the common bile duct is Mirizzi syndrome.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: a gallstone compressing the common bile duct is Mirizzi syndrome."
+  }
+ ]
+}

@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000258",
+ "image": "Q000000258.png",
+ "takeaway": "A shocked patient with a tender epigastric mass needs intravenous lines, cross-matched blood and immediate transfer to theatre.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 67-year-old man is admitted with back pain. He is shocked, BP 90/40, with a tender epigastric mass. What is the most appropriate management?",
+  "say": "A sixty-seven-year-old man is admitted as an emergency with back pain. He is shocked, with a blood pressure of ninety over forty, and a palpable, tender epigastric mass. What is the most appropriate next step?",
+  "dir": "tense, clear"
+ },
+ "answer": {
+  "text": "Insert intravenous lines, cross-match blood, and transfer to theatre",
+  "say": "The answer: insert intravenous lines, cross-match blood, and transfer to theatre.",
+  "dir": "calm, firm"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 600,
+   "y": 482,
+   "z": 2.0,
+   "spot": [
+    600,
+    430,
+    250
+   ]
+  },
+  {
+   "x": 950,
+   "y": 307,
+   "z": 2.2,
+   "spot": [
+    950,
+    260,
+    200
+   ]
+  },
+  {
+   "x": 400,
+   "y": 282,
+   "z": 2.0,
+   "spot": [
+    400,
+    230,
+    220
+   ]
+  },
+  {
+   "x": 960,
+   "y": 620,
+   "z": 2.0,
+   "spot": [
+    960,
+    620,
+    230
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 308,
+   "z": 2.0,
+   "spot": [
+    1330,
+    330,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A man with back pain and a tender epigastric mass.",
+   "shot": 1,
+   "dir": "serious, steady",
+   "say": "A sixty-seven-year-old man has back pain, and a tender epigastric mass."
+  },
+  {
+   "text": "He is shocked: BP 90/40.",
+   "shot": 2,
+   "dir": "grave, steady",
+   "say": "He is shocked, with a blood pressure of ninety over forty. This is a surgical emergency."
+  },
+  {
+   "text": "First, insert intravenous lines.",
+   "shot": 3,
+   "dir": "clear, urgent",
+   "say": "The immediate management is to insert intravenous lines."
+  },
+  {
+   "text": "Next, cross-match the blood.",
+   "shot": 4,
+   "dir": "clear, urgent",
+   "say": "Next, cross-match blood."
+  },
+  {
+   "text": "Then straight to theatre.",
+   "shot": 5,
+   "dir": "excited, firm",
+   "say": "(laugh) And then straight to theatre, as fast as the wheels can roll!"
+  },
+  {
+   "text": "Remember: shocked with a tender epigastric mass: lines, cross-match, theatre.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: shocked, with a tender epigastric mass: lines, cross-match, theatre."
+  }
+ ]
+}

@@ -1,0 +1,118 @@
+{
+ "qid": "Q000000273",
+ "image": "Q000000273.png",
+ "takeaway": "Torsion of the hydatid of Morgagni: sudden testicular pain with a small, very tender lump on the upper pole and a testis in its normal position.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "An 18-year-old footballer has sudden acute pain in his right testicle, no trauma, no fever, a small very tender lump on the upper pole and a normally placed testis. Diagnosis?",
+  "say": "An eighteen-year-old footballer has sudden pain in his right testicle, with no trauma and no fever. There is a small, very tender lump on its upper pole, and the testicle lies normally. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Torsion of hydatid of Morgagni",
+  "say": "The answer is torsion of the hydatid of Morgagni.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 580,
+   "y": 352,
+   "z": 2.0,
+   "spot": [
+    580,
+    300,
+    220
+   ]
+  },
+  {
+   "x": 470,
+   "y": 622,
+   "z": 2.0,
+   "spot": [
+    470,
+    600,
+    200
+   ]
+  },
+  {
+   "x": 1010,
+   "y": 387,
+   "z": 2.2,
+   "spot": [
+    1010,
+    340,
+    170
+   ]
+  },
+  {
+   "x": 960,
+   "y": 497,
+   "z": 2.2,
+   "spot": [
+    960,
+    450,
+    170
+   ]
+  },
+  {
+   "x": 940,
+   "y": 754,
+   "z": 1.8,
+   "spot": [
+    940,
+    730,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "An 18-year-old footballer, with no trauma.",
+   "shot": 1,
+   "dir": "warm, concerned",
+   "say": "This young footballer is suddenly in pain, with no trauma."
+  },
+  {
+   "text": "Sudden, acute pain in the right testicle.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The pain in his right testicle came on suddenly."
+  },
+  {
+   "text": "The testicle sits in a normal position.",
+   "shot": 5,
+   "dir": "clear, steady",
+   "say": "The testicle sits in its normal position."
+  },
+  {
+   "text": "A small, very tender lump on the upper pole.",
+   "shot": 4,
+   "dir": "clear, curious",
+   "say": "On its upper pole sits a small, very tender lump."
+  },
+  {
+   "text": "The appendix testis: a Mullerian duct remnant.",
+   "shot": 3,
+   "dir": "warm, playful",
+   "say": "(laugh) Meet the blue appendix testis, or hydatid of Morgagni: a Mullerian duct remnant at the top of the testis, now twisted."
+  },
+  {
+   "text": "It is like the fimbriated end of the fallopian tube.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "It is comparable to the fimbriated end of the fallopian tube in females."
+  },
+  {
+   "text": "Remember: a tender upper pole lump with a normal testis is torsion of the hydatid of Morgagni.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: a tender upper pole lump with a normal testis is torsion of the hydatid of Morgagni."
+  }
+ ]
+}

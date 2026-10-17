@@ -1,0 +1,96 @@
+{
+ "qid": "Q000000292",
+ "image": "Q000000292.png",
+ "takeaway": "In a posterior approach to the left kidney the subcostal nerve is superficial and met first; the kidney lies retroperitoneally.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "In a left nephrectomy by a posterior approach, which structure is encountered before reaching the kidney?",
+  "say": "When performing a left nephrectomy from a posterior approach, which structure is encountered before reaching the kidney?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Subcostal nerve",
+  "say": "The answer is the subcostal nerve.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 384,
+   "y": 532,
+   "z": 2.0,
+   "spot": [
+    150,
+    480,
+    260
+   ]
+  },
+  {
+   "x": 860,
+   "y": 497,
+   "z": 2.2,
+   "spot": [
+    860,
+    450,
+    220
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 482,
+   "z": 2.0,
+   "spot": [
+    1350,
+    430,
+    250
+   ]
+  },
+  {
+   "x": 1084,
+   "y": 745,
+   "z": 1.7,
+   "spot": [
+    1100,
+    720,
+    300
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The surgeon goes in from behind: the posterior approach.",
+   "shot": 1,
+   "dir": "clear, steady",
+   "say": "The surgeon goes in from behind. This is the posterior approach, and the map shows the way to the left kidney."
+  },
+  {
+   "text": "The first structure met is the subcostal nerve.",
+   "shot": 2,
+   "dir": "warm, amused",
+   "say": "And look who waves hello. The subcostal nerve is superficial, so it is met first."
+  },
+  {
+   "text": "It lies on top, before the kidney.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "It lies superficial, long before the kidney."
+  },
+  {
+   "text": "The kidney is deep and retroperitoneal.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "The kidney lies deep, extraperitoneally, in the retroperitoneum."
+  },
+  {
+   "text": "Remember: from behind, the subcostal nerve comes before the kidney.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: from behind, the subcostal nerve comes before the kidney."
+  }
+ ]
+}

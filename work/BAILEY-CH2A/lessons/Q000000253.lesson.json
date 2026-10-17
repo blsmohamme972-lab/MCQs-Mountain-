@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000253",
+ "image": "Q000000253.png",
+ "takeaway": "Malignant melanoma is a tumour of melanocytes: think of it in an itchy, pigmented lesion that bleeds.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 34-year-old lawyer has an itchy brown pigmented lesion on her right lower limb. She says it occasionally bleeds. What is the diagnosis?",
+  "say": "A thirty-four-year-old lawyer presents with an itchy brown pigmented lesion on her right lower limb. She says it occasionally bleeds. What is the diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Malignant melanoma",
+  "say": "The answer is malignant melanoma.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 560,
+   "y": 312,
+   "z": 2.0,
+   "spot": [
+    560,
+    260,
+    230
+   ]
+  },
+  {
+   "x": 450,
+   "y": 647,
+   "z": 2.2,
+   "spot": [
+    450,
+    600,
+    200
+   ]
+  },
+  {
+   "x": 680,
+   "y": 777,
+   "z": 2.2,
+   "spot": [
+    680,
+    730,
+    200
+   ]
+  },
+  {
+   "x": 940,
+   "y": 572,
+   "z": 2.0,
+   "spot": [
+    940,
+    520,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 34-year-old lawyer inspects her leg with a magnifier.",
+   "shot": 1,
+   "dir": "gentle, curious",
+   "say": "This thirty-four-year-old lawyer is inspecting her leg with a magnifying glass."
+  },
+  {
+   "text": "An itchy brown pigmented lesion on her right lower limb.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "She has an itchy brown pigmented lesion on her right lower limb."
+  },
+  {
+   "text": "And she says it occasionally bleeds.",
+   "shot": 3,
+   "dir": "clear, concerned",
+   "say": "And she says it occasionally bleeds."
+  },
+  {
+   "text": "The grumpy cells are melanocytes: a tumour of melanocytes.",
+   "shot": 4,
+   "dir": "warm, amused",
+   "say": "(laugh) The grumpy little judges inside are melanocytes. Malignant melanoma is a tumour of melanocytes."
+  },
+  {
+   "text": "Melanocytes are found in the skin, the bowel and the eye.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Melanocytes are found in the skin, the bowel and the eye."
+  },
+  {
+   "text": "Remember: an itchy, pigmented lesion that bleeds should make you think of malignant melanoma.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: an itchy, pigmented lesion that bleeds should make you think of malignant melanoma."
+  }
+ ]
+}

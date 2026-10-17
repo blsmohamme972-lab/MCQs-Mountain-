@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000242",
+ "image": "Q000000242.png",
+ "takeaway": "The double-bubble sign on X-ray, with Down's syndrome, vomiting and dehydration in a newborn, is duodenal atresia.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 3-day-old boy with Down's syndrome has vomiting and dehydration. A plain abdominal X-ray shows two bubbles of gas in the upper abdomen. What is the diagnosis?",
+  "say": "A three-day-old boy with Down's syndrome presents with vomiting and dehydration. A plain abdominal X-ray shows two bubbles of gas in the upper abdomen. What is the diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Duodenal atresia",
+  "say": "The answer is duodenal atresia.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 452,
+   "y": 621,
+   "z": 1.7,
+   "spot": [
+    430,
+    560,
+    280
+   ]
+  },
+  {
+   "x": 720,
+   "y": 297,
+   "z": 2.2,
+   "spot": [
+    720,
+    250,
+    190
+   ]
+  },
+  {
+   "x": 1060,
+   "y": 598,
+   "z": 1.8,
+   "spot": [
+    1060,
+    540,
+    280
+   ]
+  },
+  {
+   "x": 1130,
+   "y": 817,
+   "z": 2.2,
+   "spot": [
+    1130,
+    770,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 3-day-old boy with Down's syndrome is vomiting.",
+   "shot": 1,
+   "dir": "gentle, curious",
+   "say": "This is a three-day-old boy with Down's syndrome. He is vomiting."
+  },
+  {
+   "text": "He is dehydrated too, and the water drop is very worried.",
+   "shot": 2,
+   "dir": "gentle, concerned",
+   "say": "(sigh) He is dehydrated too, and the little water drop on the drip is very worried."
+  },
+  {
+   "text": "The plain X-ray shows two bubbles of gas: the double-bubble sign.",
+   "shot": 3,
+   "dir": "clear, confident",
+   "say": "The plain X-ray shows two bubbles of gas in the upper abdomen. This is the double-bubble sign."
+  },
+  {
+   "text": "The bubbles are the dilated stomach and dilated proximal duodenum.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "The bubbles are the dilated stomach and the dilated proximal duodenum."
+  },
+  {
+   "text": "The padlock is the blockage: duodenal atresia.",
+   "shot": 4,
+   "dir": "calm, confident",
+   "say": "And the padlock is the blockage: duodenal atresia, which is associated with Down's syndrome."
+  },
+  {
+   "text": "Remember: double bubble in a baby with Down's syndrome is duodenal atresia.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: a double bubble in a baby with Down's syndrome means duodenal atresia."
+  }
+ ]
+}

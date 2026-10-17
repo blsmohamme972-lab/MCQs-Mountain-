@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000293",
+ "image": "Q000000293.png",
+ "takeaway": "In a right hemicolectomy the right ureter, the right gonadal vessels and the second part of the duodenum are at risk.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "In a right hemicolectomy, which structure is encountered during dissection?",
+  "say": "When performing a right hemicolectomy, which of the following structures is encountered during dissection?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Right ureter",
+  "say": "The answer is the right ureter.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 800,
+   "y": 421,
+   "z": 1.7,
+   "spot": [
+    800,
+    360,
+    300
+   ]
+  },
+  {
+   "x": 650,
+   "y": 662,
+   "z": 2.0,
+   "spot": [
+    650,
+    640,
+    230
+   ]
+  },
+  {
+   "x": 920,
+   "y": 652,
+   "z": 2.0,
+   "spot": [
+    920,
+    630,
+    230
+   ]
+  },
+  {
+   "x": 1109,
+   "y": 658,
+   "z": 1.8,
+   "spot": [
+    1180,
+    600,
+    280
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Two surgeons lift the colon in a right hemicolectomy.",
+   "shot": 1,
+   "dir": "clear, steady",
+   "say": "Two surgeons lift the colon during a right hemicolectomy. Behind it lie important relations of the right colon."
+  },
+  {
+   "text": "Underneath, the right ureter waves a red flag.",
+   "shot": 2,
+   "dir": "urgent, steady",
+   "say": "Underneath, the right ureter waves a red flag. Watch the ureter!"
+  },
+  {
+   "text": "Next to it, the right gonadal vessels.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "Next to it lie the right gonadal vessels."
+  },
+  {
+   "text": "And the second part of the duodenum.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "And nearby, the second part of the duodenum."
+  },
+  {
+   "text": "These three structures are at risk and need careful identification.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "These three structures are at risk. Vigilance and careful identification are needed to prevent injury at the time of surgery."
+  },
+  {
+   "text": "Remember: a right hemicolectomy puts the right ureter at risk.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: in a right hemicolectomy, find the right ureter."
+  }
+ ]
+}

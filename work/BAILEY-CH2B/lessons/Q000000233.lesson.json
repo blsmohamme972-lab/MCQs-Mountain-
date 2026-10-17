@@ -1,0 +1,98 @@
+{
+ "qid": "Q000000233",
+ "image": "Q000000233.png",
+ "takeaway": "High pH means alkalosis. A low CO2 means a respiratory cause. A negative base excess shows metabolic compensation.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "An arterial blood gas shows pH 7.59, a low pCO2 of 2.3 kPa and a base excess of −5.5. What is the interpretation?",
+  "say": "An arterial blood gas shows pH seven point five nine, a low carbon dioxide of two point three kilopascals, and a base excess of minus five point five. What is the interpretation?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Respiratory alkalosis with compensation",
+  "say": "The answer is respiratory alkalosis with compensation.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 850,
+   "y": 382,
+   "z": 2.0,
+   "spot": [
+    850,
+    330,
+    300
+   ]
+  },
+  {
+   "x": 452,
+   "y": 581,
+   "z": 1.7,
+   "spot": [
+    330,
+    520,
+    300
+   ]
+  },
+  {
+   "x": 1084,
+   "y": 621,
+   "z": 1.7,
+   "spot": [
+    1210,
+    560,
+    300
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The syringe superhero floats high: pH 7.59, so this is an alkalosis.",
+   "shot": 1,
+   "dir": "calm, curious",
+   "say": "The syringe superhero is floating up high. The pH is seven point five nine, so this is an alkalosis."
+  },
+  {
+   "text": "The lungs blow the CO2 balloon away, so the CO2 is low.",
+   "shot": 2,
+   "dir": "clear, confident",
+   "say": "Now the lungs. They blow the carbon dioxide balloon away, so the carbon dioxide is low."
+  },
+  {
+   "text": "A low CO2 tells us the cause is respiratory.",
+   "shot": 2,
+   "dir": "calm, confident",
+   "say": "A low carbon dioxide tells us the cause is respiratory."
+  },
+  {
+   "text": "Look at the kidney at work: the base excess is negative.",
+   "shot": 3,
+   "dir": "warm, amused",
+   "say": "(laugh) Look at that little kidney working hard. The base excess is negative, minus five point five."
+  },
+  {
+   "text": "A negative base excess shows metabolic compensation.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "A negative base excess shows the kidney compensating."
+  },
+  {
+   "text": "So: a respiratory alkalosis, with compensation.",
+   "shot": 0,
+   "dir": "calm, confident",
+   "say": "So we have a respiratory alkalosis, with metabolic compensation."
+  },
+  {
+   "text": "Remember: high pH, low CO2, negative base excess.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: high pH, low carbon dioxide, negative base excess: respiratory alkalosis with compensation."
+  }
+ ]
+}

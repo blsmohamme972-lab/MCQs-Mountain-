@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000288",
+ "image": "Q000000288.png",
+ "takeaway": "Tumours spread mainly by the lymphatic and blood routes; prostatic carcinoma commonly spreads via the blood.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following is a feature of metastatic spread?",
+  "say": "Which of the following is a feature of metastatic spread?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Prostatic carcinoma commonly spreads via the blood",
+  "say": "The answer: prostatic carcinoma commonly spreads via the blood.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 800,
+   "y": 621,
+   "z": 1.7,
+   "spot": [
+    800,
+    560,
+    300
+   ]
+  },
+  {
+   "x": 440,
+   "y": 382,
+   "z": 2.0,
+   "spot": [
+    440,
+    330,
+    250
+   ]
+  },
+  {
+   "x": 1187,
+   "y": 347,
+   "z": 2.2,
+   "spot": [
+    1270,
+    300,
+    200
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 784,
+   "z": 1.8,
+   "spot": [
+    1000,
+    780,
+    300
+   ]
+  },
+  {
+   "x": 384,
+   "y": 352,
+   "z": 2.0,
+   "spot": [
+    170,
+    300,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Metastasis: cells travel to a distant site.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "Metastasis is the growth of cells that have travelled from a tumour to a distant site."
+  },
+  {
+   "text": "Tumours mostly use two routes.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "Tumours commonly spread by two routes: the lymphatic and the haematogenous."
+  },
+  {
+   "text": "The prostate takes the blood boat.",
+   "shot": 1,
+   "dir": "warm, amused",
+   "say": "(laugh) And the prostate cancer takes the blood boat, sailing down the river of red cells."
+  },
+  {
+   "text": "It commonly spreads via the blood.",
+   "shot": 4,
+   "dir": "clear, confident",
+   "say": "Prostatic carcinoma commonly spreads via the blood."
+  },
+  {
+   "text": "Other routes are less common.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Other routes are less common: transcoelomic, perineural, through the cerebrospinal fluid, and iatrogenic."
+  },
+  {
+   "text": "Remember: prostatic carcinoma commonly spreads via the blood.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: prostatic carcinoma commonly spreads via the blood."
+  }
+ ]
+}

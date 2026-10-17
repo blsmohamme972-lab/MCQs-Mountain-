@@ -1,0 +1,118 @@
+{
+ "qid": "Q000000322",
+ "image": "Q000000322.png",
+ "takeaway": "Hyperthyroidism causes tremor, tachycardia, low serum cholesterol and hyperreflexia; the opposite findings point to hypothyroidism.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Typical physical and laboratory findings in hyperthyroidism include which of the following?",
+  "say": "Typical physical and laboratory findings in hyperthyroidism include which of the following?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Tremor",
+  "say": "The answer is tremor.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 780,
+   "y": 467,
+   "z": 2.2,
+   "spot": [
+    780,
+    420,
+    150
+   ]
+  },
+  {
+   "x": 470,
+   "y": 482,
+   "z": 2.0,
+   "spot": [
+    470,
+    430,
+    180
+   ]
+  },
+  {
+   "x": 1050,
+   "y": 507,
+   "z": 2.2,
+   "spot": [
+    1050,
+    460,
+    150
+   ]
+  },
+  {
+   "x": 800,
+   "y": 672,
+   "z": 2.0,
+   "spot": [
+    800,
+    650,
+    200
+   ]
+  },
+  {
+   "x": 760,
+   "y": 318,
+   "z": 1.8,
+   "spot": [
+    760,
+    260,
+    220
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "His thyroid is on fire: hyperthyroidism.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "Look at his neck. The thyroid is on fire. This man has hyperthyroidism."
+  },
+  {
+   "text": "His hand shakes and the tea spills: tremor.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "His hand shakes so much that the tea spills from the glass. That is tremor."
+  },
+  {
+   "text": "The other hand trembles too.",
+   "shot": 3,
+   "dir": "warm, amused",
+   "say": "(laugh) And the other hand is trembling too."
+  },
+  {
+   "text": "His heart drums fast: tachycardia.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "Inside, his heart beats a fast drum. That is tachycardia."
+  },
+  {
+   "text": "Low serum cholesterol and hyperreflexia also fit.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "Hyperthyroidism also brings a low serum cholesterol and brisk reflexes, called hyperreflexia."
+  },
+  {
+   "text": "The other options are classical findings of hypothyroidism.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "All the other options are classical findings of hypothyroidism, the opposite state."
+  },
+  {
+   "text": "Remember: a hot thyroid shakes the hands: tremor.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: an overactive thyroid shakes the hands. Tremor is a typical finding in hyperthyroidism."
+  }
+ ]
+}

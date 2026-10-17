@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000239",
+ "image": "Q000000239.png",
+ "takeaway": "Ulcerative colitis is associated with sclerosing cholangitis: jaundice with deranged liver tests in a patient with long-standing inflammatory bowel disease.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 45-year-old woman has epigastric tenderness and jaundice. Her liver tests are deranged and she has a long history of inflammatory bowel disease. What is the likely diagnosis?",
+  "say": "A forty-five-year-old woman has epigastric tenderness and jaundice. She has deranged liver biochemistry and a long history of inflammatory bowel disease. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Sclerosing cholangitis",
+  "say": "The answer is sclerosing cholangitis.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 427,
+   "y": 388,
+   "z": 1.8,
+   "spot": [
+    300,
+    330,
+    280
+   ]
+  },
+  {
+   "x": 1050,
+   "y": 487,
+   "z": 2.2,
+   "spot": [
+    1050,
+    440,
+    200
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 505,
+   "z": 2.0,
+   "spot": [
+    1330,
+    540,
+    230
+   ]
+  },
+  {
+   "x": 760,
+   "y": 470,
+   "z": 1.8,
+   "spot": [
+    760,
+    470,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A woman with jaundice and a long scroll of IBD history.",
+   "shot": 1,
+   "dir": "calm, curious",
+   "say": "Here is a woman with jaundice and epigastric tenderness. Her scroll shows a long history of inflammatory bowel disease."
+  },
+  {
+   "text": "Her liver tests are deranged: the paper shows arrows going up.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "Her liver biochemistry is deranged. The report in the liver's hand shows the numbers going up."
+  },
+  {
+   "text": "The colon is the link: ulcerative colitis goes with sclerosing cholangitis.",
+   "shot": 3,
+   "dir": "clear, confident",
+   "say": "The colon is the link. Ulcerative colitis is associated with sclerosing cholangitis."
+  },
+  {
+   "text": "The liver is tied up in knotted bile ducts: sclerosing cholangitis.",
+   "shot": 4,
+   "dir": "warm, amused",
+   "say": "(laugh) And look at the liver, all tied up in knotted bile ducts. That is sclerosing cholangitis."
+  },
+  {
+   "text": "A long inflammatory bowel disease history is the big clue.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "So a long history of inflammatory bowel disease is the big clue."
+  },
+  {
+   "text": "Remember: IBD with jaundice and deranged liver tests means sclerosing cholangitis.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: inflammatory bowel disease with jaundice and deranged liver tests suggests sclerosing cholangitis."
+  }
+ ]
+}

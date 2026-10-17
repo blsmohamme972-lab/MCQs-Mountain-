@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000302",
+ "image": "Q000000302.png",
+ "takeaway": "Gastric acid is stimulated by acetylcholine, gastrin from pyloric G-cells, and histamine from mast cells.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Gastric acid secretion is stimulated by which of the following?",
+  "say": "Gastric acid secretion is stimulated by which of the following?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Gastrin",
+  "say": "The answer is gastrin.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 880,
+   "y": 535,
+   "z": 1.6,
+   "spot": [
+    880,
+    470,
+    320
+   ]
+  },
+  {
+   "x": 480,
+   "y": 642,
+   "z": 2.0,
+   "spot": [
+    480,
+    620,
+    260
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 522,
+   "z": 2.0,
+   "spot": [
+    1290,
+    470,
+    230
+   ]
+  },
+  {
+   "x": 880,
+   "y": 808,
+   "z": 2.0,
+   "spot": [
+    880,
+    820,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The stomach is a furnace making gastric acid.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "The stomach is a furnace, and it makes gastric acid."
+  },
+  {
+   "text": "The golden drops of acid are made by the parietal cells.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "The golden drops of acid are made by the parietal cells."
+  },
+  {
+   "text": "Gastrin shouts through a megaphone.",
+   "shot": 2,
+   "dir": "warm, amused",
+   "say": "(laugh) Gastrin shouts through a megaphone: make more acid! It is produced by the pyloric G-cells."
+  },
+  {
+   "text": "Histamine, from mast cells, stimulates the parietal cells directly.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "Histamine, produced by mast cells, stimulates the parietal cells directly, and boosts the effect of gastrin."
+  },
+  {
+   "text": "Acetylcholine from the vagus nerve is the third.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "The third factor is acetylcholine, from the vagus nerve, which reaches the parietal cells directly."
+  },
+  {
+   "text": "Remember: acetylcholine, gastrin and histamine stimulate acid.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: acetylcholine, gastrin, and histamine stimulate gastric acid."
+  }
+ ]
+}

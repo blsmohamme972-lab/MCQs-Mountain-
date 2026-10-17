@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000324",
+ "image": "Q000000324.png",
+ "takeaway": "Cerebral blood flow is very sensitive to the pCO2 of the perfusing blood; the circle of Willis lets other arteries supply the brain if one blocks.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "With regard to the cerebral circulation:",
+  "say": "With regard to the cerebral circulation, which statement is true?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Cerebral blood flow is very sensitive to changes in the pCO2 of the perfusing blood",
+  "say": "The answer: cerebral blood flow is very sensitive to changes in the pCO2 of the perfusing blood.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 740,
+   "y": 431,
+   "z": 1.7,
+   "spot": [
+    740,
+    370,
+    300
+   ]
+  },
+  {
+   "x": 1109,
+   "y": 308,
+   "z": 1.8,
+   "spot": [
+    1280,
+    250,
+    280
+   ]
+  },
+  {
+   "x": 740,
+   "y": 725,
+   "z": 1.7,
+   "spot": [
+    740,
+    700,
+    300
+   ]
+  },
+  {
+   "x": 1020,
+   "y": 383,
+   "z": 2.4,
+   "spot": [
+    1020,
+    340,
+    150
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The brain sits above a roundabout: the circle of Willis.",
+   "shot": 3,
+   "dir": "warm, curious",
+   "say": "The brain sits above a busy roundabout. This is the circle of Willis, around the base of the brain."
+  },
+  {
+   "text": "All the main arteries connect to it.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "All the main arteries to the brain connect to this rich anastomosis."
+  },
+  {
+   "text": "If one road blocks, the others still supply the brain.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "So if one artery blocks, the brain is still supplied by the others. There are no functional end-arteries."
+  },
+  {
+   "text": "The CO2 character turns the tap: flow follows the pCO2.",
+   "shot": 2,
+   "dir": "warm, amused",
+   "say": "(laugh) And the carbon dioxide character turns the tap. Cerebral blood flow is very sensitive to changes in pCO2."
+  },
+  {
+   "text": "Autonomic reflexes barely affect it.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Cerebral blood flow is little affected by cardiovascular reflexes."
+  },
+  {
+   "text": "Remember: cerebral blood flow follows the pCO2.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: cerebral blood flow is very sensitive to the pCO2 of the blood."
+  }
+ ]
+}

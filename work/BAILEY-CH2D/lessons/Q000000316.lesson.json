@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000316",
+ "image": "Q000000316.png",
+ "takeaway": "Shaping of the hands and feet in limb development happens through apoptosis during a critical period of about 4 weeks.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "With regard to development of the limbs:",
+  "say": "With regard to development of the limbs, which statement is true?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Shaping of the hands and feet is brought about through apoptosis",
+  "say": "The answer: shaping of the hands and feet is brought about through apoptosis.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 760,
+   "y": 532,
+   "z": 2.0,
+   "spot": [
+    760,
+    480,
+    260
+   ]
+  },
+  {
+   "x": 540,
+   "y": 332,
+   "z": 2.0,
+   "spot": [
+    540,
+    280,
+    250
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 472,
+   "z": 2.0,
+   "spot": [
+    1370,
+    420,
+    230
+   ]
+  },
+  {
+   "x": 970,
+   "y": 647,
+   "z": 2.2,
+   "spot": [
+    970,
+    600,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A potter sculpts a hand on the wheel: the developing limb.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "A potter sculpts a hand on his wheel. This is the developing limb."
+  },
+  {
+   "text": "The little sparkling cells carve out the fingers: apoptosis.",
+   "shot": 2,
+   "dir": "clear, confident",
+   "say": "The sparkling cells carve out the fingers, between them. This is apoptosis, programmed cell death."
+  },
+  {
+   "text": "Limb development takes place over a 4-week period.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "Limb development takes place over a four-week period."
+  },
+  {
+   "text": "By the end of the eighth week all components are distinct.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "By the end of the eighth week, all the components of the upper and lower limbs are distinct."
+  },
+  {
+   "text": "In this critical period teratogens can cause limb anomalies.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "During this critical period the limb is susceptible to environmental teratogens, resulting in limb anomalies."
+  },
+  {
+   "text": "Remember: apoptosis shapes the hands and feet.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: apoptosis shapes the hands and feet."
+  }
+ ]
+}

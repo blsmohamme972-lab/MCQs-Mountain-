@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000328",
+ "image": "Q000000328.png",
+ "takeaway": "The facial nerve is secreto-motor to the lacrimal gland through the greater petrosal nerve.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "With regard to the facial nerve, which statement is true?",
+  "say": "With regard to the facial nerve, which statement is true?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "It is secreto-motor to the lacrimal gland",
+  "say": "The answer is: it is secreto-motor to the lacrimal gland.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 530,
+   "y": 452,
+   "z": 2.0,
+   "spot": [
+    530,
+    400,
+    200
+   ]
+  },
+  {
+   "x": 840,
+   "y": 624,
+   "z": 1.8,
+   "spot": [
+    840,
+    600,
+    260
+   ]
+  },
+  {
+   "x": 780,
+   "y": 307,
+   "z": 2.2,
+   "spot": [
+    780,
+    260,
+    160
+   ]
+  },
+  {
+   "x": 1040,
+   "y": 297,
+   "z": 2.2,
+   "spot": [
+    1040,
+    250,
+    170
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 572,
+   "z": 2.0,
+   "spot": [
+    1100,
+    520,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The facial nerve: the 7th cranial nerve.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "Meet the facial nerve, the seventh cranial nerve, smiling in the onion market."
+  },
+  {
+   "text": "It has many different functions and matters clinically.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "Its branches spread across the face. It has a variety of different functions, and it is important clinically."
+  },
+  {
+   "text": "One branch is a pipe: the greater petrosal nerve.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "One branch runs up like a pipe. This is the greater petrosal nerve."
+  },
+  {
+   "text": "It turns on the lacrimal gland's tap.",
+   "shot": 4,
+   "dir": "clear, confident",
+   "say": "Through it, the facial nerve carries secreto-motor fibres to the lacrimal gland, and turns on the tap."
+  },
+  {
+   "text": "And out flow the tears.",
+   "shot": 5,
+   "dir": "warm, amused",
+   "say": "(laugh) And out flow the tears, onions or no onions."
+  },
+  {
+   "text": "Remember: the facial nerve makes tears via the greater petrosal nerve.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: the facial nerve is secreto-motor to the lacrimal gland, through the greater petrosal nerve."
+  }
+ ]
+}

@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000296",
+ "image": "Q000000296.png",
+ "takeaway": "A fall in pCO2 shifts the oxygen-haemoglobin curve to the left: haemoglobin holds oxygen more tightly.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which displaces the oxygen–haemoglobin dissociation curve to the left?",
+  "say": "Which of these displaces the oxygen–haemoglobin dissociation curve to the left?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "A fall in pCO2",
+  "say": "The answer is a fall in p C O two.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 760,
+   "y": 525,
+   "z": 1.6,
+   "spot": [
+    760,
+    460,
+    300
+   ]
+  },
+  {
+   "x": 384,
+   "y": 402,
+   "z": 2.0,
+   "spot": [
+    200,
+    350,
+    190
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 252,
+   "z": 2.0,
+   "spot": [
+    1170,
+    200,
+    200
+   ]
+  },
+  {
+   "x": 480,
+   "y": 808,
+   "z": 2.0,
+   "spot": [
+    480,
+    800,
+    200
+   ]
+  },
+  {
+   "x": 790,
+   "y": 482,
+   "z": 2.0,
+   "spot": [
+    790,
+    430,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A left shift means haemoglobin holds oxygen tight.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "A left shift means haemoglobin grips its oxygen tightly, like this strong hero hugging every ball."
+  },
+  {
+   "text": "The CO2 balloon goes flat: a fall in pCO2.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The carbon dioxide balloon deflates. A fall in p C O two shifts the curve left."
+  },
+  {
+   "text": "A rise in pH flies the same flag.",
+   "shot": 3,
+   "dir": "warm, amused",
+   "say": "(laugh) His friend waves the flag for a rise in p H, another left shift."
+  },
+  {
+   "text": "So do cold, less 2,3-DPG, fetal haemoglobin and carbon monoxide.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "So do a fall in temperature, less two three D P G, fetal haemoglobin, and carbon monoxide."
+  },
+  {
+   "text": "Acidosis, heat, a rise in pCO2 and exercise push it right.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Acidosis, heat, a rise in p C O two, and exercise push it right."
+  },
+  {
+   "text": "Remember: a fall in pCO2 shifts the curve to the left.",
+   "shot": 4,
+   "dir": "slow, firm",
+   "say": "Remember: a fall in p C O two shifts the curve to the left."
+  }
+ ]
+}

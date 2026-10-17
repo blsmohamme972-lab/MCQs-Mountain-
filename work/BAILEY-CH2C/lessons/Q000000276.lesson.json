@@ -1,0 +1,128 @@
+{
+ "qid": "Q000000276",
+ "image": "Q000000276.png",
+ "takeaway": "Acute alcoholic hepatitis: jaundice, fever, a tender enlarged liver, ascites and stigmata of chronic liver disease after alcohol excess.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 57-year-old woman has 5 weeks of jaundice, anorexia and weight loss, a tender enlarged liver, mild ascites, spider naevi, palmar erythema and a raised ALT. Diagnosis?",
+  "say": "A fifty-seven-year-old woman has a five-week history of jaundice, anorexia and weight loss. She has a tender enlarged liver, mild ascites, widespread spider naevi and palmar erythema. Her alanine transaminase is high, her albumin is low, and her prothrombin time is prolonged. What is the likely diagnosis?",
+  "dir": "serious, clear"
+ },
+ "answer": {
+  "text": "Acute alcoholic hepatitis",
+  "say": "The answer is acute alcoholic hepatitis.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 480,
+   "y": 272,
+   "z": 2.0,
+   "spot": [
+    480,
+    220,
+    230
+   ]
+  },
+  {
+   "x": 700,
+   "y": 545,
+   "z": 1.6,
+   "spot": [
+    700,
+    480,
+    320
+   ]
+  },
+  {
+   "x": 880,
+   "y": 637,
+   "z": 2.2,
+   "spot": [
+    880,
+    590,
+    200
+   ]
+  },
+  {
+   "x": 440,
+   "y": 587,
+   "z": 2.2,
+   "spot": [
+    440,
+    540,
+    200
+   ]
+  },
+  {
+   "x": 1090,
+   "y": 552,
+   "z": 2.0,
+   "spot": [
+    1090,
+    500,
+    230
+   ]
+  },
+  {
+   "x": 1030,
+   "y": 802,
+   "z": 2.0,
+   "spot": [
+    1030,
+    780,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Alcohol excess keeps pouring on the liver.",
+   "shot": 1,
+   "dir": "serious, steady",
+   "say": "The bottle keeps pouring alcohol onto the liver. That is alcohol excess."
+  },
+  {
+   "text": "A tender enlarged liver, burning with inflammation.",
+   "shot": 2,
+   "dir": "grave, steady",
+   "say": "(sigh) The liver is tender and enlarged, burning with acute inflammation."
+  },
+  {
+   "text": "She has a fever: 37.8°C.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "She has a low fever, thirty-seven point eight degrees."
+  },
+  {
+   "text": "Spider naevi.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "Spider naevi cover her skin."
+  },
+  {
+   "text": "And palmar erythema.",
+   "shot": 5,
+   "dir": "clear, steady",
+   "say": "And palmar erythema on her hands. Both are peripheral stigmata of liver disease."
+  },
+  {
+   "text": "The prothrombin time is long: 20 s.",
+   "shot": 6,
+   "dir": "grave, explanatory",
+   "say": "The prothrombin time is prolonged, twenty seconds against a control of thirteen, so the liver is failing."
+  },
+  {
+   "text": "Remember: jaundice, a tender liver and spider naevi after alcohol is acute alcoholic hepatitis.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: jaundice, a tender liver and spider naevi after alcohol excess is acute alcoholic hepatitis."
+  }
+ ]
+}

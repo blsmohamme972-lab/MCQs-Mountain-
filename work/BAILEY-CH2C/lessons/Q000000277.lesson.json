@@ -1,0 +1,118 @@
+{
+ "qid": "Q000000277",
+ "image": "Q000000277.png",
+ "takeaway": "Hepatic metastases: a past colorectal cancer, weight loss, jaundice, a right upper quadrant mass that moves on respiration and a very high ALP.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 62-year-old man has weight loss, jaundice and epigastric pain. He had a rectal anterior resection years ago and now has a right upper quadrant mass moving on respiration. ALP is 752. Diagnosis?",
+  "say": "A sixty-two-year-old man has three months of weight loss, increasing jaundice, and nocturnal epigastric pain. Five years ago he had an anterior resection of the rectum. There is a right upper quadrant mass that moves on respiration, and his alkaline phosphatase is 752. What is the likely diagnosis?",
+  "dir": "serious, clear"
+ },
+ "answer": {
+  "text": "Hepatic metastases",
+  "say": "The answer is hepatic metastases.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 730,
+   "y": 387,
+   "z": 2.2,
+   "spot": [
+    730,
+    340,
+    200
+   ]
+  },
+  {
+   "x": 384,
+   "y": 622,
+   "z": 2.0,
+   "spot": [
+    350,
+    570,
+    250
+   ]
+  },
+  {
+   "x": 900,
+   "y": 545,
+   "z": 1.6,
+   "spot": [
+    900,
+    480,
+    320
+   ]
+  },
+  {
+   "x": 900,
+   "y": 722,
+   "z": 2.0,
+   "spot": [
+    900,
+    700,
+    230
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 312,
+   "z": 2.0,
+   "spot": [
+    1250,
+    260,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Years ago he had an anterior resection of the rectum.",
+   "shot": 1,
+   "dir": "serious, steady",
+   "say": "Years ago this man had an anterior resection of the rectum for cancer."
+  },
+  {
+   "text": "Colon cancer cells travel to the liver.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "Colon cancer spreads to other organs. The purple cells travel to the liver."
+  },
+  {
+   "text": "The liver is full of seeds.",
+   "shot": 3,
+   "dir": "grave, steady",
+   "say": "(sigh) Now his liver is full of cancer seeds."
+  },
+  {
+   "text": "The mass moves with breathing.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "The right upper quadrant mass moves on respiration."
+  },
+  {
+   "text": "The alkaline phosphatase is sky-high: 752.",
+   "shot": 5,
+   "dir": "urgent, steady",
+   "say": "The alkaline phosphatase rockets to seven hundred and fifty-two."
+  },
+  {
+   "text": "Up to 25 per cent have liver metastases at diagnosis.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Up to twenty-five per cent have liver metastases at diagnosis."
+  },
+  {
+   "text": "Remember: a past colon cancer with a liver mass and a high ALP is hepatic metastases.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: a past colorectal cancer with a liver mass and a high alkaline phosphatase means hepatic metastases."
+  }
+ ]
+}

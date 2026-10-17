@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000303",
+ "image": "Q000000303.png",
+ "takeaway": "Bicarbonate carries 80 to 90 per cent of the blood's carbon dioxide; carbonic anhydrase in red cells makes it.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Carbon dioxide is principally transported in the blood in which form?",
+  "say": "Carbon dioxide is principally transported in the blood in which form?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Bicarbonate",
+  "say": "The answer is bicarbonate.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 390,
+   "y": 682,
+   "z": 2.0,
+   "spot": [
+    390,
+    660,
+    250
+   ]
+  },
+  {
+   "x": 950,
+   "y": 485,
+   "z": 1.6,
+   "spot": [
+    950,
+    420,
+    330
+   ]
+  },
+  {
+   "x": 1030,
+   "y": 242,
+   "z": 2.0,
+   "spot": [
+    1030,
+    190,
+    230
+   ]
+  },
+  {
+   "x": 1070,
+   "y": 592,
+   "z": 2.0,
+   "spot": [
+    1070,
+    540,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Carbon dioxide needs a ride through the blood.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "Little carbon dioxide wants a ride through the river of blood."
+  },
+  {
+   "text": "The big ferry is bicarbonate.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The big ferry is full of passengers. This is bicarbonate."
+  },
+  {
+   "text": "It carries 80 to 90 per cent of the CO2.",
+   "shot": 3,
+   "dir": "clear, confident",
+   "say": "Bicarbonate accounts for about eighty to ninety per cent of the carbon dioxide in the blood."
+  },
+  {
+   "text": "Carbamino compounds carry 5 to 10 per cent; 5 per cent is dissolved.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Carbamino compounds carry five to ten per cent, and only five per cent is physically dissolved."
+  },
+  {
+   "text": "Red cells use carbonic anhydrase, with zinc, to make it.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Red cells hold carbonic anhydrase, which needs zinc as a cofactor, to turn carbon dioxide into bicarbonate."
+  },
+  {
+   "text": "Remember: carbon dioxide travels mostly as bicarbonate.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: carbon dioxide travels mostly as bicarbonate."
+  }
+ ]
+}

@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000308",
+ "image": "Q000000308.png",
+ "takeaway": "Saliva is the gastrointestinal fluid richest in potassium; 1 to 1.5 litres are secreted each day by an active process.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following gastrointestinal fluids is richest in potassium?",
+  "say": "Which of the following gastrointestinal fluids is richest in potassium?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Salivary",
+  "say": "The answer is salivary.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 382,
+   "z": 2.0,
+   "spot": [
+    400,
+    330,
+    250
+   ]
+  },
+  {
+   "x": 700,
+   "y": 618,
+   "z": 1.8,
+   "spot": [
+    700,
+    560,
+    300
+   ]
+  },
+  {
+   "x": 900,
+   "y": 358,
+   "z": 1.8,
+   "spot": [
+    900,
+    300,
+    280
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 612,
+   "z": 2.0,
+   "spot": [
+    1220,
+    560,
+    250
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The bananas splash in the salivary fountain.",
+   "shot": 1,
+   "dir": "warm, amused",
+   "say": "(laugh) The potassium bananas are splashing in the salivary fountain!"
+  },
+  {
+   "text": "Saliva is the fluid richest in potassium.",
+   "shot": 2,
+   "dir": "clear, confident",
+   "say": "Saliva is the gastrointestinal fluid that is richest in potassium."
+  },
+  {
+   "text": "The salivary gland pours out 1 to 1.5 litres a day.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "The salivary glands secrete about one to one and a half litres each day."
+  },
+  {
+   "text": "Secretion is an active process.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "Salivary secretion is an active process."
+  },
+  {
+   "text": "First a plasma-like fluid forms, then the ducts modify it.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "A primary secretion forms first, like an ultrafiltrate of plasma, and is then modified as it flows along the duct system."
+  },
+  {
+   "text": "Remember: saliva is the potassium-rich fluid.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: saliva is the potassium-rich fluid."
+  }
+ ]
+}

@@ -1,0 +1,92 @@
+{
+ "qid": "Q000000243",
+ "image": "Q000000243.png",
+ "takeaway": "Pyloric stenosis: a young boy with non-bilious projectile vomiting and an olive-sized mass in the right upper quadrant, from pyloric muscle hypertrophy.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 7-week-old boy has non-bilious vomiting and dehydration. An olive-sized mass is felt in the right upper quadrant. What is the diagnosis?",
+  "say": "A seven-week-old boy presents with non-bilious vomiting and dehydration. On examination there is an olive-sized mass in the right upper quadrant. What is the diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Pyloric stenosis",
+  "say": "The answer is pyloric stenosis.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 650,
+   "y": 388,
+   "z": 1.8,
+   "spot": [
+    650,
+    330,
+    280
+   ]
+  },
+  {
+   "x": 1050,
+   "y": 567,
+   "z": 2.2,
+   "spot": [
+    1050,
+    520,
+    200
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 572,
+   "z": 2.0,
+   "spot": [
+    1260,
+    520,
+    220
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 7-week-old boy shoots out non-bilious projectile vomit.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "This seven-week-old boy has non-bilious, projectile vomiting, and he is getting dehydrated."
+  },
+  {
+   "text": "An olive-sized mass in the right upper quadrant.",
+   "shot": 2,
+   "dir": "clear, confident",
+   "say": "The doctor feels an olive-sized mass in the right upper quadrant. Here it is, a grumpy little olive."
+  },
+  {
+   "text": "The thick pylorus muscle blocks the stomach exit.",
+   "shot": 3,
+   "dir": "warm, amused",
+   "say": "(laugh) And the angry bodybuilder next to it is the thick pylorus muscle, blocking the stomach exit."
+  },
+  {
+   "text": "In hypertrophic pyloric stenosis the pyloric muscle is overgrown.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "In hypertrophic pyloric stenosis the pyloric lumen is obstructed by muscular hypertrophy."
+  },
+  {
+   "text": "It most commonly affects males in the first few months of life.",
+   "shot": 0,
+   "dir": "calm, steady",
+   "say": "It most commonly affects males in the first few months of life."
+  },
+  {
+   "text": "Remember: projectile non-bilious vomiting with an olive-sized mass is pyloric stenosis.",
+   "shot": 0,
+   "dir": "slow, warm",
+   "say": "Remember: projectile non-bilious vomiting with an olive-sized mass means pyloric stenosis."
+  }
+ ]
+}

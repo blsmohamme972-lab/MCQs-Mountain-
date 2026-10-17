@@ -1,0 +1,92 @@
+{
+ "qid": "Q000000294",
+ "image": "Q000000294.png",
+ "takeaway": "Restrictive disease such as pulmonary fibrosis makes the lungs stiff and reduces the functional residual capacity; obstructive disease increases it.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "What causes a reduction in pulmonary functional residual capacity?",
+  "say": "What causes a reduction in pulmonary functional residual capacity?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Pulmonary fibrosis",
+  "say": "The answer is pulmonary fibrosis.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 720,
+   "y": 445,
+   "z": 1.6,
+   "spot": [
+    720,
+    380,
+    280
+   ]
+  },
+  {
+   "x": 745,
+   "y": 680,
+   "z": 2.2,
+   "spot": [
+    745,
+    660,
+    170
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 482,
+   "z": 2.0,
+   "spot": [
+    1150,
+    430,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "FRC: the air left after a passive breath out.",
+   "shot": 2,
+   "dir": "warm, curious",
+   "say": "Functional residual capacity is the air left in the lungs at the end of passive expiration. Here it is this little jar."
+  },
+  {
+   "text": "These lungs have turned to stiff wood.",
+   "shot": 1,
+   "dir": "grave, steady",
+   "say": "(sigh) These lungs have turned to wood. That is pulmonary fibrosis."
+  },
+  {
+   "text": "Stiff, less compliant lungs.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "Fibrosis makes the lungs stiff and less compliant, like this tight spring."
+  },
+  {
+   "text": "So the FRC falls.",
+   "shot": 2,
+   "dir": "clear, explanatory",
+   "say": "Stiff lungs hold less air at rest, so the F R C is reduced."
+  },
+  {
+   "text": "Emphysema, bronchitis and asthma raise the FRC.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Obstructive diseases, like emphysema, chronic bronchitis and asthma, do the opposite. Air trapping and higher compliance increase the F R C."
+  },
+  {
+   "text": "Remember: restrictive disease like pulmonary fibrosis reduces the FRC.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: restrictive disease, like pulmonary fibrosis, reduces the functional residual capacity."
+  }
+ ]
+}

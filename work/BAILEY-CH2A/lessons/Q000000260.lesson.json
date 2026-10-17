@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000260",
+ "image": "Q000000260.png",
+ "takeaway": "A sudden severe headache with photophobia and neck stiffness suggests subarachnoid haemorrhage, confirmed by an immediate CT head scan.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 26-year-old man has a sudden onset of severe headache with photophobia and neck stiffness. Most appropriate investigation?",
+  "say": "A twenty-six-year-old man is admitted with a sudden onset of severe headache, with photophobia and neck stiffness. Select the most appropriate investigation.",
+  "dir": "tense, clear"
+ },
+ "answer": {
+  "text": "Immediate CT head scan",
+  "say": "The answer is an immediate CT head scan.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 800,
+   "y": 388,
+   "z": 1.8,
+   "spot": [
+    800,
+    330,
+    290
+   ]
+  },
+  {
+   "x": 384,
+   "y": 572,
+   "z": 2.0,
+   "spot": [
+    170,
+    520,
+    220
+   ]
+  },
+  {
+   "x": 730,
+   "y": 697,
+   "z": 2.2,
+   "spot": [
+    730,
+    650,
+    200
+   ]
+  },
+  {
+   "x": 1010,
+   "y": 327,
+   "z": 2.2,
+   "spot": [
+    1010,
+    280,
+    220
+   ]
+  },
+  {
+   "x": 1109,
+   "y": 478,
+   "z": 1.8,
+   "spot": [
+    1260,
+    420,
+    260
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 26-year-old man with a sudden, severe headache: a thunderclap.",
+   "shot": 1,
+   "dir": "urgent, steady",
+   "say": "A twenty-six-year-old man has a sudden onset of severe headache, like a thunderclap."
+  },
+  {
+   "text": "The light hurts his eyes: photophobia.",
+   "shot": 2,
+   "dir": "grave, steady",
+   "say": "(sigh) Bright light hurts his eyes. That is photophobia."
+  },
+  {
+   "text": "His neck is stiff.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "And his neck is stiff."
+  },
+  {
+   "text": "This history suggests subarachnoid haemorrhage from an aneurysmal bleed.",
+   "shot": 4,
+   "dir": "clear, confident",
+   "say": "This history suggests a subarachnoid haemorrhage, secondary to an aneurysmal bleed."
+  },
+  {
+   "text": "A CT head scan confirms the diagnosis.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "The diagnosis is confirmed with a CT head scan, and it must be done immediately."
+  },
+  {
+   "text": "Remember: sudden severe headache, photophobia and neck stiffness need an immediate CT head scan.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: a sudden severe headache with photophobia and neck stiffness needs an immediate CT head scan."
+  }
+ ]
+}

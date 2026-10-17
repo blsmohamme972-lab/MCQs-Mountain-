@@ -1,0 +1,102 @@
+{
+ "qid": "Q000000305",
+ "image": "Q000000305.png",
+ "takeaway": "Bile salts are reabsorbed mainly in the terminal ileum and return to the liver: the enterohepatic circulation.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Bile salt reuptake principally occurs where?",
+  "say": "Where does bile salt reuptake principally occur?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "In the ileum",
+  "say": "The answer is in the ileum.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 1084,
+   "y": 581,
+   "z": 1.7,
+   "spot": [
+    1260,
+    520,
+    280
+   ]
+  },
+  {
+   "x": 600,
+   "y": 644,
+   "z": 1.8,
+   "spot": [
+    600,
+    620,
+    260
+   ]
+  },
+  {
+   "x": 460,
+   "y": 422,
+   "z": 2.0,
+   "spot": [
+    460,
+    370,
+    240
+   ]
+  },
+  {
+   "x": 349,
+   "y": 207,
+   "z": 2.2,
+   "spot": [
+    290,
+    160,
+    180
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The ileum welcomes the travellers home.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "The happy ileum opens its arms. This is where bile salts are taken back up."
+  },
+  {
+   "text": "90 to 95% of bile salts are reabsorbed.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "Between ninety and ninety-five per cent of bile salts are absorbed from the small intestine, mostly from the terminal ileum."
+  },
+  {
+   "text": "They ride the enterohepatic circulation.",
+   "shot": 3,
+   "dir": "warm, amused",
+   "say": "(laugh) They ride their wagon along the golden road of the enterohepatic circulation."
+  },
+  {
+   "text": "The liver secretes them again.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "Back at the liver, they are excreted again into bile."
+  },
+  {
+   "text": "The pool recycles 6-8 times a day.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "The whole pool recycles twice per meal, about six to eight times a day."
+  },
+  {
+   "text": "Remember: bile salt reuptake happens in the ileum.",
+   "shot": 1,
+   "dir": "slow, firm",
+   "say": "Remember: bile salt reuptake happens in the ileum, mainly the terminal ileum."
+  }
+ ]
+}

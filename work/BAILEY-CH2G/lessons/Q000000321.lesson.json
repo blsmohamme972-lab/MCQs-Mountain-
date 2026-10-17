@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000321",
+ "image": "Q000000321.png",
+ "takeaway": "HIV establishes persistence through antigenic variation: huge numbers of variants eventually swamp the immune system.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Human immunodeficiency virus (HIV): which statement is true?",
+  "say": "Which statement about the human immunodeficiency virus, HIV, is true?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Establishes persistence through antigenic variation",
+  "say": "The answer is: it establishes persistence through antigenic variation.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 700,
+   "y": 388,
+   "z": 1.8,
+   "spot": [
+    700,
+    330,
+    230
+   ]
+  },
+  {
+   "x": 1056,
+   "y": 445,
+   "z": 1.6,
+   "spot": [
+    1250,
+    380,
+    280
+   ]
+  },
+  {
+   "x": 384,
+   "y": 432,
+   "z": 2.0,
+   "spot": [
+    380,
+    380,
+    180
+   ]
+  },
+  {
+   "x": 520,
+   "y": 724,
+   "z": 1.8,
+   "spot": [
+    520,
+    700,
+    250
+   ]
+  },
+  {
+   "x": 770,
+   "y": 784,
+   "z": 1.8,
+   "spot": [
+    770,
+    780,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "HIV tries on a new mask.",
+   "shot": 1,
+   "dir": "warm, playful",
+   "say": "Here is HIV, grinning as it tries on yet another mask."
+  },
+  {
+   "text": "A whole wall of masks: antigenic variation.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "Behind it hangs a whole wall of masks. This is antigenic variation: the virus keeps changing its surface antigens."
+  },
+  {
+   "text": "In the mirror, a disguised virus.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "In the mirror, it hides behind a disguise, so the immune system cannot recognise it."
+  },
+  {
+   "text": "A huge number of variants in a single patient.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "One infected patient carries a huge number of HIV variants during the course of infection."
+  },
+  {
+   "text": "The immune system is swamped and collapses.",
+   "shot": 4,
+   "dir": "grave, steady",
+   "say": "(sigh) The immune cells are buried under the masks. The immune system is swamped, and finally collapses."
+  },
+  {
+   "text": "Remember: HIV persists by antigenic variation.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: HIV establishes persistence through antigenic variation."
+  }
+ ]
+}

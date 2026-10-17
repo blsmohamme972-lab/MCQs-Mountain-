@@ -1,0 +1,92 @@
+{
+ "qid": "Q000000295",
+ "image": "Q000000295.png",
+ "takeaway": "Angiotensin II, a potent vasoconstrictor made through the renin–angiotensin system, is released in hypovolaemia.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which is a feature of the physiology of angiotensin II?",
+  "say": "Which is a feature of the physiology of angiotensin two?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Released in hypovolaemia",
+  "say": "The answer is: released in hypovolaemia.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 427,
+   "y": 388,
+   "z": 1.8,
+   "spot": [
+    290,
+    330,
+    240
+   ]
+  },
+  {
+   "x": 820,
+   "y": 378,
+   "z": 1.8,
+   "spot": [
+    820,
+    320,
+    230
+   ]
+  },
+  {
+   "x": 1150,
+   "y": 622,
+   "z": 2.0,
+   "spot": [
+    1150,
+    600,
+    220
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Hypovolaemia: the tank runs dry.",
+   "shot": 1,
+   "dir": "warm, concerned",
+   "say": "This water tank is almost empty and very thirsty. That is hypovolaemia, a low blood volume."
+  },
+  {
+   "text": "Renin turns angiotensinogen into angiotensin I.",
+   "shot": 0,
+   "dir": "clear, explanatory",
+   "say": "Low volume switches on the renin–angiotensin system. Renin converts angiotensinogen to angiotensin one."
+  },
+  {
+   "text": "Angiotensin I becomes angiotensin II.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "Angiotensin one is then converted into angiotensin two, our muscular hero."
+  },
+  {
+   "text": "One of the most potent vasoconstrictors.",
+   "shot": 3,
+   "dir": "warm, playful",
+   "say": "(laugh) He squeezes the blood vessel hard. Angiotensin two is one of the most potent vasoconstrictors in the body."
+  },
+  {
+   "text": "Squeezing vessels holds up blood pressure.",
+   "shot": 3,
+   "dir": "calm, explanatory",
+   "say": "Narrowing the vessels helps hold up blood pressure when the volume is low."
+  },
+  {
+   "text": "Remember: angiotensin II is released in hypovolaemia.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: angiotensin two, the great squeezer, is released in hypovolaemia."
+  }
+ ]
+}
