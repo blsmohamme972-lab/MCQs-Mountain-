@@ -4,6 +4,10 @@ Read this before any voice batch. Every rule below comes from a real failure on 
 
 ## 1. Before the batch
 
+- Ask the owner first: the Head renders everything itself (no workers, no approvals, about 6 hours per 100 lessons on
+  Breeze), or workers (under an hour, but the permission check may refuse an upload). Exact question: CLAUDE.md.
+  The rest of this runbook is for the workers choice.
+
 - ⚠️🚨 Remind the owner about the `Kafu Voice` environment (CLAUDE.md warning) and check it with `list_environments`.
   Open every worker in it (`environment_id`), never in the default one.
 - **First run in a fresh environment: ONE test worker first**, and wait until it has published its artifact with no
