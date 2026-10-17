@@ -37,6 +37,9 @@ if os.environ.get("KAFU_STUB"):                       # test without Breeze: a t
                             "-ar", "24000", "-ac", "1", str(p)], check=True)
         return p
     v.breeze_wav = stub
+if not os.environ.get("KAFU_STUB") and not v.breeze_paths()[0].exists():
+    print("building the portable Breeze binary first (a few minutes)", flush=True)
+    v.setup_breeze()                                  # same process as the render: no separate command to approve
 lex = v.load_lexicon()
 manifest, failed = [], []
 t0 = time.time()
