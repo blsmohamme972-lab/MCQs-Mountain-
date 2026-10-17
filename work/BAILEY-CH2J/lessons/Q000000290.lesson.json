@@ -1,0 +1,98 @@
+{
+ "qid": "Q000000290",
+ "image": "Q000000290.png",
+ "takeaway": "An adenoma is a slow-growing benign tumour that is typically encapsulated, with a pseudocapsule of compressed tissue.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which is a feature of an adenoma?",
+  "say": "Which is a feature of an adenoma?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Typically encapsulated",
+  "say": "The answer is: typically encapsulated.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 680,
+   "y": 478,
+   "z": 1.8,
+   "spot": [
+    680,
+    420,
+    250
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 418,
+   "z": 1.8,
+   "spot": [
+    1100,
+    360,
+    220
+   ]
+  },
+  {
+   "x": 990,
+   "y": 702,
+   "z": 2.0,
+   "spot": [
+    990,
+    680,
+    220
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A benign adenoma, resting on its cushion.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "Here is a calm adenoma, a benign tumour, resting on its red cushion."
+  },
+  {
+   "text": "It is typically encapsulated.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "It sits inside a clear bubble. Adenomas are typically encapsulated."
+  },
+  {
+   "text": "Slow growth squashes the tissue around it.",
+   "shot": 3,
+   "dir": "warm, explanatory",
+   "say": "(sigh) Look at the squashed cells below. As it grows slowly, it compresses the normal tissue around it."
+  },
+  {
+   "text": "That makes a pseudocapsule.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "That compressed tissue forms a pseudocapsule."
+  },
+  {
+   "text": "Some cells may be dysplastic, but cannot invade.",
+   "shot": 1,
+   "dir": "calm, explanatory",
+   "say": "Some cells may be dysplastic, but they cannot invade the basement membrane or metastasize, so it is still benign."
+  },
+  {
+   "text": "Severe dysplasia equals carcinoma in situ.",
+   "shot": 0,
+   "dir": "serious, steady",
+   "say": "Dysplasia is a step toward malignancy, and severe dysplasia is the same as carcinoma in situ."
+  },
+  {
+   "text": "Remember: an adenoma is a slow, benign tumour, typically encapsulated.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: an adenoma is a slow-growing, benign tumour, typically encapsulated."
+  }
+ ]
+}

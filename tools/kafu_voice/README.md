@@ -46,3 +46,6 @@
 - `voice_setup.py`: resumable, checksummed Breeze install; last line `VOICE OK` or `VOICE BROKEN: ...`.
 - `render_job.py`: renders a job's lines with the repository's own Breeze code and packs base64 parts + `DONE_<slot>_r1.txt`.
 - `worker_prompt.py`: the worker's first message with its whole job inside.
+- `import_voice.py`: the Head puts a worker's parts into the Breeze cache (checks the DONE checksum).
+- `build_pkg.sh`: the Head builds and validates one MCARDS package (≤12 lessons, needs the catalog URL).
+- `HEAD_RUNBOOK.md`: the rules learned from past failures. Read before every batch.

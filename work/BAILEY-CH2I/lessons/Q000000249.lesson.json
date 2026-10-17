@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000249",
+ "image": "Q000000249.png",
+ "takeaway": "S1 root compression: back pain radiating down the back of the leg, positive straight leg raise, numb heel and lateral foot, and a lost ankle jerk.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A market trader has 3 months of low back pain, now radiating down the back of his left leg. Straight leg raising hurts; the heel and lateral foot are numb; ankle jerk absent. Which nerve?",
+  "say": "A market trader has three months of low back pain, now radiating down the back of his left leg. Raising the leg hurts, his heel and lateral foot are numb, and the ankle jerk is absent. Which nerve root?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "1st sacral nerve root",
+  "say": "The answer is the first sacral nerve root.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 760,
+   "y": 322,
+   "z": 2.0,
+   "spot": [
+    760,
+    270,
+    220
+   ]
+  },
+  {
+   "x": 1080,
+   "y": 216,
+   "z": 2.0,
+   "spot": [
+    1080,
+    160,
+    220
+   ]
+  },
+  {
+   "x": 850,
+   "y": 572,
+   "z": 2.0,
+   "spot": [
+    850,
+    520,
+    230
+   ]
+  },
+  {
+   "x": 880,
+   "y": 810,
+   "z": 2.2,
+   "spot": [
+    880,
+    790,
+    200
+   ]
+  },
+  {
+   "x": 720,
+   "y": 760,
+   "z": 2.2,
+   "spot": [
+    720,
+    740,
+    180
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Low back pain while he bends over his crates.",
+   "shot": 1,
+   "dir": "warm, concerned",
+   "say": "Our market trader clutches his aching lower back."
+  },
+  {
+   "text": "The S1 nerve root leaves the spine here.",
+   "shot": 2,
+   "dir": "clear, curious",
+   "say": "The culprit is the first sacral nerve root, squeezed as it leaves the spine."
+  },
+  {
+   "text": "Pain shoots down the back of the leg.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "Now the pain shoots down the back of his leg, and raising the leg makes it worse."
+  },
+  {
+   "text": "The heel and lateral foot are numb.",
+   "shot": 4,
+   "dir": "calm, explanatory",
+   "say": "The heel and the lateral border of the foot go numb."
+  },
+  {
+   "text": "The ankle jerk is absent.",
+   "shot": 5,
+   "dir": "grave, steady",
+   "say": "(sigh) The hammer taps, but the ankle jerk is absent. The first sacral root carries that reflex."
+  },
+  {
+   "text": "Remember: posterior leg pain, a numb lateral foot and no ankle jerk mean S1.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: posterior leg pain, a numb lateral foot and no ankle jerk mean the first sacral root."
+  }
+ ]
+}

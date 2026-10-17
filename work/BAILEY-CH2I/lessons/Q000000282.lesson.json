@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000282",
+ "image": "Q000000282.png",
+ "takeaway": "Secondary hyperparathyroidism: symptomatic hypocalcaemia with tingling and carpal spasm, and a high PTH.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 50-year-old woman has tingling in her hands and feet, and carpal spasm when her BP is taken. Ca 1.85 (2.20–2.65), phosphate 1.4, PTH 80 (1.1–6.8). Likely diagnosis?",
+  "say": "A fifty-year-old woman has tingling in her hands and feet, and her hand goes into carpal spasm when her blood pressure is taken. Her calcium is low at one point eight five, and her parathyroid hormone is high at eighty. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Secondary hyperparathyroidism",
+  "say": "The answer is secondary hyperparathyroidism.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 860,
+   "y": 312,
+   "z": 2.0,
+   "spot": [
+    860,
+    260,
+    200
+   ]
+  },
+  {
+   "x": 427,
+   "y": 744,
+   "z": 1.8,
+   "spot": [
+    420,
+    720,
+    220
+   ]
+  },
+  {
+   "x": 1100,
+   "y": 582,
+   "z": 2.0,
+   "spot": [
+    1100,
+    530,
+    200
+   ]
+  },
+  {
+   "x": 1109,
+   "y": 769,
+   "z": 1.8,
+   "spot": [
+    1320,
+    745,
+    180
+   ]
+  },
+  {
+   "x": 430,
+   "y": 282,
+   "z": 2.0,
+   "spot": [
+    430,
+    230,
+    220
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Tingling in her hands and feet.",
+   "shot": 2,
+   "dir": "warm, concerned",
+   "say": "Sparks of tingling run through her hands and feet: pins and needles in the peripheries."
+  },
+  {
+   "text": "Carpal spasm under the cuff: Trousseau's sign.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "When the blood pressure cuff goes up, her hand clenches into carpal spasm. That is Trousseau's sign."
+  },
+  {
+   "text": "Calcium is low: 1.85.",
+   "shot": 4,
+   "dir": "clear, steady",
+   "say": "Her calcium is low, one point eight five. This is symptomatic hypocalcaemia."
+  },
+  {
+   "text": "PTH is high: 80.",
+   "shot": 5,
+   "dir": "clear, explanatory",
+   "say": "The parathyroid hormone shouts back at eighty, far above normal, answering the low calcium."
+  },
+  {
+   "text": "Chvostek's sign should be positive too.",
+   "shot": 1,
+   "dir": "calm, explanatory",
+   "say": "(sigh) Tap gently over her facial nerve, and her face would twitch. That is Chvostek's sign."
+  },
+  {
+   "text": "Remember: low calcium with a high PTH is secondary hyperparathyroidism.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: low calcium with a high parathyroid hormone is secondary hyperparathyroidism."
+  }
+ ]
+}

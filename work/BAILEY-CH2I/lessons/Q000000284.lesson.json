@@ -1,0 +1,118 @@
+{
+ "qid": "Q000000284",
+ "image": "Q000000284.png",
+ "takeaway": "Pseudogout: knee effusion with positively birefringent crystals on polarized light; gout is the more common crystal arthropathy.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 60-year-old man has knee pain and a moderate effusion. Fluid microscopy shows crystals that are positively birefringent under polarized light. Diagnosis?",
+  "say": "A sixty-year-old man complains of knee pain, and there is a moderate effusion. The fluid is withdrawn, and microscopy shows crystals that are positively birefringent under polarized light. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Pseudogout",
+  "say": "The answer is pseudogout.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 800,
+   "y": 581,
+   "z": 1.7,
+   "spot": [
+    800,
+    520,
+    300
+   ]
+  },
+  {
+   "x": 390,
+   "y": 612,
+   "z": 2.0,
+   "spot": [
+    390,
+    560,
+    230
+   ]
+  },
+  {
+   "x": 1000,
+   "y": 522,
+   "z": 2.0,
+   "spot": [
+    1000,
+    470,
+    250
+   ]
+  },
+  {
+   "x": 600,
+   "y": 802,
+   "z": 2.0,
+   "spot": [
+    600,
+    780,
+    260
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 662,
+   "z": 2.0,
+   "spot": [
+    1260,
+    640,
+    250
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 60-year-old man with a painful, swollen knee.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "This sixty-year-old man has a painful knee."
+  },
+  {
+   "text": "The knee has a moderate effusion.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "The knee holds a moderate effusion."
+  },
+  {
+   "text": "The syringe withdraws fluid full of crystals.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "The doctor withdraws the fluid, and the syringe is full of crystals."
+  },
+  {
+   "text": "The crystals are dancing a party in the joint.",
+   "shot": 4,
+   "dir": "warm, amused",
+   "say": "(laugh) Look at the crystals, they are having a party in the joint!"
+  },
+  {
+   "text": "Under polarized light they are positively birefringent.",
+   "shot": 5,
+   "dir": "clear, confident",
+   "say": "Under polarized light, the crystals are positively birefringent."
+  },
+  {
+   "text": "Crystals in a joint cause synovitis: gout or pseudogout. Gout is more common.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Crystals in a joint cause synovitis. There are two main forms, gout and pseudogout. Gout is the more common."
+  },
+  {
+   "text": "Remember: positively birefringent crystals in a knee effusion mean pseudogout.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: positively birefringent crystals in a knee effusion mean pseudogout."
+  }
+ ]
+}

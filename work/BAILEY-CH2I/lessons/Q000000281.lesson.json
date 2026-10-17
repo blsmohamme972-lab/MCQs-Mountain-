@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000281",
+ "image": "Q000000281.png",
+ "takeaway": "Primary hyperparathyroidism: symptomatic hypercalcaemia with a PTH that is not suppressed, most often from a parathyroid adenoma.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 30-year-old man has polyuria and polydipsia. Fasting glucose 4.7. Ca 2.85 (2.20–2.65), phosphate 0.4 (0.8–1.4), PTH 4.2 (1.1–6.8). Likely diagnosis?",
+  "say": "A thirty-year-old man has polyuria and polydipsia, with a fasting glucose of four point seven. His calcium is high at two point eight five, his phosphate is low at zero point four, and his parathyroid hormone is four point two, inside the normal range. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Primary hyperparathyroidism",
+  "say": "The answer is primary hyperparathyroidism.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 420,
+   "y": 352,
+   "z": 2.0,
+   "spot": [
+    420,
+    300,
+    220
+   ]
+  },
+  {
+   "x": 1152,
+   "y": 702,
+   "z": 2.0,
+   "spot": [
+    1350,
+    680,
+    200
+   ]
+  },
+  {
+   "x": 820,
+   "y": 272,
+   "z": 2.0,
+   "spot": [
+    820,
+    220,
+    200
+   ]
+  },
+  {
+   "x": 850,
+   "y": 432,
+   "z": 2.0,
+   "spot": [
+    850,
+    380,
+    200
+   ]
+  },
+  {
+   "x": 970,
+   "y": 612,
+   "z": 2.0,
+   "spot": [
+    970,
+    590,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "He drinks and drinks: polydipsia.",
+   "shot": 1,
+   "dir": "warm, curious",
+   "say": "This thirsty man gulps from the jug. That is polydipsia."
+  },
+  {
+   "text": "And he passes lots of urine: polyuria.",
+   "shot": 2,
+   "dir": "warm, amused",
+   "say": "(laugh) And the toilet chases after him. That is polyuria."
+  },
+  {
+   "text": "Glucose is normal, but calcium is high: 2.85.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "His glucose is normal, so this is not diabetes. But calcium is high, two point eight five."
+  },
+  {
+   "text": "PTH is 4.2: not suppressed.",
+   "shot": 4,
+   "dir": "clear, explanatory",
+   "say": "High calcium should switch parathyroid hormone off. Yet P T H keeps shouting at four point two."
+  },
+  {
+   "text": "A parathyroid adenoma is the likely cause.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "The high calcium fails to suppress P T H, so a parathyroid adenoma is the most likely cause."
+  },
+  {
+   "text": "Remember: high calcium with an unsuppressed PTH is primary hyperparathyroidism.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: high calcium with an unsuppressed parathyroid hormone is primary hyperparathyroidism."
+  }
+ ]
+}

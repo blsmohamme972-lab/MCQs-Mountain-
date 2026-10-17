@@ -7,6 +7,8 @@ Start with `HANDOFF.md`. Voice-over: `voiceover/README.md`.
 Before starting ANY new batch that uses voice workers, remind the owner, with this exact warning:
 "⚠️🚨 قبل ما نبدي المجموعة الجديدة: اختار بيئة Kafu Voice أو سوّيها إذا مو موجودة! 🎙️"
 Check it exists (`list_environments`) and open every worker in it. Steps and why: `tools/kafu_voice/README.md`.
+Before any batch read `tools/kafu_voice/HEAD_RUNBOOK.md` (every past failure and its rule). One test worker first in a fresh environment;
+a stuck worker is reported to the owner at once with links and a ready message.
 Without it the auto-mode permission check refuses the workers and the owner has to approve each one by hand.
 
 ## Make IMAGE LESSONS only; hand-animated MotionCards are retired

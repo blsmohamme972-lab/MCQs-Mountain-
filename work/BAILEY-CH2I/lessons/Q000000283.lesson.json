@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000283",
+ "image": "Q000000283.png",
+ "takeaway": "Addison's disease: primary hypoadrenalism with low sodium, high potassium and low glucose, confirmed by the short synACTHen test.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 50-year-old Asian woman has nocturia and dizziness. Fasting glucose is 3.9, sodium 131 and potassium 6.1 mmol/L. What is the likely diagnosis?",
+  "say": "A fifty-year-old Asian woman complains of nocturia and dizziness. Her fasting glucose is three point nine, her sodium is low at one hundred and thirty-one, and her potassium is high at six point one. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Addison’s disease",
+  "say": "The answer is Addison’s disease.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 450,
+   "y": 382,
+   "z": 2.0,
+   "spot": [
+    450,
+    330,
+    260
+   ]
+  },
+  {
+   "x": 384,
+   "y": 612,
+   "z": 2.0,
+   "spot": [
+    330,
+    560,
+    200
+   ]
+  },
+  {
+   "x": 720,
+   "y": 587,
+   "z": 2.2,
+   "spot": [
+    720,
+    540,
+    200
+   ]
+  },
+  {
+   "x": 900,
+   "y": 572,
+   "z": 2.0,
+   "spot": [
+    900,
+    520,
+    250
+   ]
+  },
+  {
+   "x": 1109,
+   "y": 658,
+   "z": 1.8,
+   "spot": [
+    1250,
+    600,
+    300
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A dizzy woman who gets up at night: nocturia.",
+   "shot": 1,
+   "dir": "gentle, curious",
+   "say": "This woman is dizzy, and she keeps getting up at night. That is nocturia."
+  },
+  {
+   "text": "The sodium is low: Na 131.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "The salt is pouring away. Her sodium is low, one hundred and thirty-one."
+  },
+  {
+   "text": "The potassium is high: K 6.1.",
+   "shot": 4,
+   "dir": "warm, amused",
+   "say": "(laugh) And the potassium bananas pile up. Her potassium is high, six point one."
+  },
+  {
+   "text": "Low glucose and low pressure: hypoglycaemia and hypotension.",
+   "shot": 2,
+   "dir": "calm, explanatory",
+   "say": "Add hypoglycaemia and hypotension, from a lack of mineralocorticoid and glucocorticoid."
+  },
+  {
+   "text": "The tired adrenals are tested with the short synACTHen test.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "The tired adrenals are tested with the short synACTHen test. An absent or impaired cortisol response confirms it."
+  },
+  {
+   "text": "Remember: low sodium, high potassium and low glucose mean Addison's disease.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: low sodium, high potassium, and low glucose mean Addison's disease."
+  }
+ ]
+}

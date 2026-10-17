@@ -1,0 +1,118 @@
+{
+ "qid": "Q000000272",
+ "image": "Q000000272.png",
+ "takeaway": "Teratoma: a non-seminomatous germ cell tumour of many cell types; a hard testicular lump in a young man with a positive beta-hCG.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "A 25-year-old man discovers a hard lump on his left testicle. His GP has arranged a blood test (β-hCG) which is positive. Select the likely diagnosis.",
+  "say": "A twenty-five-year-old man discovers a hard lump on his left testicle. His GP arranges a beta-hCG blood test, which is positive. What is the likely diagnosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Teratoma",
+  "say": "The answer is teratoma.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 650,
+   "y": 302,
+   "z": 2.0,
+   "spot": [
+    650,
+    250,
+    230
+   ]
+  },
+  {
+   "x": 780,
+   "y": 680,
+   "z": 2.2,
+   "spot": [
+    780,
+    660,
+    200
+   ]
+  },
+  {
+   "x": 384,
+   "y": 432,
+   "z": 2.0,
+   "spot": [
+    380,
+    380,
+    230
+   ]
+  },
+  {
+   "x": 1060,
+   "y": 612,
+   "z": 2.0,
+   "spot": [
+    1060,
+    560,
+    230
+   ]
+  },
+  {
+   "x": 1110,
+   "y": 642,
+   "z": 2.0,
+   "spot": [
+    1110,
+    620,
+    230
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A 25-year-old man finds a lump.",
+   "shot": 1,
+   "dir": "warm, concerned",
+   "say": "This twenty-five-year-old man has just found something worrying."
+  },
+  {
+   "text": "A hard lump in his left testicle.",
+   "shot": 2,
+   "dir": "clear, steady",
+   "say": "It is a hard lump in his left testicle."
+  },
+  {
+   "text": "The beta-hCG test is positive.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "His beta-hCG blood test comes back positive."
+  },
+  {
+   "text": "A teratoma is made of many cell types.",
+   "shot": 4,
+   "dir": "warm, amused",
+   "say": "(laugh) Meet the teratoma, a tumour made of many cell types, with tooth, hair, bone and muscle all mixed together."
+  },
+  {
+   "text": "They come from one or more of the three germ layers.",
+   "shot": 5,
+   "dir": "calm, explanatory",
+   "say": "These cells come from one or more of the three germ layers, from abnormal pluripotent cells."
+  },
+  {
+   "text": "It is a non-seminomatous germ cell tumour.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Teratomas belong to the non-seminomatous germ cell tumours."
+  },
+  {
+   "text": "Remember: a hard testicular lump with a positive beta-hCG suggests teratoma.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: a hard testicular lump in a young man with a positive beta-hCG suggests teratoma."
+  }
+ ]
+}

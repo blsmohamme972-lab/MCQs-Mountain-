@@ -1,0 +1,112 @@
+{
+ "qid": "Q000000300",
+ "image": "Q000000300.png",
+ "takeaway": "Prolonged vomiting gives a hypochloraemic metabolic alkalosis; respiratory compensation is hypoventilation, raising arterial pCO2.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which causes prolonged vomiting due to pyloric stenosis?",
+  "say": "Which change is caused by prolonged vomiting due to pyloric stenosis?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "A rise in arterial pCO2",
+  "say": "The answer is a rise in arterial pCO2.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 650,
+   "y": 511,
+   "z": 1.7,
+   "spot": [
+    650,
+    450,
+    300
+   ]
+  },
+  {
+   "x": 384,
+   "y": 742,
+   "z": 2.0,
+   "spot": [
+    270,
+    720,
+    260
+   ]
+  },
+  {
+   "x": 930,
+   "y": 312,
+   "z": 2.0,
+   "spot": [
+    930,
+    260,
+    260
+   ]
+  },
+  {
+   "x": 1084,
+   "y": 621,
+   "z": 1.7,
+   "spot": [
+    1110,
+    560,
+    300
+   ]
+  },
+  {
+   "x": 1187,
+   "y": 810,
+   "z": 2.2,
+   "spot": [
+    1380,
+    790,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "The baby vomits for a long time.",
+   "shot": 2,
+   "dir": "gentle, concerned",
+   "say": "This baby has prolonged vomiting, and the acid keeps pouring into the basin."
+  },
+  {
+   "text": "Metabolic alkalosis: the pH and bicarbonate rise.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "Losing the stomach acid causes a hypochloraemic metabolic alkalosis, with a rise in pH and raised bicarbonate."
+  },
+  {
+   "text": "Potassium falls too, and the baby dries out.",
+   "shot": 1,
+   "dir": "calm, explanatory",
+   "say": "Gastric juice is rich in potassium, so hypokalaemia follows, with a hypovolaemic state and raised urea."
+  },
+  {
+   "text": "The tired lungs compensate by hypoventilation.",
+   "shot": 4,
+   "dir": "gentle, explanatory",
+   "say": "(sigh) To compensate, the tired lungs breathe slowly. This is hypoventilation."
+  },
+  {
+   "text": "Slow breathing makes the CO2 rise: pCO2 rises.",
+   "shot": 5,
+   "dir": "clear, confident",
+   "say": "And slow breathing lets the carbon dioxide build up, so arterial pCO2 rises."
+  },
+  {
+   "text": "Remember: prolonged vomiting gives alkalosis and a rise in arterial pCO2.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: prolonged vomiting gives alkalosis, and a rise in arterial pCO2."
+  }
+ ]
+}

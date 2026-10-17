@@ -1,0 +1,92 @@
+{
+ "qid": "Q000000289",
+ "image": "Q000000289.png",
+ "takeaway": "Fibroblasts are the cells that contract a wound, drawing its two edges together.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "In wound healing, which cells are responsible for wound contraction?",
+  "say": "In wound healing, which cells are responsible for wound contraction?",
+  "dir": "clear, curious"
+ },
+ "answer": {
+  "text": "Fibroblasts",
+  "say": "The answer is fibroblasts.",
+  "dir": "calm, confident"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 400,
+   "y": 382,
+   "z": 2.0,
+   "spot": [
+    400,
+    330,
+    230
+   ]
+  },
+  {
+   "x": 765,
+   "y": 652,
+   "z": 2.0,
+   "spot": [
+    765,
+    600,
+    230
+   ]
+  },
+  {
+   "x": 1109,
+   "y": 618,
+   "z": 1.8,
+   "spot": [
+    1220,
+    560,
+    240
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Purple fibroblasts grab the ropes.",
+   "shot": 1,
+   "dir": "warm, playful",
+   "say": "Meet the purple fibroblasts. Each one grabs a rope tied across the wound."
+  },
+  {
+   "text": "They pull: wound contraction.",
+   "shot": 3,
+   "dir": "clear, steady",
+   "say": "Together they pull hard from both sides. This is wound contraction."
+  },
+  {
+   "text": "The two edges are drawn together.",
+   "shot": 2,
+   "dir": "warm, amused",
+   "say": "(laugh) The two smiling wound edges are drawn together, and the gap closes."
+  },
+  {
+   "text": "Macrophages eat debris and release cytokines.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Macrophages have another job. They engulf foreign matter by phagocytosis and release cytokines for inflammation and healing."
+  },
+  {
+   "text": "Reticulocytes are immature red cells.",
+   "shot": 0,
+   "dir": "calm, explanatory",
+   "say": "Reticulocytes are immature red blood cells, with no real role in wound contraction."
+  },
+  {
+   "text": "Remember: fibroblasts pull the wound edges together.",
+   "shot": 0,
+   "dir": "slow, firm",
+   "say": "Remember: in wound contraction, fibroblasts pull the two wound edges together."
+  }
+ ]
+}
