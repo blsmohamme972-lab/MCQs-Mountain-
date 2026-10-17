@@ -1,0 +1,84 @@
+{
+ "qid": "Q000007302",
+ "image": "Q000007302.png",
+ "takeaway": "Relative risk of venous thrombosis: homozygous factor V Leiden 80, heterozygous 6, OCP 4, heterozygous protein C deficiency 7.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following factors has the greatest relative risk (RR) of venous thrombosis?",
+  "say": "Which of the following factors has the greatest relative risk, R R, of venous thrombosis?"
+ },
+ "answer": {
+  "text": "Homozygous factor V Leiden",
+  "say": "Homozygous factor five Leiden."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 240,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    230,
+    400,
+    200
+   ]
+  },
+  {
+   "x": 770,
+   "y": 400,
+   "z": 1.6,
+   "spot": [
+    770,
+    420,
+    300
+   ]
+  },
+  {
+   "x": 1250,
+   "y": 350,
+   "z": 1.8,
+   "spot": [
+    1260,
+    350,
+    200
+   ]
+  },
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  }
+ ],
+ "lines": [
+  {
+   "text": "Let's weigh the risks on the scale. On the left, the pill carries a relative risk of 4, and heterozygous factor V Leiden a relative risk of 6.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "But the crowned clot sits on the heaviest weight: homozygous factor V Leiden, with a relative risk of 80.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Factor V Leiden causes increased breakdown of protein C, an anticoagulant factor.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "Heterozygous protein C deficiency carries a relative risk of only 7.",
+   "shot": 3,
+   "dir": "calm, clear"
+  },
+  {
+   "text": "So the greatest relative risk belongs to homozygous factor V Leiden.",
+   "shot": 4,
+   "dir": "warm, confident"
+  }
+ ]
+}
