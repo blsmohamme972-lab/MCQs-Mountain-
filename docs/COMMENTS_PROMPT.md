@@ -35,6 +35,7 @@ format and commands: `docs/COMMENTS.md`.
   the feminine form, men in the masculine.
 - `kind`: `tip` (exam/study tip), `mnemonic`, `clinical` (clinical pearl), `exam` (exam trap or pattern); leave it
   out for an ordinary note. Mix them; most comments have none.
+- Leave out `at`, `likes` and `react`: `pack` gives every comment a posting time, likes and reactions.
 
 ## How many
 

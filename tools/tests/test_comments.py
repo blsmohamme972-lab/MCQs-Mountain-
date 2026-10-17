@@ -5,6 +5,7 @@ import subprocess
 import tempfile
 import unittest
 import zipfile
+from datetime import timedelta
 from pathlib import Path
 
 from tools import comments as C
@@ -62,7 +63,9 @@ class PackageTests(unittest.TestCase):
             self.assertEqual(first.name, "COMMENTS_TEST-BOOK_r1.zip")
             self.assertEqual(first.read_bytes(), second.read_bytes())
             pack = C.read_package(first, NAMES)
-        self.assertEqual(pack.questions[QIDS[0]][0], {"author": A, "text": "Fixture\n\nline two"})
+        first_comment = pack.questions[QIDS[0]][0]
+        self.assertEqual({k: first_comment[k] for k in ("author", "text")}, {"author": A, "text": "Fixture\n\nline two"})
+        self.assertEqual(set(first_comment), {"author", "text", "at", "likes", "react"})
         self.assertEqual((pack.book_id, pack.revision, pack.comments), ("TEST-BOOK", 1, 1))
 
     def test_every_problem_is_reported(self):
@@ -138,6 +141,102 @@ class PackageTests(unittest.TestCase):
             self.assertIn("3 comments on 2 questions", ok.stdout)
             again = run("validate", str(td / "out/COMMENTS_TEST-BOOK_r1.zip"))
             self.assertEqual(again.returncode, 0, again.stderr)
+
+
+NOW = "2026-10-17T12:00:00Z"
+
+
+class ActivityTests(unittest.TestCase):
+    """Posting times, likes and reactions: kept when given, filled by pack otherwise."""
+
+    def thread(self, **extra):
+        return doc({QIDS[0]: [{"author": A, "text": "Fixture comment.", **extra,
+                               "replies": [{"author": B, "text": "Fixture reply one."}, {"author": D, "text": "Fixture reply two."}]},
+                              {"author": D, "text": "Fixture comment two.", "kind": "mnemonic"}],
+                    QIDS[1]: [{"author": B, "text": f"Fixture note {i}."} for i in range(12)]})
+
+    def test_given_values_are_kept_and_checked(self):
+        given = {"at": "2026-10-01T08:30:00Z", "likes": 0, "react": ["❤", "🧠"]}
+        _, _, questions = C.validate_document(self.thread(**given), NAMES)
+        self.assertEqual({k: questions[QIDS[0]][0][k] for k in given}, {**given, "react": ["❤️", "🧠"]})
+        filled = C.fill_activity("TEST-BOOK", questions, C.pack_time(NOW))
+        self.assertEqual({k: filled[QIDS[0]][0][k] for k in given}, {**given, "react": ["❤️", "🧠"]})
+        for extra, needle in [({"at": "2026-10-17 10:00"}, "at must be"), ({"at": "2026-10-17T10:00:00"}, "at must be"),
+                              ({"at": "2026-10-17T10:00:00.000Z"}, "at must be"), ({"at": "2019-12-31T10:00:00Z"}, "at must be"),
+                              ({"at": "2026-02-30T10:00:00Z"}, "at must be"), ({"likes": 21}, "likes must be"),
+                              ({"likes": -1}, "likes must be"), ({"likes": True}, "likes must be"), ({"likes": 3.0}, "likes must be"),
+                              ({"react": []}, "react must"), ({"react": ["👍", "🔥", "💯", "🧠"]}, "react must"),
+                              ({"react": ["👍", "👍"]}, "react must"), ({"react": ["🤡"]}, "react must"), ({"react": "👍"}, "react must")]:
+            with self.subTest(extra=extra), self.assertRaisesRegex(C.PackError, needle):
+                C.validate_document(self.thread(**extra), NAMES)
+        late = self.thread(at="2026-10-10T08:00:00Z")
+        late["questions"][QIDS[0]][0]["replies"][1]["at"] = "2026-10-09T08:00:00Z"
+        with self.assertRaisesRegex(C.PackError, r"replies\[1\]\.at is earlier"):
+            C.validate_document(late, NAMES)
+
+    def test_pack_fills_every_comment_the_same_way_each_time(self):
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            first = C.write_package(self.thread(), td / "a", NAMES, NOW)
+            second = C.write_package(self.thread(), td / "b", NAMES, NOW)
+            later = C.write_package(self.thread(), td / "c", NAMES, "2026-10-18T12:00:00Z")
+            self.assertEqual(first.read_bytes(), second.read_bytes())
+            self.assertNotEqual(first.read_bytes(), later.read_bytes())
+            pack, moved = C.read_package(first, NAMES), C.read_package(later, NAMES)
+        now = C.pack_time(NOW)
+        for qid, comments in pack.questions.items():
+            for i, comment in enumerate(comments):
+                at = C.parse_at(comment["at"])
+                self.assertTrue(now - timedelta(days=75) <= at <= now - timedelta(minutes=45), comment["at"])
+                self.assertEqual(moved.questions[qid][i]["likes"], comment["likes"])
+                self.assertEqual(C.parse_at(moved.questions[qid][i]["at"]) - at, timedelta(days=1))
+                previous = at
+                for item in [comment, *comment.get("replies", [])]:
+                    self.assertTrue(1 <= item["likes"] <= C.LIKES_MAX)
+                    size = len(item["react"])
+                    self.assertTrue(size == 1 if item["likes"] < 5 else 1 <= size <= 2 if item["likes"] < 12 else 2 <= size <= 3)
+                    self.assertTrue(set(item["react"]) <= set(C.REACTIONS))
+                    self.assertTrue(previous <= C.parse_at(item["at"]) <= now - timedelta(minutes=1))
+                    previous = C.parse_at(item["at"])
+        likes = [c["likes"] for c in pack.questions[QIDS[1]]]
+        self.assertGreater(len(set(likes)), 3, "likes vary between comments")
+
+    def test_editing_one_comment_keeps_the_others(self):
+        source = self.thread()
+        before = C.fill_activity("TEST-BOOK", C.validate_document(source, NAMES)[2], C.pack_time(NOW))
+        source["questions"][QIDS[1]][5]["text"] = "Fixture note five, edited."
+        after = C.fill_activity("TEST-BOOK", C.validate_document(source, NAMES)[2], C.pack_time(NOW))
+        self.assertEqual(before[QIDS[0]], after[QIDS[0]])
+        self.assertEqual([c for i, c in enumerate(before[QIDS[1]]) if i != 5], [c for i, c in enumerate(after[QIDS[1]]) if i != 5])
+
+    def test_replies_fit_between_a_recent_comment_and_now(self):
+        source = self.thread(at="2026-10-17T11:58:00Z")
+        source["questions"][QIDS[1]][0]["replies"] = [{"author": A, "text": "Fixture reply.", "at": "2026-10-17T11:00:00Z"}]
+        filled = C.fill_activity("TEST-BOOK", C.validate_document(source, NAMES)[2], C.pack_time(NOW))
+        self.assertEqual([r["at"] for r in filled[QIDS[0]][0]["replies"]], ["2026-10-17T11:58:00Z", "2026-10-17T11:58:00Z"])
+        self.assertLessEqual(filled[QIDS[1]][0]["at"], "2026-10-17T11:00:00Z", "a comment is never after its replies")
+
+    def test_old_packs_without_activity_still_publish(self):
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            old = zip_with(td / "COMMENTS_TEST-BOOK_r1.zip", {"comments.json": json.dumps(doc(), ensure_ascii=False).encode()})
+            self.assertNotIn("likes", json.dumps(C.read_package(old, NAMES).questions))
+            summary = C.publish(td / "state.sqlite", content_tree(td / "content"), old, NAMES)
+        self.assertEqual(summary["comments"], 3)
+
+    def test_cli_pack_takes_now(self):
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            (td / "comments.json").write_text(json.dumps(self.thread()), encoding="utf-8")
+            run = lambda *a: subprocess.run(["python3", "tools/comments.py", "pack", str(td / "comments.json"), *a],
+                                            cwd=ROOT, capture_output=True, text=True)
+            ok = run("--out", str(td / "a"), "--now", NOW)
+            self.assertEqual(ok.returncode, 0, ok.stderr)
+            self.assertEqual((td / "a/COMMENTS_TEST-BOOK_r1.zip").read_bytes(),
+                             C.write_package(self.thread(), td / "b", NAMES, NOW).read_bytes())
+            bad = run("--out", str(td / "c"), "--now", "yesterday")
+            self.assertEqual(bad.returncode, 1)
+            self.assertIn("--now must be", bad.stderr)
 
 
 class PublishTests(unittest.TestCase):

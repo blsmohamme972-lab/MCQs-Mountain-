@@ -4,7 +4,11 @@
 A pack holds one file, comments.json. It adds or replaces the comments of the questions it lists
 (an empty list removes that question's comments); questions it does not list keep theirs, so a
 book can be covered chapter by chapter. Every author is one of the Kafu characters, the Leaders
-personas in app/modules/leaders-core.js, and the app labels each comment as written by one.
+personas in app/modules/leaders-core.js, and the app says the comments are written by them.
+
+Each comment also has a posting time, a like count (1–20) and up to three emoji reactions. Writers
+leave them out: pack fills them once, seeded by the comment itself, so the same file and the same
+--now always give the same ZIP.
 
 Published files (in the content tree served by kafu-content-1):
   comments/<BOOK-ID>.json                           index: revision, totals, one entry per shard
@@ -15,6 +19,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
+import random
 import re
 import sqlite3
 import subprocess
@@ -24,6 +30,7 @@ import zipfile
 import zlib
 from collections import defaultdict
 from dataclasses import dataclass
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -46,6 +53,13 @@ LINK = re.compile(r"(?i)(?:https?://|www\.|\bt\.me/|\btelegram\.me/)")
 BIDI_CONTROLS = set("‪‫‬‭‮⁦⁧⁨⁩")
 MAX_ERRORS = 50
 KEEP_SNAPSHOTS = 20   # revisions per book that /comments-restore can bring back
+LIKES_MAX = 20
+REACTIONS = ("👍", "❤️", "🔥", "💯", "🧠", "👏", "😂", "😮")
+MAX_REACT = 3
+AT = re.compile(r"^(20[2-9]\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)Z$")
+# Reactions people tend to leave on each kind of comment, most likely first.
+REACT_BY_KIND = {"mnemonic": ("😂", "🧠", "🔥", "👍"), "clinical": ("💯", "🧠", "👏", "❤️"), "exam": ("🔥", "💯", "👍", "😮"),
+                 "tip": ("👍", "❤️", "🔥", "💯"), "note": ("👍", "❤️", "👏", "🧠"), "reply": ("👍", "❤️", "😂", "👏")}
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS question_comments (
@@ -180,8 +194,46 @@ def clean_text(value: Any, where: str, problems: list[str]) -> str | None:
     return text
 
 
+def parse_at(value: str) -> datetime | None:
+    match = AT.fullmatch(value) if isinstance(value, str) else None
+    if not match:
+        return None
+    try:
+        return datetime(*map(int, match.groups()), tzinfo=timezone.utc)
+    except ValueError:
+        return None
+
+
+def clean_activity(value: dict[str, Any], where: str, out: dict[str, Any], problems: list[str]) -> bool:
+    """Copy a valid posting time, like count and reactions into out; report anything else."""
+    ok = True
+    if "at" in value:
+        if parse_at(value["at"]) is None:
+            problems.append(f"{where}.at must be a UTC time like 2026-10-17T18:40:00Z (2020–2099)")
+            ok = False
+        else:
+            out["at"] = value["at"]
+    if "likes" in value:
+        likes = value["likes"]
+        if type(likes) is not int or not 0 <= likes <= LIKES_MAX:
+            problems.append(f"{where}.likes must be a whole number from 0 to {LIKES_MAX}")
+            ok = False
+        else:
+            out["likes"] = likes
+    if "react" in value:
+        react = value["react"]
+        react = [{"❤": "❤️"}.get(e, e) for e in react] if isinstance(react, list) else react
+        if (not isinstance(react, list) or not 1 <= len(react) <= MAX_REACT or len(set(react)) != len(react)
+                or any(e not in REACTIONS for e in react)):
+            problems.append(f"{where}.react must list 1–{MAX_REACT} different reactions from {' '.join(REACTIONS)}")
+            ok = False
+        else:
+            out["react"] = react
+    return ok
+
+
 def clean_comment(value: Any, where: str, names: set[str], problems: list[str], reply: bool) -> dict[str, Any] | None:
-    allowed = {"author", "text", "kind"} if reply else {"author", "text", "kind", "replies"}
+    allowed = {"author", "text", "kind", "at", "likes", "react"} | (set() if reply else {"replies"})
     if not isinstance(value, dict):
         problems.append(f"{where} must be an object")
         return None
@@ -204,6 +256,8 @@ def clean_comment(value: Any, where: str, names: set[str], problems: list[str], 
         return None
     if kind != "note":
         out["kind"] = kind
+    if not clean_activity(value, where, out, problems):
+        return None
     if not reply and "replies" in value:
         replies = value["replies"]
         if not isinstance(replies, list) or len(replies) > MAX_REPLIES:
@@ -211,6 +265,10 @@ def clean_comment(value: Any, where: str, names: set[str], problems: list[str], 
             return None
         cleaned = [clean_comment(r, f"{where}.replies[{i}]", names, problems, True) for i, r in enumerate(replies)]
         if any(r is None for r in cleaned):
+            return None
+        early = [i for i, r in enumerate(cleaned) if "at" in r and "at" in out and r["at"] < out["at"]]
+        if early:
+            problems.append(f"{where}.replies[{early[0]}].at is earlier than the comment it answers")
             return None
         if cleaned:
             out["replies"] = cleaned
@@ -301,9 +359,85 @@ def read_package(path: Path, names: list[str] | None = None) -> Pack:
     return Pack(book_id, revision, questions, hashlib.sha256(path.read_bytes()).hexdigest())
 
 
-def write_package(doc: Any, out_dir: Path, names: list[str] | None = None) -> Path:
-    """Validate a comments document and write its ZIP; the same input always gives the same bytes."""
+def _stamp(moment: datetime) -> str:
+    return moment.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _between(rng: random.Random, low: float, high: float) -> float:
+    """Log-uniform: most values near the low end, a few near the high end."""
+    return math.exp(rng.uniform(math.log(low), math.log(high)))
+
+
+def _reactions(rng: random.Random, kind: str, likes: int) -> list[str]:
+    pool = REACT_BY_KIND[kind]
+    size = 1 if likes < 5 else rng.randint(1, 2) if likes < 12 else rng.randint(2, 3)
+    weights = [len(pool) - i for i in range(len(pool))]
+    picked: list[str] = []
+    while len(picked) < size:
+        choice = rng.choices(pool, weights)[0]
+        if choice not in picked:
+            picked.append(choice)
+    return sorted(picked, key=pool.index)
+
+
+def fill_activity(book_id: str, questions: dict[str, list[dict[str, Any]]], now: datetime) -> dict[str, list[dict[str, Any]]]:
+    """Give every comment a posting time, likes (1–20) and reactions; values the writer gave are kept.
+
+    Each value is seeded by the comment itself, so editing one comment never reshuffles the others.
+    Comments were posted over the last weeks; replies follow their comment, in order, before now."""
+    latest = now - timedelta(minutes=1)
+
+    def rng(qid: str, i: int, j: int, item: dict[str, Any]) -> random.Random:
+        seed = hashlib.sha256(f"{book_id}|{qid}|{i}|{j}|{item['author']}|{item['text']}".encode("utf-8")).digest()
+        return random.Random(int.from_bytes(seed[:8], "big"))
+
+    def likes(r: random.Random, mode: float) -> int:
+        return max(1, min(LIKES_MAX, round(r.triangular(1, LIKES_MAX, mode))))
+
+    out: dict[str, list[dict[str, Any]]] = {}
+    for qid, comments in questions.items():
+        filled = []
+        for i, comment in enumerate(comments):
+            r, kind = rng(qid, i, 0, comment), comment.get("kind", "note")
+            top = {k: v for k, v in comment.items() if k != "replies"}
+            if "at" not in top:   # never after a reply time the writer gave
+                given = [parse_at(x["at"]) for x in comment.get("replies") or [] if "at" in x]
+                top["at"] = _stamp(min([(now - timedelta(minutes=_between(r, 45, 75 * 24 * 60))).replace(second=0, microsecond=0), *given]))
+            top.setdefault("likes", likes(r, 6 if kind == "note" else 12))
+            top.setdefault("react", _reactions(r, kind, top["likes"]))
+            previous = parse_at(top["at"])
+            replies = []
+            for k, reply in enumerate(comment.get("replies") or []):
+                r, item = rng(qid, i, k + 1, reply), dict(reply)
+                if "at" not in item:
+                    gap, room = timedelta(minutes=_between(r, 3, 2 * 24 * 60)), latest - previous
+                    when = previous + (gap if gap <= room else max(timedelta(0), room) * r.uniform(0.3, 0.9))
+                    item["at"] = _stamp(max(previous, when.replace(second=0, microsecond=0)))
+                item.setdefault("likes", likes(r, 3))
+                item.setdefault("react", _reactions(r, "reply", item["likes"]))
+                previous = parse_at(item["at"])
+                replies.append(item)
+            if replies:
+                top["replies"] = replies
+            filled.append(top)
+        out[qid] = filled
+    return out
+
+
+def pack_time(value: datetime | str | None = None) -> datetime:
+    """The reference time for fill_activity: --now, or the start of the current UTC hour."""
+    if value is None:
+        return datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
+    moment = parse_at(value) if isinstance(value, str) else value
+    if moment is None or moment.tzinfo is None:
+        raise PackError("--now must be a UTC time like 2026-10-17T18:00:00Z")
+    return moment.astimezone(timezone.utc)
+
+
+def write_package(doc: Any, out_dir: Path, names: list[str] | None = None, now: datetime | str | None = None) -> Path:
+    """Validate a comments document, fill its activity and write the ZIP; the same input and now give the same bytes."""
     book_id, revision, questions = validate_document(doc, names or personas())
+    questions = fill_activity(book_id, questions, pack_time(now))
     clean = {"schema": 1, "format": FORMAT, "book_id": book_id, "revision": revision, "questions": questions}
     raw = (json.dumps(clean, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -542,6 +676,7 @@ def main(argv: list[str] | None = None) -> int:
         p.add_argument("source", type=Path, help="COMMENTS_*.zip" if name == "validate" else "comments.json")
         if name == "pack":
             p.add_argument("--out", type=Path, required=True)
+            p.add_argument("--now", help="reference time for the comments' posting times (default: this hour), e.g. 2026-10-17T18:00:00Z")
         p.add_argument("--catalog", help="catalog.json path or https URL to check the QIDs")
         p.add_argument("--export", action="append", help="Kafu MCQ export JSON to check the QIDs (repeat for parts)")
     p = sub.add_parser("publish")
@@ -572,7 +707,7 @@ def main(argv: list[str] | None = None) -> int:
             doc = loads(args.source.read_bytes())
             book_id, _, questions = validate_document(doc, personas())
             note = _check_against(book_id, questions, args)
-            target = write_package(doc, args.out)
+            target = write_package(doc, args.out, now=args.now)
             pack = read_package(target)
             print(f"OK {target}: {pack.comments} comments on {len(pack.questions)} questions, {target.stat().st_size} bytes{note}")
         elif args.cmd == "publish":
