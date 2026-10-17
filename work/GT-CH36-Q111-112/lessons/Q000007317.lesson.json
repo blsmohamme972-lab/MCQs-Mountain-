@@ -1,0 +1,87 @@
+{
+ "qid": "Q000007317",
+ "image": "Q000007317.png",
+ "takeaway": "Total division of the facial nerve paralyses buccinator, which empties the buccal sulcus during chewing, so food and fluid collect there. The facial nerve has no cutaneous sensory fibres.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "After a radical parotidectomy, the left facial nerve had to be divided completely. Postoperatively, which is the most likely sequela?"
+ },
+ "answer": {
+  "text": "Tendency for food and fluids to collect in the buccal sulcus after meals"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 380,
+   "y": 450,
+   "z": 1.8,
+   "spot": [
+    330,
+    420,
+    230
+   ]
+  },
+  {
+   "x": 780,
+   "y": 470,
+   "z": 1.8,
+   "spot": [
+    780,
+    520,
+    230
+   ]
+  },
+  {
+   "x": 1200,
+   "y": 470,
+   "z": 1.8,
+   "spot": [
+    1300,
+    500,
+    200
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "In a radical parotidectomy, the facial nerve runs through the gland.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Dividing it causes a lower motor neurone injury, and weakness of the muscles of facial expression, including the forehead.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "A distressing feature is paralysis of buccinator.",
+   "shot": 2,
+   "dir": "gently concerned"
+  },
+  {
+   "text": "Buccinator normally empties the buccal sulcus during chewing.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So food and fluids collect in the buccal sulcus after meals.",
+   "shot": 3,
+   "dir": "warm, confident"
+  },
+  {
+   "text": "There are no cutaneous sensory fibres in the facial nerve, so cheek numbness is not expected.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the answer is food and fluid collecting in the buccal sulcus.",
+   "shot": 0,
+   "dir": "warm, confident"
+  }
+ ]
+}
