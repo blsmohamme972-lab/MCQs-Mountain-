@@ -1,0 +1,24 @@
+{
+ "qid": "Q000007327",
+ "image": "Q000007327.png",
+ "takeaway": "The axillary artery starts at the lateral border of the 1st rib, is divided into three parts by pectoralis minor, and ends at the lower border of teres major, not teres minor.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {"text": "Which statement about the axillary artery is incorrect?"},
+ "answer": {"text": "It ends at the lower border of the teres minor."},
+ "shots": [
+  {"x": 768, "y": 512, "z": 1},
+  {"x": 190, "y": 300, "z": 1.9, "spot": [170, 300, 150]},
+  {"x": 640, "y": 360, "z": 1.9, "spot": [620, 400, 170]},
+  {"x": 1060, "y": 360, "z": 1.9, "spot": [1060, 400, 190]},
+  {"x": 1380, "y": 380, "z": 1.9, "spot": [1420, 420, 150]}
+ ],
+ "lines": [
+  {"text": "Follow the artery like a river.", "shot": 0, "dir": "warm, curious"},
+  {"text": "It starts at the lateral border of the first rib, as the continuation of the subclavian artery.", "shot": 1, "dir": "calm, confident"},
+  {"text": "Pectoralis minor stands over it like a gatekeeper and divides it into three parts.", "shot": 2, "say": "Pectoralis minor stands over it like a gatekeeper and divides it into three parts. (laugh)", "dir": "gently amused"},
+  {"text": "The river ends at the lower border of teres major, and becomes the brachial artery.", "shot": 3, "dir": "calm, confident"},
+  {"text": "Teres minor is the wrong muscle, so it gets the red cross.", "shot": 4, "dir": "calm, clear"},
+  {"text": "So the incorrect statement is that it ends at teres minor.", "shot": 4, "dir": "warm, reassuring"}
+ ]
+}
