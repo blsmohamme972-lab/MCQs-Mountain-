@@ -1,0 +1,86 @@
+{
+ "takeaway": "ADH is made in the supraoptic nucleus and rises with low arterial pressure or raised osmolality, not with high pressure. So the high-pressure statement is the incorrect one.",
+ "question": {
+  "text": "Which statement regarding the regulation of sodium and water reabsorption is incorrect?",
+  "say": "Which statement regarding the regulation of sodium and water reabsorption is incorrect?"
+ },
+ "answer": {
+  "text": "Antidiuretic hormone secretion is stimulated by an increased arterial pressure.",
+  "say": "Antidiuretic hormone secretion is stimulated by an increased arterial pressure."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 230,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    230,
+    380,
+    230
+   ]
+  },
+  {
+   "x": 770,
+   "y": 400,
+   "z": 2,
+   "spot": [
+    820,
+    420,
+    260
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 420,
+   "z": 2,
+   "spot": [
+    1300,
+    360,
+    240
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "Antidiuretic hormone, ADH, is produced in the supraoptic nucleus of the hypothalamus.",
+   "say": "Antidiuretic hormone, A D H, is produced in the supraoptic nucleus of the hypothalamus.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "Osmoreceptors detect a rise in osmolality and switch it on.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "In the kidney, renin is released when afferent arteriole pressure or sodium falls.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Aldosterone then drives sodium reabsorption in the distal tubule.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "ADH is also stimulated by a fall in circulating volume or arterial pressure.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So high arterial pressure does not stimulate ADH, and that statement is the incorrect one.",
+   "shot": 3,
+   "say": "So high arterial pressure does not stimulate ADH, and that statement is the incorrect one. (sigh)",
+   "dir": "calm, confident"
+  }
+ ],
+ "qid": "Q000007311",
+ "image": "Q000007311.png",
+ "engine": "breeze",
+ "tempo": 1.0
+}

@@ -1,0 +1,84 @@
+{
+ "takeaway": "A painless, soft lump below the ear lobule, with bilateral parotid lumps and an intact facial nerve in an older patient, is a Warthin tumour (adenolymphoma).",
+ "question": {
+  "text": "An 83-year-old woman has a soft, painless 1 cm lump below the left ear lobule, a similar lump on the other side, and no facial nerve involvement. Most likely diagnosis?",
+  "say": "An 83-year-old woman has a soft, painless one centimetre lump below the left ear lobule, a similar lump on the other side, and no facial nerve involvement. What is the most likely diagnosis?"
+ },
+ "answer": {
+  "text": "Adenolymphoma",
+  "say": "Adenolymphoma."
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 280,
+   "y": 430,
+   "z": 2,
+   "spot": [
+    260,
+    400,
+    230
+   ]
+  },
+  {
+   "x": 760,
+   "y": 450,
+   "z": 2,
+   "spot": [
+    760,
+    420,
+    230
+   ]
+  },
+  {
+   "x": 1300,
+   "y": 430,
+   "z": 2,
+   "spot": [
+    1300,
+    380,
+    250
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "An older woman has a soft, painless lump just below the ear lobule, and a similar lump on the other side.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "That position is the parotid gland, and bilateral lumps are the clue.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Most parotid tumours are pleomorphic adenomas, and monomorphic adenomas make up the rest.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The commonest monomorphic adenoma is the Warthin tumour, which is an adenolymphoma.",
+   "shot": 2,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "Warthin tumours are more commonly bilateral, just like this patient.",
+   "shot": 2,
+   "dir": "warm, interested"
+  },
+  {
+   "text": "The facial nerve is intact, and weakness would suggest malignant infiltration, so this is benign.",
+   "shot": 3,
+   "dir": "calm, confident"
+  }
+ ],
+ "qid": "Q000007310",
+ "image": "Q000007310.png",
+ "engine": "breeze",
+ "tempo": 1.0
+}
