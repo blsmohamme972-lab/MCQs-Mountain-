@@ -1,0 +1,97 @@
+{
+ "qid": "Q000007284",
+ "image": "Q000007284.png",
+ "takeaway": "High anion gap metabolic acidosis means extra unmeasured anions, as in ketoacidosis and lactic acidosis. Anion gap = (Na+ + K+) - (HCO3- + Cl-). A normal gap acidosis also exists.",
+ "engine": "breeze",
+ "tempo": 1.0,
+ "question": {
+  "text": "Which of the following conditions is associated with a metabolic acidosis and a high anion gap?"
+ },
+ "answer": {
+  "text": "Ketoacidosis"
+ },
+ "shots": [
+  {
+   "x": 768,
+   "y": 512,
+   "z": 1
+  },
+  {
+   "x": 250,
+   "y": 400,
+   "z": 1.9,
+   "spot": [
+    250,
+    330,
+    200
+   ]
+  },
+  {
+   "x": 870,
+   "y": 330,
+   "z": 1.9,
+   "spot": [
+    860,
+    230,
+    170
+   ]
+  },
+  {
+   "x": 880,
+   "y": 520,
+   "z": 2.0,
+   "spot": [
+    860,
+    520,
+    150
+   ]
+  },
+  {
+   "x": 1330,
+   "y": 450,
+   "z": 1.9,
+   "spot": [
+    1340,
+    430,
+    170
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "text": "A high anion gap means there are extra unmeasured anions in the blood.",
+   "shot": 1,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "The anion gap is sodium plus potassium, minus bicarbonate plus chloride.",
+   "shot": 0,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "When unmeasured anions pile up, like ketones or lactate, the gap rises.",
+   "shot": 1,
+   "dir": "warm, curious"
+  },
+  {
+   "text": "That is exactly what happens in ketoacidosis, the fruity breath of acetone.",
+   "shot": 2,
+   "dir": "gently amused"
+  },
+  {
+   "text": "Lactic acidosis behaves the same way, with a high gap.",
+   "shot": 3,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "But remember, a metabolic acidosis can also have a normal anion gap.",
+   "shot": 4,
+   "dir": "calm, confident"
+  },
+  {
+   "text": "So the high gap condition here is ketoacidosis.",
+   "shot": 0,
+   "dir": "calm, confident"
+  }
+ ]
+}
