@@ -28,7 +28,7 @@ from kafu_data import CONFIG, QUEUE  # noqa: E402
 
 STYLE=("Picmonic and Sketchy-style visual mnemonic for medical students: cute, funny, expressive cartoon characters with big friendly eyes, "
        "bright flat colours, thick dark outlines, rich storytelling detail. All text sits in rounded white label boxes with dark navy bold letters, "
-       "crisp and spelled exactly as given.")
+       "crisp and spelled exactly as given. " + g.STORY_RULES)
 AVOID=("Avoid: garbled or misspelled text, extra text that is not in quotes here, duplicated characters, distorted faces, photographs, "
        "watermarks, cluttered dark background, and anything real-person-like.")
 HOW=("HOW TO WORK ON EVERY IMAGE BELOW (read once, apply to each image)\n"
@@ -113,7 +113,7 @@ def page(path, outpath):
          "ORDER OF WORK, one image at a time:",
          f'1. If <QID>.png is already in "{NAME}" now, skip that image.',
          "2. Otherwise think (A), then generate it (one image, 3:2, 1536x1024).",
-         "3. Check it: every quoted label present and spelled exactly; the bottom banner reads exactly as written; one connected scene. If not, regenerate once.",
+         "3. Check it: every quoted label present and spelled exactly; the bottom banner reads exactly as written; ONE story around ONE MAIN CHARACTER in the centre, every other character acting on it (Picmonic / Sketchy), no panels. If not, regenerate once.",
          f'4. Save it to "{NAME}" in the same message, named exactly <QID>.png (capital Q, nine digits, .png, no other words). Then go on.',
          "Do not stop after generating: think, generate, check, save, next. No drafts or duplicates in the folder; to replace an image, overwrite the same name.",
          f'If you stop before the end and I write "continue", continue from the first image that is not yet in "{NAME}".',
@@ -128,6 +128,7 @@ def page(path, outpath):
                f"Title banner at the top: \"{it['title'].strip()}\".\n"
                f"Story brief (improve it, keep the labels exactly):\n{it['scenes'].strip()}\n"
                f"Bottom banner: \"Answer --> {it['banner'].strip()}\".\n{AVOID}")
+            assert g.STORY_RULES in p, "every image prompt must carry the story rules"
             msg+=[f"===== IMAGE {i} of {len(ch)}: save as {q}.png (question {e['n']}) =====",p,""]
         pname=f"places_{ch[0]}-{ch[-1]}.txt"
         msg+=[f'PART 2 - the places notes file. After the images, write ONE plain text file named exactly {pname} (a .txt file, not a Google Doc) and save it to "{NAME}". For each image, in the same order, write 4 to 7 short lines: the QID and question number; the real place you chose (its name and city) and what the cartoon background looks like; the MAIN CHARACTER and what it stands for; each other character with the single fact it stands for; the funny idea, pun or memory trick; and any extra fact you added beyond the question and correct answer (say it is extra). Keep it plain and short: these notes help the voice-over writer know exactly what the picture shows. If a file with that name is already there, replace it.',""]

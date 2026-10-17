@@ -58,6 +58,13 @@ Keep checks short (`| tail`), do not reread files you already read, and answer t
    and SendUserFile it. The card tells ChatGPT to think first (better characters, more connected, more memorable, Picmonic
    and Sketchy ideas), to use a real photo of the place as a cartoon background, to adapt anything its image rules forbid
    instead of refusing, and to save one `places_<first>-<last>.txt` notes file per card. ChatGPT writes NO voice.
+   **Story rules in every image prompt (owner, 2026-10-17):** `gpt_writer.STORY_RULES` (Picmonic / Sketchy, ONE story
+   around ONE MAIN CHARACTER, every other character acts on it, one pun per fact, no panels) travels inside `STYLE`, so every
+   image prompt from `head_prompts.py`, `gpt_writer.py` and `gpt_master_prompts.py` carries it, and the card's check step
+   makes ChatGPT redraw an image that is not one story. Never write an image prompt outside these tools. Before sending, review
+   every character line: does it act on the main character with a pun? If not, rewrite it (labels and evidence unchanged).
+   ChatGPT writing the prompts itself (`gpt_master_prompts.py --from A --to B --out FILE`) failed once (2026-10-17): if it
+   fails, the Head writes them with the same master script locally (`--test-dir`, `show(n)`, `make(DATA)`).
    Ask the owner to test ONE card before pasting all of them when the method or the style changed.
 2. **Even split for any session count.** After the owner picks N sessions: `assign.py options PREFIX --from <first number>`
    shows the table; then `assign.py resize PREFIX N --from <first number>` (N packages of nearly equal size) and
