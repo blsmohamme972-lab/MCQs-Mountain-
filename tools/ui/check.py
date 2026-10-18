@@ -68,6 +68,10 @@ VISUAL_HASH_VARIANTS={
         # Five-tab bar (Leaders tab, PR #129): two renderer variants seen on its first two runs.
         '26b118ba00302d72b048b187e5c95c1f7cdc27dbf04f5177f10922512fc6f6bc',
         '8416172e413e246e1d1a4ca17e90782b14cac1d1e00eab93c112c2de0d28d615',
+        # PR #231: these two alternated over three runs of one head (the PR does not change this screen: main and the
+        # PR render it byte-identically); the evidence image was inspected and is correct.
+        'fe79b2397c7b93c514880ae016f5fb40bb83e4adbbe0d3245b9dc6f87d081867',
+        '434ea392d42704275a7687706022d4f4017dff7118256181874b21fffedd7b76',
     },
 }
 
