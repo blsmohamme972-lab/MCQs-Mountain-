@@ -21,10 +21,11 @@ globalThis.KafuEnhancements.installers.push({name:'ux-diagnostics',install(){
   }
   window.addEventListener('online',refresh);window.addEventListener('offline',refresh);
   const safeAreas=()=>{
-    const inset=Math.max(0,Math.min(150,Number(TG?.contentSafeAreaInset?.top)||0));
-    document.documentElement.style.setProperty('--kafu-tg-safe-top',TG?.isFullscreen?inset+'px':'0px');
+    const n=v=>Math.max(0,Math.min(150,+v||0)),fs=!!TG?.isFullscreen,r=document.documentElement;
+    r.style.setProperty('--kafu-tg-safe-top',(fs?n(TG.safeAreaInset?.top)+n(TG.contentSafeAreaInset?.top):0)+'px');r.classList.toggle('tg-fs',fs);
   };
-  try{TG?.onEvent?.('contentSafeAreaChanged',safeAreas);TG?.onEvent?.('fullscreenChanged',safeAreas);}catch(_){}
+  try{for(const e of['contentSafeAreaChanged','safeAreaChanged','fullscreenChanged'])TG?.onEvent?.(e,safeAreas);}catch(_){}
   safeAreas();
+  if(IN_TG)setTimeout(()=>fullscreen.autoTablet(screen),0);
   globalThis.KafuUI={fullscreen,banner,get catalogSource(){return source;},setCatalogSource:value=>{source=value;},build:()=>Core.buildInfo(globalThis.KAFU_BUILD)};
 }});

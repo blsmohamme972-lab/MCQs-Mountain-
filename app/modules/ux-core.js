@@ -6,8 +6,9 @@
     const value=typeof error==='string'?error:error?.error||error?.name;
     return clean(value,'UNSPECIFIED_ERROR');
   };
+  const isTablet=(tg,s)=>/^(ios|android)/.test(tg?.platform)&&Math.min(s?.width,s?.height)>=600;
   class FullscreenDiagnostic {
-    constructor(tg,{changed=()=>{},timer=setTimeout,clear=clearTimeout}={}){
+    constructor(tg,{changed=()=>{},timer=(f,t)=>setTimeout(f,t),clear=i=>clearTimeout(i)}={}){
       this.tg=tg;this.changed=changed;this.timer=timer;this.clear=clear;this.timeout=null;this.pending=false;
       this.result='Not requested';this.returned='not called';
       this.onChanged=()=>{this.pending=false;this.clear(this.timeout);this.result=tg?.isFullscreen?'Fullscreen confirmed by Telegram':'Not fullscreen (Telegram event)';this.changed();};
@@ -20,6 +21,7 @@
     }
     snapshot(){return{telegramVersion:clean(this.tg?.version),platform:clean(this.tg?.platform),isFullscreen:!!this.tg?.isFullscreen,
       supported:this.supported(),returned:this.returned,result:this.result};}
+    autoTablet(s){if(this.auto||!isTablet(this.tg,s)||!this.supported()||this.tg.isFullscreen)return false;this.auto=true;this.request();return true;}
     request(exit=false){
       if(this.pending)return;
       const method=exit?'exitFullscreen':'requestFullscreen';
@@ -29,7 +31,7 @@
       if(!exit&&this.tg.isFullscreen){this.result='ALREADY_FULLSCREEN';this.returned='not called';this.changed();return;}
       this.pending=true;this.result='Request sent; waiting for Telegram';this.returned='pending';this.changed();
       try{
-        // Synchronous invocation preserves the user's tap gesture. No automatic call.
+        // Synchronous invocation preserves the user's tap gesture.
         const result=this.tg[method]();
         this.returned=result===undefined?'void (request sent)':typeof result==='object'?'object (not logged)':typeof result;
         if(result&&typeof result.then==='function')result.catch(error=>this.onFailed(error));
