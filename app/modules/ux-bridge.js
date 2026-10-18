@@ -20,17 +20,12 @@ globalThis.KafuEnhancements.installers.push({name:'ux-diagnostics',install(){
     const view=VIEWS[key];VIEWS[key]=function(...args){const result=view.apply(this,args);result.html=banner()+result.html;return result;};
   }
   window.addEventListener('online',refresh);window.addEventListener('offline',refresh);
-  // In full screen Telegram's own buttons float over the top of the app: the content starts below the device's safe
-  // area plus Telegram's button band (both from Telegram; env() is not reliable inside its WebView).
   const safeAreas=()=>{
-    const n=value=>Math.max(0,Math.min(150,Number(value)||0)),full=!!TG?.isFullscreen;
-    const inset=full?n(TG?.safeAreaInset?.top)+n(TG?.contentSafeAreaInset?.top):0;
-    document.documentElement.style.setProperty('--kafu-tg-safe-top',inset+'px');
-    document.documentElement.classList.toggle('tg-fs',full);
+    const n=v=>Math.max(0,Math.min(150,+v||0)),fs=!!TG?.isFullscreen,r=document.documentElement;
+    r.style.setProperty('--kafu-tg-safe-top',(fs?n(TG.safeAreaInset?.top)+n(TG.contentSafeAreaInset?.top):0)+'px');r.classList.toggle('tg-fs',fs);
   };
-  try{TG?.onEvent?.('contentSafeAreaChanged',safeAreas);TG?.onEvent?.('safeAreaChanged',safeAreas);TG?.onEvent?.('fullscreenChanged',safeAreas);}catch(_){}
+  try{for(const e of['contentSafeAreaChanged','safeAreaChanged','fullscreenChanged'])TG?.onEvent?.(e,safeAreas);}catch(_){}
   safeAreas();
-  // Tablets open full screen by themselves, right after boot() has told Telegram the app is ready.
-  if(IN_TG)setTimeout(()=>fullscreen.autoTablet(globalThis.screen),0);
+  if(IN_TG)setTimeout(()=>fullscreen.autoTablet(screen),0);
   globalThis.KafuUI={fullscreen,banner,get catalogSource(){return source;},setCatalogSource:value=>{source=value;},build:()=>Core.buildInfo(globalThis.KAFU_BUILD)};
 }});
