@@ -12,6 +12,10 @@
 > any recent revision can be restored.
 > See `docs/COMMENTS.md` and, to write them, `docs/COMMENTS_PROMPT.md`.
 
+> **2D game lab (Oct 2026):** a standalone prototype of an "MCQs Mountain" game mode (the character climbs from one MCQ
+> to the next), kept out of the app: not deployed, not linked. Start with `game-lab/README.md`; the current step is the
+> STATUS line at the top of `game-lab/PLAN.md`.
+
 Updated: 2026-09-28 (Asia/Baghdad)
 
 ## Start here

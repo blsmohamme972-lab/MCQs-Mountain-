@@ -1,0 +1,16 @@
+# Lean storage: text only in the lab (see game-lab/README.md).
+node_modules/
+tools/package.json
+tools/package-lock.json
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.zip
+*.mp3
+*.mp4
+*.ogg
+*.opus
+*.wav
+*.trace.json

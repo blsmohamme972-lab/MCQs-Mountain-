@@ -32,6 +32,12 @@ Comments under questions come from `COMMENTS_<BOOK-ID>_rN.zip` packs: write them
 build and check them with `tools/comments.py pack … --export …`, send the ZIP to the owner in chat (`docs/COMMENTS.md`).
 No "By Kafu characters" line and no per-comment label (both removed by the owner); the composer says "التعليقات مغلقة مؤقتاً".
 
+## 2D game lab (prototype only)
+
+`game-lab/` holds the "MCQs Mountain" 2D game prototype. It is not deployed and not linked; never copy anything from it
+into `app/`, `worker/` or `tools/` without the owner's written go-ahead. Start with `game-lab/README.md`; the current
+step is the STATUS line at the top of `game-lab/PLAN.md`, and settled decisions are in `game-lab/DECISIONS.md`.
+
 ## Voice-over: ask the owner who renders, every time
 
 Before any voice batch, ask the owner this (with the engine question below), and wait for the answer:
