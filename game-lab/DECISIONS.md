@@ -204,3 +204,73 @@ non-commercial or evaluation tools and assets for the test where they help (D22 
 - Honesty rule: free and evaluation packs may not reach a very high world-class look. If they do not, say so with
   screenshots and list the paid options (premium packs, a commissioned artist) for the owner to decide; agents do not
   buy anything.
+
+## The HD tier (2026-10-18, later; paused by the owner before the final reviews)
+
+**D26. The HD tier: PixiJS 8 on WebGL with pixi-filters, a hero animated in code from cut-out parts, Kenney CC0 art
+plus procedurally painted layers. The pixel build stays as the light tier.** `v2/world-hd.js` is a second world behind
+the same `window.World` interface, so `app.js`, the flow, the MCQ sheet, grading, modes and the harness are shared.
+- **Tier choice** (`app.js`): `?tier=light|hd` forces one. Otherwise light for `?low=1`, for Telegram's `LOW)` class, or
+  when WebGL is missing. If the HD world fails to start, the light tier loads instead. A phone on which the HD world ran
+  slow is remembered (`localStorage` `mcqm-tier`) and starts on the light tier next time.
+- **Renderer**: WebGL at `min(devicePixelRatio, 2)`, `autoDensity`. Filters (pixi-filters 6.1.5, MIT, pinned in
+  `tools/engine-lock.json`): colour grading (AdjustmentFilter) over the whole scene, light rays (GodrayFilter) as an
+  additive overlay at half resolution (day only), a glow on the summit star (GlowFilter), a thin outline on the hero
+  (OutlineFilter). **PixiJS filters default to resolution 1**: on 2x screens a full-scene filter must be set to
+  `resolution: 'inherit'`, or the whole picture is rendered at 1x and stretched (this was the "soft picture" in two
+  review rounds).
+- **Hero: no Spine.** No existing Spine skeleton fits (the official examples carry weapons or lack the moves), and a new
+  skeleton needs the Spine editor, whose free trial cannot save or export. Instead the Kenney Toon Characters "Female
+  adventurer" body parts (CC0) are rigged in code: forward kinematics over 9 parts, target poses eased every frame,
+  baked blink and happy faces. Idle (breathing, blink, looking around), run (stride locked to the distance, no foot
+  sliding), stair steps, anticipation crouch, jump, fall, land squash, lift ride looking up, reading a book while the
+  MCQ is open, a hop with arms up after a correct answer, a calm nod with a hand on the heart after a wrong one, summit
+  cheer. 0 KB extra runtime, no licence risk.
+- **Art** (`tools/build_assets_hd.py`, register in `ASSETS.md`): Kenney CC0 packs from a GitHub mirror pinned to one
+  commit (`tools/assets-hd-lock.json`, 101 files with SHA-256), plus procedural painting at 2 texture px per world
+  unit: four mountain ranges with apex-lit faces and snow, a landmark peak, a sea of clouds, one painted cliff per
+  ledge (strata, outcrops, moss, vines), props (gondola, pulley, cairn, checkpoint posts and pennants, rope). WebP:
+  0.59 MB per palette (day or night), 0.71 MB for both; one 2048 x 2048 atlas; sounds 0.40 MB, loaded only after the
+  player turns sound on (both tiers share them).
+- **World**: 4-6 parallax layers with strong height parallax (far 0.15, peak 0.35, clouds 0.2, mid 0.3, near 0.55 of
+  the camera's rise), so the summit reads as the top; a cloud bank below the path; waterfalls with spray; birds,
+  leaves by day, fireflies, stars and torch light by night; checkpoint pennants that run up their posts; a gantry
+  lift; a cairn with a star at the summit and a camera pull-back; spring camera with look-ahead; XP counter ticks up.
+- **Loading**: only the art for the first frame (atlas, layers, the start cliff) before `lab:game-ready`; the rest
+  right after, drawn once before the start button turns on (`World.whenReady`), so no texture uploads during a
+  climb. Strip mode draws from a small sheet of its own (`strip.webp`), never from the 2048 px atlas.
+- **Quality governor**: if frames run long while moving, the light rays go, then the grading, then the phone is
+  remembered for the light tier. It never changes the resolution at run time (a canvas reallocation stalled 0.35-1.7 s
+  in the container).
+
+Numbers (360 x 740 at DPR 3, 4x CPU, container without a GPU; harness flags for HD: SwiftShader in the GPU process and
+2D canvases on the CPU, because with 2D canvases on SwiftShader PixiJS's start-up readback of a 6 x 1 px canvas stalls
+about 0.6 s here, against about 1 ms on a phone):
+
+| | Light tier (Canvas 2D) | HD tier (WebGL) |
+|---|---|---|
+| Engine + runtimes + game code, gzip | 264 KB (PixiJS 236.8 + app 10.0 + world 10.5 + questions 1.7 + page 5.0) | 320 KB (PixiJS 236.8 + filters 44.3 + app 10.0 + world-hd 21.7 + questions 1.7 + page 5.0); budget 450 |
+| Art | 0.09 MB (pixel atlas and layers, PNG) | 0.59 MB per palette; budget 2 MB |
+| Load to first frame | 0.49 s (earlier session) | 1.26-1.55 s, about 1.4 s typical; budget 1.5 s |
+| Strip / Classic frame p95 / p99 | 16.7-16.8 / 16.8 ms (target p99 33; the old 33.4 was the harness's own script injection, now warmed up first) | not judged here (GPU-bound on SwiftShader) |
+| Script time per frame (update + render submission) | n/a | p50 3-4 ms, p95 7-9 ms, p99 12-15 ms; budget p95 8 |
+| Long tasks over 50 ms during transitions | 0 | 0 (after removing run-time resizes) |
+| Story Next to next MCQ | about 1.12 s (1.6 s on lifts) | 1.8-3.1 s here at full resolution because SwiftShader draws a frame in 0.1-0.75 s; 1.33 s average, 1.70 s max on lifts with the GPU load removed (`?res=0.5&fx=0`) |
+| Strip / Classic Next to next MCQ | 137-141 ms / 23-25 ms | 142-150 ms / 23-29 ms |
+
+
+**Visual quality loop (three rounds, each scored by a fresh independent reviewer against the Ori / Rayman Legends bar,
+five screens in day and night):** round 1 day 4-5.5, night 4.5-5; round 2 day 5-6, night 5-6.5; round 3 day 5-6.5,
+night 4.5-6. Not 9/10. The round-3 reviewer's judgement: backgrounds could reach about 9 procedurally (Alto's Odyssey
+level), cliffs about 8, Kenney props top out near 7, the stock Kenney hero near 7; a realistic ceiling with free and
+procedural art is about 7.5. A 9 needs paid work: an original hero designed and rigged by an artist (Spine or Rive,
+the full move set), and a premium or commissioned prop and tile set (about 25 props). Agents did not buy anything; the
+owner decides. Still open from round 3 (bugs, not taste): the lift's post and arm read as a gallows (make it a braced
+tower with a counterweight), the stair steps render as broken narrow columns, the hero has a lavender halo and is not
+dimmed at night, a leaf seen edge-on draws as a line, the waterfall starts from nothing, "+10 XP" crosses the lift
+ropes.
+
+Still to do (the owner paused the work here): fix the open QA findings (`results/qa-v2-partial.md`) and the round-3
+bugs, run the speed, rules and visual reviews from `climb/SPEC.md` on both tiers, a fresh agent's final re-measure
+(`results/v2-final-<tier>-<mode>.json`), and the phone link (`tools/make_artifact.py` is ready). The prompt:
+`NEXT_AGENT.md`.

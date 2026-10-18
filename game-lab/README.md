@@ -27,7 +27,8 @@ professional, and it stays out of the app until the owner is fully convinced.
 | Playable prototype with 3 modes (Story, Strip, Classic) | First draft works (flow, MCQ, speed). Its look was **rejected** by the owner (D18) |
 | New direction: world-class 2D quality, professional engine, no medical characters | Written down (`DECISIONS.md` D18-D23) |
 | Engine spike | Done: PixiJS 8 with Canvas 2D renderer (D24, `results/spike-*.json`) |
-| v2 on PixiJS with test pixel art (`v2/`) | Works in all modes; sound, `ASSETS.md`, reviews and final numbers still open (`NEXT_AGENT.md`) |
+| v2 light tier (`v2/world.js`, Canvas 2D pixel art, `?low=1` / `?tier=light`) | Works in all modes; Strip and Classic p99 16.8 ms at 4x |
+| v2 HD tier (`v2/world-hd.js`, WebGL, the default; D26) | Works in all modes; three visual review rounds reached 5-6.5 of 10, not 9 (free-art ceiling about 7.5); QA findings, three reviews, final re-measure and phone link still open (`NEXT_AGENT.md`) |
 | Owner tries it on a phone, then in Telegram through a test bot | Not started (Gate 1) |
 
 **New agent: start with `NEXT_AGENT.md`.** It is the ready task prompt for the next step.
@@ -56,14 +57,18 @@ game-lab/
   PLAN.md              method, gates, kill criteria, current status
   DECISIONS.md         decision log with reasons and sources (D18-D23: the owner's new direction)
   CHARACTER_BRIEF.md   character and world brief, asset list, free tools
-  ASSETS.md            asset register with exact licences (to be created with the first test asset)
+  ASSETS.md            asset register with exact licences (both tiers, engine, runtimes)
   assets-test/         downloaded test assets, git-ignored, never committed
   climb/index.html     first draft of the prototype (flow and speed good, look rejected)
-  v2/                  the rebuild on PixiJS 8 (index.html, app.js flow and MCQ sheet, world.js game world)
+  v2/                  the rebuild on PixiJS 8: index.html, app.js (flow, MCQ sheet, tiers), world.js (light tier),
+                       world-hd.js (HD tier)
   spike/               the engine spike scenes (Phaser 4 and PixiJS 8)
   vendor/              engine builds fetched by tools/fetch_engine.py, git-ignored
   climb/SPEC.md        the spec of the first draft, and the four review checklists
   tools/measure.mjs    speed harness (Playwright, CPU throttling as a cheap-phone proxy)
+  tools/shots.mjs      screenshots of the five review screens, day and night
+  tools/fetch_*.py     pinned downloads (engine, runtimes, test art and sound); build_assets*.py build the art
+  tools/make_artifact.py  the phone copy (claude.ai artifact folder) of v2, both tiers
   results/             measurement JSON from the harness (text only)
   research/            the four research reports with their fact-check corrections
 ```
@@ -72,8 +77,11 @@ game-lab/
 
 - On a computer: open `game-lab/climb/index.html` in Chrome. It needs no server and makes no network requests.
 - v2 needs a server and the git-ignored files: `python3 game-lab/tools/fetch_engine.py`, `python3
-  game-lab/tools/fetch_assets.py` (Pillow), then `python3 -m http.server 8765` from `game-lab/` and open
-  `http://127.0.0.1:8765/v2/index.html`. Extra options: `?hero=captain|frog|pink|guy|mask`, `?gl=1` (WebGL renderer).
+  game-lab/tools/fetch_assets.py` (Pillow, numpy, ffmpeg; it builds both tiers' art, the HD part takes about a
+  minute), then `python3 -m http.server 8765` from `game-lab/` and open `http://127.0.0.1:8765/v2/index.html`.
+  Tiers: the HD tier (WebGL) is the default; `?tier=light` or `?low=1` gives the light tier. Light-tier options:
+  `?hero=captain|frog|pink|guy|mask`, `?gl=1`. HD options: `?fx=0` (no filters), `?gov=0` (no quality governor, for
+  screenshots on a machine without a GPU), `?res=1` (fixed resolution).
 - On a phone: the owner gets a private claude.ai link to the same page (an "artifact" copy with the document wrapper
   removed and two Google Fonts added). The repository file stays the source of truth.
 - URL options: `?mode=story|strip|classic`, `?debug=1` (frame-time overlay), `?low=1` (low-quality tier),
@@ -85,7 +93,15 @@ game-lab/
 cd game-lab/tools
 npm init -y >/dev/null && npm i playwright@1.56.1   # once; do not commit node_modules
 node measure.mjs ../climb/index.html --mode story --cpu 1,4,6 --q 8 --json ../results/story.json
+node measure.mjs "http://127.0.0.1:8765/v2/index.html?tier=light" --mode strip --cpu 4 --q 8   # light tier
+node measure.mjs "http://127.0.0.1:8765/v2/index.html" --mode story --cpu 4 --q 8              # HD tier
+node shots.mjs http://127.0.0.1:8765/v2/index.html <scratch-dir>   # 5 screens, day and night (never commit PNGs)
 ```
+
+For the HD tier the harness starts Chromium with SwiftShader in the GPU process (`--use-angle=swiftshader
+--enable-unsafe-swiftshader`) and 2D canvases on the CPU (`--disable-accelerated-2d-canvas`); see D26 for why. It also
+reports `script_ms_p50/p95/p99`, the world's own update plus render-submission time per frame (`World.scriptTimes`).
+HD frame times in this container are GPU-bound on software rendering and are judged on a real phone (D25).
 
 In the Claude Code cloud container Chromium is preinstalled; `playwright@1.56.1` matches it. Do not run
 `playwright install`.

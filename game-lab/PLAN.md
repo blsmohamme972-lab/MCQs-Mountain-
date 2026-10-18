@@ -1,15 +1,17 @@
 # MCQs Mountain: the method, step by step
 
-**STATUS (update this line whenever a step finishes):** Gate 0, v2 in progress (paused by the owner on 2026-10-18).
-- Done: engine spike, decision D24 (PixiJS 8.22.0, Canvas 2D renderer, pixel art at 1 canvas px per CSS px; numbers in
-  `DECISIONS.md` D24 and `results/spike-*.json`). `v2/` runs all three modes end to end with zero console errors, on
-  TEST-ONLY CC0 pixel art (Pixel Frog "Treasure Hunters" + "Pixel Adventure", downloaded by `tools/fetch_assets.py`).
-  v2 numbers at 4x CPU (360 x 740): Story frame p95 16.7 / p99 16.8 ms, Next to first frame 5 ms, Next to next MCQ
-  about 1.12 s (1.6 s on lifts), game load 0.49 s; Strip 138 ms; Classic 22-35 ms.
-- New owner direction (D25): target mid-range to high-end phones and a very high world-class look. Next: a WebGL
-  "high tier" of v2 with high-resolution art, filters and Spine animation; the Canvas pixel build stays as the light
-  tier. Also open: Strip and Classic p99 33.4 ms (target 33), sound, `ASSETS.md`, the four reviews, the independent
-  re-measure, the phone link. The ready prompt: `NEXT_AGENT.md`.
+**STATUS (update this line whenever a step finishes):** Gate 0, v2 with two tiers; paused by the owner on 2026-10-18
+before the final reviews. The ready prompt: `NEXT_AGENT.md`.
+- Done: engine spike and D24. Light tier (`v2/world.js`, Canvas 2D pixel art): Strip and Classic p99 now 16.8 ms at
+  4x CPU (the old 33.4 ms was the harness's own script injection; the harness now warms it up first). HD tier (D26,
+  `v2/world-hd.js`, WebGL): code-rigged CC0 hero, painted parallax and cliffs, filters, particles, sound (off by
+  default, both tiers), `ASSETS.md`, the phone-copy generator `tools/make_artifact.py`. Numbers in D26: HD first frame
+  about 1.4 s at 4x, script time p95 7-9 ms, no long task in transitions, 320 KB gzip of code, 0.59 MB of art.
+- Visual loop: three independent rounds, best scores 5-6.5 of 10, not the 9 the owner asked for. The reviewer's
+  ceiling with free and procedural art is about 7.5; a 9 needs an artist-made hero with a rig and premium props (D26).
+- Open: the QA findings in `results/qa-v2-partial.md` (unverified, one page error while loading), the round-3 bugs
+  (lift looks like a gallows, broken stair columns, night halo), the speed, rules and visual reviews on both tiers,
+  the fresh final re-measure, the phone link (Gate 1).
 
 Last updated: 2026-10-18.
 

@@ -1,0 +1,23 @@
+# v2 QA review (partial, NOT verified) — 2026-10-18
+
+The QA agent (both tiers, scripted Playwright) was stopped by the owner's "stop and hand over" before it wrote its
+report. These are the issues its raw logs recorded. **Verify each one before fixing**: the HD tier runs on SwiftShader
+in the container (no GPU), so frames take 0.1-1 s there, and timing-based checks can misfire. Screenshots stayed in the
+session scratchpad (not committed).
+
+| # | Tier | Likely severity | Finding (from the raw logs) | Probable cause and fix |
+|---|---|---|---|---|
+| 1 | HD | blocker (page errors) | Switching the colour scheme, or hiding the page, while the HD world is still loading throws: `TypeError ... reading 'atlas'` at `frame()` via `setFace()`, `reading 'stop'` at `World.pause()`, `reading 'visible'` at `busy()` | `world-hd.js`: `theme()`, `pause()`, `resume()` and `applyNight()` run before `init()` has built the scene. Guard them (`if (!built) return;`, `if (app && app.ticker)`), as `world.js` does. |
+| 2 | both | major | A double tap on "Check answer" (60-140 ms apart) also presses "Next MCQ", which appears in the same place: the explanation is skipped | `app.js`: ignore Next for about 400 ms after grading (or until the feedback has been on screen one frame). Study rule: the explanation must be seen. |
+| 3 | both | major | At 320 px wide, the "Correct answer" and "Your answer" marks are clipped at the sheet edge (Q4, multi) | Caused by the HD-review change in `index.html` (`.mk{white-space:nowrap;flex:none}`). Let the mark wrap on narrow screens, e.g. `@media (max-width:359px){.mk{white-space:normal;flex:0 1 auto}}`. |
+| 4 | both | major (keyboard) | After "Check answer" the focus falls to `<body>` (the Check button hides) | `app.js` `doCheck()`: move focus to the feedback block or to the Next button. |
+| 5 | both | minor | Classic mode shows "Ledge 0/8" while Q1 is open | `app.js` `go()` in classic calls `openSheet()` without `hud()`; call `hud()` there. |
+| 6 | HD | minor (container?) | The HUD XP counter lags the sheet's XP, and at the end showed 50 or 59 instead of 60 in some runs | The tick-up runs on `requestAnimationFrame`, which SwiftShader starves. Add a fallback that sets the final number after about 0.5 s (`setTimeout`). |
+| 7 | HD | minor (container?) | Classic "Time added by the game" 0.8-5 s instead of about 0 | Each classic switch waits one animation frame, and frames are slow on SwiftShader. Re-check on a phone; likely not a code bug. |
+| 8 | HD | major | Rotating the phone about 200 ms after load (still loading) leaves the canvas stretched (portrait canvas in a landscape view) | `World.resize()` returns early before the scene is built. After `init()` resolves, compare the size with `innerWidth`/`innerHeight` and resize if it changed. |
+| 9 | both | major (landscape phones) | In landscape at 844x390, 740x360 and 568x320, the start and summary cards slide under the top bar, or are cut off at 320 px tall | `index.html`: limit the cards' height (`max-height: calc(100% - top bar)`, scroll inside) or compact them in landscape. |
+| 10 | HD | check | "Foot button off-screen" (Check/Next below the view) logged once in Story 390x844 Q5 and in Strip 360x740 Q1 | Probably measured during the sheet's slide; verify with the sheet fully open. |
+
+Passed in the raw logs (as far as they went): all three modes reached the summary twice per tier at 320, 360, 390,
+820 and 1280 widths; grading counts (4 right, 4 wrong: +60 XP); dark mode; switching the scheme during play after
+load; a resize storm (40 resizes, no leak); sound requests only after the sound toggle.
