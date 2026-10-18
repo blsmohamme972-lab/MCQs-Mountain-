@@ -6,9 +6,10 @@
   TEST-ONLY CC0 pixel art (Pixel Frog "Treasure Hunters" + "Pixel Adventure", downloaded by `tools/fetch_assets.py`).
   v2 numbers at 4x CPU (360 x 740): Story frame p95 16.7 / p99 16.8 ms, Next to first frame 5 ms, Next to next MCQ
   about 1.12 s (1.6 s on lifts), game load 0.49 s; Strip 138 ms; Classic 22-35 ms.
-- Open: Strip and Classic p99 is 33.4 ms (target 33); no sound yet; no `ASSETS.md` yet; the final art pick
-  (`research/05-assets-scouting.md`); the four reviews and the independent re-measure; the phone link. Details and
-  the ready prompt: `NEXT_AGENT.md`.
+- New owner direction (D25): target mid-range to high-end phones and a very high world-class look. Next: a WebGL
+  "high tier" of v2 with high-resolution art, filters and Spine animation; the Canvas pixel build stays as the light
+  tier. Also open: Strip and Classic p99 33.4 ms (target 33), sound, `ASSETS.md`, the four reviews, the independent
+  re-measure, the phone link. The ready prompt: `NEXT_AGENT.md`.
 
 Last updated: 2026-10-18.
 

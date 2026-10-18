@@ -185,3 +185,22 @@ must load lazily, after the app is idle or when the player opens it.
 
 The phone copy (artifact) loads the same pinned build from cdnjs (`pixi.js/8.22.0/pixi.min.js`, with jsDelivr as a
 fallback), checked with a Subresource Integrity hash of the npm file.
+
+## Owner direction: mid-range to high-end phones, a very high world-class bar (2026-10-18, later)
+
+**D25. A "high tier" for mid-range and high-end phones, at a very high world-class quality.** The owner asked to
+assume mid-range to high-end phones (a real GPU, WebGL) and to raise the look to a very high world-class level, using
+non-commercial or evaluation tools and assets for the test where they help (D22 rules still apply: registered in
+`ASSETS.md`, downloaded by script, never committed, never shipped).
+- The engine stays PixiJS 8 (D24), but the high tier uses its WebGL renderer at devicePixelRatio up to 2, so it can
+  show high-resolution vector or painted art, filters (glow, light, fog, colour grading) and skeletal animation (Spine,
+  evaluation licence, TEST ONLY). The Canvas 2D pixel-art build of v2 stays as the light tier for weak phones
+  (`?low=1`, and automatically for Telegram's LOW performance class), so the idea of tiers in D12 is kept.
+- Speed rules (D23) still bind: the app's start-up and MCQ path stay untouched, the game loads lazily, every animation
+  is skippable, rewards come after grading, wrong answers stay neutral (D2, D3, D20).
+- This container has no GPU (WebGL runs on SwiftShader), so the high tier's frame times cannot be judged here: in the
+  lab it is held to main-thread budgets (script work per frame, long tasks, load time) and its frame rate is checked
+  on a real mid-range phone at Gate 2.
+- Honesty rule: free and evaluation packs may not reach a very high world-class look. If they do not, say so with
+  screenshots and list the paid options (premium packs, a commissioned artist) for the owner to decide; agents do not
+  buy anything.
