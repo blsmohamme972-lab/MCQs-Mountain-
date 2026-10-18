@@ -2,6 +2,11 @@
 .kafu-diagnostic{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;grid-template-columns:minmax(90px,1fr) minmax(0,2fr);gap:8px 14px;font-size:13px}
 .kafu-diagnostic dt{color:var(--muted)}.kafu-diagnostic dd{margin:0;overflow-wrap:anywhere}.kafu-diagnostic code{font-size:12px}
 :root{--kafu-tg-safe-top:0px}body{padding-top:var(--kafu-tg-safe-top)}.top{top:max(env(safe-area-inset-top,0px),var(--kafu-tg-safe-top))}
+/* Telegram full screen (tablets): Telegram's inset replaces env(), and a strip in the page colour sits behind its floating buttons */
+:root.tg-fs{padding-top:0}.tg-fs .top{top:var(--kafu-tg-safe-top)}
+.tg-fs body::before{content:"";position:fixed;left:0;right:0;top:0;height:var(--kafu-tg-safe-top);background:var(--bg);z-index:6;pointer-events:none}
+.tg-fs body[data-study-screen]::before{background:var(--mcq-paper)}.tg-fs body[data-study-screen] .top-in.k-study-topbar{padding-top:var(--space-2)}
+.tg-fs .kafu-motioncards-overlay{padding-top:max(20px,var(--kafu-tg-safe-top))}
 
 .k-version{display:flex;justify-content:center;padding:var(--space-6) 0 var(--space-3)}
 .k-version button{min-height:var(--tap-target);padding:var(--space-2) var(--space-3);color:var(--color-muted);font-size:var(--text-xs)}
