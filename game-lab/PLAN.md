@@ -1,7 +1,7 @@
 # MCQs Mountain: the method, step by step
 
-**STATUS (update this line whenever a step finishes):** Gate 0, v2 with two tiers; paused by the owner on 2026-10-18
-before the final reviews. The ready prompt: `NEXT_AGENT.md`.
+**STATUS (update this line whenever a step finishes):** Gate 0, v2 with two tiers; stopped by the owner on 2026-10-18
+in the middle of D27 (chapters from a few MCQs to 200). The ready prompt: `NEXT_AGENT.md`.
 - Done: engine spike and D24. Light tier (`v2/world.js`, Canvas 2D pixel art): Strip and Classic p99 now 16.8 ms at
   4x CPU (the old 33.4 ms was the harness's own script injection; the harness now warms it up first). HD tier (D26,
   `v2/world-hd.js`, WebGL): code-rigged CC0 hero, painted parallax and cliffs, filters, particles, sound (off by
@@ -9,10 +9,14 @@ before the final reviews. The ready prompt: `NEXT_AGENT.md`.
   about 1.4 s at 4x, script time p95 7-9 ms, no long task in transitions, 320 KB gzip of code, 0.59 MB of art.
 - Visual loop: three independent rounds, best scores 5-6.5 of 10, not the 9 the owner asked for. The reviewer's
   ceiling with free and procedural art is about 7.5; a 9 needs an artist-made hero with a rig and premium props (D26).
-- Open: the QA findings in `results/qa-v2-partial.md` (unverified, one page error while loading), the round-3 bugs
-  (lift looks like a gallows, broken stair columns, night halo), chapters from a few MCQs to 200 within the same
-  budgets (owner, D27: stages of about 10, pooled objects, three-digit numbers that fit), the speed, rules and visual
-  reviews on both tiers, the fresh final re-measure (also at 200 MCQs), the phone link (Gate 1).
+- D27 so far: app.js (chapter size from `?n=` or the start card's lab row, stages of about 10 MCQs, the Strip bar per
+  stage) and the HD world (stage-local build, clouds hide the stage change, a camp per stage, the summit only in the
+  last) are done and pass chapters of 1, 8, 13, 25 and 200 functionally (reduced motion), HD heap 10-12 MB flat. The
+  QA fixes (8 of 10) and the round-3 bugs (lift tower, stone stairs, night halo) are in the code
+  (`results/qa-v2-partial.md`).
+- Open: nobody has looked at the new HD art yet; the light world (`v2/world.js`) is not stage-aware; no measurement
+  at N > 8; the speed, QA, rules and visual reviews on both tiers; the fresh final re-measure (also at 200 MCQs); the
+  phone link (Gate 1).
 
 Last updated: 2026-10-18.
 
