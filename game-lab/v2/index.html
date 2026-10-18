@@ -72,7 +72,8 @@ h1,.card h2{font:600 28px/1.15 var(--fd);margin:0}
 .mdesc{margin:10px 2px 18px;min-height:3em;font-size:14px;color:var(--muted)}
 .go{min-height:62px;font:600 22px/1 var(--fd)}
 .go .bob{display:inline-flex;align-items:center;gap:10px}
-.ready .go .bob{animation:bob 1.5s ease-in-out infinite}
+/* the arrow bobs only while the start card shows (a hidden card's animation would still redraw the page every frame) */
+.ready #startp:not(.off) .go .bob{animation:bob 1.5s ease-in-out infinite}
 .go .ld{display:none;font:700 16px/1 var(--fr)}
 :root:not(.ready) .go .bob{display:none}:root:not(.ready) .go .ld{display:inline}
 .go svg{width:26px;height:26px;stroke-width:3.4}
@@ -140,8 +141,8 @@ h1,.card h2{font:600 28px/1.15 var(--fd);margin:0}
 .stats li{padding:8px 0;border-bottom:2px solid var(--border)}
 .stats li:last-child{border:0}
 #dbg{position:fixed;left:max(16px,env(safe-area-inset-left,0px));top:calc(60px + env(safe-area-inset-top,0px));z-index:7;padding:6px 8px;font:12px/1.35 ui-monospace,Menlo,monospace;white-space:pre;color:var(--text);background:var(--surface);border:2px solid var(--outline);border-radius:var(--r-xs);pointer-events:none}
-@media (prefers-reduced-motion:reduce){.ready .go .bob{animation:none}}
-.rm.ready .go .bob{animation:none}
+@media (prefers-reduced-motion:reduce){.ready #startp .go .bob{animation:none}}
+.rm.ready #startp .go .bob{animation:none}
 </style>
 </head>
 <body>

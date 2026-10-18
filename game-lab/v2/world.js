@@ -497,7 +497,9 @@
     const [c, x] = canvas(T, T); tile(x, 4, 4, 0, 0);
     return (slabT = PIXI.Texture.from(c));
   }
-  function setStage(k) { stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout(); buildStage(); }
+  // the main-thread time of every stage build (for the harness: World.stageInfo().buildMs)
+  const buildMs = [];
+  function setStage(k) { const t = performance.now(); stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10); }
 
   function resetState() {
     plan.length = 0; planOn = false; onArrive = null; coin.on = false; celebrateT = 0; H.sq = 0;
@@ -643,7 +645,7 @@
     info: () => 'S ' + S + ' · ' + (app && app.renderer ? app.renderer.name || app.renderer.type : '-') + ' · ' + heroKey + ' · stage ' + (stage + 1) + '/' + STG.length,
     // for the screenshot tool and the harness
     heroState: () => planOn && plan[pi] && plan[pi].k === 2 ? 'lift' : celebrateT > 0 ? 'cheer' : H.anim,
-    stageInfo: () => ({ stage, stages: STG.length, wipe: fadeK }),
+    stageInfo: () => ({ stage, stages: STG.length, buildMs, wipe: fadeK }),
     stripArt: () => kit && {
       coin(c, gold, x, y, size) { const f = kit.atlas.frames[(gold ? 'coin/gold' : 'coin/silver') + '/0']; c.imageSmoothingEnabled = false; c.drawImage(atlasImg.source.resource, f[0], f[1], f[2], f[3], x - size / 2, y - size / 2, size, size); },
       flag(c, x, y) { const f = kit.atlas.frames['end/idle']; c.imageSmoothingEnabled = false; c.drawImage(atlasImg.source.resource, f[0], f[1], f[2], f[3], x - 14, y - 26, 28, 28); },

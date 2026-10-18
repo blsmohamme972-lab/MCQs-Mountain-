@@ -76,7 +76,9 @@
   function installFont() {
     if (fontReady) return;
     PIXI.BitmapFont.install({ name: 'kafu-label', style: Object.assign(textStyle(40, 0xffffff), { stroke: { color: 0x3a2618, width: 7, join: 'round' } }),
-      chars: [['a', 'z'], ['A', 'Z'], ['0', '9'], ' +/'], resolution: 2, padding: 4 });
+      // only the glyphs the labels use (another one is added on demand), and no kerning table: the pairwise
+      // measuring cost about 120 ms of the start-up at 4x CPU
+      chars: '0123456789 +/QSTARCXPNLtagempxounisf', skipKerning: true, resolution: 2, padding: 4 });
     fontReady = true;
   }
   function btext(s, size, tint, parent) { const t = new PIXI.BitmapText({ text: s, style: { fontFamily: 'kafu-label', fontSize: size } }); t.anchor.set(0.5); t.tint = tint; if (parent) parent.addChild(t); return t; }
@@ -210,20 +212,22 @@
   // The caption shown while the clouds cover the screen: "Next mountain / Stage 2 of 3" (k = the next stage, 0-based).
   function caption(k) { wipeCap.t1.text = k === STG.length - 1 ? 'Last mountain' : 'Next mountain'; wipeCap.t2.text = 'Stage ' + (k + 1) + ' of ' + STG.length; }
   function swapStage(s) { s.swapped = true; setStage(stage + 1); H.x = lastX = START_X0; H.y = H.gy = 0; heroState('idle'); cam.fy = cam.fy1 = feetY('walk'); snapCam(); }
+  // Move times (ms) keep Story at about 1 s from Next to the next MCQ (D27: at most about 1.2 s added per MCQ on
+  // average, 1.6 s on the lift, 2.5 s for a stage change): a stair or jump move is about 0.62 s, the lift 1.14 s.
   function planMove(i) {
     const a = L[i], b = L[i + 1], k = kinds[i];
     if (k === 'lift') {
       const lf = lifts.find(l => l.j === i), mx = lf.x + LIFT_W / 2;
-      Wk(stand(i), a.y, mx, a.y, 260, 2); Lf(mx, a.y, b.y, 760, lf); Wk(mx, b.y, stand(i + 1), b.y, 200, 1);
+      Wk(stand(i), a.y, mx, a.y, 240, 2); Lf(mx, a.y, b.y, 720, lf); Wk(mx, b.y, stand(i + 1), b.y, 180, 1);
     } else if (k === 'jump') {
       const edge = a.x + LW - 14;
-      Wk(stand(i), a.y, edge, a.y, 190, 2); Cr(edge, a.y, 90); Jp(edge, a.y, b.x + 18, b.y, 320, 46); Wk(b.x + 18, b.y, stand(i + 1), b.y, 110, 1);
+      Wk(stand(i), a.y, edge, a.y, 160, 2); Cr(edge, a.y, 80); Jp(edge, a.y, b.x + 18, b.y, 300, 46); Wk(b.x + 18, b.y, stand(i + 1), b.y, 90, 1);
     } else {
       const edge = a.x + LW - 12, ss = steps.filter(s => s.j === i);
-      Wk(stand(i), a.y, edge, a.y, 190, 2);
+      Wk(stand(i), a.y, edge, a.y, 160, 2);
       let px = edge, py = a.y;
-      ss.forEach((s, n) => { St(px, py, s.x + STEP_W / 2, s.y, 112, n); px = s.x + STEP_W / 2; py = s.y; });
-      St(px, py, b.x + 16, b.y, 112, 3); Wk(b.x + 16, b.y, stand(i + 1), b.y, 90, 1);
+      ss.forEach((s, n) => { St(px, py, s.x + STEP_W / 2, s.y, 96, n); px = s.x + STEP_W / 2; py = s.y; });
+      St(px, py, b.x + 16, b.y, 96, 3); Wk(b.x + 16, b.y, stand(i + 1), b.y, 80, 1);
     }
   }
   function begin(cb) { pi = 0; pt = 0; onArrive = cb; if (RM) finishPlan(); else { planOn = true; wake(); } }
@@ -700,7 +704,9 @@
   // Each stage gets its own light over the same art (a gentle tint on the sky and far layers): clear, warm, fresh, cool.
   const STAGE_TINT = [0xffffff, 0xfff0e2, 0xe8f6ec, 0xeceaff];
   let stageTint = 0xffffff, heroC;
-  function setStage(k) { stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout(); buildStage(); }
+  // the main-thread time of every stage build (for the harness: World.stageInfo().buildMs)
+  const buildMs = [];
+  function setStage(k) { const t = performance.now(); stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10); }
   let backDeco, shadow, fgW, raysS;
   // Painted layers tile sideways only: drawn 2 units shorter and 1 unit down, so linear filtering never blends the
   // top row with the bottom row of the repeating texture (that showed as a pale line).
@@ -804,9 +810,10 @@
   // before the first tap: no compile stall later (the beacon's glow used to cost 170 ms at the summit).
   function prewarm() {
     for (const c of [backC, backDeco, midC]) for (const k of c.children) k.renderable = true;
-    // the summit star's glow exists only in the last stage: compile its shader now, not in the middle of a climb
+    // the summit star's glow: compile its shader now, not in the middle of a climb. Always with an on-screen dummy:
+    // Pixi skips the filters of an object outside the view, and the star is off screen at start-up (or not built yet)
     let w = null;
-    if (FX && !glow && PIXI.filters && PIXI.filters.GlowFilter) { w = spr('fx/soft', 40, 40, 0.5, 0.5, fxC, 0.2); w.alpha = 0.01; w.filters = [new PIXI.filters.GlowFilter({ distance: 12, outerStrength: 1.6, color: 0xffd36b, quality: 0.2, resolution: 'inherit' })]; }
+    if (FX && PIXI.filters && PIXI.filters.GlowFilter) { w = spr('fx/soft', 40, 40, 0.5, 0.5, fxC, 0.2); w.alpha = 0.01; w.filters = [new PIXI.filters.GlowFilter({ distance: 12, outerStrength: 1.6, color: 0xffd36b, quality: 0.2, resolution: 'inherit' })]; }
     const keep = worldC.position.clone(); worldC.position.set(0, 0); app.render(); worldC.position.copyFrom(keep);
     if (w) { w.destroy(); }
   }
@@ -911,10 +918,10 @@
       begin(cb);
     },
     // i is the chapter's MCQ index. After the last MCQ of a stage the climber reaches the camp, the clouds rise, the
-    // next mountain is built behind them, and she walks in to its first ledge (about 1.5 s on top of the climb).
+    // next mountain is built behind them, and she walks in to its first ledge (about 1.3 s on top of the climb).
     travel(i, cb) {
       const j = J(i); plan.length = 0; raiseFlag(j); planMove(j);
-      if (j === sK - 1 && !lastStage()) { const b = L[sK]; caption(stage + 1); Wp(b.x + 16, b.y, RM ? 1 : 1000); Wk(START_X0, 0, stand(0), 0, 520, 2); }
+      if (j === sK - 1 && !lastStage()) { const b = L[sK]; caption(stage + 1); Wp(b.x + 16, b.y, RM ? 1 : 860); Wk(START_X0, 0, stand(0), 0, 450, 2); }
       begin(cb);
     },
     toSummit(cb) {
@@ -989,6 +996,7 @@
       signs.forEach((s, i) => setSign(i, sts[i])); coins.forEach(c => { c.pop = 1; }); signs.forEach(s => { s.badge.pop = 1; s.badge.scale.set(0.36); });
       flags.forEach((f, i) => { if (up[i] && !f.big) { f.up = true; f.t = 1; f.pen.y = -148; f.pen.texture = frame('ui/pen0'); f.pen.anchor.set(0.03, 0.5); } });
       lifts.forEach((l, i) => { l.y = ly[i]; }); beacon.lit = lit;
+      if (wipeK > 0) { const w = plan[pi]; caption(w && w.k === 5 && w.swapped ? stage : stage + 1); }
       H.x = keep.x; H.y = keep.y; H.gy = keep.gy; H.st = keep.st;
       snapCam(); renderOnce();
     },
@@ -1000,7 +1008,7 @@
     info: () => 'HD · Z ' + Z.toFixed(2) + ' · res ' + (app ? app.renderer.resolution : '-') + ' · ' + (app && app.renderer ? app.renderer.name : '-') + (FX ? ' · fx' : ' · no fx') + ' · q-' + qStep,
     quality: () => ({ step: qStep, resolution: app ? app.renderer.resolution : null }),
     heroState: () => H.st,                                   // for the screenshot tool
-    stageInfo: () => ({ stage, stages: STG.length, wipe: wipeK }),
+    stageInfo: () => ({ stage, stages: STG.length, buildMs, wipe: wipeK }),
     // Strip mode draws from a small sheet of its own (never from the 2048 px atlas).
     stripArt: () => stripImg && stripImg.naturalWidth && {
       img(c, name, x, y, w, h) { const f = kit.strip.frames[name]; c.imageSmoothingEnabled = true; c.drawImage(stripImg, f[0], f[1], f[2], f[3], x, y, w, h); },

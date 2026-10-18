@@ -29,7 +29,7 @@
   const stageOf = i => { for (let s = 0; s < STAGES.length; s++) if (i < STAGES[s][1]) return s; return STAGES.length - 1; };
   let mode = /^(story|strip|classic)$/.test(P.get('mode')) ? P.get('mode') : 'story';
   // Harness contract (README.md): state, mode, answer(); 'loading' comes first, until the world's first frame.
-  const lab = window.__lab = { state: 'loading', mode, tier: TIER, version: 2, answer: () => autoAnswer() };
+  const lab = window.__lab = { state: 'loading', mode, tier: TIER, version: 2, n: N, stages: STAGES, answer: () => autoAnswer() };
   if (RM) R.classList.add('rm');
   R.classList.add('t-' + TIER);
   const now = () => performance.now(), mark = n => { try { performance.mark(n); } catch (e) {} };
