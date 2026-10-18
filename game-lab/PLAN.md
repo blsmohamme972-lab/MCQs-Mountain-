@@ -1,8 +1,14 @@
 # MCQs Mountain: the method, step by step
 
-**STATUS (update this line whenever a step finishes):** Gate 0 in progress. The prototype `climb/index.html` is
-being built and reviewed (build, 4 independent reviews, fix, independent re-measure). Next action after that: commit
-the prototype and its `results/`, then send the owner the phone link for Gate 1.
+**STATUS (update this line whenever a step finishes):** Gate 0, paused by the owner on 2026-10-18.
+- Done: the first draft of `climb/index.html` (53.7 KB raw, 19.4 KB gzip, no libraries, no network). It plays all
+  three modes to the end with zero console errors. Draft numbers (Playwright, 360x740, 8 MCQs, `results/draft-*.json`):
+  frame p95 16.7-16.8 ms at 1x and 4x CPU; Next to first frame 6-14 ms; Next to next MCQ: Story about 1,140 ms,
+  Strip about 140-147 ms, Classic about 26-31 ms.
+- Not done yet: the draft was built by one agent and has **not** been reviewed. Still to do, in order: the four
+  reviews listed in `climb/SPEC.md` (speed incl. 6x CPU, QA bug hunt, design rules and learning, visual quality),
+  one fix pass, an independent final re-measure, then send the owner the phone link (Gate 1).
+- Resume by reading `climb/SPEC.md` and running those reviews against the draft. Do not rebuild from scratch.
 
 Last updated: 2026-10-18.
 

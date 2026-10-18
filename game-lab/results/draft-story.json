@@ -1,0 +1,57 @@
+{
+ "file": "/home/user/MCQs-Mountain-/game-lab/climb/index.html",
+ "mode": "story",
+ "questions": 8,
+ "results": [
+  {
+   "cpu_slowdown": 1,
+   "frames": 781,
+   "frame_ms_p50": 16.7,
+   "frame_ms_p95": 16.7,
+   "frame_ms_p99": 16.8,
+   "frame_ms_max": 16.8,
+   "janky_frames_over_33ms": 0,
+   "long_tasks": 0,
+   "long_task_ms_max": 0,
+   "next_input_to_first_frame_ms": {
+    "avg": 13.6,
+    "max": 14.2
+   },
+   "next_to_world_visible_ms": {
+    "avg": 164.1,
+    "max": 164.6
+   },
+   "next_to_next_question_ms": {
+    "avg": 1140.2,
+    "max": 1580.9
+   },
+   "js_heap_mb": 9.5,
+   "errors": []
+  },
+  {
+   "cpu_slowdown": 4,
+   "frames": 816,
+   "frame_ms_p50": 16.7,
+   "frame_ms_p95": 16.7,
+   "frame_ms_p99": 16.8,
+   "frame_ms_max": 33.3,
+   "janky_frames_over_33ms": 0,
+   "long_tasks": 0,
+   "long_task_ms_max": 0,
+   "next_input_to_first_frame_ms": {
+    "avg": 6.9,
+    "max": 7.4
+   },
+   "next_to_world_visible_ms": {
+    "avg": 157.8,
+    "max": 158.9
+   },
+   "next_to_next_question_ms": {
+    "avg": 1135.1,
+    "max": 1580.2
+   },
+   "js_heap_mb": 9.5,
+   "errors": []
+  }
+ ]
+}

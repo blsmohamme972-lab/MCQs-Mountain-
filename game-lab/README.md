@@ -24,7 +24,7 @@ professional, and it stays out of the app until the owner is fully convinced.
 | Step-by-step method with gates and kill criteria | Done, in `PLAN.md` |
 | Character and world brief (before any drawing) | Done, in `CHARACTER_BRIEF.md` |
 | Speed harness | Done, `tools/measure.mjs` |
-| Playable prototype with 3 modes (Story, Strip, Classic) | See the status line at the top of `PLAN.md` |
+| Playable prototype with 3 modes (Story, Strip, Classic) | First draft works, not yet reviewed (`climb/index.html`, spec in `climb/SPEC.md`) |
 | Owner tries it on a phone, then in Telegram through a test bot | Not started (Gate 1) |
 
 **Current gate and the next action are always written at the top of `PLAN.md`.** Update that line whenever you
@@ -51,6 +51,7 @@ game-lab/
   DECISIONS.md         decision log with reasons and sources
   CHARACTER_BRIEF.md   character and world brief, asset list, free tools
   climb/index.html     the playable prototype (one self-contained file, no libraries, no network)
+  climb/SPEC.md        the exact spec it was built from, and the four review checklists still to run
   tools/measure.mjs    speed harness (Playwright, CPU throttling as a cheap-phone proxy)
   results/             measurement JSON from the harness (text only)
   research/            the four research reports with their fact-check corrections
