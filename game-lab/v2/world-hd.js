@@ -534,7 +534,8 @@
   const QSTEPS = [() => { if (godray) { raysS.visible = false; godray = null; } }, () => { root.filters = null; grade = null; },
     () => { try { localStorage.setItem('mcqm-tier', 'light'); } catch (e) {} }];
   function govern(ms) {
-    if (!GOV || !(awake || planOn) || qStep >= QSTEPS.length || ms > 1000) { qN = qSum = 0; return; }
+    // not under reduced motion: its frames are rare one-off renders, not a sign of a slow phone
+    if (!GOV || RM || !(awake || planOn) || qStep >= QSTEPS.length || ms > 1000) { qN = qSum = 0; return; }
     qSum += ms; qN++;
     if (qN < 8 && qSum < 600) return;
     if (qSum / qN > 28) QSTEPS[qStep++]();

@@ -80,7 +80,7 @@
   function row(t, p) { const b = h('button', 'row', t), d = h('p', 'ph', p); b.type = 'button'; b.dataset.r = '1'; b.setAttribute('aria-expanded', 'false'); d.hidden = true; return [b, d]; }
   function build(pg, i) {
     const q = Q[i], w = h('div', 'in wrap'), hd = h('div', 'qhead'), os = h('div', 'opts');
-    pg.el.textContent = ''; pg.q = i; pg.o = []; pg.mk = [];
+    pg.el.textContent = ''; pg.el.scrollTop = 0; pg.q = i; pg.o = []; pg.mk = [];
     pg.h = h('h2', 'qn', 'Q ' + (i + 1) + '/' + N); pg.h.tabIndex = -1; pg.xp = h('span', 'qxp');
     hd.append(pg.h, h('span', 'chip', TY[q.type]));
     if (STAGES.length > 1) hd.append(h('span', 'qstage', 'Stage ' + (stageOf(i) + 1) + ' of ' + STAGES.length));
@@ -110,7 +110,8 @@
   function activate(i) {
     if (act.q !== i) { if (ina.q !== i) build(ina, i); const o = act; act = ina; ina = o; }
     ina.o.forEach(b => b.removeAttribute('data-lab')); act.o.forEach(b => b.setAttribute('data-lab', 'opt'));
-    act.xp.textContent = xp + ' XP'; act.el.scrollTop = 0; ina.el.classList.remove('on'); act.el.classList.add('on');
+    if (act.el.scrollTop) act.el.scrollTop = 0;   // read before any write: no forced layout in the transition
+    act.xp.textContent = xp + ' XP'; ina.el.classList.remove('on'); act.el.classList.add('on');
     chk.hidden = false; chk.disabled = true; nxt.hidden = true; $('bar').firstChild.style.transform = 'scaleX(' + (i / N) + ')';
   }
   function openSheet() {
@@ -179,7 +180,8 @@
     Sound.play(r.correct ? 'correct' : 'soft');
     if (mode === 'strip') drawStrip();
     try { pg.fb.scrollIntoView({ block: 'nearest', behavior: RM ? 'auto' : 'smooth' }); } catch (e) {}
-    if (mode !== 'story') setTimeout(() => prebuild(idx + 1), 0);
+    // the next MCQ's page is built while this one is read (in Story too, so the climb has no DOM work)
+    const n1 = idx + 1; if (window.requestIdleCallback) requestIdleCallback(() => prebuild(n1), { timeout: 700 }); else setTimeout(() => prebuild(n1), 60);
   }
   function autoAnswer() {
     if (lab.state !== 'question') return false;
@@ -272,7 +274,7 @@
     lab.state = 'start'; hud(); hudXP(); drawStrip(); setTimeout(() => prebuild(0), 0);
     try { goB.focus({ preventScroll: true }); } catch (e) {}
   }
-  function skipOn(v) { skipH.classList.toggle('on', !!v && !RM && mode !== 'classic'); }
+  function skipOn(v) { const on = !!v && !RM && mode !== 'classic'; skipH.classList.toggle('on', on); skipH.tabIndex = on ? 0 : -1; skipH.setAttribute('aria-hidden', String(!on)); }
   function hud(top) {
     const n = lab.state === 'start' || lab.state === 'loading' ? 0 : idx + 1, el = $('ledge');
     if (top) el.textContent = 'Summit'; else el.innerHTML = '<span class="lw">Ledge </span>' + n + '/' + N;
@@ -303,9 +305,15 @@
   let sk = 8;
   const smx = j => 22 + j * (sw - 52) / (sk + 0.6), smy = j => 46 - j * 26.4 / Math.max(1, sk);
   // The strip's two colours come from the theme; read once and again only when the theme changes (not per draw).
-  const stripCol = { rock: '#6b5b4e', grass: '#5bc46b' };
-  function readStripCol() { const cs = getComputedStyle(R); stripCol.rock = cs.getPropertyValue('--strip-rock').trim() || '#6b5b4e'; stripCol.grass = cs.getPropertyValue('--strip-grass').trim() || '#5bc46b'; }
+  const stripCol = { rock: '#6b5b4e', grass: '#5bc46b', ink: '#182032' };
+  function readStripCol() { const cs = getComputedStyle(R); stripCol.rock = cs.getPropertyValue('--strip-rock').trim() || '#6b5b4e'; stripCol.ink = cs.getPropertyValue('--ink').trim() || stripCol.ink; stripCol.grass = cs.getPropertyValue('--strip-grass').trim() || '#5bc46b'; }
   function sizeStrip() { sw = Math.max(200, sc.clientWidth || 320); sc.width = Math.round(sw * S); sc.height = Math.round(56 * S); drawStrip(); }
+  // a tick (correct) or a pennant (saved for review) on a Strip coin, in ink: the result is not shown by colour alone
+  function stripMark(c, s, x, y) {
+    c.strokeStyle = c.fillStyle = stripCol.ink; c.lineWidth = 1.6; c.lineCap = c.lineJoin = 'round'; c.beginPath();
+    if (s === 1) { c.moveTo(x - 2.6, y + 0.2); c.lineTo(x - 0.6, y + 2.2); c.lineTo(x + 2.8, y - 1.8); c.stroke(); }
+    else { c.moveTo(x - 1.8, y + 3); c.lineTo(x - 1.8, y - 3); c.stroke(); c.beginPath(); c.moveTo(x - 1.8, y - 3); c.lineTo(x + 2.8, y - 1.6); c.lineTo(x - 1.8, y - 0.2); c.fill(); }
+  }
   function drawStrip(ts) {
     if (mode !== 'strip') return;
     const art = World.stripArt && World.stripArt(), done = lab.state === 'done';
@@ -321,7 +329,7 @@
     for (let j = 0; j <= sk; j++) c.fillRect(smx(j) - bw / 2, smy(j) - 1, j < sk ? bw : sw, 3);
     for (let j = 0; j < sk; j++) {
       const i = s0 + j;
-      if (art && st[i]) art.coin(c, st[i] === 1, smx(j) + bw * 0.2, smy(j) - 9, 9);
+      if (art && st[i]) { const cx = smx(j) + bw * 0.2, cy = smy(j) - 9; art.coin(c, st[i] === 1, cx, cy, 9); stripMark(c, st[i], cx, cy); }
       else { c.fillStyle = 'rgba(255,255,255,.75)'; c.fillRect(smx(j) + bw * 0.2 - 3, smy(j) - 10, 6, 6); }
     }
     if (art) art.flag(c, smx(sk) + 6, smy(sk));
@@ -403,7 +411,7 @@
   chk.addEventListener('click', () => { const was = RS[idx] && RS[idx].done; doCheck(); if (!was && RS[idx] && RS[idx].done) nextGuard = now() + 350; }); nxt.addEventListener('click', next); goB.addEventListener('click', go); $('again').addEventListener('click', reset);
   D.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => { if (lab.state === 'start' || lab.state === 'loading') setMode(b.dataset.m); }));
   $('snd').addEventListener('click', e => { const on = Sound.toggle(); e.currentTarget.setAttribute('aria-pressed', on); });
-  $('world').addEventListener('pointerdown', skip);
+  $('world').addEventListener('pointerdown', skip); skipH.addEventListener('click', skip);
   D.addEventListener('keydown', e => { if (lab.state === 'moving' && (e.key === ' ' || e.key === 'Enter')) { e.preventDefault(); skip(); } });
   const pause = () => { World.pause(); Sound.pause(); }, resume = () => { World.resume(); Sound.resume(); };
   D.addEventListener('visibilitychange', () => { D.hidden ? pause() : resume(); });

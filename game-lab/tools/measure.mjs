@@ -112,7 +112,6 @@ async function run(cpu) {
     cycles[cycles.length - 1].kind = mode === 'story' ? kindOf(q) : kindOf(q) === 'stage' ? 'stage' : 'step';
     cycles[cycles.length - 1].end = await page.evaluate(() => performance.now());
   }
-  const heap1 = await heapGC();
   const probe = await page.evaluate(t => ({
     deltas: window.__probe.frames.filter(([t1]) => t1 >= t).map(([, d]) => d),
     longTasks: window.__probe.longTasks.filter(([s]) => s >= t),
@@ -121,6 +120,9 @@ async function run(cpu) {
     tier: window.__lab.tier || null,
     build: window.World && window.World.stageInfo ? window.World.stageInfo().buildMs : null,
   }), t0);
+  // the harness's own frame log (thousands of entries in a long run) must not count as the page's heap
+  await page.evaluate(() => { window.__probe.frames.length = 0; window.__probe.longTasks.length = 0; });
+  const heap1 = await heapGC();
   await browser.close();
   const d = probe.deltas;
   const avg = (key, cs = cycles) => round(cs.reduce((s, c) => s + c[key], 0) / Math.max(1, cs.length));
