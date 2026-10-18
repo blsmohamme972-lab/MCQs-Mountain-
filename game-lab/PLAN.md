@@ -1,22 +1,20 @@
 # MCQs Mountain: the method, step by step
 
-**STATUS (update this line whenever a step finishes):** Gate 0, v2 with two tiers; stopped by the owner on 2026-10-18
-in the middle of D27 (chapters from a few MCQs to 200). The ready prompt: `NEXT_AGENT.md`.
-- Done: engine spike and D24. Light tier (`v2/world.js`, Canvas 2D pixel art): Strip and Classic p99 now 16.8 ms at
-  4x CPU (the old 33.4 ms was the harness's own script injection; the harness now warms it up first). HD tier (D26,
-  `v2/world-hd.js`, WebGL): code-rigged CC0 hero, painted parallax and cliffs, filters, particles, sound (off by
-  default, both tiers), `ASSETS.md`, the phone-copy generator `tools/make_artifact.py`. Numbers in D26: HD first frame
-  about 1.4 s at 4x, script time p95 7-9 ms, no long task in transitions, 320 KB gzip of code, 0.59 MB of art.
-- Visual loop: three independent rounds, best scores 5-6.5 of 10, not the 9 the owner asked for. The reviewer's
-  ceiling with free and procedural art is about 7.5; a 9 needs an artist-made hero with a rig and premium props (D26).
-- D27 so far: app.js (chapter size from `?n=` or the start card's lab row, stages of about 10 MCQs, the Strip bar per
-  stage) and the HD world (stage-local build, clouds hide the stage change, a camp per stage, the summit only in the
-  last) are done and pass chapters of 1, 8, 13, 25 and 200 functionally (reduced motion), HD heap 10-12 MB flat. The
-  QA fixes (8 of 10) and the round-3 bugs (lift tower, stone stairs, night halo) are in the code
-  (`results/qa-v2-partial.md`).
-- Open: nobody has looked at the new HD art yet; the light world (`v2/world.js`) is not stage-aware; no measurement
-  at N > 8; the speed, QA, rules and visual reviews on both tiers; the fresh final re-measure (also at 200 MCQs); the
-  phone link (Gate 1).
+**STATUS (update this line whenever a step finishes):** Gate 0, v2 with two tiers, D27 (chapters of 1 to 200 MCQs)
+in progress; the owner asked for paced work (an hour of work, an hour of rest, progress pushed before each rest). The
+ready prompt: `NEXT_AGENT.md`.
+- Done (2026-10-18, this session): steps 1-3 of `NEXT_AGENT.md`. HD art looked at and fixed (stage change: clouds rise
+  with "Next mountain / Stage 2 of 3"; a tent at each camp; each stage shows its own stretch of the ranges; stair blocks
+  dimmed at night; Strip "Stage s/S" moved into the rock; the lab row fits 320 px). The light world (`v2/world.js`) is
+  stage-aware (stage-local layout, only the current stage built, islands cached by size, sign numbers as pixel-font
+  glyphs on a shared plate, a camp with a checkpoint flag, a fade with "STAGE 2 OF 3"). `tools/measure.mjs --n` labels
+  each move (step, lift, stage), reports the time added per MCQ, the exact heap after GC and the stage build time;
+  `tools/shots.mjs --n 25` shoots the stage change. Speed fixes: the summit glow shader is always prewarmed (a
+  0.2-0.3 s compile mid-climb), the bitmap font installs only the used glyphs without kerning (205 -> 51 ms at 4x), HD
+  moves are quicker (about 1 s per MCQ), the start arrow's CSS animation no longer redraws the page all chapter, Strip
+  and Classic build a new stage in a task of their own. Intermediate D27 numbers: `results/d27-<tier>-n<N>.json`.
+- Next: the four reviews (speed + rules, then QA + visual, two agents at a time), fixes, the D27 matrix again
+  (`results/d27-*.json`), a fresh agent's final re-measure, the phone link, the docs.
 
 Last updated: 2026-10-18.
 

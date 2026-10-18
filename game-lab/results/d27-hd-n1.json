@@ -1,0 +1,160 @@
+{
+ "tier": "hd",
+ "chapter_mcqs": 1,
+ "date": "2026-10-18",
+ "harness": "tools/measure.mjs --cpu 4 --n 1",
+ "device": "Chromium 360 x 740 at DPR 3, 4x CPU throttling, container without a GPU (HD: WebGL on SwiftShader)",
+ "budgets_d27": {
+  "load_vs_n8": "game ready within 10% of the N = 8 value (median of the runs at this size)",
+  "hd_load_ms_max": 1500,
+  "heap": "JS heap after a full GC flat with N (end of a whole chapter, reduced motion)",
+  "hd_script_ms_p95_max": 8,
+  "long_task_ms_max_in_transitions": 50,
+  "story_step_ms": "about 1000",
+  "story_lift_ms": "about 1600",
+  "story_stage_ms": "about 2500",
+  "strip_classic_next_ms_max": 150,
+  "story_added_per_mcq_ms_max": "about 1200"
+ },
+ "checks": {
+  "load_within_10pct_of_n8": true,
+  "hd_load_at_most_1500ms": true,
+  "hd_script_ms_p95_at_most_8": false,
+  "no_long_task_over_50ms_in_moves": true,
+  "story_step_about_1s": null,
+  "story_lift_about_1600ms": null,
+  "story_stage_about_2500ms": null,
+  "strip_under_150ms": null,
+  "classic_under_150ms": null,
+  "story_added_per_mcq_about_1200ms": null
+ },
+ "load": {
+  "game_ready_ms_median": 1346.5,
+  "game_ready_ms_runs": [
+   1338.3,
+   1354.7,
+   1416.4,
+   1300.6
+  ],
+  "n8_median_ms": 1386.6
+ },
+ "heap_after_gc_mb": {
+  "at_start": 4.94,
+  "after_whole_chapter": 5.75,
+  "note": "whole chapter answered with reduced motion (?rm=1), heap read after a forced GC (CDP)"
+ },
+ "story": {
+  "answered": 1,
+  "stages": 1,
+  "game_ready_ms": 1338.3,
+  "by_kind": {},
+  "added_per_mcq_ms": 0,
+  "next_input_to_first_frame_ms": {
+   "avg": 0,
+   "max": 0
+  },
+  "frame_ms_p95": 433.3,
+  "frame_ms_p99": 550,
+  "script_ms_p50": 6,
+  "script_ms_p95": 12.9,
+  "script_ms_p99": 17.4,
+  "long_tasks": 0,
+  "long_task_ms_max": 0,
+  "stage_build_ms": {
+   "count": 0,
+   "max": null,
+   "avg": null
+  },
+  "js_heap_after_gc_mb": {
+   "at_start": 5.28,
+   "at_end": 6.01
+  },
+  "errors": []
+ },
+ "story_without_gpu_load": {
+  "answered": 1,
+  "stages": 1,
+  "game_ready_ms": 1232.6,
+  "by_kind": {},
+  "added_per_mcq_ms": 0,
+  "next_input_to_first_frame_ms": {
+   "avg": 0,
+   "max": 0
+  },
+  "frame_ms_p95": 66.6,
+  "frame_ms_p99": 133.4,
+  "script_ms_p50": 1.6,
+  "script_ms_p95": 5.4,
+  "script_ms_p99": 23,
+  "long_tasks": 0,
+  "long_task_ms_max": 0,
+  "stage_build_ms": {
+   "count": 0,
+   "max": null,
+   "avg": null
+  },
+  "js_heap_after_gc_mb": {
+   "at_start": 4.73,
+   "at_end": 5.69
+  },
+  "errors": []
+ },
+ "strip": {
+  "answered": 1,
+  "stages": 1,
+  "game_ready_ms": 1354.7,
+  "by_kind": {},
+  "added_per_mcq_ms": 0,
+  "next_input_to_first_frame_ms": {
+   "avg": 0,
+   "max": 0
+  },
+  "frame_ms_p95": 316.6,
+  "frame_ms_p99": 966.6,
+  "script_ms_p50": 4.4,
+  "script_ms_p95": 14.6,
+  "script_ms_p99": 14.6,
+  "long_tasks": 0,
+  "long_task_ms_max": 0,
+  "stage_build_ms": {
+   "count": 0,
+   "max": null,
+   "avg": null
+  },
+  "js_heap_after_gc_mb": {
+   "at_start": 5.27,
+   "at_end": 5.95
+  },
+  "errors": []
+ },
+ "classic": {
+  "answered": 1,
+  "stages": 1,
+  "game_ready_ms": 1416.4,
+  "by_kind": {},
+  "added_per_mcq_ms": 0,
+  "next_input_to_first_frame_ms": {
+   "avg": 0,
+   "max": 0
+  },
+  "frame_ms_p95": 1016.7,
+  "frame_ms_p99": 1016.7,
+  "script_ms_p50": 4.1,
+  "script_ms_p95": 5.7,
+  "script_ms_p99": 5.7,
+  "long_tasks": 0,
+  "long_task_ms_max": 0,
+  "stage_build_ms": {
+   "count": 0,
+   "max": null,
+   "avg": null
+  },
+  "js_heap_after_gc_mb": {
+   "at_start": 5.13,
+   "at_end": 5.87
+  },
+  "errors": []
+ },
+ "note": "HD transition times come from story_without_gpu_load (?res=0.5&fx=0): with full resolution SwiftShader draws a frame in 0.3-0.75 s here, which stretches every timed move; the main-thread numbers (script time, long tasks, load) come from the full-quality run. Frame rate is judged on a phone (D25).",
+ "measured_at": "commit c218a9e, before the stage-build split (Strip/Classic build a new stage in its own task; reduced motion opens the next MCQ one task later). Intermediate: the final run after the four reviews replaces these numbers."
+}

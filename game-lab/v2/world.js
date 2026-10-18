@@ -231,7 +231,7 @@
   }
   // The veil and its caption ("NEXT MOUNTAIN / STAGE 2 OF 3"), drawn over the whole screen while the stage changes.
   function fade(a) {
-    fadeK = a; veil.visible = a > 0; veil.alpha = a;
+    fadeK = a; veil.visible = a > 0; veil.alpha = a; world.visible = a < 1;
     capC.visible = a > 0.6; capC.alpha = clamp((a - 0.6) / 0.4, 0, 1);
   }
   function caption(k) {
@@ -311,6 +311,7 @@
   const popping = () => { for (let i = 0; i < coins.length; i++) if (coins[i].visible && coins[i].pop < 1) return true; return false; };
 
   function update(dt) {
+    ready();
     ambientT += dt;
     if (planOn) stepPlan(dt * 1000);
     if (H.sq > 0) H.sq = Math.max(0, H.sq - dt);
@@ -499,7 +500,19 @@
   }
   // the main-thread time of every stage build (for the harness: World.stageInfo().buildMs)
   const buildMs = [];
-  function setStage(k) { const t = performance.now(); stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10); }
+  // later = true (Strip, Classic): the layout now, the objects in a task of their own right after the tap, so the tap
+  // stays short; anything that needs them first calls ready() (the loop does too).
+  let pend = false, pendAfter = null;
+  function setStage(k, later) {
+    stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout();
+    if (later) { pend = true; setTimeout(ready, 0); return; }
+    pend = false; const t = performance.now(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
+  }
+  function ready() {
+    if (!pend) return;
+    pend = false; const t = performance.now(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
+    const f = pendAfter; pendAfter = null; if (f) f();
+  }
 
   function resetState() {
     plan.length = 0; planOn = false; onArrive = null; coin.on = false; celebrateT = 0; H.sq = 0;
@@ -562,11 +575,17 @@
     // i is the chapter's MCQ index. After the last MCQ of a stage the climber reaches the camp, the flag runs up, the
     // screen fades with the next stage's number, and she walks in from the next START island.
     travel(i, cb) {
+      ready();
       const j = J(i); plan.length = 0; planMove(j);
-      if (j === sK - 1 && !lastStage()) { caption(stage + 1); Wt(stand(sK), L[sK].y, 260); Fd(RM ? 1 : 820); Wk(HOME_X, 0, stand(0), 0, 520, 2); }
+      if (j === sK - 1 && !lastStage()) {
+        caption(stage + 1); Wt(stand(sK), L[sK].y, 260); Fd(RM ? 1 : 820); Wk(HOME_X, 0, stand(0), 0, 520, 2);
+        // reduced motion: the new stage is built in this task and the app opens the next MCQ in the next one
+        if (RM) { const c = cb; cb = () => setTimeout(c, 0); }
+      }
       begin(cb);
     },
     toSummit(cb) {
+      ready();
       const j = sK - 1; plan.length = 0; planMove(j);
       const end = trophy.x - 22;
       Wk(stand(sK), L[sK].y, end, L[sK].y, 260, 1);
@@ -579,12 +598,14 @@
       });
     },
     coin(i, gold, cb) {
+      ready();
       const j = J(i);
       if (RM || !coins[j]) { if (coins[j]) { coins[j].visible = false; coins[j].got = true; } cb(i); return; }
       coinStart(j, gold, () => cb(i)); kick();
     },
     // animate=false (Strip, Classic): the world is behind the sheet, so it is redrawn later, off the tap's frame.
     sign(i, st, animate) {
+      ready();
       const j = J(i); if (j < 0 || j >= sK) return;
       setSign(j, st); if (animate && !RM) kick(); else { coins[j].pop = 1; renderLater(); }
     },
@@ -599,13 +620,15 @@
     // Strip and Classic jump straight to a question (the world is behind the sheet); this may change the stage.
     place(i) {
       const sg = i === 'summit' ? STG.length - 1 : stageIdx(i);
-      if (sg !== stage) setStage(sg);
+      if (sg !== stage) setStage(sg, true);
       const k = i === 'summit' ? sK : J(i);
-      H.x = i === 'summit' ? trophy.x - 22 : stand(k); H.y = H.gy = L[k].y; fade(0);
-      for (const l of lifts) if (l.j < k) { l.y = l.y1; liftAnim(l, false); }
+      H.x = i === 'summit' ? L[sK].x + SUMW - 60 : stand(k); H.y = H.gy = L[k].y;
+      const after = () => { fade(0); for (const l of lifts) if (l.j < k) { l.y = l.y1; liftAnim(l, false); } };
+      if (pend) pendAfter = after; else after();
       heroAnim('idle'); snapCam(); renderLater();
     },
     skip() {
+      ready();
       let did = false;
       if (coin.on) { coinCollect(); did = true; }
       if (planOn) { finishPlan(); did = true; }
@@ -621,9 +644,10 @@
     },
     sleep() { awake = false; cam.ft = 1; cam.fy = cam.fy1; snapCam(); renderOnce(); },
     wake,
-    reset() { if (stage !== 0) setStage(0); resetState(); renderOnce(); if (!RM) wake(); },
+    reset() { ready(); if (stage !== 0) setStage(0); resetState(); renderOnce(); if (!RM) wake(); },
     resize(w, h) {
       if (!app || !built) return;
+      ready();
       VW = w; VH = h; app.renderer.resize(w, h);
       S = scaleFor(w, h);
       const keep = { x: H.x, y: H.y, gy: H.gy }, sts = signs.map(s => s.st), got = coins.map(c => c.got), ly = lifts.map(l => l.y), up = camp && camp.up, f = fadeK;

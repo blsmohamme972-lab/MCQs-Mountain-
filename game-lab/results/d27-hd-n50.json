@@ -1,0 +1,234 @@
+{
+ "tier": "hd",
+ "chapter_mcqs": 50,
+ "date": "2026-10-18",
+ "harness": "tools/measure.mjs --cpu 4 --n 50",
+ "device": "Chromium 360 x 740 at DPR 3, 4x CPU throttling, container without a GPU (HD: WebGL on SwiftShader)",
+ "budgets_d27": {
+  "load_vs_n8": "game ready within 10% of the N = 8 value (median of the runs at this size)",
+  "hd_load_ms_max": 1500,
+  "heap": "JS heap after a full GC flat with N (end of a whole chapter, reduced motion)",
+  "hd_script_ms_p95_max": 8,
+  "long_task_ms_max_in_transitions": 50,
+  "story_step_ms": "about 1000",
+  "story_lift_ms": "about 1600",
+  "story_stage_ms": "about 2500",
+  "strip_classic_next_ms_max": 150,
+  "story_added_per_mcq_ms_max": "about 1200"
+ },
+ "checks": {
+  "load_within_10pct_of_n8": true,
+  "hd_load_at_most_1500ms": true,
+  "hd_script_ms_p95_at_most_8": false,
+  "no_long_task_over_50ms_in_moves": false,
+  "story_step_about_1s": true,
+  "story_lift_about_1600ms": true,
+  "story_stage_about_2500ms": true,
+  "strip_under_150ms": true,
+  "classic_under_150ms": true,
+  "story_added_per_mcq_about_1200ms": true
+ },
+ "load": {
+  "game_ready_ms_median": 1340.8,
+  "game_ready_ms_runs": [
+   1277.9,
+   1383.7,
+   1337.1,
+   1344.5
+  ],
+  "n8_median_ms": 1386.6
+ },
+ "heap_after_gc_mb": {
+  "at_start": 5.67,
+  "after_whole_chapter": 7.58,
+  "note": "whole chapter answered with reduced motion (?rm=1), heap read after a forced GC (CDP)"
+ },
+ "story": {
+  "answered": 12,
+  "stages": 5,
+  "game_ready_ms": 1277.9,
+  "by_kind": {
+   "step": {
+    "count": 9,
+    "avg_ms": 2880.5,
+    "max_ms": 3685.8,
+    "long_tasks": 0,
+    "long_task_ms_max": 0
+   },
+   "lift": {
+    "count": 1,
+    "avg_ms": 3761.5,
+    "max_ms": 3761.5,
+    "long_tasks": 0,
+    "long_task_ms_max": 0
+   },
+   "stage": {
+    "count": 1,
+    "avg_ms": 5926.8,
+    "max_ms": 5926.8,
+    "long_tasks": 1,
+    "long_task_ms_max": 53
+   }
+  },
+  "added_per_mcq_ms": 3237.5,
+  "next_input_to_first_frame_ms": {
+   "avg": 247.2,
+   "max": 421.9
+  },
+  "frame_ms_p95": 666.6,
+  "frame_ms_p99": 1216.6,
+  "script_ms_p50": 4.2,
+  "script_ms_p95": 9.4,
+  "script_ms_p99": 12.9,
+  "long_tasks": 1,
+  "long_task_ms_max": 53,
+  "stage_build_ms": {
+   "count": 1,
+   "max": 14.6,
+   "avg": 14.6
+  },
+  "js_heap_after_gc_mb": {
+   "at_start": 5.76,
+   "at_end": 7.38
+  },
+  "errors": []
+ },
+ "story_without_gpu_load": {
+  "answered": 12,
+  "stages": 5,
+  "game_ready_ms": 1383.6,
+  "by_kind": {
+   "step": {
+    "count": 9,
+    "avg_ms": 1057.3,
+    "max_ms": 1099.6,
+    "long_tasks": 1,
+    "long_task_ms_max": 64
+   },
+   "lift": {
+    "count": 1,
+    "avg_ms": 1553.5,
+    "max_ms": 1553.5,
+    "long_tasks": 0,
+    "long_task_ms_max": 0
+   },
+   "stage": {
+    "count": 1,
+    "avg_ms": 2385.9,
+    "max_ms": 2385.9,
+    "long_tasks": 1,
+    "long_task_ms_max": 52
+   }
+  },
+  "added_per_mcq_ms": 1223.2,
+  "next_input_to_first_frame_ms": {
+   "avg": 6.9,
+   "max": 16.1
+  },
+  "frame_ms_p95": 50.1,
+  "frame_ms_p99": 83.4,
+  "script_ms_p50": 1.9,
+  "script_ms_p95": 5.4,
+  "script_ms_p99": 10.1,
+  "long_tasks": 2,
+  "long_task_ms_max": 64,
+  "stage_build_ms": {
+   "count": 1,
+   "max": 40,
+   "avg": 40
+  },
+  "js_heap_after_gc_mb": {
+   "at_start": 5.52,
+   "at_end": 7.29
+  },
+  "errors": []
+ },
+ "strip": {
+  "answered": 12,
+  "stages": 5,
+  "game_ready_ms": 1383.7,
+  "by_kind": {
+   "step": {
+    "count": 10,
+    "avg_ms": 146.1,
+    "max_ms": 196.5,
+    "long_tasks": 0,
+    "long_task_ms_max": 0
+   },
+   "stage": {
+    "count": 1,
+    "avg_ms": 143.5,
+    "max_ms": 143.5,
+    "long_tasks": 0,
+    "long_task_ms_max": 0
+   }
+  },
+  "added_per_mcq_ms": 145.9,
+  "next_input_to_first_frame_ms": {
+   "avg": 9.2,
+   "max": 15.4
+  },
+  "frame_ms_p95": 100,
+  "frame_ms_p99": 216.6,
+  "script_ms_p50": 4.3,
+  "script_ms_p95": 11.4,
+  "script_ms_p99": 11.4,
+  "long_tasks": 0,
+  "long_task_ms_max": 0,
+  "stage_build_ms": {
+   "count": 1,
+   "max": 30.9,
+   "avg": 30.9
+  },
+  "js_heap_after_gc_mb": {
+   "at_start": 5.85,
+   "at_end": 7
+  },
+  "errors": []
+ },
+ "classic": {
+  "answered": 12,
+  "stages": 5,
+  "game_ready_ms": 1337.1,
+  "by_kind": {
+   "step": {
+    "count": 10,
+    "avg_ms": 23.7,
+    "max_ms": 28.2,
+    "long_tasks": 0,
+    "long_task_ms_max": 0
+   },
+   "stage": {
+    "count": 1,
+    "avg_ms": 41.6,
+    "max_ms": 41.6,
+    "long_tasks": 0,
+    "long_task_ms_max": 0
+   }
+  },
+  "added_per_mcq_ms": 25.4,
+  "next_input_to_first_frame_ms": {
+   "avg": 5.6,
+   "max": 10.9
+  },
+  "frame_ms_p95": 49.9,
+  "frame_ms_p99": 250,
+  "script_ms_p50": 4.9,
+  "script_ms_p95": 9.3,
+  "script_ms_p99": 9.3,
+  "long_tasks": 0,
+  "long_task_ms_max": 0,
+  "stage_build_ms": {
+   "count": 1,
+   "max": 26.7,
+   "avg": 26.7
+  },
+  "js_heap_after_gc_mb": {
+   "at_start": 5.83,
+   "at_end": 6.96
+  },
+  "errors": []
+ },
+ "note": "HD transition times come from story_without_gpu_load (?res=0.5&fx=0): with full resolution SwiftShader draws a frame in 0.3-0.75 s here, which stretches every timed move; the main-thread numbers (script time, long tasks, load) come from the full-quality run. Frame rate is judged on a phone (D25).",
+ "measured_at": "commit c218a9e, before the stage-build split (Strip/Classic build a new stage in its own task; reduced motion opens the next MCQ one task later). Intermediate: the final run after the four reviews replaces these numbers."
+}

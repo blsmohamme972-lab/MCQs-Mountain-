@@ -395,6 +395,7 @@
   const ambient = () => !RM && !paused && (window.__lab ? window.__lab.mode === 'story' || window.__lab.state === 'start' || window.__lab.state === 'loading' : true);
 
   function update(dt) {
+    ready();
     ambT += dt; H.t += dt;
     if (planOn) stepPlan(dt * 1000);
     if (H.sq > 0) H.sq = Math.max(0, H.sq - dt);
@@ -509,6 +510,7 @@
     // the stage change: big clouds rise inside the bank (at their own place once it covers the screen) and the caption
     // fades in while they cover it
     wipeC.visible = wipeK > 0; if (wipeK > 0) wipeC.y = lay.bank.y + VH * 0.34;
+    bgC.visible = worldC.visible = wipeK < 1;
     wipeCap.alpha = clamp((wipeK - 0.7) / 0.3, 0, 1); wipeCap.visible = wipeCap.alpha > 0;
     fgW.x = -cx * 0.25; fgW.y = -cy * 0.25;
     // cull the world by x (a few dozen objects): 'renderable' only, so an object's own visible state is kept
@@ -706,7 +708,19 @@
   let stageTint = 0xffffff, heroC;
   // the main-thread time of every stage build (for the harness: World.stageInfo().buildMs)
   const buildMs = [];
-  function setStage(k) { const t = performance.now(); stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10); }
+  // later = true (Strip, Classic): the layout now, the objects in a task of their own right after the tap, so the tap
+  // stays short; anything that needs them first calls ready() (the loop does too).
+  let pend = false, pendAfter = null;
+  function setStage(k, later) {
+    stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout();
+    if (later) { pend = true; setTimeout(ready, 0); return; }
+    pend = false; const t = performance.now(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
+  }
+  function ready() {
+    if (!pend) return;
+    pend = false; const t = performance.now(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
+    const f = pendAfter; pendAfter = null; if (f) f();
+  }
   let backDeco, shadow, fgW, raysS;
   // Painted layers tile sideways only: drawn 2 units shorter and 1 unit down, so linear filtering never blends the
   // top row with the bottom row of the repeating texture (that showed as a pale line).
@@ -920,11 +934,17 @@
     // i is the chapter's MCQ index. After the last MCQ of a stage the climber reaches the camp, the clouds rise, the
     // next mountain is built behind them, and she walks in to its first ledge (about 1.3 s on top of the climb).
     travel(i, cb) {
+      ready();
       const j = J(i); plan.length = 0; raiseFlag(j); planMove(j);
-      if (j === sK - 1 && !lastStage()) { const b = L[sK]; caption(stage + 1); Wp(b.x + 16, b.y, RM ? 1 : 860); Wk(START_X0, 0, stand(0), 0, 450, 2); }
+      if (j === sK - 1 && !lastStage()) {
+        const b = L[sK]; caption(stage + 1); Wp(b.x + 16, b.y, RM ? 1 : 860); Wk(START_X0, 0, stand(0), 0, 450, 2);
+        // reduced motion: the new stage is built in this task and the app opens the next MCQ in the next one
+        if (RM) { const c = cb; cb = () => setTimeout(c, 0); }
+      }
       begin(cb);
     },
     toSummit(cb) {
+      ready();
       const j = sK - 1; plan.length = 0; raiseFlag(j); planMove(j);
       const end = landmark.x - 118;
       Wk(stand(sK), L[sK].y, end, L[sK].y, 300, 1);
@@ -939,12 +959,14 @@
       });
     },
     coin(i, gold, cb) {
+      ready();
       const j = J(i);
       if (RM || !coins[j]) { if (coins[j]) coins[j].visible = false; cb(i); return; }
       coinStart(j, gold, () => cb(i)); kick();
     },
     // animate=false (Strip, Classic): the world is behind the sheet, so it is redrawn later, off the tap's frame.
     sign(i, st, animate) {
+      ready();
       const j = J(i); if (j < 0 || j >= sK) return;
       setSign(j, st);
       if (animate && !RM) { sparkle(signX(j) + 20, L[j].y - 56, st === 1 ? 12 : 4, 50); kick(); }
@@ -962,16 +984,20 @@
     // Strip and Classic jump straight to a question (the world is behind the sheet); this may change the stage.
     place(i) {
       const sg = i === 'summit' ? STG.length - 1 : stageIdx(i);
-      if (sg !== stage) setStage(sg);
+      if (sg !== stage) setStage(sg, true);
       const k = i === 'summit' ? sK : J(i);
-      H.x = i === 'summit' ? landmark.x - 118 : stand(k); H.y = H.gy = L[k].y; wipeK = 0;
+      H.x = i === 'summit' ? L[sK].x + SUMW - 228 : stand(k); H.y = H.gy = L[k].y; wipeK = 0;
       atStart = false; if (i === 'summit') { summitView = true; cam.z1 = 0.84; }
       for (const l of lifts) { l.y = l.y0; l.on = false; l.ret = false; }
-      for (const f of flags) if (!f.big && f.i < k && !f.up) { f.up = true; f.t = 1; f.pen.y = -148; f.pen.texture = frame('ui/pen0'); f.pen.anchor.set(0.03, 0.5); }
-      if (i === 'summit') beacon.lit = true;
+      const after = () => {
+        for (const f of flags) if (!f.big && f.i < k && !f.up) { f.up = true; f.t = 1; f.pen.y = -148; f.pen.texture = frame('ui/pen0'); f.pen.anchor.set(0.03, 0.5); }
+        if (i === 'summit') beacon.lit = true;
+      };
+      if (pend) pendAfter = after; else after();
       heroState('read'); snapCam(); renderLater();
     },
     skip() {
+      ready();
       let did = false;
       if (coin.on) { coinCollect(); did = true; }
       if (planOn) { finishPlan(); did = true; }
@@ -986,9 +1012,10 @@
     },
     sleep() { awake = false; cam.ft = 1; cam.fy = cam.fy1; snapCam(); renderOnce(); if (!ambient()) { app.ticker.stop(); running = false; } else kick(); },
     wake,
-    reset() { if (stage !== 0) setStage(0); resetState(); renderOnce(); if (!RM) kick(); },
+    reset() { ready(); if (stage !== 0) setStage(0); resetState(); renderOnce(); if (!RM) kick(); },
     resize(w, h) {
       if (!app || !built) return;
+      ready();
       VW = w; VH = h; app.renderer.resize(w, h);
       Z = zoomFor(w, h);
       const keep = { x: H.x, y: H.y, gy: H.gy, st: H.st }, sts = signs.map(s => s.st), up = flags.map(f => f.up), ly = lifts.map(l => l.y), lit = beacon.lit;
