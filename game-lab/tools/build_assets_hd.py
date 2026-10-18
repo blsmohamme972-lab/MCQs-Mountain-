@@ -36,7 +36,7 @@ PAL = {
     "day": {"sky": ["#2f7fd0", "#7fbdea", "#cfe6f2", "#ffe2bf"], "far": "#9cbfe0", "farLit": "#c4dcf0", "snow": "#f4f8fc",
             "peak": "#7fa3cc", "peakLit": "#b4cde6", "mid": "#5f8fbb", "midLit": "#86afd2", "forestMid": "#4c7f9c",
             "near": "#3f7a66", "nearLit": "#5c9a72", "forestNear": "#2f6656", "haze": "#ffe9cf", "fog": "#d8ecf6",
-            "colFog": "#9fb6c4"},
+            "colFog": "#6f8ea3"},
     "night": {"sky": ["#070b22", "#141c46", "#2a2f66", "#4b3d78"], "far": "#2c3566", "farLit": "#3e4a85", "snow": "#9fb0e0",
               "peak": "#262e5c", "peakLit": "#3a4782", "mid": "#1f2650", "midLit": "#2e3a70", "forestMid": "#1a2147",
               "near": "#16203f", "nearLit": "#203058", "forestNear": "#111a35", "haze": "#4a3f78", "fog": "#2a2f60",

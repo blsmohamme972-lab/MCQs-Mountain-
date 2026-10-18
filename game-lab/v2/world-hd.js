@@ -377,14 +377,14 @@
       const b = signs[i].badge;
       if (b.pop < 1) { b.pop = Math.min(1, b.pop + dt / 0.3); b.scale.set(0.36 * easeOut(b.pop) * (1 + 0.3 * Math.sin(Math.PI * b.pop))); }
     }
-    if (xpText.visible) { xpT += dt; xpText.y -= dt * 36; xpText.scale.set(Math.min(1, 0.6 + xpT * 4)); xpText.alpha = xpT < 0.55 ? 1 : Math.max(0, 1 - (xpT - 0.55) / 0.35); if (xpT > 0.9) xpText.visible = false; }
+    if (xpText.visible) { xpT += dt; xpText.x = H.x; xpText.y = H.y - 104 - xpT * 36; xpText.scale.set(Math.min(1, 0.6 + xpT * 4)); xpText.alpha = xpT < 0.55 ? 1 : Math.max(0, 1 - (xpT - 0.55) / 0.35); if (xpT > 0.9) xpText.visible = false; }
     // checkpoint flags: the flag runs up the pole (the waving flag grows from the ground), then waves
     for (const f of flags) {
       if (!f.up) continue;
       if (f.t < 1) { f.t = Math.min(1, f.t + dt / 0.55); const e = f.t, b = 1 + 2.2 * (e - 1) ** 3 + 1.2 * (e - 1) ** 2; f.s.scale.y = f.sc * lerp(0.35, 1, b); if (f.t >= 1) sparkle(f.x + 24, f.y - 54, 8, 50); }
       if (!RM) f.s.texture = frame(((ambT * 5 + f.o) | 0) % 2 ? f.a : f.b);
     }
-    for (const l of lifts) { l.c.y = l.y; l.chain.height = Math.max(8, l.y - l.top); }
+    for (const l of lifts) { l.c.y = l.y; for (const ch of l.chains) { ch.y = l.top; ch.height = Math.max(8, l.y - l.top); } }
     stepParts(dt);
     if (!RM) stepAmbient(dt);
     stepCam(dt);
@@ -403,7 +403,7 @@
       birds.list.forEach(b => { b.x = birds.x + b.dx; b.y = birds.y + b.dy + Math.sin(ambT * 2 + b.o) * 4; b.texture = frame('fx/bird' + (((ambT * 9 + b.o) | 0) % 3)); });
       if (birds.x > VW + 220) { birds.on = false; birds.t = 9 + rnd() * 8; birds.list.forEach(b => { b.visible = false; }); }
     }
-    for (const w of falls) { w.s.tilePosition.y += dt * 230; w.foam.alpha = 0.55 + 0.2 * Math.sin(ambT * 9 + w.o); w.foam.scale.set(w.fs * (1 + 0.06 * Math.sin(ambT * 7 + w.o))); }
+    for (const w of falls) { w.s.tilePosition.y += dt * 230; w.foam.alpha = 0.35 + 0.15 * Math.sin(ambT * 9 + w.o); w.foam.scale.set(w.fs * (1 + 0.06 * Math.sin(ambT * 7 + w.o))); }
     for (const f of floaters) {
       f.t += dt;
       if (night) { f.s.x = f.x + Math.sin(f.t * 0.7 + f.o) * 26; f.s.y = f.y + Math.sin(f.t * 1.1 + f.o * 2) * 16; f.s.alpha = 0.35 + 0.65 * Math.max(0, Math.sin(f.t * 2.2 + f.o)); }
@@ -433,7 +433,6 @@
     lay.near.y = hz + 40 * Z - cy * Z * 0.24; lay.near.tilePosition.x = -cx * 0.28 * Z;
     lay.nearFill.y = lay.near.y + lay.near.height - 2; lay.nearFill.height = Math.max(0, VH - lay.nearFill.y);
     for (const f of fgs) { const sx = (f.wx - cx * 1.35) * Z; f.s.x = ((sx % f.span) + f.span) % f.span - 400 * Z; f.s.y = VH + 12 * Z; }
-    wallC.x = cx * 0.1; wallC.y = cy * 0.1;
     // cull the world by x (a few dozen objects)
     const x0 = cx - 160, x1 = cx + VW / Z + 160;
     for (const c of backC.children) if (c.wx != null) c.visible = c.wx < x1 && c.wx + c.ww > x0;
@@ -484,7 +483,7 @@
     const shade = new PIXI.Sprite(frame('fx/vgrad')); shade.x = x; shade.y = y + 16; shade.width = w; shade.height = 300; c.addChild(shade); c.shade = shade;
     const edgeL = new PIXI.Sprite(PIXI.Texture.WHITE); edgeL.x = x; edgeL.y = y + 16; edgeL.width = 7; edgeL.height = RD; edgeL.tint = 0x1a0d06; edgeL.alpha = 0.28; c.addChild(edgeL);
     const edgeR = new PIXI.Sprite(PIXI.Texture.WHITE); edgeR.x = x + w - 4; edgeR.y = y + 16; edgeR.width = 4; edgeR.height = 220; edgeR.tint = 0xffe8c8; edgeR.alpha = 0.22; c.addChild(edgeR); c.rim = edgeR;
-    const fog = new PIXI.Sprite(frame('fx/vgrad')); fog.x = x; fog.y = y + 300; fog.width = w; fog.height = RD - 284; c.addChild(fog); c.fog = fog;
+    const fog = new PIXI.Sprite(frame('fx/vgrad')); fog.x = x; fog.y = y + 340; fog.width = w; fog.height = RD - 324; c.addChild(fog); c.fog = fog;
     const fogB = new PIXI.Sprite(PIXI.Texture.WHITE); fogB.x = x; fogB.y = y + 16 + RD - 1; fogB.width = w; fogB.height = depth - RD; c.addChild(fogB); c.fogB = fogB;
     // lip: half tiles across the top
     const tw = 128 * ART, n = Math.max(2, Math.round(w / tw));
@@ -496,31 +495,6 @@
     return c;
   }
   const cols = [];
-  // The lower mountainside behind the path: a rock slope whose top edge runs below the ledges, drawn a little smaller
-  // and moved at 0.9 of the camera (parallax), so the gaps show a mountain falling away into the haze, not a void.
-  let wallC, wall, wallFacets;
-  function buildWall() {
-    wallC = new PIXI.Container(); backC.addChild(wallC);
-    const P = (x, y) => [x * 0.9 + 13, y * 0.9 - 30];
-    const top = [P(-START_W - 260, 520), P(-START_W - 160, 170), P(-80, 120)];
-    seed = 77;
-    for (let i = 1; i <= N; i++) {
-      const l = L[i], lift = rnd() * 40;
-      top.push(P(l.x - 30, l.y + 150 - lift), P(l.x + l.w * 0.5, l.y + 95 - lift));
-    }
-    const s = L[N];
-    top.push(P(s.x + SUMW * 0.55, s.y + 60), P(s.x + SUMW + 90, s.y + 180), P(s.x + SUMW + 420, s.y + 420), P(s.x + SUMW + 520, s.y + 900));
-    const pts = [].concat(...top, P(s.x + SUMW + 520, 2400), P(-START_W - 260, 2400));
-    wall = new PIXI.Graphics().poly(pts.flat()).fill(0xffffff); wallC.addChild(wall);
-    // lit facets: a lighter wedge under each rise, falling toward the lower right
-    wallFacets = new PIXI.Graphics();
-    for (let k = 1; k < top.length - 2; k++) {
-      const a = top[k], b = top[k + 1];
-      if (b[1] < a[1]) wallFacets.poly([a[0], a[1], b[0], b[1], b[0] + 40, b[1] + 260, a[0] + 30, a[1] + 200]).fill({ color: 0xffffff, alpha: 0.25 });
-    }
-    wallC.addChild(wallFacets);
-    const haze = new PIXI.Sprite(frame('fx/vgrad')); haze.x = -START_W - 300; haze.width = s.x + SUMW + 900 + START_W; haze.y = s.y; haze.height = 900; haze.alpha = 0.75; wallC.addChild(haze); wallC.haze = haze;
-  }
   function decorate(i) {
     // Each ledge gets its own small scene, seeded by its index (the same every run).
     seed = 1000 + i * 97;
@@ -577,14 +551,13 @@
     backC = new PIXI.Container(); backDeco = new PIXI.Container(); midC = new PIXI.Container(); fxC = new PIXI.Container();
     worldC.addChild(backC, backDeco, midC, fxC);
     cols.length = 0; torches.length = 0; falls.length = 0; flags.length = 0;
-    // the mountain behind the path, then waterfalls falling from it through the gaps, then the cliff columns
-    buildWall();
+    // waterfalls through the gaps (behind the cliffs), then the cliff columns
     const lips = [];
     for (let i = 0; i < N; i++) {
       if (kinds[i] !== 'jump') continue;
       // a spring bursts from the cliff face of the higher ledge and falls through the gap
       const x = L[i + 1].x - 30, top = L[i + 1].y + 34;
-      const w = tiling(tex.waterfall, 24, COL_D); w.x = x; w.y = top; w.alpha = 0.92; w.wx = x - 10; w.ww = 60; backC.addChild(w);
+      const w = tiling(tex.waterfall, 22, COL_D); w.x = x; w.y = top; w.alpha = 0.8; w.wx = x - 10; w.ww = 60; backC.addChild(w);
       const lip = spr('fx/soft', x + 22, top + 2, 0.5, 0.5, null, 0.8); lip.alpha = 0.85; lip.wx = x - 20; lip.ww = 80; lips.push(lip);
       const foam = spr('fx/glow', x + 18, L[i].y + 150, 0.5, 0.5, backC, 1.5); foam.tint = 0xe6f6ff; foam.wx = x - 60; foam.ww = 160;
       falls.push({ s: w, foam, fs: 1.5, o: i });
@@ -612,8 +585,10 @@
     // lifts: a log platform on two chains reaching above the view
     for (const l of lifts) {
       l.top = l.y1 - 420; l.c = new PIXI.Container(); l.c.x = l.x; l.c.y = l.y; l.c.wx = l.x - 20; l.c.ww = LIFT_W + 40;
-      l.chain = tiling(frame('prop/chain'), 18, 40); l.chain.tileScale.set(ART * 0.6); l.chain.x = l.x + LIFT_W / 2 - 9; l.chain.wx = l.x; l.chain.ww = LIFT_W; backC.addChild(l.chain);
-      const plank = spr('prop/bridgeA', 0, -2, 0, 0, l.c); plank.width = LIFT_W; plank.height = 24;
+      // two chains from a beam high above to both ends of a log platform
+      l.chains = [4, LIFT_W - 14].map(dx => { const ch = tiling(frame('prop/chain'), 10, 40); ch.tileScale.set(ART * 0.36); ch.x = l.x + dx; ch.wx = l.x; ch.ww = LIFT_W; backC.addChild(ch); return ch; });
+      const beam = new PIXI.Sprite(PIXI.Texture.WHITE); beam.x = l.x - 6; beam.y = l.top - 6; beam.width = LIFT_W + 12; beam.height = 10; beam.tint = 0x5a3b26; beam.wx = l.x; beam.ww = LIFT_W; backC.addChild(beam);
+      const plank = spr('prop/bridgeA', -4, -4, 0, 0, l.c); plank.width = LIFT_W + 8; plank.height = 26;
       midC.addChild(l.c); l.on = false;
     }
     // signs (Q number plates), badges after grading, coins, checkpoint flags
@@ -646,7 +621,7 @@
     const vb = new PIXI.Sprite(frame('fx/vgrad')); vb.y = VH - 120; vb.width = VW; vb.height = 120; vb.tint = 0x0b1030; vignette.addChild(vb);
     // filters: light rays over the sky and far layers, colour grading over everything
     if (FX && PIXI.filters) {
-      godray = new PIXI.filters.GodrayFilter({ gain: 0.36, lacunarity: 2.2, parallel: false, center: { x: VW * 0.8, y: VH * 0.12 }, time: 0, alpha: 0.42 });
+      godray = new PIXI.filters.GodrayFilter({ gain: 0.3, lacunarity: 2.4, parallel: false, center: { x: VW * 0.8, y: VH * 0.12 }, time: 0, alpha: 0.15 });
       godray.resolution = 0.5;
       grade = new PIXI.filters.AdjustmentFilter({ gamma: 1.02, saturation: 1.12, contrast: 1.06, brightness: 1.0, red: 1.03, green: 1.0, blue: 0.97 });
       bgC.filters = [godray]; root.filters = [grade];
@@ -702,18 +677,16 @@
       c.fog.tint = hex(pal.colFog); c.fogB.tint = hex(pal.colFog); c.fog.alpha = 1; c.fogB.alpha = 1;
       c.shade.tint = night ? 0x060a20 : 0x3a2010; c.shade.alpha = night ? 0.75 : 0.55; c.rim.tint = night ? 0x9fb2ff : 0xffe8c8;
     }
-    wall.tint = night ? 0x2c3463 : 0xa37c62; wallFacets.tint = night ? 0x3d4880 : 0xd2a27c;
     for (const c of cols) for (const k of c.children) if (k.texture && k.texture !== PIXI.Texture.WHITE && k !== c.fog && k !== c.shade && !(k instanceof PIXI.TilingSprite)) k.tint = night ? 0x9aa6d8 : 0xffffff;
     for (const c of cols) for (const k of c.children) if (k instanceof PIXI.TilingSprite) k.tint = night ? 0x7a84b8 : 0xffffff;
     for (const d of backDeco.children) if (d !== beaconGlow && d !== beacon && d !== landmark) d.tint = night ? 0x8d97c9 : 0xffffff;
     for (const b of landmark.children) b.tint = night ? 0x9aa6d8 : 0xffffff;
-    for (const f of falls) f.s.tint = night ? 0x9fb4ff : 0xffffff;
+    for (const f of falls) f.s.tint = night ? 0x9fb4ff : 0xbfe4ff;
     for (const f of fgs) f.s.tint = night ? 0x0a1022 : 0xffffff;
-    wallC.haze.tint = hex(pal.fog);
     for (const f of floaters) { f.s.texture = frame(night ? 'fx/soft' : 'fx/leaf'); f.s.blendMode = night ? 'add' : 'normal'; f.s.tint = night ? 0xd8ff7a : 0x8fd16a; f.s.scale.set(night ? 0.12 : 0.42); if (night) { f.x = 30 + rnd() * (VW - 60); f.y = VH * (0.3 + rnd() * 0.4); f.s.rotation = 0; } }
     hero.children.forEach(s => { s.tint = night ? 0xc4cbef : 0xffffff; });
     vignette.alpha = night ? 0.6 : 0.32;
-    if (godray) { godray.gain = night ? 0.28 : 0.36; godray.alpha = night ? 0.22 : 0.42; godray.center = { x: VW * (night ? 0.78 : 0.8), y: VH * (night ? 0.14 : 0.12) }; }
+    if (godray) { godray.gain = night ? 0.26 : 0.3; godray.alpha = night ? 0.12 : 0.15; godray.center = { x: VW * (night ? 0.78 : 0.8), y: VH * (night ? 0.14 : 0.12) }; }
     if (grade) { grade.saturation = night ? 1.0 : 1.12; grade.contrast = night ? 1.08 : 1.06; grade.red = night ? 0.96 : 1.03; grade.blue = night ? 1.06 : 0.97; grade.gamma = night ? 0.98 : 1.02; }
     app.renderer.background.color = hex(pal.sky[0]);
   }
