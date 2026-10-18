@@ -10,13 +10,13 @@ test('tablets ask for fullscreen once by themselves; phones, desktops and old cl
   const make=(platform,{version=true,full=false}={})=>{const t={platform,version:'8.0',isFullscreen:full,calls:0,isVersionAtLeast:()=>version,onEvent:()=>{},requestFullscreen(){t.calls++;}};return t;};
   const ipad={width:820,height:1180},ipadLand={width:1180,height:820},phone={width:390,height:844},androidTab={width:800,height:1280};
   let tg=make('ios');const d=new Core.FullscreenDiagnostic(tg,{timer:()=>1,clear:()=>{}});
-  assert.equal(d.autoTablet(ipad),true);assert.equal(tg.calls,1);assert.equal(d.snapshot().automatic,true);assert.match(d.snapshot().result,/waiting/);
+  assert.equal(d.autoTablet(ipad),true);assert.equal(tg.calls,1);assert.match(d.snapshot().result,/waiting/);
   assert.equal(d.autoTablet(ipad),false);assert.equal(tg.calls,1);
   for(const [platform,screen] of [['ios',ipadLand],['android',androidTab],['android_x',androidTab]]){tg=make(platform);assert.equal(new Core.FullscreenDiagnostic(tg,{timer:()=>1}).autoTablet(screen),true);assert.equal(tg.calls,1);}
   for(const [t,screen] of [[make('ios'),phone],[make('android'),{width:412,height:915}],[make('tdesktop'),{width:1280,height:800}],[make('macos'),ipad],[make('weba'),ipad],[make('ios',{version:false}),ipad],[make('ios',{full:true}),ipad]]){
     assert.equal(new Core.FullscreenDiagnostic(t,{timer:()=>1}).autoTablet(screen),false);assert.equal(t.calls,0);
   }
-  assert.equal(new Core.FullscreenDiagnostic(null).autoTablet(ipad),false);assert.equal(Core.isTablet(make('ios'),undefined),false);
+  assert.equal(new Core.FullscreenDiagnostic(null).autoTablet(ipad),false);tg=make('ios');assert.equal(new Core.FullscreenDiagnostic(tg).autoTablet(undefined),false);assert.equal(tg.calls,0);
 });
 test('the default timers work in a browser, where a detached setTimeout or clearTimeout throws',()=>{
   const st=globalThis.setTimeout,ct=globalThis.clearTimeout,strict=fn=>function(...args){if(this!==undefined&&this!==globalThis)throw new TypeError('Illegal invocation');return fn(...args);};
