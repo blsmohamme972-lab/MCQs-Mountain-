@@ -72,6 +72,7 @@ h1,.card h2{font:600 28px/1.15 var(--fd);margin:0}
 .seg [aria-pressed=true]{background:var(--surface);border-color:var(--outline);box-shadow:0 3px 0 var(--shadow)}
 .mdesc{margin:10px 2px 18px;min-height:3em;font-size:14px;color:var(--muted)}
 .go{min-height:62px;font:600 22px/1 var(--fd)}
+.btn.alt{margin-top:12px;background:var(--surface);color:var(--text);box-shadow:0 5px 0 var(--border)}.btn.alt:active{box-shadow:0 1px 0 var(--border)}
 .go .bob{display:inline-flex;align-items:center;gap:10px}
 /* the arrow bobs only while the start card shows (a hidden card's animation would still redraw the page every frame) */
 .ready #startp:not(.off) .go .bob{animation:bob 1.5s ease-in-out infinite}
@@ -167,6 +168,7 @@ h1,.card h2{font:600 28px/1.15 var(--fd);margin:0}
 </div>
 <p class="mdesc" id="mdesc"></p>
 <button type="button" class="btn go" id="go" data-lab="go" disabled><span class="bob">First MCQ<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span><span class="ld">Loading the mountain…</span></button>
+<button type="button" class="btn alt" id="resume" hidden></button>
 <div class="labo" id="labo"><div role="group" aria-labelledby="labT"><span id="labT">Lab: picture</span><div><button type="button" data-tier="hd">HD</button><button type="button" data-tier="light">Light</button></div></div><div role="group" aria-labelledby="labN"><span id="labN">Lab: MCQs in the chapter</span><div><button type="button" data-n="8">8</button><button type="button" data-n="50">50</button><button type="button" data-n="200">200</button></div></div></div>
 </section>
 <section id="sheet" aria-label="Question">

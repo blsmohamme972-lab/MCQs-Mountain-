@@ -200,6 +200,23 @@
     World.walkToFirst(arrived);
   }
   function arrived() { hud(); stageNews(); openSheet(); }
+  /* ---------- a long chapter can be left and continued later (lab: localStorage 'mcqm-progress'; the app would use
+     its own resume). The place is kept after every MCQ and offered on the start card of the same chapter. ---------- */
+  const PK = 'mcqm-progress';
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(PK) || 'null'); } catch (e) {}
+  if (!saved || saved.n !== N || !(saved.next > 0 && saved.next < N) || typeof saved.st !== 'string' || saved.st.length !== N) saved = null;
+  function keep(next) { try { if (next >= N) localStorage.removeItem(PK); else localStorage.setItem(PK, JSON.stringify({ n: N, next, xp, st: Array.from(st).join('') })); } catch (e) {} }
+  function continueChapter() {
+    if (lab.state !== 'start' || !saved) return;
+    const s = saved; saved = null; $('resume').hidden = true;
+    for (let k = 0; k < s.next; k++) { const v = +s.st[k] || 2, r = RS[k]; st[k] = v; r.done = true; r.correct = v === 1; r.score = r.correct ? 1 : 0; }
+    xp = s.xp | 0; hudXP(); idx = s.next;
+    World.place(idx);
+    for (let k = STAGES[stageOf(idx)][0]; k < idx; k++) World.sign(k, st[k], false);
+    tGo = now(); firstOpen = true; lab.state = 'moving'; startp.classList.add('off'); Sound.unlock();
+    hud(); drawStrip(); openSheet();
+  }
   // A new stage is announced to screen readers (it is shown in the question header too).
   function stageNews() {
     if (STAGES.length < 2 || !idx || stageOf(idx) === stageOf(idx - 1)) return;
@@ -233,7 +250,7 @@
   function summit(celebrateMs) { hud(true); celebT = after(RM ? 0 : celebrateMs, () => { celebT = null; finish(); }); }
   let celebT = null;
   function collected(i) {
-    xp += RS[i].correct ? 10 : 5; hudXP();
+    xp += RS[i].correct ? 10 : 5; hudXP(); keep(i + 1);
     try { if (TG && TG.HapticFeedback) TG.HapticFeedback.impactOccurred('light'); } catch (e) {}
     Sound.play(RS[i].correct ? 'coin' : 'coin2');
   }
@@ -252,6 +269,7 @@
     setTimeout(() => prebuild(idx + 1), 0);
   }
   function finish() {
+    keep(N);
     const t = now(); gameT += t - tNext; lab.state = 'done'; skipOn(false); hud(true);
     if (mode === 'strip') drawStrip();
     const c = RS.filter(r => r.correct).length, sec = Math.round(readT / 1000), per = gameT / N / 1000, z = per * 100 / 60;
@@ -408,7 +426,7 @@
     if (b.dataset.i != null) pick(b);
   });
   // A fast double tap on Check must not also press Next (it appears in the same place) and skip the explanation.
-  chk.addEventListener('click', () => { const was = RS[idx] && RS[idx].done; doCheck(); if (!was && RS[idx] && RS[idx].done) nextGuard = now() + 350; }); nxt.addEventListener('click', next); goB.addEventListener('click', go); $('again').addEventListener('click', reset);
+  chk.addEventListener('click', () => { const was = RS[idx] && RS[idx].done; doCheck(); if (!was && RS[idx] && RS[idx].done) nextGuard = now() + 350; }); nxt.addEventListener('click', next); goB.addEventListener('click', go); $('resume').addEventListener('click', continueChapter); $('again').addEventListener('click', reset);
   D.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => { if (lab.state === 'start' || lab.state === 'loading') setMode(b.dataset.m); }));
   $('snd').addEventListener('click', e => { const on = Sound.toggle(); e.currentTarget.setAttribute('aria-pressed', on); });
   $('world').addEventListener('pointerdown', skip); skipH.addEventListener('click', skip);
@@ -460,6 +478,7 @@
     })
     .then(() => {
       R.classList.add('ready'); goB.disabled = false; lab.state = 'start'; drawStrip();
+      if (saved) { const b = $('resume'); b.textContent = 'Continue at Q' + (saved.next + 1) + ' of ' + N; b.hidden = false; }
       if (DBG) console.info('[lab] game ready', Math.round(performance.getEntriesByName('lab:game-ready')[0].startTime), 'ms');
     })
     .catch(e => { $('mdesc').textContent = 'The game could not load: ' + e.message; throw e; });

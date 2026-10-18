@@ -45,7 +45,7 @@ and skipping all pass; violations below.
 | R3 | light | major | The "saved for review" badge read as a capital F | fixed (a112d49): a pennant on a pole |
 | R4 | both | major | "Your answer" on a wrong option was 4.13:1 in the light theme | fixed (a112d49): --error-text #B4203F (5.49:1) |
 | R5 | both | major | Stage progress hard to follow in Story and with reduced motion; not announced | fixed (a112d49): "Stage s of S" in the question header; a new stage is announced to screen readers |
-| R6 | both | major (200 MCQs) | No break or resume point in a long chapter | open |
+| R6 | both | major (200 MCQs) | No break or resume point in a long chapter | fixed: the place is kept after every MCQ; the start card of the same chapter offers "Continue at Q57 of 200" |
 | R7 | both | minor | Summary time lines awkward for long and short chapters | fixed (a112d49) |
 | R8 | both | minor | The app's fonts are not loaded in the repo copy (system fallback); Nunito 600/800 used | open (the phone copy loads Fredoka and Nunito from Google Fonts) |
 | R9 | both | minor | Some literal colours and timings outside the tokens; the token copy drifts from app/design/tokens.css | open |
