@@ -15,30 +15,38 @@
   const GOV = P.get('gov') !== '0';                // ?gov=0 keeps full quality (screenshots on a machine without a GPU)
   const ART = 0.42;                                  // Kenney art px -> world units (hero about 80 units tall)
   const LW = 170, SUMW = 330, STEP_W = 34, STEP_H = 27, JUMP_GAP = 64, JUMP_RISE = 72, LIFT_W = 64, LIFT_RISE = 216;
-  const START_W = 270, COL_D = 1400;
+  const START_W = 270, COL_D = 1400, START_X0 = -90;   // the climber starts each stage at x -90
   let app, kit, N = 8, RM = false, VW = 360, VH = 740, Z = 1, night = false, base = '';
   let atlas, tex = {}, lay = {}, root, bgC, worldC, backC, midC, fxC, fgC, vignette, starsC, cloudsC, birdsC;
   let godray = null, grade = null, glow = null, heroLine = null;
   const L = [], kinds = [], steps = [], lifts = [], signs = [], coins = [], flags = [], torches = [], falls = [], fgs = [];
   let landmark, beacon, beaconGlow, startSign, readyP = null, stripImg = null;
 
-  /* ---------- layout: one ledge per MCQ, joined by stairs, gap jumps or a lift ---------- */
-  const liftAt = i => i < N - 1 && (i + 2) % 4 === 0;            // Q3->Q4 and Q7->Q8 ride a lift, as in the light tier
-  const kindOf = i => i === N - 1 ? 'stairs' : liftAt(i) ? 'lift' : i % 2 ? 'jump' : 'stairs';
-  const stand = i => L[i].x + 40, signX = i => L[i].x + 112, flagX = i => L[i].x + 156;
+  /* ---------- stages and layout ---------- */
+  // A chapter has 1 to 200 MCQs (D27). It is cut into stages of about 10 (app.js gives the split): each stage is its
+  // own mountain, in stage-local coordinates, with a ledge per MCQ and a camp at the top (the real summit for the last
+  // stage). Only the current stage exists; its objects are built from shared textures when it starts and released
+  // when it ends, so memory and work do not grow with the chapter.
+  let STG = [[0, 8]], stage = 0, sA = 0, sK = 8;
+  const lastStage = () => stage === STG.length - 1;
+  const stageIdx = i => { for (let k = 0; k < STG.length; k++) if (i < STG[k][1]) return k; return STG.length - 1; };
+  const J = i => i - sA;                                           // chapter MCQ index -> ledge in this stage
+  const liftJ = () => sK >= 6 ? Math.floor(sK / 2) - 1 : -1;       // one lift per stage, in its middle
+  const kindOf = j => j === sK - 1 ? 'stairs' : j === liftJ() ? 'lift' : j % 2 ? 'jump' : 'stairs';
+  const stand = j => L[j].x + 40, signX = j => L[j].x + 112, flagX = j => L[j].x + 156;
   function layout() {
     L.length = 0; steps.length = 0; lifts.length = 0; kinds.length = 0;
     let x = 0, y = 0;
-    for (let i = 0; i <= N; i++) {
-      L.push({ x, y, w: i === N ? SUMW : LW });
-      if (i === N) break;
-      const k = kindOf(i); kinds.push(k);
+    for (let j = 0; j <= sK; j++) {
+      L.push({ x, y, w: j === sK ? SUMW : LW });
+      if (j === sK) break;
+      const k = kindOf(j); kinds.push(k);
       if (k === 'stairs') {
         const sx = x + LW;
-        for (let s = 0; s < 3; s++) steps.push({ x: sx + s * STEP_W, y: y - (s + 1) * STEP_H, foot: y, i });
+        for (let n = 0; n < 3; n++) steps.push({ x: sx + n * STEP_W, y: y - (n + 1) * STEP_H, foot: y, j, n });
         x = sx + 3 * STEP_W; y -= 4 * STEP_H;
       } else if (k === 'jump') { x += LW + JUMP_GAP; y -= JUMP_RISE; }
-      else { lifts.push({ x: x + LW + 6, y, y0: y, y1: y - LIFT_RISE, i }); x += LW + 12 + LIFT_W; y -= LIFT_RISE; }
+      else { lifts.push({ x: x + LW + 6, y, y0: y, y1: y - LIFT_RISE, j }); x += LW + 12 + LIFT_W; y -= LIFT_RISE; }
     }
   }
 
@@ -62,7 +70,16 @@
     return s;
   }
   const textStyle = (size, fill) => ({ fontFamily: 'Fredoka, ui-rounded, "Arial Rounded MT Bold", system-ui, sans-serif', fontSize: size, fontWeight: '700', fill, stroke: { color: 0x3a2618, width: Math.max(2, size / 7), join: 'round' } });
-  function text(s, size, fill, parent) { const t = new PIXI.Text({ text: s, style: textStyle(size, fill), resolution: 2 }); t.anchor.set(0.5); if (parent) parent.addChild(t); return t; }
+  // Short labels (sign numbers, Camp, Stage n, +10 XP) use one bitmap font made once at start-up: no texture per
+  // sign, so a 200-MCQ chapter costs the same as 8. White fill and a dark stroke; the colour comes from the tint.
+  let fontReady = false;
+  function installFont() {
+    if (fontReady) return;
+    PIXI.BitmapFont.install({ name: 'kafu-label', style: Object.assign(textStyle(40, 0xffffff), { stroke: { color: 0x3a2618, width: 7, join: 'round' } }),
+      chars: [['a', 'z'], ['A', 'Z'], ['0', '9'], ' +/'], resolution: 2, padding: 4 });
+    fontReady = true;
+  }
+  function btext(s, size, tint, parent) { const t = new PIXI.BitmapText({ text: s, style: { fontFamily: 'kafu-label', fontSize: size } }); t.anchor.set(0.5); t.tint = tint; if (parent) parent.addChild(t); return t; }
 
   /* ---------- the hero: a cut-out skeleton from the Kenney Toon parts, posed in code ---------- */
   // Joint positions come from kit.rig (pose space 192 x 256, feet at 96, 256). A pose is a set of angles and offsets;
@@ -187,16 +204,20 @@
   const Jp = (x0, y0, x1, y1, d, h) => plan.push({ k: 3, x0, y0, x1, y1, d, h });
   const Cr = (x, y, d) => plan.push({ k: 4, x0: x, y0: y, x1: x, y1: y, d });
   const Lf = (x, y0, y1, d, lift) => plan.push({ k: 2, x0: x, y0, x1: x, y1, d, lift });
+  // The stage change: clouds rise and cover the screen, the next mountain is built behind them, the clouds fall.
+  const Wp = (x, y, d) => plan.push({ k: 5, x0: x, y0: y, x1: START_X0, y1: 0, d, swapped: false });
+  let wipeK = 0;
+  function swapStage(s) { s.swapped = true; setStage(stage + 1); H.x = lastX = START_X0; H.y = H.gy = 0; heroState('idle'); cam.fy = cam.fy1 = feetY('walk'); snapCam(); }
   function planMove(i) {
     const a = L[i], b = L[i + 1], k = kinds[i];
     if (k === 'lift') {
-      const lf = lifts.find(l => l.i === i), mx = lf.x + LIFT_W / 2;
+      const lf = lifts.find(l => l.j === i), mx = lf.x + LIFT_W / 2;
       Wk(stand(i), a.y, mx, a.y, 260, 2); Lf(mx, a.y, b.y, 760, lf); Wk(mx, b.y, stand(i + 1), b.y, 200, 1);
     } else if (k === 'jump') {
       const edge = a.x + LW - 14;
       Wk(stand(i), a.y, edge, a.y, 190, 2); Cr(edge, a.y, 90); Jp(edge, a.y, b.x + 18, b.y, 320, 46); Wk(b.x + 18, b.y, stand(i + 1), b.y, 110, 1);
     } else {
-      const edge = a.x + LW - 12, ss = steps.filter(s => s.i === i);
+      const edge = a.x + LW - 12, ss = steps.filter(s => s.j === i);
       Wk(stand(i), a.y, edge, a.y, 190, 2);
       let px = edge, py = a.y;
       ss.forEach((s, n) => { St(px, py, s.x + STEP_W / 2, s.y, 112, n); px = s.x + STEP_W / 2; py = s.y; });
@@ -215,6 +236,7 @@
       if (s.k === 1) { dust(H.x, H.y, 2); sfx('step'); }
       if (s.k === 2) { s.lift.y = s.y1; s.lift.on = false; s.lift.used = true; }
       if (s.k === 4) { dust(H.x, H.y, 4); sfx('jump'); }
+      if (s.k === 5) { if (!s.swapped) swapStage(s); wipeK = 0; }
     }
     if (pi >= plan.length) { arrive(); return; }
     s = plan[pi];
@@ -233,6 +255,10 @@
       H.y = lerp(s.y0, s.y1, easeOut(p)) - Math.sin(Math.PI * p) * s.h;
       heroState(p < 0.48 ? 'jump' : 'fall'); if (p > 0.85) H.gy = s.y1;
       H.trail = (H.trail || 0) + ms; if (H.trail > 34) { H.trail = 0; emit('trail', H.x - 6, H.y - 30, 0, 0, 0.32); }
+    } else if (s.k === 5) {
+      wipeK = p < 0.42 ? easeInOut(p / 0.42) : p < 0.58 ? 1 : 1 - easeInOut((p - 0.58) / 0.42);
+      if (!s.swapped && p >= 0.42) swapStage(s);
+      if (!s.swapped) heroState('idle');
     } else {
       const e = p < 0.5 ? 4 * p * p * p : 1 - 4 * (1 - p) * (1 - p) * (1 - p);
       H.y = H.gy = lerp(s.y0, s.y1, e); s.lift.y = H.y; heroState('lift');
@@ -243,7 +269,8 @@
     lastX = H.x;
   }
   function finishPlan() {
-    for (; pi < plan.length; pi++) { const s = plan[pi]; if (s.k === 2) { s.lift.y = s.y1; s.lift.on = false; s.lift.used = true; } }
+    for (; pi < plan.length; pi++) { const s = plan[pi]; if (s.k === 2) { s.lift.y = s.y1; s.lift.on = false; s.lift.used = true; } if (s.k === 5 && !s.swapped) swapStage(s); }
+    wipeK = 0;
     const s = plan[plan.length - 1];
     H.x = s.x1; H.y = H.gy = s.y1; arrive();
   }
@@ -321,7 +348,7 @@
     if (cb) cb(coin.i);
   }
   function raiseFlag(i) {
-    const f = flags[i]; if (!f || f.up) return;
+    const f = flags.find(g => !g.big && g.i === i); if (!f || f.up) return;
     f.up = true; f.t = RM ? 1 : 0; if (RM) { f.pen.y = -148; f.pen.texture = frame('ui/pen0'); f.pen.anchor.set(0.03, 0.5); } else sfx('flag');
   }
 
@@ -341,7 +368,8 @@
     cam.z += (cam.z1 - cam.z) * (1 - Math.exp(-dt * 2.2));
     // the background dims a little while an MCQ is open, so the eye goes to the climber
     const dim = cam.fy1 < 0.4 && !summitView ? 0.82 : 1; bgDim += (dim - bgDim) * (1 - Math.exp(-dt * 6));
-    const g = Math.round(255 * bgDim); bgC.tint = (g << 16) | (g << 8) | Math.min(255, g + 6);
+    const st = stageTint, ch = (v, k) => Math.round(((v >> k) & 255) * bgDim);
+    bgC.tint = (ch(st, 16) << 16) | (ch(st, 8) << 8) | Math.min(255, ch(st, 0) + 6);   // the stage's light, dimmed under a sheet
     camTarget(tgt);
     // critically damped springs (no overshoot), a little softer vertically
     const sp = (pos, vel, to, w) => { const x = pos - to, e = Math.exp(-w * dt), a = (vel + w * x) * dt; return [to + (x + a) * e, (vel - w * a) * e]; };
@@ -395,18 +423,20 @@
       const b = signs[i].badge;
       if (b.pop < 1) { b.pop = Math.min(1, b.pop + dt / 0.3); b.scale.set(0.36 * easeOut(b.pop) * (1 + 0.3 * Math.sin(Math.PI * b.pop))); }
     }
-    if (xpText.visible) { xpT += dt; xpText.x = H.x; xpText.y = H.y - 104 - xpT * 36; xpText.scale.set(Math.min(1, 0.6 + xpT * 4)); xpText.alpha = xpT < 0.55 ? 1 : Math.max(0, 1 - (xpT - 0.55) / 0.35); if (xpT > 0.9) xpText.visible = false; }
+    // "+10 XP" floats up above the climber (beside the ropes when she rides the lift)
+    if (xpText.visible) { xpT += dt; xpText.x = H.x + (H.st === 'lift' ? 62 : 0); xpText.y = H.y - 104 - xpT * 36; xpText.scale.set(Math.min(1, 0.6 + xpT * 4)); xpText.alpha = xpT < 0.55 ? 1 : Math.max(0, 1 - (xpT - 0.55) / 0.35); if (xpT > 0.9) xpText.visible = false; }
     // checkpoint posts: once a ledge is passed its pennant runs up the post and unfurls, then waves
     for (const f of flags) {
       if (!f.up) continue;
-      if (f.big) { if (!RM) f.pen.texture = frame('ui/gold' + (((ambT * 7) | 0) % 3)); continue; }
+      if (f.big) { if (!RM) f.pen.texture = frame((f.gold ? 'ui/gold' : 'ui/pen') + (((ambT * 7 + f.o) | 0) % 3)); continue; }
       if (f.t < 1) { f.t = Math.min(1, f.t + dt / 0.6); f.pen.y = lerp(-36, -148, easeOut(f.t)); if (f.t >= 1) sparkle(f.x + 18, f.y - 72, 8, 50); }
       if (f.t > 0.15) { const k = RM ? 0 : ((ambT * 7 + f.o) | 0) % 3; const t = frame('ui/pen' + k); if (f.pen.texture !== t) { f.pen.texture = t; f.pen.anchor.set(0.03, 0.5); } }
     }
     for (const l of lifts) {
       if (l.ret) { l.y += (l.y0 - l.y) * (1 - Math.exp(-dt * 1.6)); if (Math.abs(l.y - l.y0) < 0.5) { l.y = l.y0; l.ret = false; } }
       l.c.y = l.y; l.wheel.rotation = (l.y - l.y0) / 7;
-      for (const ch of l.chains) { ch.y = l.top - 4; ch.height = Math.max(8, l.y - 40 - l.top); }
+      for (const ch of l.chains) { ch.y = l.top - 12; ch.height = Math.max(8, l.y - 32 - l.top); }
+      l.cw.y = l.cwTop + 18 + (l.y0 - l.y) * 0.4; l.cwRope.height = Math.max(4, l.cw.y - l.cwTop);   // the counterweight goes the other way
     }
     stepParts(dt);
     if (!RM) stepAmbient(dt);
@@ -435,7 +465,7 @@
       f.t += dt;
       if (night) { f.s.x = f.x + Math.sin(f.t * 0.7 + f.o) * 26; f.s.y = f.y + Math.sin(f.t * 1.1 + f.o * 2) * 16; f.s.alpha = 0.35 + 0.65 * Math.max(0, Math.sin(f.t * 2.2 + f.o)); }
       else {
-        f.s.x += (f.vx + Math.sin(f.t * 1.3 + f.o) * 12) * dt; f.s.y += f.vy * dt; f.s.rotation += f.spin * dt; f.s.scale.y = 0.42 * Math.cos(f.t * 3 + f.o);
+        f.s.x += (f.vx + Math.sin(f.t * 1.3 + f.o) * 12) * dt; f.s.y += f.vy * dt; f.s.rotation += f.spin * dt; f.s.scale.y = 0.42 * Math.max(0.28, Math.abs(Math.cos(f.t * 3 + f.o)));
         if (f.s.y > VH + 30 || f.s.x > VW + 40) { f.s.x = -20 + rnd() * VW * 0.6; f.s.y = -20 - rnd() * 80; }
       }
     }
@@ -458,7 +488,7 @@
     // near 0.55 of the camera's rise).
     const dy = (cy + (VH / Z) * feetY('start')) * Z;
     lay.far.y = VH * 0.3 - 125 * Z - dy * 0.15; lay.far.tilePosition.x = -cx * 0.05 * 2;
-    lay.peak.x = VW * 0.7 - (cx - L[N].x * 0.5) * 0.06 * Z; lay.peak.y = VH * 0.5 - dy * 0.35;
+    lay.peak.x = VW * 0.7 - (cx - L[sK].x * 0.5) * 0.06 * Z; lay.peak.y = VH * 0.5 - dy * 0.35;
     cloudsC.x = -cx * 0.1 * Z; cloudsC.y = -dy * 0.2;
     lay.sea.y = VH * 0.37 - dy * 0.2; lay.sea.tilePosition.x = -(cx * 0.12 + (RM ? 0 : ambT * 4)) * 2;
     lay.mid.y = VH * 0.38 - 130 * Z - dy * 0.3; lay.mid.tilePosition.x = -cx * 0.2 * 2;
@@ -466,7 +496,7 @@
     lay.near.y = VH * 0.47 - 140 * Z - dy * 0.55; lay.near.tilePosition.x = -cx * 0.4 * 2;
     lay.nearFill.y = lay.near.y + 356 * Z; lay.nearFill.height = Math.max(0, VH - lay.nearFill.y);
     // the cloud bank below the path (screen space, moving with the world)
-    lay.bank.y = VH * 0.8 + (RM ? 0 : Math.sin(ambT * 0.6) * 4); lay.bank.tilePosition.x = -(cx * 1.0 + (RM ? 0 : ambT * 6)) * 2;
+    lay.bank.y = lerp(VH * 0.8, -VH * 0.34, wipeK) + (RM ? 0 : Math.sin(ambT * 0.6) * 4); lay.bank.tilePosition.x = -(cx * 1.0 + (RM ? 0 : ambT * 6)) * 2;
     lay.bankFill.y = lay.bank.y + 80 * Z; lay.bankFill.height = Math.max(0, VH - lay.bankFill.y);
     fgW.x = -cx * 0.25; fgW.y = -cy * 0.25;
     // cull the world by x (a few dozen objects): 'renderable' only, so an object's own visible state is kept
@@ -513,14 +543,14 @@
   function tiling(t, w, h) { return new PIXI.TilingSprite({ texture: t, width: w, height: h }); }
   // A cliff column: one painted rock shape (tools/build_assets_hd.py, 2 px per unit, with a margin for its rocky
   // silhouette) under a lip of grass (or stone, for stair steps) tiles.
-  const CLIFF_M = { 'cliff-step': 6 };
+  const CLIFF_M = {};   // texture margin (units) around a cliff's rocky silhouette, when not the default 14
   // Textures needed after the first frame arrive a moment later (World.whenReady); until then a sprite shows nothing.
   const T = n => tex[n] || PIXI.Texture.EMPTY;
-  function column(parent, x, y, w, name, stone) {
+  function column(parent, x, y, w, name, stone, noLip) {
     const c = new PIXI.Container(); c.wx = x - 30; c.ww = w + 60; parent.addChild(c);
     const m = CLIFF_M[name] || 14, wu = kit.dims[name][0] / 2 - 2 * m;
     const body = new PIXI.Sprite(T(name)); body.scale.set(0.5 * w / wu, 0.5); body.x = x - m * w / wu; body.y = y + 6; c.addChild(body); c.body = body; c.texName = name;
-    const tw = 128 * ART, n = Math.max(2, Math.round(w / tw));
+    const tw = 128 * ART, n = noLip ? 0 : Math.max(2, Math.round(w / tw));
     c.lips = [];
     for (let k = 0; k < n; k++) {
       const part = k === 0 ? 'left' : k === n - 1 ? 'right' : 'mid';
@@ -531,27 +561,126 @@
   }
   const cols = [];
   function shadowAt(x, y, w, parent) { const s = spr('fx/shadow', x, y + 1, 0.5, 0.5, parent || midC); s.scale.set(w / 96, 0.5); s.alpha = 0.32; s.wx = x - 40; s.ww = 80; return s; }
+  function decorTorch(tx, y, o) { // a torch with a small warm glow and a pool of light on the ground (stronger at night)
+    shadowAt(tx, y, 18);
+    const t = spr('prop/torch1', tx, y + 4, 0.5, 1, midC, ART * 0.6); t.wx = tx - 30; t.ww = 60;
+    const g = spr('fx/glow', tx, y - 30, 0.5, 0.5, midC, 0.62); g.blendMode = 'add'; g.tint = 0xffc46a; g.wx = tx - 60; g.ww = 120;
+    const pool = spr('fx/glow', tx - 10, y + 2, 0.5, 0.5, midC); pool.scale.set(1.5, 0.3); pool.blendMode = 'add'; pool.tint = 0xffb050; pool.wx = tx - 100; pool.ww = 200;
+    torches.push({ g, pool, o: o * 1.7 });
+  }
   function decorate(i) {
-    // Each ledge gets its own small scene, seeded by its index (the same every run). Places on a ledge (x from its
-    // left edge): hero 40 (spans about 10-70), a tuft 82, the sign 112, a torch 136 on some ledges, the post 156.
-    seed = 1000 + i * 97;
+    // Each ledge gets its own small scene, seeded by its chapter number (the same every run). Places on a ledge (x
+    // from its left edge): hero 40 (spans about 10-70), a tuft 82, the sign 112, a torch 136 on some ledges, the post
+    // 156. i is the ledge in this stage.
+    seed = 1000 + (sA + i) * 97;
     const l = L[i], x0 = l.x, y = l.y, w = l.w;
     const pick = a => a[(rnd() * a.length) | 0];
     const tintB = night ? 0x8d97c9 : 0xffffff, tintF = night ? 0x9aa3d0 : 0xffffff;
     if (i % 3 !== 1) { const x = x0 + 14 + rnd() * 10, n = pick(['bg/treeSmall_green1', 'bg/treeSmall_green2', 'bg/treeSmall_green3']), d = spr(n, x, y + 6, 0.5, 1, backDeco, 0.32 + rnd() * 0.06); d.wx = x - 60; d.ww = 120; d.tint = tintB; }
     if (i % 2 === 0) { const x = x0 + w - 26, d = spr(pick(['bg/bush1', 'bg/bush2', 'bg/bush3', 'bg/bush4']), x, y + 6, 0.5, 1, backDeco, 0.26); d.wx = x - 60; d.ww = 120; d.tint = tintB; }
-    if (i === N) return;
+    if (i === sK) return;
     const tuft = spr(pick(['prop/grass', 'prop/plantPurple', 'prop/grass']), x0 + 84, y + 3, 0.5, 1, midC, ART * 0.62); tuft.wx = x0 + 44; tuft.ww = 80; tuft.tint = tintF;
     for (let k = 0; k < 3; k++) { const px = x0 + (k ? 146 + k * 9 + rnd() * 4 : 4 + rnd() * 4), pb = spr('prop/rock', px, y + 3, 0.5, 1, midC, 0.1 + rnd() * 0.06); pb.wx = px - 20; pb.ww = 40; pb.tint = tintF; }
-    if (i % 3 === 2 || i === 0) { // a torch with a small warm glow (stronger at night)
-      const tx = x0 + 137;
-      shadowAt(tx, y, 18);
-      const t = spr('prop/torch1', tx, y + 4, 0.5, 1, midC, ART * 0.6); t.wx = tx - 30; t.ww = 60;
-      const g = spr('fx/glow', tx, y - 30, 0.5, 0.5, midC, 0.62); g.blendMode = 'add'; g.tint = 0xffc46a; g.wx = tx - 60; g.ww = 120;
-      const pool = spr('fx/glow', tx - 10, y + 2, 0.5, 0.5, midC); pool.scale.set(1.5, 0.3); pool.blendMode = 'add'; pool.tint = 0xffb050; pool.wx = tx - 100; pool.ww = 200;
-      torches.push({ g, pool, o: i * 1.7 });
-    }
+    if ((sA + i) % 3 === 2 || i === 0) decorTorch(x0 + 137, y, i);
   }
+  // Builds the current stage's world (stage-local coordinates): cliffs, stairs, waterfalls, decorations, signs,
+  // coins, checkpoint posts, the lift and the camp or summit. The previous stage's objects are released first.
+  // Constant work per stage (about 150 sprites from shared textures), whatever the chapter's length.
+  function buildStage() {
+    for (const c of [backC, backDeco, midC, fgW]) for (const k of c.removeChildren()) k.destroy({ children: true });
+    cols.length = 0; torches.length = 0; falls.length = 0; flags.length = 0; signs.length = 0; coins.length = 0; glow = null;
+    // the start ledge (wide), one cliff per ledge, the camp or summit ledge
+    column(backC, -START_W, 0, START_W + LW, 'cliff-wide');
+    for (let j = 1; j < sK; j++) column(backC, L[j].x, L[j].y, LW, (j + stage) % 2 ? 'cliff-b' : 'cliff-a');
+    column(backC, L[sK].x, L[sK].y, SUMW, 'cliff-summit');
+    // stairs: stone blocks stacked on one rock base
+    for (let j = 0; j < sK; j++) {
+      const ss = steps.filter(t => t.j === j); if (!ss.length) continue;
+      column(backC, ss[0].x, ss[0].foot, 3 * STEP_W + 1, (j + stage) % 2 ? 'cliff-a' : 'cliff-b', false, true);
+      for (const t of ss) for (let m = 0; m <= t.n; m++) { const b = spr('tile/stoneMid', t.x, t.y + m * STEP_H, 0, 0, backC); b.scale.set((STEP_W + 1) / 128, (STEP_H + 1) / 128); b.wx = t.x - 10; b.ww = STEP_W + 20; }
+    }
+    // waterfalls: spill over the left lip of the higher ledge at each gap jump, between two rocks, into the cloud bank
+    for (let j = 0; j < sK; j++) {
+      if (kinds[j] !== 'jump') continue;
+      const x = L[j + 1].x - 13, top = L[j + 1].y + 4;
+      const w = tiling(T('waterfall'), 24, 700); w.tileScale.set(0.5); w.x = x; w.y = top; w.alpha = 0.92; w.wx = x - 10; w.ww = 60; backC.addChild(w);
+      const spill = spr('fx/spill', x + 12, top + 2, 0.5, 0.5, backC, 0.42); spill.wx = x - 20; spill.ww = 60;
+      for (const dx of [-2, 27]) { const r = spr('prop/rock', x + dx, top + 3, 0.5, 1, backC, 0.13); r.wx = x - 20; r.ww = 60; }
+      falls.push({ s: w, x: x + 12, y: top + 4, t: 0, o: j });
+    }
+    // the top of the stage: the summit (a cairn of stones, a golden star, the summit pennant) or a camp
+    const sx = L[sK].x + SUMW - 110, sy = L[sK].y, top = lastStage();
+    shadowAt(sx, sy, top ? 150 : 90, backDeco);
+    landmark = spr('ui/cairn', sx, sy + 6, 0.5, 1, backDeco, top ? 0.55 : 0.34); landmark.wx = sx - 120; landmark.ww = 240;
+    beaconGlow = spr('fx/glow', sx, sy - 98, 0.5, 0.5, backDeco, 0.9); beaconGlow.blendMode = 'add'; beaconGlow.tint = 0xffd36b; beaconGlow.alpha = 0.75; beaconGlow.wx = sx - 160; beaconGlow.ww = 320; beaconGlow.visible = top;
+    beacon = spr('item/star', sx, sy - 80, 0.5, 1, backDeco, 0.5); beacon.wx = sx - 60; beacon.ww = 120; beacon.lit = false; beacon.visible = top;
+    if (top && FX && PIXI.filters && PIXI.filters.GlowFilter) { glow = new PIXI.filters.GlowFilter({ distance: 12, outerStrength: 1.6, color: 0xffd36b, quality: 0.2, resolution: 'inherit' }); beacon.filters = [glow]; }
+    const sumPole = spr('ui/pole', sx + (top ? 36 : 24), sy - (top ? 20 : 8), 0.5, 1, backDeco, top ? 0.75 : 0.55); sumPole.wx = sx; sumPole.ww = 140;
+    const sumPen = spr(top ? 'ui/gold0' : 'ui/pen0', 2, -150, 0.03, 0.5, sumPole, 1);
+    flags.push({ x: sx, y: sy, up: true, t: 1, o: 0, s: sumPole, pen: sumPen, big: true, gold: top });
+    backDeco.setChildIndex(landmark, backDeco.children.length - 1);
+    if (!top) { // a camp: a sign and a torch on the stage's top ledge
+      const cs = spr('ui/plate', L[sK].x + 80, sy + 6, 0.5, 1, midC, 0.55); cs.wx = cs.x - 50; cs.ww = 100;
+      const ct = btext('Camp', 26, 0xfff4dc, null); ct.y = -84; cs.addChild(ct);
+      decorTorch(L[sK].x + 150, sy, 99);
+    }
+    for (let j = 0; j <= sK; j++) decorate(j);
+    // the start: a wooden sign (START, or the stage number) and a fence
+    shadowAt(-150, 4, 40);
+    startSign = spr('ui/plate', -150, 6, 0.5, 1, midC, 0.62); startSign.wx = -200; startSign.ww = 100;
+    const stt = btext(stage ? 'Stage ' + (stage + 1) : 'START', stage ? 22 : 24, 0xfff4dc, null); stt.y = -82; startSign.addChild(stt);
+    const fence = spr('bg/fence', -235, 6, 0.5, 1, backDeco, 0.4); fence.wx = -300; fence.ww = 120;
+    // lifts: a braced wooden tower on the upper ledge, an arm with a pulley over the shaft, two ropes to a gondola,
+    // and a counterweight inside the tower that moves the other way
+    for (const l of lifts) {
+      const up = L[l.j + 1];
+      l.top = l.y1 - 100; l.c = new PIXI.Container(); l.c.x = l.x; l.c.y = l.y; l.c.wx = l.x - 20; l.c.ww = LIFT_W + 40;
+      const tx0 = up.x + 8, tx1 = up.x + 30, ttop = l.top - 12, tbot = up.y + 4;
+      const g = new PIXI.Graphics();
+      for (let y = ttop + 8; y < tbot - 14; y += 26) g.moveTo(tx0, y).lineTo(tx1, y + 26).moveTo(tx1, y).lineTo(tx0, y + 26);
+      g.stroke({ width: 2.5, color: 0x5a3820 });
+      g.rect(tx0 - 3.5, ttop, 7, tbot - ttop).fill(0x6b4428).rect(tx1 - 3.5, ttop, 7, tbot - ttop).fill(0x6b4428);
+      g.rect(tx0 - 2, ttop, 2, tbot - ttop).fill(0x8f6038).rect(tx1 - 2, ttop, 2, tbot - ttop).fill(0x8f6038);
+      g.rect(l.x - 10, ttop - 9, tx1 + 8 - (l.x - 10), 10).fill(0x6b4428).rect(l.x - 10, ttop - 9, tx1 + 8 - (l.x - 10), 3).fill(0x8f6038);
+      g.moveTo(tx0, ttop + 1).lineTo(l.x + LIFT_W / 2 + 6, ttop - 8).stroke({ width: 3, color: 0x5a3820 });
+      g.wx = l.x - 20; g.ww = tx1 - l.x + 60; backC.addChild(g);
+      l.chains = [5, LIFT_W - 9].map(dx => { const r = tiling(frame('ui/rope'), 4, 40); r.tileScale.set(0.5); r.x = l.x + dx; r.wx = l.x; r.ww = LIFT_W; backC.addChild(r); return r; });
+      l.wheel = spr('ui/pulley', l.x + LIFT_W / 2, ttop - 6, 0.5, 0.5, backC, 0.5); l.wheel.wx = l.x; l.wheel.ww = LIFT_W;
+      l.cwx = (tx0 + tx1) / 2; l.cwTop = ttop + 4;
+      l.cwRope = tiling(frame('ui/rope'), 3, 20); l.cwRope.tileScale.set(0.4); l.cwRope.x = l.cwx - 1.5; l.cwRope.y = l.cwTop; l.cwRope.wx = l.x; l.cwRope.ww = 120; backC.addChild(l.cwRope);
+      l.cw = spr('tile/stoneMid', l.cwx, l.cwTop + 20, 0.5, 0, backC); l.cw.scale.set(0.12, 0.1); l.cw.wx = l.x; l.cw.ww = 120;
+      const gd = spr('ui/gondola', -4, 2, 0, 1, l.c, 0.5); gd.width = LIFT_W + 8;
+      midC.addChild(l.c); l.on = false; l.ret = false;
+    }
+    // signs (Q number plates), badges after grading, coins, checkpoint posts with pennants
+    for (let j = 0; j < sK; j++) {
+      const sxi = signX(j);
+      shadowAt(sxi, L[j].y, 34);
+      const s = spr('ui/plate', sxi, L[j].y + 4, 0.5, 1, midC, 0.5); s.wx = sxi - 40; s.ww = 80;
+      const n = sA + j + 1, tq = btext('Q' + n, n > 99 ? 28 : 34, 0xfff4dc, null); tq.y = -80; s.addChild(tq);
+      const badge = spr('ui/ok', 40, -112, 0.5, 0.5, s, 0.36); badge.visible = false; badge.pop = 1;
+      signs.push({ s, badge, st: 0 });
+      const c = new PIXI.Container(); c.x = sxi; c.y = L[j].y - 76; c.wx = sxi - 40; c.ww = 80;
+      c.glow = spr('fx/glow', 0, 0, 0.5, 0.5, c, 0.7); c.glow.blendMode = 'add';
+      c.s = spr('item/coinGold', 0, 0, 0.5, 0.5, c, 0.34); c.visible = false; c.pop = 1; midC.addChild(c); coins.push(c);
+      const fx0 = flagX(j);
+      shadowAt(fx0, L[j].y, 14);
+      const post = spr('ui/pole', fx0, L[j].y + 4, 0.5, 1, midC, 0.5); post.wx = fx0 - 20; post.ww = 80;
+      const pen = spr('ui/penDown', 2, -36, 0.1, 0.05, post, 1);
+      flags.push({ x: fx0, y: L[j].y, up: false, t: 0, o: j, s: post, pen, i: j });
+    }
+    // foreground in the world (closer than the path, so blurred and moving at 1.25 of the camera): bush clumps on the
+    // ground at the start and beyond the top ledge, where the climber never walks
+    const fgb = (x, y, sc) => { const b = new PIXI.Sprite(T('fgbush')); b.anchor.set(0.5, 1); b.x = x; b.y = y; b.scale.set(sc); fgW.addChild(b); return b; };
+    fgb(-300, 34, 0.42);
+    fgb(L[sK].x + SUMW + 40, L[sK].y + 34, 0.45);
+    stageTint = STAGE_TINT[stage % STAGE_TINT.length];
+    if (built) applyNight();
+  }
+  // Each stage gets its own light over the same art (a gentle tint on the sky and far layers): clear, warm, fresh, cool.
+  const STAGE_TINT = [0xffffff, 0xfff0e2, 0xe8f6ec, 0xeceaff];
+  let stageTint = 0xffffff, heroC;
+  function setStage(k) { stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout(); buildStage(); }
   let backDeco, shadow, fgW, raysS;
   // Painted layers tile sideways only: drawn 2 units shorter and 1 unit down, so linear filtering never blends the
   // top row with the bottom row of the repeating texture (that showed as a pale line).
@@ -590,82 +719,17 @@
     // light rays: a separate additive overlay at half resolution, so the painted layers stay sharp
     raysS = new PIXI.Sprite(PIXI.Texture.WHITE); raysS.tint = 0x000000; raysS.width = VW; raysS.height = VH * 0.8; bgC.addChild(raysS); raysS.visible = false;
 
-    // the world
+    // the world: the stage's own objects (built by buildStage), then the climber, effects and the near foreground
     worldC.scale.set(Z);
-    backC = new PIXI.Container(); backDeco = new PIXI.Container(); midC = new PIXI.Container(); fxC = new PIXI.Container(); fgW = new PIXI.Container();
-    worldC.addChild(backC, backDeco, midC, fxC, fgW);
-    cols.length = 0; torches.length = 0; falls.length = 0; flags.length = 0;
-    column(backC, -START_W, 0, START_W + LW, 'cliff-wide');
-    for (let i = 1; i < N; i++) column(backC, L[i].x, L[i].y, LW, i % 2 ? 'cliff-b' : 'cliff-a');
-    column(backC, L[N].x, L[N].y, SUMW, 'cliff-summit');
-    for (const s of steps) column(backC, s.x, s.y, STEP_W + 1, 'cliff-step', true);
-    // waterfalls: spill over the left lip of the higher ledge at each gap jump and pour down its face into the haze
-    for (let i = 0; i < N; i++) {
-      if (kinds[i] !== 'jump') continue;
-      const x = L[i + 1].x - 13, top = L[i + 1].y + 4;
-      // long enough to always reach down into the cloud bank, where it disappears
-      const w = tiling(T('waterfall'), 24, 700); w.tileScale.set(0.5); w.x = x; w.y = top; w.alpha = 0.92; w.wx = x - 10; w.ww = 60; backC.addChild(w);
-      const spill = spr('fx/spill', x + 12, top + 2, 0.5, 0.5, backC, 0.42); spill.wx = x - 20; spill.ww = 60;
-      falls.push({ s: w, x: x + 12, y: top + 4, t: 0, o: i });
-    }
-    // landmark: a cairn of rounded stones on the summit, a golden star on its top stone, the summit flag planted in it
-    const sx = L[N].x + SUMW - 110, sy = L[N].y;
-    shadowAt(sx, sy, 150, backDeco);
-    landmark = spr('ui/cairn', sx, sy + 6, 0.5, 1, backDeco, 0.55); landmark.wx = sx - 120; landmark.ww = 240;
-    beaconGlow = spr('fx/glow', sx, sy - 98, 0.5, 0.5, backDeco, 0.9); beaconGlow.blendMode = 'add'; beaconGlow.tint = 0xffd36b; beaconGlow.alpha = 0.75; beaconGlow.wx = sx - 160; beaconGlow.ww = 320;
-    beacon = spr('item/star', sx, sy - 80, 0.5, 1, backDeco, 0.5); beacon.wx = sx - 60; beacon.ww = 120; beacon.lit = false;
-    if (FX && PIXI.filters && PIXI.filters.GlowFilter) { glow = new PIXI.filters.GlowFilter({ distance: 12, outerStrength: 1.6, color: 0xffd36b, quality: 0.2, resolution: 'inherit' }); beacon.filters = [glow]; }
-    const sumPole = spr('ui/pole', sx + 36, sy - 20, 0.5, 1, backDeco, 0.75); sumPole.wx = sx; sumPole.ww = 140;
-    const sumPen = spr('ui/gold0', 2, -150, 0.03, 0.5, sumPole, 1);
-    flags.push({ x: sx, y: sy, up: true, t: 1, o: 0, s: sumPole, pen: sumPen, big: true });
-    backDeco.setChildIndex(landmark, backDeco.children.length - 1);
-    for (let i = 0; i <= N; i++) decorate(i);
-    // the start: a wooden sign and a fence
-    shadowAt(-150, 4, 40);
-    startSign = spr('ui/plate', -150, 6, 0.5, 1, midC, 0.62); startSign.wx = -200; startSign.ww = 100;
-    const stt = text('START', 15, 0xfff4dc, null); stt.y = -startSign.height / 0.62 + 24; stt.x = 0; stt.scale.set(1 / 0.62); startSign.addChild(stt);
-    const fence = spr('bg/fence', -235, 6, 0.5, 1, backDeco, 0.4); fence.wx = -300; fence.ww = 120;
-    // lifts: a wooden gantry stands on the upper ledge, its arm reaches over the shaft with a pulley, two ropes carry
-    // a gondola (plank deck, posts, rope rail); after the ride the gondola goes back down for the next climber
-    for (const l of lifts) {
-      const up = L[l.i + 1];
-      l.top = l.y1 - 130; l.c = new PIXI.Container(); l.c.x = l.x; l.c.y = l.y; l.c.wx = l.x - 20; l.c.ww = LIFT_W + 40;
-      const wood = (x, y, w, h, c) => { const b = new PIXI.Sprite(PIXI.Texture.WHITE); b.x = x; b.y = y; b.width = w; b.height = h; b.tint = c; b.wx = l.x - 20; b.ww = LIFT_W + 120; backC.addChild(b); return b; };
-      wood(up.x + 10, l.top - 14, 9, up.y - l.top + 18, 0x6b4428); wood(up.x + 12, l.top - 14, 3, up.y - l.top + 18, 0x8f6038);
-      wood(l.x - 8, l.top - 16, up.x + 22 - l.x, 10, 0x6b4428); wood(l.x - 8, l.top - 16, up.x + 22 - l.x, 3, 0x8f6038);
-      l.chains = [5, LIFT_W - 9].map(dx => { const r = tiling(frame('ui/rope'), 4, 40); r.tileScale.set(0.5); r.x = l.x + dx; r.wx = l.x; r.ww = LIFT_W; backC.addChild(r); return r; });
-      l.wheel = spr('ui/pulley', l.x + LIFT_W / 2, l.top - 6, 0.5, 0.5, backC, 0.5); l.wheel.wx = l.x; l.wheel.ww = LIFT_W;
-      const g = spr('ui/gondola', -4, 2, 0, 1, l.c, 0.5); g.width = LIFT_W + 8;
-      midC.addChild(l.c); l.on = false; l.ret = false;
-    }
-    // signs (Q number plates), badges after grading, coins, checkpoint posts with pennants
-    signs.length = 0; coins.length = 0;
-    for (let i = 0; i < N; i++) {
-      const sxi = signX(i);
-      shadowAt(sxi, L[i].y, 34);
-      const s = spr('ui/plate', sxi, L[i].y + 4, 0.5, 1, midC, 0.5); s.wx = sxi - 40; s.ww = 80;
-      const tq = text('Q' + (i + 1), 34, 0xfff4dc, null); tq.y = -80; s.addChild(tq);
-      const badge = spr('ui/ok', 40, -112, 0.5, 0.5, s, 0.36); badge.visible = false; badge.pop = 1;
-      signs.push({ s, badge, st: 0 });
-      const c = new PIXI.Container(); c.x = sxi; c.y = L[i].y - 76; c.wx = sxi - 40; c.ww = 80;
-      c.glow = spr('fx/glow', 0, 0, 0.5, 0.5, c, 0.7); c.glow.blendMode = 'add';
-      c.s = spr('item/coinGold', 0, 0, 0.5, 0.5, c, 0.34); c.visible = false; c.pop = 1; midC.addChild(c); coins.push(c);
-      const fx0 = flagX(i);
-      shadowAt(fx0, L[i].y, 14);
-      const post = spr('ui/pole', fx0, L[i].y + 4, 0.5, 1, midC, 0.5); post.wx = fx0 - 20; post.ww = 80;
-      const pen = spr('ui/penDown', 2, -36, 0.1, 0.05, post, 1);
-      flags.push({ x: fx0, y: L[i].y, up: false, t: 0, o: i, s: post, pen, i });
-    }
-    shadow = spr('fx/shadow', 0, 0, 0.5, 0.5, midC, 0.9); shadow.alpha = 0.4;
-    buildHero(midC);
-    xpText = text('+10 XP', 26, 0xffe27a, fxC); xpText.visible = false;
+    backC = new PIXI.Container(); backDeco = new PIXI.Container(); midC = new PIXI.Container(); heroC = new PIXI.Container();
+    fxC = new PIXI.Container(); fgW = new PIXI.Container();
+    worldC.addChild(backC, backDeco, midC, heroC, fxC, fgW);
+    buildStage();
+    shadow = spr('fx/shadow', 0, 0, 0.5, 0.5, heroC, 0.9); shadow.alpha = 0.4;
+    buildHero(heroC);
+    xpText = btext('+10 XP', 26, 0xffe27a, fxC); xpText.visible = false;
     parts.length = 0;
     for (let i = 0; i < 130; i++) { const s = spr('fx/soft', 0, 0, 0.5, 0.5, fxC); s.visible = false; parts.push({ s, vx: 0, vy: 0, t: 0, l: 1, g: 0, spin: 0, drag: 0, grow: 0, kind: '' }); }
-    // foreground in the world (closer than the path, so blurred and moving at 1.25 of the camera): bush clumps on the
-    // ground at the start and beyond the summit, where the climber never walks
-    const fgb = (x, y, sc) => { const b = new PIXI.Sprite(T('fgbush')); b.anchor.set(0.5, 1); b.x = x; b.y = y; b.scale.set(sc); fgW.addChild(b); return b; };
-    fgb(-300, 34, 0.42);
-    fgb(L[N].x + SUMW + 40, L[N].y + 34, 0.45);
     // a bank of clouds below the path (screen space, scrolling with the world): the cliffs go down into it, so the
     // valley reads as far below
     fgs.length = 0;
@@ -699,8 +763,8 @@
 
   function resetState() {
     plan.length = 0; planOn = false; onArrive = null; coin.on = false; celebT = 0; H.sq = 0; H.book = 0; H.after = '';
-    H.x = -90; H.y = H.gy = 0; heroState('idle'); lastX = H.x;
-    for (let i = 0; i < N; i++) setSign(i, 0);
+    H.x = START_X0; H.y = H.gy = 0; heroState('idle'); lastX = H.x; wipeK = 0;
+    for (let j = 0; j < sK; j++) setSign(j, 0);
     for (const c of coins) c.visible = false;
     for (const l of lifts) { l.y = l.y0; l.on = false; l.ret = false; l.used = false; }
     for (const f of flags) if (!f.big) { f.up = false; f.t = 0; f.pen.texture = frame('ui/penDown'); f.pen.anchor.set(0.1, 0.05); f.pen.y = -36; }
@@ -715,7 +779,11 @@
   // before the first tap: no compile stall later (the beacon's glow used to cost 170 ms at the summit).
   function prewarm() {
     for (const c of [backC, backDeco, midC]) for (const k of c.children) k.renderable = true;
-    app.render();
+    // the summit star's glow exists only in the last stage: compile its shader now, not in the middle of a climb
+    let w = null;
+    if (FX && !glow && PIXI.filters && PIXI.filters.GlowFilter) { w = spr('fx/soft', 40, 40, 0.5, 0.5, fxC, 0.2); w.alpha = 0.01; w.filters = [new PIXI.filters.GlowFilter({ distance: 12, outerStrength: 1.6, color: 0xffd36b, quality: 0.2, resolution: 'inherit' })]; }
+    const keep = worldC.position.clone(); worldC.position.set(0, 0); app.render(); worldC.position.copyFrom(keep);
+    if (w) { w.destroy(); }
   }
   function renderOnce() { if (!app) return; stT0 = performance.now(); update(0); app.render(); }
   let laterT = 0;
@@ -738,22 +806,23 @@
     lay.mid.texture = tex['mid-' + tod]; lay.near.texture = tex['near-' + tod]; lay.sea.texture = lay.bank.texture = tex['cloudsea-' + tod];
     lay.bankFill.tint = night ? 0x3a4078 : 0xc6d8ee;
     lay.fog.alpha = night ? 0.3 : 0.55;
-    if (heroLine) { heroLine.color = night ? 0xa9b9ff : 0x3a2622; heroLine.alpha = night ? 0.75 : 0.5; }
+    if (heroLine) { heroLine.color = night ? 0x9fb2ff : 0x3a2622; heroLine.alpha = night ? 0.3 : 0.5; }
     const hex = s => parseInt(s.slice(1), 16);
     lay.nearFill.tint = hex(pal.nearBottom); lay.fog.tint = hex(pal.fog);
     starsC.visible = night; lay.moon.visible = night; lay.sun.visible = !night;
     lay.sunGlow.tint = night ? 0x8fa6ff : 0xffe2a8; lay.sunGlow.alpha = night ? 0.3 : 0.55; lay.sunGlow.x = night ? VW * 0.24 : VW * 0.8; lay.sunGlow.y = VH * (night ? 0.14 : 0.13);
     for (const c of cloudsC.children) { c.tint = night ? 0x46508a : 0xffffff; c.alpha = night ? 0.55 : 0.85; }
     // night: the rock and plants take the moonlight (cool, darker); lamps and the beacon keep their warm light
-    const rock = night ? 0x7a84b8 : 0xffffff, plant = night ? 0x9aa6d8 : 0xffffff;
+    const rock = night ? 0x7a84b8 : 0xffffff, plant = night ? 0x7f8bc0 : 0xffffff;
     for (const c of cols) { c.body.tint = rock; for (const k of c.lips) k.tint = plant; }
     for (const d of backDeco.children) if (d !== beaconGlow && d !== beacon) d.tint = night ? 0x8d97c9 : 0xffffff;
-    for (const f of flags) if (f.big) { f.s.tint = night ? 0xb8c0e0 : 0xffffff; f.pen.tint = night ? 0xfff0c0 : 0xffffff; }
+    for (const f of flags) if (f.big) { f.s.tint = night ? 0xb8c0e0 : 0xffffff; f.pen.tint = night ? (f.gold ? 0xfff0c0 : 0x9aa6d8) : 0xffffff; }
+    for (const sg of signs) sg.s.tint = night ? 0xb0b8e0 : 0xffffff;
     for (const f of falls) { f.s.tint = night ? 0x7084c8 : 0xd6f0ff; f.s.alpha = night ? 0.7 : 0.92; }
     for (const f of fgs) f.s.tint = night ? 0x0a1022 : 0xffffff;
     for (const b of fgW.children) b.tint = night ? 0x2a3360 : 0xffffff;
     for (const f of floaters) { f.s.texture = frame(night ? 'fx/soft' : 'fx/leaf'); f.s.blendMode = night ? 'add' : 'normal'; f.s.tint = night ? 0xd8ff7a : 0x8fd16a; f.s.scale.set(night ? 0.12 : 0.42); if (night) { f.x = 30 + rnd() * (VW - 60); f.y = VH * (0.3 + rnd() * 0.4); f.s.rotation = 0; } }
-    hero.children.forEach(s => { s.tint = night ? 0xd6dcf5 : 0xffffff; });
+    hero.children.forEach(s => { s.tint = night ? 0xb6bee2 : 0xffffff; });
     vignette.alpha = night ? 0.6 : 0.32;
     // light rays by day only (at night they would streak across the moon)
     raysS.visible = !!godray && !night;
@@ -765,6 +834,7 @@
   Object.assign(API, {
     init(e) {
       N = e.N; RM = e.RM; night = e.night; VW = e.W; VH = e.H; base = e.assetBase;
+      STG = e.stages && e.stages.length ? e.stages : [[0, N]]; stage = 0; sA = 0; sK = STG[0][1] - STG[0][0];
       app = new PIXI.Application();
       // The renderer (WebGL context, shaders) and the art (decoded off the main thread) start together.
       return fetch(base + 'kit.json').then(r => r.json()).then(k => {
@@ -786,7 +856,7 @@
         return Promise.all([gl, art]);
       }).then(() => {
         Z = zoomFor(VW, VH);
-        layout(); build(); resetState();
+        installFont(); layout(); build(); resetState();
         app.ticker.add(tick, null, PIXI.UPDATE_PRIORITY.HIGH);
         app.ticker.add(tickEnd, null, PIXI.UPDATE_PRIORITY.UTILITY);
         applyNight();
@@ -813,11 +883,17 @@
       atStart = false; cam.fy0 = cam.fy; cam.fy1 = feetY('walk'); cam.ft = RM ? 1 : 0;
       begin(cb);
     },
-    travel(i, cb) { plan.length = 0; raiseFlag(i); planMove(i); begin(cb); },
+    // i is the chapter's MCQ index. After the last MCQ of a stage the climber reaches the camp, the clouds rise, the
+    // next mountain is built behind them, and she walks in to its first ledge (about 1.5 s on top of the climb).
+    travel(i, cb) {
+      const j = J(i); plan.length = 0; raiseFlag(j); planMove(j);
+      if (j === sK - 1 && !lastStage()) { const b = L[sK]; Wp(b.x + 16, b.y, RM ? 1 : 1000); Wk(START_X0, 0, stand(0), 0, 520, 2); }
+      begin(cb);
+    },
     toSummit(cb) {
-      const i = N - 1; plan.length = 0; raiseFlag(i); planMove(i);
+      const j = sK - 1; plan.length = 0; raiseFlag(j); planMove(j);
       const end = landmark.x - 118;
-      Wk(stand(N), L[N].y, end, L[N].y, 300, 1);
+      Wk(stand(sK), L[sK].y, end, L[sK].y, 300, 1);
       begin(() => {
         // the camera pulls back over the climbed ledges and the sea of clouds
         beacon.lit = true; summitView = true; cam.z1 = 0.84; if (RM) snapCam();
@@ -829,14 +905,16 @@
       });
     },
     coin(i, gold, cb) {
-      if (RM) { coins[i].visible = false; cb(i); return; }
-      coinStart(i, gold, cb); kick();
+      const j = J(i);
+      if (RM || !coins[j]) { if (coins[j]) coins[j].visible = false; cb(i); return; }
+      coinStart(j, gold, () => cb(i)); kick();
     },
     // animate=false (Strip, Classic): the world is behind the sheet, so it is redrawn later, off the tap's frame.
     sign(i, st, animate) {
-      setSign(i, st);
-      if (animate && !RM) { sparkle(signX(i) + 20, L[i].y - 56, st === 1 ? 12 : 4, 50); kick(); }
-      else { coins[i].pop = 1; signs[i].badge.pop = 1; signs[i].badge.scale.set(0.36); renderLater(); }
+      const j = J(i); if (j < 0 || j >= sK) return;
+      setSign(j, st);
+      if (animate && !RM) { sparkle(signX(j) + 20, L[j].y - 56, st === 1 ? 12 : 4, 50); kick(); }
+      else { coins[j].pop = 1; signs[j].badge.pop = 1; signs[j].badge.scale.set(0.36); renderLater(); }
     },
     pose(p) {
       if (p === 'happy') { H.after = 'read'; heroState('happy'); if (!RM) { sparkle(H.x, H.y - 70, 10, 80); kick(); } else renderLater(); }
@@ -847,9 +925,12 @@
       cam.fy0 = cam.fy; cam.fy1 = feetY(f); cam.ft = RM ? 1 : 0;
       if (RM) { snapCam(); renderOnce(); } else kick();
     },
+    // Strip and Classic jump straight to a question (the world is behind the sheet); this may change the stage.
     place(i) {
-      const k = i === 'summit' ? N : i;
-      H.x = i === 'summit' ? landmark.x - 118 : stand(k); H.y = H.gy = L[k].y;
+      const sg = i === 'summit' ? STG.length - 1 : stageIdx(i);
+      if (sg !== stage) setStage(sg);
+      const k = i === 'summit' ? sK : J(i);
+      H.x = i === 'summit' ? landmark.x - 118 : stand(k); H.y = H.gy = L[k].y; wipeK = 0;
       atStart = false; if (i === 'summit') { summitView = true; cam.z1 = 0.84; }
       for (const l of lifts) { l.y = l.y0; l.on = false; l.ret = false; }
       for (const f of flags) if (!f.big && f.i < k && !f.up) { f.up = true; f.t = 1; f.pen.y = -148; f.pen.texture = frame('ui/pen0'); f.pen.anchor.set(0.03, 0.5); }
@@ -871,22 +952,22 @@
     },
     sleep() { awake = false; cam.ft = 1; cam.fy = cam.fy1; snapCam(); renderOnce(); if (!ambient()) { app.ticker.stop(); running = false; } else kick(); },
     wake,
-    reset() { resetState(); renderOnce(); if (!RM) kick(); },
+    reset() { if (stage !== 0) setStage(0); resetState(); renderOnce(); if (!RM) kick(); },
     resize(w, h) {
       if (!app || !built) return;
       VW = w; VH = h; app.renderer.resize(w, h);
       Z = zoomFor(w, h);
       const keep = { x: H.x, y: H.y, gy: H.gy, st: H.st }, sts = signs.map(s => s.st), up = flags.map(f => f.up), ly = lifts.map(l => l.y), lit = beacon.lit;
-      build(); applyNight();
+      build(); applyNight(); prewarm();
       signs.forEach((s, i) => setSign(i, sts[i])); coins.forEach(c => { c.pop = 1; }); signs.forEach(s => { s.badge.pop = 1; s.badge.scale.set(0.36); });
       flags.forEach((f, i) => { if (up[i] && !f.big) { f.up = true; f.t = 1; f.pen.y = -148; f.pen.texture = frame('ui/pen0'); f.pen.anchor.set(0.03, 0.5); } });
       lifts.forEach((l, i) => { l.y = ly[i]; }); beacon.lit = lit;
       H.x = keep.x; H.y = keep.y; H.gy = keep.gy; H.st = keep.st;
       snapCam(); renderOnce();
     },
-    theme(n) { night = n; applyNight(); renderOnce(); },
-    pause() { paused = true; if (app) app.ticker.stop(); running = false; },
-    resume() { paused = false; if (app && (awake || busy() || ambient())) { running = true; app.ticker.start(); } },
+    theme(n) { night = n; if (built) { applyNight(); renderOnce(); } },
+    pause() { paused = true; if (app && app.ticker) app.ticker.stop(); running = false; },
+    resume() { paused = false; if (built && (awake || busy() || ambient())) { running = true; app.ticker.start(); } },
     running: () => running,
     scriptTimes(reset) { const n = Math.min(stN, ST.length), out = Array.from(ST.subarray(0, n)); if (reset) stN = 0; return out; },
     info: () => 'HD · Z ' + Z.toFixed(2) + ' · res ' + (app ? app.renderer.resolution : '-') + ' · ' + (app && app.renderer ? app.renderer.name : '-') + (FX ? ' · fx' : ' · no fx') + ' · q-' + qStep,

@@ -4,7 +4,7 @@
    (same rules, same numbers); the world is drawn by world.js on top of the chosen engine (DECISIONS.md D24).
    window.World is the only interface between the two files. */
 (function () {
-  const Q = window.LAB_QUESTIONS, N = Q.length, LET = 'ABCDEF', L2I = l => LET.indexOf(l);
+  const LET = 'ABCDEF', L2I = l => LET.indexOf(l);
   const TY = { sba: 'Single best answer', mtf: 'True-False', multi: 'Choose two', emq: 'Extended matching' };
   const D = document, R = D.documentElement, $ = i => D.getElementById(i), P = new URLSearchParams(location.search);
   const RM = P.get('rm') === '1' || matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -19,6 +19,14 @@
   const TG = window.Telegram && window.Telegram.WebApp;
   const CFG = window.LAB_CONFIG || {};
   let TC = CFG[TIER] || CFG.light;
+  // Chapter size (D27): any number of MCQs from 1 to 200. The lab repeats the 8 sample MCQs to build a chapter of n
+  // (?n=, or the start card's lab picker, kept in localStorage 'mcqm-n'); the app will pass its real chapter.
+  let nPick = 0; try { nPick = +localStorage.getItem('mcqm-n') || 0; } catch (e) {}
+  const Q0 = window.LAB_QUESTIONS, N = Math.max(1, Math.min(200, Math.round(+P.get('n') || nPick || Q0.length)));
+  const Q = Array.from({ length: N }, (_, i) => Q0[i % Q0.length]);
+  // The path is cut into stages of about 10 MCQs (one mountain each); a remainder under 4 joins the previous stage.
+  const STAGES = (() => { const out = []; for (let a = 0; a < N; a += 10) out.push([a, Math.min(N, a + 10)]); if (out.length > 1 && out[out.length - 1][1] - out[out.length - 1][0] < 4) { const l = out.pop(); out[out.length - 1][1] = l[1]; } return out; })();
+  const stageOf = i => { for (let s = 0; s < STAGES.length; s++) if (i < STAGES[s][1]) return s; return STAGES.length - 1; };
   let mode = /^(story|strip|classic)$/.test(P.get('mode')) ? P.get('mode') : 'story';
   // Harness contract (README.md): state, mode, answer(); 'loading' comes first, until the world's first frame.
   const lab = window.__lab = { state: 'loading', mode, tier: TIER, version: 2, answer: () => autoAnswer() };
@@ -139,6 +147,7 @@
     Sound.play('tap'); paint();
   }
   function setMk(m, ok, t) { m.innerHTML = ok ? ICO.ok : ICO.no; m.append(t); m.className = 'mk ' + (ok ? 'okc' : 'noc'); }
+  let nextGuard = 0;
   function doCheck() {
     const q = Q[idx], r = RS[idx];
     if (r.done || lab.state !== 'question' || !complete(q, r)) return;
@@ -159,6 +168,8 @@
     pg.fb.innerHTML = (r.correct ? ICO.ok : ICO.fl) + '<div><b></b><span></span></div>';
     pg.fb.querySelector('b').textContent = t1; pg.fb.querySelector('span').textContent = t2;
     pg.af.hidden = false; chk.hidden = true; nxt.hidden = false; nxt.textContent = idx === N - 1 ? 'Finish chapter' : 'Next MCQ';
+    // the Check button is gone, so keyboard focus moves to the feedback (not lost to the page)
+    pg.fb.tabIndex = -1; try { pg.fb.focus({ preventScroll: true }); } catch (e) {}
     live.textContent = t1 + '. ' + t2;
     st[idx] = r.correct ? 1 : 2;
     // The reward appears only now, after scoring (D2): the sign shows a tick or a review flag and the coin waits on it.
@@ -180,13 +191,13 @@
   function go() {
     if (lab.state !== 'start') return;
     tGo = now(); firstOpen = true; lab.state = 'moving'; startp.classList.add('off'); Sound.unlock();
-    if (mode === 'classic') { openSheet(); return; }
+    if (mode === 'classic') { hud(); openSheet(); return; }
     World.wake(); skipOn(true);
     World.walkToFirst(arrived);
   }
   function arrived() { hud(); openSheet(); }
   function next() {
-    if (lab.state !== 'question' || !RS[idx].done) return;
+    if (lab.state !== 'question' || !RS[idx].done || now() < nextGuard) return;
     mark('lab:next-tap'); tNext = now(); readT += tNext - tShown; lab.state = 'moving';
     if (mode === 'story') {
       World.wake(); sheet.classList.remove('open'); World.frame('walk');
@@ -267,6 +278,7 @@
     cancelAnimationFrame(xpRaf);
     const step = () => { const k = Math.min(1, (now() - t0) / 420), v = Math.round(from + (to - from) * (1 - (1 - k) * (1 - k))); if (v !== xpShown) { xpShown = v; el.textContent = v; } if (k < 1) xpRaf = requestAnimationFrame(step); };
     xpRaf = requestAnimationFrame(step);
+    setTimeout(() => { if (xpShown !== xp) { xpShown = xp; el.textContent = xp; } }, 480);   // if frames are starved
   }
   const DESC = { story: 'The climber walks to each question and climbs between them. Tap the world to skip any animation.', strip: 'The question sheet stays open. A mini climber moves along a strip at the top.', classic: 'Plain questions with a progress bar. No game, for comparison.' };
   function setMode(m) {
@@ -278,34 +290,45 @@
   /* ---------- strip mode: a mini mountain with the hero, Canvas 2D, drawn only when it changes ---------- */
   const stripAnim = { on: false, t0: -1, a: 0, b: 0 };
   let sw = 320;
-  const smx = i => 22 + i * (sw - 52) / 8.6, smy = i => 46 - i * 3.3;
+  // The strip shows the current stage's ledges (a few to about 13) and, for long chapters, "Stage s/S".
+  let sk = 8;
+  const smx = j => 22 + j * (sw - 52) / (sk + 0.6), smy = j => 46 - j * 26.4 / Math.max(1, sk);
   // The strip's two colours come from the theme; read once and again only when the theme changes (not per draw).
   const stripCol = { rock: '#6b5b4e', grass: '#5bc46b' };
   function readStripCol() { const cs = getComputedStyle(R); stripCol.rock = cs.getPropertyValue('--strip-rock').trim() || '#6b5b4e'; stripCol.grass = cs.getPropertyValue('--strip-grass').trim() || '#5bc46b'; }
   function sizeStrip() { sw = Math.max(200, sc.clientWidth || 320); sc.width = Math.round(sw * S); sc.height = Math.round(56 * S); drawStrip(); }
   function drawStrip(ts) {
     if (mode !== 'strip') return;
-    const c = sx, bw = (sw - 52) / 8.6, art = World.stripArt && World.stripArt();
+    const art = World.stripArt && World.stripArt(), done = lab.state === 'done';
+    const sg = stageOf(done ? N - 1 : idx), s0 = STAGES[sg][0], s1 = STAGES[sg][1];
+    sk = s1 - s0;
+    const c = sx, bw = (sw - 52) / (sk + 0.6), last = sg === STAGES.length - 1;
     c.setTransform(S, 0, 0, S, 0, 0); c.clearRect(0, 0, sw, 56);
     c.fillStyle = stripCol.rock;
     c.beginPath(); c.moveTo(-4, 62); c.lineTo(-4, smy(0));
-    for (let i = 0; i <= N; i++) { c.lineTo(smx(i) - bw / 2, smy(i)); c.lineTo(i < N ? smx(i) + bw / 2 : sw + 4, smy(i)); }
+    for (let j = 0; j <= sk; j++) { c.lineTo(smx(j) - bw / 2, smy(j)); c.lineTo(j < sk ? smx(j) + bw / 2 : sw + 4, smy(j)); }
     c.lineTo(sw + 4, 62); c.closePath(); c.fill();
     c.fillStyle = stripCol.grass;
-    for (let i = 0; i <= N; i++) c.fillRect(smx(i) - bw / 2, smy(i) - 1, i < N ? bw : sw, 3);
-    for (let i = 0; i < N; i++) {
-      if (art && st[i]) art.coin(c, st[i] === 1, smx(i) + bw * 0.2, smy(i) - 9, 9);
-      else { c.fillStyle = 'rgba(255,255,255,.75)'; c.fillRect(smx(i) + bw * 0.2 - 3, smy(i) - 10, 6, 6); }
+    for (let j = 0; j <= sk; j++) c.fillRect(smx(j) - bw / 2, smy(j) - 1, j < sk ? bw : sw, 3);
+    for (let j = 0; j < sk; j++) {
+      const i = s0 + j;
+      if (art && st[i]) art.coin(c, st[i] === 1, smx(j) + bw * 0.2, smy(j) - 9, 9);
+      else { c.fillStyle = 'rgba(255,255,255,.75)'; c.fillRect(smx(j) + bw * 0.2 - 3, smy(j) - 10, 6, 6); }
     }
-    if (art) art.flag(c, smx(N) + 6, smy(N));
-    let a = idx, b = idx, p = 1;
-    if (lab.state === 'done') a = b = N;
+    if (art) art.flag(c, smx(sk) + 6, smy(sk));
+    if (STAGES.length > 1) {
+      c.font = '800 11px Nunito, ui-rounded, system-ui, sans-serif'; c.lineWidth = 3; c.strokeStyle = 'rgba(24,32,50,.7)'; c.fillStyle = '#fff';
+      const t = (last ? 'Summit stage ' : 'Stage ') + (sg + 1) + '/' + STAGES.length; c.strokeText(t, 8, 13); c.fillText(t, 8, 13);
+    }
+    let a = idx - s0, b = idx - s0, p = 1;
+    if (done) a = b = sk;
     if (stripAnim.on) {
       if (stripAnim.t0 < 0) stripAnim.t0 = ts || now();
-      p = Math.min(1, ((ts || now()) - stripAnim.t0) / 320); a = stripAnim.a; b = stripAnim.b;
+      p = Math.min(1, ((ts || now()) - stripAnim.t0) / 320); a = stripAnim.a - s0; b = stripAnim.b - s0;
+      if (a < 0) a = -0.7;    // a new stage: the climber comes in from the left
       if (p >= 1) stripAnim.on = false; else if (!uiRaf) uiRaf = requestAnimationFrame(uiTick);
     }
-    const x = smx(a) + (smx(b) - smx(a)) * p, y = smy(a) + (smy(b) - smy(a)) * p - Math.sin(Math.PI * p) * 8;
+    const x = smx(a) + (smx(b) - smx(a)) * p, y = smy(Math.max(0, a)) + (smy(b) - smy(Math.max(0, a))) * p - Math.sin(Math.PI * p) * 8;
     if (art) art.hero(c, x, y, p < 1 ? 'jump' : lab.state === 'done' ? 'happy' : 'idle', 30);
   }
 
@@ -366,7 +389,8 @@
     if (b.dataset.r) { const p = b.nextElementSibling, o = p.hidden; p.hidden = !o; b.setAttribute('aria-expanded', o); return; }
     if (b.dataset.i != null) pick(b);
   });
-  chk.addEventListener('click', doCheck); nxt.addEventListener('click', next); goB.addEventListener('click', go); $('again').addEventListener('click', reset);
+  // A fast double tap on Check must not also press Next (it appears in the same place) and skip the explanation.
+  chk.addEventListener('click', () => { const was = RS[idx] && RS[idx].done; doCheck(); if (!was && RS[idx] && RS[idx].done) nextGuard = now() + 350; }); nxt.addEventListener('click', next); goB.addEventListener('click', go); $('again').addEventListener('click', reset);
   D.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => { if (lab.state === 'start' || lab.state === 'loading') setMode(b.dataset.m); }));
   $('snd').addEventListener('click', e => { const on = Sound.toggle(); e.currentTarget.setAttribute('aria-pressed', on); });
   $('world').addEventListener('pointerdown', skip);
@@ -386,6 +410,10 @@
     try { const bg = getComputedStyle(R).getPropertyValue('--bg').trim(); TG.setHeaderColor(bg); TG.setBackgroundColor(bg); } catch (e) {}
   }
   readStripCol(); RS = Q.map(fresh); setMode(mode); hud(); prebuild(0);
+  $('sub1').textContent = 'Sample chapter · ' + N + ' MCQ' + (N === 1 ? '' : 's');
+  // Lab-only switches on the start card (for the phone link): the tier and the chapter size, kept in localStorage.
+  D.querySelectorAll('#labo [data-tier]').forEach(b => { b.setAttribute('aria-pressed', b.dataset.tier === TIER); b.addEventListener('click', () => { try { localStorage.setItem('mcqm-tier', b.dataset.tier); } catch (e) {} location.reload(); }); });
+  D.querySelectorAll('#labo [data-n]').forEach(b => { b.setAttribute('aria-pressed', +b.dataset.n === N); b.addEventListener('click', () => { try { localStorage.setItem('mcqm-n', b.dataset.n); } catch (e) {} location.reload(); }); });
   S = Math.min(2, window.devicePixelRatio || 1); sizeStrip();
 
   // Load the tier's scripts in order (engine, runtimes, world), then the world; it marks lab:game-ready on its first
@@ -396,7 +424,8 @@
   const loaded = new Set();
   const load = e => { const k = typeof e === 'string' ? e : e.src; if (loaded.has(k)) return Promise.resolve(); loaded.add(k); return typeof e === 'string' ? tag(e) : tag(e.src, e.integrity).catch(err => e.fallback ? tag(e.fallback, e.integrity) : Promise.reject(err)); };
   const loadAll = list => list.reduce((p, e) => p.then(() => load(e)), Promise.resolve());
-  const start = () => loadAll(TC.scripts).then(() => World.init({ canvasHost: $('world'), assetBase: TC.assetBase, W, H, RM, LOW: TIER === 'light' && LOW, night: getComputedStyle(R).getPropertyValue('--world-night').trim() === '1', N }));
+  const start = () => loadAll(TC.scripts).then(() => World.init({ canvasHost: $('world'), assetBase: TC.assetBase, W, H, RM, LOW: TIER === 'light' && LOW, night: getComputedStyle(R).getPropertyValue('--world-night').trim() === '1', N, stages: STAGES }));
+  const initSize = [W, H];
   start().catch(e => {
     if (TIER !== 'hd') throw e;
     // The HD world could not start (no usable WebGL): fall back to the light tier.
@@ -408,6 +437,7 @@
       // lab:game-ready = the world's first frame. A world may still be loading the rest of its art; the start
       // button turns on when it says it is ready (World.whenReady), so nothing loads during the first climb.
       mark('lab:game-ready'); worldReady = true;
+      if (innerWidth !== initSize[0] || innerHeight !== initSize[1]) resize();   // rotated while loading
       return World.whenReady ? World.whenReady() : null;
     })
     .then(() => {

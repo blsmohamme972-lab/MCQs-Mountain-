@@ -4,8 +4,9 @@ Input: game-lab/assets-test/src/kenney/ as filled by tools/fetch_assets.py (tool
 Output (git-ignored):
   atlas.webp + kit.json   every sprite (the hero's body parts for the code rig, props, tiles, particles), packed
                           into one 2048 x 2048 atlas, plus the rig's joint positions and the palettes
-  sky-*.webp, far-*, peak-*, mid-*, near-*   painted parallax layers, day and night (original lab art, drawn here)
-  dirt.webp stone.webp waterfall.webp fg.webp  tiling and foreground textures
+  sky-*, far-*, peak-*, cloudsea-*, mid-*, near-*.webp   painted parallax layers, day and night (original lab art)
+  cliff-a, cliff-b, cliff-wide, cliff-summit.webp       painted cliff columns (one under each ledge)
+  waterfall.webp, fgbush.webp, strip.webp               a tiling waterfall, blurred foreground bushes, the Strip sheet
   *.mp3                   sound effects and one music loop, re-encoded (plays on Android and iOS)
 The painted layers are generated with a fixed seed, so the same input always gives the same files.
 Needs Pillow and numpy; the sound step needs ffmpeg with libmp3lame.
@@ -370,8 +371,7 @@ def textures() -> dict:
     sizes = {}
     # Cliff columns (2 px per unit): two ledge variants, the wide start ledge, the summit, a stair step.
     for name, wu, seed, cols, green in (("cliff-a", 170, 101, CLIFF_SANDSTONE, True), ("cliff-b", 170, 102, CLIFF_SANDSTONE, True),
-                                        ("cliff-wide", 440, 103, CLIFF_SANDSTONE, True), ("cliff-summit", 330, 104, CLIFF_SANDSTONE, True),
-                                        ("cliff-step", 36, 105, CLIFF_STONE, False)):
+                                        ("cliff-wide", 440, 103, CLIFF_SANDSTONE, True), ("cliff-summit", 330, 104, CLIFF_SANDSTONE, True)):
         sizes[name + ".webp"] = save_webp(cliff(wu, seed, cols, margin=14 if wu > 60 else 6, green=green), name + ".webp", quality=84, method=6)
     # Waterfall: bright streaks with foam edges, seamless top to bottom (64 x 256, 2 px per unit).
     rng = np.random.default_rng(5)
@@ -389,24 +389,6 @@ def textures() -> dict:
     body = 0.55 + 0.45 * v
     col = np.dstack([150 + 105 * body + 40 * rim, 200 + 55 * body, 235 + 20 * body, (130 + 125 * np.maximum(v, rim * 0.9)) * edge])
     sizes["waterfall.webp"] = save_webp(Image.fromarray(np.clip(col, 0, 255).astype(np.uint8), "RGBA"), "waterfall.webp")
-    # Foreground: a low band of grass blades and leaves, pre-blurred (no blur filter at run time), 640 x 220.
-    fg = Image.new("RGBA", (640, 220))
-    d = ImageDraw.Draw(fg)
-    rng = np.random.default_rng(9)
-    for k in range(70):
-        x0 = rng.uniform(0, 640)
-        hgt = rng.uniform(60, 200) * (1.0 if (x0 < 200 or x0 > 470) else 0.45)
-        lean = rng.uniform(-40, 40)
-        w2 = rng.uniform(8, 18)
-        col2 = (int(rng.uniform(18, 34)), int(rng.uniform(44, 70)), int(rng.uniform(34, 50)), 255)
-        d.polygon([(x0 - w2, 220), (x0 + w2, 220), (x0 + lean, 220 - hgt)], fill=col2)
-    for k in range(10):
-        cx, cy, r = rng.uniform(0, 640), rng.uniform(150, 230), rng.uniform(26, 48)
-        if 220 < cx < 440:
-            continue
-        d.ellipse([cx - r * 1.6, cy - r * 0.7, cx + r * 1.6, cy + r * 0.7], fill=(22, 52, 40, 255))
-    fg = fg.filter(ImageFilter.GaussianBlur(3.2))
-    sizes["fg.webp"] = save_webp(fg, "fg.webp")
     # Foreground bushes in the world (closer than the path, so blurred): dark leafy clumps, 520 x 260.
     fb = Image.new("RGBA", (520, 260))
     for k, (n, x0, sc) in enumerate((("bush1", 0, 1.3), ("bush3", 150, 1.6), ("bush2", 300, 1.2), ("bush4", 380, 1.0))):
@@ -766,10 +748,10 @@ def main() -> None:
     strip, ssize = strip_sheet()
     sizes["strip.webp"] = ssize
     snd = sounds()
-    dims = {k: list(Image.open(OUT / (k + ".webp")).size) for k in ("waterfall", "fg", "fgbush", "cliff-a", "cliff-b", "cliff-wide", "cliff-summit", "cliff-step")}
+    dims = {k: list(Image.open(OUT / (k + ".webp")).size) for k in ("waterfall", "fgbush", "cliff-a", "cliff-b", "cliff-wide", "cliff-summit")}
     kit = {"atlas": atlas, "rig": RIG, "palette": kitpal, "strip": strip, "dims": dims,
            "layers": {k: {"day": f"{k}-day.webp", "night": f"{k}-night.webp"} for k in ("sky", "far", "peak", "cloudsea", "mid", "near")},
-           "textures": {k: k + ".webp" for k in ("waterfall", "fg", "fgbush", "cliff-a", "cliff-b", "cliff-wide", "cliff-summit", "cliff-step")},
+           "textures": {k: k + ".webp" for k in ("waterfall", "fgbush", "cliff-a", "cliff-b", "cliff-wide", "cliff-summit")},
            "sizes": sizes, "sounds": snd}
     (OUT / "kit.json").write_text(json.dumps(kit, separators=(",", ":")))
     art = sum(sizes.values())
