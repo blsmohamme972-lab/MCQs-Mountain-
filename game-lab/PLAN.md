@@ -13,8 +13,10 @@ ready prompt: `NEXT_AGENT.md`.
   0.2-0.3 s compile mid-climb), the bitmap font installs only the used glyphs without kerning (205 -> 51 ms at 4x), HD
   moves are quicker (about 1 s per MCQ), the start arrow's CSS animation no longer redraws the page all chapter, Strip
   and Classic build a new stage in a task of their own. Intermediate D27 numbers: `results/d27-<tier>-n<N>.json`.
-- Next: the four reviews (speed + rules, then QA + visual, two agents at a time), fixes, the D27 matrix again
-  (`results/d27-*.json`), a fresh agent's final re-measure, the phone link, the docs.
+- Round 1 of the reviews (speed, rules and learning) is done and its majors fixed except S1/S2 (build the next
+  stage ahead, in idle time) and R6 (resume a long chapter): `results/reviews-v2-d27.md`.
+- Next: S1/S2 and R6, round 2 (QA + visual), fixes, the D27 matrix again (`results/d27-*.json`), a fresh agent's
+  final re-measure, the phone link, the docs.
 
 Last updated: 2026-10-18.
 
