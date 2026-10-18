@@ -153,7 +153,7 @@
     live.textContent = t1 + '. ' + t2;
     st[idx] = r.correct ? 1 : 2;
     // The reward appears only now, after scoring (D2): the sign shows a tick or a review flag and the coin waits on it.
-    World.sign(idx, st[idx]); World.pose(r.correct ? 'happy' : 'calm');
+    World.sign(idx, st[idx], mode === 'story'); if (mode === 'story') World.pose(r.correct ? 'happy' : 'calm');
     Sound.play(r.correct ? 'correct' : 'soft');
     if (mode === 'strip') drawStrip();
     try { pg.fb.scrollIntoView({ block: 'nearest', behavior: RM ? 'auto' : 'smooth' }); } catch (e) {}

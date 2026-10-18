@@ -25,7 +25,9 @@ professional, and it stays out of the app until the owner is fully convinced.
 | Character and world brief (before any drawing) | Done, in `CHARACTER_BRIEF.md` |
 | Speed harness | Done, `tools/measure.mjs` |
 | Playable prototype with 3 modes (Story, Strip, Classic) | First draft works (flow, MCQ, speed). Its look was **rejected** by the owner (D18) |
-| New direction: world-class 2D quality, professional engine, no medical characters | Written down (`DECISIONS.md` D18-D23); next agent starts with the engine spike |
+| New direction: world-class 2D quality, professional engine, no medical characters | Written down (`DECISIONS.md` D18-D23) |
+| Engine spike | Done: PixiJS 8 with Canvas 2D renderer (D24, `results/spike-*.json`) |
+| v2 on PixiJS with test pixel art (`v2/`) | Works in all modes; sound, `ASSETS.md`, reviews and final numbers still open (`NEXT_AGENT.md`) |
 | Owner tries it on a phone, then in Telegram through a test bot | Not started (Gate 1) |
 
 **New agent: start with `NEXT_AGENT.md`.** It is the ready task prompt for the next step.
@@ -57,6 +59,9 @@ game-lab/
   ASSETS.md            asset register with exact licences (to be created with the first test asset)
   assets-test/         downloaded test assets, git-ignored, never committed
   climb/index.html     first draft of the prototype (flow and speed good, look rejected)
+  v2/                  the rebuild on PixiJS 8 (index.html, app.js flow and MCQ sheet, world.js game world)
+  spike/               the engine spike scenes (Phaser 4 and PixiJS 8)
+  vendor/              engine builds fetched by tools/fetch_engine.py, git-ignored
   climb/SPEC.md        the spec of the first draft, and the four review checklists
   tools/measure.mjs    speed harness (Playwright, CPU throttling as a cheap-phone proxy)
   results/             measurement JSON from the harness (text only)
@@ -66,6 +71,9 @@ game-lab/
 ## Open the prototype
 
 - On a computer: open `game-lab/climb/index.html` in Chrome. It needs no server and makes no network requests.
+- v2 needs a server and the git-ignored files: `python3 game-lab/tools/fetch_engine.py`, `python3
+  game-lab/tools/fetch_assets.py` (Pillow), then `python3 -m http.server 8765` from `game-lab/` and open
+  `http://127.0.0.1:8765/v2/index.html`. Extra options: `?hero=captain|frog|pink|guy|mask`, `?gl=1` (WebGL renderer).
 - On a phone: the owner gets a private claude.ai link to the same page (an "artifact" copy with the document wrapper
   removed and two Google Fonts added). The repository file stays the source of truth.
 - URL options: `?mode=story|strip|classic`, `?debug=1` (frame-time overlay), `?low=1` (low-quality tier),

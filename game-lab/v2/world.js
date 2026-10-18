@@ -412,6 +412,8 @@
     cam.fy0 = cam.fy1 = cam.fy = feetY('walk'); snapCam(); cam0y = cam.y;
   }
   function renderOnce() { if (!app) return; update(0); app.render(); }
+  let laterT = 0;
+  function renderLater() { if (!laterT) laterT = setTimeout(() => { laterT = 0; if (!running) renderOnce(); }, 260); }
 
   /* ---------- public interface (used by app.js) ---------- */
   Object.assign(API, {
@@ -468,7 +470,8 @@
       if (RM) { coins[i].visible = false; cb(i); return; }
       coinStart(i, gold, cb); kick();
     },
-    sign(i, st) { setSign(i, st); if (!RM) kick(); else renderOnce(); },
+    // animate=false (Strip, Classic): the world is behind the sheet, so it is redrawn later, off the tap's frame.
+    sign(i, st, animate) { setSign(i, st); if (animate && !RM) kick(); else { coins[i].pop = 1; renderLater(); } },
     pose(p) {
       if (p === 'happy' && !RM) { squash(0.22, 0.14); kick(); }
       else if (p === 'read') heroAnim('idle');
@@ -481,7 +484,7 @@
       const k = i === 'summit' ? N : i;
       H.x = i === 'summit' ? trophy.x - 22 : stand(k); H.y = H.gy = L[k].y;
       for (const l of lifts) if (l.i < k) { l.y = l.y1; liftAnim(l, false); }
-      heroAnim('idle'); snapCam(); renderOnce();
+      heroAnim('idle'); snapCam(); renderLater();
     },
     skip() {
       let did = false;

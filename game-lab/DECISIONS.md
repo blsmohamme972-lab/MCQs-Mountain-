@@ -146,3 +146,42 @@ asset packs licensed for non-commercial use, CC-BY or CC0 packs. Rules:
 - Speed targets stay as in `PLAN.md` Gate 0 (smooth movement, Next answered within 100 ms, Story about 1 s per MCQ,
   Strip and Classic under 150 ms), and on the floor phone at Gate 2. A richer world that misses them is not done.
 - The prototype also reports how long its own code and art take to load, so the cost of the engine is visible.
+
+## Engine spike (2026-10-18)
+
+**D24. PixiJS 8 with its Canvas 2D renderer, pixel art drawn at 1 canvas pixel per CSS pixel.** The spike (D21)
+built the same scene in Phaser 4.2.1 and PixiJS 8.22.0 (`spike/phaser/`, `spike/pixi/`: 5 parallax layers, an animated
+hero from a sprite sheet, coins with particle bursts, a following camera, a DOM MCQ sheet on top) and measured it with
+`tools/spike.mjs` (360 x 740 at DPR 3, 3 runs per setting, medians, `results/spike-*.json`). Both engines are fetched
+from npm with pinned versions and hashes by `tools/fetch_engine.py` into the git-ignored `vendor/`.
+
+| Setting (4x CPU unless noted) | Engine + scene, gzip | Load to first frame (1x / 4x / 6x) | Frame p95 / p99 at 4x | Frames over 33 ms at 6x | JS heap |
+|---|---|---|---|---|---|
+| **PixiJS, Canvas 2D, 1x resolution (chosen)** | **239.7 KB** | **172 / 480 / 740 ms** | **16.7 / 16.8 ms** | **0** | **9.5 MB** |
+| Phaser, Canvas 2D, 1x resolution | 355.3 KB | 235 / 804 / 1221 ms | 16.8 / 16.8 ms | 3 | 11.3 MB |
+| PixiJS, WebGL, 1x resolution | 239.7 KB | 262 / 666 / 892 ms | 33.4 / 50.1 ms | 31 | 9.5 MB |
+| Phaser, WebGL, 1x resolution | 355.3 KB | 270 / 971 / 1441 ms | 33.3 / 33.4 ms | 7 | 15.4 MB |
+| PixiJS, WebGL, DPR 2 | 239.7 KB | 311 / 806 / 1219 ms | 116.7 / 149.9 ms | 36 | 9.5 MB |
+| Phaser, WebGL, DPR 2 | 355.3 KB | 358 / 1169 / 1589 ms | 83.4 / 100.1 ms | 56 | 14.5 MB |
+
+Why:
+- At the same smooth frames (p95 16.7 ms at 1x, 4x and 6x CPU, no frame over 33 ms), PixiJS loads 40% faster than
+  Phaser (480 vs 804 ms at 4x; its longest blocking task during load is 218 vs 501 ms), downloads a third less
+  (237 vs 352 KB gzip for the engine) and uses less memory. Speed and the app's budget are the owner's first rule (D23).
+- Phaser's extras (physics, scenes, tweens, a sound manager, tilemaps) are not needed: the game is a scripted path, and
+  the draft already has the motion, camera and timing code.
+- The Canvas 2D renderer won in both engines. Pixel art needs no WebGL effects, starts faster (no shader compilation),
+  cannot lose a WebGL context on iOS, and draws a few dozen sprites cheaply. Drawing at 1 canvas pixel per CSS pixel and
+  letting the browser scale with `image-rendering: pixelated` gives the same look as DPR 2 for whole-number art scales,
+  with a quarter of the pixels to fill.
+- `?gl=1` switches v2 to PixiJS's WebGL renderer, so Gate 2 can compare both on real phones.
+
+Limits of this evidence: the container has no GPU, so WebGL runs on SwiftShader (software) and CPU throttling slows only
+the page's main thread. That makes WebGL look worse here than on a phone, where both renderers use the GPU. The choice
+does not depend on WebGL: the Canvas 2D path passes with margin on this harness. The real check is the floor phone at
+Gate 2 (D16). A plain-sprites variant (`?tile=sprites`, `results/spike-*-sprites.json`) showed the WebGL gap is not
+caused by the tiling-sprite shader. For the app (D7, D23), 237 KB gzip can never enter the start-up budget; the game
+must load lazily, after the app is idle or when the player opens it.
+
+The phone copy (artifact) loads the same pinned build from cdnjs (`pixi.js/8.22.0/pixi.min.js`, with jsDelivr as a
+fallback), checked with a Subresource Integrity hash of the npm file.

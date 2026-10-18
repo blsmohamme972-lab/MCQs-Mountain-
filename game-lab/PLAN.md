@@ -1,24 +1,14 @@
 # MCQs Mountain: the method, step by step
 
-**STATUS (update this line whenever a step finishes):** Gate 0, paused on 2026-10-18 with a **new direction from the
-owner**. Read `DECISIONS.md` D18-D23 first.
-- Done: a first draft of `climb/index.html` (hand-written Canvas 2D, 3 modes, zero console errors). Its flow, MCQ
-  sheet, grading, harness hooks and speed are good. Draft numbers (`results/draft-*.json`, 360x740, 8 MCQs): frame
-  p95 16.7-16.8 ms at 1x and 4x CPU; Next to first frame 6-14 ms; Next to next MCQ: Story about 1,140 ms, Strip about
-  140-147 ms, Classic about 26-31 ms.
-- Rejected by the owner after screenshots: the look. The characters are "very silly" and must not be medical. The owner
-  wants world-class 2D quality and atmosphere (Super Mario level), in a professional engine, even for the test, while
-  staying fast and leaving the app's speed untouched. Non-commercial or evaluation tools and assets are allowed for the
-  test, registered and never shipped (D22).
-- Next, in order (details in `NEXT_AGENT.md`):
-  1. Engine spike: build the same small scene in the two candidate engines (D21), measure, pick one, record it as a
-     new decision.
-  2. Rebuild the game world and hero at world-class quality in the chosen engine, keeping the draft's flow, MCQ sheet,
-     grading, three modes and harness contract. Test assets via a download script into `assets-test/` (git-ignored),
-     each in `ASSETS.md`.
-  3. The four reviews in `climb/SPEC.md` (speed, QA, rules and learning, visual), one fix pass, an independent final
-     re-measure.
-  4. Send the owner the phone link with screenshots (Gate 1).
+**STATUS (update this line whenever a step finishes):** Gate 0, v2 in progress (paused by the owner on 2026-10-18).
+- Done: engine spike, decision D24 (PixiJS 8.22.0, Canvas 2D renderer, pixel art at 1 canvas px per CSS px; numbers in
+  `DECISIONS.md` D24 and `results/spike-*.json`). `v2/` runs all three modes end to end with zero console errors, on
+  TEST-ONLY CC0 pixel art (Pixel Frog "Treasure Hunters" + "Pixel Adventure", downloaded by `tools/fetch_assets.py`).
+  v2 numbers at 4x CPU (360 x 740): Story frame p95 16.7 / p99 16.8 ms, Next to first frame 5 ms, Next to next MCQ
+  about 1.12 s (1.6 s on lifts), game load 0.49 s; Strip 138 ms; Classic 22-35 ms.
+- Open: Strip and Classic p99 is 33.4 ms (target 33); no sound yet; no `ASSETS.md` yet; the final art pick
+  (`research/05-assets-scouting.md`); the four reviews and the independent re-measure; the phone link. Details and
+  the ready prompt: `NEXT_AGENT.md`.
 
 Last updated: 2026-10-18.
 
