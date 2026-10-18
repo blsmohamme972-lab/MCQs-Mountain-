@@ -20,7 +20,7 @@
   let atlas, tex = {}, lay = {}, root, bgC, worldC, backC, midC, fxC, fgC, vignette, starsC, cloudsC, birdsC;
   let godray = null, grade = null, glow = null, heroLine = null;
   const L = [], kinds = [], steps = [], lifts = [], signs = [], coins = [], flags = [], torches = [], falls = [], fgs = [];
-  let landmark, beacon, beaconGlow, startSign, readyP = null, stripImg = null;
+  let landmark, beacon, beaconGlow, startSign, readyP = null, stripImg = null, wipeC, wipeCap;
 
   /* ---------- stages and layout ---------- */
   // A chapter has 1 to 200 MCQs (D27). It is cut into stages of about 10 (app.js gives the split): each stage is its
@@ -207,6 +207,8 @@
   // The stage change: clouds rise and cover the screen, the next mountain is built behind them, the clouds fall.
   const Wp = (x, y, d) => plan.push({ k: 5, x0: x, y0: y, x1: START_X0, y1: 0, d, swapped: false });
   let wipeK = 0;
+  // The caption shown while the clouds cover the screen: "Next mountain / Stage 2 of 3" (k = the next stage, 0-based).
+  function caption(k) { wipeCap.t1.text = k === STG.length - 1 ? 'Last mountain' : 'Next mountain'; wipeCap.t2.text = 'Stage ' + (k + 1) + ' of ' + STG.length; }
   function swapStage(s) { s.swapped = true; setStage(stage + 1); H.x = lastX = START_X0; H.y = H.gy = 0; heroState('idle'); cam.fy = cam.fy1 = feetY('walk'); snapCam(); }
   function planMove(i) {
     const a = L[i], b = L[i + 1], k = kinds[i];
@@ -487,17 +489,23 @@
     // so by the summit everything but the sky lies below her (far 0.15, peak 0.35, clouds and sea 0.2, mid 0.3,
     // near 0.55 of the camera's rise).
     const dy = (cy + (VH / Z) * feetY('start')) * Z;
-    lay.far.y = VH * 0.3 - 125 * Z - dy * 0.15; lay.far.tilePosition.x = -cx * 0.05 * 2;
-    lay.peak.x = VW * 0.7 - (cx - L[sK].x * 0.5) * 0.06 * Z; lay.peak.y = VH * 0.5 - dy * 0.35;
+    // each stage shows a different stretch of the painted ranges (so = a fixed offset per stage)
+    const so = stage * 731;
+    lay.far.y = VH * 0.3 - 125 * Z - dy * 0.15; lay.far.tilePosition.x = -(cx * 0.05 + so) * 2;
+    lay.peak.x = VW * (stage % 2 ? 0.34 : 0.7) - (cx - L[sK].x * 0.5) * 0.06 * Z; lay.peak.y = VH * 0.5 - dy * 0.35;
     cloudsC.x = -cx * 0.1 * Z; cloudsC.y = -dy * 0.2;
     lay.sea.y = VH * 0.37 - dy * 0.2; lay.sea.tilePosition.x = -(cx * 0.12 + (RM ? 0 : ambT * 4)) * 2;
-    lay.mid.y = VH * 0.38 - 130 * Z - dy * 0.3; lay.mid.tilePosition.x = -cx * 0.2 * 2;
+    lay.mid.y = VH * 0.38 - 130 * Z - dy * 0.3; lay.mid.tilePosition.x = -(cx * 0.2 + so * 1.7) * 2;
     lay.fog.y = lay.mid.y + 250 * Z;
-    lay.near.y = VH * 0.47 - 140 * Z - dy * 0.55; lay.near.tilePosition.x = -cx * 0.4 * 2;
+    lay.near.y = VH * 0.47 - 140 * Z - dy * 0.55; lay.near.tilePosition.x = -(cx * 0.4 + so * 2.3) * 2;
     lay.nearFill.y = lay.near.y + 356 * Z; lay.nearFill.height = Math.max(0, VH - lay.nearFill.y);
     // the cloud bank below the path (screen space, moving with the world)
     lay.bank.y = lerp(VH * 0.8, -VH * 0.34, wipeK) + (RM ? 0 : Math.sin(ambT * 0.6) * 4); lay.bank.tilePosition.x = -(cx * 1.0 + (RM ? 0 : ambT * 6)) * 2;
     lay.bankFill.y = lay.bank.y + 80 * Z; lay.bankFill.height = Math.max(0, VH - lay.bankFill.y);
+    // the stage change: big clouds rise inside the bank (at their own place once it covers the screen) and the caption
+    // fades in while they cover it
+    wipeC.visible = wipeK > 0; if (wipeK > 0) wipeC.y = lay.bank.y + VH * 0.34;
+    wipeCap.alpha = clamp((wipeK - 0.7) / 0.3, 0, 1); wipeCap.visible = wipeCap.alpha > 0;
     fgW.x = -cx * 0.25; fgW.y = -cy * 0.25;
     // cull the world by x (a few dozen objects): 'renderable' only, so an object's own visible state is kept
     const x0 = cx - 160, x1 = cx + VW / Z + 160;
@@ -559,7 +567,7 @@
     cols.push(c);
     return c;
   }
-  const cols = [];
+  const cols = [], blocks = [];   // cliff columns and stair blocks (tinted by the moonlight at night)
   function shadowAt(x, y, w, parent) { const s = spr('fx/shadow', x, y + 1, 0.5, 0.5, parent || midC); s.scale.set(w / 96, 0.5); s.alpha = 0.32; s.wx = x - 40; s.ww = 80; return s; }
   function decorTorch(tx, y, o) { // a torch with a small warm glow and a pool of light on the ground (stronger at night)
     shadowAt(tx, y, 18);
@@ -583,12 +591,24 @@
     for (let k = 0; k < 3; k++) { const px = x0 + (k ? 146 + k * 9 + rnd() * 4 : 4 + rnd() * 4), pb = spr('prop/rock', px, y + 3, 0.5, 1, midC, 0.1 + rnd() * 0.06); pb.wx = px - 20; pb.ww = 40; pb.tint = tintF; }
     if ((sA + i) % 3 === 2 || i === 0) decorTorch(x0 + 137, y, i);
   }
+  // The camp's tent, drawn once per stage (a few triangles): canvas, shaded side, open door, poles and guy ropes.
+  function tent(x, y) {
+    const g = new PIXI.Graphics(), ink = 0x4a2a18;
+    g.moveTo(x - 66, y + 4).lineTo(x - 30, y - 36).moveTo(x + 66, y + 4).lineTo(x + 30, y - 36).stroke({ width: 1.5, color: 0xe8d6b4 });
+    g.poly([x - 54, y + 5, x, y - 66, x + 54, y + 5]).fill(0xe0703f).stroke({ width: 3, color: ink, join: 'round' });
+    g.poly([x, y - 66, x + 54, y + 5, x + 20, y + 5]).fill(0xb9532c);
+    g.poly([x - 15, y + 5, x, y - 32, x + 13, y + 5]).fill(0x3b1d10);
+    g.poly([x, y - 32, x + 13, y + 5, x + 27, y + 5]).fill(0xf0a35c).stroke({ width: 2, color: ink, join: 'round' });
+    g.moveTo(x, y - 64).lineTo(x - 7, y - 78).moveTo(x, y - 64).lineTo(x + 8, y - 77).stroke({ width: 3, color: 0x5a3820 });
+    backDeco.addChild(g);
+    return g;
+  }
   // Builds the current stage's world (stage-local coordinates): cliffs, stairs, waterfalls, decorations, signs,
   // coins, checkpoint posts, the lift and the camp or summit. The previous stage's objects are released first.
   // Constant work per stage (about 150 sprites from shared textures), whatever the chapter's length.
   function buildStage() {
     for (const c of [backC, backDeco, midC, fgW]) for (const k of c.removeChildren()) k.destroy({ children: true });
-    cols.length = 0; torches.length = 0; falls.length = 0; flags.length = 0; signs.length = 0; coins.length = 0; glow = null;
+    cols.length = 0; blocks.length = 0; torches.length = 0; falls.length = 0; flags.length = 0; signs.length = 0; coins.length = 0; glow = null;
     // the start ledge (wide), one cliff per ledge, the camp or summit ledge
     column(backC, -START_W, 0, START_W + LW, 'cliff-wide');
     for (let j = 1; j < sK; j++) column(backC, L[j].x, L[j].y, LW, (j + stage) % 2 ? 'cliff-b' : 'cliff-a');
@@ -597,7 +617,7 @@
     for (let j = 0; j < sK; j++) {
       const ss = steps.filter(t => t.j === j); if (!ss.length) continue;
       column(backC, ss[0].x, ss[0].foot, 3 * STEP_W + 1, (j + stage) % 2 ? 'cliff-a' : 'cliff-b', false, true);
-      for (const t of ss) for (let m = 0; m <= t.n; m++) { const b = spr('tile/stoneMid', t.x, t.y + m * STEP_H, 0, 0, backC); b.scale.set((STEP_W + 1) / 128, (STEP_H + 1) / 128); b.wx = t.x - 10; b.ww = STEP_W + 20; }
+      for (const t of ss) for (let m = 0; m <= t.n; m++) { const b = spr('tile/stoneMid', t.x, t.y + m * STEP_H, 0, 0, backC); b.scale.set((STEP_W + 1) / 128, (STEP_H + 1) / 128); b.wx = t.x - 10; b.ww = STEP_W + 20; blocks.push(b); }
     }
     // waterfalls: spill over the left lip of the higher ledge at each gap jump, between two rocks, into the cloud bank
     for (let j = 0; j < sK; j++) {
@@ -611,7 +631,7 @@
     // the top of the stage: the summit (a cairn of stones, a golden star, the summit pennant) or a camp
     const sx = L[sK].x + SUMW - 110, sy = L[sK].y, top = lastStage();
     shadowAt(sx, sy, top ? 150 : 90, backDeco);
-    landmark = spr('ui/cairn', sx, sy + 6, 0.5, 1, backDeco, top ? 0.55 : 0.34); landmark.wx = sx - 120; landmark.ww = 240;
+    landmark = top ? spr('ui/cairn', sx, sy + 6, 0.5, 1, backDeco, 0.55) : tent(sx, sy); landmark.wx = sx - 120; landmark.ww = 240;
     beaconGlow = spr('fx/glow', sx, sy - 98, 0.5, 0.5, backDeco, 0.9); beaconGlow.blendMode = 'add'; beaconGlow.tint = 0xffd36b; beaconGlow.alpha = 0.75; beaconGlow.wx = sx - 160; beaconGlow.ww = 320; beaconGlow.visible = top;
     beacon = spr('item/star', sx, sy - 80, 0.5, 1, backDeco, 0.5); beacon.wx = sx - 60; beacon.ww = 120; beacon.lit = false; beacon.visible = top;
     if (top && FX && PIXI.filters && PIXI.filters.GlowFilter) { glow = new PIXI.filters.GlowFilter({ distance: 12, outerStrength: 1.6, color: 0xffd36b, quality: 0.2, resolution: 'inherit' }); beacon.filters = [glow]; }
@@ -619,10 +639,10 @@
     const sumPen = spr(top ? 'ui/gold0' : 'ui/pen0', 2, -150, 0.03, 0.5, sumPole, 1);
     flags.push({ x: sx, y: sy, up: true, t: 1, o: 0, s: sumPole, pen: sumPen, big: true, gold: top });
     backDeco.setChildIndex(landmark, backDeco.children.length - 1);
-    if (!top) { // a camp: a sign and a torch on the stage's top ledge
-      const cs = spr('ui/plate', L[sK].x + 80, sy + 6, 0.5, 1, midC, 0.55); cs.wx = cs.x - 50; cs.ww = 100;
+    if (!top) { // a camp: a tent, a sign and a torch on the stage's top ledge (the sign stands clear of the climber)
+      const cs = spr('ui/plate', L[sK].x + 112, sy + 6, 0.5, 1, midC, 0.55); cs.wx = cs.x - 50; cs.ww = 100;
       const ct = btext('Camp', 26, 0xfff4dc, null); ct.y = -84; cs.addChild(ct);
-      decorTorch(L[sK].x + 150, sy, 99);
+      decorTorch(L[sK].x + 158, sy, 99);
     }
     for (let j = 0; j <= sK; j++) decorate(j);
     // the start: a wooden sign (START, or the stage number) and a fence
@@ -735,6 +755,11 @@
     fgs.length = 0;
     lay.bankFill = new PIXI.Sprite(PIXI.Texture.WHITE); lay.bankFill.width = VW; fgC.addChild(lay.bankFill);
     lay.bank = layerTiling('cloudsea', 160); fgC.addChild(lay.bank);
+    wipeC = new PIXI.Container(); fgC.addChild(wipeC); seed = 31;
+    for (let k = 0; k < 7; k++) { const c = spr('bg/cloud' + [1, 2, 3, 5, 6, 8, 3][k], VW * ((k % 3) * 0.42 + 0.08 + rnd() * 0.12), VH * (0.04 + k * 0.14), 0.5, 0.5, wipeC, (0.95 + rnd() * 0.4) * Z); c.alpha = 0.92; }
+    wipeCap = new PIXI.Container(); wipeCap.x = VW / 2; wipeCap.y = VH * 0.44; fgC.addChild(wipeCap);
+    wipeCap.t1 = btext('Next mountain', 22, 0xfff4dc, wipeCap); wipeCap.t1.y = -40; wipeCap.t2 = btext('Stage 2', 42, 0xffffff, wipeCap);
+    wipeC.visible = wipeCap.visible = false;
 
     // floaters: leaves by day, fireflies by night (screen space)
     floaters.length = 0; seed = 21;
@@ -805,6 +830,7 @@
     lay.sky.texture = tex['sky-' + tod]; lay.far.texture = tex['far-' + tod]; lay.peak.texture = tex['peak-' + tod];
     lay.mid.texture = tex['mid-' + tod]; lay.near.texture = tex['near-' + tod]; lay.sea.texture = lay.bank.texture = tex['cloudsea-' + tod];
     lay.bankFill.tint = night ? 0x3a4078 : 0xc6d8ee;
+    for (const c of wipeC.children) c.tint = night ? 0x5c66a6 : 0xffffff;
     lay.fog.alpha = night ? 0.3 : 0.55;
     if (heroLine) { heroLine.color = night ? 0x9fb2ff : 0x3a2622; heroLine.alpha = night ? 0.3 : 0.5; }
     const hex = s => parseInt(s.slice(1), 16);
@@ -815,6 +841,7 @@
     // night: the rock and plants take the moonlight (cool, darker); lamps and the beacon keep their warm light
     const rock = night ? 0x7a84b8 : 0xffffff, plant = night ? 0x7f8bc0 : 0xffffff;
     for (const c of cols) { c.body.tint = rock; for (const k of c.lips) k.tint = plant; }
+    for (const b of blocks) b.tint = rock;
     for (const d of backDeco.children) if (d !== beaconGlow && d !== beacon) d.tint = night ? 0x8d97c9 : 0xffffff;
     for (const f of flags) if (f.big) { f.s.tint = night ? 0xb8c0e0 : 0xffffff; f.pen.tint = night ? (f.gold ? 0xfff0c0 : 0x9aa6d8) : 0xffffff; }
     for (const sg of signs) sg.s.tint = night ? 0xb0b8e0 : 0xffffff;
@@ -887,7 +914,7 @@
     // next mountain is built behind them, and she walks in to its first ledge (about 1.5 s on top of the climb).
     travel(i, cb) {
       const j = J(i); plan.length = 0; raiseFlag(j); planMove(j);
-      if (j === sK - 1 && !lastStage()) { const b = L[sK]; Wp(b.x + 16, b.y, RM ? 1 : 1000); Wk(START_X0, 0, stand(0), 0, 520, 2); }
+      if (j === sK - 1 && !lastStage()) { const b = L[sK]; caption(stage + 1); Wp(b.x + 16, b.y, RM ? 1 : 1000); Wk(START_X0, 0, stand(0), 0, 520, 2); }
       begin(cb);
     },
     toSummit(cb) {
@@ -973,6 +1000,7 @@
     info: () => 'HD · Z ' + Z.toFixed(2) + ' · res ' + (app ? app.renderer.resolution : '-') + ' · ' + (app && app.renderer ? app.renderer.name : '-') + (FX ? ' · fx' : ' · no fx') + ' · q-' + qStep,
     quality: () => ({ step: qStep, resolution: app ? app.renderer.resolution : null }),
     heroState: () => H.st,                                   // for the screenshot tool
+    stageInfo: () => ({ stage, stages: STG.length, wipe: wipeK }),
     // Strip mode draws from a small sheet of its own (never from the 2048 px atlas).
     stripArt: () => stripImg && stripImg.naturalWidth && {
       img(c, name, x, y, w, h) { const f = kit.strip.frames[name]; c.imageSmoothingEnabled = true; c.drawImage(stripImg, f[0], f[1], f[2], f[3], x, y, w, h); },

@@ -318,7 +318,8 @@
     if (art) art.flag(c, smx(sk) + 6, smy(sk));
     if (STAGES.length > 1) {
       c.font = '800 11px Nunito, ui-rounded, system-ui, sans-serif'; c.lineWidth = 3; c.strokeStyle = 'rgba(24,32,50,.7)'; c.fillStyle = '#fff';
-      const t = (last ? 'Summit stage ' : 'Stage ') + (sg + 1) + '/' + STAGES.length; c.strokeText(t, 8, 13); c.fillText(t, 8, 13);
+      // bottom right, inside the rock: the climber and the coins stand on the ledges above it, so they never cover it
+      const t = (last ? 'Summit stage ' : 'Stage ') + (sg + 1) + '/' + STAGES.length; c.textAlign = 'right'; c.strokeText(t, sw - 8, 51); c.fillText(t, sw - 8, 51); c.textAlign = 'left';
     }
     let a = idx - s0, b = idx - s0, p = 1;
     if (done) a = b = sk;
