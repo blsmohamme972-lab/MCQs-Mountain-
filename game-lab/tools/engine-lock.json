@@ -1,5 +1,5 @@
 {
- "note": "Engine builds for the lab (D21, D24). Fetched by tools/fetch_engine.py from the npm registry into game-lab/vendor/ (git-ignored). Never commit the engine files.",
+ "note": "Engine builds for the lab (D21, D24, D26). Fetched by tools/fetch_engine.py from the npm registry into game-lab/vendor/ (git-ignored). Never commit the engine files.",
  "files": [
   {
    "package": "phaser",
@@ -30,6 +30,16 @@
    "member": "package/dist/pixi.min.js",
    "path": "vendor/pixi-8.22.0.min.js",
    "sha256": "06d9ef9823e743518793083c296d801e752db128cb1f519fbabe37e1259567ea"
+  },
+  {
+   "package": "pixi-filters",
+   "version": "6.1.5",
+   "licence": "MIT",
+   "tarball": "https://registry.npmjs.org/pixi-filters/-/pixi-filters-6.1.5.tgz",
+   "integrity": "sha512-Ewb/J+kxAbaNN+0/ATJbglAJG+skGJfh7BIDP3ILIDdD6wWk1p0pGa25pVf1T8hGBOQSUNVAmwwJBwkj+cyLLA==",
+   "member": "package/dist/pixi-filters.js",
+   "path": "vendor/pixi-filters-6.1.5.js",
+   "sha256": "3bb1830fe730687c9aa24b331b51f8f2263023ac7c91885e50cf9f339cff36ef"
   }
  ]
 }

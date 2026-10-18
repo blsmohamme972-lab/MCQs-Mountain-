@@ -9,12 +9,19 @@
   const D = document, R = D.documentElement, $ = i => D.getElementById(i), P = new URLSearchParams(location.search);
   const RM = P.get('rm') === '1' || matchMedia('(prefers-reduced-motion: reduce)').matches;
   const LOW = /LOW\)/.test(navigator.userAgent) || P.get('low') === '1', DBG = P.get('debug') === '1';
+  // Two tiers (D25, D26): 'light' is the Canvas 2D pixel-art world (weak phones: ?low=1 or Telegram's LOW class),
+  // 'hd' the WebGL world for everyone else. ?tier=light|hd forces one. Support is checked cheaply here (creating a
+  // test context costs about 0.2 s on a slow phone); if the HD world then fails to start, the light tier loads instead.
+  const hasGL = !!(window.WebGL2RenderingContext || window.WebGLRenderingContext);
+  let TIER = P.get('tier') === 'light' || P.get('tier') === 'hd' ? P.get('tier') : LOW || !hasGL ? 'light' : 'hd';
   const TG = window.Telegram && window.Telegram.WebApp;
   const CFG = window.LAB_CONFIG || {};
+  let TC = CFG[TIER] || CFG.light;
   let mode = /^(story|strip|classic)$/.test(P.get('mode')) ? P.get('mode') : 'story';
   // Harness contract (README.md): state, mode, answer(); 'loading' comes first, until the world's first frame.
-  const lab = window.__lab = { state: 'loading', mode, version: 2, answer: () => autoAnswer() };
+  const lab = window.__lab = { state: 'loading', mode, tier: TIER, version: 2, answer: () => autoAnswer() };
   if (RM) R.classList.add('rm');
+  R.classList.add('t-' + TIER);
   const now = () => performance.now(), mark = n => { try { performance.mark(n); } catch (e) {} };
   const sheet = $('sheet'), chk = $('check'), nxt = $('next'), startp = $('startp'), doneC = $('done'), live = $('live'), skipH = $('skip'), goB = $('go');
   const sc = $('strip'), sx = sc.getContext('2d');
@@ -249,7 +256,16 @@
     el.textContent = top ? 'Summit' : RM ? 'Ledge ' + n + ' of ' + N : 'Ledge ' + n + '/' + N;
     el.setAttribute('aria-label', top ? 'Summit' : 'Ledge ' + n + ' of ' + N);
   }
-  function hudXP() { $('xpN').textContent = xp; const p = $('xpP'); if (!RM && p.animate) p.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.18)' }, { transform: 'scale(1)' }], { duration: 220, easing: 'ease-out' }); }
+  // The XP counter ticks up to its new value (about 0.4 s); reduced motion shows the number at once.
+  let xpShown = 0, xpRaf = 0;
+  function hudXP() {
+    const el = $('xpN'), p = $('xpP'), from = xpShown, to = xp, t0 = now();
+    if (RM || to <= from) { xpShown = to; el.textContent = to; return; }
+    if (p.animate) p.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.18)' }, { transform: 'scale(1)' }], { duration: 220, easing: 'ease-out' });
+    cancelAnimationFrame(xpRaf);
+    const step = () => { const k = Math.min(1, (now() - t0) / 420), v = Math.round(from + (to - from) * (1 - (1 - k) * (1 - k))); if (v !== xpShown) { xpShown = v; el.textContent = v; } if (k < 1) xpRaf = requestAnimationFrame(step); };
+    xpRaf = requestAnimationFrame(step);
+  }
   const DESC = { story: 'The climber walks to each question and climbs between them. Tap the world to skip any animation.', strip: 'The question sheet stays open. A mini climber moves along a strip at the top.', classic: 'Plain questions with a progress bar. No game, for comparison.' };
   function setMode(m) {
     mode = m; lab.mode = m; R.classList.remove('m-story', 'm-strip', 'm-classic'); R.classList.add('m-' + m);
@@ -261,16 +277,19 @@
   const stripAnim = { on: false, t0: -1, a: 0, b: 0 };
   let sw = 320;
   const smx = i => 22 + i * (sw - 52) / 8.6, smy = i => 46 - i * 3.3;
+  // The strip's two colours come from the theme; read once and again only when the theme changes (not per draw).
+  const stripCol = { rock: '#6b5b4e', grass: '#5bc46b' };
+  function readStripCol() { const cs = getComputedStyle(R); stripCol.rock = cs.getPropertyValue('--strip-rock').trim() || '#6b5b4e'; stripCol.grass = cs.getPropertyValue('--strip-grass').trim() || '#5bc46b'; }
   function sizeStrip() { sw = Math.max(200, sc.clientWidth || 320); sc.width = Math.round(sw * S); sc.height = Math.round(56 * S); drawStrip(); }
   function drawStrip(ts) {
     if (mode !== 'strip') return;
     const c = sx, bw = (sw - 52) / 8.6, art = World.stripArt && World.stripArt();
     c.setTransform(S, 0, 0, S, 0, 0); c.clearRect(0, 0, sw, 56);
-    c.fillStyle = getComputedStyle(R).getPropertyValue('--strip-rock').trim() || '#6b5b4e';
+    c.fillStyle = stripCol.rock;
     c.beginPath(); c.moveTo(-4, 62); c.lineTo(-4, smy(0));
     for (let i = 0; i <= N; i++) { c.lineTo(smx(i) - bw / 2, smy(i)); c.lineTo(i < N ? smx(i) + bw / 2 : sw + 4, smy(i)); }
     c.lineTo(sw + 4, 62); c.closePath(); c.fill();
-    c.fillStyle = getComputedStyle(R).getPropertyValue('--strip-grass').trim() || '#5bc46b';
+    c.fillStyle = stripCol.grass;
     for (let i = 0; i <= N; i++) c.fillRect(smx(i) - bw / 2, smy(i) - 1, i < N ? bw : sw, 3);
     for (let i = 0; i < N; i++) {
       if (art && st[i]) art.coin(c, st[i] === 1, smx(i) + bw * 0.2, smy(i) - 9, 9);
@@ -315,7 +334,7 @@
     function load(k) {
       if (buf[k] !== undefined || !files[k]) return Promise.resolve(buf[k]);
       buf[k] = null;
-      return fetch(CFG.assetBase + files[k]).then(r => r.arrayBuffer()).then(a => new Promise((res, rej) => ctx().decodeAudioData(a, res, rej))).then(b => (buf[k] = b)).catch(() => null);
+      return fetch((CFG.soundBase || TC.assetBase) + files[k]).then(r => r.arrayBuffer()).then(a => new Promise((res, rej) => ctx().decodeAudioData(a, res, rej))).then(b => (buf[k] = b)).catch(() => null);
     }
     function play(k, vol) {
       if (!on || !ac || !buf[k]) return;
@@ -356,21 +375,33 @@
   let rq = 0;
   addEventListener('resize', () => { if (!rq) { rq = 1; requestAnimationFrame(() => { rq = 0; resize(); }); } });
   const theme = () => World.theme(getComputedStyle(R).getPropertyValue('--world-night').trim() === '1');
-  try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { theme(); drawStrip(); }); } catch (e) {}
-  try { new MutationObserver(() => { theme(); drawStrip(); }).observe(R, { attributes: true, attributeFilter: ['data-theme'] }); } catch (e) {}
+  try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readStripCol(); theme(); drawStrip(); }); } catch (e) {}
+  try { new MutationObserver(() => { readStripCol(); theme(); drawStrip(); }).observe(R, { attributes: true, attributeFilter: ['data-theme'] }); } catch (e) {}
   if (TG) {
     try { if (TG.colorScheme) R.setAttribute('data-theme', TG.colorScheme); TG.ready(); TG.expand(); } catch (e) {}
     try { if (TG.isVersionAtLeast && TG.isVersionAtLeast('7.7')) TG.disableVerticalSwipes(); } catch (e) {}
     try { TG.onEvent('activated', resume); TG.onEvent('deactivated', pause); TG.onEvent('themeChanged', () => { if (TG.colorScheme) R.setAttribute('data-theme', TG.colorScheme); }); } catch (e) {}
     try { const bg = getComputedStyle(R).getPropertyValue('--bg').trim(); TG.setHeaderColor(bg); TG.setBackgroundColor(bg); } catch (e) {}
   }
-  RS = Q.map(fresh); setMode(mode); hud(); prebuild(0);
+  readStripCol(); RS = Q.map(fresh); setMode(mode); hud(); prebuild(0);
   S = Math.min(2, window.devicePixelRatio || 1); sizeStrip();
 
-  // Load the engine, then the world; the world marks lab:game-ready on its first drawn frame.
+  // Load the tier's scripts in order (engine, runtimes, world), then the world; it marks lab:game-ready on its first
+  // drawn frame. A script entry is a URL or { src, integrity, fallback }: with an integrity hash the file is checked
+  // (Subresource Integrity, CORS) and, if the first host fails, loaded from the fallback URL with the same hash.
   mark('lab:game-load');
-  const load = src => new Promise((res, rej) => { const s = D.createElement('script'); s.src = src; s.onload = res; s.onerror = () => rej(new Error('failed to load ' + src)); D.head.appendChild(s); });
-  load(CFG.engineSrc).then(() => load(CFG.worldSrc || 'world.js')).then(() => World.init({ canvasHost: $('world'), assetBase: CFG.assetBase, W, H, RM, LOW, night: getComputedStyle(R).getPropertyValue('--world-night').trim() === '1', N }))
+  const tag = (src, sri) => new Promise((res, rej) => { const s = D.createElement('script'); s.src = src; if (sri) { s.integrity = sri; s.crossOrigin = 'anonymous'; } s.onload = res; s.onerror = () => { s.remove(); rej(new Error('failed to load ' + src)); }; D.head.appendChild(s); });
+  const loaded = new Set();
+  const load = e => { const k = typeof e === 'string' ? e : e.src; if (loaded.has(k)) return Promise.resolve(); loaded.add(k); return typeof e === 'string' ? tag(e) : tag(e.src, e.integrity).catch(err => e.fallback ? tag(e.fallback, e.integrity) : Promise.reject(err)); };
+  const loadAll = list => list.reduce((p, e) => p.then(() => load(e)), Promise.resolve());
+  const start = () => loadAll(TC.scripts).then(() => World.init({ canvasHost: $('world'), assetBase: TC.assetBase, W, H, RM, LOW: TIER === 'light' && LOW, night: getComputedStyle(R).getPropertyValue('--world-night').trim() === '1', N }));
+  start().catch(e => {
+    if (TIER !== 'hd') throw e;
+    // The HD world could not start (no usable WebGL): fall back to the light tier.
+    console.warn('[lab] HD tier failed, using the light tier:', e && e.message);
+    TIER = lab.tier = 'light'; TC = CFG.light; R.classList.remove('t-hd'); R.classList.add('t-light'); $('world').textContent = '';
+    return start();
+  })
     .then(() => {
       mark('lab:game-ready'); worldReady = true;
       R.classList.add('ready'); goB.disabled = false; lab.state = 'start'; drawStrip();

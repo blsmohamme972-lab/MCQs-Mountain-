@@ -1,7 +1,7 @@
 """Download the lab's TEST-ONLY art and audio (D22) into game-lab/assets-test/ (git-ignored), then build the game's
-atlases and sounds into game-lab/assets-test/build/.
+atlases and sounds into game-lab/assets-test/build/ (light tier) and build-hd/ (HD tier, tools/build_assets_hd.py).
 
-Every file is listed in tools/assets-lock.json with a URL pinned to an exact commit and a SHA-256; a file whose hash
+Every file is listed in tools/assets-lock.json or tools/assets-hd-lock.json with a URL pinned to an exact commit and a SHA-256; a file whose hash
 does not match is refused. The register of authors and licences is game-lab/ASSETS.md. Nothing downloaded here may be
 committed or copied into app/ (D15, D22).
 
@@ -20,7 +20,7 @@ import urllib.request
 from pathlib import Path
 
 LAB = Path(__file__).resolve().parents[1]
-LOCK = LAB / "tools" / "assets-lock.json"
+LOCKS = [LAB / "tools" / "assets-lock.json", LAB / "tools" / "assets-hd-lock.json"]  # light tier, HD tier
 OUT = LAB / "assets-test"
 ALLOWED = ("https://raw.githubusercontent.com/",)
 
@@ -44,9 +44,9 @@ def fetch(url: str, limit: int = 32 * 1024 * 1024) -> bytes:
 
 
 def download() -> int:
-    lock = json.loads(LOCK.read_text())
+    items = [it for p in LOCKS for it in json.loads(p.read_text())["files"]]
     n = 0
-    for item in lock["files"]:
+    for item in items:
         rel = item["path"]
         if not re.fullmatch(r"src/[A-Za-z0-9_. ()/-]+", rel) or ".." in rel:
             raise ValueError("Unsafe asset path: " + rel)
@@ -60,7 +60,7 @@ def download() -> int:
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(raw)
         n += 1
-    print("[assets]", len(lock["files"]), "files ok,", n, "downloaded")
+    print("[assets]", len(items), "files ok,", n, "downloaded")
     return 0
 
 
@@ -68,6 +68,7 @@ def main(argv: list[str]) -> int:
     download()
     if "--no-build" not in argv:
         subprocess.run([sys.executable, str(LAB / "tools" / "build_assets.py")], check=True)
+        subprocess.run([sys.executable, str(LAB / "tools" / "build_assets_hd.py")], check=True)
     return 0
 
 

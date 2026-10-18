@@ -1,0 +1,611 @@
+{
+ "note": "HD tier test assets (D25, D26): Kenney CC0 packs from the CraigBuilds/kenney_assets_v2 mirror of Kenney Game Assets All-in-1, pinned to one commit. Fetched by tools/fetch_assets.py into assets-test/ (git-ignored), built by tools/build_assets_hd.py. Register: ASSETS.md.",
+ "files": [
+  {
+   "path": "src/kenney/Toon Characters Pack 1/License.txt",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Toon Characters Pack 1/License.txt",
+   "sha256": "eb6e49c449d37edb92600466c835104caaf8a6a48d8f524ffd60005d79bed7f8",
+   "bytes": 580
+  },
+  {
+   "path": "src/kenney/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/arm.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/arm.png",
+   "sha256": "b75e6640c2177c07ac8275a4e344b4ae75ddf42f797128c1b59fdb3dd1c6aa83",
+   "bytes": 755
+  },
+  {
+   "path": "src/kenney/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/back.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/back.png",
+   "sha256": "fbfb4552ca38e2bfcec6c3cf4e25246e14c4ecd8a7b578855c65e873145208b1",
+   "bytes": 1090
+  },
+  {
+   "path": "src/kenney/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/body.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/body.png",
+   "sha256": "5d8f054500b4293e3ee770d4a7c16d8cf98bead69c03f79d82efd05db5c4f428",
+   "bytes": 1567
+  },
+  {
+   "path": "src/kenney/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/bodyBack.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/bodyBack.png",
+   "sha256": "1fc910d4917ea47ff10f9f31fc44ee3b6d5fbe6faa7514b98bed2c0db9af0497",
+   "bytes": 1253
+  },
+  {
+   "path": "src/kenney/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/hand.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/hand.png",
+   "sha256": "d4ae8b3c5cb754c2e9f3e451e2906a2328347e6ee064b5650ddea3d7bb4731d3",
+   "bytes": 448
+  },
+  {
+   "path": "src/kenney/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/head.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/head.png",
+   "sha256": "50e9e9eb4381589b3958db85aa3ffccc10a7fa90bbe4395ef60bb4b2d8eef9eb",
+   "bytes": 2288
+  },
+  {
+   "path": "src/kenney/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/headBack.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/headBack.png",
+   "sha256": "498da89f17d85764081b74a5f993ed9efcaee8ae5a045e3b6f046ee9c565493e",
+   "bytes": 1320
+  },
+  {
+   "path": "src/kenney/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/headFocus.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/headFocus.png",
+   "sha256": "aaab866cdfc35aa9a19070a735f1224371e9e841d4d0a9dd731cc5b1c1b8e786",
+   "bytes": 2298
+  },
+  {
+   "path": "src/kenney/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/headShock.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/headShock.png",
+   "sha256": "7aa72c39b36e139eb32719fc8de02a9929768d28f22c85402373d4ff94e5ea1e",
+   "bytes": 2281
+  },
+  {
+   "path": "src/kenney/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/leg.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/leg.png",
+   "sha256": "411ddb98a4f9825876610bea8040896c5766b198c679ded2eacabe368a83f196",
+   "bytes": 448
+  },
+  {
+   "path": "src/kenney/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/legBend.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Toon Characters Pack 1/Female adventurer/PNG/Parts HD/legBend.png",
+   "sha256": "b3807c261f89f81bfa4bd73de05134a321fe08f57a889cf908635354fcbcc846",
+   "bytes": 688
+  },
+  {
+   "path": "src/kenney/Toon Characters Pack 1/Female adventurer/PNG/Poses HD/character_femaleAdventurer_idle.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Toon Characters Pack 1/Female adventurer/PNG/Poses HD/character_femaleAdventurer_idle.png",
+   "sha256": "ea2d020b168a5d6d02d66cccd375956db7854b386ee6e153d034cc0b00dff635",
+   "bytes": 7948
+  },
+  {
+   "path": "src/kenney/Toon Characters Pack 1/Female adventurer/PNG/Poses HD/character_femaleAdventurer_jump.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Toon Characters Pack 1/Female adventurer/PNG/Poses HD/character_femaleAdventurer_jump.png",
+   "sha256": "8a50b5a8240d5a616339bb00a793f0ec944c7d774ba4c382c222923b17ba8b82",
+   "bytes": 8209
+  },
+  {
+   "path": "src/kenney/Toon Characters Pack 1/Female adventurer/PNG/Poses HD/character_femaleAdventurer_cheer0.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Toon Characters Pack 1/Female adventurer/PNG/Poses HD/character_femaleAdventurer_cheer0.png",
+   "sha256": "947991448aa64a3abe307e07fd941173250ca988db067bfdb5ed65c9a68ecbab",
+   "bytes": 7067
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/License.txt",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/License.txt",
+   "sha256": "5e8ce128d7005cfb72153b1a92b237a36e76fa11aae5b463970210870a24cc13",
+   "bytes": 551
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Ground/Grass/grassMid.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Ground/Grass/grassMid.png",
+   "sha256": "9e578837a359e33938e862fdbf830e31780df3ee860564baac93de4aa6ab3515",
+   "bytes": 1937
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Ground/Grass/grassLeft.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Ground/Grass/grassLeft.png",
+   "sha256": "105f16af0f79d51604bb56a129bbfc4425f41042463f0be6b4f06b0160841edd",
+   "bytes": 2267
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Ground/Grass/grassRight.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Ground/Grass/grassRight.png",
+   "sha256": "17b59457867c60d396833aad8373e5ea63182454e3ed10cab72e4c6d305b578c",
+   "bytes": 2294
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Ground/Grass/grassCenter.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Ground/Grass/grassCenter.png",
+   "sha256": "2637496c42a867c8d257b657c4319e512f32d81921ce65d914595f9ed7c2d43b",
+   "bytes": 1772
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Ground/Grass/grassHalf_mid.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Ground/Grass/grassHalf_mid.png",
+   "sha256": "3873a3a8e1390bdbba825355f6fb81fc7b2d8f51ddb0919916d04f1d55ec6f4a",
+   "bytes": 1352
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Ground/Grass/grassHalf_left.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Ground/Grass/grassHalf_left.png",
+   "sha256": "d19bd8039f1bcba094ac211021b18e7906ff1a053de5e03d7d8ac6ef795889c5",
+   "bytes": 1673
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Ground/Grass/grassHalf_right.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Ground/Grass/grassHalf_right.png",
+   "sha256": "7ad14ee2713551ae6334d9fe6936f5b2709b03ad5349e91222c1eb8b152283ae",
+   "bytes": 1679
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Ground/Stone/stoneHalf_mid.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Ground/Stone/stoneHalf_mid.png",
+   "sha256": "188ec758b55710303b2b66d0d63921bd3db9448038718dbe81735a276a8bc04a",
+   "bytes": 520
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Ground/Stone/stoneHalf_left.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Ground/Stone/stoneHalf_left.png",
+   "sha256": "0f24e0a1a5af8e3444f6ee22129b0180805df70d96b6a5188829bb2af8b39586",
+   "bytes": 767
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Ground/Stone/stoneHalf_right.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Ground/Stone/stoneHalf_right.png",
+   "sha256": "289c69cd558a0ae5db9801201c35ed30c0cedd324f4c0dd17923a33843bed8ea",
+   "bytes": 784
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Ground/Stone/stoneMid.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Ground/Stone/stoneMid.png",
+   "sha256": "d752c4aceb1ccc8bf4bf2f3acdc55ed4b58eda8a63c3e26596851ce277ed5537",
+   "bytes": 628
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Ground/Stone/stoneCenter.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Ground/Stone/stoneCenter.png",
+   "sha256": "3d4b2765f29c96e54ed1784d553cef86de69cd97c914f4fe634ef40b272c7897",
+   "bytes": 572
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Tiles/chain.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Tiles/chain.png",
+   "sha256": "b07d7155061fbc35d99705c32cbbfeb4f3050094af022cf8a439d962db023b0c",
+   "bytes": 996
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Tiles/sign.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Tiles/sign.png",
+   "sha256": "0a5cd6dacb2c46ee714e668a2d116d16867d03be192d5886fd515aadd92d57f6",
+   "bytes": 892
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Tiles/bush.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Tiles/bush.png",
+   "sha256": "7d095def554d3bf4ac5f69a97a3ac73245316d994c4040487c5da7fb49c3316f",
+   "bytes": 1279
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Tiles/rock.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Tiles/rock.png",
+   "sha256": "d7f3fa82a9ee2a2176bb844fa4a47546ddfd00455ff3b974be23950096a77fdc",
+   "bytes": 1553
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Tiles/grass.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Tiles/grass.png",
+   "sha256": "f10e639137c0548159809bc9778bb555f19d5b495fe43a3951b769272699d45c",
+   "bytes": 1009
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Tiles/plantPurple.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Tiles/plantPurple.png",
+   "sha256": "f154952c1506acd5c41778dd511cbd8399ec988611bdba1f5f2e7d6d6fa1267a",
+   "bytes": 1377
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Tiles/fence.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Tiles/fence.png",
+   "sha256": "2796ecd3072eb4667d92d5c53b549476b1936c796057cabacfe6141c8793a1a1",
+   "bytes": 647
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Tiles/torch1.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Tiles/torch1.png",
+   "sha256": "c62919fd842d57053c7e202b2dde33cdb8f45fe25afbde6bd501ad5ef2e8e4e9",
+   "bytes": 1368
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Tiles/torch2.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Tiles/torch2.png",
+   "sha256": "1201a520f16b8a19ce4ccf12fa0defed7a3c17d5494fd9f11a2886f07df91edc",
+   "bytes": 1382
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Tiles/bridgeA.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Tiles/bridgeA.png",
+   "sha256": "4cf485de68b0f04ae00e5391949f39715f1978129bff37463c50366ae55b67d2",
+   "bytes": 1579
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Items/coinGold.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Items/coinGold.png",
+   "sha256": "215dc2dca7cd511512d7e3de72b5119123be42d60153e6c94782f14a7c908b30",
+   "bytes": 1415
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Items/coinSilver.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Items/coinSilver.png",
+   "sha256": "4701d3e493909645642fd916fcaa60646cc02716f2a5f86552079b9f05688485",
+   "bytes": 1419
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Items/flagGreen1.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Items/flagGreen1.png",
+   "sha256": "079ed0076d532a0522fcee0460f976e270fb1c7a4b6d384f85df7407d84d900e",
+   "bytes": 1180
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Items/flagGreen2.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Items/flagGreen2.png",
+   "sha256": "2fb7b422f3791c4edb4ad04bb957276e8b45ea4c671642f077d0beb4575876e9",
+   "bytes": 1144
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Items/flagGreen_down.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Items/flagGreen_down.png",
+   "sha256": "4969e3a6a5c9efa36f1acdd3199414ab88436b74eddaaafa2ed40cbc07d2d7c6",
+   "bytes": 749
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Items/flagYellow1.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Items/flagYellow1.png",
+   "sha256": "7ff0f76b6b8baa008d8dbdc9d678901cebb03803b1cd38c8d05385e039f69c21",
+   "bytes": 1180
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Items/flagYellow2.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Items/flagYellow2.png",
+   "sha256": "75cc7a7bbac74dcd162a89508fba21d95e3b877c7388204a7f51700f41d180a3",
+   "bytes": 1144
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Items/star.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Items/star.png",
+   "sha256": "a45a18a2b68f37167a8a6b238fd17abbaf6265d5229c4e5cd3f000f0ae356a8b",
+   "bytes": 1210
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/License.txt",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/License.txt",
+   "sha256": "fae0f175d14aedbcf21273fd7dacaf8c23075c8e0027c5dfd234ed600b3d11d5",
+   "bytes": 583
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/treePine.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/treePine.png",
+   "sha256": "a7314cedbba00c3d0e5259391d7339d12a21baadc9c72fbdf3ef3b773107e294",
+   "bytes": 4714
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/treeSmall_green1.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/treeSmall_green1.png",
+   "sha256": "aaf927a7ec780bf65d31268070cdf6e111bd0d949b9c4cf8af2592b6224ee7b7",
+   "bytes": 1200
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/treeSmall_green2.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/treeSmall_green2.png",
+   "sha256": "59462a86055815056874f15c1385e79eaae891c17306c8d53627ac886d81d9ac",
+   "bytes": 1456
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/treeSmall_green3.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/treeSmall_green3.png",
+   "sha256": "50729e8df6387ea05407b3494a326e4c3ba90a5bcaeb39019a781d15523b186f",
+   "bytes": 1027
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/tree.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/tree.png",
+   "sha256": "1aaf2cb30f614f7a58a30c91aab4250a02780fe2db22a62678d7d6e6cc6a69be",
+   "bytes": 5086
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/treeLong.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/treeLong.png",
+   "sha256": "696a83d192436b8168552258e9f2bbe893ab0cb176d046208f31adc87e60815a",
+   "bytes": 3907
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/bush1.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/bush1.png",
+   "sha256": "e14d775d55048f585c32dfb2314d093e1bffd9d1c9a599fa9b23d0f3e1badd34",
+   "bytes": 1661
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/bush2.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/bush2.png",
+   "sha256": "b1375798d1a020421d02cc71fd3b3fcf2b508da2436881e36d207b26579cdd88",
+   "bytes": 2293
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/bush3.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/bush3.png",
+   "sha256": "6302f35b45e4012c6ae6c2e1eff97716c435dcdfb9d8eed4f1958253736fe5a9",
+   "bytes": 2763
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/bush4.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/bush4.png",
+   "sha256": "b0043fbe4195083c1bad928328fc87c2da1d04d5fa859bdb23440bc07103e336",
+   "bytes": 2517
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/cloud1.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/cloud1.png",
+   "sha256": "d1b46bbad9f7b68d6a939c5a9978115066e88c26f225492c573fa9a1afea933d",
+   "bytes": 4048
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/cloud2.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/cloud2.png",
+   "sha256": "cdb2c2e1675a6a044a9badb0641b9f26245951425aa35af962f755954c2d7b5a",
+   "bytes": 4607
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/cloud3.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/cloud3.png",
+   "sha256": "7edd765beee8a24dc2aef31c10092539e04b59963ec8fbb415b2f6c88227222f",
+   "bytes": 4398
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/cloud5.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/cloud5.png",
+   "sha256": "50c40c67541e372df40ccec2540a0c5dd4b4b771924e2568b6e0e30639232306",
+   "bytes": 4116
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/cloud6.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/cloud6.png",
+   "sha256": "cfc4c1c4b41a029eec15c40869d96317aca5d9f795eeda19071409a4074b0c96",
+   "bytes": 4627
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/cloud8.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/cloud8.png",
+   "sha256": "9c2c6f586b5a1f477266a8ed27f69e91974055dd9dab98a7f9fe736034130070",
+   "bytes": 5095
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/sun.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/sun.png",
+   "sha256": "d30cae7cfd9b5f3a1812b5d898f28a2cf296c8fd9098fbb24c4a16c2ef5b74cb",
+   "bytes": 2467
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/moon.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/moon.png",
+   "sha256": "bd8683076bcdc3461ec70b29a547bb462c9d210ee31724c80a4ba9606cdd25f0",
+   "bytes": 2992
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/moonFull.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/moonFull.png",
+   "sha256": "702df7411edde20b43ddef4a60792324e07136995b127e234d4a44c7f7fdd613",
+   "bytes": 2976
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/fence.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/fence.png",
+   "sha256": "74a4fd03decaf785a543298914e30790899883ea358dd4a4f09f1e162b377785",
+   "bytes": 2378
+  },
+  {
+   "path": "src/kenney/Background Elements Redux/PNG/Retina/towerAlt.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Background Elements Redux/PNG/Retina/towerAlt.png",
+   "sha256": "4bf9c690d23b7ecab3a8338a421709b0cdd9e5cd4da9028a0bfbcd00a290f35a",
+   "bytes": 2580
+  },
+  {
+   "path": "src/kenney/Particle Pack/License.txt",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Particle Pack/License.txt",
+   "sha256": "7a026aade177ce497b0b925849ddb9f142417e29f877baca99ef816b4481843e",
+   "bytes": 682
+  },
+  {
+   "path": "src/kenney/Particle Pack/PNG (Transparent)/light_01.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Particle Pack/PNG (Transparent)/light_01.png",
+   "sha256": "caedcc5df5bcac4470244d2520d6a64b45b20c1ccf4d918da516c55e3fa365a6",
+   "bytes": 93470
+  },
+  {
+   "path": "src/kenney/Particle Pack/PNG (Transparent)/light_02.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Particle Pack/PNG (Transparent)/light_02.png",
+   "sha256": "f1bdb57478703fec539f7b8eeceb494c4a23664652b296389f310104be80cfe0",
+   "bytes": 93415
+  },
+  {
+   "path": "src/kenney/Particle Pack/PNG (Transparent)/star_06.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Particle Pack/PNG (Transparent)/star_06.png",
+   "sha256": "65d3ff5aa87ec0770c11fe1293fdc70cdc5ccf0eabc2e2fd6a1ead922051035e",
+   "bytes": 35453
+  },
+  {
+   "path": "src/kenney/Particle Pack/PNG (Transparent)/spark_05.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Particle Pack/PNG (Transparent)/spark_05.png",
+   "sha256": "9624ea2017b8b2767a9d3b82e978b7fdf5154d83e6756cd919da51447bb97138",
+   "bytes": 64808
+  },
+  {
+   "path": "src/kenney/Particle Pack/PNG (Transparent)/circle_05.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Particle Pack/PNG (Transparent)/circle_05.png",
+   "sha256": "925b8ac284436f74f9cadf0ecd058da1c08fba65c098e4e34fd220603022f02e",
+   "bytes": 65336
+  },
+  {
+   "path": "src/kenney/Particle Pack/PNG (Transparent)/smoke_04.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Particle Pack/PNG (Transparent)/smoke_04.png",
+   "sha256": "2db2f69874cdb1e5203f2f86803d5debde30402590cf50a810afaba882184616",
+   "bytes": 97568
+  },
+  {
+   "path": "src/kenney/Particle Pack/PNG (Transparent)/magic_05.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Particle Pack/PNG (Transparent)/magic_05.png",
+   "sha256": "92fb8c7a1d9bc14e052526c0505502c3e5b37d27502fa3d36d2c80b4565b62ef",
+   "bytes": 74794
+  },
+  {
+   "path": "src/kenney/Smoke Particles/License.txt",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Smoke Particles/License.txt",
+   "sha256": "4e058952e7666b2b44209f13379f35abbacfd5dc066662ee40f468b4ed2dd5a7",
+   "bytes": 545
+  },
+  {
+   "path": "src/kenney/Smoke Particles/PNG/White puff/whitePuff00.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Smoke Particles/PNG/White puff/whitePuff00.png",
+   "sha256": "33f894c2279bee9f77874dbfa3c0e9f071a0ee5e1a7065dcc40196029d699f58",
+   "bytes": 57599
+  },
+  {
+   "path": "src/kenney/Smoke Particles/PNG/White puff/whitePuff04.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Smoke Particles/PNG/White puff/whitePuff04.png",
+   "sha256": "8233a8b20beabd2e3dfb5224d3faf816fe229faeeaadad6d04350c1c818b60ee",
+   "bytes": 60272
+  },
+  {
+   "path": "src/kenney/Smoke Particles/PNG/White puff/whitePuff08.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Smoke Particles/PNG/White puff/whitePuff08.png",
+   "sha256": "5e476e2c9eb48ab7e36eefb6e4576e8e8339f1249cbb768ba5405d640b933be4",
+   "bytes": 61704
+  },
+  {
+   "path": "src/kenney/Smoke Particles/PNG/White puff/whitePuff12.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Smoke Particles/PNG/White puff/whitePuff12.png",
+   "sha256": "1a62910a4c91177de2720432c5f86ec19211db6db6cece6ce29ad91fb78d5869",
+   "bytes": 56305
+  },
+  {
+   "path": "src/kenney/Smoke Particles/PNG/White puff/whitePuff16.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Smoke Particles/PNG/White puff/whitePuff16.png",
+   "sha256": "603f5f2faa71e1c18e5a2eb45ed16e01aa7642ca8222d4e80fa32a038979d764",
+   "bytes": 62341
+  },
+  {
+   "path": "src/kenney/Smoke Particles/PNG/White puff/whitePuff20.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Smoke Particles/PNG/White puff/whitePuff20.png",
+   "sha256": "e4ec6baabfb10ed0bfc37b96247aa70830c862edcdbe33ef374c8bd9ff295cc5",
+   "bytes": 59174
+  },
+  {
+   "path": "src/kenney/Smoke Particles/PNG/White puff/whitePuff24.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Smoke Particles/PNG/White puff/whitePuff24.png",
+   "sha256": "910af24555c21b7c548b3616848308b2048596173b60a21465f2f0c5cd6f800d",
+   "bytes": 54102
+  },
+  {
+   "path": "src/kenney/audio/Music Loops/License.txt",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Music Loops/License.txt",
+   "sha256": "ff194834cdd5a72fcf4febd65210bb48a15117abd23f5745029a4a81ce30db0a",
+   "bytes": 569
+  },
+  {
+   "path": "src/kenney/audio/Music Loops/Loops/Flowing Rocks.ogg",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Music Loops/Loops/Flowing Rocks.ogg",
+   "sha256": "8563774243e381e827cba402cf6ccdc471b8bed3e3fafdf182f36039c2a8479f",
+   "bytes": 421076
+  },
+  {
+   "path": "src/kenney/audio/Interface Sounds/License.txt",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Interface Sounds/License.txt",
+   "sha256": "f7966c773bbed0eca6a9c75081c44a178b38eae112724dbb5fdfbd4192d118a9",
+   "bytes": 574
+  },
+  {
+   "path": "src/kenney/audio/Interface Sounds/Audio/click_002.ogg",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Interface Sounds/Audio/click_002.ogg",
+   "sha256": "775b61d6cd2af764cf54532c765ab35f5df71a63ba4cb9ac34ab69c4ba429c1e",
+   "bytes": 6356
+  },
+  {
+   "path": "src/kenney/audio/Interface Sounds/Audio/glass_002.ogg",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Interface Sounds/Audio/glass_002.ogg",
+   "sha256": "58b399176211ac9def126ec6ddbe58587cf05c4ca19883d8f2a33c53307773c7",
+   "bytes": 6998
+  },
+  {
+   "path": "src/kenney/audio/Interface Sounds/Audio/glass_004.ogg",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Interface Sounds/Audio/glass_004.ogg",
+   "sha256": "948cbe625a35fbd9cf662a9de88b36a3ca63cdebe3f92df365306a8a252bac68",
+   "bytes": 10404
+  },
+  {
+   "path": "src/kenney/audio/Interface Sounds/Audio/confirmation_001.ogg",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Interface Sounds/Audio/confirmation_001.ogg",
+   "sha256": "1d59821014076adf376ae092a556ff7ee4816f5532a8ae0719b6d44d244bfbc1",
+   "bytes": 11066
+  },
+  {
+   "path": "src/kenney/audio/Interface Sounds/Audio/drop_002.ogg",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Interface Sounds/Audio/drop_002.ogg",
+   "sha256": "978c28bfc517f54fc956f7491e33f37802809d938933bf5071f39423089554d3",
+   "bytes": 8492
+  },
+  {
+   "path": "src/kenney/audio/Interface Sounds/Audio/pluck_001.ogg",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Interface Sounds/Audio/pluck_001.ogg",
+   "sha256": "73b7ada3cb7be3ca1fcd7fc377a728fdc595b133afa51b9471988d0120fc688b",
+   "bytes": 8398
+  },
+  {
+   "path": "src/kenney/audio/Interface Sounds/Audio/maximize_006.ogg",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Interface Sounds/Audio/maximize_006.ogg",
+   "sha256": "a62654b30eb1812f1830049671ea0de88c859de053fcee56c118ca0aa6e89d44",
+   "bytes": 13716
+  },
+  {
+   "path": "src/kenney/audio/Impact Sounds/License.txt",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Impact Sounds/License.txt",
+   "sha256": "b49aa9c56b04528b95913de13e506a0f7c5e807b9925db9bfef86af1f91120db",
+   "bytes": 608
+  },
+  {
+   "path": "src/kenney/audio/Impact Sounds/Audio/footstep_grass_000.ogg",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Impact Sounds/Audio/footstep_grass_000.ogg",
+   "sha256": "de44d80f152915fc43aee6fbd7f5d26b921c392fec15ed7520f675712be53d2b",
+   "bytes": 10371
+  },
+  {
+   "path": "src/kenney/audio/Impact Sounds/Audio/footstep_grass_002.ogg",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Impact Sounds/Audio/footstep_grass_002.ogg",
+   "sha256": "7db0b66cf043a155fd3d7177716366c141681f2d0a530930e75d5d5cf6c0c440",
+   "bytes": 10359
+  },
+  {
+   "path": "src/kenney/audio/Impact Sounds/Audio/impactMetal_light_002.ogg",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Impact Sounds/Audio/impactMetal_light_002.ogg",
+   "sha256": "0d9cc7901cbd5cea390cfff2c2efdfc9bffe14b21e169ad56f25211ee66bd48a",
+   "bytes": 8885
+  },
+  {
+   "path": "src/kenney/audio/Music Jingles/License.txt",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Music Jingles/License.txt",
+   "sha256": "3d335ff3545dcc606a9ec8804026fec7b4ec048cb741076400fccfe72cb72bb2",
+   "bytes": 571
+  },
+  {
+   "path": "src/kenney/audio/Music Jingles/Audio (Pizzicato)/jingles-pizzicato_04.ogg",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Music Jingles/Audio (Pizzicato)/jingles-pizzicato_04.ogg",
+   "sha256": "4a34b90cd4c46583e8081fdd3cda3869b2cea468f14d959682dafb5bbd736f06",
+   "bytes": 13926
+  },
+  {
+   "path": "src/kenney/audio/Music Jingles/Audio (Steeldrum)/jingles-steel_02.ogg",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Music Jingles/Audio (Steeldrum)/jingles-steel_02.ogg",
+   "sha256": "bf909e9babc92fa72c6cbfa0b05bda31da409fe410358caac07e90c952f34168",
+   "bytes": 17010
+  }
+ ]
+}

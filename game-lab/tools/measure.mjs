@@ -31,7 +31,10 @@ const pct = (xs, p) => { if (!xs.length) return 0; const s = [...xs].sort((a, b)
 const round = x => Math.round(x * 10) / 10;
 
 async function run(cpu) {
-  const browser = await chromium.launch({ args: ['--disable-gpu-vsync=false'] });
+  // The HD tier needs WebGL: with no GPU in the container it runs on SwiftShader in the GPU process (software, so its
+  // frame times say little about a phone). The light tier is measured without these flags, as before (comparable).
+  const light = /[?&](low=1|tier=light)/.test(file);
+  const browser = await chromium.launch({ args: ['--disable-gpu-vsync=false'].concat(light ? [] : ['--use-angle=swiftshader', '--enable-unsafe-swiftshader']) });
   const context = await browser.newContext({ viewport: { width: 360, height: 740 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true });
   const page = await context.newPage();
   const errors = [];
@@ -59,7 +62,10 @@ async function run(cpu) {
     return { ready: at('lab:game-ready'), start: at('lab:game-load'), dcl: nav ? nav.domContentLoadedEventEnd : null };
   });
   const loadBytes = bytes;
-  const t0 = await page.evaluate(() => performance.now());
+  // Warm up Playwright's own injected selector script before the measured part: its first use is a 30-40 ms task at
+  // 4x CPU that belongs to the harness, not to the page.
+  await page.locator('[data-lab=go]').isVisible(); await page.locator('[data-lab=next]').count(); await page.waitForTimeout(300);
+  const t0 = await page.evaluate(() => { if (window.World && window.World.scriptTimes) window.World.scriptTimes(true); return performance.now(); });
   await page.tap('[data-lab=go]');
   const cycles = [];
   for (let q = 0; q < questions; q++) {
@@ -90,6 +96,8 @@ async function run(cpu) {
     deltas: window.__probe.frames.filter(([t1]) => t1 >= t).map(([, d]) => d),
     longTasks: window.__probe.longTasks.filter(([s]) => s >= t),
     heap: performance.memory ? performance.memory.usedJSHeapSize : null,
+    script: window.World && window.World.scriptTimes ? window.World.scriptTimes() : null,
+    tier: window.__lab.tier || null,
   }), t0);
   await browser.close();
   const d = probe.deltas;
@@ -105,6 +113,12 @@ async function run(cpu) {
     next_to_world_visible_ms: { avg: avg('next_to_world_visible_ms'), max: max('next_to_world_visible_ms') },
     next_to_next_question_ms: { avg: avg('next_to_next_question_ms'), max: max('next_to_next_question_ms') },
     js_heap_mb: probe.heap ? round(probe.heap / 1048576) : null,
+    tier: probe.tier,
+    // HD tier: main-thread script time per world frame (update + render submission), measured inside the ticker.
+    script_frames: probe.script ? probe.script.length : null,
+    script_ms_p50: probe.script ? round(pct(probe.script, 50)) : null,
+    script_ms_p95: probe.script ? round(pct(probe.script, 95)) : null,
+    script_ms_p99: probe.script ? round(pct(probe.script, 99)) : null,
     // Load: ms from navigation start to the first drawn frame of the game, and from the start of loading the
     // game code (lab:game-load) to that frame. null when a prototype does not set the marks (the draft).
     game_ready_ms: load.ready == null ? null : round(load.ready),

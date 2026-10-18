@@ -78,6 +78,7 @@ h1,.card h2{font:600 28px/1.15 var(--fd);margin:0}
 :root[data-theme="dark"] #stripW{background:linear-gradient(#1A2240,#2C3A63)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #stripW{background:linear-gradient(#1A2240,#2C3A63)}}
 #strip{display:block;width:100%;height:56px;image-rendering:pixelated}
+.t-hd #world canvas,.t-hd #strip{image-rendering:auto}
 #bar{flex:none;height:12px;margin:14px 16px 0;overflow:hidden;background:var(--surface-alt);border:2px solid var(--outline);border-radius:var(--r-pill)}
 #bar i{display:block;height:100%;background:var(--primary);transform-origin:0 50%;transform:scaleX(0)}
 .m-story #stripW,.m-story #bar,.m-classic #stripW,.m-strip #bar{display:none}
@@ -165,13 +166,14 @@ h1,.card h2{font:600 28px/1.15 var(--fd);margin:0}
 </section>
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
-/* Where the engine and the test art come from. The repo copy uses the pinned engine fetched by tools/fetch_engine.py
-   and the art built by tools/fetch_assets.py; the phone (artifact) copy swaps these for cdnjs and its own files. */
+/* Where each tier's scripts and test art come from. The repo copy uses the pinned engine and filters fetched by
+   tools/fetch_engine.py and the art and sound built by tools/fetch_assets.py; the phone (artifact) copy made by
+   tools/make_artifact.py swaps these for cdnjs (with integrity hashes and a jsDelivr fallback) and its own files. */
 window.LAB_CONFIG = {
-  engineSrc: '../vendor/pixi-8.22.0.min.js',
-  worldSrc: 'world.js',
-  assetBase: '../assets-test/build/',
-  sounds: { music: 'music.ogg', coin: 'coin.ogg', coin2: 'coin2.ogg', jump: 'jump.ogg', land: 'land.ogg', lift: 'lift.ogg', tap: 'tap.ogg', correct: 'correct.ogg', soft: 'soft.ogg', cheer: 'cheer.ogg' }
+  light: { scripts: ['../vendor/pixi-8.22.0.min.js', 'world.js'], assetBase: '../assets-test/build/' },
+  hd: { scripts: ['../vendor/pixi-8.22.0.min.js', '../vendor/pixi-filters-6.1.5.js', 'world-hd.js'], assetBase: '../assets-test/build-hd/' },
+  soundBase: '../assets-test/build-hd/',
+  sounds: { music: 'music.mp3', coin: 'coin.mp3', coin2: 'coin2.mp3', jump: 'jump.mp3', land: 'land.mp3', step: 'step.mp3', lift: 'lift.mp3', tap: 'tap.mp3', correct: 'correct.mp3', soft: 'soft.mp3', cheer: 'cheer.mp3', flag: 'flag.mp3' }
 };
 </script>
 <script src="questions.js"></script>
