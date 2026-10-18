@@ -3,35 +3,43 @@
    Pixel art (TEST ONLY, ASSETS.md) is drawn at 1 canvas pixel per CSS pixel and scaled by the browser with
    nearest-neighbour filtering, S CSS px per art px. World units below are art pixels, y grows downward.
    Speed rules from D8 still hold: one canvas, the loop runs only while something moves, time-based motion with a
-   clamped delta, the static terrain baked once into a few textures, no per-frame allocation in the hot path. */
+   clamped delta, no per-frame allocation in the hot path. A chapter has 1 to 200 MCQs (D27): it is cut into stages of
+   about 10 (app.js gives the split), and only the current stage exists. Its islands come from a few textures cached by
+   size and its signs from one shared plate with pixel-font digits on top, so a 200-MCQ chapter costs what 8 cost. */
 (function () {
   const API = window.World;
   const P = new URLSearchParams(location.search);
   const T = 32;                       // terrain tile size (art px)
   const LW = 64, SLAB = 32, GAP = 8;  // ledge width, stepping-slab width, gap between pieces
   const RISE_STEP = 28, LIFT_RISE = 112, SUMW = 128;
-  let app, kit, env, N = 8, RM = false, LOW = false, S = 3, VW = 360, VH = 740, night = false;
-  let atlasImg, tex = {}, layer = {}, world, back, mid, front, fx, hero, shadow, overlay, waterFill;
+  let app, kit, N = 8, RM = false, LOW = false, S = 3, VW = 360, VH = 740, night = false;
+  let atlasImg, tex = {}, layer = {}, world, back, mid, fx, stB, stM, hero, shadow, overlay, waterFill, veil, capC;
   const L = [], pillars = [], slabs = [], lifts = [], signs = [], coins = [], glints = [], palms = [];
-  const anims = [];                   // one-shot animated sprites (dust, sparkle, trophy press)
+  const anims = [];                   // one-shot animated sprites (dust, sparkle, trophy press, camp flag)
   const parts = [];                   // particle pool (confetti, puffs)
-  let startSign, trophy, heroKey = 'captain', heroDef;
+  let startSign, trophy, camp, heroKey = 'captain', heroDef;
 
-  /* ---------- layout: the same path as the draft, rebuilt for 32 px pixel-art tiles ---------- */
-  const liftAt = i => i < N - 1 && (i + 2) % 4 === 0;      // Q3->Q4 and Q7->Q8 ride a lift (story beats)
-  const stand = i => L[i].x + 14, signX = i => L[i].x + 46;
+  /* ---------- stages and layout: the draft's path, rebuilt for 32 px pixel-art tiles, one stage at a time ---------- */
+  // Each stage is its own island chain in stage-local coordinates (the climber starts every stage at the START
+  // island, x START_X + 24, y 0): a ledge per MCQ, one lift in the middle (the long beat), and a camp at the top (the
+  // real summit, with the trophy, only in the last stage).
+  let STG = [[0, 8]], stage = 0, sA = 0, sK = 8;
+  const lastStage = () => stage === STG.length - 1;
+  const stageIdx = i => { for (let k = 0; k < STG.length; k++) if (i < STG[k][1]) return k; return STG.length - 1; };
+  const J = i => i - sA;                                       // chapter MCQ index -> ledge in this stage
+  const liftJ = () => sK >= 6 ? Math.floor(sK / 2) - 1 : -1;   // the same ledge as the HD tier
+  const stand = j => L[j].x + 14, signX = j => L[j].x + 46;
   function layout() {
     L.length = 0; slabs.length = 0; lifts.length = 0;
     let x = 0, y = 0;
-    for (let i = 0; i <= N; i++) {
+    for (let j = 0; j <= sK; j++) {
       L.push({ x, y });
-      if (i === N) break;
-      if (i === N - 1) { slabs.push({ x: x + LW + GAP, y: y - RISE_STEP, i }); x += LW + GAP + SLAB + GAP; y -= 2 * RISE_STEP; }
-      else if (liftAt(i)) { lifts.push({ x: x + LW + 4, y, y0: y, y1: y - LIFT_RISE, i }); x += LW + 40; y -= LIFT_RISE; }
-      else { slabs.push({ x: x + LW + GAP, y: y - RISE_STEP, i }); x += LW + GAP + SLAB + GAP; y -= 2 * RISE_STEP; }
+      if (j === sK) break;
+      if (j === liftJ()) { lifts.push({ x: x + LW + 4, y, y0: y, y1: y - LIFT_RISE, j }); x += LW + 40; y -= LIFT_RISE; }
+      else { slabs.push({ x: x + LW + GAP, y: y - RISE_STEP, j }); x += LW + GAP + SLAB + GAP; y -= 2 * RISE_STEP; }
     }
   }
-  const START_X = -136, START_W = 192;
+  const START_X = -136, START_W = 192, HOME_X = START_X + 24;
 
   /* ---------- textures ---------- */
   function frame(name) {
@@ -55,33 +63,54 @@
     return PIXI.Texture.from(c);
   }
   // A floating island of rock: grass top, stone edges, rounded bottom (tiles from the Treasure Hunters terrain sheet).
-  function bakeIsland(cols, rows) {
+  // Baked once per size (columns x rows) and shared by every island of that size, in every stage.
+  const islandCache = {};
+  function islandTex(cols, rows) {
+    const key = cols + 'x' + rows;
+    if (islandCache[key]) return islandCache[key];
     const [c, x] = canvas(cols * T, rows * T);
     const col = k => cols === 1 ? 4 : k === 0 ? 0 : k === cols - 1 ? 2 : 1;
     for (let k = 0; k < cols; k++) for (let r = 0; r < rows; r++) tile(x, col(k), r === 0 ? 0 : r === rows - 1 ? 2 : 1, k * T, r * T);
-    return PIXI.Texture.from(c);
+    return (islandCache[key] = PIXI.Texture.from(c));
   }
-  // A signpost with a paper plate "Q3"; state 0 waiting, 1 correct (green tick), 2 saved for review (amber flag).
-  const signCache = {};
-  function signTex(i, st) {
-    const key = i + ':' + st;
-    if (signCache[key]) return signCache[key];
-    const [c, x] = canvas(30, 34), ink = '#3b2c35', paper = '#f2d3a5', shade = '#d9aa74', wood = '#8a4f35';
-    x.fillStyle = ink; x.fillRect(13, 14, 4, 20); x.fillStyle = wood; x.fillRect(14, 14, 2, 20);
-    x.fillStyle = ink; x.fillRect(1, 1, 28, 16); x.fillStyle = shade; x.fillRect(2, 2, 26, 14); x.fillStyle = paper; x.fillRect(2, 2, 26, 12);
-    const s = 'Q' + (i + 1); text(x, s, 15 - s.length * 4, 3, 'b');
-    if (st) {
-      const col = st === 1 ? '#2f9e57' : '#e3962c', dk = st === 1 ? '#1c6b39' : '#9a5a14';
-      x.fillStyle = ink; x.fillRect(20, 0, 10, 10); x.fillStyle = col; x.fillRect(21, 1, 8, 8); x.fillStyle = dk; x.fillRect(21, 8, 8, 1);
-      x.fillStyle = '#fff';
-      if (st === 1) [[22, 4], [23, 5], [24, 6], [25, 5], [26, 4], [27, 3]].forEach(p => x.fillRect(p[0], p[1], 1, 1));
-      else { x.fillRect(23, 2, 1, 6); x.fillRect(24, 2, 3, 1); x.fillRect(24, 3, 2, 1); x.fillRect(24, 4, 3, 1); }
+  // A signpost with a blank paper plate, one texture per plate width (chars of text it holds): the text ("Q3", "Q200",
+  // "CAMP") is laid on top as pixel-font glyph sprites from the atlas, so no texture is made per number.
+  const plateCache = {};
+  const plateW = n => Math.max(30, n * 8 + 8);
+  function plateTex(n) {
+    const w = plateW(n);
+    if (plateCache[w]) return plateCache[w];
+    const [c, x] = canvas(w, 34), ink = '#3b2c35', paper = '#f2d3a5', shade = '#d9aa74', wood = '#8a4f35';
+    x.fillStyle = ink; x.fillRect(w / 2 - 2, 14, 4, 20); x.fillStyle = wood; x.fillRect(w / 2 - 1, 14, 2, 20);
+    x.fillStyle = ink; x.fillRect(1, 1, w - 2, 16); x.fillStyle = shade; x.fillRect(2, 2, w - 4, 14); x.fillStyle = paper; x.fillRect(2, 2, w - 4, 12);
+    return (plateCache[w] = PIXI.Texture.from(c));
+  }
+  // The badge on a plate's corner after grading: 1 correct (green tick), 2 saved for review (amber flag).
+  const badgeCache = {};
+  function badgeTex(st) {
+    if (badgeCache[st]) return badgeCache[st];
+    const [c, x] = canvas(10, 10), col = st === 1 ? '#2f9e57' : '#e3962c', dk = st === 1 ? '#1c6b39' : '#9a5a14';
+    x.fillStyle = '#3b2c35'; x.fillRect(0, 0, 10, 10); x.fillStyle = col; x.fillRect(1, 1, 8, 8); x.fillStyle = dk; x.fillRect(1, 8, 8, 1);
+    x.fillStyle = '#fff';
+    if (st === 1) [[2, 4], [3, 5], [4, 6], [5, 5], [6, 4], [7, 3]].forEach(p => x.fillRect(p[0], p[1], 1, 1));
+    else { x.fillRect(3, 2, 1, 6); x.fillRect(4, 2, 3, 1); x.fillRect(4, 3, 2, 1); x.fillRect(4, 4, 3, 1); }
+    return (badgeCache[st] = PIXI.Texture.from(c));
+  }
+  // A sign: its plate, the glyphs of its text, and the badge. Anchored at its post's foot (x, y).
+  function plate(s, x, y, parent) {
+    const c = new PIXI.Container(), w = plateW(s.length);
+    c.x = x - w / 2; c.y = y - 34; c.w = w; parent.addChild(c);
+    c.addChild(new PIXI.Sprite(plateTex(s.length)));
+    for (let k = 0; k < s.length; k++) {
+      const name = 'font-b/' + s.charCodeAt(k);
+      if (!kit.atlas.frames[name]) continue;
+      const g = new PIXI.Sprite(frame(name)); g.x = w / 2 - s.length * 4 + k * 8; g.y = 3; c.addChild(g);
     }
-    return (signCache[key] = PIXI.Texture.from(c));
+    return c;
   }
 
   /* ---------- small helpers ---------- */
-  const lerp = (a, b, t) => a + (b - a) * t;
+  const lerp = (a, b, t) => a + (b - a) * t, clamp = (v, a, b) => v < a ? a : v > b ? b : v;
   const easeOut = t => 1 - (1 - t) * (1 - t), easeInOut = t => t < 0.5 ? 2 * t * t : 1 - 2 * (1 - t) * (1 - t);
   const sfx = k => { try { window.Sound && window.Sound.play(k); } catch (e) {} };
   function spr(t, x, y, ax, ay, parent) { const s = new PIXI.Sprite(t); s.anchor.set(ax == null ? 0.5 : ax, ay == null ? 1 : ay); s.x = x; s.y = y; (parent || mid).addChild(s); return s; }
@@ -124,20 +153,26 @@
   }
   function squash(d, a) { if (RM) return; H.sq = H.sqD = d; H.sqA = a; }
 
-  /* ---------- movement plan (from the draft): walk, hop, lift, celebrate ---------- */
+  /* ---------- movement plan (from the draft): walk, hop, lift, celebrate, and the stage change ---------- */
   const plan = [];
   let pi = 0, pt = 0, planOn = false, onArrive = null;
   const Wk = (x0, y0, x1, y1, d, e) => plan.push({ k: 0, x0, y0, x1, y1, d, e: e || 0 });
   const Hp = (x0, y0, x1, y1, d, hgt) => plan.push({ k: 1, x0, y0, x1, y1, d, h: hgt || 14 });
   const Lf = (x, y0, y1, d, lift) => plan.push({ k: 2, x0: x, y0, x1: x, y1, d, lift });
-  function planMove(i) {
-    const a = L[i], b = L[i + 1];
-    if (liftAt(i)) {
-      const lf = lifts.find(l => l.i === i), mx = lf.x + 16;
-      Wk(stand(i), a.y, mx, a.y, 260, 2); Lf(mx, a.y, b.y, 760, lf); Wk(mx, b.y, stand(i + 1), b.y, 200, 1);
+  const Wt = (x, y, d) => plan.push({ k: 6, x0: x, y0: y, x1: x, y1: y, d });
+  // The stage change: the screen fades to the night-sky ink with "STAGE 2 OF 3", the next stage is built behind it,
+  // and the fade lifts on the climber at the next START island (about 0.8 s, skippable, instant with reduced motion).
+  const Fd = d => plan.push({ k: 5, x0: HOME_X, y0: 0, x1: HOME_X, y1: 0, d, swapped: false });
+  let fadeK = 0;
+  function swapStage(s) { s.swapped = true; setStage(stage + 1); H.x = HOME_X; H.y = H.gy = 0; heroAnim('idle'); cam.fy = cam.fy1 = feetY('walk'); snapCam(); }
+  function planMove(j) {
+    const a = L[j], b = L[j + 1];
+    if (j === liftJ()) {
+      const lf = lifts[0], mx = lf.x + 16;
+      Wk(stand(j), a.y, mx, a.y, 260, 2); Lf(mx, a.y, b.y, 760, lf); Wk(mx, b.y, stand(j + 1), b.y, 200, 1);
     } else {
-      const sl = slabs.find(s => s.i === i), edge = a.x + LW - 8;
-      Wk(stand(i), a.y, edge, a.y, 110, 0); Hp(edge, a.y, sl.x + SLAB / 2, sl.y, 195); Hp(sl.x + SLAB / 2, sl.y, stand(i + 1), b.y, 195);
+      const sl = slabs.find(s => s.j === j), edge = a.x + LW - 8;
+      Wk(stand(j), a.y, edge, a.y, 110, 0); Hp(edge, a.y, sl.x + SLAB / 2, sl.y, 195); Hp(sl.x + SLAB / 2, sl.y, stand(j + 1), b.y, 195);
     }
   }
   function begin(cb) { pi = 0; pt = 0; onArrive = cb; if (RM) finishPlan(); else { planOn = true; wake(); } }
@@ -149,7 +184,9 @@
       H.x = s.x1; H.y = H.gy = s.y1;
       if (s.k === 1) { squash(0.12, 0.12); heroAnim('land'); dustAt('dust/land', H.x, H.y); sfx('land'); }
       if (s.k === 2) { s.lift.y = s.y1; liftAnim(s.lift, false); }
+      if (s.k === 5) { if (!s.swapped) swapStage(s); fade(0); }
       if (pi < plan.length && plan[pi].k === 1) { heroAnim('jump'); dustAt('dust/jump', H.x, H.y); sfx('jump'); }
+      if (pi < plan.length && plan[pi].k === 6) raiseCamp();
     }
     if (pi >= plan.length) { arrive(); return; }
     s = plan[pi];
@@ -162,6 +199,12 @@
       H.x = lerp(s.x0, s.x1, p); H.gy = lerp(s.y0, s.y1, p);
       H.y = lerp(s.y0, s.y1, easeOut(p)) - Math.sin(Math.PI * p) * s.h;
       heroAnim(p < 0.5 ? 'jump' : 'fall');
+    } else if (s.k === 5) {
+      fade(p < 0.4 ? easeInOut(p / 0.4) : p < 0.6 ? 1 : 1 - easeInOut((p - 0.6) / 0.4));
+      if (!s.swapped && p >= 0.4) swapStage(s);
+      heroAnim('idle');
+    } else if (s.k === 6) {
+      if (H.anim !== 'land' || H.t > 0.12) heroAnim('idle');
     } else {
       const e = p < 0.5 ? 4 * p * p * p : 1 - 4 * (1 - p) * (1 - p) * (1 - p);
       H.y = H.gy = lerp(s.y0, s.y1, e); s.lift.y = H.y; heroAnim('idle');
@@ -169,7 +212,13 @@
     }
   }
   function finishPlan() {
-    for (; pi < plan.length; pi++) { const s = plan[pi]; if (s.k === 2) { s.lift.y = s.y1; liftAnim(s.lift, false); } }
+    for (; pi < plan.length; pi++) {
+      const s = plan[pi];
+      if (s.k === 2) { s.lift.y = s.y1; liftAnim(s.lift, false); }
+      if (s.k === 6) raiseCamp(true);
+      if (s.k === 5 && !s.swapped) swapStage(s);
+    }
+    fade(0);
     const s = plan[plan.length - 1];
     H.x = s.x1; H.y = H.gy = s.y1; arrive();
   }
@@ -179,6 +228,32 @@
     heroAnim('idle');
     const cb = onArrive; onArrive = null;
     if (cb) cb();
+  }
+  // The veil and its caption ("NEXT MOUNTAIN / STAGE 2 OF 3"), drawn over the whole screen while the stage changes.
+  function fade(a) {
+    fadeK = a; veil.visible = a > 0; veil.alpha = a;
+    capC.visible = a > 0.6; capC.alpha = clamp((a - 0.6) / 0.4, 0, 1);
+  }
+  function caption(k) {
+    const lines = [k === STG.length - 1 ? 'LAST MOUNTAIN' : 'NEXT MOUNTAIN', 'STAGE ' + (k + 1) + ' OF ' + STG.length];
+    capC.removeChildren().forEach(g => g.destroy());
+    lines.forEach((s, r) => {
+      const sc = r ? S : Math.max(1, S - 1), y = r ? 0 : -16 * sc;
+      for (let i = 0; i < s.length; i++) {
+        const name = 'font-w/' + s.charCodeAt(i);
+        if (!kit.atlas.frames[name]) continue;
+        const g = new PIXI.Sprite(frame(name)); g.scale.set(sc); g.x = Math.round((i - s.length / 2) * 8 * sc); g.y = y; capC.addChild(g);
+      }
+    });
+    capC.x = Math.round(VW / 2); capC.y = Math.round(VH * 0.44);
+  }
+  // At a camp the checkpoint flag runs up its pole (the Pixel Adventure checkpoint), then waves.
+  function raiseCamp(now) {
+    if (!camp || camp.up) return;
+    camp.up = true;
+    if (RM || LOW || now) { camp.texture = frame('flag/idle/0'); camp.fr = animFrames('flag/idle'); return; }
+    camp.visible = false; sfx('flag');
+    oneShot('flag/out', camp.x, camp.y, stM).done = () => { camp.visible = true; camp.fr = animFrames('flag/idle'); };
   }
 
   /* ---------- coins, particles, dust ---------- */
@@ -194,32 +269,32 @@
       p.s.scale.set(kind === 'confetti' ? 0.5 : 0.6);
     }
   }
-  function coinStart(i, gold, cb) {
-    const c = coins[i];
-    coin.on = true; coin.t = 0; coin.i = i; coin.cb = cb; coin.x0 = c.x; coin.y0 = c.y; coin.gold = gold;
+  function coinStart(j, gold, cb) {
+    const c = coins[j];
+    coin.on = true; coin.t = 0; coin.i = j; coin.cb = cb; coin.x0 = c.x; coin.y0 = c.y; coin.gold = gold;
     c.visible = true;
     xpLabel.texture = gold ? lbl10 : lbl5; xpLabel.visible = false;
   }
   function coinCollect() {
     const c = coins[coin.i];
-    c.visible = false; coin.on = false;
+    c.visible = false; c.got = true; coin.on = false;
     if (!RM && !LOW) oneShot('coin/fx', H.x, H.y - 22, fx, 0.5, 0.5).s.scale.set(1.6);
     if (!RM) { xpLabel.visible = true; xpLabel.x = H.x; xpLabel.y = H.y - 34; xpLabel.alpha = 1; xpT = 0; }
     const cb = coin.cb; coin.cb = null;
-    if (cb) cb(coin.i);
+    if (cb) cb();
   }
   let xpLabel, lbl10, lbl5, xpT = 0;
 
   /* ---------- lifts and signs ---------- */
   function liftAnim(l, on) { l.on = on; l.s.texture = on ? l.fr[0] : frame('lift/off'); }
-  function setSign(i, st) {
-    const s = signs[i];
-    s.st = st; s.s.texture = signTex(i, st);
+  function setSign(j, st) {
+    const s = signs[j];
+    s.st = st; s.badge.visible = st !== 0; if (st) s.badge.texture = badgeTex(st);
     s.bubble.visible = st === 0;
-    const c = coins[i];
-    c.visible = st !== 0; c.gold = st === 1;
+    const c = coins[j];
+    c.visible = st !== 0; c.gold = st === 1; c.got = false;
     c.fr = animFrames(st === 1 ? 'coin/gold' : 'coin/silver'); c.texture = c.fr[0];
-    c.x = signX(i); c.y = L[i].y - 44; c.pop = st ? 0 : 1;
+    c.x = signX(j); c.y = L[j].y - 44; c.pop = st ? 0 : 1;
   }
 
   /* ---------- camera ---------- */
@@ -229,12 +304,11 @@
   function snapCam() { cam.fy = cam.fy1; cam.ft = 1; const t = camTarget(); cam.x = t[0]; cam.y = t[1]; }
 
   /* ---------- the loop ---------- */
-  let awake = false, ambientT = 0, built = false, dirty = true, lastTick = 0;
+  let awake = false, ambientT = 0, built = false, camMoving = false, celebrateT = 0;
   const busy = () => planOn || coin.on || xpLabel.visible || H.sq > 0 || celebrateT > 0 || anyOn(anims) || anyParts() || cam.ft < 1 || camMoving || popping();
   const anyOn = a => { for (let i = 0; i < a.length; i++) if (a[i].s.visible) return true; return false; };
   const anyParts = () => { for (let i = 0; i < parts.length; i++) if (parts[i].s.visible) return true; return false; };
   const popping = () => { for (let i = 0; i < coins.length; i++) if (coins[i].visible && coins[i].pop < 1) return true; return false; };
-  let camMoving = false, celebrateT = 0;
 
   function update(dt) {
     ambientT += dt;
@@ -278,6 +352,7 @@
     if (!LOW && !RM) {
       for (const g of glints) g.s.texture = g.fr[Math.floor(ambientT * 6 + g.o) % 4];
       for (const p of palms) p.s.texture = p.fr[Math.floor(ambientT * 7 + p.o) % 4];
+      if (camp && camp.up && camp.visible) camp.texture = camp.fr[Math.floor(ambientT * 14) % camp.fr.length];
     }
     // Camera: horizontal and vertical follow with exponential smoothing; the framing height eases between
     // "walking" (hero mid-screen) and "MCQ open" (hero above the sheet).
@@ -289,31 +364,39 @@
     place();
   }
   // Positions every layer from the camera. Parallax factors (x): sky band 0.04, back mountains 0.03, big clouds 0.08,
-  // front mountains 0.07, small clouds 0.16, world 1. The horizon sinks a little as the hero climbs (y 0.12).
+  // front mountains 0.07, small clouds 0.16, world 1. The horizon sinks a little as the hero climbs (y 0.12); every
+  // stage starts again at y 0, so the backgrounds never run out, and each stage shows its own stretch of them (so).
   let cam0y = 0;
   function place() {
-    const X = Math.round(cam.x * S), Y = Math.round(cam.y * S), dy = cam.y - cam0y;
+    const X = Math.round(cam.x * S), Y = Math.round(cam.y * S), dy = cam.y - cam0y, so = stage * 173;
     world.x = -X; world.y = -Y;
     // horizon = the screen row of the sea line; it sinks slowly as the hero climbs.
     const horizon = Math.round(VH * 0.6 - dy * 0.12 * S);
     const drift = RM || LOW ? 0 : ambientT;
-    layer.bg.y = horizon - kit.colors.sea * S; layer.bg.tilePosition.x = -cam.x * 0.04 * S;
+    layer.bg.y = horizon - kit.colors.sea * S; layer.bg.tilePosition.x = -(cam.x * 0.04 + so * 0.4) * S;
     waterFill.y = layer.bg.y + kit.colors.height * S - 1; waterFill.height = Math.max(0, VH - waterFill.y);
-    layer.cb.y = horizon - tex.cloudsBig.height * S + 6 * S; layer.cb.tilePosition.x = -(cam.x * 0.08 + drift * 3) * S;
-    if (layer.cs) { layer.cs.y = Math.round(VH * 0.12 - dy * 0.16 * S); layer.cs.tilePosition.x = -(cam.x * 0.16 + drift * 6) * S; }
-    if (layer.stars.visible) { layer.stars.y = Math.round(VH * 0.04 - dy * 0.05 * S); layer.stars.tilePosition.x = -cam.x * 0.02 * S; }
-    if (layer.mb) { layer.mb.y = horizon + 2 * S - layer.mb.height; layer.mb.tilePosition.x = -cam.x * 0.03 * S; }
-    layer.mf.y = horizon + 2 * S - layer.mf.height; layer.mf.tilePosition.x = -cam.x * 0.07 * S;
+    layer.cb.y = horizon - tex.cloudsBig.height * S + 6 * S; layer.cb.tilePosition.x = -(cam.x * 0.08 + drift * 3 + so) * S;
+    if (layer.cs) { layer.cs.y = Math.round(VH * 0.12 - dy * 0.16 * S); layer.cs.tilePosition.x = -(cam.x * 0.16 + drift * 6 + so) * S; }
+    if (layer.stars.visible) { layer.stars.y = Math.round(VH * 0.04 - dy * 0.05 * S); layer.stars.tilePosition.x = -(cam.x * 0.02 + so * 0.5) * S; }
+    if (layer.mb) { layer.mb.y = horizon + 2 * S - layer.mb.height; layer.mb.tilePosition.x = -(cam.x * 0.03 + so * 1.3) * S; }
+    layer.mf.y = horizon + 2 * S - layer.mf.height; layer.mf.tilePosition.x = -(cam.x * 0.07 + so * 2.1) * S;
     for (const g of glints) g.s.y = horizon + g.dy * S;
     // Cull world sprites outside the view (cheap: a few dozen objects).
     const x0 = cam.x - 80, x1 = cam.x + VW / S + 80;
     for (const p of pillars) p.visible = p.x < x1 && p.x + p.w > x0;
     for (const s of slabs) s.s.visible = s.x < x1 && s.x + SLAB > x0;
+    for (const s of signs) s.c.visible = s.c.x < x1 && s.c.x + s.c.w > x0;
   }
 
+  // Script time per frame (update + render submission) for the harness, as in the HD tier (World.scriptTimes).
+  const ST = new Float32Array(4096); let stN = 0, stT0 = 0;
   function tick(t) {
+    stT0 = performance.now();
     const dt = Math.min(50, t.deltaMS) / 1000;
     update(dt);
+  }
+  function tickEnd() {
+    ST[stN % ST.length] = performance.now() - stT0; stN++;
     if (!awake && !busy()) { app.ticker.stop(); running = false; }
   }
   let running = false;
@@ -322,10 +405,13 @@
   let paused = false;
 
   /* ---------- build the scene ---------- */
+  // build(): the layers, the containers, the hero and the pools (once, and again after a resize); buildStage(): the
+  // current stage's islands, slabs, lifts, signs, coins, palms, START and the camp or summit.
   function build() {
     const st = app.stage;
-    st.removeChildren();
-    world = new PIXI.Container(); back = new PIXI.Container(); mid = new PIXI.Container(); front = new PIXI.Container(); fx = new PIXI.Container();
+    for (const k of st.removeChildren()) k.destroy({ children: true });
+    world = new PIXI.Container(); back = new PIXI.Container(); mid = new PIXI.Container(); fx = new PIXI.Container();
+    stB = new PIXI.Container(); stM = new PIXI.Container();
     // Background, back to front. The sky is the renderer's clear colour.
     layer.bg = new PIXI.TilingSprite({ texture: tex.bg, width: VW, height: kit.colors.height * S }); layer.bg.tileScale.set(S);
     waterFill = new PIXI.Sprite(PIXI.Texture.WHITE); waterFill.width = VW; waterFill.tint = kit.colors.water;
@@ -333,56 +419,27 @@
     layer.mf = new PIXI.TilingSprite({ texture: tex.mtnFront, width: VW, height: tex.mtnFront.height * S }); layer.mf.tileScale.set(S);
     layer.stars = new PIXI.TilingSprite({ texture: tex.stars, width: VW, height: tex.stars.height * S }); layer.stars.tileScale.set(S); layer.stars.visible = false;
     st.addChild(layer.stars, waterFill, layer.bg, layer.cb);
+    glints.length = 0;
     if (!LOW) {
       layer.mb = new PIXI.TilingSprite({ texture: tex.mtnBack, width: VW, height: tex.mtnBack.height * S }); layer.mb.tileScale.set(S);
       layer.cs = new PIXI.TilingSprite({ texture: tex.cloudsSmall, width: VW, height: tex.cloudsSmall.height * S }); layer.cs.tileScale.set(S);
       st.addChild(layer.mb, layer.mf, layer.cs);
-      glints.length = 0;
       [['big', 0.18, 8], ['medium', 0.62, 16], ['small', 0.84, 11], ['medium', 0.32, 26], ['small', 0.08, 34]].forEach(([k, fx0, dy], j) => {
         const s = new PIXI.Sprite(frame('glint/' + k + '/0')); s.scale.set(S); s.x = Math.round(VW * fx0); st.addChild(s);
         glints.push({ s, fr: animFrames('glint/' + k), dy, o: j });
       });
-    } else { st.addChild(layer.mf); layer.cs = layer.mb = null; glints.length = 0; }
+    } else { st.addChild(layer.mf); layer.cs = layer.mb = null; }
     world.scale.set(S);
-    world.addChild(back, mid, front, fx);
+    back.addChild(stB); mid.addChild(stM);
+    world.addChild(back, mid, fx);
     st.addChild(world);
     // Night: the background swaps to its night textures; this veil dims the world itself to moonlight.
     overlay = new PIXI.Graphics().rect(0, 0, 4000, 4000).fill({ color: 0x101a40, alpha: 0.3 }); overlay.visible = night;
     st.addChild(overlay);
-
-    // Terrain: floating islands. The START island carries ledge 0; one island per ledge; stepping slabs between
-    // them; a wider summit island. Each island is baked once into its own small texture.
-    pillars.length = 0;
-    const addIsland = (x, y, w, rows) => {
-      const p = new PIXI.Sprite(bakeIsland(Math.round(w / T), rows));
-      p.x = x; p.y = y; p.w = w; back.addChild(p); pillars.push(p); return p;
-    };
-    addIsland(START_X - START_W + 136, 0, START_W + LW, 3);
-    for (let i = 1; i < N; i++) addIsland(L[i].x, L[i].y, LW, 2 + (i % 2));
-    addIsland(L[N].x, L[N].y, SUMW, 3);
-    for (const s of slabs) { s.s = spr(frame('terrain'), s.x, s.y, 0, 0, back); s.s.texture = slabTex(); }
-    // Decorations: palms behind, a front palm at the start.
-    palms.length = 0;
-    const palm = (k, x, y, o) => { const s = spr(frame('palm/' + k + '/0'), x, y + 4, 0.5, 1, back); back.setChildIndex(s, 0); palms.push({ s, fr: animFrames('palm/' + k), o }); };
-    palm('regular', START_X - 20, 0, 0); palm('left', START_X + 60, 0, 1); palm('right', L[N].x + 96, L[N].y, 2);
-    if (N > 4) palm('regular', L[4].x + 40, L[4].y, 3);
-    startSign = spr(frame('start/idle'), START_X - 4, 3, 0.5, 1, mid);
-    trophy = spr(frame('end/idle'), L[N].x + SUMW - 38, L[N].y + 4, 0.5, 1, mid);
-    // Lifts: a platform on a chain that reaches above the view.
-    for (const l of lifts) {
-      l.top = l.y1 - 260;
-      l.chain = new PIXI.TilingSprite({ texture: frame('lift/chain'), width: 8, height: 8 }); l.chain.x = l.x + 12; back.addChild(l.chain);
-      l.s = spr(frame('lift/off'), l.x, l.y, 0, 0, mid); l.fr = animFrames('lift/on'); l.on = false;
-    }
-    // Signs, waiting "?" bubbles and the coins that wait on them after grading.
-    signs.length = 0; coins.length = 0;
-    for (let i = 0; i < N; i++) {
-      const s = spr(signTex(i, 0), signX(i), L[i].y + 3, 0.5, 1, mid);
-      const b = spr(frame('bubble/q-in/2'), signX(i) + 1, L[i].y - 32, 0.5, 1, mid);
-      signs.push({ s, bubble: b, st: 0 });
-      const c = spr(frame('coin/gold/0'), signX(i), L[i].y - 44, 0.5, 0.5, mid); c.visible = false; c.pop = 1; c.fr = animFrames('coin/gold');
-      coins.push(c);
-    }
+    // The stage change's veil and caption (screen space, over everything).
+    veil = new PIXI.Sprite(PIXI.Texture.WHITE); veil.width = VW; veil.height = VH; veil.tint = 0x141a33; veil.visible = false;
+    capC = new PIXI.Container(); capC.visible = false;
+    st.addChild(veil, capC);
     shadow = spr(frame('shadow'), 0, 0, 0.5, 0.5, mid); shadow.alpha = 0.5;
     hero = spr(frame(heroKey + '/idle/0'), 0, 0, heroDef.foot.x / heroDef.frame[0], heroDef.foot.y / heroDef.frame[1], mid);
     heroAnims();
@@ -390,7 +447,49 @@
     xpLabel = spr(lbl10, 0, 0, 0.5, 1, fx); xpLabel.visible = false;
     anims.length = 0; parts.length = 0;
     for (let i = 0; i < 36; i++) { const s = spr(frame('puff'), 0, 0, 0.5, 0.5, fx); s.visible = false; parts.push({ s, vx: 0, vy: 0, t: 0, l: 1, g: 0, spin: 0 }); }
+    buildStage();
     built = true;
+  }
+  function buildStage() {
+    // one-shots playing inside the old stage (the START sign, the camp flag) leave it first, so the pool keeps them
+    for (const a of anims) if (a.s.parent === stB || a.s.parent === stM) { a.s.parent.removeChild(a.s); a.s.visible = false; a.done = null; }
+    for (const c of [stB, stM]) for (const k of c.removeChildren()) k.destroy({ children: true });
+    pillars.length = 0; palms.length = 0; signs.length = 0; coins.length = 0; camp = null;
+    // Terrain: floating islands. The START island carries ledge 0; one island per ledge; stepping slabs between
+    // them; a wider island at the top (the camp, or the summit in the last stage). Textures are shared by size.
+    const addIsland = (x, y, w, rows) => { const p = new PIXI.Sprite(islandTex(Math.round(w / T), rows)); p.x = x; p.y = y; p.w = w; stB.addChild(p); pillars.push(p); return p; };
+    addIsland(START_X - START_W + 136, 0, START_W + LW, 3);
+    for (let j = 1; j < sK; j++) addIsland(L[j].x, L[j].y, LW, 2 + ((sA + j) % 2));
+    addIsland(L[sK].x, L[sK].y, SUMW, 3);
+    for (const s of slabs) { s.s = spr(slabTex(), s.x, s.y, 0, 0, stB); }
+    // Decorations: palms behind, a front palm at the start.
+    const palm = (k, x, y, o) => { const s = spr(frame('palm/' + k + '/0'), x, y + 4, 0.5, 1, stB); stB.setChildIndex(s, 0); palms.push({ s, fr: animFrames('palm/' + k), o }); };
+    palm('regular', START_X - 20, 0, 0); palm('left', START_X + 60, 0, 1); palm('right', L[sK].x + 96, L[sK].y, 2);
+    if (sK > 4) palm('regular', L[4].x + 40, L[4].y, 3);
+    // START (the first stage) or the stage number on a plate (the next ones; it is wider, so it stands right of the
+    // climber's start, where the camera always shows it).
+    startSign = stage ? plate('STAGE ' + (stage + 1), HOME_X + 52, 3, stM) : spr(frame('start/idle'), START_X - 4, 3, 0.5, 1, stM);
+    // The top of the stage: the trophy on the summit, or a camp (a CAMP plate and a checkpoint flag that runs up).
+    trophy = spr(frame('end/idle'), L[sK].x + SUMW - 38, L[sK].y + 4, 0.5, 1, stM); trophy.visible = lastStage();
+    if (!lastStage()) {
+      plate('CAMP', signX(sK) + 4, L[sK].y + 3, stM);
+      camp = spr(frame('flag/pole'), L[sK].x + SUMW - 34, L[sK].y + 4, 0.5, 1, stM); camp.up = false; camp.fr = animFrames('flag/idle');
+    }
+    // Lifts: a platform on a chain that reaches above the view.
+    for (const l of lifts) {
+      l.top = l.y1 - 260;
+      l.chain = new PIXI.TilingSprite({ texture: frame('lift/chain'), width: 8, height: 8 }); l.chain.x = l.x + 12; stB.addChild(l.chain);
+      l.s = spr(frame('lift/off'), l.x, l.y, 0, 0, stM); l.fr = animFrames('lift/on'); l.on = false;
+    }
+    // Signs (shared plate + pixel-font number), waiting "?" bubbles and the coins that wait on them after grading.
+    for (let j = 0; j < sK; j++) {
+      const c = plate('Q' + (sA + j + 1), signX(j), L[j].y + 3, stM);
+      const badge = new PIXI.Sprite(badgeTex(1)); badge.x = c.w - 5; badge.y = -6; badge.visible = false; c.addChild(badge);
+      const b = spr(frame('bubble/q-in/2'), signX(j) + 1, L[j].y - 32, 0.5, 1, stM);
+      signs.push({ c, badge, bubble: b, st: 0 });
+      const k = spr(frame('coin/gold/0'), signX(j), L[j].y - 44, 0.5, 0.5, stM); k.visible = false; k.pop = 1; k.fr = animFrames('coin/gold');
+      coins.push(k);
+    }
   }
   let slabT = null;
   function slabTex() {
@@ -398,27 +497,31 @@
     const [c, x] = canvas(T, T); tile(x, 4, 4, 0, 0);
     return (slabT = PIXI.Texture.from(c));
   }
+  function setStage(k) { stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout(); buildStage(); }
 
   function resetState() {
     plan.length = 0; planOn = false; onArrive = null; coin.on = false; celebrateT = 0; H.sq = 0;
-    H.x = START_X + 24; H.y = H.gy = 0; heroAnim('idle');
-    for (let i = 0; i < N; i++) setSign(i, 0);
+    H.x = HOME_X; H.y = H.gy = 0; heroAnim('idle');
+    for (let j = 0; j < sK; j++) setSign(j, 0);
     for (const c of coins) c.visible = false;
     for (const l of lifts) { l.y = l.y0; liftAnim(l, false); }
     for (const a of anims) a.s.visible = false;
     for (const p of parts) p.s.visible = false;
     if (xpLabel) xpLabel.visible = false;
-    startSign.texture = frame('start/idle'); trophy.texture = frame('end/idle');
+    fade(0);
+    startSign.visible = true; if (startSign.texture) startSign.texture = frame('start/idle');
+    trophy.texture = frame('end/idle');
     cam.fy0 = cam.fy1 = cam.fy = feetY('walk'); snapCam(); cam0y = cam.y;
   }
-  function renderOnce() { if (!app) return; update(0); app.render(); }
+  function renderOnce() { if (!app) return; stT0 = performance.now(); update(0); app.render(); }
   let laterT = 0;
   function renderLater() { if (!laterT) laterT = setTimeout(() => { laterT = 0; if (!running) renderOnce(); }, 260); }
 
   /* ---------- public interface (used by app.js) ---------- */
   Object.assign(API, {
     init(e) {
-      env = e; N = e.N; RM = e.RM; LOW = e.LOW; night = e.night; VW = e.W; VH = e.H;
+      N = e.N; RM = e.RM; LOW = e.LOW; night = e.night; VW = e.W; VH = e.H;
+      STG = e.stages && e.stages.length ? e.stages : [[0, N]]; stage = 0; sA = 0; sK = STG[0][1] - STG[0][0];
       heroKey = P.get('hero') || 'captain';
       PIXI.TextureSource.defaultOptions.scaleMode = 'nearest';
       app = new PIXI.Application();
@@ -441,7 +544,8 @@
       }).then(() => {
         S = scaleFor(VW, VH);
         layout(); build(); resetState();
-        app.ticker.add(tick);
+        app.ticker.add(tick, null, PIXI.UPDATE_PRIORITY.HIGH);
+        app.ticker.add(tickEnd, null, PIXI.UPDATE_PRIORITY.UTILITY);
         applyNight();
         renderOnce();
         // Ambient life at the start screen (idle breathing, palms, clouds) runs until the first tap.
@@ -450,28 +554,38 @@
     },
     walkToFirst(cb) {
       plan.length = 0; Wk(H.x, 0, stand(0), 0, 600, 2);
-      if (!RM) { const a = oneShot('start/go', startSign.x, startSign.y, mid); startSign.visible = false; a.done = () => { startSign.visible = true; }; }
+      if (!RM && startSign.texture) { const a = oneShot('start/go', startSign.x, startSign.y, stM); startSign.visible = false; a.done = () => { startSign.visible = true; }; }
       begin(cb);
     },
-    travel(i, cb) { plan.length = 0; planMove(i); begin(cb); },
+    // i is the chapter's MCQ index. After the last MCQ of a stage the climber reaches the camp, the flag runs up, the
+    // screen fades with the next stage's number, and she walks in from the next START island.
+    travel(i, cb) {
+      const j = J(i); plan.length = 0; planMove(j);
+      if (j === sK - 1 && !lastStage()) { caption(stage + 1); Wt(stand(sK), L[sK].y, 260); Fd(RM ? 1 : 820); Wk(HOME_X, 0, stand(0), 0, 520, 2); }
+      begin(cb);
+    },
     toSummit(cb) {
-      const i = N - 1; plan.length = 0; planMove(i);
+      const j = sK - 1; plan.length = 0; planMove(j);
       const end = trophy.x - 22;
-      Wk(stand(N), L[N].y, end, L[N].y, 260, 1);
+      Wk(stand(sK), L[sK].y, end, L[sK].y, 260, 1);
       begin(() => {
         if (!RM) {
-          const a = oneShot('end/press', trophy.x, trophy.y, mid); trophy.visible = false; a.done = () => { trophy.visible = true; trophy.texture = frame('end/idle'); };
+          const a = oneShot('end/press', trophy.x, trophy.y, stM); trophy.visible = false; a.done = () => { trophy.visible = true; trophy.texture = frame('end/idle'); };
           celebrateT = 0.9; burst(trophy.x, trophy.y - 40, 24, 'confetti'); sfx('cheer');
         }
         cb(RM ? 0 : 900);
       });
     },
     coin(i, gold, cb) {
-      if (RM) { coins[i].visible = false; cb(i); return; }
-      coinStart(i, gold, cb); kick();
+      const j = J(i);
+      if (RM || !coins[j]) { if (coins[j]) { coins[j].visible = false; coins[j].got = true; } cb(i); return; }
+      coinStart(j, gold, () => cb(i)); kick();
     },
     // animate=false (Strip, Classic): the world is behind the sheet, so it is redrawn later, off the tap's frame.
-    sign(i, st, animate) { setSign(i, st); if (animate && !RM) kick(); else { coins[i].pop = 1; renderLater(); } },
+    sign(i, st, animate) {
+      const j = J(i); if (j < 0 || j >= sK) return;
+      setSign(j, st); if (animate && !RM) kick(); else { coins[j].pop = 1; renderLater(); }
+    },
     pose(p) {
       if (p === 'happy' && !RM) { squash(0.22, 0.14); kick(); }
       else if (p === 'read') heroAnim('idle');
@@ -480,10 +594,13 @@
       cam.fy0 = cam.fy; cam.fy1 = feetY(f); cam.ft = RM ? 1 : 0;
       if (RM) { snapCam(); renderOnce(); } else kick();
     },
+    // Strip and Classic jump straight to a question (the world is behind the sheet); this may change the stage.
     place(i) {
-      const k = i === 'summit' ? N : i;
-      H.x = i === 'summit' ? trophy.x - 22 : stand(k); H.y = H.gy = L[k].y;
-      for (const l of lifts) if (l.i < k) { l.y = l.y1; liftAnim(l, false); }
+      const sg = i === 'summit' ? STG.length - 1 : stageIdx(i);
+      if (sg !== stage) setStage(sg);
+      const k = i === 'summit' ? sK : J(i);
+      H.x = i === 'summit' ? trophy.x - 22 : stand(k); H.y = H.gy = L[k].y; fade(0);
+      for (const l of lifts) if (l.j < k) { l.y = l.y1; liftAnim(l, false); }
       heroAnim('idle'); snapCam(); renderLater();
     },
     skip() {
@@ -495,29 +612,38 @@
         if (xpLabel) xpLabel.visible = false;
         for (const p of parts) p.s.visible = false;
         for (const a of anims) { if (a.s.visible && a.done) a.done(); a.s.visible = false; }
-        trophy.visible = true; startSign.visible = true; H.sq = 0;
+        trophy.visible = lastStage(); startSign.visible = true; H.sq = 0;
         snapCam(); renderOnce();
       }
       return did;
     },
     sleep() { awake = false; cam.ft = 1; cam.fy = cam.fy1; snapCam(); renderOnce(); },
     wake,
-    reset() { resetState(); renderOnce(); if (!RM) wake(); },
+    reset() { if (stage !== 0) setStage(0); resetState(); renderOnce(); if (!RM) wake(); },
     resize(w, h) {
       if (!app || !built) return;
       VW = w; VH = h; app.renderer.resize(w, h);
-      const s = scaleFor(w, h);
-      S = s; build(); applyNight();
-      const keep = { x: H.x, y: H.y };
-      for (let i = 0; i < N; i++) setSign(i, signs[i] ? signs[i].st : 0);
-      H.x = keep.x; H.y = keep.y;
+      S = scaleFor(w, h);
+      const keep = { x: H.x, y: H.y, gy: H.gy }, sts = signs.map(s => s.st), got = coins.map(c => c.got), ly = lifts.map(l => l.y), up = camp && camp.up, f = fadeK;
+      build(); applyNight();
+      // signs keep their badges; coins already collected stay gone
+      sts.forEach((st, j) => { setSign(j, st); coins[j].pop = 1; coins[j].scale.set(1); if (got[j]) { coins[j].visible = false; coins[j].got = true; } });
+      lifts.forEach((l, j) => { l.y = ly[j]; liftAnim(l, false); });
+      if (up) raiseCamp(true);
+      H.x = keep.x; H.y = keep.y; H.gy = keep.gy;
+      if (f > 0) { const w = plan[pi]; caption(w && w.k === 5 && w.swapped ? stage : stage + 1); }
+      fade(f);
       snapCam(); renderOnce();
     },
-    theme(n) { night = n; applyNight(); renderOnce(); },
-    pause() { paused = true; if (app) app.ticker.stop(); running = false; },
-    resume() { paused = false; if (app && (awake || busy())) { running = true; app.ticker.start(); } },
+    theme(n) { night = n; if (built) { applyNight(); renderOnce(); } },
+    pause() { paused = true; if (app && app.ticker) app.ticker.stop(); running = false; },
+    resume() { paused = false; if (built && (awake || busy())) { running = true; app.ticker.start(); } },
     running: () => running,
-    info: () => 'S ' + S + ' · ' + (app && app.renderer ? app.renderer.name || app.renderer.type : '-') + ' · ' + heroKey,
+    scriptTimes(reset) { const n = Math.min(stN, ST.length), out = Array.from(ST.subarray(0, n)); if (reset) stN = 0; return out; },
+    info: () => 'S ' + S + ' · ' + (app && app.renderer ? app.renderer.name || app.renderer.type : '-') + ' · ' + heroKey + ' · stage ' + (stage + 1) + '/' + STG.length,
+    // for the screenshot tool and the harness
+    heroState: () => planOn && plan[pi] && plan[pi].k === 2 ? 'lift' : celebrateT > 0 ? 'cheer' : H.anim,
+    stageInfo: () => ({ stage, stages: STG.length, wipe: fadeK }),
     stripArt: () => kit && {
       coin(c, gold, x, y, size) { const f = kit.atlas.frames[(gold ? 'coin/gold' : 'coin/silver') + '/0']; c.imageSmoothingEnabled = false; c.drawImage(atlasImg.source.resource, f[0], f[1], f[2], f[3], x - size / 2, y - size / 2, size, size); },
       flag(c, x, y) { const f = kit.atlas.frames['end/idle']; c.imageSmoothingEnabled = false; c.drawImage(atlasImg.source.resource, f[0], f[1], f[2], f[3], x - 14, y - 26, 28, 28); },

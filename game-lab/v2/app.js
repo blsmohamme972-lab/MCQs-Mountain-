@@ -245,7 +245,7 @@
     const t = now(); gameT += t - tNext; lab.state = 'done'; skipOn(false); hud(true);
     if (mode === 'strip') drawStrip();
     const c = RS.filter(r => r.correct).length, sec = Math.round(readT / 1000), per = gameT / N / 1000, z = per * 100 / 60;
-    $('dS').textContent = N + ' MCQs · ' + c + ' correct · +' + xp + ' XP';
+    $('dS').textContent = N + (N === 1 ? ' MCQ · ' : ' MCQs · ') + c + ' correct · +' + xp + ' XP';
     const L2 = $('dL'); L2.textContent = '';
     ['Time reading and answering: ' + Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0'),
       'Time added by the game: ' + (gameT / 1000).toFixed(1) + ' s (' + per.toFixed(1) + ' s per MCQ)',
