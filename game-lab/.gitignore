@@ -1,5 +1,5 @@
 # Lean storage: text only in the lab (see game-lab/README.md).
-node_modules/
+node_modules
 tools/package.json
 tools/package-lock.json
 *.png
@@ -19,3 +19,5 @@ assets-test/
 *.riv
 *.skel
 *.atlas
+# Engine builds (D24): fetched by tools/fetch_engine.py, never committed.
+vendor/

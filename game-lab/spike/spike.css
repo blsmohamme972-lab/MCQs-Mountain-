@@ -1,0 +1,6 @@
+html,body{height:100%;margin:0;background:#8fd3ff;overflow:hidden;font:16px/1.5 system-ui,sans-serif}
+#game,#game canvas{position:fixed;left:0;top:0;width:100%!important;height:100%!important;display:block;image-rendering:pixelated}
+#sheet{position:fixed;left:0;right:0;bottom:0;height:78%;padding:16px;box-sizing:border-box;background:#fff;border-radius:22px 22px 0 0;
+ transform:translateY(calc(100% + 12px));opacity:0;visibility:hidden;transition:transform 140ms cubic-bezier(.4,0,1,1),opacity 140ms linear,visibility 0s 140ms;will-change:transform}
+#sheet.open{transform:none;opacity:1;visibility:visible;transition:transform 200ms cubic-bezier(.2,.8,.2,1),opacity 200ms linear,visibility 0s}
+#sheet button{display:block;width:100%;min-height:52px;margin:8px 0;text-align:left;font:600 16px/1.4 system-ui;border:2px solid #cad2e3;border-radius:12px;background:#fff}

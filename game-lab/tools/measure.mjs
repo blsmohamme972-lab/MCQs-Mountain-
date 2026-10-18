@@ -1,6 +1,8 @@
 // Kafu game-lab speed test: drives a prototype through N questions in Chromium
 // and reports frame times and transition latencies, with CPU throttling as a
-// low-end-phone proxy. Usage: node measure.mjs <file.html> [--mode story|strip|classic] [--cpu 1,4,6] [--q 6] [--json out.json]
+// low-end-phone proxy. Usage: node measure.mjs <file.html | http(s)://url> [--mode story|strip|classic] [--cpu 1,4,6] [--q 6] [--json out.json]
+// Engine-based versions load textures with fetch/WebGL, which fails from file://: serve game-lab/ with
+// `python3 -m http.server 8765` (from game-lab/) and pass http://127.0.0.1:8765/v2/index.html (extra query params are kept).
 //
 // Contract every prototype exposes (see game-lab/README.md):
 //   window.__lab.state  'start' | 'moving' | 'question' | 'done'
@@ -10,12 +12,15 @@
 //   performance.mark('lab:sheet-visible')  first frame the next question sheet is fully open
 //   buttons: [data-lab=go] start arrow, [data-lab=opt] options, [data-lab=next] next question
 //   ?mode=story|strip|classic selects the variant
+//   optional: performance.mark('lab:game-load') when the game code starts loading and
+//   performance.mark('lab:game-ready') on the first drawn frame (engine + art loaded), reported as load times
 import { chromium } from 'playwright';
 import { resolve } from 'node:path';
 import { writeFileSync } from 'node:fs';
 
 const args = process.argv.slice(2);
-const file = resolve(args[0]);
+const isUrl = /^https?:\/\//.test(args[0] || '');
+const file = isUrl ? args[0] : resolve(args[0]);
 const opt = (name, fallback) => { const i = args.indexOf('--' + name); return i < 0 ? fallback : args[i + 1]; };
 const cpus = opt('cpu', '1,4,6').split(',').map(Number);
 const questions = Number(opt('q', '6'));
@@ -40,10 +45,20 @@ async function run(cpu) {
     try { new PerformanceObserver(l => l.getEntries().forEach(e => longTasks.push([e.startTime, e.duration]))).observe({ type: 'longtask', buffered: true }); } catch (_) {}
     window.__probe = { frames, longTasks };
   });
+  let bytes = 0;
+  page.on('requestfinished', async r => { try { const s = await r.sizes(); bytes += s.responseBodySize; } catch (_) {} });
   const cdp = await context.newCDPSession(page);
-  await page.goto('file://' + file + '?mode=' + mode);
-  await page.waitForFunction(() => window.__lab && window.__lab.state === 'start', null, { timeout: 10000 });
+  // Throttle before navigation so the load time (engine + art + first frame) is measured at the same CPU rate.
   await cdp.send('Emulation.setCPUThrottlingRate', { rate: cpu });
+  const url = isUrl ? file + (file.includes('?') ? '&' : '?') + 'mode=' + mode : 'file://' + file + '?mode=' + mode;
+  await page.goto(url);
+  await page.waitForFunction(() => window.__lab && window.__lab.state === 'start', null, { timeout: 60000 });
+  const load = await page.evaluate(() => {
+    const at = n => { const e = performance.getEntriesByName(n)[0]; return e ? e.startTime : null; };
+    const nav = performance.getEntriesByType('navigation')[0];
+    return { ready: at('lab:game-ready'), start: at('lab:game-load'), dcl: nav ? nav.domContentLoadedEventEnd : null };
+  });
+  const loadBytes = bytes;
   const t0 = await page.evaluate(() => performance.now());
   await page.tap('[data-lab=go]');
   const cycles = [];
@@ -90,6 +105,12 @@ async function run(cpu) {
     next_to_world_visible_ms: { avg: avg('next_to_world_visible_ms'), max: max('next_to_world_visible_ms') },
     next_to_next_question_ms: { avg: avg('next_to_next_question_ms'), max: max('next_to_next_question_ms') },
     js_heap_mb: probe.heap ? round(probe.heap / 1048576) : null,
+    // Load: ms from navigation start to the first drawn frame of the game, and from the start of loading the
+    // game code (lab:game-load) to that frame. null when a prototype does not set the marks (the draft).
+    game_ready_ms: load.ready == null ? null : round(load.ready),
+    game_load_to_ready_ms: load.ready == null || load.start == null ? null : round(load.ready - load.start),
+    dom_content_loaded_ms: load.dcl == null ? null : round(load.dcl),
+    bytes_loaded_uncompressed: loadBytes || null,
     errors,
   };
 }

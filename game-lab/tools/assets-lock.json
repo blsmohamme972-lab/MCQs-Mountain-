@@ -1,0 +1,937 @@
+{
+ "note": "TEST-ONLY assets (D22), register in ASSETS.md. Downloaded by tools/fetch_assets.py into assets-test/ (git-ignored). URLs are pinned to commits; every file is checked against its SHA-256.",
+ "files": [
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/01-Idle/Idle%2001.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/01-Idle/Idle 01.png",
+   "sha256": "08a30fc8be3de84042987fbbd7eb666752787a07807a434d0a8961041b9164dc",
+   "bytes": 715
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/01-Idle/Idle%2002.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/01-Idle/Idle 02.png",
+   "sha256": "4a60dd236d67f4fcd33fd965f036b3befe783fbf8bbbb2596a070623971dbc4c",
+   "bytes": 681
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/01-Idle/Idle%2003.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/01-Idle/Idle 03.png",
+   "sha256": "8cef489c19f4270dc06ef26b4cb980f768c669dcf99f94de5e546bcf78dbd9ae",
+   "bytes": 639
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/01-Idle/Idle%2004.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/01-Idle/Idle 04.png",
+   "sha256": "ca0e7dd583e5ab817d270fb1f4d2150d68f1eb514aa7192dfc20358964409c49",
+   "bytes": 666
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/01-Idle/Idle%2005.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/01-Idle/Idle 05.png",
+   "sha256": "bfbc16279cff11290892fcfbd79f4721b83bf0904dc699108f746bdd9bae0cfe",
+   "bytes": 698
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/02-Run/Run%2001.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/02-Run/Run 01.png",
+   "sha256": "eabeff3ca19f21026ce15366f0c0cfe1d803462f4bfdd7d8feb7b274525b69ae",
+   "bytes": 687
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/02-Run/Run%2002.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/02-Run/Run 02.png",
+   "sha256": "fab1ed5f97f598a9e5a2dfb3553ce6c39a10ca57e053327e7a9b26f501b58c97",
+   "bytes": 708
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/02-Run/Run%2003.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/02-Run/Run 03.png",
+   "sha256": "5b92cc30b4ae1cc799581b1972213c6c60f0fcfc0e5ea5e0ff16c77bf25964d4",
+   "bytes": 669
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/02-Run/Run%2004.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/02-Run/Run 04.png",
+   "sha256": "4fdf71876e9f897d0eb11f3a86172152349d457b3c503afead78858e44dff603",
+   "bytes": 714
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/02-Run/Run%2005.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/02-Run/Run 05.png",
+   "sha256": "db6eae2710f70ccbd6a2771ff8eee8db1e59760d3bd13281182d0e3ff636ef83",
+   "bytes": 743
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/02-Run/Run%2006.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/02-Run/Run 06.png",
+   "sha256": "e50ac117699c09ad88fc88f3add91201c4139f9e65cda4af1b4a067b25ea4dd8",
+   "bytes": 681
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/03-Jump/Jump%2001.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/03-Jump/Jump 01.png",
+   "sha256": "8791d5e16f6f294e1ca3341031a8ce3e6e8afe3d40c392ec6a28e0a6fd401763",
+   "bytes": 742
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/03-Jump/Jump%2002.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/03-Jump/Jump 02.png",
+   "sha256": "4d58d82e191c35ff66cb012e1fc0dabf7bdccff95fdc9eb86d176b32812d871a",
+   "bytes": 774
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/03-Jump/Jump%2003.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/03-Jump/Jump 03.png",
+   "sha256": "6560f064b6cfcdb8814e96e756722dd778ca2289d9090331123a42150307ca1b",
+   "bytes": 778
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/04-Fall/Fall%2001.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/04-Fall/Fall 01.png",
+   "sha256": "bacb0eb8e3098e5685a72f9289aff75f9109a24af5428995d74eb0b8d4920736",
+   "bytes": 760
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/05-Ground/Ground%2001.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/05-Ground/Ground 01.png",
+   "sha256": "9cdcaab779a5d494eeb4cb07ab62df4077d10efbe262333af64176500821213a",
+   "bytes": 635
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Captain%20Clown%20Nose/Captain%20Clown%20Nose%20without%20Sword/05-Ground/Ground%2002.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose without Sword/05-Ground/Ground 02.png",
+   "sha256": "c1656cd5fa41b1374d2c1660ab5a6a23444354eed553e3c55a59718d0209bd16",
+   "bytes": 676
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Fall%2001.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Fall 01.png",
+   "sha256": "81b2013704ceb33ce434107799653ec703924497ec4f6ed6ac9214db3e27f17f",
+   "bytes": 119
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Fall%2002.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Fall 02.png",
+   "sha256": "588142c1a8fa05ecef599882b6391f07db3d88321122103c73ebf294c632c66d",
+   "bytes": 139
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Fall%2003.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Fall 03.png",
+   "sha256": "639ac71cee1eef1cab6e99c517f6f86b4d9e4a47d5985de2562eedb2c27bb60b",
+   "bytes": 140
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Fall%2004.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Fall 04.png",
+   "sha256": "1f1ac9c0d0e6a0486aa5531cbef8596e3427282bed13751347bd10d4b8bbe86f",
+   "bytes": 126
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Fall%2005.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Fall 05.png",
+   "sha256": "eaf3a43d6a563a81539fdf9e1fcfff45368cb26f1a0a9696655da2f83e7d3e40",
+   "bytes": 109
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Jump%2001.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Jump 01.png",
+   "sha256": "9dcb8ff395183651610093992ff2c3081e31e21895bbdf24b414dd5cc2757769",
+   "bytes": 140
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Jump%2002.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Jump 02.png",
+   "sha256": "ed3344d8aac313c99939134424f2aa808b1c5b64bccbecbb8e1d4b55c0d36253",
+   "bytes": 169
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Jump%2003.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Jump 03.png",
+   "sha256": "69df10200155f3a36728067464e9125dd7b0f57e878a257d79587888d9d0453a",
+   "bytes": 171
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Jump%2004.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Jump 04.png",
+   "sha256": "3f0e9fcf61857a8abbaa692a96f56b16ddda2d668d70f31f04602b93738fd485",
+   "bytes": 159
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Jump%2005.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Jump 05.png",
+   "sha256": "5626dbf2b7f28ba76bb98e043fe0963213c0b60eb2afb51b824a6e3eb1dcc133",
+   "bytes": 126
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Jump%2006.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Jump 06.png",
+   "sha256": "c153fbe3746c4d1739165046bd500fb55ac583491896f5740f486bcedb11f609",
+   "bytes": 104
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Run%2001.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Run 01.png",
+   "sha256": "a2dbb2a76f21b70f23b3662f341442a5c08ba05d0fc6e84167fd06083fc203ca",
+   "bytes": 117
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Run%2002.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Run 02.png",
+   "sha256": "13bfd84a4632157717b371f53faa6664cb55e9cd5f04274f29cd67cbe2c54dc8",
+   "bytes": 134
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Run%2003.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Run 03.png",
+   "sha256": "ac33e45cf196bd259f8e0e9c69f763b8c94a79b9857c4aa3275cb6a97b3f0896",
+   "bytes": 135
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Run%2004.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Run 04.png",
+   "sha256": "39f98ee9e5e7f1517fb22f98d82445b49a1caba66f1e0d9fccd798e111cfa1b3",
+   "bytes": 118
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dust%20Particles/Run%2005.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dust Particles/Run 05.png",
+   "sha256": "8dbc35b6b0de4ed49c41c14da3946a28c412da096fe1dedb308265f942ee78b4",
+   "bytes": 104
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dialogue/Interrogation/Interrogation%20In%2001.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dialogue/Interrogation/Interrogation In 01.png",
+   "sha256": "586254c28b18a373aa25999b63484fcf38e3fa87fe3eb1be7a9561bdca254ed9",
+   "bytes": 151
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dialogue/Interrogation/Interrogation%20In%2002.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dialogue/Interrogation/Interrogation In 02.png",
+   "sha256": "95bcb1eebd900d0e8f9790edadad21998894166e2fcbb61d1ede680b7d435c92",
+   "bytes": 208
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dialogue/Interrogation/Interrogation%20In%2003.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dialogue/Interrogation/Interrogation In 03.png",
+   "sha256": "7814bb296e7c7ac7be674cd1833d7612c532b2a8d3ab4fcd49c143f2667fb6d6",
+   "bytes": 200
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dialogue/Interrogation/Interrogation%20Out%2001.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dialogue/Interrogation/Interrogation Out 01.png",
+   "sha256": "95bcb1eebd900d0e8f9790edadad21998894166e2fcbb61d1ede680b7d435c92",
+   "bytes": 208
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dialogue/Interrogation/Interrogation%20Out%2002.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dialogue/Interrogation/Interrogation Out 02.png",
+   "sha256": "586254c28b18a373aa25999b63484fcf38e3fa87fe3eb1be7a9561bdca254ed9",
+   "bytes": 151
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dialogue/Exclamation/Exclamation%20In%2001.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dialogue/Exclamation/Exclamation In 01.png",
+   "sha256": "c8914dcc60635560a2a5addb684c9d14ebb1df2a6014bea8e7b6198a055a37f7",
+   "bytes": 85
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dialogue/Exclamation/Exclamation%20In%2002.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dialogue/Exclamation/Exclamation In 02.png",
+   "sha256": "586254c28b18a373aa25999b63484fcf38e3fa87fe3eb1be7a9561bdca254ed9",
+   "bytes": 151
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dialogue/Exclamation/Exclamation%20In%2003.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dialogue/Exclamation/Exclamation In 03.png",
+   "sha256": "207b58acbb2ca3ebc46f9c7822a38bd92fa0e69d1ef2fc8747540cc5e5656aa2",
+   "bytes": 194
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dialogue/Exclamation/Exclamation%20Out%2001.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dialogue/Exclamation/Exclamation Out 01.png",
+   "sha256": "207b58acbb2ca3ebc46f9c7822a38bd92fa0e69d1ef2fc8747540cc5e5656aa2",
+   "bytes": 194
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Captain%20Clown%20Nose/Sprites/Dialogue/Exclamation/Exclamation%20Out%2002.png",
+   "path": "src/treasure-hunters/Captain Clown Nose/Sprites/Dialogue/Exclamation/Exclamation Out 02.png",
+   "sha256": "586254c28b18a373aa25999b63484fcf38e3fa87fe3eb1be7a9561bdca254ed9",
+   "bytes": 151
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Pirate%20Treasure/Sprites/Gold%20Coin/01.png",
+   "path": "src/treasure-hunters/Pirate Treasure/Sprites/Gold Coin/01.png",
+   "sha256": "7e97cf232dd4f8ccf1dd38821b6148c897898d035396df2bede3c06c4ac29d27",
+   "bytes": 264
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Pirate%20Treasure/Sprites/Gold%20Coin/02.png",
+   "path": "src/treasure-hunters/Pirate Treasure/Sprites/Gold Coin/02.png",
+   "sha256": "2be7bed18058c9c43d3351e2f4ce297bae88c73cd1e42f3e88abd26ff810ffb9",
+   "bytes": 219
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Pirate%20Treasure/Sprites/Gold%20Coin/03.png",
+   "path": "src/treasure-hunters/Pirate Treasure/Sprites/Gold Coin/03.png",
+   "sha256": "60a1ed835b9485f7b7f8ab25037d3041becc27f80ea192840b27bf946ce7be3e",
+   "bytes": 129
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Pirate%20Treasure/Sprites/Gold%20Coin/04.png",
+   "path": "src/treasure-hunters/Pirate Treasure/Sprites/Gold Coin/04.png",
+   "sha256": "5b9f4696af044eb17705472e18423af977fbf2ccd43ff0c48f81c6d812ce3c73",
+   "bytes": 217
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Pirate%20Treasure/Sprites/Silver%20Coin/01.png",
+   "path": "src/treasure-hunters/Pirate Treasure/Sprites/Silver Coin/01.png",
+   "sha256": "d31d93573ca743df491ea59dfdae5d331d5f68fc0dee69fdec5f35c2d30b0daf",
+   "bytes": 217
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Pirate%20Treasure/Sprites/Silver%20Coin/02.png",
+   "path": "src/treasure-hunters/Pirate Treasure/Sprites/Silver Coin/02.png",
+   "sha256": "5b04941b81f0b517ef586d19449926e3900d41b38be1e5677bd61a5664696c75",
+   "bytes": 207
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Pirate%20Treasure/Sprites/Silver%20Coin/03.png",
+   "path": "src/treasure-hunters/Pirate Treasure/Sprites/Silver Coin/03.png",
+   "sha256": "590497b761db64ef1c7427480c047aaf82f00a22569c60971802cd9343424874",
+   "bytes": 129
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Pirate%20Treasure/Sprites/Silver%20Coin/04.png",
+   "path": "src/treasure-hunters/Pirate Treasure/Sprites/Silver Coin/04.png",
+   "sha256": "05522d4597d73cf2ae06f6ec5b2d00c335edafcb92963ed6c16ef9081c04c37b",
+   "bytes": 202
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Pirate%20Treasure/Sprites/Coin%20Effect/01.png",
+   "path": "src/treasure-hunters/Pirate Treasure/Sprites/Coin Effect/01.png",
+   "sha256": "5f7edd0f044a519ef8bcbf2050994ef0b75c1076faec3041f9c8bf93cdd439c4",
+   "bytes": 139
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Pirate%20Treasure/Sprites/Coin%20Effect/02.png",
+   "path": "src/treasure-hunters/Pirate Treasure/Sprites/Coin Effect/02.png",
+   "sha256": "f8a2e0b3e9d399fef3b212f36cd9f03cd480419a83a7221e8308c618a3bdca08",
+   "bytes": 187
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Pirate%20Treasure/Sprites/Coin%20Effect/03.png",
+   "path": "src/treasure-hunters/Pirate Treasure/Sprites/Coin Effect/03.png",
+   "sha256": "24a1a19699a3cee5c0f5e2887cac3538d3e99ed3a7f4a375f540f6aae461517d",
+   "bytes": 134
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Additional%20Sky.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Additional Sky.png",
+   "sha256": "80bac82a656a65c2e2259648e4a85402d5558e340583bf1251f0448f81aa97e8",
+   "bytes": 123
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Additional%20Water.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Additional Water.png",
+   "sha256": "a074600eaa47280a05771ff3fca44228fac6a4f09cde3b1588aa5cf0c56a8eb5",
+   "bytes": 122
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/BG%20Image.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/BG Image.png",
+   "sha256": "ecf52ac117beae8e65eda8776910896313bca012055c1cf61aac15097ffd1174",
+   "bytes": 586
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Big%20Clouds.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Big Clouds.png",
+   "sha256": "a70b6b08e6bdd1723752f3828cdc391757eeca8fdd3e2afc8adb33a57e1e9ff0",
+   "bytes": 1896
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Small%20Cloud%201.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Small Cloud 1.png",
+   "sha256": "46d29b9047a27a427aff8eccca71686661470a36f29f61674da56530216c1b5a",
+   "bytes": 393
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Small%20Cloud%202.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Small Cloud 2.png",
+   "sha256": "7f83ca42039480d4090ed00370e68881497dde629b4a14c347ff2c323b697cad",
+   "bytes": 567
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Small%20Cloud%203.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Small Cloud 3.png",
+   "sha256": "365747ad99f6c860f90de92cd68b02d4cc7549e72f93e91330df52122589eec5",
+   "bytes": 620
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Water%20Reflect%20Big%2001.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Water Reflect Big 01.png",
+   "sha256": "15a856420142bc1d470466c55f1403b33292e88c3648312a76a9017a39ac1942",
+   "bytes": 223
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Water%20Reflect%20Big%2002.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Water Reflect Big 02.png",
+   "sha256": "ccae5be918ce4abf2c8e348fc5219effbeb3ea93938b684c02ea37bb6c4e8bf8",
+   "bytes": 222
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Water%20Reflect%20Big%2003.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Water Reflect Big 03.png",
+   "sha256": "a3dc8600797d2e9767adc86a43c128aab16e987581db7d0027ef1593b2e6a43c",
+   "bytes": 236
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Water%20Reflect%20Big%2004.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Water Reflect Big 04.png",
+   "sha256": "7237ad3c7268f826f5820a37cccc9801c1977378898c715918db5ffc44bd542e",
+   "bytes": 236
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Water%20Reflect%20Medium%2001.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Water Reflect Medium 01.png",
+   "sha256": "d04499a9a99548cc6af0b7de0d621f8be658c28d995712b8dcbcfd41dd310ec6",
+   "bytes": 136
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Water%20Reflect%20Medium%2002.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Water Reflect Medium 02.png",
+   "sha256": "8d401b2c56b75947bd8f3d50cacb3e9efed92f48f8f01bd3f9458cffe0145f98",
+   "bytes": 150
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Water%20Reflect%20Medium%2003.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Water Reflect Medium 03.png",
+   "sha256": "a914c96087817f2c7bc1e83766f3e244364ce038358d86c4dfcf11ecab102351",
+   "bytes": 153
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Water%20Reflect%20Medium%2004.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Water Reflect Medium 04.png",
+   "sha256": "0d0698dff0e7de28de8511ce5bcacf671fe1b53897865bed954c29f0fa18ac27",
+   "bytes": 148
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Water%20Reflect%20Small%2001.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Water Reflect Small 01.png",
+   "sha256": "3be30e2981d73813aca8aff3494f991e25e339b9c13bcfa863d5816058f8d7bf",
+   "bytes": 137
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Water%20Reflect%20Small%2002.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Water Reflect Small 02.png",
+   "sha256": "d9d0bf271d85cb52e85176847eb662d788496dfe2021f66555f7426968aa5c44",
+   "bytes": 138
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Water%20Reflect%20Small%2003.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Water Reflect Small 03.png",
+   "sha256": "f016bad9cc77a9e1f22bb94dd69d082e34276cef4e206055550407f1e4788652",
+   "bytes": 137
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Background/Water%20Reflect%20Small%2004.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Background/Water Reflect Small 04.png",
+   "sha256": "3a4fa55b840bd17061673a14f0eb4aaad45f28f10d437e34d6df875442a39c6d",
+   "bytes": 134
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Back%20Palm%20Trees/Back%20Palm%20Tree%20Left%2001.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Left 01.png",
+   "sha256": "4c592a5d2f710fe822a86113038d39861ff50f95c7fd14393bd6e143fbf50b99",
+   "bytes": 905
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Back%20Palm%20Trees/Back%20Palm%20Tree%20Left%2002.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Left 02.png",
+   "sha256": "220478c7f1dbcdfbf3cc4f549c6a9ee01e73aa15c2dd76594c25fdbcf521ed94",
+   "bytes": 928
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Back%20Palm%20Trees/Back%20Palm%20Tree%20Left%2003.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Left 03.png",
+   "sha256": "9707f2660f715dbf1f0a04a23a2d82e99f865bc697e521fe3676117dc935a704",
+   "bytes": 909
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Back%20Palm%20Trees/Back%20Palm%20Tree%20Left%2004.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Left 04.png",
+   "sha256": "e2dff9506ef4512ef1e2fc1c9672b66e07d7b22c74bb35dc92f9430cae1d870a",
+   "bytes": 902
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Back%20Palm%20Trees/Back%20Palm%20Tree%20Regular%2001.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Regular 01.png",
+   "sha256": "c2d4717dcf4e74d8168210bb11f2b09cc0b51af6940c0ca79195ff4ccedc476a",
+   "bytes": 895
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Back%20Palm%20Trees/Back%20Palm%20Tree%20Regular%2002.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Regular 02.png",
+   "sha256": "cbfb91423b9adfb3b63a593ee91d876a83f6abbefaf3fd8260a2a3cf1afc857a",
+   "bytes": 911
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Back%20Palm%20Trees/Back%20Palm%20Tree%20Regular%2003.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Regular 03.png",
+   "sha256": "e41a9e73944fc89d8b2ca0c801db64d923fdc0c230c77428c1ba6eaa06c7a409",
+   "bytes": 900
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Back%20Palm%20Trees/Back%20Palm%20Tree%20Regular%2004.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Regular 04.png",
+   "sha256": "5b0692c2c92f31b89ee3b420af1db58c6eee6ec81ec5d9e6c8d75b3173077fba",
+   "bytes": 886
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Back%20Palm%20Trees/Back%20Palm%20Tree%20Right%2001.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Right 01.png",
+   "sha256": "f21c68c5d99e2f7c1b3e8385e91bcfc6daf3c47bc3d6822565d6af4cd7ea578d",
+   "bytes": 884
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Back%20Palm%20Trees/Back%20Palm%20Tree%20Right%2002.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Right 02.png",
+   "sha256": "f86caa2f316fc36264cd320c89fa151fc4450ef8e2688e872f8a86cb4b6f26e8",
+   "bytes": 896
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Back%20Palm%20Trees/Back%20Palm%20Tree%20Right%2003.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Right 03.png",
+   "sha256": "2aad44370efdcf86f56756891a6a5a5e7c4bc5faaee23bac395a16547ddae932",
+   "bytes": 880
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Back%20Palm%20Trees/Back%20Palm%20Tree%20Right%2004.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Back Palm Trees/Back Palm Tree Right 04.png",
+   "sha256": "6e676ad5a9aa7f9f60fdf1f03822a6cd9c3ed490a3efe530d5ee4b17ce89a0de",
+   "bytes": 871
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Front%20Palm%20Trees/Front%20Palm%20Bottom%20and%20Grass%20%2832x32%29.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Front Palm Trees/Front Palm Bottom and Grass (32x32).png",
+   "sha256": "292490138cfe675d63f4fc13edcb48aa732fd8c11ea1c8bf3802f1edd8beafd9",
+   "bytes": 1319
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Front%20Palm%20Trees/Front%20Palm%20Tree%20Top%2001.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Front Palm Trees/Front Palm Tree Top 01.png",
+   "sha256": "0b5983234ec9cf671097219f6cfa118c29803e944e31c16685e4b43e49b2ea76",
+   "bytes": 662
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Front%20Palm%20Trees/Front%20Palm%20Tree%20Top%2002.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Front Palm Trees/Front Palm Tree Top 02.png",
+   "sha256": "2f2e8608af6482cdfb7deed0fa5f9c23a45e623ca3841a35f232521a796da808",
+   "bytes": 689
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Front%20Palm%20Trees/Front%20Palm%20Tree%20Top%2003.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Front Palm Trees/Front Palm Tree Top 03.png",
+   "sha256": "b053a27684eaef9b343ec221373fac276803c629e3c8b6ec32efd9514d7ad3c4",
+   "bytes": 677
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Front%20Palm%20Trees/Front%20Palm%20Tree%20Top%2004.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Front Palm Trees/Front Palm Tree Top 04.png",
+   "sha256": "747770dd8cf689a3b4cea2ba161100af5b36d00b7ef9a4f34cebf420c6c18b02",
+   "bytes": 670
+  },
+  {
+   "pack": "treasure-hunters",
+   "url": "https://raw.githubusercontent.com/MarcialBot/Uppy-Bat/e8098cdd1a0981edda7dad7a4a6afd8aeb4ed421/Treasure%20Hunters/Palm%20Tree%20Island/Sprites/Terrain/Terrain%20%2832x32%29.png",
+   "path": "src/treasure-hunters/Palm Tree Island/Sprites/Terrain/Terrain (32x32).png",
+   "sha256": "d9dbca45da4e78d35ff0c0b2fb02e44a5251c5d9e500064932b07091b316646f",
+   "bytes": 11796
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Ninja%20Frog/Double%20Jump%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Ninja Frog/Double Jump (32x32).png",
+   "sha256": "6b7401b52565962aed9dce0338d6ca96c1bdd12001c86c557d2153ae9c63f2c5",
+   "bytes": 1898
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Ninja%20Frog/Fall%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Ninja Frog/Fall (32x32).png",
+   "sha256": "713d4428d2f5f02d39c1cec5ab153c8780f40db033aae9765644713724bcdf15",
+   "bytes": 759
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Ninja%20Frog/Idle%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Ninja Frog/Idle (32x32).png",
+   "sha256": "282defd7762fd4a775b60a262d1fccb49037a85fd3b5babc832a632e26619f95",
+   "bytes": 1351
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Ninja%20Frog/Jump%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Ninja Frog/Jump (32x32).png",
+   "sha256": "9e3abe890e4e2248d614a7a834a2ed249566ca2d4e45031f6e6c0831513233d2",
+   "bytes": 761
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Ninja%20Frog/Run%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Ninja Frog/Run (32x32).png",
+   "sha256": "4fca7321ae84f234e232ff0da132e028f69363cdee55999961525561bbf57a7c",
+   "bytes": 2190
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Ninja%20Frog/Wall%20Jump%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Ninja Frog/Wall Jump (32x32).png",
+   "sha256": "e64690cebb7e17b9d604532cbf92ce892902e9a4a69d85af6957e20f2aac7ebd",
+   "bytes": 824
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Pink%20Man/Double%20Jump%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Pink Man/Double Jump (32x32).png",
+   "sha256": "c8b2ab53ac0dacef559adb64180c6608f07c9566de56ce69ee060c3f6a791451",
+   "bytes": 1863
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Pink%20Man/Fall%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Pink Man/Fall (32x32).png",
+   "sha256": "cc1a7a8dd76ae405154cf23d424e4c9652e1db8bd5dc07267504abc3e953754f",
+   "bytes": 677
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Pink%20Man/Idle%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Pink Man/Idle (32x32).png",
+   "sha256": "7ef14870dbcbdd0e0be9acb5cd30a37e0170cd00f6762118a4967d399f17a5e9",
+   "bytes": 1419
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Pink%20Man/Jump%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Pink Man/Jump (32x32).png",
+   "sha256": "ef781c4823de31d000a8ec80ba07860ea88e17716741c4aff106fc77e7f7d18f",
+   "bytes": 769
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Pink%20Man/Run%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Pink Man/Run (32x32).png",
+   "sha256": "f7634c98bcac351f63052f4e4279ed3ae3aa6cea011c14a57d3a96483fbfcb5c",
+   "bytes": 2146
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Pink%20Man/Wall%20Jump%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Pink Man/Wall Jump (32x32).png",
+   "sha256": "65ebb0c151d28d1cbeae8294195b802469da117a6c815baf0bc14a597d73031a",
+   "bytes": 902
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Virtual%20Guy/Double%20Jump%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Virtual Guy/Double Jump (32x32).png",
+   "sha256": "2dac01890eeab55a6a3cbce8ad494f38ca7b40b7dbc21297dd22b5f1e7a63c38",
+   "bytes": 1823
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Virtual%20Guy/Fall%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Virtual Guy/Fall (32x32).png",
+   "sha256": "2b1323ef1f603203f3f0c7571d914b3a412bc6a889227f56b87005b720472994",
+   "bytes": 709
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Virtual%20Guy/Idle%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Virtual Guy/Idle (32x32).png",
+   "sha256": "8b478bc9dbb76859f5549f8a342d4a9660f529396ea71fba649f50769f83b179",
+   "bytes": 1336
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Virtual%20Guy/Jump%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Virtual Guy/Jump (32x32).png",
+   "sha256": "45d09d66f6593bc845463458759ee88e5a6b0e5d015e41232db838c8e51f744c",
+   "bytes": 737
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Virtual%20Guy/Run%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Virtual Guy/Run (32x32).png",
+   "sha256": "7664599efcdb57b9b29727941e23a5033318753bae60df251f33ad5f2813df9b",
+   "bytes": 2085
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Virtual%20Guy/Wall%20Jump%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Virtual Guy/Wall Jump (32x32).png",
+   "sha256": "831dbd5ac67607fcc4ec0ed214e37c7110cacfb67aa08f843bebc6fc94158eec",
+   "bytes": 881
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Mask%20Dude/Double%20Jump%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Mask Dude/Double Jump (32x32).png",
+   "sha256": "d8a4ea93f017afb50dd2cc620b00937d7151b0b8cf88aaadc5a6c9ceb72d35d4",
+   "bytes": 2203
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Mask%20Dude/Fall%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Mask Dude/Fall (32x32).png",
+   "sha256": "b4829a85e20ba9447596cca214002e9340c6da6854bc2d83f6fddbacd8394a6d",
+   "bytes": 829
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Mask%20Dude/Idle%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Mask Dude/Idle (32x32).png",
+   "sha256": "ded44a6ee1985f19201f87e11b373ac23db0541f27d7dfe8a2014848cb6ae66a",
+   "bytes": 1563
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Mask%20Dude/Jump%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Mask Dude/Jump (32x32).png",
+   "sha256": "ddce2a578aa83e955114283fffae90562e9949178d9ff0e64c4a759fc51ee802",
+   "bytes": 845
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Mask%20Dude/Run%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Mask Dude/Run (32x32).png",
+   "sha256": "c17add49705fa9a8b175d8270d0f2a8b1405393b34af890c371ebcd50a4ed8a8",
+   "bytes": 2389
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Main%20Characters/Mask%20Dude/Wall%20Jump%20%2832x32%29.png",
+   "path": "src/pixel-adventure/Main Characters/Mask Dude/Wall Jump (32x32).png",
+   "sha256": "63aac973a1b37264ec40d5cd885c64a875abbb88cda1776884d0d8045ed50245",
+   "bytes": 963
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Items/Checkpoints/Start/Start%20%28Idle%29.png",
+   "path": "src/pixel-adventure/Items/Checkpoints/Start/Start (Idle).png",
+   "sha256": "acb6643795bb6b36efc30ca12560bab34eaee91d1f72d6592f58b946c3640cd6",
+   "bytes": 648
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Items/Checkpoints/Start/Start%20%28Moving%29%20%2864x64%29.png",
+   "path": "src/pixel-adventure/Items/Checkpoints/Start/Start (Moving) (64x64).png",
+   "sha256": "44311719b2a81384fecdef540c101740819a295637626e35409dd135bc06eaff",
+   "bytes": 2575
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Items/Checkpoints/End/End%20%28Idle%29.png",
+   "path": "src/pixel-adventure/Items/Checkpoints/End/End (Idle).png",
+   "sha256": "283b5cb5fda1993b46f2da84592a8b90dde7c124a90d5fa67f1dc8c61f4f1286",
+   "bytes": 913
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Items/Checkpoints/End/End%20%28Pressed%29%20%2864x64%29.png",
+   "path": "src/pixel-adventure/Items/Checkpoints/End/End (Pressed) (64x64).png",
+   "sha256": "59b0019cfc40a840e027ad8268ac583e34f9f52adefdad11217cbf9495a36fa9",
+   "bytes": 2206
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Items/Checkpoints/Checkpoint/Checkpoint%20%28Flag%20Idle%29%2864x64%29.png",
+   "path": "src/pixel-adventure/Items/Checkpoints/Checkpoint/Checkpoint (Flag Idle)(64x64).png",
+   "sha256": "99fd9012b3935a91f580922c051ca2cbe86fe85c1ca5d8a1dbf09fc161f3e309",
+   "bytes": 1834
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Items/Checkpoints/Checkpoint/Checkpoint%20%28Flag%20Out%29%20%2864x64%29.png",
+   "path": "src/pixel-adventure/Items/Checkpoints/Checkpoint/Checkpoint (Flag Out) (64x64).png",
+   "sha256": "b4e42b307d92ec89a2ed2857c021732cc8b27740e7cab6307723086551c1dee5",
+   "bytes": 3331
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Items/Checkpoints/Checkpoint/Checkpoint%20%28No%20Flag%29.png",
+   "path": "src/pixel-adventure/Items/Checkpoints/Checkpoint/Checkpoint (No Flag).png",
+   "sha256": "cd048973d0ead9e6c81003601bd041c364044eb8210e9e71e473076a9afa5ae7",
+   "bytes": 530
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Traps/Platforms/Brown%20Off.png",
+   "path": "src/pixel-adventure/Traps/Platforms/Brown Off.png",
+   "sha256": "f59498d41d9cea8d3886d2116e9cf22e72e2c8b89e8f225b39791a324aacf2db",
+   "bytes": 290
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Traps/Platforms/Brown%20On%20%2832x8%29.png",
+   "path": "src/pixel-adventure/Traps/Platforms/Brown On (32x8).png",
+   "sha256": "2ac98ed7d0c723707af667cdd1f9edf184519f7c3eb796c5840685ffbab6f354",
+   "bytes": 542
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Traps/Platforms/Chain.png",
+   "path": "src/pixel-adventure/Traps/Platforms/Chain.png",
+   "sha256": "4a801753546916d4b32b29a8ad85695db59ee57bc9703b0b60c9ce6f3f1551b2",
+   "bytes": 117
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Traps/Platforms/Grey%20Off.png",
+   "path": "src/pixel-adventure/Traps/Platforms/Grey Off.png",
+   "sha256": "1d303ddc3e08bb527358e9ed996bb47bf4b3a3c26894b59000c66d5c8a724284",
+   "bytes": 277
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Traps/Platforms/Grey%20On%20%2832x8%29.png",
+   "path": "src/pixel-adventure/Traps/Platforms/Grey On (32x8).png",
+   "sha256": "56c95eda0d6a5f71669e86f7ada0022538ea99981d5bc2bdb9809992bcd3994c",
+   "bytes": 509
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Other/Confetti%20%2816x16%29.png",
+   "path": "src/pixel-adventure/Other/Confetti (16x16).png",
+   "sha256": "ea90696d9dc4613e083d172b0b1651bc493856d2aace4eafc3bb069e4cb4b38b",
+   "bytes": 174
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Other/Dust%20Particle.png",
+   "path": "src/pixel-adventure/Other/Dust Particle.png",
+   "sha256": "b9e1e1ff09095582aba4b3f3cf6712cdc7fc45694f8219d000ccf5d7717277ab",
+   "bytes": 162
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Other/Shadow.png",
+   "path": "src/pixel-adventure/Other/Shadow.png",
+   "sha256": "b603c1b27d7cb23a2424de66dbae2d73738f7e40cc760cea135184a7bec97049",
+   "bytes": 99
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Other/Transition.png",
+   "path": "src/pixel-adventure/Other/Transition.png",
+   "sha256": "205d51cc4155349b27bf0ac7af5d1297653218bc1e3a48660047368daf0e1f9a",
+   "bytes": 352
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Menu/Text/Text%20%28Black%29%20%288x10%29.png",
+   "path": "src/pixel-adventure/Menu/Text/Text (Black) (8x10).png",
+   "sha256": "4596509b9af2de085cf912b3c13faa7f546d1084569a9c994980a5f127c575e1",
+   "bytes": 829
+  },
+  {
+   "pack": "pixel-adventure",
+   "url": "https://raw.githubusercontent.com/marpor/PixelAdventure/fb168c3a1efc859312ce4c16d2a30c91ef796098/PixelAdventure/Menu/Text/Text%20%28White%29%20%288x10%29.png",
+   "path": "src/pixel-adventure/Menu/Text/Text (White) (8x10).png",
+   "sha256": "0c494dba14859d4d3401fec5fa62ec2bff5b1b4074f34f888881d7cba4a7eb9a",
+   "bytes": 803
+  }
+ ],
+ "sounds": {}
+}
