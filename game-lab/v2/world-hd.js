@@ -812,7 +812,7 @@
     stripArt: () => kit && atlas && {
       img(c, name, x, y, w, h) { const f = kit.atlas.frames[name]; c.imageSmoothingEnabled = true; c.drawImage(atlas.source.resource, f[0], f[1], f[2], f[3], x, y, w, h); },
       coin(c, gold, x, y, size) { this.img(c, gold ? 'item/coinGold' : 'item/coinSilver', x - size * 0.75, y - size * 0.75, size * 1.5, size * 1.5); },
-      flag(c, x, y) { this.img(c, 'item/flagYellow1', x - 8, y - 30, 30, 30); },
+      flag(c, x, y) { this.img(c, 'item/flagYellow1', x - 6, y - 20, 21, 21); },
       hero(c, x, y, p, size) { const k = size * 1.5 / 128; this.img(c, 'icon/' + (p === 'jump' ? 'jump' : p === 'happy' ? 'cheer' : 'idle'), Math.round(x - 48 * k), Math.round(y - 128 * k), 96 * k, 128 * k); },
     },
   });
