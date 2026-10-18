@@ -1,14 +1,24 @@
 # MCQs Mountain: the method, step by step
 
-**STATUS (update this line whenever a step finishes):** Gate 0, paused by the owner on 2026-10-18.
-- Done: the first draft of `climb/index.html` (53.7 KB raw, 19.4 KB gzip, no libraries, no network). It plays all
-  three modes to the end with zero console errors. Draft numbers (Playwright, 360x740, 8 MCQs, `results/draft-*.json`):
-  frame p95 16.7-16.8 ms at 1x and 4x CPU; Next to first frame 6-14 ms; Next to next MCQ: Story about 1,140 ms,
-  Strip about 140-147 ms, Classic about 26-31 ms.
-- Not done yet: the draft was built by one agent and has **not** been reviewed. Still to do, in order: the four
-  reviews listed in `climb/SPEC.md` (speed incl. 6x CPU, QA bug hunt, design rules and learning, visual quality),
-  one fix pass, an independent final re-measure, then send the owner the phone link (Gate 1).
-- Resume by reading `climb/SPEC.md` and running those reviews against the draft. Do not rebuild from scratch.
+**STATUS (update this line whenever a step finishes):** Gate 0, paused on 2026-10-18 with a **new direction from the
+owner**. Read `DECISIONS.md` D18-D23 first.
+- Done: a first draft of `climb/index.html` (hand-written Canvas 2D, 3 modes, zero console errors). Its flow, MCQ
+  sheet, grading, harness hooks and speed are good. Draft numbers (`results/draft-*.json`, 360x740, 8 MCQs): frame
+  p95 16.7-16.8 ms at 1x and 4x CPU; Next to first frame 6-14 ms; Next to next MCQ: Story about 1,140 ms, Strip about
+  140-147 ms, Classic about 26-31 ms.
+- Rejected by the owner after screenshots: the look. The characters are "very silly" and must not be medical. The owner
+  wants world-class 2D quality and atmosphere (Super Mario level), in a professional engine, even for the test, while
+  staying fast and leaving the app's speed untouched. Non-commercial or evaluation tools and assets are allowed for the
+  test, registered and never shipped (D22).
+- Next, in order (details in `NEXT_AGENT.md`):
+  1. Engine spike: build the same small scene in the two candidate engines (D21), measure, pick one, record it as a
+     new decision.
+  2. Rebuild the game world and hero at world-class quality in the chosen engine, keeping the draft's flow, MCQ sheet,
+     grading, three modes and harness contract. Test assets via a download script into `assets-test/` (git-ignored),
+     each in `ASSETS.md`.
+  3. The four reviews in `climb/SPEC.md` (speed, QA, rules and learning, visual), one fix pass, an independent final
+     re-measure.
+  4. Send the owner the phone link with screenshots (Gate 1).
 
 Last updated: 2026-10-18.
 
@@ -26,20 +36,26 @@ Last updated: 2026-10-18.
    accuracy are guardrails that the game must not lower.
 6. **Students and instruments decide, not opinions.** Device traces, timed playtests and a pilot with a comparison
    group are the evidence. Our own impression is not.
+7. **World-class look, even for tests (owner, D19).** A test with weak art cannot convince anyone, so the placeholder
+   stage uses world-class test assets (registered, never shipped, D22) instead of home-made shapes.
 
 ## Gates
 
 Each gate has an exit condition. Do not start a gate before the previous one has passed, unless the owner says so.
 
-### Gate 0: lab prototype and lab numbers (this session)
+### Gate 0: lab prototype and lab numbers
 
-- Build `climb/index.html`: one self-contained file, hand-written Canvas 2D, no libraries, no network, three modes,
-  the harness contract from `README.md`.
+- First draft (done): `climb/index.html`, hand-written Canvas 2D, three modes, the harness contract from `README.md`.
+  Its look was rejected by the owner (D18).
+- Now: pick a professional engine with a measured spike (D21), then rebuild the world and hero at world-class quality
+  (D19) with registered test assets (D22), keeping the flow, MCQ sheet, grading, modes and harness contract.
 - Review it four ways (speed, bugs, the app's design rules, visual quality), fix, then have an agent who did not build
   it re-measure.
 - **Exit:** at 4x CPU throttling, movement frame p95 at or under 16.7 ms and p99 at or under 33 ms; no long task over
   50 ms during transitions; Next to the first visible change under 100 ms; Story mode Next to the next MCQ about 1 s
-  (about 1.6 s on a lift beat); Strip and Classic under 150 ms. Results saved as JSON in `results/`.
+  (about 1.6 s on a lift beat); Strip and Classic under 150 ms; the game's own load time (engine plus art, from
+  starting to load until the first frame) measured and reported. Results saved as JSON in `results/`. The owner
+  judges the look from screenshots: it has to read as a world-class 2D game, not a demo (D19).
 
 ### Gate 1: the owner feels it
 
@@ -66,8 +82,10 @@ Each gate has an exit condition. Do not start a gate before the previous one has
 - **Exit:** the same numbers as Gate 0, but on the floor phone inside Telegram, recorded in `results/devices.md`.
   If the floor phone fails, use `?low=1` (DPR 1.5, no parallax) and re-test before changing the design.
 
-### Gate 3: the character
+### Gate 3: the game's own original hero
 
+- The test assets of Gate 0 prove the game; this gate replaces them with Kafu's own original hero and world (not
+  medical, D18), at the same world-class quality, so nothing "TEST ONLY" remains.
 - Follow `CHARACTER_BRIEF.md` in order: brief, silhouettes, silhouette test with 5 students, model sheet, expression
   sheet, key poses timed in the prototype, then clean-up and one atlas (1024 x 1024 or smaller).
 - **Exit:** 5 new students recognise the silhouette at phone size; reverse-image search finds no look-alike; Gate 2
@@ -125,6 +143,8 @@ Prerequisites, each in its own reviewed PR:
 
 ## Pending owner decisions
 
+- Answered on 2026-10-18: no medical characters; world-class 2D quality and atmosphere in a professional engine, even
+  for the test; non-commercial tools allowed for testing; the app's speed must stay untouched (D18-D23).
 - Which modes go forward after Gate 1 (Story, Strip, or both)?
 - Create a separate test bot and free hosting for Gate 1 (owner's accounts)?
 - Approve any measurement of students for Gate 5, and how?

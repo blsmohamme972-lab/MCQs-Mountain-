@@ -24,8 +24,11 @@ professional, and it stays out of the app until the owner is fully convinced.
 | Step-by-step method with gates and kill criteria | Done, in `PLAN.md` |
 | Character and world brief (before any drawing) | Done, in `CHARACTER_BRIEF.md` |
 | Speed harness | Done, `tools/measure.mjs` |
-| Playable prototype with 3 modes (Story, Strip, Classic) | First draft works, not yet reviewed (`climb/index.html`, spec in `climb/SPEC.md`) |
+| Playable prototype with 3 modes (Story, Strip, Classic) | First draft works (flow, MCQ, speed). Its look was **rejected** by the owner (D18) |
+| New direction: world-class 2D quality, professional engine, no medical characters | Written down (`DECISIONS.md` D18-D23); next agent starts with the engine spike |
 | Owner tries it on a phone, then in Telegram through a test bot | Not started (Gate 1) |
+
+**New agent: start with `NEXT_AGENT.md`.** It is the ready task prompt for the next step.
 
 **Current gate and the next action are always written at the top of `PLAN.md`.** Update that line whenever you
 finish a step.
@@ -47,11 +50,14 @@ finish a step.
 ```
 game-lab/
   README.md            this file (entry point)
+  NEXT_AGENT.md        the ready task prompt for whoever continues
   PLAN.md              method, gates, kill criteria, current status
-  DECISIONS.md         decision log with reasons and sources
+  DECISIONS.md         decision log with reasons and sources (D18-D23: the owner's new direction)
   CHARACTER_BRIEF.md   character and world brief, asset list, free tools
-  climb/index.html     the playable prototype (one self-contained file, no libraries, no network)
-  climb/SPEC.md        the exact spec it was built from, and the four review checklists still to run
+  ASSETS.md            asset register with exact licences (to be created with the first test asset)
+  assets-test/         downloaded test assets, git-ignored, never committed
+  climb/index.html     first draft of the prototype (flow and speed good, look rejected)
+  climb/SPEC.md        the spec of the first draft, and the four review checklists
   tools/measure.mjs    speed harness (Playwright, CPU throttling as a cheap-phone proxy)
   results/             measurement JSON from the harness (text only)
   research/            the four research reports with their fact-check corrections
@@ -92,7 +98,12 @@ The real gate is a trace from a cheap Android phone inside Telegram (Gate 2 in `
 - Stay inside `game-lab/`. No edits to `app/`, `worker/`, `tools/`, CI or deployment for this project.
 - Lean storage: commit text only. No images, sprite sheets, audio, ZIPs or `node_modules`. Screenshots go to the
   owner in chat.
-- The prototype follows the app's rules: `docs/DESIGN_STYLE.md` (Arcade-Clean, tokens, 44 px targets, reduced
-  motion, neutral wrong answers) and `docs/DESIGN.md` (never celebrate before an answer is scored).
-- Original art only. Never brief or prompt "Mario-like" or any existing character.
+- The game world aims at world-class 2D quality (Super Mario level), with no medical characters (D18, D19).
+- The MCQ sheet keeps the app's study rules: readable reading font, 44 px targets, reduced motion, neutral wrong
+  answers (`docs/DESIGN_STYLE.md`), and no celebration before an answer is scored (`docs/DESIGN.md`).
+- A professional engine is allowed in the lab, chosen by a measured spike (D21). The app's start-up and MCQ speed must
+  stay untouched (D23).
+- Test-only tools and assets (non-commercial, evaluation) are allowed: register each in `ASSETS.md`, download by
+  script into `assets-test/`, never commit or ship them (D22).
+- Original art only. "Like Super Mario" means its quality, never Nintendo's characters, art, music or look.
 - Before integration ever happens, the app's start-up budget needs room first (see D7 in `DECISIONS.md`).

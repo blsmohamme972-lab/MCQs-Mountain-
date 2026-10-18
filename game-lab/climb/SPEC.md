@@ -1,5 +1,12 @@
 # Prototype spec: climb/index.html
 
+> **Partly replaced on 2026-10-18 by the owner's new direction (`../DECISIONS.md` D18-D23).** No longer binding: the
+> "young medic" placeholder character, the Arcade-Clean look of the game world, and the zero-library / hand-written
+> Canvas 2D rule. Still binding: the flow (START, arrow, walk, MCQ, Next, climb or lift, summit), the MCQ sheet and its
+> grading, rewards after grading, neutral wrong answers, skip and reduced motion, the three modes, the summary card,
+> the Telegram behaviour, the speed targets and the harness contract. The reviews at the bottom still apply; the visual
+> review now judges against world-class 2D games (D19).
+
 The exact specification the prototype was built from (2026-10-18). Any new version must keep it, especially the
 harness contract in `../README.md`. If you change the spec, record why in `../DECISIONS.md`.
 

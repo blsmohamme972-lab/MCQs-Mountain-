@@ -14,3 +14,8 @@ tools/package-lock.json
 *.opus
 *.wav
 *.trace.json
+# Test-only assets (D22): downloaded by script, never committed.
+assets-test/
+*.riv
+*.skel
+*.atlas
