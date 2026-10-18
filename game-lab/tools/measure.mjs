@@ -32,9 +32,11 @@ const round = x => Math.round(x * 10) / 10;
 
 async function run(cpu) {
   // The HD tier needs WebGL: with no GPU in the container it runs on SwiftShader in the GPU process (software, so its
-  // frame times say little about a phone). The light tier is measured without these flags, as before (comparable).
+  // frame times say little about a phone). 2D canvases stay on the CPU: with them on SwiftShader, PixiJS's start-up
+  // test (it reads back a 6 x 1 px canvas) stalls about 0.6 s here, against about 1 ms on a phone. The light tier is
+  // measured without these flags, as before (comparable).
   const light = /[?&](low=1|tier=light)/.test(file);
-  const browser = await chromium.launch({ args: ['--disable-gpu-vsync=false'].concat(light ? [] : ['--use-angle=swiftshader', '--enable-unsafe-swiftshader']) });
+  const browser = await chromium.launch({ args: ['--disable-gpu-vsync=false'].concat(light ? [] : ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--disable-accelerated-2d-canvas']) });
   const context = await browser.newContext({ viewport: { width: 360, height: 740 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true });
   const page = await context.newPage();
   const errors = [];

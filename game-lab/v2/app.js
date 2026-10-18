@@ -13,7 +13,9 @@
   // 'hd' the WebGL world for everyone else. ?tier=light|hd forces one. Support is checked cheaply here (creating a
   // test context costs about 0.2 s on a slow phone); if the HD world then fails to start, the light tier loads instead.
   const hasGL = !!(window.WebGL2RenderingContext || window.WebGLRenderingContext);
-  let TIER = P.get('tier') === 'light' || P.get('tier') === 'hd' ? P.get('tier') : LOW || !hasGL ? 'light' : 'hd';
+  // A phone on which the HD world ran slow last time is remembered (world-hd.js) and starts on the light tier.
+  let hint = null; try { hint = localStorage.getItem('mcqm-tier'); } catch (e) {}
+  let TIER = P.get('tier') === 'light' || P.get('tier') === 'hd' ? P.get('tier') : LOW || !hasGL || hint === 'light' ? 'light' : 'hd';
   const TG = window.Telegram && window.Telegram.WebApp;
   const CFG = window.LAB_CONFIG || {};
   let TC = CFG[TIER] || CFG.light;
@@ -403,7 +405,12 @@
     return start();
   })
     .then(() => {
+      // lab:game-ready = the world's first frame. A world may still be loading the rest of its art; the start
+      // button turns on when it says it is ready (World.whenReady), so nothing loads during the first climb.
       mark('lab:game-ready'); worldReady = true;
+      return World.whenReady ? World.whenReady() : null;
+    })
+    .then(() => {
       R.classList.add('ready'); goB.disabled = false; lab.state = 'start'; drawStrip();
       if (DBG) console.info('[lab] game ready', Math.round(performance.getEntriesByName('lab:game-ready')[0].startTime), 'ms');
     })

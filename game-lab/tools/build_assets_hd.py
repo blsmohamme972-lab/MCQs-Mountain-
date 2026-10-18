@@ -37,7 +37,7 @@ PAL = {
             "peak": "#7fa3cc", "peakLit": "#b4cde6", "mid": "#5f8fbb", "midLit": "#86afd2", "forestMid": "#4c7f9c",
             "near": "#3f7a66", "nearLit": "#5c9a72", "forestNear": "#2f6656", "haze": "#ffe9cf", "fog": "#d8ecf6",
             "colFog": "#6f8ea3"},
-    "night": {"sky": ["#070b22", "#141c46", "#2a2f66", "#4b3d78"], "far": "#2c3566", "farLit": "#3e4a85", "snow": "#9fb0e0",
+    "night": {"sky": ["#070b22", "#141c46", "#2a2f66", "#4b3d78"], "far": "#2c3566", "farLit": "#3e4a85", "snow": "#7f8fc4",
               "peak": "#262e5c", "peakLit": "#3a4782", "mid": "#1f2650", "midLit": "#2e3a70", "forestMid": "#1a2147",
               "near": "#16203f", "nearLit": "#203058", "forestNear": "#111a35", "haze": "#4a3f78", "fog": "#2a2f60",
               "colFog": "#1c2246"},
@@ -209,9 +209,9 @@ def build_layers(kitpal: dict) -> dict:
         sizes[f"sky-{tod}.webp"] = save_webp(sky, f"sky-{tod}.webp")
         # Far snowy range: 2048 x 300 units at 1 px per unit (it is hazy, softness is right there).
         W = 2048
-        prof = 0.6 * peaks(W, 7, 1.6, 11) + 0.4 * peaks(W, 13, 1.3, 12) + 0.04 * ridge(W, [(31, 1), (67, 0.5)], 13)
+        prof = 0.6 * peaks(W, 4, 1.6, 11) + 0.4 * peaks(W, 7, 1.3, 12) + 0.04 * ridge(W, [(17, 1), (37, 0.5)], 13)
         prof = (prof - prof.min()) / (prof.max() - prof.min())
-        far, _ = mountain_layer(W, 300, 40, 170, prof, C["far"], C["farLit"], C["haze"], C["snow"], 0.42, seed=14, fog_from=0.3)
+        far, _ = mountain_layer(W, 600, 80, 340, prof, C["far"], C["farLit"], C["haze"], C["snow"], 0.42, seed=14, fog_from=0.3, S=2)
         sizes[f"far-{tod}.webp"] = save_webp(far, f"far-{tod}.webp")
         # The landmark peak (not tiling), 1100 x 760 units at 1.6 px per unit.
         S = 1.6
@@ -295,7 +295,7 @@ def cliff(wu: float, seed: int, colours: list, S: int = 2, hu: int = 600, margin
     # strata: bands of uneven thickness whose boundaries wave and tilt
     bounds, y = [], -rng.uniform(0, 20) * S
     while y < H + 60 * S:
-        y += rng.uniform(13, 44) * S
+        y += rng.choice([rng.uniform(7, 16), rng.uniform(16, 34), rng.uniform(34, 62)]) * S
         bounds.append(y)
     bounds = np.array(bounds, np.float32)
     warp = (wave1d(W, [(1, 5), (3, 3), (7, 1.5)], seed + 3) * S)[None, :] + (xx - W / 2) * rng.uniform(-0.04, 0.04)
@@ -305,12 +305,24 @@ def cliff(wu: float, seed: int, colours: list, S: int = 2, hu: int = 600, margin
     hi = bounds[np.minimum(idx, len(bounds) - 1)]
     frac = np.clip((u - lo) / np.maximum(1, hi - lo), 0, 1)
     pal = np.array([rgb(c) for c in colours])
-    bright = rng.uniform(0.92, 1.06, len(bounds) + 1)
-    band = pal[idx % len(pal)] * bright[idx][..., None]
+    pick = rng.integers(0, len(pal), len(bounds) + 1)
+    hue = rng.uniform([0.9, 0.92, 0.9], [1.08, 1.05, 1.04], (len(bounds) + 1, 3))
+    bright = rng.uniform(0.88, 1.08, len(bounds) + 1)
+    band = pal[pick[idx]] * hue[idx] * bright[idx][..., None]
     band = band * (1.07 - 0.14 * frac[..., None])
     band = band * (1 - 0.28 * np.clip((frac - 0.86) / 0.14, 0, 1))[..., None]
     grain = (np.sin(xx * 0.9 + yy * 0.37) * np.sin(xx * 0.23 - yy * 1.1) + np.sin(xx * 2.3 + yy * 1.7) * 0.5) * 0.018
     col = band * (1 + grain[..., None])
+    # outcrops: some band tops stick out as a lit lip with a soft shadow under it
+    out_b = rng.random(len(bounds) + 1) < 0.3
+    du = u - lo
+    lip = out_b[idx] & (du >= 0) & (du < 2.2 * S)
+    sh = out_b[idx] & (du >= 2.2 * S) & (du < 9 * S)
+    col = np.where(lip[..., None], col * 1.16, col)
+    col = col * (1 - 0.3 * sh * np.clip(1 - (du - 2.2 * S) / (6.8 * S), 0, 1))[..., None]
+    # rounded column: the face turns from shade (left) to the sun (right)
+    across = np.clip((xx - xl[:, None]) / np.maximum(1, (xr - xl)[:, None]), 0, 1)
+    col = col * (0.74 + 0.3 * across ** 0.8)[..., None]
     # depth: darker and cooler further down
     tt = t[:, None, None]
     col = col * (1 - 0.32 * tt ** 0.9) + np.array([70, 80, 105], np.float32) * (0.22 * tt)
@@ -323,14 +335,14 @@ def cliff(wu: float, seed: int, colours: list, S: int = 2, hu: int = 600, margin
     im = Image.fromarray(np.dstack([np.clip(col, 0, 255), alpha[..., None] * 255]).astype(np.uint8), "RGBA")
     d = ImageDraw.Draw(im)
     # cracks: short jagged dark lines inside bands
-    for _ in range(int(W * H / (5200 * S * S))):
-        x0, y0 = rng.uniform(M, W - M), rng.uniform(20 * S, H * 0.7)
+    for _ in range(int(W * H / (11000 * S * S))):
+        x0, y0 = rng.uniform(M + 4 * S, W - M - 4 * S), rng.uniform(20 * S, H * 0.7)
         pts = [(x0, y0)]
         for _ in range(rng.integers(2, 5)):
             x0 += rng.uniform(-4, 4) * S
-            y0 += rng.uniform(3, 9) * S
+            y0 += rng.uniform(4, 10) * S
             pts.append((x0, y0))
-        d.line(pts, fill=(70, 42, 30, 110), width=max(1, S))
+        d.line(pts, fill=(58, 32, 22, 210), width=int(1.5 * S))
     if green:
         # moss: patches hanging under the lip, thinning downward
         for _ in range(int(wu / 9)):
@@ -549,6 +561,29 @@ def props2() -> dict:
         d.line([(p[0], (p[1] + q[1]) / 2 - 3) for p, q in zip(top, bot)][:34], fill=(132, 214, 160, 255), width=3)
         d.line(top, fill=(36, 120, 70, 255), width=1)
         out[f"ui/pen{k}"] = im
+    for k in range(3):   # the summit pennant, gold
+        im = Image.new("RGBA", (80, 52))
+        d = ImageDraw.Draw(im)
+        top, bot = [], []
+        for i in range(41):
+            x = i * 2
+            off = math.sin(x / 13 + k * 2.1) * 3.2 * (x / 80)
+            half = 22 * (1 - x / 84)
+            top.append((x, 26 - half + off))
+            bot.append((x, 26 + half + off))
+        d.polygon(top + bot[::-1], fill=(242, 184, 40, 255))
+        d.line([(p[0], (p[1] + q[1]) / 2 - 3) for p, q in zip(top, bot)][:34], fill=(255, 230, 140, 255), width=3)
+        d.line(top, fill=(196, 132, 20, 255), width=1)
+        out[f"ui/gold{k}"] = im
+    # rope for the lift: twisted strands, tiles vertically (4 x 16 units)
+    im = Image.new("RGBA", (8, 32))
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, 0, 7, 31], fill=(104, 72, 44, 255))
+    for y0 in range(-8, 40, 8):
+        d.line([(0, y0), (7, y0 + 6)], fill=(170, 128, 82, 255), width=2)
+        d.line([(0, y0 + 3), (7, y0 + 9)], fill=(76, 50, 30, 255), width=1)
+    d.line([(0, 0), (0, 31)], fill=(60, 40, 24, 255), width=1)
+    out["ui/rope"] = im
     im = Image.new("RGBA", (22, 50))
     d = ImageDraw.Draw(im)
     d.polygon([(2, 2), (14, 4), (12, 48), (6, 44)], fill=(54, 168, 98, 255))
@@ -689,6 +724,24 @@ SOUNDS = {
 }
 
 
+def strip_sheet() -> tuple[dict, int]:
+    """The few small pictures the Strip mode draws on its Canvas 2D strip (hero poses, coins, the summit flag), in one
+    small sheet so the strip never has to draw from (and upload) the 2048 px atlas."""
+    items = [("idle", img(TOON / "Poses HD" / "character_femaleAdventurer_idle.png").resize((72, 96), Image.LANCZOS)),
+             ("jump", img(TOON / "Poses HD" / "character_femaleAdventurer_jump.png").resize((72, 96), Image.LANCZOS)),
+             ("cheer", img(TOON / "Poses HD" / "character_femaleAdventurer_cheer0.png").resize((72, 96), Image.LANCZOS)),
+             ("coinGold", img(RED / "Items" / "coinGold.png").resize((40, 40), Image.LANCZOS)),
+             ("coinSilver", img(RED / "Items" / "coinSilver.png").resize((40, 40), Image.LANCZOS)),
+             ("flag", img(RED / "Items" / "flagYellow1.png").resize((48, 48), Image.LANCZOS))]
+    W = sum(im.width + 2 for _, im in items)
+    sheet, frames, x = Image.new("RGBA", (W, 96)), {}, 0
+    for n, im in items:
+        sheet.paste(im, (x, 0))
+        frames[n] = [x, 0, im.width, im.height]
+        x += im.width + 2
+    return {"image": "strip.webp", "frames": frames}, save_webp(sheet, "strip.webp")
+
+
 def sounds() -> dict:
     sizes = {}
     if not shutil.which("ffmpeg"):
@@ -710,8 +763,11 @@ def main() -> None:
     kitpal = {}
     sizes.update(build_layers(kitpal))
     sizes.update(textures())
+    strip, ssize = strip_sheet()
+    sizes["strip.webp"] = ssize
     snd = sounds()
-    kit = {"atlas": atlas, "rig": RIG, "palette": kitpal,
+    dims = {k: list(Image.open(OUT / (k + ".webp")).size) for k in ("waterfall", "fg", "fgbush", "cliff-a", "cliff-b", "cliff-wide", "cliff-summit", "cliff-step")}
+    kit = {"atlas": atlas, "rig": RIG, "palette": kitpal, "strip": strip, "dims": dims,
            "layers": {k: {"day": f"{k}-day.webp", "night": f"{k}-night.webp"} for k in ("sky", "far", "peak", "cloudsea", "mid", "near")},
            "textures": {k: k + ".webp" for k in ("waterfall", "fg", "fgbush", "cliff-a", "cliff-b", "cliff-wide", "cliff-summit", "cliff-step")},
            "sizes": sizes, "sounds": snd}
