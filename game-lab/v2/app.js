@@ -196,7 +196,7 @@
     if (lab.state !== 'start') return;
     tGo = now(); firstOpen = true; lab.state = 'moving'; startp.classList.add('off'); Sound.unlock();
     if (mode === 'classic') { hud(); openSheet(); return; }
-    World.wake(); skipOn(true);
+    if (!RM) World.wake(); skipOn(true);   // reduced motion: no loop at all, the world is drawn once per MCQ
     World.walkToFirst(arrived);
   }
   function arrived() { hud(); stageNews(); openSheet(); }
@@ -227,7 +227,7 @@
     if (lab.state !== 'question' || !RS[idx].done || now() < nextGuard) return;
     mark('lab:next-tap'); tNext = now(); readT += tNext - tShown; lab.state = 'moving';
     if (mode === 'story') {
-      World.wake(); sheet.classList.remove('open'); World.frame('walk');
+      if (!RM) World.wake(); sheet.classList.remove('open'); World.frame('walk');
       clT = after(RM ? 0 : 140, worldVisible);
       World.coin(idx, RS[idx].correct, collected);
       skipOn(true); return;

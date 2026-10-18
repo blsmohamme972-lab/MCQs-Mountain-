@@ -23,7 +23,7 @@ first frame 25 ms average at 6x); full-filter frame rate is GPU-bound here and j
 | S6 | light | major | The start card ran an uncapped 60 fps loop | fixed (a112d49): 12 fps while idle (its pixel animations run at 6-7 fps) |
 | S7 | light | minor | Light frames over 33 ms at 6x are mostly the software canvas commit in this container | phone check (chrome://gpu) |
 | S8 | both | minor | Story built the next MCQ's DOM during the climb; scrollTop forced a layout in the transition | fixed (b764c34) |
-| S9 | both | minor | Reduced motion still wakes the loop and renders several times per MCQ | open |
+| S9 | both | minor | Reduced motion still wakes the loop and renders several times per MCQ | fixed: no loop under reduced motion, one render per MCQ (HD 25 MCQs: 23 s -> 6.6 s here) |
 | S10 | HD | minor | Per-frame allocations (pose closures and arrays, busy() twice, texture name strings); culling walks every child each frame; script p95 over 8 ms | open |
 | S11 | both | minor | The harness's frame log skewed the heap; the heap check was missing | fixed (b764c34) in the harness; heap check open |
 | S12 | HD | minor | A new GlowFilter per last-stage build and per resize, never destroyed | fixed (a112d49): one filter, made once |

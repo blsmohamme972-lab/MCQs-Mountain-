@@ -985,7 +985,7 @@
     },
     frame(f) {
       cam.fy0 = cam.fy; cam.fy1 = feetY(f); cam.ft = RM ? 1 : 0;
-      if (RM) { snapCam(); renderOnce(); } else kick();
+      if (RM) snapCam(); else kick();   // reduced motion: drawn once when the sheet is open (sleep), not per framing
     },
     // Strip and Classic jump straight to a question (the world is behind the sheet); this may change the stage.
     place(i) {
