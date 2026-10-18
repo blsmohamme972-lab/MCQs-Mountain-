@@ -77,37 +77,56 @@ def peaks(width: int, freq: int, sharp: float, seed: int) -> np.ndarray:
     return base ** sharp
 
 
-def mountain_layer(width, height, top, amp, prof, base, lit, fog, snow=None, snow_line=0.0, seed=0, fog_from=0.45):
-    """A painted range: a lit and a shaded face per slope (light from the right), optional snow caps,
-    a soft rim of light on the ridge, and fog rising from the bottom. Returns an RGBA strip."""
-    h = top + amp * (1 - prof)  # ridge row per column (y grows downward)
+def smooth(h: np.ndarray, k: int, wrap: bool = True) -> np.ndarray:
+    k = max(3, k | 1)
+    ext = np.concatenate([h[-k:], h, h[:k]]) if wrap else np.concatenate([np.full(k, h[0]), h, np.full(k, h[-1])])
+    return np.convolve(ext, np.ones(k) / k, mode="same")[k:-k]
+
+
+def mountain_layer(width, height, top, amp, prof, base, lit, fog, snow=None, snow_line=0.0, seed=0, fog_from=0.45, wrap=True, S=1.0):
+    """A painted range in the flat "atmospheric" style: every mountain has a spine running down from its apex, the
+    face right of it is lit (light from the right) and the face left of it is in shade, with soft reflected light in
+    the valleys, optional snow caps (lit and shaded), a rim of light on the lit ridges and fog rising from the bottom.
+    Sizes are in texture pixels (S pixels per world unit). Returns (RGBA image, ridge row per column)."""
+    W = width
+    h = top + amp * (1 - prof)
     yy = np.arange(height, dtype=np.float32)[:, None]
-    inside = yy >= h[None, :]
-    # Facets from the large-scale slope only (a wrapped box blur first), so small ripples do not make stripes.
-    k = 41
-    hs = np.convolve(np.concatenate([h[-k:], h, h[:k]]), np.ones(k) / k, mode="same")[k:-k]
-    slope = np.gradient(hs)
-    # The face turned to the light (light from the right): the ground rising to the right faces away and is in shade.
-    face = np.tanh(-slope * 2.2)
-    # Facet boundaries lean as they go down, like real ridges.
-    rng = np.random.default_rng(seed + 7)
-    lean = np.clip((yy - h[None, :]) / max(1, amp * 1.3), 0, 1)
-    shift = (lean * 18).astype(int)
-    idx = (np.arange(width)[None, :] + shift) % width
-    f = face[idx]
-    col = base[None, None, :] + (lit - base)[None, None, :] * (0.5 + 0.5 * f)[..., None]
+    xx = np.arange(W, dtype=np.float32)[None, :]
+    hs = smooth(h, int(W / 160), wrap)
+    R = max(6, int(W / 36))
+    ext = np.concatenate([hs[-R:], hs, hs[:R]]) if wrap else np.concatenate([np.full(R, 1e9), hs, np.full(R, 1e9)])
+    win = np.lib.stride_tricks.sliding_window_view(ext, 2 * R + 1)
+    apex = np.nonzero(hs <= win.min(1) + 1e-6)[0]
+    rng = np.random.default_rng(seed)
+    lean = rng.uniform(-0.55, -0.05, len(apex))           # spines lean to the lower left, light falls from the right
+    # nearest apex for every column (with wrap)
+    d = np.abs(np.arange(W)[:, None] - apex[None, :])
+    if wrap:
+        d = np.minimum(d, W - d)
+    near = np.argmin(d, 1)
+    ax, ay, al = apex[near].astype(np.float32), hs[apex[near]], lean[near]
+    dx = xx - ax[None, :]
+    if wrap:
+        dx = (dx + W / 2) % W - W / 2
+    spine = (yy - ay[None, :]) * al[None, :]
+    side = np.clip((dx - spine) / (1.5 * S) + 0.5, 0, 1)    # 1 = lit face, 0 = shaded face (anti-aliased)
+    reach = np.clip(np.abs(dx - spine) / (amp * 0.9 + 1), 0, 1)
+    shade_v = 0.08 + 0.22 * reach                              # reflected light grows toward the valley
+    lit_v = 1.0 - 0.18 * reach                                 # the lit face dims away from the spine
+    k = side * lit_v + (1 - side) * shade_v
+    col = base[None, None, :] + (lit - base)[None, None, :] * k[..., None]
+    depth = yy - h[None, :]
     if snow is not None:
-        depth = yy - h[None, :]
-        jag = ridge(width, [(17, 6), (41, 3), (97, 1.5)], seed + 3)[None, :]
-        cap = (h[None, :] < top + amp * snow_line) & (depth < 26 + jag + (top + amp * snow_line - h[None, :]) * 0.55)
-        sn = snow[None, None, :] * (0.86 + 0.14 * (0.5 + 0.5 * f))[..., None]
+        jag = smooth(ridge(W, [(17, 6), (41, 3), (97, 1.5)], seed + 3), 3, wrap)[None, :] * S
+        line = top + amp * snow_line
+        cap = (h[None, :] < line) & (depth < (26 * S + jag + (line - h[None, :]) * 0.55))
+        sn = snow[None, None, :] * (0.78 + 0.22 * k)[..., None] + np.array([0, 4, 14], np.float32) * (1 - side)[..., None]
         col = np.where(cap[..., None], sn, col)
-    # Rim light on the ridge line, then fog from the bottom.
-    rim = np.clip(1 - (yy - h[None, :]) / 3.0, 0, 1) * inside
-    col = col + rim[..., None] * 26
+    rim = np.clip(1 - depth / (2.2 * S), 0, 1) * (depth >= 0) * side
+    col = col + rim[..., None] * 30
+    col = col * (1.04 - 0.08 * np.clip(depth / (amp + 1), 0, 1))[..., None]
     t = np.clip((yy / height - fog_from) / (1 - fog_from), 0, 1) ** 1.4
     col = col * (1 - t[..., None] * 0.85) + fog[None, None, :] * (t[..., None] * 0.85)
-    # Anti-aliased edge.
     a = np.clip(yy - h[None, :] + 1, 0, 1)
     out = np.dstack([np.clip(col, 0, 255), (a * 255)[..., None]]).astype(np.uint8)
     return Image.fromarray(out, "RGBA"), h
@@ -143,56 +162,93 @@ def gradient(height: int, stops: list) -> np.ndarray:
     return np.stack([np.interp(ys, pos, cols[:, k]) for k in range(3)], 1)
 
 
-def build_layers() -> dict:
-    """Painted parallax layers for day and night. Sizes are in texture pixels; the game shows them at 1 px per CSS px."""
+def bottom_colour(im: Image.Image) -> str:
+    a = np.asarray(im.convert("RGBA"))[-2]
+    c = a[a[:, 3] > 200][:, :3].mean(0)
+    return "#%02x%02x%02x" % tuple(int(v) for v in c)
+
+
+def cloud_sea(W: int, H: int, top: tuple, under: tuple, seed: int) -> Image.Image:
+    """A sea of clouds seen from above, tiling horizontally: rows of round billows, lit on top, blue underneath,
+    fading out toward the bottom."""
+    rng = np.random.default_rng(seed)
+    im = Image.new("RGBA", (W, H))
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    field = np.zeros((H, W), np.float32)
+    for row in range(3):
+        n = 9 + row * 5
+        base_y = H * (0.3 + row * 0.12)
+        for k in range(n):
+            cx = (k + rng.uniform(-0.35, 0.35)) * W / n
+            r = rng.uniform(0.16, 0.3) * H * (1 + row * 0.2)
+            cy = base_y + rng.uniform(-0.05, 0.06) * H
+            for ox in (-W, 0, W):
+                dx = xx - (cx + ox)
+                if np.abs(cx + ox - W / 2) > W / 2 + r * 2:
+                    continue
+                field = np.maximum(field, 1 - ((dx / (r * 1.8)) ** 2 + ((yy - cy) / (r * 0.75)) ** 2))
+    inside = np.clip(field * 5, 0, 1)
+    # light from above: the higher in a billow, the brighter; soft, like a painted cloud bank
+    lightk = np.clip(field * 1.3 + (0.5 - yy / H) * 0.6, 0, 1)
+    lightk = np.asarray(Image.fromarray((lightk * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(6))).astype(np.float32) / 255
+    col = np.array(under, np.float32)[None, None, :] * (1 - lightk[..., None]) + np.array(top, np.float32)[None, None, :] * lightk[..., None]
+    fade = np.clip(1 - (yy / H - 0.55) / 0.45, 0, 1)
+    a = inside * fade
+    return Image.fromarray(np.dstack([np.clip(col, 0, 255), a[..., None] * 255]).astype(np.uint8), "RGBA")
+
+
+def build_layers(kitpal: dict) -> dict:
+    """Painted parallax layers for day and night, at 2 texture px per world unit for the near layers (sharp on 2x
+    screens) and 1 for the hazy far range."""
     sizes = {}
     pine = img(BGE / "treePine.png")
     for tod, P in PAL.items():
         C = {k: (rgb(v) if isinstance(v, str) else v) for k, v in P.items()}
-        # Sky: a 4 x 512 gradient, stretched by the game.
         g = gradient(512, P["sky"])
         sky = Image.fromarray(np.repeat(g[:, None, :], 4, 1).astype(np.uint8), "RGB")
         sizes[f"sky-{tod}.webp"] = save_webp(sky, f"sky-{tod}.webp")
-        # Far snowy range.
+        # Far snowy range: 2048 x 300 units at 1 px per unit (it is hazy, softness is right there).
         W = 2048
-        prof = 0.6 * peaks(W, 7, 1.6, 11) + 0.4 * peaks(W, 13, 1.3, 12) + 0.06 * ridge(W, [(31, 1), (67, 0.5)], 13)
+        prof = 0.6 * peaks(W, 7, 1.6, 11) + 0.4 * peaks(W, 13, 1.3, 12) + 0.04 * ridge(W, [(31, 1), (67, 0.5)], 13)
         prof = (prof - prof.min()) / (prof.max() - prof.min())
-        far, _ = mountain_layer(W, 300, 40, 170, prof, C["far"], C["farLit"], C["haze"], C["snow"], 0.42, seed=14, fog_from=0.25)
+        far, _ = mountain_layer(W, 300, 40, 170, prof, C["far"], C["farLit"], C["haze"], C["snow"], 0.42, seed=14, fog_from=0.3)
         sizes[f"far-{tod}.webp"] = save_webp(far, f"far-{tod}.webp")
-        # The landmark peak: one big mountain (not tiling), the summit the climber is heading for.
-        PW, PH = 1100, 760
+        # The landmark peak (not tiling), 1100 x 760 units at 1.6 px per unit.
+        S = 1.6
+        PW, PH = int(1100 * S), int(760 * S)
         x = np.linspace(-1, 1, PW)
-        pp = np.clip(1 - np.abs(x) ** 1.15, 0, 1) ** 1.25 + 0.03 * ridge(PW, [(7, 1), (17, 0.4)], 21)
+        pp = np.clip(1 - np.abs(x) ** 1.15, 0, 1) ** 1.25 + 0.02 * ridge(PW, [(7, 1), (17, 0.4)], 21)
         pp += 0.18 * np.clip(1 - np.abs(x + 0.45) * 3.2, 0, 1) + 0.14 * np.clip(1 - np.abs(x - 0.5) * 3.6, 0, 1)
-        pp = np.clip(pp, 0, None)
         pp = (pp - pp.min()) / (pp.max() - pp.min())
-        peak, ph = mountain_layer(PW, PH, 30, PH - 60, pp, C["peak"], C["peakLit"], C["haze"], C["snow"], 0.36, seed=22, fog_from=0.35)
-        # fade the sides to nothing so the peak sits in the range without a hard edge
+        peak, _ = mountain_layer(PW, PH, 30 * S, PH - 60 * S, pp, C["peak"], C["peakLit"], C["haze"], C["snow"], 0.36, seed=22, fog_from=0.35, wrap=False, S=S)
         a = np.asarray(peak).copy()
-        edge = np.clip(np.minimum(np.arange(PW), PW - 1 - np.arange(PW)) / 90, 0, 1)
+        edge = np.clip(np.minimum(np.arange(PW), PW - 1 - np.arange(PW)) / (90 * S), 0, 1)
         a[..., 3] = (a[..., 3] * edge[None, :]).astype(np.uint8)
-        peak = Image.fromarray(a, "RGBA")
-        sizes[f"peak-{tod}.webp"] = save_webp(peak, f"peak-{tod}.webp")
-        # Mid range with a forest line.
-        prof = 0.55 * peaks(W, 5, 1.2, 31) + 0.45 * peaks(W, 11, 1.1, 32) + 0.08 * ridge(W, [(29, 1), (71, 0.4)], 33)
+        sizes[f"peak-{tod}.webp"] = save_webp(Image.fromarray(a, "RGBA"), f"peak-{tod}.webp")
+        # Sea of clouds below the far peaks: 1024 x 160 units at 2 px per unit.
+        cs = cloud_sea(2048, 320, (255, 255, 255) if tod == "day" else (150, 160, 210), (196, 214, 236) if tod == "day" else (56, 62, 118), 61)
+        sizes[f"cloudsea-{tod}.webp"] = save_webp(cs, f"cloudsea-{tod}.webp")
+        # Mid range with a forest line: 1024 x 420 units at 2 px per unit.
+        W, S = 2048, 2
+        prof = 0.55 * peaks(W, 3, 1.2, 31) + 0.45 * peaks(W, 6, 1.1, 32) + 0.05 * ridge(W, [(19, 1), (41, 0.4)], 33)
         prof = (prof - prof.min()) / (prof.max() - prof.min())
-        mid, mh = mountain_layer(W, 420, 30, 200, prof, C["mid"], C["midLit"], C["fog"], None, seed=34, fog_from=0.5)
+        mid, mh = mountain_layer(W, 840, 60, 400, prof, C["mid"], C["midLit"], C["fog"], None, seed=34, fog_from=0.5, S=S)
         trees = Image.new("RGBA", mid.size)
-        stamp_trees(trees, mh + 120, pine, C["forestMid"], 8, (0.12, 0.2), 35, sink=14)
+        stamp_trees(trees, mh + 240, pine, C["forestMid"], 14, (0.22, 0.36), 35, sink=26)
         mid = Image.alpha_composite(mid, trees)
-        fogm = gradient(420, [P["fog"], P["fog"]])
         a = np.asarray(mid).astype(np.float32)
-        t = np.clip((np.arange(420) / 420 - 0.55) / 0.45, 0, 1)[:, None, None] ** 1.2
-        a[..., :3] = a[..., :3] * (1 - t * 0.7) + fogm[:, None, :] * (t * 0.7)
+        t = np.clip((np.arange(840) / 840 - 0.55) / 0.45, 0, 1)[:, None, None] ** 1.2
+        a[..., :3] = a[..., :3] * (1 - t * 0.7) + C["fog"][None, None, :] * (t * 0.7)
         mid = Image.fromarray(a.astype(np.uint8), "RGBA")
         sizes[f"mid-{tod}.webp"] = save_webp(mid, f"mid-{tod}.webp")
-        # Near hills: rolling, with a dense forest edge (closest background layer).
-        prof = 0.5 + 0.5 * ridge(W, [(3, 0.6), (7, 0.3), (13, 0.12)], 41) / 1.02
-        near, nh = mountain_layer(W, 360, 70, 140, prof, C["near"], C["nearLit"], C["fog"], None, seed=42, fog_from=0.6)
+        # Near hills with forest clumps: 1024 x 360 units at 2 px per unit.
+        prof = 0.5 + 0.5 * ridge(W, [(2, 0.6), (5, 0.3), (9, 0.12)], 41) / 1.02
+        near, nh = mountain_layer(W, 720, 140, 280, prof, C["near"], C["nearLit"], C["fog"], None, seed=42, fog_from=0.55, S=S)
         trees = Image.new("RGBA", near.size)
-        stamp_trees(trees, nh, pine, C["forestNear"], 13, (0.2, 0.34), 43, sink=34, clump=-0.3)
+        stamp_trees(trees, nh, pine, C["forestNear"], 22, (0.4, 0.66), 43, sink=64, clump=-0.3)
         near = Image.alpha_composite(near, trees)
         sizes[f"near-{tod}.webp"] = save_webp(near, f"near-{tod}.webp")
+        kitpal[tod] = dict(P, nearBottom=bottom_colour(near), midBottom=bottom_colour(mid))
     return sizes
 
 
@@ -207,47 +263,120 @@ def periodic(n: int, terms: list, seed: int) -> np.ndarray:
     return v
 
 
-def rock(n: int, band_cols: list, seed: int) -> Image.Image:
-    """Layered rock: wavy horizontal strata, darker seams between them, a grain of small stones."""
-    yy, xx = np.mgrid[0:n, 0:n].astype(np.float32)
-    warp = periodic(n, [(1, 0, 2.2), (2, 1, 1.0), (3, 0, 0.6)], seed)
-    strata = (yy + warp) / n * 8                     # 8 bands per tile (a multiple of the 4 colours), so it tiles
-    band = np.floor(strata) % len(band_cols)
-    frac = strata - np.floor(strata)
-    cols = np.array([rgb(c) for c in band_cols])
-    col = cols[band.astype(int)]
-    # a soft light at the top of each band and a dark seam at its bottom
-    col = col * (1.06 - 0.16 * frac[..., None])
-    seam = np.clip((frac - 0.9) / 0.1, 0, 1)
-    col = col * (1 - 0.35 * seam[..., None])
-    grain = periodic(n, [(9, 7, 1), (13, 17, 0.7), (23, 19, 0.5), (31, 29, 0.4)], seed + 1)
-    col = col * (1 + 0.012 * grain[..., None])
-    # short vertical joints in alternate bands, like bedded sandstone
-    jx = (xx + 37 * band) % 64
-    joint = (jx < 1.6) & (band % 2 == 0) & (frac > 0.12) & (frac < 0.88)
-    col = np.where(joint[..., None], col * 0.78, col)
-    return Image.fromarray(np.clip(col, 0, 255).astype(np.uint8), "RGB").convert("RGBA")
+def wave1d(n: int, terms: list, seed: int) -> np.ndarray:
+    """Smooth 1-D noise over n samples (not periodic): a few sines with random phases."""
+    rng = np.random.default_rng(seed)
+    t = np.arange(n) / n
+    v = np.zeros(n, np.float32)
+    for f, a in terms:
+        v += a * np.sin(2 * math.pi * f * t + rng.uniform(0, 6.3))
+    return v
+
+
+CLIFF_SANDSTONE = ["#c88d5c", "#b47d52", "#a06c47", "#bd8758", "#a8744c", "#c2905f"]
+CLIFF_STONE = ["#a6a097", "#938d86", "#857f79", "#9c968e", "#8c867f"]
+
+
+def cliff(wu: float, seed: int, colours: list, S: int = 2, hu: int = 600, margin: int = 14, green: bool = True) -> Image.Image:
+    """One cliff column under a ledge, drawn as a single painted shape (the game shows it at 1/S scale):
+    a rocky silhouette that widens toward the base, uneven wavy strata, cracks and grain, a dark band of ambient
+    occlusion under the grass lip, a warm rim of light on the sunny right edge, shade on the left, moss and hanging
+    vines near the top, and a fade to transparent at the bottom (the valley haze shows through)."""
+    rng = np.random.default_rng(seed)
+    W, H, M = int((wu + 2 * margin) * S), hu * S, margin * S
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    t = yy[:, 0] / H
+    pin = np.clip(1 - yy[:, 0] / (26 * S), 0, 1) ** 2         # edges pinned to the lip width near the top
+    xl = M - t ** 1.25 * M * 0.9 + wave1d(H, [(2, 4), (5, 3), (11, 1.6), (29, 0.8)], seed + 1) * S
+    xr = W - M + t ** 1.25 * M * 0.9 + wave1d(H, [(2, 4), (6, 3), (13, 1.6), (31, 0.8)], seed + 2) * S
+    xl = xl * (1 - pin) + M * pin
+    xr = xr * (1 - pin) + (W - M) * pin
+    alpha = np.clip(xx - xl[:, None] + 1, 0, 1) * np.clip(xr[:, None] - xx + 1, 0, 1)
+    # strata: bands of uneven thickness whose boundaries wave and tilt
+    bounds, y = [], -rng.uniform(0, 20) * S
+    while y < H + 60 * S:
+        y += rng.uniform(13, 44) * S
+        bounds.append(y)
+    bounds = np.array(bounds, np.float32)
+    warp = (wave1d(W, [(1, 5), (3, 3), (7, 1.5)], seed + 3) * S)[None, :] + (xx - W / 2) * rng.uniform(-0.04, 0.04)
+    u = yy + warp
+    idx = np.searchsorted(bounds, u)
+    lo = np.where(idx > 0, bounds[np.maximum(idx - 1, 0)], u - 20 * S)
+    hi = bounds[np.minimum(idx, len(bounds) - 1)]
+    frac = np.clip((u - lo) / np.maximum(1, hi - lo), 0, 1)
+    pal = np.array([rgb(c) for c in colours])
+    bright = rng.uniform(0.92, 1.06, len(bounds) + 1)
+    band = pal[idx % len(pal)] * bright[idx][..., None]
+    band = band * (1.07 - 0.14 * frac[..., None])
+    band = band * (1 - 0.28 * np.clip((frac - 0.86) / 0.14, 0, 1))[..., None]
+    grain = (np.sin(xx * 0.9 + yy * 0.37) * np.sin(xx * 0.23 - yy * 1.1) + np.sin(xx * 2.3 + yy * 1.7) * 0.5) * 0.018
+    col = band * (1 + grain[..., None])
+    # depth: darker and cooler further down
+    tt = t[:, None, None]
+    col = col * (1 - 0.32 * tt ** 0.9) + np.array([70, 80, 105], np.float32) * (0.22 * tt)
+    # ambient occlusion under the lip, shade on the left edge, rim light on the right edge
+    col = col * (1 - 0.55 * np.exp(-yy / (12 * S)))[..., None]
+    dl = xx - xl[:, None]
+    dr = xr[:, None] - xx
+    col = col * (1 - 0.32 * np.exp(-dl / (9 * S)))[..., None]
+    col = col + np.array([255, 214, 160], np.float32) * (0.32 * np.exp(-dr / (2.2 * S)) * (1 - tt[..., 0] * 1.2).clip(0, 1))[..., None]
+    im = Image.fromarray(np.dstack([np.clip(col, 0, 255), alpha[..., None] * 255]).astype(np.uint8), "RGBA")
+    d = ImageDraw.Draw(im)
+    # cracks: short jagged dark lines inside bands
+    for _ in range(int(W * H / (5200 * S * S))):
+        x0, y0 = rng.uniform(M, W - M), rng.uniform(20 * S, H * 0.7)
+        pts = [(x0, y0)]
+        for _ in range(rng.integers(2, 5)):
+            x0 += rng.uniform(-4, 4) * S
+            y0 += rng.uniform(3, 9) * S
+            pts.append((x0, y0))
+        d.line(pts, fill=(70, 42, 30, 110), width=max(1, S))
+    if green:
+        # moss: patches hanging under the lip, thinning downward
+        for _ in range(int(wu / 9)):
+            x0 = rng.uniform(M, W - M)
+            ln = rng.uniform(6, 26) * S
+            w = rng.uniform(5, 14) * S
+            d.ellipse([x0 - w, -w * 0.4, x0 + w, ln], fill=(92, 142, 62, 210))
+            d.ellipse([x0 - w * 0.6, ln * 0.3, x0 + w * 0.6, ln * 1.25], fill=(78, 126, 54, 190))
+        # vines with small leaves
+        for _ in range(max(1, int(wu / 60))):
+            x0 = rng.uniform(M + 8 * S, W - M - 8 * S)
+            ln, ph = rng.uniform(40, 150) * S, rng.uniform(0, 6)
+            pts = [(x0 + math.sin(ph + k * 0.25) * 4 * S, k * 4 * S) for k in range(int(ln / (4 * S)))]
+            d.line(pts, fill=(46, 92, 48, 255), width=max(2, int(1.5 * S)), joint="curve")
+            for k, (px, py) in enumerate(pts[2::3]):
+                sd = 1 if k % 2 else -1
+                d.ellipse([px + sd * 2 * S - 3 * S, py - 2 * S, px + sd * 2 * S + 3 * S, py + 2 * S], fill=(70, 130, 60, 255))
+    a = np.asarray(im).astype(np.float32)
+    fade = np.clip((1 - t) / 0.38, 0, 1) ** 1.3
+    a[..., 3] *= fade[:, None]
+    return Image.fromarray(a.astype(np.uint8), "RGBA")
 
 
 def textures() -> dict:
     sizes = {}
-    # Rock for the cliff columns: painted strata, seamless both ways (256 x 256), warm sandstone.
-    sizes["dirt.webp"] = save_webp(rock(256, ["#c98f5e", "#b07a50", "#9a6743", "#b8845a"], 51), "dirt.webp")
-    sizes["stone.webp"] = save_webp(rock(256, ["#a9a39b", "#8f8a83", "#7e7a74", "#9d978f"], 52), "stone.webp")
-    # Waterfall: vertical streaks, seamless top to bottom (64 x 256).
+    # Cliff columns (2 px per unit): two ledge variants, the wide start ledge, the summit, a stair step.
+    for name, wu, seed, cols, green in (("cliff-a", 170, 101, CLIFF_SANDSTONE, True), ("cliff-b", 170, 102, CLIFF_SANDSTONE, True),
+                                        ("cliff-wide", 440, 103, CLIFF_SANDSTONE, True), ("cliff-summit", 330, 104, CLIFF_SANDSTONE, True),
+                                        ("cliff-step", 36, 105, CLIFF_STONE, False)):
+        sizes[name + ".webp"] = save_webp(cliff(wu, seed, cols, margin=14 if wu > 60 else 6, green=green), name + ".webp", quality=84, method=6)
+    # Waterfall: bright streaks with foam edges, seamless top to bottom (64 x 256, 2 px per unit).
     rng = np.random.default_rng(5)
     w, h = 64, 256
     yy = np.arange(h)[:, None] / h * 2 * math.pi
     xx = np.arange(w)[None, :]
     v = np.zeros((h, w), np.float32)
-    for k in range(10):
-        fx, ph, f = rng.uniform(0, w), rng.uniform(0, 6.3), int(rng.integers(1, 4))
-        band = np.exp(-((xx - fx) ** 2) / (2 * rng.uniform(1.5, 4) ** 2))
-        v += band * (0.5 + 0.5 * np.sin(f * yy + ph))
-    v = v / v.max()
-    edge = np.clip(np.minimum(xx, w - 1 - xx) / 10, 0, 1)
-    col = np.dstack([180 + 75 * v, 220 + 35 * v, 245 + 10 * v, (150 + 105 * v) * edge]).clip(0, 255).astype(np.uint8)
-    sizes["waterfall.webp"] = save_webp(Image.fromarray(col, "RGBA"), "waterfall.webp")
+    for k in range(16):
+        fx, ph, f = rng.uniform(4, w - 4), rng.uniform(0, 6.3), int(rng.integers(1, 4))
+        band = np.exp(-((xx - fx) ** 2) / (2 * rng.uniform(0.8, 2.5) ** 2))
+        v += band * np.clip(0.4 + 0.8 * np.sin(f * yy + ph), 0, 1)
+    v = np.clip(v / 1.6, 0, 1)
+    edge = np.clip(np.minimum(xx, w - 1 - xx) / 6, 0, 1)
+    rim = np.exp(-np.minimum(xx, w - 1 - xx) / 3.0)
+    body = 0.55 + 0.45 * v
+    col = np.dstack([150 + 105 * body + 40 * rim, 200 + 55 * body, 235 + 20 * body, (130 + 125 * np.maximum(v, rim * 0.9)) * edge])
+    sizes["waterfall.webp"] = save_webp(Image.fromarray(np.clip(col, 0, 255).astype(np.uint8), "RGBA"), "waterfall.webp")
     # Foreground: a low band of grass blades and leaves, pre-blurred (no blur filter at run time), 640 x 220.
     fg = Image.new("RGBA", (640, 220))
     d = ImageDraw.Draw(fg)
@@ -256,9 +385,9 @@ def textures() -> dict:
         x0 = rng.uniform(0, 640)
         hgt = rng.uniform(60, 200) * (1.0 if (x0 < 200 or x0 > 470) else 0.45)
         lean = rng.uniform(-40, 40)
-        w = rng.uniform(8, 18)
-        col = (int(rng.uniform(18, 34)), int(rng.uniform(44, 70)), int(rng.uniform(34, 50)), 255)
-        d.polygon([(x0 - w, 220), (x0 + w, 220), (x0 + lean, 220 - hgt)], fill=col)
+        w2 = rng.uniform(8, 18)
+        col2 = (int(rng.uniform(18, 34)), int(rng.uniform(44, 70)), int(rng.uniform(34, 50)), 255)
+        d.polygon([(x0 - w2, 220), (x0 + w2, 220), (x0 + lean, 220 - hgt)], fill=col2)
     for k in range(10):
         cx, cy, r = rng.uniform(0, 640), rng.uniform(150, 230), rng.uniform(26, 48)
         if 220 < cx < 440:
@@ -266,6 +395,16 @@ def textures() -> dict:
         d.ellipse([cx - r * 1.6, cy - r * 0.7, cx + r * 1.6, cy + r * 0.7], fill=(22, 52, 40, 255))
     fg = fg.filter(ImageFilter.GaussianBlur(3.2))
     sizes["fg.webp"] = save_webp(fg, "fg.webp")
+    # Foreground bushes in the world (closer than the path, so blurred): dark leafy clumps, 520 x 260.
+    fb = Image.new("RGBA", (520, 260))
+    for k, (n, x0, sc) in enumerate((("bush1", 0, 1.3), ("bush3", 150, 1.6), ("bush2", 300, 1.2), ("bush4", 380, 1.0))):
+        b = img(BGE / f"{n}.png")
+        b = b.resize((int(b.width * sc), int(b.height * sc)), Image.LANCZOS)
+        a2 = np.asarray(b)[..., 3]
+        sil = np.dstack([np.full_like(a2, 34), np.full_like(a2, 70 + k * 6), np.full_like(a2, 48), a2]).astype(np.uint8)
+        fb.alpha_composite(Image.fromarray(sil, "RGBA"), (x0, 260 - b.height))
+    fb = fb.filter(ImageFilter.GaussianBlur(4))
+    sizes["fgbush.webp"] = save_webp(fb, "fgbush.webp")
     return sizes
 
 
@@ -378,6 +517,99 @@ def shapes() -> dict:
             d.polygon([(25, 17), (45, 23), (25, 31)], fill=(255, 255, 255, 255))
         out[f"ui/{kind}"] = b
     out["ui/plate"] = plate()
+    out.update(props2())
+    return out
+
+
+def props2() -> dict:
+    """Hand-made props drawn at 2 px per world unit: the checkpoint post and its pennant (furled and three waving
+    frames), the lift's gondola and pulley, the summit cairn, a soft band for fog, the spill of a waterfall."""
+    out = {}
+    # wooden post, 6 x 80 units
+    im = Image.new("RGBA", (16, 164))
+    d = ImageDraw.Draw(im)
+    d.rounded_rectangle([3, 6, 12, 163], 3, fill=(112, 70, 42, 255))
+    d.rectangle([5, 8, 7, 160], fill=(150, 100, 64, 255))
+    d.ellipse([1, 0, 14, 12], fill=(218, 170, 74, 255))
+    d.ellipse([4, 2, 9, 7], fill=(250, 220, 130, 255))
+    out["ui/pole"] = im
+    # pennant: a long triangle with a wave, green with a light stripe (38 x 24 units)
+    for k in range(3):
+        im = Image.new("RGBA", (80, 52))
+        d = ImageDraw.Draw(im)
+        top, bot = [], []
+        for i in range(41):
+            x = i * 2
+            amp = 3.2 * (x / 80)
+            off = math.sin(x / 13 + k * 2.1) * amp
+            half = 22 * (1 - x / 84)
+            top.append((x, 26 - half + off))
+            bot.append((x, 26 + half + off))
+        d.polygon(top + bot[::-1], fill=(54, 168, 98, 255))
+        d.line([(p[0], (p[1] + q[1]) / 2 - 3) for p, q in zip(top, bot)][:34], fill=(132, 214, 160, 255), width=3)
+        d.line(top, fill=(36, 120, 70, 255), width=1)
+        out[f"ui/pen{k}"] = im
+    im = Image.new("RGBA", (22, 50))
+    d = ImageDraw.Draw(im)
+    d.polygon([(2, 2), (14, 4), (12, 48), (6, 44)], fill=(54, 168, 98, 255))
+    d.line([(6, 6), (9, 40)], fill=(132, 214, 160, 255), width=2)
+    out["ui/penDown"] = im
+    # gondola: a plank deck with posts and a rope rail, 76 x 44 units
+    im = Image.new("RGBA", (152, 88))
+    d = ImageDraw.Draw(im)
+    wood, dark, light = (150, 98, 58, 255), (96, 60, 36, 255), (190, 132, 82, 255)
+    for x in (6, 138):
+        d.rounded_rectangle([x, 4, x + 8, 70], 3, fill=dark)
+        d.rectangle([x + 2, 6, x + 4, 66], fill=wood)
+        d.ellipse([x - 2, 0, x + 10, 12], fill=(120, 120, 128, 255))
+        d.ellipse([x + 1, 3, x + 7, 9], fill=(60, 60, 66, 255))
+    d.line([(14, 30), (76, 36), (138, 30)], fill=(196, 160, 104, 255), width=4, joint="curve")
+    d.rounded_rectangle([0, 62, 151, 86], 6, fill=dark)
+    for i in range(6):
+        x0 = 4 + i * 24.3
+        d.rounded_rectangle([x0, 64, x0 + 22, 80], 3, fill=wood)
+        d.line([(x0 + 3, 67), (x0 + 19, 67)], fill=light, width=2)
+    d.rectangle([0, 80, 151, 86], fill=(80, 50, 30, 255))
+    out["ui/gondola"] = im
+    # pulley wheel, 28 x 28 units
+    im = Image.new("RGBA", (56, 56))
+    d = ImageDraw.Draw(im)
+    d.ellipse([1, 1, 54, 54], fill=(70, 66, 72, 255))
+    d.ellipse([7, 7, 48, 48], fill=(128, 122, 130, 255))
+    for k in range(6):
+        ang = k * math.pi / 3
+        d.line([(28, 28), (28 + math.cos(ang) * 20, 28 + math.sin(ang) * 20)], fill=(70, 66, 72, 255), width=4)
+    d.ellipse([21, 21, 35, 35], fill=(196, 160, 90, 255))
+    out["ui/pulley"] = im
+    # summit cairn: rounded stones, lit from the upper right, with contact shadows (120 x 96 units)
+    W, H = 240, 192
+    im = Image.new("RGBA", (W, H))
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    acc = np.zeros((H, W, 4), np.float32)
+    stones = [(58, 160, 54, 32, (196, 184, 166)), (128, 166, 62, 28, (184, 174, 160)), (190, 162, 46, 30, (204, 192, 172)),
+              (92, 118, 50, 28, (208, 196, 178)), (156, 116, 46, 28, (190, 180, 166)), (124, 76, 40, 24, (206, 196, 182)), (126, 42, 26, 18, (216, 206, 190))]
+    for cx, cy, rx, ry, c in stones:
+        dx, dy = (xx - cx) / rx, (yy - cy) / ry
+        r2 = dx * dx + dy * dy
+        inside = np.clip((1 - r2) * 18, 0, 1)
+        light = np.clip(0.82 + 0.32 * (dx * 0.55 - dy * 0.75) - 0.18 * r2, 0.5, 1.15)
+        colr = np.array(c, np.float32)[None, None, :] * light[..., None]
+        edge = np.clip((r2 - 0.82) / 0.18, 0, 1)
+        colr = colr * (1 - 0.35 * edge[..., None])
+        m = inside[..., None]
+        acc[..., :3] = acc[..., :3] * (1 - m) + colr * m
+        acc[..., 3] = np.maximum(acc[..., 3], inside)
+    out["ui/cairn"] = Image.fromarray(np.dstack([np.clip(acc[..., :3], 0, 255), acc[..., 3:] * 255]).astype(np.uint8), "RGBA")
+    # soft band for fog layers (alpha 0 -> 1 -> 0)
+    v = np.sin(np.linspace(0, math.pi, 128)) ** 1.5
+    out["fx/band"] = Image.fromarray(np.dstack([np.full((128, 8), 255)] * 3 + [np.repeat(v[:, None], 8, 1) * 255]).astype(np.uint8), "RGBA")
+    # waterfall spill over a lip: a white foamy bulge
+    im = Image.new("RGBA", (72, 40))
+    d = ImageDraw.Draw(im)
+    for k in range(9):
+        x = 8 + k * 7
+        d.ellipse([x - 9, 8 + (k % 3) * 3, x + 9, 30 + (k % 2) * 4], fill=(236, 248, 255, 230))
+    out["fx/spill"] = im.filter(ImageFilter.GaussianBlur(1.2))
     return out
 
 
@@ -475,12 +707,13 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     atlas, asize = build_atlas()
     sizes = {"atlas.webp": asize}
-    sizes.update(build_layers())
+    kitpal = {}
+    sizes.update(build_layers(kitpal))
     sizes.update(textures())
     snd = sounds()
-    kit = {"atlas": atlas, "rig": RIG, "palette": PAL,
-           "layers": {k: {"day": f"{k}-day.webp", "night": f"{k}-night.webp"} for k in ("sky", "far", "peak", "mid", "near")},
-           "textures": {"dirt": "dirt.webp", "stone": "stone.webp", "waterfall": "waterfall.webp", "fg": "fg.webp"},
+    kit = {"atlas": atlas, "rig": RIG, "palette": kitpal,
+           "layers": {k: {"day": f"{k}-day.webp", "night": f"{k}-night.webp"} for k in ("sky", "far", "peak", "cloudsea", "mid", "near")},
+           "textures": {k: k + ".webp" for k in ("waterfall", "fg", "fgbush", "cliff-a", "cliff-b", "cliff-wide", "cliff-summit", "cliff-step")},
            "sizes": sizes, "sounds": snd}
     (OUT / "kit.json").write_text(json.dumps(kit, separators=(",", ":")))
     art = sum(sizes.values())

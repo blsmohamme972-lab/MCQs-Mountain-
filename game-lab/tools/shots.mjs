@@ -17,7 +17,7 @@ async function run(scheme) {
   const errors = [];
   page.on('pageerror', e => errors.push(String(e)));
   page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
-  await page.goto(url + (url.includes('?') ? '&' : '?') + 'mode=story');
+  await page.goto(url + (url.includes('?') ? '&' : '?') + 'mode=story&gov=0');
   await page.waitForFunction(() => window.__lab && window.__lab.state === 'start', null, { timeout: 60000 });
   const shot = async n => page.screenshot({ path: `${out}/${scheme === 'dark' ? 'night' : 'day'}-${n}.png` });
   const answer = async () => { await page.waitForFunction(() => window.__lab.state === 'question', null, { timeout: 20000 }); await page.waitForTimeout(150); await page.evaluate(() => window.__lab.answer()); await page.waitForTimeout(200); };
