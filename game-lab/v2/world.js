@@ -93,7 +93,7 @@
     x.fillStyle = '#3b2c35'; x.fillRect(0, 0, 10, 10); x.fillStyle = col; x.fillRect(1, 1, 8, 8); x.fillStyle = dk; x.fillRect(1, 8, 8, 1);
     x.fillStyle = '#fff';
     if (st === 1) [[2, 4], [3, 5], [4, 6], [5, 5], [6, 4], [7, 3]].forEach(p => x.fillRect(p[0], p[1], 1, 1));
-    else { x.fillRect(3, 2, 1, 6); x.fillRect(4, 2, 3, 1); x.fillRect(4, 3, 2, 1); x.fillRect(4, 4, 3, 1); }
+    else { x.fillRect(3, 1, 1, 8); x.fillRect(4, 1, 4, 1); x.fillRect(4, 2, 3, 1); x.fillRect(4, 3, 2, 1); x.fillRect(4, 4, 1, 1); }
     return (badgeCache[st] = PIXI.Texture.from(c));
   }
   // A sign: its plate, the glyphs of its text, and the badge. Anchored at its post's foot (x, y).
@@ -398,7 +398,9 @@
   }
   function tickEnd() {
     ST[stN % ST.length] = performance.now() - stT0; stN++;
-    if (!awake && !busy()) { app.ticker.stop(); running = false; }
+    const b = busy();
+    if (!awake && !b) { app.ticker.stop(); running = false; }
+    app.ticker.maxFPS = planOn || b ? 0 : 12;
   }
   let running = false;
   function wake() { awake = true; if (!running && !paused && app) { running = true; app.ticker.start(); } }
@@ -500,12 +502,13 @@
   }
   // the main-thread time of every stage build (for the harness: World.stageInfo().buildMs)
   const buildMs = [];
-  // later = true (Strip, Classic): the layout now, the objects in a task of their own right after the tap, so the tap
-  // stays short; anything that needs them first calls ready() (the loop does too).
+  // later = true (Strip, Classic): the layout now, the objects in a task of their own once the next MCQ is open (its
+  // 100 ms cross-fade stays free), just before the world behind the sheet is redrawn (renderLater, 260 ms); anything
+  // that needs them sooner calls ready() (the loop does too).
   let pend = false, pendAfter = null;
   function setStage(k, later) {
     stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout();
-    if (later) { pend = true; setTimeout(ready, 0); return; }
+    if (later) { pend = true; setTimeout(ready, 220); return; }
     pend = false; const t = performance.now(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
   }
   function ready() {

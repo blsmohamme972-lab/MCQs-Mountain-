@@ -82,7 +82,9 @@
     const q = Q[i], w = h('div', 'in wrap'), hd = h('div', 'qhead'), os = h('div', 'opts');
     pg.el.textContent = ''; pg.q = i; pg.o = []; pg.mk = [];
     pg.h = h('h2', 'qn', 'Q ' + (i + 1) + '/' + N); pg.h.tabIndex = -1; pg.xp = h('span', 'qxp');
-    hd.append(pg.h, h('span', 'chip', TY[q.type]), pg.xp); w.append(hd);
+    hd.append(pg.h, h('span', 'chip', TY[q.type]));
+    if (STAGES.length > 1) hd.append(h('span', 'qstage', 'Stage ' + (stageOf(i) + 1) + ' of ' + STAGES.length));
+    hd.append(pg.xp); w.append(hd);
     if (q.lead_in) w.append(h('p', 'lead', q.lead_in));
     w.append(h('p', 'stem', q.stem));
     pg.hint = null;
@@ -195,7 +197,13 @@
     World.wake(); skipOn(true);
     World.walkToFirst(arrived);
   }
-  function arrived() { hud(); openSheet(); }
+  function arrived() { hud(); stageNews(); openSheet(); }
+  // A new stage is announced to screen readers (it is shown in the question header too).
+  function stageNews() {
+    if (STAGES.length < 2 || !idx || stageOf(idx) === stageOf(idx - 1)) return;
+    const s = stageOf(idx);
+    live.textContent = 'Stage ' + (s + 1) + ' of ' + STAGES.length + '. ' + (s === STAGES.length - 1 ? 'Last mountain.' : 'Next mountain.');
+  }
   function next() {
     if (lab.state !== 'question' || !RS[idx].done || now() < nextGuard) return;
     mark('lab:next-tap'); tNext = now(); readT += tNext - tShown; lab.state = 'moving';
@@ -207,12 +215,12 @@
     }
     collected(idx);
     if (idx === N - 1) { sheet.classList.remove('open'); World.place('summit'); finish(); return; }
-    const a = idx; idx++; hud();
+    const a = idx; idx++; hud(); stageNews();
     if (mode === 'strip' && !RM) { stripAnim.on = true; stripAnim.t0 = -1; stripAnim.a = a; stripAnim.b = idx; }
     if (mode === 'strip') drawStrip();
     World.place(idx);
     activate(idx);
-    xfT = after(mode === 'strip' && !RM ? 120 : 0, () => { xfT = null; mark('lab:world-visible'); sheetVisible(); });
+    xfT = after(mode === 'strip' && !RM ? 100 : 0, () => { xfT = null; mark('lab:world-visible'); sheetVisible(); });
   }
   function worldVisible() {
     clT = null; mark('lab:world-visible');
@@ -247,10 +255,11 @@
     const c = RS.filter(r => r.correct).length, sec = Math.round(readT / 1000), per = gameT / N / 1000, z = per * 100 / 60;
     $('dS').textContent = N + (N === 1 ? ' MCQ · ' : ' MCQs · ') + c + ' correct · +' + xp + ' XP';
     const L2 = $('dL'); L2.textContent = '';
+    const dur = s => s < 60 ? s.toFixed(1) + ' s' : Math.floor(Math.round(s) / 60) + ' min ' + (Math.round(s) % 60) + ' s';
     ['Time reading and answering: ' + Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0'),
-      'Time added by the game: ' + (gameT / 1000).toFixed(1) + ' s (' + per.toFixed(1) + ' s per MCQ)',
-      'At this pace 100 MCQs would add about ' + (z < 10 ? z.toFixed(1) : Math.round(z)) + ' min',
-      'Animations skipped: ' + skips].forEach(s => L2.append(h('li', null, s)));
+      'Time added by the game: ' + dur(gameT / 1000) + ' (' + (per < 0.1 ? 'under 0.1' : per.toFixed(1)) + ' s per MCQ)']
+      .concat(N === 100 ? [] : ['At this pace 100 MCQs would add about ' + (z < 0.1 ? 'under 0.1' : z < 10 ? z.toFixed(1) : Math.round(z)) + ' min'], ['Animations skipped: ' + skips])
+      .forEach(s => L2.append(h('li', null, s)));
     sheet.classList.remove('open'); doneC.classList.remove('off'); World.sleep();
     try { $('t2').focus({ preventScroll: true }); } catch (e) {}
   }
@@ -266,7 +275,7 @@
   function skipOn(v) { skipH.classList.toggle('on', !!v && !RM && mode !== 'classic'); }
   function hud(top) {
     const n = lab.state === 'start' || lab.state === 'loading' ? 0 : idx + 1, el = $('ledge');
-    el.textContent = top ? 'Summit' : RM ? 'Ledge ' + n + ' of ' + N : 'Ledge ' + n + '/' + N;
+    if (top) el.textContent = 'Summit'; else el.innerHTML = '<span class="lw">Ledge </span>' + n + '/' + N;
     el.setAttribute('aria-label', top ? 'Summit' : 'Ledge ' + n + ' of ' + N);
   }
   // The XP counter ticks up to its new value (about 0.4 s); reduced motion shows the number at once.

@@ -72,7 +72,8 @@
   const textStyle = (size, fill) => ({ fontFamily: 'Fredoka, ui-rounded, "Arial Rounded MT Bold", system-ui, sans-serif', fontSize: size, fontWeight: '700', fill, stroke: { color: 0x3a2618, width: Math.max(2, size / 7), join: 'round' } });
   // Short labels (sign numbers, Camp, Stage n, +10 XP) use one bitmap font made once at start-up: no texture per
   // sign, so a 200-MCQ chapter costs the same as 8. White fill and a dark stroke; the colour comes from the tint.
-  let fontReady = false;
+  let fontReady = false, glowOne = null;
+  const glowF = () => glowOne || (FX && PIXI.filters && PIXI.filters.GlowFilter ? (glowOne = new PIXI.filters.GlowFilter({ distance: 12, outerStrength: 1.6, color: 0xffd36b, quality: 0.2, resolution: 'inherit' })) : null);
   function installFont() {
     if (fontReady) return;
     PIXI.BitmapFont.install({ name: 'kafu-label', style: Object.assign(textStyle(40, 0xffffff), { stroke: { color: 0x3a2618, width: 7, join: 'round' } }),
@@ -388,11 +389,14 @@
   /* ---------- the loop ---------- */
   let summitView = false, bgDim = 1;
   let awake = false, ambT = 0, built = false, camMoving = false, celebT = 0, running = false, paused = false;
-  const busy = () => planOn || lifts.some(l => l.ret) || coin.on || xpText.visible || H.sq > 0 || celebT > 0 || anyParts() || cam.ft < 1 || camMoving || popping() || flagMoving() || H.st === 'happy' || H.st === 'calm';
+  const busy = () => planOn || settle > 0 || lifts.some(l => l.ret) || coin.on || xpText.visible || H.sq > 0 || celebT > 0 || anyParts() || cam.ft < 1 || camMoving || popping() || flagMoving() || H.st === 'happy' || H.st === 'calm';
   const popping = () => { for (let i = 0; i < coins.length; i++) if ((coins[i].visible && coins[i].pop < 1) || signs[i].badge.pop < 1) return true; return false; };
   const flagMoving = () => { for (const f of flags) if (f.up && f.t < 1) return true; return false; };
   // Ambient life (story mode, not reduced motion): the world keeps breathing at 30 fps while an MCQ is open.
-  const ambient = () => !RM && !paused && (window.__lab ? window.__lab.mode === 'story' || window.__lab.state === 'start' || window.__lab.state === 'loading' : true);
+  // Only the start screen breathes (30 fps): while an MCQ is open the world is still (no motion in a study view,
+  // DESIGN_STYLE), and after the chapter the loop stops too.
+  let settle = 0;   // seconds the loop keeps running after it is told to sleep, so the reading pose settles
+  const ambient = () => !RM && !paused && (window.__lab ? window.__lab.state === 'start' || window.__lab.state === 'loading' : true);
 
   function update(dt) {
     ready();
@@ -401,11 +405,11 @@
     if (H.sq > 0) H.sq = Math.max(0, H.sq - dt);
     if (H.st === 'land' && H.t > 0.16 && !planOn) heroState('idle');
     if (H.st === 'idle' && !RM) { H.look -= dt; if (H.look < -6 - rnd() * 6) H.look = 1.6; }
-    if (H.st === 'happy' && H.t > 1.5) heroState(H.after || 'idle');
-    if (H.st === 'calm' && H.t > 2.1) heroState(H.after || 'idle');
+    if (settle > 0) settle -= dt;
+    if (H.st === 'happy' && H.t > 1.5) { heroState(H.after || 'idle'); settle = 0.5; }
+    if (H.st === 'calm' && H.t > 2.1) { heroState(H.after || 'idle'); settle = 0.5; }
     if (celebT > 0) {
       celebT -= dt;
-      if (!RM && ((celebT * 10) | 0) % 4 === 0 && rnd() < 0.15) firework(beacon.x + (rnd() - 0.5) * 260, beacon.y - 120 - rnd() * 140);
       if (celebT <= 0) { heroState('idle'); squash(0.16, 0.08); }
     }
     stepPose(dt);
@@ -424,7 +428,7 @@
       if (!c.visible) continue;
       if (c.pop < 1) { c.pop = Math.min(1, c.pop + dt / 0.32); }
       const e = c.pop, bounce = easeOut(e) * (1 + 0.25 * Math.sin(Math.PI * e));
-      c.s.scale.set(0.34 * bounce * Math.cos(ambT * 4.2 + i), 0.34 * bounce);
+      c.s.scale.set(0.34 * bounce * (awake || ambient() ? Math.cos(ambT * 4.2 + i) : 1), 0.34 * bounce);
       c.glow.scale.set(0.7 + 0.08 * Math.sin(ambT * 5 + i)); c.glow.alpha = 0.55 * bounce;
       if (!coin.on || coin.i !== i) c.y = L[i].y - 76 + Math.sin(ambT * 2.4 + i) * 3;
       const b = signs[i].badge;
@@ -640,7 +644,7 @@
     landmark = top ? spr('ui/cairn', sx, sy + 6, 0.5, 1, backDeco, 0.55) : tent(sx, sy); landmark.wx = sx - 120; landmark.ww = 240;
     beaconGlow = spr('fx/glow', sx, sy - 98, 0.5, 0.5, backDeco, 0.9); beaconGlow.blendMode = 'add'; beaconGlow.tint = 0xffd36b; beaconGlow.alpha = 0.75; beaconGlow.wx = sx - 160; beaconGlow.ww = 320; beaconGlow.visible = top;
     beacon = spr('item/star', sx, sy - 80, 0.5, 1, backDeco, 0.5); beacon.wx = sx - 60; beacon.ww = 120; beacon.lit = false; beacon.visible = top;
-    if (top && FX && PIXI.filters && PIXI.filters.GlowFilter) { glow = new PIXI.filters.GlowFilter({ distance: 12, outerStrength: 1.6, color: 0xffd36b, quality: 0.2, resolution: 'inherit' }); beacon.filters = [glow]; }
+    if (top && glowF()) { glow = glowF(); beacon.filters = [glow]; }
     const sumPole = spr('ui/pole', sx + (top ? 36 : 24), sy - (top ? 20 : 8), 0.5, 1, backDeco, top ? 0.75 : 0.55); sumPole.wx = sx; sumPole.ww = 140;
     const sumPen = spr(top ? 'ui/gold0' : 'ui/pen0', 2, -150, 0.03, 0.5, sumPole, 1);
     flags.push({ x: sx, y: sy, up: true, t: 1, o: 0, s: sumPole, pen: sumPen, big: true, gold: top });
@@ -708,12 +712,13 @@
   let stageTint = 0xffffff, heroC;
   // the main-thread time of every stage build (for the harness: World.stageInfo().buildMs)
   const buildMs = [];
-  // later = true (Strip, Classic): the layout now, the objects in a task of their own right after the tap, so the tap
-  // stays short; anything that needs them first calls ready() (the loop does too).
+  // later = true (Strip, Classic): the layout now, the objects in a task of their own once the next MCQ is open (its
+  // 100 ms cross-fade stays free), just before the world behind the sheet is redrawn (renderLater, 260 ms); anything
+  // that needs them sooner calls ready() (the loop does too).
   let pend = false, pendAfter = null;
   function setStage(k, later) {
     stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout();
-    if (later) { pend = true; setTimeout(ready, 0); return; }
+    if (later) { pend = true; setTimeout(ready, 220); return; }
     pend = false; const t = performance.now(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
   }
   function ready() {
@@ -827,7 +832,7 @@
     // the summit star's glow: compile its shader now, not in the middle of a climb. Always with an on-screen dummy:
     // Pixi skips the filters of an object outside the view, and the star is off screen at start-up (or not built yet)
     let w = null;
-    if (FX && PIXI.filters && PIXI.filters.GlowFilter) { w = spr('fx/soft', 40, 40, 0.5, 0.5, fxC, 0.2); w.alpha = 0.01; w.filters = [new PIXI.filters.GlowFilter({ distance: 12, outerStrength: 1.6, color: 0xffd36b, quality: 0.2, resolution: 'inherit' })]; }
+    if (glowF()) { w = spr('fx/soft', 40, 40, 0.5, 0.5, fxC, 0.2); w.alpha = 0.01; w.filters = [glowF()]; }
     const keep = worldC.position.clone(); worldC.position.set(0, 0); app.render(); worldC.position.copyFrom(keep);
     if (w) { w.destroy(); }
   }
@@ -1010,7 +1015,12 @@
       }
       return did;
     },
-    sleep() { awake = false; cam.ft = 1; cam.fy = cam.fy1; snapCam(); renderOnce(); if (!ambient()) { app.ticker.stop(); running = false; } else kick(); },
+    sleep() {
+      awake = false; cam.ft = 1; cam.fy = cam.fy1; snapCam();
+      if (window.__lab && window.__lab.mode !== 'story') return;   // Strip, Classic: behind the sheet; place() draws it later
+      if (RM) { renderOnce(); app.ticker.stop(); running = false; return; }
+      settle = 0.6; kick();                                          // Story: the reading pose settles, then the loop stops
+    },
     wake,
     reset() { ready(); if (stage !== 0) setStage(0); resetState(); renderOnce(); if (!RM) kick(); },
     resize(w, h) {
