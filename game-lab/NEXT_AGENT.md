@@ -2,7 +2,7 @@
 
 The owner can paste the block below into a new Claude Code session on this repository. It is kept up to date with
 the STATUS line in `PLAN.md`. Last updated: 2026-10-18, when the owner paused the HD-tier work (D26) before the final
-reviews.
+reviews and added D27 (chapters from a few MCQs to 200).
 
 ```text
 Continue the "MCQs Mountain" 2D game prototype in the Kafu repo (blsmohamme972-lab/MCQs-Mountain-). The game now has
@@ -15,9 +15,10 @@ two at a time, no large multi-agent workflows).
 Where the work is:
 - Branch ccr-be53cbba-utrxso holds everything (it includes ccr-027f1300-5q5swg and ccr-efb5e2bb-wvj576). Fetch it
   first. If your session has a different designated branch, merge this one into yours; do not lose its commits.
-- Read: game-lab/PLAN.md (STATUS at the top), game-lab/DECISIONS.md D24-D26 (D26 has the HD tier's design and all
-  numbers so far), game-lab/README.md (harness contract, how to run both tiers, harness flags), game-lab/ASSETS.md,
-  game-lab/results/qa-v2-partial.md (unverified QA findings). Do not redo the engine spike, the art direction or the
+- Read: game-lab/PLAN.md (STATUS at the top), game-lab/DECISIONS.md D24-D27 (D26 has the HD tier's design and all
+  numbers so far; D27 is the owner's new rule: chapters from a few MCQs to 200), game-lab/README.md (harness
+  contract, how to run both tiers, harness flags), game-lab/ASSETS.md, game-lab/results/qa-v2-partial.md (unverified
+  QA findings). Do not redo the engine spike, the art direction or the
   visual quality loop: three rounds are done (best 5-6.5 of 10; the reviewers' ceiling with free and procedural art is
   about 7.5; a 9 needs an artist-made hero and premium props, already reported to the owner, who decides).
 
@@ -54,20 +55,34 @@ Your task, in order:
 2. Add a small lab-only tier switch so the owner can try both tiers on the phone link without URL parameters (for
    example a "Light version" / "HD version" link on the start card that stores the choice in localStorage, key
    mcqm-tier, and reloads; app.js already reads that key).
-3. The four reviews from game-lab/climb/SPEC.md (speed incl. 6x; QA across modes, question types, rapid taps, skip,
+3. Chapter size from a few MCQs to 200 (owner, DECISIONS.md D27): make both tiers work for ANY number of MCQs from 1
+   to 200 and fit every budget at every size. Cut the path into stages of about 10 MCQs (one mountain per stage, a
+   camp at the end, the real summit at the end of the last stage; a remainder under 4 joins the previous stage; each
+   stage gets its own scenery from the same art; height parallax restarts per stage; one lift per stage; the stage
+   change is a skippable beat of at most about 2.5 s). Build only the current and next stage and pool everything (no
+   per-ledge textures, sign numbers from one shared digit sheet), so load time, memory and per-frame work do not grow
+   with N. Make three-digit numbers fit at 320 px in both tiers (sign "Q200", top bar "Ledge 200/200", sheet header,
+   Strip bar with the current stage's ledges and "Stage 3/20", summary). Add a lab-only ?n= parameter (repeat the 8
+   samples, renumbered), a --n option in tools/measure.mjs, and a lab-only 8 / 50 / 200 picker on the start card for
+   the phone link. Test N = 1, 2, 3, 9, 10, 11, 13, 50, 100, 200 for flow, grading, summary and layout, and measure
+   N = 1, 8, 50 and 200 against the D27 budgets (load within 10% of N = 8, flat memory, HD script p95 <= 8 ms, no long
+   task over 50 ms in any transition incl. stage changes, Story about 1 s per MCQ, Strip and Classic under 150 ms,
+   at most about 1.2 s added per MCQ on average in Story).
+4. The four reviews from game-lab/climb/SPEC.md (speed incl. 6x; QA across modes, question types, rapid taps, skip,
    resize and rotation, reduced motion, dark mode, keyboard, 320 px to iPad 820x1180 and 1280x800; rules and learning;
    visual) against BOTH tiers, by independent agents, at most two at a time. Give the HD agents the harness flags from
-   README.md. Fix blockers and majors.
-4. Then a fresh agent that did not fix anything re-measures every mode for both tiers at --cpu 1,4,6 --q 8 (JSON to
-   game-lab/results/v2-final-<tier>-<mode>.json) and takes screenshots with tools/shots.mjs (send them in chat, never
-   commit them).
-5. Phone link (Gate 1): load the artifact-design skill, run python3 game-lab/tools/make_artifact.py <scratch>/artifact
+   README.md. The QA and speed reviews also cover chapter sizes (1, 8, 200). Fix blockers and majors.
+5. Then a fresh agent that did not fix anything re-measures every mode for both tiers at --cpu 1,4,6 --q 8 (JSON to
+   game-lab/results/v2-final-<tier>-<mode>.json) plus a 200-MCQ chapter for both tiers (JSON to
+   game-lab/results/v2-final-<tier>-<mode>-n200.json), and takes screenshots with tools/shots.mjs (send them in chat,
+   never commit them).
+6. Phone link (Gate 1): load the artifact-design skill, run python3 game-lab/tools/make_artifact.py <scratch>/artifact
    (it writes the page without its document wrapper, Google Fonts Fredoka and Nunito, PixiJS and pixi-filters from
    cdnjs with Subresource Integrity hashes and jsDelivr as fallback, and the code, art and sound as supporting files
    under assets/), then publish a private claude.ai Artifact titled "MCQs Mountain" with those files. The repo files
    stay the source of truth. Ask the owner to try both tiers on a mid-range phone and to report how smooth it feels.
-6. Update the STATUS line in game-lab/PLAN.md, the table in game-lab/README.md, the numbers in DECISIONS.md D26 (final
-   per tier and mode), and this file. Commit and push (text only).
+7. Update the STATUS line in game-lab/PLAN.md, the table in game-lab/README.md, the numbers in DECISIONS.md D26 and
+   D27 (final per tier, mode and chapter size), and this file. Commit and push (text only).
 
 Rules:
 - Work only inside game-lab/. Do not touch app/, worker/, tools/, CI or deployment. Nothing is integrated into the app

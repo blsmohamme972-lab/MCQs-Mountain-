@@ -274,3 +274,32 @@ Still to do (the owner paused the work here): fix the open QA findings (`results
 bugs, run the speed, rules and visual reviews from `climb/SPEC.md` on both tiers, a fresh agent's final re-measure
 (`results/v2-final-<tier>-<mode>.json`), and the phone link (`tools/make_artifact.py` is ready). The prompt:
 `NEXT_AGENT.md`.
+
+## Owner direction: chapter size from a few MCQs to 200 (2026-10-18, later)
+
+**D27. A chapter can have any number of MCQs, from a few (even 1) to 200, and the game must fit every size within the
+same budgets.** The prototype was built for 8. Measured or read from the code, a straight N = 200 would break or slow
+down in four places: the whole path is built at start-up (200 ledges, signs, coins, flags; the light tier bakes one
+texture per island), the height parallax runs out after about 20 MCQs (a 200-MCQ climb is about 22,000 units, so the
+backgrounds sink away), the Strip bar is hard-coded for 8 ledges (`app.js` `smx`/`smy`), and Story would add about
+1.1-1.2 s per MCQ (about 4 minutes per 200; Strip about 0.14 s per MCQ, about 30 s; Classic about 0).
+- **Stages.** The path is cut into stages of about 10 MCQs, one mountain each, ending at a camp (the last stage ends
+  at the real summit). A short chapter is one stage; a small remainder (under 4) joins the previous stage, so no stage
+  is tiny. Each stage gets its own scenery from the same art pieces (day and night palettes, biome tints such as
+  forest, snow, dusk), and the height parallax restarts at each stage's base, so the backgrounds never run out. One
+  lift per stage (the long beat); the stage change (camp to the next mountain) is a story beat of at most about 2.5 s,
+  always skippable.
+- **Constant cost.** Only the current and the next stage exist at a time; ledges, signs, coins, posts and cliffs are
+  pooled and reused. No per-ledge texture or per-sign `Text`: the sign numbers come from one shared digit sheet. Load
+  time, memory and per-frame work must not grow with N.
+- **Numbers fit.** Three-digit counters fit everywhere at 320 px wide in both tiers: sign plates ("Q200"), the top bar
+  ("Ledge 200/200"), the sheet header ("Q 200/200"), the Strip bar (current stage's ledges plus "Stage 3/20") and the
+  summary card. Edge cases: N = 1 (no transition, straight to the summit), 2, 3, 9, 10, 11, 13, 200.
+- **Budgets at every N** (1, 3, 8, 10, 11, 50, 100, 200), both tiers, 4x CPU: load to first frame within 10% of the
+  N = 8 value (HD at most 1.5 s); JS heap and texture memory flat with N; HD script time per frame p95 at most 8 ms;
+  no long task over 50 ms in any transition, stage changes included; Story Next to next MCQ about 1 s (1.6 s on the
+  lift), Strip and Classic under 150 ms; average time added per MCQ over the whole chapter at most about 1.2 s in Story
+  (the summary card reports the honest total).
+- **Testing.** A lab-only `?n=` parameter builds a chapter of n MCQs by repeating the 8 samples (renumbered), and the
+  harness gets `--n`; full 200-MCQ runs check memory and every stage change. On the phone link, a lab-only picker on
+  the start card offers 8, 50 and 200 MCQs, so the owner can feel a long chapter.

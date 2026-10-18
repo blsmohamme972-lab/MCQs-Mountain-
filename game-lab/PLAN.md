@@ -10,8 +10,9 @@ before the final reviews. The ready prompt: `NEXT_AGENT.md`.
 - Visual loop: three independent rounds, best scores 5-6.5 of 10, not the 9 the owner asked for. The reviewer's
   ceiling with free and procedural art is about 7.5; a 9 needs an artist-made hero with a rig and premium props (D26).
 - Open: the QA findings in `results/qa-v2-partial.md` (unverified, one page error while loading), the round-3 bugs
-  (lift looks like a gallows, broken stair columns, night halo), the speed, rules and visual reviews on both tiers,
-  the fresh final re-measure, the phone link (Gate 1).
+  (lift looks like a gallows, broken stair columns, night halo), chapters from a few MCQs to 200 within the same
+  budgets (owner, D27: stages of about 10, pooled objects, three-digit numbers that fit), the speed, rules and visual
+  reviews on both tiers, the fresh final re-measure (also at 200 MCQs), the phone link (Gate 1).
 
 Last updated: 2026-10-18.
 
