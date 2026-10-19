@@ -57,7 +57,11 @@ def build() -> dict:
             size = (d / name).stat().st_size
             total += size
             layers.append({"file": f"worlds/{w['id']}/{name}", "w": tw, "h": th, "top": top, "rows": bottom - top, "par": par, "scale": sc, "bytes": size})
-        out["worlds"].append({k: w[k] for k in ("id", "name", "fx", "lit")} | {"layers": layers,
+        # the colour under the nearest layer's bottom edge, to fill the screen below it
+        near = Image.open(d / layers[-1]["file"].split("/")[-1]).convert("RGBA")
+        row = [p for p in (near.getpixel((x, near.height - 2)) for x in range(0, near.width, 7)) if p[3] > 200] or [(40, 40, 40, 255)]
+        fill = "#%02x%02x%02x" % tuple(sum(p[c] for p in row) // len(row) for c in range(3))
+        out["worlds"].append({k: w[k] for k in ("id", "name", "fx", "lit")} | {"fill": fill, "layers": layers,
                               "bytes": sum(l["bytes"] for l in layers), "gpuMB": round(sum(l["w"] * l["h"] * 4 for l in layers) / 1e6, 1)})
         print(f"[worlds] {w['id']}: {len(layers)} layers, {out['worlds'][-1]['bytes'] // 1024} KB, GPU {out['worlds'][-1]['gpuMB']} MB")
     (OUT.parent / "worlds.json").write_text(json.dumps(out, indent=1))

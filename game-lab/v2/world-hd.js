@@ -513,6 +513,7 @@
     lay.fog.y = lay.mid.y + 250 * Z;
     lay.near.y = VH * 0.47 - 140 * Z - dy * 0.55; lay.near.tilePosition.x = -(cx * 0.4 + so * 2.3) * 2;
     lay.nearFill.y = lay.near.y + 356 * Z; lay.nearFill.height = Math.max(0, VH - lay.nearFill.y);
+    if (wNow) placeWorld(cx, dy);
     // the cloud bank below the path (screen space, moving with the world)
     lay.bank.y = lerp(VH * 0.8, -VH * 0.34, wipeK) + (RM ? 0 : Math.sin(ambT * 0.6) * 4); lay.bank.tilePosition.x = -(cx * 1.0 + (RM ? 0 : ambT * 6)) * 2;
     lay.bankFill.y = lay.bank.y + 80 * Z; lay.bankFill.height = Math.max(0, VH - lay.bankFill.y);
@@ -726,7 +727,7 @@
   function setStage(k, later) {
     if (ahead && ahead[0] === k) { swapIn(); return; }
     dropAhead();
-    stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout();
+    stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout(); setWorld();
     if (later) { pend = true; setTimeout(ready, 220); return; }
     pend = false; const t = performance.now(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
   }
@@ -760,6 +761,7 @@
     try { layout(); buildStage(); ahead = stageVars(); } finally { useVars(cur); }
     if (aheadMs.length < 400) aheadMs.push(Math.round((performance.now() - t) * 10) / 10);
     aheadCold = true; idle(warmAhead);   // the GPU upload in a task of its own (review HD3)
+    loadWorld(worldFor(k));              // the next stage's world: fetched and decoded off the main thread
   }
   function warmAhead() {
     if (!ahead || !aheadCold || awake || planOn) return;
@@ -779,9 +781,70 @@
     const now = [backC, backDeco, midC, fgW];
     for (let i = 0; i < 4; i++) { const at = worldC.getChildIndex(old[i]); worldC.removeChildAt(at); worldC.addChildAt(now[i], at); }
     idle(() => { for (const c of old) c.destroy({ children: true }); });
+    setWorld();
     if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
   }
-  let backDeco, shadow, fgW, raysS;
+  let backDeco, shadow, fgW, raysS, classicC;
+
+  /* ---------- fantasy worlds (D28): one per stage after the first, built by tools/build_worlds_hd.py ---------- */
+  // The first stage keeps the painted mountain; the next ones go through the worlds in order. A world is a stack of
+  // sideways-tiling layers drawn instead of the painted ranges. Its textures are fetched (decoded off the main
+  // thread) while an MCQ of the stage before it is open, reach the GPU in an idle warm-up, and are released once
+  // neither this stage nor the next needs them: at most two worlds are held at a time.
+  let WORLDS = [], wTex = {}, wLoad = {}, wNow = null, wbg = null;
+  const worldFor = k => k > 0 && WORLDS.length ? WORLDS[(k - 1) % WORLDS.length] : null;
+  const wUrls = w => w.layers.map(l => base + l.file);
+  function loadWorld(w) {
+    if (!w || wTex[w.id]) return null;
+    if (!wLoad[w.id]) wLoad[w.id] = PIXI.Assets.load(wUrls(w)).then(t => {
+      delete wLoad[w.id];
+      if (!worldWanted(w.id)) { PIXI.Assets.unload(wUrls(w)).catch(() => {}); return null; }
+      wTex[w.id] = wUrls(w).map(u => t[u]);
+      idle(() => warmWorld(w.id));
+      return wTex[w.id];
+    }).catch(() => { delete wLoad[w.id]; return null; });
+    return wLoad[w.id];
+  }
+  const worldWanted = id => { const a = worldFor(stage), b = worldFor(stage + 1); return (a && a.id === id) || (b && b.id === id); };
+  // the GPU upload, off the stage change's frame (as warmAhead does for the stage's objects)
+  function warmWorld(id) {
+    if (!wTex[id] || awake || planOn || !app || !app.renderer) return;
+    const c = new PIXI.Container();
+    for (const t of wTex[id]) c.addChild(new PIXI.Sprite(t));
+    warmRT = warmRT || PIXI.RenderTexture.create({ width: 4, height: 4 });
+    app.renderer.render({ container: c, target: warmRT, clear: true });
+    c.destroy({ children: true });
+  }
+  // shows the world for this stage (null: the painted mountain); a world still loading shows when it arrives
+  function setWorld() {
+    const w = worldFor(stage);
+    if (wbg) for (const k of wbg.removeChildren()) k.destroy();
+    wNow = w && wTex[w.id] ? w : null;
+    if (w && !wNow) { const p = loadWorld(w); if (p) p.then(() => { if (worldFor(stage) === w && !wNow) { setWorld(); renderLater(); } }); }
+    if (classicC) classicC.visible = !wNow;
+    if (wNow && wbg) {
+      const t = wTex[w.id], sky = new PIXI.Sprite(t[0]); wbg.addChild(sky);
+      for (let i = 1; i < t.length; i++) { const s = tiling(t[i], 8, 8); s.L = w.layers[i]; wbg.addChild(s); }
+      const f = new PIXI.Sprite(PIXI.Texture.WHITE); f.tint = parseInt(w.fill.slice(1), 16); wbg.addChild(f);
+      wbg.tint = night && w.lit === 'day' ? 0x8a92c4 : 0xffffff;
+    }
+    for (const id in wTex) if (!worldWanted(id)) idle(() => { if (!worldWanted(id) && wTex[id]) { const ww = WORLDS.find(x => x.id === id); delete wTex[id]; if (ww) PIXI.Assets.unload(wUrls(ww)).catch(() => {}); } });
+  }
+  // world layers: the scene's 1920 x 1080 frame is drawn about one screen tall, its foot just above the bottom; each
+  // layer slides sideways at its own factor and sinks as the climber rises (far ones less), like the painted ranges
+  function placeWorld(cx, dy) {
+    const ch = wbg.children, fs = VH * 1.05 / 1080, top0 = VH * 0.98 - 1080 * fs;
+    ch[0].width = VW; ch[0].height = VH;
+    let low = 0;
+    for (let i = 1; i < ch.length - 1; i++) {
+      const s = ch[i], L = s.L;
+      s.width = VW; s.height = Math.ceil(L.rows * fs); s.tileScale.set(fs / L.scale);
+      s.y = Math.round(top0 + L.top * fs - dy * (0.08 + L.par * 1.05));
+      s.tilePosition.x = -(cx * L.par * Z + stage * 397 * L.par);
+      if (s.y + s.height > low) low = s.y + s.height;
+    }
+    const f = ch[ch.length - 1]; f.y = low - 2; f.width = VW; f.height = Math.max(0, VH - f.y + 2);
+  }
   // Painted layers tile sideways only: drawn 2 units shorter and 1 unit down, so linear filtering never blends the
   // top row with the bottom row of the repeating texture (that showed as a pale line).
   function layerTiling(name, hu) { const t = tiling(T(name), VW / Z, hu - 2); t.tileScale.set(0.5); t.tilePosition.y = -1; t.scale.set(Z); return t; }
@@ -792,32 +855,34 @@
     bgC = new PIXI.Container(); worldC = new PIXI.Container(); fgC = new PIXI.Container();
     root.addChild(bgC, worldC, fgC);
     // sky, sun or moon, stars
-    lay.sky = new PIXI.Sprite(tex.sky); lay.sky.width = VW; lay.sky.height = VH; bgC.addChild(lay.sky);
-    starsC = new PIXI.Container(); bgC.addChild(starsC);
+    classicC = new PIXI.Container(); bgC.addChild(classicC);
+    lay.sky = new PIXI.Sprite(tex.sky); lay.sky.width = VW; lay.sky.height = VH; classicC.addChild(lay.sky);
+    starsC = new PIXI.Container(); classicC.addChild(starsC);
     seed = 3;
     for (let i = 0; i < 70; i++) { const s = spr('fx/soft', rnd() * VW, rnd() * VH * 0.55, 0.5, 0.5, starsC, 0.05 + rnd() * 0.08); s.blendMode = 'add'; s.v = 0.5 + rnd() * 2; s.o = rnd() * 6; }
-    lay.sunGlow = spr('fx/glow', VW * 0.8, VH * 0.13, 0.5, 0.5, bgC, 4); lay.sunGlow.blendMode = 'add';
-    lay.sun = spr('fx/glow', VW * 0.8, VH * 0.13, 0.5, 0.5, bgC, 0.9); lay.sun.blendMode = 'add';
-    lay.moon = spr('bg/moonFull', VW * 0.24, VH * 0.14, 0.5, 0.5, bgC, 0.45);
+    lay.sunGlow = spr('fx/glow', VW * 0.8, VH * 0.13, 0.5, 0.5, classicC, 4); lay.sunGlow.blendMode = 'add';
+    lay.sun = spr('fx/glow', VW * 0.8, VH * 0.13, 0.5, 0.5, classicC, 0.9); lay.sun.blendMode = 'add';
+    lay.moon = spr('bg/moonFull', VW * 0.24, VH * 0.14, 0.5, 0.5, classicC, 0.45);
     // painted ranges, back to front: far snowy range, the landmark peak, clouds, mid range, fog, near hills, the
     // valley haze under them, and the sea of clouds (seen from above once the climber is high)
-    lay.far = layerTiling('far', 300); bgC.addChild(lay.far);
-    lay.peak = new PIXI.Sprite(tex.peak); lay.peak.anchor.set(0.5, 1); lay.peak.scale.set(300 * Z / tex.peak.height); bgC.addChild(lay.peak);
-    cloudsC = new PIXI.Container(); bgC.addChild(cloudsC);
+    lay.far = layerTiling('far', 300); classicC.addChild(lay.far);
+    lay.peak = new PIXI.Sprite(tex.peak); lay.peak.anchor.set(0.5, 1); lay.peak.scale.set(300 * Z / tex.peak.height); classicC.addChild(lay.peak);
+    cloudsC = new PIXI.Container(); classicC.addChild(cloudsC);
     seed = 11;
     for (let i = 0; i < 7; i++) {
       const c = spr('bg/cloud' + [1, 2, 3, 5, 6, 8, 2][i], i * 260 + rnd() * 120, VH * (0.06 + rnd() * 0.26), 0.5, 0.5, cloudsC, (0.3 + rnd() * 0.3) * Z);
       c.v = 6 + rnd() * 8; c.span = 2200; c.alpha = 0.85;
     }
-    lay.sea = layerTiling('cloudsea', 160); bgC.addChild(lay.sea);
-    lay.mid = layerTiling('mid', 420); bgC.addChild(lay.mid);
-    lay.fog = new PIXI.Sprite(frame('fx/band')); lay.fog.width = VW; lay.fog.height = 150 * Z; lay.fog.alpha = 0.55; bgC.addChild(lay.fog);
-    birdsC = new PIXI.Container(); bgC.addChild(birdsC);
+    lay.sea = layerTiling('cloudsea', 160); classicC.addChild(lay.sea);
+    lay.mid = layerTiling('mid', 420); classicC.addChild(lay.mid);
+    lay.fog = new PIXI.Sprite(frame('fx/band')); lay.fog.width = VW; lay.fog.height = 150 * Z; lay.fog.alpha = 0.55; classicC.addChild(lay.fog);
+    birdsC = new PIXI.Container(); classicC.addChild(birdsC);
     birds.list = []; for (let k = 0; k < 4; k++) { const b = spr('fx/bird0', 0, 0, 0.5, 0.5, birdsC, 0.5 * Z); b.visible = false; birds.list.push(b); }
-    lay.near = layerTiling('near', 360); bgC.addChild(lay.near);
-    lay.nearFill = new PIXI.Sprite(PIXI.Texture.WHITE); lay.nearFill.width = VW; bgC.addChild(lay.nearFill);
+    lay.near = layerTiling('near', 360); classicC.addChild(lay.near);
+    lay.nearFill = new PIXI.Sprite(PIXI.Texture.WHITE); lay.nearFill.width = VW; classicC.addChild(lay.nearFill);
     // light rays: a separate additive overlay at half resolution, so the painted layers stay sharp
-    raysS = new PIXI.Sprite(PIXI.Texture.WHITE); raysS.tint = 0x000000; raysS.width = VW; raysS.height = VH * 0.8; bgC.addChild(raysS); raysS.visible = false;
+    raysS = new PIXI.Sprite(PIXI.Texture.WHITE); raysS.tint = 0x000000; raysS.width = VW; raysS.height = VH * 0.8; classicC.addChild(raysS); raysS.visible = false;
+    wbg = new PIXI.Container(); bgC.addChild(wbg);
 
     // the world: the stage's own objects (built by buildStage), then the climber, effects and the near foreground
     worldC.scale.set(Z);
@@ -934,6 +999,7 @@
     raysS.visible = !!godray && !night;
     if (grade) { grade.saturation = night ? 1.0 : 1.12; grade.contrast = night ? 1.08 : 1.06; grade.red = night ? 0.96 : 1.03; grade.blue = night ? 1.06 : 0.97; grade.gamma = night ? 0.98 : 1.02; }
     app.renderer.background.color = hex(pal.sky[0]);
+    if (wbg) wbg.tint = night && wNow && wNow.lit === 'day' ? 0x8a92c4 : 0xffffff;
   }
 
   // night: the stage's rock and plants take the moonlight (cool, darker); lamps and the beacon keep their warm light
@@ -955,6 +1021,8 @@
       STG = e.stages && e.stages.length ? e.stages : [[0, N]]; stage = 0; sA = 0; sK = STG[0][1] - STG[0][0];
       app = new PIXI.Application();
       // The renderer (WebGL context, shaders) and the art (decoded off the main thread) start together.
+      // the fantasy worlds' list (D28): small, fetched alongside; the first stage never needs it
+      fetch(base + 'worlds.json').then(r => r.ok ? r.json() : null).then(j => { if (j && j.worlds) WORLDS = j.worlds; }).catch(() => {});
       return fetch(base + 'kit.json').then(r => r.json()).then(k => {
         kit = k;
         // the first frame needs the atlas, the layers and the start ledge's cliff; the rest loads right after it
@@ -1098,7 +1166,7 @@
       VW = w; VH = h; app.renderer.resize(w, h);
       Z = zoomFor(w, h);
       const keep = { x: H.x, y: H.y, gy: H.gy, st: H.st }, sts = signs.map(s => s.st), up = flags.map(f => f.up), ly = lifts.map(l => l.y), lit = beacon.lit;
-      build(); applyNight(); prewarm();
+      build(); setWorld(); applyNight(); prewarm();
       signs.forEach((s, i) => setSign(i, sts[i])); coins.forEach(c => { c.pop = 1; }); signs.forEach(s => { s.badge.pop = 1; s.badge.scale.set(0.36); });
       flags.forEach((f, i) => { if (up[i] && !f.big) { f.up = true; f.t = 1; f.pen.y = -148; f.pen.texture = frame('ui/pen0'); f.pen.anchor.set(0.03, 0.5); } });
       lifts.forEach((l, i) => { l.y = ly[i]; }); beacon.lit = lit;
