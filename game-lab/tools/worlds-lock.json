@@ -1,0 +1,29 @@
+{
+ "note": "Fantasy-world art packs for D28 (one world per stage), TEST ONLY in the lab. Fetched by tools/fetch_worlds.py from each author's free itch.io page (the 'No thanks, just take me to the downloads' path: no payment, no login) into assets-test/src/worlds/ (git-ignored); a file whose SHA-256 differs is refused. Licences as shipped in each pack and on its page (checked 2026-10-19); re-check them before anything ships. Register: ASSETS.md.",
+ "packs": [
+  {"name": "cartoonforest", "page": "https://free-game-assets.itch.io/free-cartoon-forest-2d-backgrounds", "upload": "free-cartoon-forest-game-backgrounds.zip",
+   "bytes": 17763058, "sha256": "c72cc8d3f80f6dc8092aee10562b330cfc75064a7d55b18ad7d4b16c60ec9104",
+   "author": "CraftPix (published on itch.io by Free Game Assets)", "licence": "CraftPix file licence (the pack's TXT/license.txt points to https://craftpix.net/file-licenses/): personal and commercial use, no attribution required, no resale or redistribution of the art files",
+   "worlds": "enchanted forest, magic night forest (lanterns, glowing plants)"},
+  {"name": "fairytale", "page": "https://free-game-assets.itch.io/free-fairy-tale-2d-backgrounds", "upload": "Fairy-Tale-2D-Backgrounds.zip",
+   "bytes": 10258702, "sha256": "4727c5ac0c2be2745dcdbd1f1267e31ef244b9474bb08a044439e3cc0ad07da6",
+   "author": "CraftPix (published on itch.io by Free Game Assets)", "licence": "Page: 'You can download it absolutely for free and use it in your games for commercial purposes'; CraftPix file licence terms (no attribution, no redistribution of the files)",
+   "worlds": "jungle lagoon with a waterfall, purple enchanted forest (glowing orbs), misty forest"},
+  {"name": "parallax2d", "page": "https://free-game-assets.itch.io/free-parallax-2d-backgrounds", "upload": "Parallax-2D-Backgrounds.zip",
+   "bytes": 3499291, "sha256": "8be5361c53864161e9a668d93101e9ca979f760831b292b5e02bbe0295edd43b",
+   "author": "CraftPix (published on itch.io by Free Game Assets)", "licence": "Page: 'You can download it absolutely for free and use it in your games for commercial purposes'; CraftPix file licence terms",
+   "worlds": "a castle on the clouds under the stars (sky islands at night), teal hills"},
+  {"name": "winter", "page": "https://free-game-assets.itch.io/free-winter-holiday-2d-backgrounds", "upload": "free-winter-holiday-game-backgrounds.zip",
+   "bytes": 15959620, "sha256": "e3c9b7a720e52882bf4dd3b20270d1eb0e9820bf1c6e8861732695e1f1db652a",
+   "author": "CraftPix (published on itch.io by Free Game Assets)", "licence": "CraftPix file licence (the pack's TXT/license.txt points to https://craftpix.net/file-licenses/)",
+   "worlds": "snowy pine forest (scene 1 only: the others carry holiday decorations)"},
+  {"name": "volcano", "page": "https://ludicarts.itch.io/volcano-free-platform-tileset", "upload": "free_volcano_tileset.zip",
+   "bytes": 8038294, "sha256": "2735262298bc219d329a7eb3aee8a121304f55feb922f7527d90f038dc686f5f",
+   "author": "Franco Giachetti (LudicArts)", "licence": "CC BY 3.0 (License.txt: 'Free Lava Platform Tileset by Franco Giachetti is licensed under a Creative Commons Attribution 3.0 International License', attribution to LudicArts.com)",
+   "worlds": "volcano: lava-rock tiles, crystals"},
+  {"name": "iceforest", "page": "https://ludicarts.itch.io/free-ice-forest-platformer-tileset", "upload": "freeiceforest.zip",
+   "bytes": 12641756, "sha256": "04e1eb7ada0fe5f688374031fcb8f328224fc559d210145317bc32428209f943",
+   "author": "LudicArts", "licence": "CC BY 4.0 (License.txt: 'Free Ice Forest Platformer Tileset is licensed under a Creative Commons ... 4.0 International License', attribution to LudicArts.com)",
+   "worlds": "ice kingdom: ice-brick tiles, snowy trees and bushes"}
+ ]
+}

@@ -48,3 +48,22 @@ spotted mushroom and the "!" blocks (too close to a famous platformer), the cast
 as a famous platformer's level end).
 
 Sound is off by default and the files load only after the player turns sound on (both tiers share the HD sound set).
+
+## Fantasy worlds, one per stage (D28; lock: `tools/worlds-lock.json`, 6 packs)
+
+Fetched by `tools/fetch_worlds.py` from each author's free itch.io page (no payment, no login) into
+`assets-test/src/worlds/` (git-ignored), SHA-256 checked. Licences as shipped in each pack and on its page on
+2026-10-19; re-check before anything ships. Being built into the HD worlds (not in the game yet).
+
+| Pack | Used for | Author | Licence | Evidence |
+|---|---|---|---|---|
+| Free Cartoon Forest 2D Backgrounds | enchanted forest, magic night forest | CraftPix (on itch.io by Free Game Assets) | CraftPix file licence: personal and commercial use, no attribution, no resale or redistribution of the files | the pack's `TXT/license.txt` links craftpix.net/file-licenses (read on 2026-10-19; craftpix.net itself answers 403 from the build container) |
+| Free Fairy-Tale 2D Backgrounds | jungle lagoon, purple enchanted forest, misty forest | CraftPix (Free Game Assets) | CraftPix file licence | itch page: "use it in your games for commercial purposes"; the pack names its font (Grobold, dafont), not used |
+| Free Parallax 2D Backgrounds | castle on the clouds at night, teal hills | CraftPix (Free Game Assets) | CraftPix file licence | itch page, as above |
+| Free Winter Holiday 2D Backgrounds | snowy pine forest (scene 1 only) | CraftPix (Free Game Assets) | CraftPix file licence | the pack's `TXT/license.txt` |
+| Volcano - Free Platform Tileset | lava-rock tiles, crystals | Franco Giachetti (LudicArts) | CC BY 3.0, credit "LudicArts.com" | the pack's `License.txt` |
+| Free Ice Forest - Platformer Tileset | ice-brick tiles, snowy trees and bushes | LudicArts | CC BY 4.0, credit "LudicArts.com" | the pack's `License.txt` |
+
+Left out on purpose: the CraftPix Halloween backgrounds (ghosts, graves with crosses) and the winter scenes with
+holiday decorations (not neutral for the audience), the Fairy-Tale mushroom scene (red spotted mushrooms read as a
+famous platformer), and AI-made packs.
