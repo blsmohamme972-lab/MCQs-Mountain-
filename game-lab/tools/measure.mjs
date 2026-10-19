@@ -143,6 +143,8 @@ async function run(cpu) {
     frame_ms_p50: round(pct(d, 50)), frame_ms_p95: round(pct(d, 95)), frame_ms_p99: round(pct(d, 99)), frame_ms_max: round(Math.max(0, ...d)),
     janky_frames_over_33ms: d.filter(x => x > 33.4).length,
     long_tasks: probe.longTasks.length, long_task_ms_max: round(Math.max(0, ...probe.longTasks.map(l => l[1]))),
+    long_task_list: probe.longTasks.map(l => [round(l[0]), round(l[1])]),   // [start, duration] ms since the page opened
+    next_list: cycles.map(c => [round(c.tap), round(c.end), c.kind]),        // each Next: [tap, next MCQ open, kind]
     next_input_to_first_frame_ms: { avg: avg('input_to_first_frame_ms'), max: max('input_to_first_frame_ms') },
     next_to_world_visible_ms: { avg: avg('next_to_world_visible_ms'), max: max('next_to_world_visible_ms') },
     next_to_next_question_ms: { avg: avg('next_to_next_question_ms'), max: max('next_to_next_question_ms') },

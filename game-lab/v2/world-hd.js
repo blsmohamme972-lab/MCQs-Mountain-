@@ -832,7 +832,9 @@
   // neither this stage nor the next needs them: at most two worlds are held at a time.
   let WORLDS = [], wTex = {}, wLoad = {}, wNow = null, wbg = null;
   const worldFor = k => k > 0 && WORLDS.length ? WORLDS[(k - 1) % WORLDS.length] : null;
-  const wUrls = w => w.layers.map(l => base + l.file);
+  // a world's textures: its layers, then (if it has its own cliffs) the four cliff bodies in its style
+  const CLIFFS = ['cliff-a', 'cliff-b', 'cliff-wide', 'cliff-summit'];
+  const wUrls = w => w.layers.map(l => base + l.file).concat(w.cliffs ? CLIFFS.map(n => base + n + '-' + w.cliffs + '.webp') : []);
   function loadWorld(w) {
     if (!w || wTex[w.id]) return null;
     if (!wLoad[w.id]) wLoad[w.id] = PIXI.Assets.load(wUrls(w)).then(t => {
@@ -845,15 +847,20 @@
     return wLoad[w.id];
   }
   const worldWanted = id => { const a = worldFor(stage), b = worldFor(stage + 1); return (a && a.id === id) || (b && b.id === id); };
-  // the GPU upload, off the stage change's frame (as warmAhead does for the stage's objects)
-  function warmWorld(id) {
-    if (!wTex[id] || awake || planOn || !app || !app.renderer) return;
-    const c = new PIXI.Container();
-    for (const t of wTex[id]) c.addChild(new PIXI.Sprite(t));
+  // the GPU upload, off the stage change's frame (as warmAhead does for the stage's objects): one texture per idle
+  // slot (all at once took 86-98 ms at CPU x4 here), waiting while the climber moves
+  function warmWorld(id, i = 0) {
+    const t = wTex[id];
+    if (!t || i >= t.length || !app || !app.renderer) return;
+    if (awake || planOn) { setTimeout(() => idle(() => warmWorld(id, i)), 400); return; }
+    const t0 = performance.now(), s = new PIXI.Sprite(t[i]);
     warmRT = warmRT || PIXI.RenderTexture.create({ width: 4, height: 4 });
-    app.renderer.render({ container: c, target: warmRT, clear: true });
-    c.destroy({ children: true });
+    app.renderer.render({ container: s, target: warmRT, clear: true });
+    s.destroy();
+    if (wWarmMs.length < 400) wWarmMs.push(Math.round((performance.now() - t0) * 10) / 10);
+    idle(() => warmWorld(id, i + 1));
   }
+  const wWarmMs = [];
   // shows the world for this stage (null: the painted mountain); a world still loading shows when it arrives
   function setWorld() {
     const w = worldFor(stage);
@@ -863,11 +870,14 @@
     if (classicC) classicC.visible = !wNow;
     if (wNow && wbg) {
       const t = wTex[w.id], sky = new PIXI.Sprite(t[0]); wbg.addChild(sky);
-      for (let i = 1; i < t.length; i++) { const s = tiling(t[i], 8, 8); s.L = w.layers[i]; wbg.addChild(s); }
+      for (let i = 1; i < w.layers.length; i++) { const s = tiling(t[i], 8, 8); s.L = w.layers[i]; wbg.addChild(s); }
       const f = new PIXI.Sprite(PIXI.Texture.WHITE); f.tint = parseInt(w.fill.slice(1), 16); wbg.addChild(f);
       wbg.tint = night && w.lit === 'day' ? 0x8a92c4 : 0xffffff;
     }
     if (floatC) { styleFloaters(); bankTint(); }
+    // the cliffs in the world's style (snow, lava rock), else the sandstone ones
+    const ct = wNow && wNow.cliffs && wTex[wNow.id], nl = wNow ? wNow.layers.length : 0;
+    for (const c of cols) { const k = CLIFFS.indexOf(c.texName); c.body.texture = ct && k >= 0 ? ct[nl + k] : T(c.texName); }
     for (const id in wTex) if (!worldWanted(id)) idle(() => { if (!worldWanted(id) && wTex[id]) { const ww = WORLDS.find(x => x.id === id); delete wTex[id]; if (ww) PIXI.Assets.unload(wUrls(ww)).catch(() => {}); } });
   }
   // world layers: the scene's 1920 x 1080 frame is drawn 'zoom' screens tall, its foot just above the bottom; each
@@ -1231,7 +1241,7 @@
     info: () => 'HD · Z ' + Z.toFixed(2) + ' · res ' + (app ? app.renderer.resolution : '-') + ' · ' + (app && app.renderer ? app.renderer.name : '-') + (FX ? ' · fx' : ' · no fx') + ' · q-' + qStep,
     quality: () => ({ step: qStep, resolution: app ? app.renderer.resolution : null }),
     heroState: () => H.st,                                   // for the screenshot tool
-    stageInfo: () => ({ stage, stages: STG.length, buildMs, aheadMs, warmMs, ahead: ahead ? ahead[0] : -1, wipe: wipeK }),
+    stageInfo: () => ({ stage, stages: STG.length, buildMs, aheadMs, warmMs, worldWarmMs: wWarmMs, ahead: ahead ? ahead[0] : -1, wipe: wipeK }),
     // Strip mode draws from a small sheet of its own (never from the 2048 px atlas).
     stripArt: () => stripImg && stripImg.naturalWidth && {
       img(c, name, x, y, w, h) { const f = kit.strip.frames[name]; c.imageSmoothingEnabled = true; c.drawImage(stripImg, f[0], f[1], f[2], f[3], x, y, w, h); },

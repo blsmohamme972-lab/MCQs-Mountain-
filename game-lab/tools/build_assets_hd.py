@@ -276,13 +276,16 @@ def wave1d(n: int, terms: list, seed: int) -> np.ndarray:
 
 CLIFF_SANDSTONE = ["#c88d5c", "#b47d52", "#a06c47", "#bd8758", "#a8744c", "#c2905f"]
 CLIFF_STONE = ["#a6a097", "#938d86", "#857f79", "#9c968e", "#8c867f"]
+CLIFF_ICE = ["#a9bcd6", "#98aecb", "#8aa0c0", "#b4c6de", "#9db2cf"]      # D28 snowy worlds: cold blue-grey rock
+CLIFF_BASALT = ["#5a3a3a", "#4c3034", "#63403a", "#523438", "#6a4640"]   # D28 volcano: dark basalt
 
 
-def cliff(wu: float, seed: int, colours: list, S: int = 2, hu: int = 600, margin: int = 14, green: bool = True) -> Image.Image:
+def cliff(wu: float, seed: int, colours: list, S: int = 2, hu: int = 600, margin: int = 14, green: bool = True, style: str = "grass") -> Image.Image:
     """One cliff column under a ledge, drawn as a single painted shape (the game shows it at 1/S scale):
     a rocky silhouette that widens toward the base, uneven wavy strata, cracks and grain, a dark band of ambient
     occlusion under the grass lip, a warm rim of light on the sunny right edge, shade on the left, moss and hanging
-    vines near the top, and a fade to transparent at the bottom (the valley haze shows through)."""
+    vines near the top, and a fade to transparent at the bottom (the valley haze shows through). The fantasy worlds
+    (D28) have two more styles: 'snow' (snow drifts and icicles instead of moss) and 'lava' (glowing cracks)."""
     rng = np.random.default_rng(seed)
     W, H, M = int((wu + 2 * margin) * S), hu * S, margin * S
     yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
@@ -343,8 +346,26 @@ def cliff(wu: float, seed: int, colours: list, S: int = 2, hu: int = 600, margin
             x0 += rng.uniform(-4, 4) * S
             y0 += rng.uniform(4, 10) * S
             pts.append((x0, y0))
-        d.line(pts, fill=(58, 32, 22, 210), width=int(1.5 * S))
-    if green:
+        if style == "lava":   # a crack that glows: a wide dim orange line under a thin bright one
+            d.line(pts, fill=(200, 70, 20, 150), width=int(3.5 * S))
+            d.line(pts, fill=(255, 196, 80, 255), width=max(1, int(1 * S)))
+        else:
+            d.line(pts, fill=(58, 32, 22, 210), width=int(1.5 * S))
+    if style == "snow":
+        # snow drifts lying on the outcrops under the lip, and icicles hanging from the top
+        for _ in range(int(wu / 7)):
+            x0 = rng.uniform(M, W - M)
+            ln = rng.uniform(4, 14) * S
+            w = rng.uniform(6, 16) * S
+            d.ellipse([x0 - w, -w * 0.5, x0 + w, ln], fill=(238, 244, 255, 235))
+        for _ in range(int(wu / 12)):
+            x0 = rng.uniform(M + 3 * S, W - M - 3 * S)
+            ln, w = rng.uniform(8, 30) * S, rng.uniform(1.5, 3.5) * S
+            d.polygon([(x0 - w, 6 * S), (x0 + w, 6 * S), (x0, 6 * S + ln)], fill=(200, 226, 255, 230))
+            d.line([(x0 - w * 0.3, 7 * S), (x0, 6 * S + ln * 0.8)], fill=(255, 255, 255, 200), width=max(1, int(0.6 * S)))
+    elif style == "lava":
+        pass
+    elif green:
         # moss: patches hanging under the lip, thinning downward
         for _ in range(int(wu / 9)):
             x0 = rng.uniform(M, W - M)
@@ -373,6 +394,10 @@ def textures() -> dict:
     for name, wu, seed, cols, green in (("cliff-a", 170, 101, CLIFF_SANDSTONE, True), ("cliff-b", 170, 102, CLIFF_SANDSTONE, True),
                                         ("cliff-wide", 440, 103, CLIFF_SANDSTONE, True), ("cliff-summit", 330, 104, CLIFF_SANDSTONE, True)):
         sizes[name + ".webp"] = save_webp(cliff(wu, seed, cols, margin=14 if wu > 60 else 6, green=green), name + ".webp", quality=84, method=6)
+        # the fantasy worlds' cliffs (D28), same size: loaded with their world only (worlds.json 'cliffs')
+        for style, pal in (("snow", CLIFF_ICE), ("lava", CLIFF_BASALT)):
+            n = f"{name}-{style}.webp"
+            sizes[n] = save_webp(cliff(wu, seed, pal, margin=14 if wu > 60 else 6, green=False, style=style), n, quality=84, method=6)
     # Waterfall: bright streaks with foam edges, seamless top to bottom (64 x 256, 2 px per unit).
     rng = np.random.default_rng(5)
     w, h = 64, 256

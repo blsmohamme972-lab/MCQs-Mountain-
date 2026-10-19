@@ -1,0 +1,238 @@
+{
+ "file": "http://localhost:8765/v2/index.html",
+ "mode": "story",
+ "n": 35,
+ "questions": 24,
+ "results": [
+  {
+   "cpu_slowdown": 4,
+   "frames": 631,
+   "frame_ms_p50": 316.7,
+   "frame_ms_p95": 1483.2,
+   "frame_ms_p99": 2383.2,
+   "frame_ms_max": 5366.6,
+   "janky_frames_over_33ms": 465,
+   "long_tasks": 6,
+   "long_task_ms_max": 4439,
+   "long_task_list": [
+    [
+     11842,
+     986
+    ],
+    [
+     100048.8,
+     368
+    ],
+    [
+     105890.3,
+     2294
+    ],
+    [
+     200001.2,
+     69
+    ],
+    [
+     213722.1,
+     472
+    ],
+    [
+     219935.4,
+     4439
+    ]
+   ],
+   "next_list": [
+    [
+     8349.2,
+     10488.6,
+     "step"
+    ],
+    [
+     14274.9,
+     20978.5,
+     "step"
+    ],
+    [
+     25000.3,
+     30877.3,
+     "step"
+    ],
+    [
+     36056,
+     40726.9,
+     "step"
+    ],
+    [
+     45434.8,
+     51270.5,
+     "lift"
+    ],
+    [
+     56290.9,
+     62545.7,
+     "step"
+    ],
+    [
+     66045.9,
+     69717.3,
+     "step"
+    ],
+    [
+     73840.3,
+     79999.9,
+     "step"
+    ],
+    [
+     84400,
+     90082.9,
+     "step"
+    ],
+    [
+     94849.2,
+     102654.1,
+     "stage"
+    ],
+    [
+     110389.3,
+     116024,
+     "step"
+    ],
+    [
+     121409.4,
+     126523.4,
+     "step"
+    ],
+    [
+     131940.4,
+     136150.5,
+     "step"
+    ],
+    [
+     139943.7,
+     144738.2,
+     "step"
+    ],
+    [
+     148977.9,
+     155622.6,
+     "lift"
+    ],
+    [
+     161410.7,
+     167572.7,
+     "step"
+    ],
+    [
+     173354.2,
+     179300.2,
+     "step"
+    ],
+    [
+     184537.8,
+     192465.8,
+     "step"
+    ],
+    [
+     196981.9,
+     202373.8,
+     "step"
+    ],
+    [
+     206665.6,
+     217350.4,
+     "stage"
+    ],
+    [
+     225817.5,
+     234279.8,
+     "step"
+    ],
+    [
+     240340.7,
+     246570,
+     "step"
+    ],
+    [
+     252002.1,
+     257981.1,
+     "step"
+    ]
+   ],
+   "next_input_to_first_frame_ms": {
+    "avg": 287,
+    "max": 1026.7
+   },
+   "next_to_world_visible_ms": {
+    "avg": 838,
+    "max": 2039.4
+   },
+   "next_to_next_question_ms": {
+    "avg": 5970,
+    "max": 10634.4
+   },
+   "by_kind": {
+    "step": {
+     "count": 19,
+     "next_to_next_question_ms": {
+      "avg": 5605.2,
+      "max": 8430.5
+     },
+     "long_tasks": 1,
+     "long_task_ms_max": 69
+    },
+    "lift": {
+     "count": 2,
+     "next_to_next_question_ms": {
+      "avg": 6214.5,
+      "max": 6618
+     },
+     "long_tasks": 0,
+     "long_task_ms_max": 0
+    },
+    "stage": {
+     "count": 2,
+     "next_to_next_question_ms": {
+      "avg": 9191,
+      "max": 10634.4
+     },
+     "long_tasks": 2,
+     "long_task_ms_max": 472
+    }
+   },
+   "added_per_mcq_ms": 5970,
+   "chapter_mcqs": 35,
+   "stages": 4,
+   "answered": 24,
+   "js_heap_mb": 9.5,
+   "js_heap_mb_at_start": 9.5,
+   "js_heap_after_gc_mb": {
+    "at_start": 5.97,
+    "at_end": 8.18
+   },
+   "stage_build_ms": {
+    "count": 2,
+    "max": 8,
+    "avg": 4.7
+   },
+   "stage_ahead_ms": {
+    "count": 3,
+    "max": 18.6,
+    "avg": 14.7
+   },
+   "stage_warm_ms": {
+    "count": 3,
+    "max": 42.4,
+    "avg": 17.4
+   },
+   "tier": "hd",
+   "script_frames": 631,
+   "script_ms_p50": 5.9,
+   "script_ms_p95": 12.7,
+   "script_ms_p99": 21.8,
+   "game_ready_ms": 2047.3,
+   "game_load_to_ready_ms": 1765,
+   "dom_content_loaded_ms": 304.1,
+   "bytes_loaded_uncompressed": 1785239,
+   "errors": []
+  }
+ ]
+}

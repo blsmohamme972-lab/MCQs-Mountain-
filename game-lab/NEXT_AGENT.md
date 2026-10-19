@@ -55,8 +55,9 @@ Your task:
    game is integrated), R8 (the repo copy does not load the app's fonts; the phone copy does), the rest of S10 (the
    HD pose code allocates per frame and culling walks every child).
 3b. D28 (DECISIONS.md, "Built so far" lists what is done and what is next): fetch the packs with
-   python3 game-lab/tools/fetch_worlds.py, build with python3 game-lab/tools/build_worlds_hd.py; continue with the
-   painted worlds, the worlds' particles, the light tier's pixel worlds, then a visual and a speed review.
+   python3 game-lab/tools/fetch_worlds.py, build with python3 game-lab/tools/build_worlds_hd.py (six HD worlds with
+   their own particles, mist, cliff tops and cliff bodies); continue with fewer layers per world (GPU fill rate, D28
+   "Speed"), crystal caverns, the light tier's pixel worlds, then a visual and a speed review.
 4. A 9/10 look needs paid art (D26): an original hero designed and rigged by an artist (Spine or Rive, the full move
    set) and a premium or commissioned prop and tile set (about 25 props). Agents never buy anything; the owner decides.
 5. Gate 1 continues in Telegram through a test bot only when the owner sets one up; agents do not create bots,

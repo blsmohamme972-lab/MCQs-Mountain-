@@ -399,6 +399,14 @@ fast, even if you use non-commercial stock, for some of the game's new stages." 
   night under an aurora painted by the build, ice blocks with blue crystals, snowy trees and bushes, falling snow
   (129 KB, 6 MB). Seven stages measured here: swap 0.5-3.2 ms, look-ahead 1.2-9.6 ms, warm-up 2-21 ms, no errors.
   Cliff tops per world: snow in the snow forest and the ice kingdom (Kenney's snow half tiles, CC0, added to the
-  HD atlas and `assets-hd-lock.json`), stone at the volcano, grass elsewhere. Still to do: the cliff bodies keep their
-  painted moss and vines in every world (a snowy and a lava-rock body), crystal caverns, the light tier's pixel
-  worlds, and a visual and speed review of the worlds.
+  HD atlas and `assets-hd-lock.json`), stone at the volcano, grass elsewhere; and cliff bodies per world, painted by
+  `build_assets_hd.py` in two more styles (blue-grey ice rock with snow drifts and icicles; dark basalt with glowing
+  lava cracks: 8 textures, 280 KB, loaded with their world only and swapped in with it). The world's GPU warm-up now
+  uploads one texture per idle slot (all at once took 86-98 ms at CPU x4). Speed (`results/d28-hd-story-n35*.json`,
+  Story, CPU x4, 24 MCQs across two world changes; `measure.mjs` now lists every long task and every Next): with
+  `?res=0.5&fx=0` one long task of 50 ms and 1.4 s added per MCQ, as in D27; at full resolution with filters
+  SwiftShader falls behind after each world change and the main thread waits on it (long tasks of 0.4-4.4 s while
+  the next MCQ is open; none before the worlds). That is this machine's software GPU, but it says the worlds cost
+  fill rate: 6-9 full-screen layers each. Still to do: merge layers that barely differ in parallax (the starry
+  world's three star layers, the purple forest's far ones) to cut the overdraw, then check on a phone; crystal
+  caverns; the light tier's pixel worlds; a visual and speed review of the worlds.
