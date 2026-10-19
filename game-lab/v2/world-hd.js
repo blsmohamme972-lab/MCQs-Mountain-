@@ -472,7 +472,8 @@
     for (const w of falls) {
       w.s.tilePosition.y += dt * 460;
       // spray: droplets jump off the lip of the fall now and then
-      if (w.s.renderable && (w.t -= dt) < 0) { w.t = 0.09 + rnd() * 0.08; const p = emit('drop', w.x + (rnd() - 0.5) * 18, w.y, (rnd() - 0.5) * 50, -20 - rnd() * 40, 0.55); if (p && night) p.s.tint = 0xa8b8ff; }
+      // (never while an MCQ is open: the drops kept the loop running, review HD1)
+      if (w.s.renderable && (awake || planOn || ambient()) && (w.t -= dt) < 0) { w.t = 0.09 + rnd() * 0.08; const p = emit('drop', w.x + (rnd() - 0.5) * 18, w.y, (rnd() - 0.5) * 50, -20 - rnd() * 40, 0.55); if (p && night) p.s.tint = 0xa8b8ff; }
     }
     for (const f of floaters) {
       f.t += dt;
@@ -730,6 +731,7 @@
     if (!pend) return;
     pend = false; const t = performance.now(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
     const f = pendAfter; pendAfter = null; if (f) f();
+    aheadAgain();
   }
   // The next stage is built ahead (review S1): in idle time while an MCQ of this stage is open, into containers of its
   // own off screen, then drawn once into a tiny texture so its textures and shapes reach the GPU then, not in the frame
@@ -759,6 +761,7 @@
     w.removeChildren(); w.destroy();
     if (aheadMs.length < 400) aheadMs.push(Math.round((performance.now() - t) * 10) / 10);
   }
+  const aheadAgain = () => { if (window.__lab && window.__lab.state === 'question') aheadSoon(); };
   function dropAhead() { if (!ahead) return; const cs = ahead.slice(-4); ahead = null; for (const c of cs) c.destroy({ children: true }); }
   function swapIn() {
     const t = performance.now(), old = [backC, backDeco, midC, fgW];
@@ -1086,9 +1089,9 @@
       lifts.forEach((l, i) => { l.y = ly[i]; }); beacon.lit = lit;
       if (wipeK > 0) { const w = plan[pi]; caption(w && w.k === 5 && w.swapped ? stage : stage + 1); }
       H.x = keep.x; H.y = keep.y; H.gy = keep.gy; H.st = keep.st;
-      snapCam(); renderOnce();
+      snapCam(); renderOnce(); aheadAgain();
     },
-    theme(n) { night = n; if (built) { dropAhead(); applyNight(); renderOnce(); } },
+    theme(n) { night = n; if (built) { dropAhead(); applyNight(); renderOnce(); aheadAgain(); } },
     pause() { paused = true; if (app && app.ticker) app.ticker.stop(); running = false; },
     resume() { paused = false; if (built && (awake || busy() || ambient())) { running = true; app.ticker.start(); } },
     running: () => running,

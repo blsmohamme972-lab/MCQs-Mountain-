@@ -195,6 +195,7 @@
   function go() {
     if (lab.state !== 'start') return;
     tGo = now(); firstOpen = true; lab.state = 'moving'; startp.classList.add('off'); Sound.unlock();
+    saved = null; $('resume').hidden = true; from = 0;
     if (mode === 'classic') { hud(); openSheet(); return; }
     if (!RM) World.wake(); skipOn(true);   // reduced motion: no loop at all, the world is drawn once per MCQ
     World.walkToFirst(arrived);
@@ -203,7 +204,7 @@
   /* ---------- a long chapter can be left and continued later (lab: localStorage 'mcqm-progress'; the app would use
      its own resume). The place is kept after every MCQ and offered on the start card of the same chapter. ---------- */
   const PK = 'mcqm-progress';
-  let saved = null;
+  let saved = null, from = 0;
   try { saved = JSON.parse(localStorage.getItem(PK) || 'null'); } catch (e) {}
   if (!saved || saved.n !== N || !(saved.next > 0 && saved.next < N) || typeof saved.st !== 'string' || saved.st.length !== N) saved = null;
   function keep(next) { try { if (next >= N) localStorage.removeItem(PK); else localStorage.setItem(PK, JSON.stringify({ n: N, next, xp, st: Array.from(st).join('') })); } catch (e) {} }
@@ -211,7 +212,7 @@
     if (lab.state !== 'start' || !saved) return;
     const s = saved; saved = null; $('resume').hidden = true;
     for (let k = 0; k < s.next; k++) { const v = +s.st[k] || 2, r = RS[k]; st[k] = v; r.done = true; r.correct = v === 1; r.score = r.correct ? 1 : 0; }
-    xp = s.xp | 0; hudXP(); idx = s.next;
+    xp = s.xp | 0; hudXP(); idx = from = s.next;
     World.place(idx);
     for (let k = STAGES[stageOf(idx)][0]; k < idx; k++) World.sign(k, st[k], false);
     tGo = now(); firstOpen = true; lab.state = 'moving'; startp.classList.add('off'); Sound.unlock();
@@ -223,8 +224,8 @@
     const s = stageOf(idx);
     live.textContent = 'Stage ' + (s + 1) + ' of ' + STAGES.length + '. ' + (s === STAGES.length - 1 ? 'Last mountain.' : 'Next mountain.');
   }
-  function next() {
-    if (lab.state !== 'question' || !RS[idx].done || now() < nextGuard) return;
+  function next(e) {
+    if (lab.state !== 'question' || !RS[idx].done || (e && e.timeStamp ? e.timeStamp : now()) < nextGuard) return;
     mark('lab:next-tap'); tNext = now(); readT += tNext - tShown; lab.state = 'moving';
     if (mode === 'story') {
       if (!RM) World.wake(); sheet.classList.remove('open'); World.frame('walk');
@@ -272,7 +273,7 @@
     keep(N);
     const t = now(); gameT += t - tNext; lab.state = 'done'; skipOn(false); hud(true);
     if (mode === 'strip') drawStrip();
-    const c = RS.filter(r => r.correct).length, sec = Math.round(readT / 1000), per = gameT / N / 1000;
+    const c = RS.filter(r => r.correct).length, sec = Math.round(readT / 1000), per = gameT / Math.max(1, N - from) / 1000;
     // numbers only, so markup is safe; each part stays on one line
     $('dS').innerHTML = [N + (N === 1 ? ' MCQ' : ' MCQs'), c + ' correct', '+' + xp + ' XP'].map(t => '<span class="nw">' + t + '</span>').join(' · ');
     const L2 = $('dL'); L2.textContent = '';
@@ -281,6 +282,7 @@
       'Time added by the game: ' + dur(gameT / 1000) + ' (' + (per < 0.1 ? 'under 0.1' : per.toFixed(1)) + ' s per MCQ)']
       .concat(N === 100 ? [] : ['At this pace 100 MCQs would add about ' + dur(per * 100)], ['Animations skipped: ' + skips])
       .forEach(s => L2.append(h('li', null, s)));
+    $('t2').textContent = mode === 'classic' ? 'Chapter done' : 'Summit reached';
     sheet.classList.remove('open'); doneC.classList.remove('off'); World.sleep(); cardFrame();
     try { $('t2').focus({ preventScroll: true }); } catch (e) {}
   }
@@ -427,7 +429,7 @@
     if (b.dataset.i != null) pick(b);
   });
   // A fast double tap on Check must not also press Next (it appears in the same place) and skip the explanation.
-  chk.addEventListener('click', () => { const was = RS[idx] && RS[idx].done; doCheck(); if (!was && RS[idx] && RS[idx].done) nextGuard = now() + 350; }); nxt.addEventListener('click', next); goB.addEventListener('click', go); $('resume').addEventListener('click', continueChapter); $('again').addEventListener('click', reset);
+  chk.addEventListener('click', e => { const was = RS[idx] && RS[idx].done; doCheck(); if (!was && RS[idx] && RS[idx].done) nextGuard = (e.timeStamp || now()) + 350; }); nxt.addEventListener('click', next); goB.addEventListener('click', go); $('resume').addEventListener('click', continueChapter); $('again').addEventListener('click', reset);
   D.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => { if (lab.state === 'start' || lab.state === 'loading') setMode(b.dataset.m); }));
   $('snd').addEventListener('click', e => { const on = Sound.toggle(); e.currentTarget.setAttribute('aria-pressed', on); });
   $('world').addEventListener('pointerdown', skip); skipH.addEventListener('click', skip);
@@ -454,8 +456,9 @@
   readStripCol(); RS = Q.map(fresh); setMode(mode); hud(); prebuild(0);
   $('sub1').textContent = 'Sample chapter · ' + N + ' MCQ' + (N === 1 ? '' : 's');
   // Lab-only switches on the start card (for the phone link): the tier and the chapter size, kept in localStorage.
-  D.querySelectorAll('#labo [data-tier]').forEach(b => { b.setAttribute('aria-pressed', b.dataset.tier === TIER); b.addEventListener('click', () => { try { localStorage.setItem('mcqm-tier', b.dataset.tier); } catch (e) {} location.reload(); }); });
-  D.querySelectorAll('#labo [data-n]').forEach(b => { b.setAttribute('aria-pressed', +b.dataset.n === N); b.addEventListener('click', () => { try { localStorage.setItem('mcqm-n', b.dataset.n); } catch (e) {} location.reload(); }); });
+  D.querySelectorAll('#labo [data-tier]').forEach(b => { b.setAttribute('aria-pressed', b.dataset.tier === TIER); b.addEventListener('click', () => { try { localStorage.setItem('mcqm-tier', b.dataset.tier); } catch (e) {} relaunch('tier'); }); });
+  D.querySelectorAll('#labo [data-n]').forEach(b => { b.setAttribute('aria-pressed', +b.dataset.n === N); b.addEventListener('click', () => { try { localStorage.setItem('mcqm-n', b.dataset.n); } catch (e) {} relaunch('n'); }); });
+  function relaunch(p) { const u = new URL(location.href); u.searchParams.delete(p); location.replace(u.href); }
   S = Math.min(2, window.devicePixelRatio || 1); sizeStrip();
 
   // Load the tier's scripts in order (engine, runtimes, world), then the world; it marks lab:game-ready on its first

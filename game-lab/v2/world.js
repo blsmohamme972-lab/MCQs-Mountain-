@@ -524,6 +524,7 @@
     if (!pend) return;
     pend = false; const t = performance.now(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
     const f = pendAfter; pendAfter = null; if (f) f();
+    aheadAgain();
   }
   // The next stage is built ahead (review S2): in idle time while an MCQ of this stage is open, into containers of its
   // own off screen; at the stage change they are swapped in under the veil and the old stage is released in idle time.
@@ -547,6 +548,7 @@
     try { layout(); buildStage(); ahead = stageVars(); } finally { useVars(cur); }
     if (aheadMs.length < 400) aheadMs.push(Math.round((performance.now() - t) * 10) / 10);
   }
+  const aheadAgain = () => { if (window.__lab && window.__lab.state === 'question') aheadSoon(); };
   function dropAhead() { if (!ahead) return; const cs = ahead.slice(-2); ahead = null; for (const c of cs) c.destroy({ children: true }); }
   function swapIn() {
     const t = performance.now(), oB = stB, oM = stM;
@@ -709,7 +711,7 @@
       H.x = keep.x; H.y = keep.y; H.gy = keep.gy;
       if (f > 0) { const w = plan[pi]; caption(w && w.k === 5 && w.swapped ? stage : stage + 1); }
       fade(f);
-      snapCam(); renderOnce();
+      snapCam(); renderOnce(); aheadAgain();
     },
     theme(n) { night = n; if (built) { applyNight(); renderOnce(); } },
     pause() { paused = true; if (app && app.ticker) app.ticker.stop(); running = false; },
