@@ -339,6 +339,16 @@ higher (light 8 MCQs: 9.6 and 10.1 ms).
   stage change at 200 MCQs (2.67 s against about 2.5 s), one HD Strip Next at 50 MCQs (167 ms), and single long tasks
   of 53-199 ms in a few moves (the A/B showed them for the old commit too). They are judged on a phone (Gate 1)
   and in the fresh agent's final re-measure.
+- **Final re-measure** (2026-10-19, a fresh agent that fixed nothing; `results/v2-final-<tier>-<mode>.json` at 1x, 4x
+  and 6x with 8 MCQs, and `-n200.json` at 4x with 200): it reproduces the table above. 8 and 200 MCQs behave the same:
+  load medians within 10% (light +6.0%, HD -7.2%), heap after a whole 200-MCQ chapter 5.3 MB (light) and 8.1 MB (HD),
+  stage swaps at most 6 ms, every Next of a whole reduced-motion chapter at most 95 ms, 19 stage changes and no page
+  errors in 26 runs. Light meets every speed budget except single 50-58 ms tasks in some Story steps, which a trace puts
+  in the browser's copy of the software canvas (PixiJS's own tick is 7-9 ms of them): a phone check (S7). HD misses
+  the fixed budgets on this container as above (load 1.90-2.05 s, script p95 10.1-10.6 ms without the GPU load, step
+  1.19-1.27 s, stage change 2.63-2.95 s, 1.27-1.45 s added per MCQ, an occasional 300 ms Strip Next during a
+  SwiftShader frame stall); scaled by the container's 1.4-1.6x the load and script time pass. One HD build-ahead task
+  of 55 ms (1 of 19, while an MCQ is open). Gate 1 (the phone) decides.
 
 
 ## Owner direction: a different fantasy world per stage (2026-10-19)
@@ -369,3 +379,10 @@ fast, even if you use non-commercial stock, for some of the game's new stages." 
   WebP at most 2048 px wide (far layers at half resolution), about 0.4 MB per world. The next world is fetched and
   decoded off the main thread while an MCQ of the stage before it is open, drawn to the GPU in the idle warm-up
   that already exists, and the old world is released after the swap: at most two worlds in memory.
+- **Built so far (2026-10-19):** `tools/fetch_worlds.py` (six packs, pinned and hashed, `tools/worlds-lock.json`,
+  register in `ASSETS.md`) and `tools/build_worlds_hd.py` (layers cropped, scaled, WebP; `worlds.json`). The HD tier
+  shows, from the second stage on, a magic forest, a purple forest, a snow forest and starry clouds, in that order:
+  230-600 KB to download and 15-22 MB of GPU memory each; the swap stays at 0.6-2.8 ms and the warm-up 5-18 ms here.
+  Still to do: the painted worlds (volcano, crystal caverns, ice) and the LudicArts cliff tops, the worlds' own
+  particles (fireflies, snow, sparkles), a matching cloud bank per world, the light tier's pixel worlds, and a visual
+  and speed review of the worlds.

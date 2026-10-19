@@ -2,8 +2,8 @@
 
 The owner can paste the block below into a new Claude Code session on this repository. It is kept up to date with
 the STATUS line in `PLAN.md`. Last updated: 2026-10-19, when D27 (chapters of 1 to 200 MCQs), the four reviews and
-the phone link were done; a fresh agent's final re-measure (`results/v2-final-*.json`) was the last step before Gate 1
-(the owner's phone test). If those files are missing, run that step first (step 0 below says how).
+the phone link were done, and a fresh agent's final re-measure (`results/v2-final-*.json`); Gate 1 (the owner's phone
+test) is waiting on the owner. The owner's newest direction, D28 (a fantasy world per stage), is being built.
 
 ```text
 Continue the "MCQs Mountain" 2D game prototype in the Kafu repo (blsmohamme972-lab/MCQs-Mountain-). The game has two
@@ -38,7 +38,7 @@ Setup (the container is fresh each session; nothing below is committed):
   judged on a phone (D25).
 
 Your task:
-0. If game-lab/results/v2-final-*.json are missing: a fresh helper agent that has fixed nothing re-measures, one
+0. Done (2026-10-19), kept for a later re-measure: a fresh helper agent that has fixed nothing re-measures, one
    browser at a time and nothing else running: from game-lab/tools, node measure.mjs '<url>' --mode <story|strip|
    classic> --cpu 1,4,6 --q 8 --json ../results/v2-final-<tier>-<mode>.json for both tiers (HD Story also with
    ?res=0.5&fx=0 into v2-final-hd-story-nogpu.json), and the same at --cpu 4 --n 200 --q 12 into
@@ -54,6 +54,9 @@ Your task:
    top bar or the sheet in landscape and after a rotate, R9 tokens (settle them from app/design/tokens.css when the
    game is integrated), R8 (the repo copy does not load the app's fonts; the phone copy does), the rest of S10 (the
    HD pose code allocates per frame and culling walks every child).
+3b. D28 (DECISIONS.md, "Built so far" lists what is done and what is next): fetch the packs with
+   python3 game-lab/tools/fetch_worlds.py, build with python3 game-lab/tools/build_worlds_hd.py; continue with the
+   painted worlds, the worlds' particles, the light tier's pixel worlds, then a visual and a speed review.
 4. A 9/10 look needs paid art (D26): an original hero designed and rigged by an artist (Spine or Rive, the full move
    set) and a premium or commissioned prop and tile set (about 25 props). Agents never buy anything; the owner decides.
 5. Gate 1 continues in Telegram through a test bot only when the owner sets one up; agents do not create bots,
