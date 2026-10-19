@@ -398,5 +398,7 @@ fast, even if you use non-commercial stock, for some of the game's new stages." 
   memory); and a sixth, an ice kingdom, from LudicArts' ice forest pack (CC BY 4.0, same credit): its mountains at
   night under an aurora painted by the build, ice blocks with blue crystals, snowy trees and bushes, falling snow
   (129 KB, 6 MB). Seven stages measured here: swap 0.5-3.2 ms, look-ahead 1.2-9.6 ms, warm-up 2-21 ms, no errors.
-  Still to do: cliff tops per world (snow and lava rock: only a tint so far), crystal caverns, the light tier's pixel
+  Cliff tops per world: snow in the snow forest and the ice kingdom (Kenney's snow half tiles, CC0, added to the
+  HD atlas and `assets-hd-lock.json`), stone at the volcano, grass elsewhere. Still to do: the cliff bodies keep their
+  painted moss and vines in every world (a snowy and a lava-rock body), crystal caverns, the light tier's pixel
   worlds, and a visual and speed review of the worlds.

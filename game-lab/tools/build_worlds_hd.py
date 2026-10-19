@@ -22,7 +22,8 @@ FRAME_H = 1080   # every scene is drawn in a 1920 x 1080 frame
 # zoom: how tall the scene's frame is drawn, in screens (forests fill the screen; open skies show more of the scene).
 # A layer: (file, parallax factor x, scale). The factor is how fast it follows the camera (0 = fixed, 1 = with the
 # world); the sky is fixed and stretched to the screen. fx: the world's particles; lit: its light (a 'day' world is
-# dimmed at night); rock, plant: the cliffs' tint; mist: the cloud bank's colour below the path (white if absent).
+# dimmed at night); rock, plant: the cliffs' tint; lip: the cliff tops' tiles (grass if absent); mist: the cloud
+# bank's colour below the path (white if absent).
 WORLDS = [
     {"id": "magicforest", "name": "Magic forest", "pack": "cartoonforest", "dir": "PNG/Cartoon_Forest_BG_04/Layers",
      "layers": [("Sky.png", 0, 0.25), ("BG_Decor.png", 0.12, 0.75), ("Middle_Decor.png", 0.25, 0.75), ("Foreground.png", 0.45, 1)],
@@ -32,7 +33,7 @@ WORLDS = [
      "fx": "sparkles", "lit": "dusk", "zoom": 1.05, "rock": "#b49ac4", "plant": "#c8a6e0", "mist": "#e2d0f2"},
     {"id": "snowforest", "name": "Snow forest", "pack": "winter", "dir": "PNG/BG_01/Layers",
      "layers": [("Sky.png", 0, 0.25), ("BG.png", 0.1, 0.75), ("Middle.png", 0.25, 0.75), ("Foreground.png", 0.45, 1)],
-     "fx": "snow", "lit": "day", "zoom": 0.8, "rock": "#dfe9f6", "plant": "#f0f6ff"},
+     "fx": "snow", "lit": "day", "zoom": 0.8, "rock": "#dfe9f6", "plant": "#ffffff", "lip": "snow"},
     # the scene's gingerbread castle is left out (too childish, and it loomed behind the climber): stars over clouds
     {"id": "skycastle", "name": "Starry clouds", "pack": "parallax2d", "dir": "platformer_background_2/Layers",
      "layers": [("layer09_Sky.png", 0, 0.25), ("layer08_Stars_1.png", 0.02, 0.75), ("layer07_Stars_2.png", 0.03, 0.75), ("layer06_Stars_3.png", 0.04, 0.75),
@@ -42,12 +43,12 @@ WORLDS = [
     # lake, with dead trees, rocks and crystals in front (CC BY 3.0: credit LudicArts.com)
     {"id": "volcano", "name": "Volcano", "pack": "volcano", "compose": "volcano",
      "layers": [("sky", 0, 0.25), ("mountains", 0.05, 0.5), ("lava", 0.16, 0.5), ("props", 0.32, 0.75)],
-     "fx": "embers", "lit": "dusk", "zoom": 1.0, "rock": "#d6a088", "plant": "#c09a6a", "fill": "#7a1e0c", "mist": "#a8706a", "credit": "LudicArts.com"},
+     "fx": "embers", "lit": "dusk", "zoom": 1.0, "rock": "#d6a088", "plant": "#c09a6a", "fill": "#7a1e0c", "mist": "#a8706a", "lip": "stone", "credit": "LudicArts.com"},
     # composed (compose_ice) from LudicArts' ice forest pack: its mountains at night under a painted aurora, ice
     # blocks, snowy trees and bushes, blue crystals (CC BY 4.0: credit LudicArts.com)
     {"id": "ice", "name": "Ice kingdom", "pack": "iceforest", "compose": "ice",
      "layers": [("sky", 0, 0.25), ("mountains", 0.05, 0.5), ("props", 0.3, 0.75)],
-     "fx": "snow", "lit": "night", "zoom": 1.0, "rock": "#cfe0ff", "plant": "#e4f0ff", "fill": "#24365e", "mist": "#b8c8ff", "credit": "LudicArts.com"},
+     "fx": "snow", "lit": "night", "zoom": 1.0, "rock": "#cfe0ff", "plant": "#e4f0ff", "fill": "#24365e", "mist": "#b8c8ff", "lip": "snow", "credit": "LudicArts.com"},
 ]
 
 
@@ -170,7 +171,7 @@ def build() -> dict:
         near = Image.open(d / layers[-1]["file"].split("/")[-1]).convert("RGBA")
         row = [p for p in (near.getpixel((x, near.height - 2)) for x in range(0, near.width, 7)) if p[3] > 200] or [(40, 40, 40, 255)]
         fill = w.get("fill") or "#%02x%02x%02x" % tuple(sum(p[c] for p in row) // len(row) for c in range(3))
-        out["worlds"].append({k: w[k] for k in ("id", "name", "fx", "lit", "zoom", "rock", "plant", "mist", "credit") if k in w} | {"fill": fill, "layers": layers,
+        out["worlds"].append({k: w[k] for k in ("id", "name", "fx", "lit", "zoom", "rock", "plant", "mist", "lip", "credit") if k in w} | {"fill": fill, "layers": layers,
                               "bytes": sum(l["bytes"] for l in layers), "gpuMB": round(sum(l["w"] * l["h"] * 4 for l in layers) / 1e6, 1)})
         print(f"[worlds] {w['id']}: {len(layers)} layers, {out['worlds'][-1]['bytes'] // 1024} KB, GPU {out['worlds'][-1]['gpuMB']} MB")
     (OUT.parent / "worlds.json").write_text(json.dumps(out, indent=1))

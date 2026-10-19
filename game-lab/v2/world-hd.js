@@ -614,11 +614,12 @@
     const c = new PIXI.Container(); c.wx = x - 30; c.ww = w + 60; parent.addChild(c);
     const m = CLIFF_M[name] || 14, wu = kit.dims[name][0] / 2 - 2 * m;
     const body = new PIXI.Sprite(T(name)); body.scale.set(0.5 * w / wu, 0.5); body.x = x - m * w / wu; body.y = y + 6; c.addChild(body); c.body = body; c.texName = name;
-    const tw = 128 * ART, n = noLip ? 0 : Math.max(2, Math.round(w / tw));
+    const tw = 128 * ART, n = noLip ? 0 : Math.max(2, Math.round(w / tw)), wd = worldFor(stage);
+    const lip = 'tile/' + (stone ? 'stone' : (wd && wd.lip) || 'grass') + 'Half_';   // the world's cliff top: grass, snow or stone
     c.lips = [];
     for (let k = 0; k < n; k++) {
       const part = k === 0 ? 'left' : k === n - 1 ? 'right' : 'mid';
-      const s = spr((stone ? 'tile/stoneHalf_' : 'tile/grassHalf_') + part, x + k * (w / n), y - 2, 0, 0, c); s.scale.set((w / n) / 128, ART); c.lips.push(s);
+      const s = spr(lip + part, x + k * (w / n), y - 2, 0, 0, c); s.scale.set((w / n) / 128, ART); c.lips.push(s);
     }
     cols.push(c);
     return c;

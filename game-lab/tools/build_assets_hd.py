@@ -657,6 +657,8 @@ def build_atlas() -> tuple[dict, int]:
         pk.add("tile/" + n, img(RED / "Ground" / "Grass" / f"{n}.png"))
     for n in "stoneHalf_mid stoneHalf_left stoneHalf_right stoneMid".split():
         pk.add("tile/" + n, img(RED / "Ground" / "Stone" / f"{n}.png"))
+    for n in "snowHalf_mid snowHalf_left snowHalf_right".split():   # the cliff tops of the snowy worlds (D28)
+        pk.add("tile/" + n, img(RED / "Ground" / "Snow" / f"{n}.png"))
     for n in "chain sign bush rock grass plantPurple fence torch1 torch2 bridgeA".split():
         pk.add("prop/" + n, img(RED / "Tiles" / f"{n}.png"))
     for n in "coinGold coinSilver flagGreen1 flagGreen2 flagGreen_down flagYellow1 flagYellow2 star".split():

@@ -606,6 +606,24 @@
    "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/Audio/Music Jingles/Audio (Steeldrum)/jingles-steel_02.ogg",
    "sha256": "bf909e9babc92fa72c6cbfa0b05bda31da409fe410358caac07e90c952f34168",
    "bytes": 17010
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Ground/Snow/snowHalf_left.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Ground/Snow/snowHalf_left.png",
+   "sha256": "033ef8fa48272ed5a17be6d956a7076348bdffdf8733c0edfe2041c0b84886b3",
+   "bytes": 1499
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Ground/Snow/snowHalf_mid.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Ground/Snow/snowHalf_mid.png",
+   "sha256": "6e7f4ede17e602390684f6e27d8dfe2dc9bde5879927484a1c3e50a0a620778e",
+   "bytes": 1161
+  },
+  {
+   "path": "src/kenney/Platformer Pack Redux/PNG/Ground/Snow/snowHalf_right.png",
+   "url": "https://raw.githubusercontent.com/CraigBuilds/kenney_assets_v2/53fc78e81ee0c604fb216d289100ea1bd8516591/assets/2D assets/Platformer Pack Redux/PNG/Ground/Snow/snowHalf_right.png",
+   "sha256": "b85f5d08754babbc5bcf4f8aa23300d86c453141a0c522f27fe4c3ff549ef90f",
+   "bytes": 1486
   }
  ]
 }
