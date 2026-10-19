@@ -388,6 +388,13 @@ fast, even if you use non-commercial stock, for some of the game's new stages." 
   every world (tint them, or use the LudicArts ice and lava-rock tops), and in the starry world a large cloud sits
   right beside the climber. Fixed the same day: a zoom per world (the forests fill the screen, the open skies show
   0.8 of one), forest layers never show their top edge, cliffs and grass take each world's light, and the starry
-  world's big cloud left the climber's side. Still to do: the painted worlds (volcano, crystal caverns, ice), the
-  worlds' own particles (fireflies, snow, sparkles), a matching cloud bank per world, the light tier's pixel worlds,
-  and a visual and speed review of the worlds.
+  world's big cloud left the climber's side. Later the same day: each world has its own particles, drawn by the
+  floaters that were leaves and fireflies (fireflies in the magic forest, rising sparkles in the purple forest,
+  falling snow, twinkling stars behind the cliffs, embers at the volcano; they move on the start card and between
+  MCQs and stand still while an MCQ is open, as before); the cloud bank below the path takes the world's mist colour
+  (lilac in the purple forest, red smoke at the volcano); and a fifth world, a volcano, is composed in
+  `build_worlds_hd.py` from LudicArts' volcano pack (CC BY 3.0, credit "LudicArts.com" wherever it ships): its painted
+  mountains made seamless and lit red from below, a lava lake, dead trees, rocks and crystals (125 KB, 7 MB of GPU
+  memory). Six stages measured here: swap 0.5-2.1 ms, look-ahead 1.2-9 ms, warm-up 2-21 ms, no errors. Still to do:
+  cliff tops per world (snow and lava rock: only a tint so far), crystal caverns and ice, the light tier's pixel
+  worlds, and a visual and speed review of the worlds.

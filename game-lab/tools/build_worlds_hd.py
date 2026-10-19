@@ -12,7 +12,7 @@ from __future__ import annotations
 import json
 import shutil
 from pathlib import Path
-from PIL import Image
+from PIL import Image, ImageChops
 
 LAB = Path(__file__).resolve().parents[1]
 SRC = LAB / "assets-test" / "src" / "worlds"
@@ -21,14 +21,15 @@ FRAME_H = 1080   # every scene is drawn in a 1920 x 1080 frame
 
 # zoom: how tall the scene's frame is drawn, in screens (forests fill the screen; open skies show more of the scene).
 # A layer: (file, parallax factor x, scale). The factor is how fast it follows the camera (0 = fixed, 1 = with the
-# world); the sky is fixed and stretched to the screen. 'over' marks a layer drawn in front of the path (snow).
+# world); the sky is fixed and stretched to the screen. fx: the world's particles; lit: its light (a 'day' world is
+# dimmed at night); rock, plant: the cliffs' tint; mist: the cloud bank's colour below the path (white if absent).
 WORLDS = [
     {"id": "magicforest", "name": "Magic forest", "pack": "cartoonforest", "dir": "PNG/Cartoon_Forest_BG_04/Layers",
      "layers": [("Sky.png", 0, 0.25), ("BG_Decor.png", 0.12, 0.75), ("Middle_Decor.png", 0.25, 0.75), ("Foreground.png", 0.45, 1)],
      "fx": "fireflies", "lit": "night", "zoom": 1.05, "rock": "#b98f86", "plant": "#c9b27a"},
     {"id": "purpleforest", "name": "Purple forest", "pack": "fairytale", "dir": "_PNG/2",
      "layers": [("7.png", 0, 0.25), ("6.png", 0.06, 0.75), ("5.png", 0.12, 0.75), ("4.png", 0.22, 0.75), ("3.png", 0.36, 0.85), ("2.png", 0.5, 0.75)],
-     "fx": "sparkles", "lit": "dusk", "zoom": 1.05, "rock": "#b49ac4", "plant": "#c8a6e0"},
+     "fx": "sparkles", "lit": "dusk", "zoom": 1.05, "rock": "#b49ac4", "plant": "#c8a6e0", "mist": "#e2d0f2"},
     {"id": "snowforest", "name": "Snow forest", "pack": "winter", "dir": "PNG/BG_01/Layers",
      "layers": [("Sky.png", 0, 0.25), ("BG.png", 0.1, 0.75), ("Middle.png", 0.25, 0.75), ("Foreground.png", 0.45, 1)],
      "fx": "snow", "lit": "day", "zoom": 0.8, "rock": "#dfe9f6", "plant": "#f0f6ff"},
@@ -37,7 +38,55 @@ WORLDS = [
      "layers": [("layer09_Sky.png", 0, 0.25), ("layer08_Stars_1.png", 0.02, 0.75), ("layer07_Stars_2.png", 0.03, 0.75), ("layer06_Stars_3.png", 0.04, 0.75),
                 ("layer03_Clouds_3.png", 0.16, 0.75), ("layer02_Clouds_2.png", 0.26, 0.75), ("layer01_Clouds_1.png", 0.4, 1)],
      "fx": "stars", "lit": "night", "zoom": 0.8, "rock": "#9aa4d0", "plant": "#a6b4dc"},
+    # composed here (compose_volcano) from LudicArts' volcano pack: its painted mountains, lit from below by a lava
+    # lake, with dead trees, rocks and crystals in front (CC BY 3.0: credit LudicArts.com)
+    {"id": "volcano", "name": "Volcano", "pack": "volcano", "compose": "volcano",
+     "layers": [("sky", 0, 0.25), ("mountains", 0.05, 0.5), ("lava", 0.16, 0.5), ("props", 0.32, 0.75)],
+     "fx": "embers", "lit": "dusk", "zoom": 1.0, "rock": "#d6a088", "plant": "#c09a6a", "fill": "#7a1e0c", "mist": "#a8706a", "credit": "LudicArts.com"},
 ]
+
+
+def _grad(w: int, h: int, stops: list[tuple[float, tuple]]) -> Image.Image:
+    """A vertical gradient (RGBA) through (position 0..1, colour) stops."""
+    col = Image.new("RGBA", (1, h))
+    for y in range(h):
+        t = y / max(1, h - 1)
+        for (a, ca), (b, cb) in zip(stops, stops[1:]):
+            if a <= t <= b:
+                k = (t - a) / max(1e-6, b - a)
+                col.putpixel((0, y), tuple(round(ca[c] + (cb[c] - ca[c]) * k) for c in range(len(ca))))
+                break
+    return col.resize((w, h))
+
+
+def compose_volcano(src: Path) -> dict:
+    """The volcano's layers at frame size (1920 x 1080 frame units; the mountains are 3840 wide, mirrored so they tile)."""
+    img = src / "images"
+    tile = lambda n: Image.open(img / f"Tile_{n}.png").convert("RGBA")
+    # the painted mountains, cropped to 16:9, made seamless (the picture and its mirror), lit red-orange from below
+    bg = Image.open(img / "Background.png").convert("RGBA")
+    h = round(bg.width * 9 / 16)
+    bg = bg.crop((0, (bg.height - h) // 2, bg.width, (bg.height - h) // 2 + h)).resize((1920, 1080), Image.LANCZOS)
+    wide = Image.new("RGBA", (3840, 1080)); wide.paste(bg, (0, 0)); wide.paste(bg.transpose(Image.FLIP_LEFT_RIGHT), (1920, 0))
+    glow = _grad(3840, 1080, [(0, (0, 0, 0, 255)), (0.3, (40, 8, 20, 255)), (0.62, (210, 70, 30, 255)), (1, (255, 120, 40, 255))])
+    wide = ImageChops.screen(wide, glow)
+    # the lava lake: the pack's glowing lava surface along a line, deep orange to dark red below it
+    lava = Image.new("RGBA", (1920, 1080))
+    surf = tile(27).resize((128, 128), Image.LANCZOS)
+    y0 = 470
+    lava.paste(_grad(1920, 1080 - y0 - 100, [(0, (255, 140, 20, 255)), (0.35, (214, 70, 18, 255)), (1, (122, 30, 12, 255))]), (0, y0 + 100))
+    for x in range(0, 1920, 128):
+        lava.alpha_composite(surf, (x, y0))
+    # props standing in the lava (none crosses the strip's edges, so it tiles)
+    props = Image.new("RGBA", (1920, 1080))
+    def put(n, x, foot, sc):
+        t = tile(n); t = t.crop(t.getbbox()); t = t.resize((max(1, round(t.width * sc)), max(1, round(t.height * sc))), Image.LANCZOS)
+        props.alpha_composite(t, (x, foot - t.height))
+    for n, x, foot, sc in [(33, 40, 570, 0.95), (20, 300, 584, 0.8), (35, 470, 576, 0.75), (19, 640, 588, 0.75), (40, 900, 574, 1.0),
+                           (21, 1080, 586, 0.8), (36, 1290, 578, 0.7), (34, 1430, 572, 0.9), (20, 1700, 588, 0.6)]:
+        put(n, x, foot, sc)
+    sky = _grad(64, 1080, [(0, (40, 22, 70, 255)), (0.55, (96, 40, 92, 255)), (1, (190, 70, 50, 255))])
+    return {"sky": sky, "mountains": wide, "lava": lava, "props": props}
 
 
 def build() -> dict:
@@ -48,8 +97,9 @@ def build() -> dict:
         shutil.rmtree(d, ignore_errors=True)   # no stale layers from an earlier build
         d.mkdir(parents=True)
         layers = []
+        made = globals()["compose_" + w["compose"]](SRC / w["pack"] / "x") if w.get("compose") else {}
         for i, (fn, par, sc) in enumerate(w["layers"]):
-            im = Image.open(SRC / w["pack"] / "x" / w["dir"] / fn).convert("RGBA")
+            im = made[fn] if made else Image.open(SRC / w["pack"] / "x" / w["dir"] / fn).convert("RGBA")
             W, H = im.size
             top, bottom = (0, H) if par == 0 else (im.getbbox() or (0, 0, W, H))[1::2]
             if par:
@@ -64,8 +114,8 @@ def build() -> dict:
         # the colour under the nearest layer's bottom edge, to fill the screen below it
         near = Image.open(d / layers[-1]["file"].split("/")[-1]).convert("RGBA")
         row = [p for p in (near.getpixel((x, near.height - 2)) for x in range(0, near.width, 7)) if p[3] > 200] or [(40, 40, 40, 255)]
-        fill = "#%02x%02x%02x" % tuple(sum(p[c] for p in row) // len(row) for c in range(3))
-        out["worlds"].append({k: w[k] for k in ("id", "name", "fx", "lit", "zoom", "rock", "plant")} | {"fill": fill, "layers": layers,
+        fill = w.get("fill") or "#%02x%02x%02x" % tuple(sum(p[c] for p in row) // len(row) for c in range(3))
+        out["worlds"].append({k: w[k] for k in ("id", "name", "fx", "lit", "zoom", "rock", "plant", "mist", "credit") if k in w} | {"fill": fill, "layers": layers,
                               "bytes": sum(l["bytes"] for l in layers), "gpuMB": round(sum(l["w"] * l["h"] * 4 for l in layers) / 1e6, 1)})
         print(f"[worlds] {w['id']}: {len(layers)} layers, {out['worlds'][-1]['bytes'] // 1024} KB, GPU {out['worlds'][-1]['gpuMB']} MB")
     (OUT.parent / "worlds.json").write_text(json.dumps(out, indent=1))

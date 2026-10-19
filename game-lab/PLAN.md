@@ -23,10 +23,10 @@ ready prompt: `NEXT_AGENT.md`.
   is reclaimed soon after a turn ends).
 - 2026-10-19: a fresh agent's final re-measure done (`results/v2-final-*.json`, summary at the end of D27): 8 and 200
   MCQs behave the same; the light tier meets the speed budgets (single 50-58 ms canvas-copy tasks aside); HD's fixed
-  budgets are judged on a phone. The owner's new direction D28 (a fantasy world per stage) started: four HD worlds in
-  the game (`DECISIONS.md` D28, "Built so far").
-- Next: Gate 1, the owner tries both tiers and the 8 / 50 / 200 chapters on a mid-range phone; D28 continues (painted
-  worlds, particles, the light tier, a review).
+  budgets are judged on a phone. The owner's new direction D28 (a fantasy world per stage) started: five HD worlds in
+  the game, each with its own particles and mist (`DECISIONS.md` D28, "Built so far").
+- Next: Gate 1, the owner tries both tiers and the 8 / 50 / 200 chapters on a mid-range phone; D28 continues (cliff tops
+  per world, crystal caverns and ice, the light tier's pixel worlds, a review).
 
 Last updated: 2026-10-19.
 

@@ -461,6 +461,27 @@
   // Ambient life: clouds drift, birds cross the sky now and then, waterfalls run, leaves (day) or fireflies (night)
   // float, torches flicker, stars twinkle, the beacon pulses.
   const birds = { t: 4, on: false, x: 0, y: 0, v: 0, list: [] }, floaters = [];
+  // the floaters' kinds: how many, which sprite, added light or not, colour (by day, at night) and size
+  const FLOAT = {
+    leaves: { n: 7, tex: 'fx/leaf', add: false, tint: 0x8fd16a, sc: 0.42 },
+    fireflies: { n: 8, tex: 'fx/soft', add: true, tint: 0xd8ff7a, sc: 0.12 },
+    sparkles: { n: 12, tex: 'fx/star_06', add: true, tint: 0xf0c4ff, nt: 0xc8b4ff, sc: 0.14 },
+    snow: { n: 22, tex: 'fx/soft', add: false, tint: 0xffffff, nt: 0xb4c0ec, sc: 0.15 },
+    stars: { n: 9, tex: 'fx/star_06', add: true, tint: 0xa8c4ff, sc: 0.09 },
+    embers: { n: 18, tex: 'fx/soft', add: true, tint: 0xff7a2a, sc: 0.08 },
+  };
+  let floatK = 'leaves', floatC, wfx;
+  // the world's own floaters, else leaves by day and fireflies by night
+  function styleFloaters() {
+    const k = floatK = (wNow && FLOAT[wNow.fx] ? wNow.fx : night ? 'fireflies' : 'leaves'), d = FLOAT[k];
+    floaters.forEach((f, i) => {
+      const s = f.s; (k === 'stars' ? wfx : floatC).addChild(s);
+      s.visible = i < d.n; s.texture = frame(d.tex); s.blendMode = d.add ? 'add' : 'normal'; s.tint = night && d.nt ? d.nt : d.tint;
+      s.scale.set(d.sc * (k === 'snow' || k === 'sparkles' || k === 'embers' ? 0.55 + f.r * 0.9 : 1)); s.rotation = 0; s.alpha = k === 'snow' ? 0.55 + f.r * 0.4 : k === 'stars' || k === 'sparkles' || k === 'embers' ? 0.3 + f.r * 0.6 : 1;   // still under reduced motion
+      f.x = 30 + rnd() * (VW - 60); f.y = VH * (k === 'stars' ? 0.04 + rnd() * 0.36 : k === 'sparkles' || k === 'embers' ? 0.15 + rnd() * 0.7 : 0.3 + rnd() * 0.4);
+      s.x = k === 'leaves' || k === 'snow' ? rnd() * VW : f.x; s.y = k === 'leaves' || k === 'snow' ? rnd() * VH : f.y;
+    });
+  }
   const BIRD = ['fx/bird0', 'fx/bird1', 'fx/bird2'], PEN = ['ui/pen0', 'ui/pen1', 'ui/pen2'], GOLD = ['ui/gold0', 'ui/gold1', 'ui/gold2'];
   function stepAmbient(dt) {
     for (const c of cloudsC.children) { c.x += c.v * dt; if (c.x > c.span) c.x -= c.span + 400; }
@@ -477,13 +498,30 @@
       // (never while an MCQ is open: the drops kept the loop running, review HD1)
       if (w.s.renderable && (awake || planOn || ambient()) && (w.t -= dt) < 0) { w.t = 0.09 + rnd() * 0.08; const p = emit('drop', w.x + (rnd() - 0.5) * 18, w.y, (rnd() - 0.5) * 50, -20 - rnd() * 40, 0.55); if (p && night) p.s.tint = 0xa8b8ff; }
     }
+    const fk = floatK, fsc = FLOAT[fk].sc;
     for (const f of floaters) {
+      const s = f.s;
+      if (!s.visible) continue;
       f.t += dt;
-      if (night) { f.s.x = f.x + Math.sin(f.t * 0.7 + f.o) * 26; f.s.y = f.y + Math.sin(f.t * 1.1 + f.o * 2) * 16; f.s.alpha = 0.35 + 0.65 * Math.max(0, Math.sin(f.t * 2.2 + f.o)); }
-      else {
-        f.s.x += (f.vx + Math.sin(f.t * 1.3 + f.o) * 12) * dt; f.s.y += f.vy * dt; f.s.rotation += f.spin * dt; f.s.scale.y = 0.42 * Math.max(0.28, Math.abs(Math.cos(f.t * 3 + f.o)));
-        if (f.s.y > VH + 30 || f.s.x > VW + 40) { f.s.x = -20 + rnd() * VW * 0.6; f.s.y = -20 - rnd() * 80; }
-      }
+      if (fk === 'leaves') {
+        s.x += (f.vx + Math.sin(f.t * 1.3 + f.o) * 12) * dt; s.y += f.vy * dt; s.rotation += f.spin * dt; s.scale.y = fsc * Math.max(0.28, Math.abs(Math.cos(f.t * 3 + f.o)));
+        if (s.y > VH + 30 || s.x > VW + 40) { s.x = -20 + rnd() * VW * 0.6; s.y = -20 - rnd() * 80; }
+      } else if (fk === 'snow') {
+        // flakes fall slowly and sway, the small (far) ones slower
+        s.x += (6 + Math.sin(f.t * 0.9 + f.o) * 16) * dt; s.y += (18 + f.r * 30) * dt;
+        if (s.y > VH + 10) { s.y = -10; s.x = rnd() * VW; } else if (s.x > VW + 10) s.x = -10;
+      } else if (fk === 'sparkles') {
+        // magic dust rises, sways, turns and fades in and out
+        f.y -= (7 + f.r * 9) * dt; if (f.y < VH * 0.1) { f.y = VH * (0.7 + rnd() * 0.2); f.x = 30 + rnd() * (VW - 60); }
+        s.x = f.x + Math.sin(f.t * 0.6 + f.o) * 20; s.y = f.y; s.rotation += dt * (0.4 + f.r); const a = Math.max(0, Math.sin(f.t * 1.4 + f.o)); s.alpha = a * a;
+      } else if (fk === 'embers') {
+        // sparks rise from the lava, quicker than dust, flicker and die out near the top
+        f.y -= (34 + f.r * 46) * dt; if (f.y < VH * 0.05) { f.y = VH * (0.75 + rnd() * 0.25); f.x = 20 + rnd() * (VW - 40); }
+        s.x = f.x + Math.sin(f.t * 1.7 + f.o) * 12; s.y = f.y; s.alpha = Math.min(1, (f.y / VH) * 1.6) * (0.6 + 0.4 * Math.sin(f.t * 9 + f.o));
+      } else if (fk === 'stars') {
+        // a star flares now and then and fades (cubed, so it is mostly faint)
+        const a = Math.max(0, Math.sin(f.t * (0.5 + f.r * 0.7) + f.o)); s.alpha = a * a * a; s.scale.set(fsc * (0.55 + 0.6 * a)); s.rotation = f.o + f.t * 0.1;
+      } else { s.x = f.x + Math.sin(f.t * 0.7 + f.o) * 26; s.y = f.y + Math.sin(f.t * 1.1 + f.o * 2) * 16; s.alpha = 0.35 + 0.65 * Math.max(0, Math.sin(f.t * 2.2 + f.o)); }
     }
     for (const t of torches) { const f = 0.08 * Math.sin(ambT * 13 + t.o) + 0.04 * Math.sin(ambT * 29 + t.o); t.g.alpha = (night ? 0.75 : 0.12) + f; t.pool.alpha = night ? 0.5 + f : 0; }
     if (starsC.visible) for (let i = 0; i < starsC.children.length; i++) { const s = starsC.children[i]; s.alpha = 0.45 + 0.55 * Math.abs(Math.sin(ambT * s.v + s.o)); }
@@ -828,6 +866,7 @@
       const f = new PIXI.Sprite(PIXI.Texture.WHITE); f.tint = parseInt(w.fill.slice(1), 16); wbg.addChild(f);
       wbg.tint = night && w.lit === 'day' ? 0x8a92c4 : 0xffffff;
     }
+    if (floatC) { styleFloaters(); bankTint(); }
     for (const id in wTex) if (!worldWanted(id)) idle(() => { if (!worldWanted(id) && wTex[id]) { const ww = WORLDS.find(x => x.id === id); delete wTex[id]; if (ww) PIXI.Assets.unload(wUrls(ww)).catch(() => {}); } });
   }
   // world layers: the scene's 1920 x 1080 frame is drawn 'zoom' screens tall, its foot just above the bottom; each
@@ -883,7 +922,7 @@
     lay.nearFill = new PIXI.Sprite(PIXI.Texture.WHITE); lay.nearFill.width = VW; classicC.addChild(lay.nearFill);
     // light rays: a separate additive overlay at half resolution, so the painted layers stay sharp
     raysS = new PIXI.Sprite(PIXI.Texture.WHITE); raysS.tint = 0x000000; raysS.width = VW; raysS.height = VH * 0.8; classicC.addChild(raysS); raysS.visible = false;
-    wbg = new PIXI.Container(); bgC.addChild(wbg);
+    wbg = new PIXI.Container(); wfx = new PIXI.Container(); bgC.addChild(wbg, wfx);
 
     // the world: the stage's own objects (built by buildStage), then the climber, effects and the near foreground
     worldC.scale.set(Z);
@@ -908,9 +947,10 @@
     wipeCap.t1 = btext('Next mountain', 26, 0xffd36b, wipeCap); wipeCap.t1.y = -42; wipeCap.t2 = btext('Stage 2', 42, 0xffffff, wipeCap);
     wipeC.visible = wipeCap.visible = false;
 
-    // floaters: leaves by day, fireflies by night (screen space)
-    floaters.length = 0; seed = 21;
-    for (let k = 0; k < 7; k++) { const s = spr('fx/leaf', rnd() * VW, rnd() * VH, 0.5, 0.5, fgC, 0.42); floaters.push({ s, x: 40 + rnd() * (VW - 80), y: VH * (0.25 + rnd() * 0.5), vx: 14 + rnd() * 14, vy: 26 + rnd() * 16, spin: (rnd() - 0.5) * 3, t: rnd() * 9, o: rnd() * 6 }); }
+    // floaters (screen space): leaves by day and fireflies by night, or the world's own (FLOAT); stars hang behind
+    // the cliffs (wfx), the rest drift in front
+    floaters.length = 0; seed = 21; floatC = new PIXI.Container(); fgC.addChild(floatC);
+    for (let k = 0; k < 22; k++) { const s = spr('fx/leaf', rnd() * VW, rnd() * VH, 0.5, 0.5, floatC, 0.42); floaters.push({ s, x: 40 + rnd() * (VW - 80), y: VH * (0.25 + rnd() * 0.5), vx: 14 + rnd() * 14, vy: 26 + rnd() * 16, spin: (rnd() - 0.5) * 3, t: rnd() * 9, o: rnd() * 6, r: rnd() }); }
     // vignette as two strips (top and bottom) instead of a full-screen layer: same look at the edges, far less fill
     vignette = new PIXI.Container(); root.addChild(vignette);
     const vt = new PIXI.Sprite(frame('fx/vgrad')); vt.width = VW; vt.height = 130; vt.scale.y *= -1; vt.y = 130; vt.tint = 0x0b1030; vignette.addChild(vt);
@@ -976,13 +1016,18 @@
       LAYERS.forEach((n, k) => { const x = tex[n + '-' + tod] = t[urls[k]]; if (n !== 'sky' && n !== 'peak') x.source.addressMode = 'repeat'; });
     });
   }
+  // the cloud bank below the path takes the world's mist colour (smoke at the volcano)
+  function bankTint() {
+    const m = wNow && wNow.mist ? parseInt(wNow.mist.slice(1), 16) : 0xffffff;
+    lay.bank.tint = m; lay.bankFill.tint = tintMul(night ? 0x3a4078 : 0xc6d8ee, m);
+  }
   function applyNight() {
     if (!built) return;
     const tod = night ? 'night' : 'day', pal = kit.palette[tod];
     if (!tex['sky-' + tod]) { loadSet(tod).then(() => { applyNight(); renderOnce(); }); return; }
     lay.sky.texture = tex['sky-' + tod]; lay.far.texture = tex['far-' + tod]; lay.peak.texture = tex['peak-' + tod];
     lay.mid.texture = tex['mid-' + tod]; lay.near.texture = tex['near-' + tod]; lay.sea.texture = lay.bank.texture = tex['cloudsea-' + tod];
-    lay.bankFill.tint = night ? 0x3a4078 : 0xc6d8ee;
+    bankTint();
     for (const c of wipeC.children) c.tint = night ? 0x5c66a6 : 0xffffff;
     lay.fog.alpha = night ? 0.3 : 0.55;
     if (heroLine) { heroLine.color = night ? 0x9fb2ff : 0x3a2622; heroLine.alpha = night ? 0.3 : 0.5; }
@@ -993,7 +1038,7 @@
     for (const c of cloudsC.children) { c.tint = night ? 0x46508a : 0xffffff; c.alpha = night ? 0.55 : 0.85; }
     nightStage();
     for (const f of fgs) f.s.tint = night ? 0x0a1022 : 0xffffff;
-    for (const f of floaters) { f.s.texture = frame(night ? 'fx/soft' : 'fx/leaf'); f.s.blendMode = night ? 'add' : 'normal'; f.s.tint = night ? 0xd8ff7a : 0x8fd16a; f.s.scale.set(night ? 0.12 : 0.42); if (night) { f.x = 30 + rnd() * (VW - 60); f.y = VH * (0.3 + rnd() * 0.4); f.s.rotation = 0; } }
+    styleFloaters();
     hero.children.forEach(s => { s.tint = night ? 0xb6bee2 : 0xffffff; });
     vignette.alpha = night ? 0.6 : 0.32;
     // light rays by day only (at night they would streak across the moon)
