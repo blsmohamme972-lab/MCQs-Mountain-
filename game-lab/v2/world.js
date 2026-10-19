@@ -14,7 +14,8 @@
   const RISE_STEP = 28, LIFT_RISE = 112, SUMW = 128;
   let app, kit, N = 8, RM = false, LOW = false, S = 3, VW = 360, VH = 740, night = false;
   let atlasImg, tex = {}, layer = {}, world, back, mid, fx, stB, stM, hero, shadow, overlay, waterFill, veil, capC;
-  const L = [], pillars = [], slabs = [], lifts = [], signs = [], coins = [], glints = [], palms = [];
+  let L = [], pillars = [], slabs = [], lifts = [], signs = [], coins = [], palms = [];
+  const glints = [];
   const anims = [];                   // one-shot animated sprites (dust, sparkle, trophy press, camp flag)
   const parts = [];                   // particle pool (confetti, puffs)
   let startSign, trophy, camp, heroKey = 'captain', heroDef;
@@ -507,6 +508,8 @@
   // that needs them sooner calls ready() (the loop does too).
   let pend = false, pendAfter = null;
   function setStage(k, later) {
+    if (ahead && ahead[0] === k) { swapIn(); return; }
+    dropAhead();
     stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout();
     if (later) { pend = true; setTimeout(ready, 220); return; }
     pend = false; const t = performance.now(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
@@ -515,6 +518,38 @@
     if (!pend) return;
     pend = false; const t = performance.now(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
     const f = pendAfter; pendAfter = null; if (f) f();
+  }
+  // The next stage is built ahead (review S2): in idle time while an MCQ of this stage is open, into containers of its
+  // own off screen; at the stage change they are swapped in under the veil and the old stage is released in idle time.
+  // At most two stages exist at once, whatever the chapter's length.
+  let ahead = null, aheadT = false;
+  const aheadMs = [];
+  const stageVars = () => [stage, sA, sK, L, pillars, slabs, lifts, signs, coins, palms, startSign, trophy, camp, stB, stM];
+  function useVars(v) { [stage, sA, sK, L, pillars, slabs, lifts, signs, coins, palms, startSign, trophy, camp, stB, stM] = v; }
+  const idle = f => window.requestIdleCallback ? requestIdleCallback(f, { timeout: 600 }) : setTimeout(f, 30);
+  function aheadSoon() {
+    if (aheadT || stage + 1 >= STG.length || (ahead && ahead[0] === stage + 1)) return;
+    aheadT = true; idle(buildAhead);
+  }
+  function buildAhead() {
+    aheadT = false;
+    const k = stage + 1;
+    if (!built || awake || planOn || pend || k >= STG.length || (ahead && ahead[0] === k)) return;   // only while an MCQ is open
+    dropAhead();
+    const t = performance.now(), cur = stageVars(), C = () => new PIXI.Container();
+    useVars([k, STG[k][0], STG[k][1] - STG[k][0], [], [], [], [], [], [], [], null, null, null, C(), C()]);
+    try { layout(); buildStage(); ahead = stageVars(); } finally { useVars(cur); }
+    if (aheadMs.length < 400) aheadMs.push(Math.round((performance.now() - t) * 10) / 10);
+  }
+  function dropAhead() { if (!ahead) return; const cs = ahead.slice(-2); ahead = null; for (const c of cs) c.destroy({ children: true }); }
+  function swapIn() {
+    const t = performance.now(), oB = stB, oM = stM;
+    for (const a of anims) if (a.s.parent === oB || a.s.parent === oM) { a.s.parent.removeChild(a.s); a.s.visible = false; a.done = null; }
+    useVars(ahead); ahead = null; pend = false; pendAfter = null;
+    let at = back.getChildIndex(oB); back.removeChildAt(at); back.addChildAt(stB, at);
+    at = mid.getChildIndex(oM); mid.removeChildAt(at); mid.addChildAt(stM, at);
+    idle(() => { oB.destroy({ children: true }); oM.destroy({ children: true }); });
+    if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
   }
 
   function resetState() {
@@ -645,12 +680,15 @@
       }
       return did;
     },
-    sleep() { awake = false; cam.ft = 1; cam.fy = cam.fy1; snapCam(); renderOnce(); },
+    sleep() {
+      awake = false; cam.ft = 1; cam.fy = cam.fy1; snapCam(); renderOnce();
+      if (window.__lab && window.__lab.state === 'question') aheadSoon();   // while the MCQ is read
+    },
     wake,
     reset() { ready(); if (stage !== 0) setStage(0); resetState(); renderOnce(); if (!RM) wake(); },
     resize(w, h) {
       if (!app || !built) return;
-      ready();
+      ready(); dropAhead();
       VW = w; VH = h; app.renderer.resize(w, h);
       S = scaleFor(w, h);
       const keep = { x: H.x, y: H.y, gy: H.gy }, sts = signs.map(s => s.st), got = coins.map(c => c.got), ly = lifts.map(l => l.y), up = camp && camp.up, f = fadeK;
@@ -672,7 +710,7 @@
     info: () => 'S ' + S + ' · ' + (app && app.renderer ? app.renderer.name || app.renderer.type : '-') + ' · ' + heroKey + ' · stage ' + (stage + 1) + '/' + STG.length,
     // for the screenshot tool and the harness
     heroState: () => planOn && plan[pi] && plan[pi].k === 2 ? 'lift' : celebrateT > 0 ? 'cheer' : H.anim,
-    stageInfo: () => ({ stage, stages: STG.length, buildMs, wipe: fadeK }),
+    stageInfo: () => ({ stage, stages: STG.length, buildMs, aheadMs, ahead: ahead ? ahead[0] : -1, wipe: fadeK }),
     stripArt: () => kit && {
       coin(c, gold, x, y, size) { const f = kit.atlas.frames[(gold ? 'coin/gold' : 'coin/silver') + '/0']; c.imageSmoothingEnabled = false; c.drawImage(atlasImg.source.resource, f[0], f[1], f[2], f[3], x - size / 2, y - size / 2, size, size); },
       flag(c, x, y) { const f = kit.atlas.frames['end/idle']; c.imageSmoothingEnabled = false; c.drawImage(atlasImg.source.resource, f[0], f[1], f[2], f[3], x - 14, y - 26, 28, 28); },

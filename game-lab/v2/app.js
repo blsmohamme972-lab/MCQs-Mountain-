@@ -272,13 +272,13 @@
     keep(N);
     const t = now(); gameT += t - tNext; lab.state = 'done'; skipOn(false); hud(true);
     if (mode === 'strip') drawStrip();
-    const c = RS.filter(r => r.correct).length, sec = Math.round(readT / 1000), per = gameT / N / 1000, z = per * 100 / 60;
+    const c = RS.filter(r => r.correct).length, sec = Math.round(readT / 1000), per = gameT / N / 1000;
     $('dS').textContent = N + (N === 1 ? ' MCQ · ' : ' MCQs · ') + c + ' correct · +' + xp + ' XP';
     const L2 = $('dL'); L2.textContent = '';
     const dur = s => s < 60 ? s.toFixed(1) + ' s' : Math.floor(Math.round(s) / 60) + ' min ' + (Math.round(s) % 60) + ' s';
     ['Time reading and answering: ' + Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0'),
       'Time added by the game: ' + dur(gameT / 1000) + ' (' + (per < 0.1 ? 'under 0.1' : per.toFixed(1)) + ' s per MCQ)']
-      .concat(N === 100 ? [] : ['At this pace 100 MCQs would add about ' + (z < 0.1 ? 'under 0.1' : z < 10 ? z.toFixed(1) : Math.round(z)) + ' min'], ['Animations skipped: ' + skips])
+      .concat(N === 100 ? [] : ['At this pace 100 MCQs would add about ' + dur(per * 100)], ['Animations skipped: ' + skips])
       .forEach(s => L2.append(h('li', null, s)));
     sheet.classList.remove('open'); doneC.classList.remove('off'); World.sleep();
     try { $('t2').focus({ preventScroll: true }); } catch (e) {}

@@ -119,6 +119,7 @@ async function run(cpu) {
     script: window.World && window.World.scriptTimes ? window.World.scriptTimes() : null,
     tier: window.__lab.tier || null,
     build: window.World && window.World.stageInfo ? window.World.stageInfo().buildMs : null,
+    ahead: window.World && window.World.stageInfo ? window.World.stageInfo().aheadMs || null : null,
   }), t0);
   // the harness's own frame log (thousands of entries in a long run) must not count as the page's heap
   await page.evaluate(() => { window.__probe.frames.length = 0; window.__probe.longTasks.length = 0; });
@@ -152,7 +153,10 @@ async function run(cpu) {
     js_heap_mb_at_start: chapter.heap ? round(chapter.heap / 1048576) : null,
     js_heap_after_gc_mb: { at_start: heap0 == null ? null : Math.round(heap0 / 1048576 * 100) / 100, at_end: heap1 == null ? null : Math.round(heap1 / 1048576 * 100) / 100 },
     // main-thread time of each stage build (the world's buildStage), as the world reports it
+    // stage_build_ms: main-thread time of each stage build inside the stage change (with the next stage built
+    // ahead, only the swap); stage_ahead_ms: the builds done ahead, in idle time while an MCQ was open
     stage_build_ms: probe.build ? { count: probe.build.length, max: round(Math.max(...probe.build)), avg: round(probe.build.reduce((a, b) => a + b, 0) / probe.build.length) } : null,
+    stage_ahead_ms: probe.ahead && probe.ahead.length ? { count: probe.ahead.length, max: round(Math.max(...probe.ahead)), avg: round(probe.ahead.reduce((a, b) => a + b, 0) / probe.ahead.length) } : null,
     tier: probe.tier,
     // HD tier: main-thread script time per world frame (update + render submission), measured inside the ticker.
     script_frames: probe.script ? probe.script.length : null,

@@ -19,7 +19,8 @@
   let app, kit, N = 8, RM = false, VW = 360, VH = 740, Z = 1, night = false, base = '';
   let atlas, tex = {}, lay = {}, root, bgC, worldC, backC, midC, fxC, fgC, vignette, starsC, cloudsC, birdsC;
   let godray = null, grade = null, glow = null, heroLine = null;
-  const L = [], kinds = [], steps = [], lifts = [], signs = [], coins = [], flags = [], torches = [], falls = [], fgs = [];
+  let L = [], kinds = [], steps = [], lifts = [], signs = [], coins = [], flags = [], torches = [], falls = [];
+  const fgs = [];
   let landmark, beacon, beaconGlow, startSign, readyP = null, stripImg = null, wipeC, wipeCap;
 
   /* ---------- stages and layout ---------- */
@@ -578,7 +579,7 @@
     cols.push(c);
     return c;
   }
-  const cols = [], blocks = [];   // cliff columns and stair blocks (tinted by the moonlight at night)
+  let cols = [], blocks = [];     // cliff columns and stair blocks (tinted by the moonlight at night)
   function shadowAt(x, y, w, parent) { const s = spr('fx/shadow', x, y + 1, 0.5, 0.5, parent || midC); s.scale.set(w / 96, 0.5); s.alpha = 0.32; s.wx = x - 40; s.ww = 80; return s; }
   function decorTorch(tx, y, o) { // a torch with a small warm glow and a pool of light on the ground (stronger at night)
     shadowAt(tx, y, 18);
@@ -706,7 +707,7 @@
     fgb(-300, 34, 0.42);
     fgb(L[sK].x + SUMW + 40, L[sK].y + 34, 0.45);
     stageTint = STAGE_TINT[stage % STAGE_TINT.length];
-    if (built) applyNight();
+    if (built) nightStage();
   }
   // Each stage gets its own light over the same art (a gentle tint on the sky and far layers): clear, warm, fresh, cool.
   const STAGE_TINT = [0xffffff, 0xfff0e2, 0xe8f6ec, 0xeceaff];
@@ -718,6 +719,8 @@
   // that needs them sooner calls ready() (the loop does too).
   let pend = false, pendAfter = null;
   function setStage(k, later) {
+    if (ahead && ahead[0] === k) { swapIn(); return; }
+    dropAhead();
     stage = k; sA = STG[k][0]; sK = STG[k][1] - STG[k][0]; layout();
     if (later) { pend = true; setTimeout(ready, 220); return; }
     pend = false; const t = performance.now(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
@@ -726,6 +729,43 @@
     if (!pend) return;
     pend = false; const t = performance.now(); buildStage(); if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
     const f = pendAfter; pendAfter = null; if (f) f();
+  }
+  // The next stage is built ahead (review S1): in idle time while an MCQ of this stage is open, into containers of its
+  // own off screen, then drawn once into a tiny texture so its textures and shapes reach the GPU then, not in the frame
+  // of the stage change. At the stage change it is swapped in under the clouds (a few container moves) and the old
+  // stage is released in idle time. At most two stages exist at once, whatever the chapter's length.
+  let ahead = null, aheadT = false, artReady = false, warmRT = null;
+  const aheadMs = [];
+  const stageVars = () => [stage, sA, sK, L, kinds, steps, lifts, signs, coins, flags, torches, falls, cols, blocks, landmark, beacon, beaconGlow, startSign, glow, stageTint, backC, backDeco, midC, fgW];
+  function useVars(v) { [stage, sA, sK, L, kinds, steps, lifts, signs, coins, flags, torches, falls, cols, blocks, landmark, beacon, beaconGlow, startSign, glow, stageTint, backC, backDeco, midC, fgW] = v; }
+  const idle = f => window.requestIdleCallback ? requestIdleCallback(f, { timeout: 600 }) : setTimeout(f, 30);
+  function aheadSoon() {
+    if (aheadT || stage + 1 >= STG.length || (ahead && ahead[0] === stage + 1)) return;
+    aheadT = true; idle(buildAhead);
+  }
+  function buildAhead() {
+    aheadT = false;
+    const k = stage + 1;
+    // only while an MCQ is open (never during a move) and once all the art is in
+    if (!built || !artReady || awake || planOn || pend || k >= STG.length || (ahead && ahead[0] === k)) return;
+    dropAhead();
+    const t = performance.now(), cur = stageVars(), C = () => new PIXI.Container();
+    useVars([k, STG[k][0], STG[k][1] - STG[k][0], [], [], [], [], [], [], [], [], [], [], [], null, null, null, null, null, 0xffffff, C(), C(), C(), C()]);
+    try { layout(); buildStage(); ahead = stageVars(); } finally { useVars(cur); }
+    const w = C(); for (const c of ahead.slice(-4)) w.addChild(c);
+    warmRT = warmRT || PIXI.RenderTexture.create({ width: 4, height: 4 });
+    app.renderer.render({ container: w, target: warmRT, clear: true });
+    w.removeChildren(); w.destroy();
+    if (aheadMs.length < 400) aheadMs.push(Math.round((performance.now() - t) * 10) / 10);
+  }
+  function dropAhead() { if (!ahead) return; const cs = ahead.slice(-4); ahead = null; for (const c of cs) c.destroy({ children: true }); }
+  function swapIn() {
+    const t = performance.now(), old = [backC, backDeco, midC, fgW];
+    useVars(ahead); ahead = null; pend = false; pendAfter = null;
+    const now = [backC, backDeco, midC, fgW];
+    for (let i = 0; i < 4; i++) { const at = worldC.getChildIndex(old[i]); worldC.removeChildAt(at); worldC.addChildAt(now[i], at); }
+    idle(() => { for (const c of old) c.destroy({ children: true }); });
+    if (buildMs.length < 400) buildMs.push(Math.round((performance.now() - t) * 10) / 10);
   }
   let backDeco, shadow, fgW, raysS;
   // Painted layers tile sideways only: drawn 2 units shorter and 1 unit down, so linear filtering never blends the
@@ -865,16 +905,8 @@
     starsC.visible = night; lay.moon.visible = night; lay.sun.visible = !night;
     lay.sunGlow.tint = night ? 0x8fa6ff : 0xffe2a8; lay.sunGlow.alpha = night ? 0.3 : 0.55; lay.sunGlow.x = night ? VW * 0.24 : VW * 0.8; lay.sunGlow.y = VH * (night ? 0.14 : 0.13);
     for (const c of cloudsC.children) { c.tint = night ? 0x46508a : 0xffffff; c.alpha = night ? 0.55 : 0.85; }
-    // night: the rock and plants take the moonlight (cool, darker); lamps and the beacon keep their warm light
-    const rock = night ? 0x7a84b8 : 0xffffff, plant = night ? 0x7f8bc0 : 0xffffff;
-    for (const c of cols) { c.body.tint = rock; for (const k of c.lips) k.tint = plant; }
-    for (const b of blocks) b.tint = rock;
-    for (const d of backDeco.children) if (d !== beaconGlow && d !== beacon) d.tint = night ? 0x8d97c9 : 0xffffff;
-    for (const f of flags) if (f.big) { f.s.tint = night ? 0xb8c0e0 : 0xffffff; f.pen.tint = night ? (f.gold ? 0xfff0c0 : 0x9aa6d8) : 0xffffff; }
-    for (const sg of signs) sg.s.tint = night ? 0xb0b8e0 : 0xffffff;
-    for (const f of falls) { f.s.tint = night ? 0x7084c8 : 0xd6f0ff; f.s.alpha = night ? 0.7 : 0.92; }
+    nightStage();
     for (const f of fgs) f.s.tint = night ? 0x0a1022 : 0xffffff;
-    for (const b of fgW.children) b.tint = night ? 0x2a3360 : 0xffffff;
     for (const f of floaters) { f.s.texture = frame(night ? 'fx/soft' : 'fx/leaf'); f.s.blendMode = night ? 'add' : 'normal'; f.s.tint = night ? 0xd8ff7a : 0x8fd16a; f.s.scale.set(night ? 0.12 : 0.42); if (night) { f.x = 30 + rnd() * (VW - 60); f.y = VH * (0.3 + rnd() * 0.4); f.s.rotation = 0; } }
     hero.children.forEach(s => { s.tint = night ? 0xb6bee2 : 0xffffff; });
     vignette.alpha = night ? 0.6 : 0.32;
@@ -882,6 +914,18 @@
     raysS.visible = !!godray && !night;
     if (grade) { grade.saturation = night ? 1.0 : 1.12; grade.contrast = night ? 1.08 : 1.06; grade.red = night ? 0.96 : 1.03; grade.blue = night ? 1.06 : 0.97; grade.gamma = night ? 0.98 : 1.02; }
     app.renderer.background.color = hex(pal.sky[0]);
+  }
+
+  // night: the stage's rock and plants take the moonlight (cool, darker); lamps and the beacon keep their warm light
+  function nightStage() {
+    const rock = night ? 0x7a84b8 : 0xffffff, plant = night ? 0x7f8bc0 : 0xffffff;
+    for (const c of cols) { c.body.tint = rock; for (const k of c.lips) k.tint = plant; }
+    for (const b of blocks) b.tint = rock;
+    for (const d of backDeco.children) if (d !== beaconGlow && d !== beacon) d.tint = night ? 0x8d97c9 : 0xffffff;
+    for (const f of flags) if (f.big) { f.s.tint = night ? 0xb8c0e0 : 0xffffff; f.pen.tint = night ? (f.gold ? 0xfff0c0 : 0x9aa6d8) : 0xffffff; }
+    for (const sg of signs) sg.s.tint = night ? 0xb0b8e0 : 0xffffff;
+    for (const f of falls) { f.s.tint = night ? 0x7084c8 : 0xd6f0ff; f.s.alpha = night ? 0.7 : 0.92; }
+    for (const b of fgW.children) b.tint = night ? 0x2a3360 : 0xffffff;
   }
 
   /* ---------- public interface (used by app.js) ---------- */
@@ -927,7 +971,7 @@
             for (const c of cols) c.body.texture = tex[c.texName];
             for (const f of falls) f.s.texture = tex.waterfall;
             for (const b of fgW.children) b.texture = tex.fgbush;
-            prewarm(); renderOnce();
+            prewarm(); renderOnce(); artReady = true;
           });
       });
     },
@@ -1018,6 +1062,7 @@
     },
     sleep() {
       awake = false; cam.ft = 1; cam.fy = cam.fy1; snapCam();
+      if (window.__lab && window.__lab.state === 'question') aheadSoon();   // while the MCQ is read
       if (window.__lab && window.__lab.mode !== 'story') return;   // Strip, Classic: behind the sheet; place() draws it later
       if (RM) { renderOnce(); app.ticker.stop(); running = false; return; }
       settle = 0.6; kick();                                          // Story: the reading pose settles, then the loop stops
@@ -1026,7 +1071,7 @@
     reset() { ready(); if (stage !== 0) setStage(0); resetState(); renderOnce(); if (!RM) kick(); },
     resize(w, h) {
       if (!app || !built) return;
-      ready();
+      ready(); dropAhead();
       VW = w; VH = h; app.renderer.resize(w, h);
       Z = zoomFor(w, h);
       const keep = { x: H.x, y: H.y, gy: H.gy, st: H.st }, sts = signs.map(s => s.st), up = flags.map(f => f.up), ly = lifts.map(l => l.y), lit = beacon.lit;
@@ -1038,7 +1083,7 @@
       H.x = keep.x; H.y = keep.y; H.gy = keep.gy; H.st = keep.st;
       snapCam(); renderOnce();
     },
-    theme(n) { night = n; if (built) { applyNight(); renderOnce(); } },
+    theme(n) { night = n; if (built) { dropAhead(); applyNight(); renderOnce(); } },
     pause() { paused = true; if (app && app.ticker) app.ticker.stop(); running = false; },
     resume() { paused = false; if (built && (awake || busy() || ambient())) { running = true; app.ticker.start(); } },
     running: () => running,
@@ -1046,7 +1091,7 @@
     info: () => 'HD · Z ' + Z.toFixed(2) + ' · res ' + (app ? app.renderer.resolution : '-') + ' · ' + (app && app.renderer ? app.renderer.name : '-') + (FX ? ' · fx' : ' · no fx') + ' · q-' + qStep,
     quality: () => ({ step: qStep, resolution: app ? app.renderer.resolution : null }),
     heroState: () => H.st,                                   // for the screenshot tool
-    stageInfo: () => ({ stage, stages: STG.length, buildMs, wipe: wipeK }),
+    stageInfo: () => ({ stage, stages: STG.length, buildMs, aheadMs, ahead: ahead ? ahead[0] : -1, wipe: wipeK }),
     // Strip mode draws from a small sheet of its own (never from the 2048 px atlas).
     stripArt: () => stripImg && stripImg.naturalWidth && {
       img(c, name, x, y, w, h) { const f = kit.strip.frames[name]; c.imageSmoothingEnabled = true; c.drawImage(stripImg, f[0], f[1], f[2], f[3], x, y, w, h); },
