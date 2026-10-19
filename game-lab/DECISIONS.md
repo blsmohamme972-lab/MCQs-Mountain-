@@ -340,3 +340,32 @@ higher (light 8 MCQs: 9.6 and 10.1 ms).
   of 53-199 ms in a few moves (the A/B showed them for the old commit too). They are judged on a phone (Gate 1)
   and in the fresh agent's final re-measure.
 
+
+## Owner direction: a different fantasy world per stage (2026-10-19)
+
+**D28. Stages become different fantasy worlds, high quality and still fast; free stock art may be used even when
+its licence is non-commercial only (lab use).** The owner: "I want different imaginative worlds, high quality and
+fast, even if you use non-commercial stock, for some of the game's new stages." Plan, from two research passes
+(2026-10-19, 09:14-09:22 UTC; notes in the session scratchpad):
+- **Worlds** (one per stage, in a fixed order so a chapter always reads the same): the green mountain we have, an
+  enchanted forest, crystal caverns, an ice kingdom, floating sky islands, a volcano, desert ruins, a night castle;
+  autumn, cherry blossom and a mushroom swamp as palette or prop variants.
+- **HD tier:** the procedural painter (`tools/build_assets_hd.py`) stays in charge of the sky, the far range, the
+  landmark and the cloud sea for every world, with a palette and silhouettes per world (faceted glowing crystals,
+  a volcano with a lava glow and embers, an aurora over ice, floating rocks above the cloud sea, pink canopies with
+  petals), so the worlds keep one style. Stock art supplies the near layer, the ground and cliff tiles and the
+  props where a free pack is good: the CraftPix freebies republished on itch.io (cartoon forest, fairy tale,
+  winter, Halloween; the CraftPix file licence allows commercial use without credit but not redistributing the
+  files: re-check per pack), LudicArts Volcano (CC BY 3.0) and Ice Forest (CC BY 4.0) tilesets, Kenney New
+  Platformer Pack (CC0). No AI-made packs; nothing that looks like a famous platformer (no red mushrooms with
+  white spots).
+- **Light tier:** pixel packs at the same 32 px scale: ansimuz Legacy Collection and Super Grotto Escape (CC0),
+  Szadi Crystal World, Eder Muniz Winter Forest (credit), Foozle Cave and Desert (CC0), Frostwindz Ice Castle, ansimuz
+  Magic Cliffs (CC0), Pixel Frog Kings and Pigs (CC0). No good free pixel volcano exists: palette work on our own.
+- **Licences:** every pack goes into `ASSETS.md` with its exact licence and source, fetched by a pinned, hashed script
+  (never committed). Packs that are non-commercial, unclear or credit-only are marked TEST ONLY and must be replaced
+  or licensed before anything ships. Never buy; never log in.
+- **Speed (the D27 budgets hold):** only the first world loads before the first frame. Each world's textures are
+  WebP at most 2048 px wide (far layers at half resolution), about 0.4 MB per world. The next world is fetched and
+  decoded off the main thread while an MCQ of the stage before it is open, drawn to the GPU in the idle warm-up
+  that already exists, and the old world is released after the swap: at most two worlds in memory.

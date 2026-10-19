@@ -1,0 +1,191 @@
+{
+ "file": "http://127.0.0.1:8765/v2/index.html?tier=light",
+ "mode": "strip",
+ "n": null,
+ "questions": 8,
+ "results": [
+  {
+   "cpu_slowdown": 1,
+   "frames": 359,
+   "frame_ms_p50": 16.7,
+   "frame_ms_p95": 16.8,
+   "frame_ms_p99": 16.8,
+   "frame_ms_max": 50,
+   "janky_frames_over_33ms": 1,
+   "long_tasks": 0,
+   "long_task_ms_max": 0,
+   "next_input_to_first_frame_ms": {
+    "avg": 12.1,
+    "max": 12.9
+   },
+   "next_to_world_visible_ms": {
+    "avg": 118,
+    "max": 130.6
+   },
+   "next_to_next_question_ms": {
+    "avg": 118,
+    "max": 130.6
+   },
+   "by_kind": {
+    "step": {
+     "count": 7,
+     "next_to_next_question_ms": {
+      "avg": 118,
+      "max": 130.6
+     },
+     "long_tasks": 0,
+     "long_task_ms_max": 0
+    }
+   },
+   "added_per_mcq_ms": 118,
+   "chapter_mcqs": 8,
+   "stages": 1,
+   "answered": 8,
+   "js_heap_mb": 9.5,
+   "js_heap_mb_at_start": 9.5,
+   "js_heap_after_gc_mb": {
+    "at_start": 3.8,
+    "at_end": 4.81
+   },
+   "stage_build_ms": {
+    "count": 0,
+    "max": null,
+    "avg": null
+   },
+   "stage_ahead_ms": null,
+   "stage_warm_ms": null,
+   "tier": "light",
+   "script_frames": 52,
+   "script_ms_p50": 0.7,
+   "script_ms_p95": 1.7,
+   "script_ms_p99": 5.2,
+   "game_ready_ms": 307.5,
+   "game_load_to_ready_ms": 233.3,
+   "dom_content_loaded_ms": 76.8,
+   "bytes_loaded_uncompressed": 1037234,
+   "errors": []
+  },
+  {
+   "cpu_slowdown": 4,
+   "frames": 404,
+   "frame_ms_p50": 16.7,
+   "frame_ms_p95": 33.3,
+   "frame_ms_p99": 33.4,
+   "frame_ms_max": 50.1,
+   "janky_frames_over_33ms": 8,
+   "long_tasks": 0,
+   "long_task_ms_max": 0,
+   "next_input_to_first_frame_ms": {
+    "avg": 21.9,
+    "max": 33.1
+   },
+   "next_to_world_visible_ms": {
+    "avg": 103.8,
+    "max": 117.3
+   },
+   "next_to_next_question_ms": {
+    "avg": 104,
+    "max": 117.8
+   },
+   "by_kind": {
+    "step": {
+     "count": 7,
+     "next_to_next_question_ms": {
+      "avg": 104,
+      "max": 117.8
+     },
+     "long_tasks": 0,
+     "long_task_ms_max": 0
+    }
+   },
+   "added_per_mcq_ms": 104,
+   "chapter_mcqs": 8,
+   "stages": 1,
+   "answered": 8,
+   "js_heap_mb": 9.5,
+   "js_heap_mb_at_start": 9.5,
+   "js_heap_after_gc_mb": {
+    "at_start": 3.8,
+    "at_end": 4.79
+   },
+   "stage_build_ms": {
+    "count": 0,
+    "max": null,
+    "avg": null
+   },
+   "stage_ahead_ms": null,
+   "stage_warm_ms": null,
+   "tier": "light",
+   "script_frames": 32,
+   "script_ms_p50": 4.1,
+   "script_ms_p95": 8.2,
+   "script_ms_p99": 9.3,
+   "game_ready_ms": 1031.8,
+   "game_load_to_ready_ms": 739.4,
+   "dom_content_loaded_ms": 312.2,
+   "bytes_loaded_uncompressed": 1037234,
+   "errors": []
+  },
+  {
+   "cpu_slowdown": 6,
+   "frames": 428,
+   "frame_ms_p50": 16.7,
+   "frame_ms_p95": 50,
+   "frame_ms_p99": 66.7,
+   "frame_ms_max": 66.7,
+   "janky_frames_over_33ms": 43,
+   "long_tasks": 18,
+   "long_task_ms_max": 77,
+   "next_input_to_first_frame_ms": {
+    "avg": 40.4,
+    "max": 47.7
+   },
+   "next_to_world_visible_ms": {
+    "avg": 94.7,
+    "max": 105.1
+   },
+   "next_to_next_question_ms": {
+    "avg": 94.7,
+    "max": 105.1
+   },
+   "by_kind": {
+    "step": {
+     "count": 7,
+     "next_to_next_question_ms": {
+      "avg": 94.7,
+      "max": 105.1
+     },
+     "long_tasks": 6,
+     "long_task_ms_max": 63
+    }
+   },
+   "added_per_mcq_ms": 94.7,
+   "chapter_mcqs": 8,
+   "stages": 1,
+   "answered": 8,
+   "js_heap_mb": 9.5,
+   "js_heap_mb_at_start": 9.5,
+   "js_heap_after_gc_mb": {
+    "at_start": 3.79,
+    "at_end": 4.75
+   },
+   "stage_build_ms": {
+    "count": 0,
+    "max": null,
+    "avg": null
+   },
+   "stage_ahead_ms": null,
+   "stage_warm_ms": null,
+   "tier": "light",
+   "script_frames": 21,
+   "script_ms_p50": 7.2,
+   "script_ms_p95": 12.2,
+   "script_ms_p99": 15.6,
+   "game_ready_ms": 1553.5,
+   "game_load_to_ready_ms": 1195.3,
+   "dom_content_loaded_ms": 384.5,
+   "bytes_loaded_uncompressed": 1037234,
+   "errors": []
+  }
+ ]
+}

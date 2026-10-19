@@ -1,0 +1,191 @@
+{
+ "file": "http://127.0.0.1:8765/v2/index.html",
+ "mode": "strip",
+ "n": null,
+ "questions": 8,
+ "results": [
+  {
+   "cpu_slowdown": 1,
+   "frames": 256,
+   "frame_ms_p50": 16.7,
+   "frame_ms_p95": 133.3,
+   "frame_ms_p99": 249.9,
+   "frame_ms_max": 1316.6,
+   "janky_frames_over_33ms": 35,
+   "long_tasks": 0,
+   "long_task_ms_max": 0,
+   "next_input_to_first_frame_ms": {
+    "avg": 34.2,
+    "max": 177.2
+   },
+   "next_to_world_visible_ms": {
+    "avg": 151.1,
+    "max": 288.1
+   },
+   "next_to_next_question_ms": {
+    "avg": 151.2,
+    "max": 288.3
+   },
+   "by_kind": {
+    "step": {
+     "count": 7,
+     "next_to_next_question_ms": {
+      "avg": 151.2,
+      "max": 288.3
+     },
+     "long_tasks": 0,
+     "long_task_ms_max": 0
+    }
+   },
+   "added_per_mcq_ms": 151.2,
+   "chapter_mcqs": 8,
+   "stages": 1,
+   "answered": 8,
+   "js_heap_mb": 9.5,
+   "js_heap_mb_at_start": 9.5,
+   "js_heap_after_gc_mb": {
+    "at_start": 5.71,
+    "at_end": 6.71
+   },
+   "stage_build_ms": {
+    "count": 0,
+    "max": null,
+    "avg": null
+   },
+   "stage_ahead_ms": null,
+   "stage_warm_ms": null,
+   "tier": "hd",
+   "script_frames": 15,
+   "script_ms_p50": 1.4,
+   "script_ms_p95": 3.3,
+   "script_ms_p99": 3.3,
+   "game_ready_ms": 739.1,
+   "game_load_to_ready_ms": 679.6,
+   "dom_content_loaded_ms": 63.5,
+   "bytes_loaded_uncompressed": 1768058,
+   "errors": []
+  },
+  {
+   "cpu_slowdown": 4,
+   "frames": 294,
+   "frame_ms_p50": 16.7,
+   "frame_ms_p95": 216.6,
+   "frame_ms_p99": 649.9,
+   "frame_ms_max": 933.4,
+   "janky_frames_over_33ms": 38,
+   "long_tasks": 0,
+   "long_task_ms_max": 0,
+   "next_input_to_first_frame_ms": {
+    "avg": 10.1,
+    "max": 24.2
+   },
+   "next_to_world_visible_ms": {
+    "avg": 106.9,
+    "max": 123.1
+   },
+   "next_to_next_question_ms": {
+    "avg": 106.9,
+    "max": 123.2
+   },
+   "by_kind": {
+    "step": {
+     "count": 7,
+     "next_to_next_question_ms": {
+      "avg": 106.9,
+      "max": 123.2
+     },
+     "long_tasks": 0,
+     "long_task_ms_max": 0
+    }
+   },
+   "added_per_mcq_ms": 106.9,
+   "chapter_mcqs": 8,
+   "stages": 1,
+   "answered": 8,
+   "js_heap_mb": 9.5,
+   "js_heap_mb_at_start": 9.5,
+   "js_heap_after_gc_mb": {
+    "at_start": 5.77,
+    "at_end": 6.71
+   },
+   "stage_build_ms": {
+    "count": 0,
+    "max": null,
+    "avg": null
+   },
+   "stage_ahead_ms": null,
+   "stage_warm_ms": null,
+   "tier": "hd",
+   "script_frames": 14,
+   "script_ms_p50": 8.1,
+   "script_ms_p95": 10.6,
+   "script_ms_p99": 10.6,
+   "game_ready_ms": 2096.4,
+   "game_load_to_ready_ms": 1793.7,
+   "dom_content_loaded_ms": 328.8,
+   "bytes_loaded_uncompressed": 1768058,
+   "errors": []
+  },
+  {
+   "cpu_slowdown": 6,
+   "frames": 324,
+   "frame_ms_p50": 16.7,
+   "frame_ms_p95": 133.4,
+   "frame_ms_p99": 316.7,
+   "frame_ms_max": 999.9,
+   "janky_frames_over_33ms": 35,
+   "long_tasks": 0,
+   "long_task_ms_max": 0,
+   "next_input_to_first_frame_ms": {
+    "avg": 17.8,
+    "max": 42
+   },
+   "next_to_world_visible_ms": {
+    "avg": 99.5,
+    "max": 111.8
+   },
+   "next_to_next_question_ms": {
+    "avg": 99.5,
+    "max": 111.8
+   },
+   "by_kind": {
+    "step": {
+     "count": 7,
+     "next_to_next_question_ms": {
+      "avg": 99.5,
+      "max": 111.8
+     },
+     "long_tasks": 0,
+     "long_task_ms_max": 0
+    }
+   },
+   "added_per_mcq_ms": 99.5,
+   "chapter_mcqs": 8,
+   "stages": 1,
+   "answered": 8,
+   "js_heap_mb": 9.5,
+   "js_heap_mb_at_start": 9.5,
+   "js_heap_after_gc_mb": {
+    "at_start": 5.77,
+    "at_end": 6.71
+   },
+   "stage_build_ms": {
+    "count": 0,
+    "max": null,
+    "avg": null
+   },
+   "stage_ahead_ms": null,
+   "stage_warm_ms": null,
+   "tier": "hd",
+   "script_frames": 14,
+   "script_ms_p50": 11.3,
+   "script_ms_p95": 19.5,
+   "script_ms_p99": 19.5,
+   "game_ready_ms": 2383.4,
+   "game_load_to_ready_ms": 2066.1,
+   "dom_content_loaded_ms": 353.3,
+   "bytes_loaded_uncompressed": 1768058,
+   "errors": []
+  }
+ ]
+}

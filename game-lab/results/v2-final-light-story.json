@@ -1,0 +1,218 @@
+{
+ "file": "http://127.0.0.1:8765/v2/index.html?tier=light",
+ "mode": "story",
+ "n": null,
+ "questions": 8,
+ "results": [
+  {
+   "cpu_slowdown": 1,
+   "frames": 726,
+   "frame_ms_p50": 16.7,
+   "frame_ms_p95": 16.7,
+   "frame_ms_p99": 16.8,
+   "frame_ms_max": 16.8,
+   "janky_frames_over_33ms": 0,
+   "long_tasks": 0,
+   "long_task_ms_max": 0,
+   "next_input_to_first_frame_ms": {
+    "avg": 12,
+    "max": 15.2
+   },
+   "next_to_world_visible_ms": {
+    "avg": 161,
+    "max": 164.2
+   },
+   "next_to_next_question_ms": {
+    "avg": 986.5,
+    "max": 1613.6
+   },
+   "by_kind": {
+    "step": {
+     "count": 6,
+     "next_to_next_question_ms": {
+      "avg": 882,
+      "max": 896.5
+     },
+     "long_tasks": 0,
+     "long_task_ms_max": 0
+    },
+    "lift": {
+     "count": 1,
+     "next_to_next_question_ms": {
+      "avg": 1613.6,
+      "max": 1613.6
+     },
+     "long_tasks": 0,
+     "long_task_ms_max": 0
+    }
+   },
+   "added_per_mcq_ms": 986.5,
+   "chapter_mcqs": 8,
+   "stages": 1,
+   "answered": 8,
+   "js_heap_mb": 9.5,
+   "js_heap_mb_at_start": 9.5,
+   "js_heap_after_gc_mb": {
+    "at_start": 3.77,
+    "at_end": 5.02
+   },
+   "stage_build_ms": {
+    "count": 0,
+    "max": null,
+    "avg": null
+   },
+   "stage_ahead_ms": null,
+   "stage_warm_ms": null,
+   "tier": "light",
+   "script_frames": 647,
+   "script_ms_p50": 0.5,
+   "script_ms_p95": 1,
+   "script_ms_p99": 1.8,
+   "game_ready_ms": 290.5,
+   "game_load_to_ready_ms": 234.3,
+   "dom_content_loaded_ms": 59.6,
+   "bytes_loaded_uncompressed": 1037234,
+   "errors": []
+  },
+  {
+   "cpu_slowdown": 4,
+   "frames": 631,
+   "frame_ms_p50": 16.7,
+   "frame_ms_p95": 33.4,
+   "frame_ms_p99": 50,
+   "frame_ms_max": 66.6,
+   "janky_frames_over_33ms": 55,
+   "long_tasks": 7,
+   "long_task_ms_max": 61,
+   "next_input_to_first_frame_ms": {
+    "avg": 7.4,
+    "max": 15.5
+   },
+   "next_to_world_visible_ms": {
+    "avg": 170.2,
+    "max": 178.8
+   },
+   "next_to_next_question_ms": {
+    "avg": 1035.6,
+    "max": 1656.2
+   },
+   "by_kind": {
+    "step": {
+     "count": 6,
+     "next_to_next_question_ms": {
+      "avg": 932.2,
+      "max": 955
+     },
+     "long_tasks": 5,
+     "long_task_ms_max": 58
+    },
+    "lift": {
+     "count": 1,
+     "next_to_next_question_ms": {
+      "avg": 1656.2,
+      "max": 1656.2
+     },
+     "long_tasks": 0,
+     "long_task_ms_max": 0
+    }
+   },
+   "added_per_mcq_ms": 1035.6,
+   "chapter_mcqs": 8,
+   "stages": 1,
+   "answered": 8,
+   "js_heap_mb": 9.5,
+   "js_heap_mb_at_start": 9.5,
+   "js_heap_after_gc_mb": {
+    "at_start": 3.77,
+    "at_end": 4.94
+   },
+   "stage_build_ms": {
+    "count": 0,
+    "max": null,
+    "avg": null
+   },
+   "stage_ahead_ms": null,
+   "stage_warm_ms": null,
+   "tier": "light",
+   "script_frames": 453,
+   "script_ms_p50": 3.1,
+   "script_ms_p95": 7,
+   "script_ms_p99": 10.5,
+   "game_ready_ms": 877.5,
+   "game_load_to_ready_ms": 673.6,
+   "dom_content_loaded_ms": 220,
+   "bytes_loaded_uncompressed": 1037234,
+   "errors": []
+  },
+  {
+   "cpu_slowdown": 6,
+   "frames": 516,
+   "frame_ms_p50": 33.3,
+   "frame_ms_p95": 66.6,
+   "frame_ms_p99": 83.3,
+   "frame_ms_max": 116.6,
+   "janky_frames_over_33ms": 166,
+   "long_tasks": 49,
+   "long_task_ms_max": 101,
+   "next_input_to_first_frame_ms": {
+    "avg": 23,
+    "max": 30.9
+   },
+   "next_to_world_visible_ms": {
+    "avg": 173,
+    "max": 182
+   },
+   "next_to_next_question_ms": {
+    "avg": 1127.4,
+    "max": 1716.9
+   },
+   "by_kind": {
+    "step": {
+     "count": 6,
+     "next_to_next_question_ms": {
+      "avg": 1029.1,
+      "max": 1067.5
+     },
+     "long_tasks": 32,
+     "long_task_ms_max": 88
+    },
+    "lift": {
+     "count": 1,
+     "next_to_next_question_ms": {
+      "avg": 1716.9,
+      "max": 1716.9
+     },
+     "long_tasks": 9,
+     "long_task_ms_max": 65
+    }
+   },
+   "added_per_mcq_ms": 1127.4,
+   "chapter_mcqs": 8,
+   "stages": 1,
+   "answered": 8,
+   "js_heap_mb": 9.5,
+   "js_heap_mb_at_start": 9.5,
+   "js_heap_after_gc_mb": {
+    "at_start": 3.79,
+    "at_end": 4.91
+   },
+   "stage_build_ms": {
+    "count": 0,
+    "max": null,
+    "avg": null
+   },
+   "stage_ahead_ms": null,
+   "stage_warm_ms": null,
+   "tier": "light",
+   "script_frames": 303,
+   "script_ms_p50": 4.9,
+   "script_ms_p95": 12.9,
+   "script_ms_p99": 20.3,
+   "game_ready_ms": 1721.2,
+   "game_load_to_ready_ms": 1351.5,
+   "dom_content_loaded_ms": 399.5,
+   "bytes_loaded_uncompressed": 1037234,
+   "errors": []
+  }
+ ]
+}
