@@ -386,6 +386,8 @@ fast, even if you use non-commercial stock, for some of the game's new stages." 
   First look (screenshots in the session scratchpad): the scenes read well, but they are drawn too large (about a
   quarter of each scene's width fills a phone, so trees are huge: show more of it), the same orange cliffs stand in
   every world (tint them, or use the LudicArts ice and lava-rock tops), and in the starry world a large cloud sits
-  right beside the climber. Still to do: those three, the painted worlds (volcano, crystal caverns, ice), the
+  right beside the climber. Fixed the same day: a zoom per world (the forests fill the screen, the open skies show
+  0.8 of one), forest layers never show their top edge, cliffs and grass take each world's light, and the starry
+  world's big cloud left the climber's side. Still to do: the painted worlds (volcano, crystal caverns, ice), the
   worlds' own particles (fireflies, snow, sparkles), a matching cloud bank per world, the light tier's pixel worlds,
   and a visual and speed review of the worlds.
