@@ -197,6 +197,6 @@
   },
   "errors": []
  },
- "machine": "Measured 2026-10-19 08:42-09:05 UTC on a container that runs the same code 1.4-1.6x slower than the one behind the earlier numbers: an A/B here gave the commit measured before (c218a9e) a load of 1.04 s (light) and 1.97 s (HD) median, against 0.64 s and 1.39 s on that container, and the final code 0.97 s and 2.02 s. The checks against N = 8 (load, heap, per-move times at every size) hold here; the absolute budgets (HD load 1.5 s, script p95 8 ms, 1 s per step) are judged on a phone.",
+ "machine": "Measured 2026-10-19 08:42-09:05 UTC on a container that runs the same code 1.4-1.6x slower than the one behind the intermediate D27 numbers (commit 1ccd6ac, measured at c218a9e): an A/B here gave c218a9e a load of 1.04 s (light) and 1.97 s (HD) median, against 0.64 s and 1.39 s on that container, and the final code 0.97 s and 2.02 s. The checks against N = 8 (load, heap, per-move times) hold here at every size except the HD 1-MCQ load (12% over N = 8: one of its four runs took 3.7 s); the absolute budgets (HD load 1.5 s, script p95 8 ms, 1 s per step) are judged on a phone.",
  "note": "The light tier runs on the CPU, so every number here is meaningful at 4x CPU."
 }

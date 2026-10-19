@@ -249,7 +249,7 @@ about 0.6 s here, against about 1 ms on a phone):
 
 | | Light tier (Canvas 2D) | HD tier (WebGL) |
 |---|---|---|
-| Engine + runtimes + game code, gzip | 264 KB (PixiJS 236.8 + app 10.0 + world 10.5 + questions 1.7 + page 5.0); after D27 and the reviews 272 KB (app 12.7, world 15.0, page 5.6) | 320 KB (PixiJS 236.8 + filters 44.3 + app 10.0 + world-hd 21.7 + questions 1.7 + page 5.0); after D27 and the reviews 328 KB (world-hd 27.4); budget 450 |
+| Engine + runtimes + game code, gzip | 264 KB (PixiJS 236.8 + app 10.0 + world 10.5 + questions 1.7 + page 5.0); after D27 and the reviews 272 KB (app 12.7, world 15.0, page 5.6) | 320 KB (PixiJS 236.8 + filters 44.3 + app 10.0 + world-hd 21.7 + questions 1.7 + page 5.0); after D27 and the reviews 329 KB (world-hd 27.5); budget 450 |
 | Art | 0.09 MB (pixel atlas and layers, PNG) | 0.59 MB per palette (0.56 after D27); budget 2 MB |
 | Load to first frame | 0.49 s (earlier session) | 1.26-1.55 s, about 1.4 s typical; budget 1.5 s |
 | Strip / Classic frame p95 / p99 | 16.7-16.8 / 16.8 ms (target p99 33; the old 33.4 was the harness's own script injection, now warmed up first) | not judged here (GPU-bound on SwiftShader) |
@@ -265,13 +265,14 @@ night 4.5-6. Not 9/10. The round-3 reviewer's judgement: backgrounds could reach
 level), cliffs about 8, Kenney props top out near 7, the stock Kenney hero near 7; a realistic ceiling with free and
 procedural art is about 7.5. A 9 needs paid work: an original hero designed and rigged by an artist (Spine or Rive,
 the full move set), and a premium or commissioned prop and tile set (about 25 props). Agents did not buy anything; the
-owner decides. Still open from round 3 (bugs, not taste): the lift's post and arm read as a gallows (make it a braced
+owner decides. Found in round 3 (bugs, not taste; all fixed since, in 8a83321 and later commits): the lift's post and arm read as a gallows (make it a braced
 tower with a counterweight), the stair steps render as broken narrow columns, the hero has a lavender halo and is not
 dimmed at night, a leaf seen edge-on draws as a line, the waterfall starts from nothing, "+10 XP" crosses the lift
 ropes.
 
-Done since (2026-10-18/19): the open QA findings and the round-3 bugs fixed (the lift is a braced tower with a
-counterweight, the stairs are stone blocks, the halo is gone, the hero dims at night); the four reviews from
+Done since (2026-10-18/19): the open QA findings fixed except #7 (HD Classic time, a phone check), and the round-3
+bugs fixed (the lift is a braced tower with a counterweight, the stairs are stone blocks, the halo is gone, the hero
+dims at night, the leaf no longer draws as a line, the waterfall spills from the lip, "+10 XP" floats beside the ropes); the four reviews from
 `climb/SPEC.md` on both tiers after D27, every blocker and major fixed (`results/reviews-v2-d27.md`); the phone link
 published. The numbers per chapter size are in D27. The fresh agent's final re-measure
 (`results/v2-final-<tier>-<mode>.json`) is the step before Gate 1 (`NEXT_AGENT.md`).
@@ -307,10 +308,11 @@ backgrounds sink away), the Strip bar is hard-coded for 8 ledges (`app.js` `smx`
 
 **Measured on the final code (2026-10-19, `results/d27-<tier>-n<N>.json`).** 360 x 740 at DPR 3, 4x CPU, Story / Strip
 / Classic per size (Story answers 12 MCQs where the chapter has more, so one stage change is in it), a whole chapter
-with reduced motion for the heap. HD move times come from the run without the GPU load (`?res=0.5&fx=0`); the script
-p95 in brackets is the full-quality run on SwiftShader.
+with reduced motion for the heap. HD move times come from the run without the GPU load (`?res=0.5&fx=0`). The script
+p95 is Story's (light; HD without the GPU load, the full-quality run on SwiftShader in brackets); Strip and Classic run
+higher (light 8 MCQs: 9.6 and 10.1 ms).
 
-| Tier, MCQs | Load (median) | Heap after GC, start -> end of chapter | Story step / lift / stage | Added per MCQ | Strip / Classic Next (max) | Script p95 | Stage swap / built ahead (max) |
+| Tier, MCQs | Load (median) | Heap after GC, start -> end of chapter | Story step / lift / stage | Added per MCQ | Strip / Classic Next (max) | Story script p95 | Stage swap / built ahead (max) |
 |---|---|---|---|---|---|---|---|
 | light 1 | 1.07 s | 3.6 -> 4.3 MB | - | - | - | 7.8 ms | - |
 | light 8 | 1.05 s | 3.6 -> 4.7 MB | 0.97 / 1.64 / - s | 1.06 s | 121 / 31 ms | 7.9 ms | - |
@@ -321,17 +323,20 @@ p95 in brackets is the full-quality run on SwiftShader.
 | HD 50 | 1.92 s | 5.7 -> 7.5 MB | 1.13 / 1.60 / 2.49 s | 1.29 s | 167 / 43 ms | 9.7 (15.1) ms | 4.0 / 40.8 ms |
 | HD 200 | 1.93 s | 5.7 -> 8.1 MB | 1.14 / 1.66 / 2.67 s | 1.32 s | 127 / 42 ms | 11.1 (13.8) ms | 3.8 / 40.0 ms |
 
-- **What holds at every size:** load does not grow with N (light 0.97-1.07 s, HD 1.80-2.03 s); the heap after a whole
+- **What holds at every size:** load does not grow with N (light 0.97-1.07 s; HD 1.80-1.93 s from 8 to 200 MCQs, and
+  2.03 s at 1 MCQ, 12% over the 8-MCQ median because one of its four runs took 3.7 s); the heap after a whole
   chapter stays within 3 MB of the 8-MCQ chapter (it grows 0.7-2.4 MB over a chapter: V8 compiled code and the
   browser's layout-shift entries, not game objects; three 200-MCQ chapters in a row add 0.1-0.3 MB each); the move
   times are the same at 8, 50 and 200; the stage change no longer builds anything in its own frame (each tier builds
   the next stage ahead, in idle time while an MCQ is open: 12-17 ms light, about 40 ms HD at 4x, and the swap takes
   2-4 ms).
-- **The machine:** this container ran the same code 1.4-1.6x slower than the one behind D26's numbers. An A/B here
+- **The machine:** this container ran the same code 1.4-1.6x slower than the one behind the intermediate D27 numbers
+  (commit 1ccd6ac, measured at c218a9e). An A/B here
   gave the commit measured before (c218a9e) a load of 1.04 s (light) and 1.97 s (HD) median, against 0.64 s and
   1.39 s there; the final code measured 0.97 s and 2.02 s, so the code did not slow down. On this machine the absolute
-  budgets miss: HD load (1.8-2.0 s against 1.5 s), HD script p95 (9.6-12.8 ms without the GPU load, against 8 ms), HD
-  Story step (1.13-1.21 s, about 1.28-1.32 s added per MCQ), one HD Strip Next at 50 MCQs (167 ms), and single long
-  tasks of 53-199 ms in a few moves (the A/B showed them for the old commit too). They are judged on a phone (Gate 1)
+  budgets miss: HD load (1.8-2.0 s against 1.5 s), HD script p95 (9.6-12.8 ms without the GPU load, against 8 ms), the
+  HD Story step at 8 MCQs (1.21 s; 1.13-1.14 s at 50 and 200 pass), 1.28-1.32 s added per MCQ in HD Story, the HD
+  stage change at 200 MCQs (2.67 s against about 2.5 s), one HD Strip Next at 50 MCQs (167 ms), and single long tasks
+  of 53-199 ms in a few moves (the A/B showed them for the old commit too). They are judged on a phone (Gate 1)
   and in the fresh agent's final re-measure.
 

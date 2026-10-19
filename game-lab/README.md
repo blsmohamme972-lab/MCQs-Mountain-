@@ -27,8 +27,8 @@ professional, and it stays out of the app until the owner is fully convinced.
 | Playable prototype with 3 modes (Story, Strip, Classic) | First draft works (flow, MCQ, speed). Its look was **rejected** by the owner (D18) |
 | New direction: world-class 2D quality, professional engine, no medical characters | Written down (`DECISIONS.md` D18-D23) |
 | Engine spike | Done: PixiJS 8 with Canvas 2D renderer (D24, `results/spike-*.json`) |
-| v2 light tier (`v2/world.js`, Canvas 2D pixel art, `?low=1` / `?tier=light`) | Works in all modes and for chapters of 1 to 200 MCQs (D27: stages of about 10, the next stage built ahead while an MCQ is open). Numbers: `DECISIONS.md` D26 and D27, `results/d27-light-n*.json`, `results/v2-final-light-*.json` |
-| v2 HD tier (`v2/world-hd.js`, WebGL, the default; D26) | Works in all modes and for 1 to 200 MCQs; three visual review rounds reached 5-6.5 of 10, not 9 (free-art ceiling about 7.5; a 9 needs paid art, the owner decides). Numbers: D26, D27, `results/d27-hd-n*.json`, `results/v2-final-hd-*.json` |
+| v2 light tier (`v2/world.js`, Canvas 2D pixel art, `?low=1` / `?tier=light`) | Works in all modes and for chapters of 1 to 200 MCQs (D27: stages of about 10, the next stage built ahead while an MCQ is open). Numbers: `DECISIONS.md` D26 and D27, `results/d27-light-n*.json` (and `results/v2-final-light-*.json` after the final re-measure) |
+| v2 HD tier (`v2/world-hd.js`, WebGL, the default; D26) | Works in all modes and for 1 to 200 MCQs; three visual review rounds reached 5-6.5 of 10, not 9 (free-art ceiling about 7.5; a 9 needs paid art, the owner decides). Numbers: D26, D27, `results/d27-hd-n*.json` (and `results/v2-final-hd-*.json` after the final re-measure) |
 | Reviews after D27 (speed, rules and learning, visual, QA) on both tiers | Done; every blocker and major fixed; open minors and the owner's decisions in `results/reviews-v2-d27.md` |
 | Phone link (a private claude.ai Artifact "MCQs Mountain", built by `tools/make_artifact.py`) | Published 2026-10-19; the link is in `NEXT_AGENT.md` |
 | Owner tries it on a phone, then in Telegram through a test bot | Waiting on the owner (Gate 1) |

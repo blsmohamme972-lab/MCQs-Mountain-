@@ -24,7 +24,7 @@ ready prompt: `NEXT_AGENT.md`.
 - Next: a fresh agent's final re-measure (`results/v2-final-<tier>-<mode>.json` and `-n200`; step 0 of
   `NEXT_AGENT.md`), then Gate 1: the owner tries both tiers and the 8 / 50 / 200 chapters on a mid-range phone.
 
-Last updated: 2026-10-18.
+Last updated: 2026-10-19.
 
 ## How a professional runs this (the principles behind the gates)
 

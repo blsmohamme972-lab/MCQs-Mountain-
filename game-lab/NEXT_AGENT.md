@@ -3,7 +3,7 @@
 The owner can paste the block below into a new Claude Code session on this repository. It is kept up to date with
 the STATUS line in `PLAN.md`. Last updated: 2026-10-19, when D27 (chapters of 1 to 200 MCQs), the four reviews and
 the phone link were done; a fresh agent's final re-measure (`results/v2-final-*.json`) was the last step before Gate 1
-(the owner's phone test). If those files are missing, run that step first (`PLAN.md` STATUS says how).
+(the owner's phone test). If those files are missing, run that step first (step 0 below says how).
 
 ```text
 Continue the "MCQs Mountain" 2D game prototype in the Kafu repo (blsmohamme972-lab/MCQs-Mountain-). The game has two
@@ -19,9 +19,10 @@ background job.
 Where the work is:
 - Branch ccr-eec99ecd-hm7ool holds everything. Fetch it first; if your session has another designated branch, merge
   this one into yours and do not lose its commits.
-- Read: game-lab/PLAN.md (STATUS at the top), game-lab/DECISIONS.md D24-D27 (D26 and D27 hold the final numbers),
+- Read: game-lab/PLAN.md (STATUS at the top), game-lab/DECISIONS.md D24-D27 (D26 and D27 hold the numbers),
   game-lab/README.md (harness contract, flags, how to run both tiers), game-lab/results/reviews-v2-d27.md (every
-  review finding, its fix and what is still open), game-lab/results/v2-final-*.json and d27-*.json (the numbers).
+  review finding, its fix and what is still open), game-lab/results/d27-*.json and, once step 0 is done,
+  v2-final-*.json (the numbers).
 - Phone link (the owner's private claude.ai Artifact "MCQs Mountain"): https://claude.ai/artifact/7qFj5GrYC3qrYJZhUG2FDD
   Rebuild it after any code change with python3 game-lab/tools/make_artifact.py <scratch>/artifact and republish the
   same page with the same files (load the artifact-design skill first; pass the artifact's URL when publishing from a
@@ -44,13 +45,15 @@ Your task:
    v2-final-<tier>-<mode>-n200.json; it checks them against the D27 budgets, looks at tools/shots.mjs screenshots
    (day and night, --n 25; send them in chat, never commit them) and reports. Then commit the JSON and update D26/D27.
 1. Ask the owner for the result of the phone test (Gate 1): both tiers, Story / Strip / Classic, chapters of 8, 50
-   and 200 MCQs (the lab row on the start card switches them), on a mid-range phone. Fix what they report first.
+   and 200 MCQs (the lab row on the start card switches them), on a mid-range phone; also the checks this machine
+   cannot make: the light tier's frame times (review S7) and the HD Classic time (QA #7). Fix what they report first.
 2. The owner's open decisions (results/reviews-v2-d27.md): R13 sound and music (D19 asked for them, D13 said no
    audio files: a decision should supersede D13 for the lab), R15 the light tier's pirate hero (a skull on the hat),
    R17 Story pre-selected (the research rates its per-item loop weakest; counterbalance in a pilot). Ask; do not decide.
 3. Open minors from the reviews, if the owner wants them: the light tier's small Strip coin, the climber behind the
    top bar or the sheet in landscape and after a rotate, R9 tokens (settle them from app/design/tokens.css when the
-   game is integrated), the rest of S10 (the HD pose code and culling allocate per frame).
+   game is integrated), R8 (the repo copy does not load the app's fonts; the phone copy does), the rest of S10 (the
+   HD pose code allocates per frame and culling walks every child).
 4. A 9/10 look needs paid art (D26): an original hero designed and rigged by an artist (Spine or Rive, the full move
    set) and a premium or commissioned prop and tile set (about 25 props). Agents never buy anything; the owner decides.
 5. Gate 1 continues in Telegram through a test bot only when the owner sets one up; agents do not create bots,
