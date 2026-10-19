@@ -23,6 +23,26 @@ PA = SRC / "pixel-adventure"
 FONT_ROWS = ["ABCDEFGHIJ", "KLMNOPQRST", "UVWXYZ", "0123456789", ".,:?!()+-"]
 
 
+# Two glyphs redrawn for legibility at sign size (visual review V14): a plain 0 (the sheet's has a slash, so Q200
+# read as Q288) and a square E (the sheet's rounded one read as a euro sign). Rows 1-8 of the 8 x 10 cell.
+GLYPH_FIX = {"0": ["..####..", ".######.", ".##..##.", ".##..##.", ".##..##.", ".##..##.", ".######.", "..####.."],
+             "E": [".######.", ".######.", ".##.....", ".#####..", ".#####..", ".##.....", ".######.", ".######."]}
+
+
+def fix_glyph(g: Image.Image, ch: str) -> Image.Image:
+    rows = GLYPH_FIX.get(ch)
+    if not rows:
+        return g
+    g = g.convert("RGBA")
+    ink = max((g.getpixel((x, y)) for x in range(g.width) for y in range(g.height)), key=lambda p: p[3])   # its colour
+    out = Image.new("RGBA", g.size, (0, 0, 0, 0))
+    for r, row in enumerate(rows):
+        for c, v in enumerate(row):
+            if v == "#":
+                out.putpixel((c, r + 1), ink)
+    return out
+
+
 def img(p: Path) -> Image.Image:
     return Image.open(p).convert("RGBA")
 
@@ -178,7 +198,7 @@ def build() -> None:
         sheet = img(PA / "Menu/Text" / f)
         for r, chars in enumerate(FONT_ROWS):
             for c, ch in enumerate(chars):
-                a.add(f"font-{col}/{ord(ch)}", [sheet.crop((c * 8, r * 10, c * 8 + 8, r * 10 + 10))])
+                a.add(f"font-{col}/{ord(ch)}", [fix_glyph(sheet.crop((c * 8, r * 10, c * 8 + 8, r * 10 + 10)), ch)])
     atlas = a.build(OUT / "atlas.png")
 
     # Parallax layers (each its own image so it can tile).

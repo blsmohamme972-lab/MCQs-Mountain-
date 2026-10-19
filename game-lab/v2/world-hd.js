@@ -737,8 +737,8 @@
   // own off screen, then drawn once into a tiny texture so its textures and shapes reach the GPU then, not in the frame
   // of the stage change. At the stage change it is swapped in under the clouds (a few container moves) and the old
   // stage is released in idle time. At most two stages exist at once, whatever the chapter's length.
-  let ahead = null, aheadT = false, artReady = false, warmRT = null;
-  const aheadMs = [];
+  let ahead = null, aheadT = false, artReady = false, warmRT = null, aheadCold = false;
+  const aheadMs = [], warmMs = [];
   const stageVars = () => [stage, sA, sK, L, kinds, steps, lifts, signs, coins, flags, torches, falls, cols, blocks, landmark, beacon, beaconGlow, startSign, glow, stageTint, backC, backDeco, midC, fgW];
   function useVars(v) { [stage, sA, sK, L, kinds, steps, lifts, signs, coins, flags, torches, falls, cols, blocks, landmark, beacon, beaconGlow, startSign, glow, stageTint, backC, backDeco, midC, fgW] = v; }
   const idle = f => window.requestIdleCallback ? requestIdleCallback(f, { timeout: 600 }) : setTimeout(f, 30);
@@ -755,17 +755,24 @@
     const t = performance.now(), cur = stageVars(), C = () => new PIXI.Container();
     useVars([k, STG[k][0], STG[k][1] - STG[k][0], [], [], [], [], [], [], [], [], [], [], [], null, null, null, null, null, 0xffffff, C(), C(), C(), C()]);
     try { layout(); buildStage(); ahead = stageVars(); } finally { useVars(cur); }
-    const w = C(); for (const c of ahead.slice(-4)) w.addChild(c);
+    if (aheadMs.length < 400) aheadMs.push(Math.round((performance.now() - t) * 10) / 10);
+    aheadCold = true; idle(warmAhead);   // the GPU upload in a task of its own (review HD3)
+  }
+  function warmAhead() {
+    if (!ahead || !aheadCold || awake || planOn) return;
+    aheadCold = false;
+    const t = performance.now(), w = new PIXI.Container();
+    for (const c of ahead.slice(-4)) w.addChild(c);
     warmRT = warmRT || PIXI.RenderTexture.create({ width: 4, height: 4 });
     app.renderer.render({ container: w, target: warmRT, clear: true });
     w.removeChildren(); w.destroy();
-    if (aheadMs.length < 400) aheadMs.push(Math.round((performance.now() - t) * 10) / 10);
+    if (warmMs.length < 400) warmMs.push(Math.round((performance.now() - t) * 10) / 10);
   }
   const aheadAgain = () => { if (window.__lab && window.__lab.state === 'question') aheadSoon(); };
-  function dropAhead() { if (!ahead) return; const cs = ahead.slice(-4); ahead = null; for (const c of cs) c.destroy({ children: true }); }
+  function dropAhead() { if (!ahead) return; const cs = ahead.slice(-4); ahead = null; aheadCold = false; for (const c of cs) c.destroy({ children: true }); }
   function swapIn() {
     const t = performance.now(), old = [backC, backDeco, midC, fgW];
-    useVars(ahead); ahead = null; pend = false; pendAfter = null;
+    useVars(ahead); ahead = null; aheadCold = false; pend = false; pendAfter = null;
     const now = [backC, backDeco, midC, fgW];
     for (let i = 0; i < 4; i++) { const at = worldC.getChildIndex(old[i]); worldC.removeChildAt(at); worldC.addChildAt(now[i], at); }
     idle(() => { for (const c of old) c.destroy({ children: true }); });
@@ -881,6 +888,11 @@
     if (glowF()) { w = spr('fx/soft', 40, 40, 0.5, 0.5, fxC, 0.2); w.alpha = 0.01; w.filters = [glowF()]; }
     const keep = worldC.position.clone(); worldC.position.set(0, 0); app.render(); worldC.position.copyFrom(keep);
     if (w) { w.destroy(); }
+    // the tiny target the next stage is drawn into ahead of time: its first use costs a stall, so it is paid here
+    if (!warmRT) {
+      warmRT = PIXI.RenderTexture.create({ width: 4, height: 4 });
+      const d = new PIXI.Container(); spr('fx/soft', 0, 0, 0.5, 0.5, d, 0.2); app.renderer.render({ container: d, target: warmRT, clear: true }); d.destroy({ children: true });
+    }
   }
   function renderOnce() { if (!app) return; stT0 = performance.now(); update(0); app.render(); }
   let laterT = 0;
@@ -1099,7 +1111,7 @@
     info: () => 'HD · Z ' + Z.toFixed(2) + ' · res ' + (app ? app.renderer.resolution : '-') + ' · ' + (app && app.renderer ? app.renderer.name : '-') + (FX ? ' · fx' : ' · no fx') + ' · q-' + qStep,
     quality: () => ({ step: qStep, resolution: app ? app.renderer.resolution : null }),
     heroState: () => H.st,                                   // for the screenshot tool
-    stageInfo: () => ({ stage, stages: STG.length, buildMs, aheadMs, ahead: ahead ? ahead[0] : -1, wipe: wipeK }),
+    stageInfo: () => ({ stage, stages: STG.length, buildMs, aheadMs, warmMs, ahead: ahead ? ahead[0] : -1, wipe: wipeK }),
     // Strip mode draws from a small sheet of its own (never from the 2048 px atlas).
     stripArt: () => stripImg && stripImg.naturalWidth && {
       img(c, name, x, y, w, h) { const f = kit.strip.frames[name]; c.imageSmoothingEnabled = true; c.drawImage(stripImg, f[0], f[1], f[2], f[3], x, y, w, h); },
