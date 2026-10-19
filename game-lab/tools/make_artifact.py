@@ -62,10 +62,12 @@ def main(out: Path) -> None:
         shutil.copy(V2 / n, out / n)
         files[n] = str(out / n)
     for src, dst in ((LAB / "assets-test" / "build-hd", "assets"), (LAB / "assets-test" / "build", "assets/light")):
-        for f in sorted(src.iterdir()):
+        for f in sorted(src.rglob("*")):   # the HD worlds (D28) live in a subfolder, worlds/<id>/
             if f.is_file():
-                shutil.copy(f, out / dst / f.name)
-                files[f"{dst}/{f.name}"] = str(out / dst / f.name)
+                rel = f.relative_to(src).as_posix()
+                (out / dst / rel).parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy(f, out / dst / rel)
+                files[f"{dst}/{rel}"] = str(out / dst / rel)
     total = sum(Path(p).stat().st_size for p in files.values())
     print(json.dumps({"page": str(out / "index.html"), "files": files, "bytes": total}, indent=1))
 
