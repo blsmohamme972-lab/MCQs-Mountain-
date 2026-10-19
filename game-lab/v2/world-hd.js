@@ -212,8 +212,8 @@
   const Wp = (x, y, d) => plan.push({ k: 5, x0: x, y0: y, x1: START_X0, y1: 0, d, swapped: false });
   let wipeK = 0;
   // The caption shown while the clouds cover the screen: "Next mountain / Stage 2 of 3" (k = the next stage, 0-based).
-  function caption(k) { wipeCap.t1.text = k === STG.length - 1 ? 'Last mountain' : 'Next mountain'; wipeCap.t2.text = 'Stage ' + (k + 1) + ' of ' + STG.length; }
-  function swapStage(s) { s.swapped = true; setStage(stage + 1); H.x = lastX = START_X0; H.y = H.gy = 0; heroState('idle'); cam.fy = cam.fy1 = feetY('walk'); snapCam(); }
+  function caption(k) { wipeCap.t1.text = wipeCap.t1s.text = k === STG.length - 1 ? 'Last mountain' : 'Next mountain'; wipeCap.t2.text = 'Stage ' + (k + 1) + ' of ' + STG.length; }
+  function swapStage(s) { s.swapped = true; campAhead = 0; setStage(stage + 1); H.x = lastX = START_X0; H.y = H.gy = 0; heroState('idle'); cam.fy = cam.fy1 = feetY('walk'); snapCam(); }
   // Move times (ms) keep Story at about 1 s from Next to the next MCQ (D27: at most about 1.2 s added per MCQ on
   // average, 1.6 s on the lift, 2.5 s for a stage change): a stair or jump move is about 0.62 s, the lift 1.14 s.
   function planMove(i) {
@@ -362,17 +362,18 @@
 
   /* ---------- camera: springs with look-ahead, and two framings (walking, MCQ open) ---------- */
   const cam = { x: 0, y: 0, vx: 0, vy: 0, fy: 0.56, fy0: 0.56, fy1: 0.56, ft: 1, ahead: 0, z: 1, z1: 1 };
-  let atStart = true, camX0 = 0;
+  let atStart = true, camX0 = 0, campAhead = 0;
   // Feet height on screen: walking 56%, at the start 47% (above the start card), MCQ open 40 px above the sheet
   // (in the HD tier the Story sheet covers the bottom 72%), never higher than 120 px so the head clears the top bar.
-  function feetY(mode) { return mode === 'sheet' ? Math.max(120, Math.round(VH * 0.28) - 40) / VH : mode === 'start' ? 0.47 : 0.56; }
+  let cardFy = 0.47;
+  function feetY(mode) { return mode === 'sheet' ? Math.max(120, Math.round(VH * 0.28) - 40) / VH : mode === 'start' ? 0.47 : mode === 'card' ? cardFy : 0.56; }
   function camTarget(out) { const zc = Z * cam.z; out[0] = H.x + cam.ahead - (VW / zc) * (summitView ? 0.5 : 0.36); out[1] = H.y - (VH / zc) * cam.fy; return out; }
   const tgt = [0, 0];
   function snapCam() { cam.fy = cam.fy1; cam.ft = 1; cam.z = cam.z1; cam.ahead = atStart ? 40 : summitView ? 50 : 0; camTarget(tgt); cam.x = tgt[0]; cam.y = tgt[1]; cam.vx = cam.vy = 0; }
   function stepCam(dt) {
     if (cam.ft < 1) { cam.ft = Math.min(1, cam.ft + dt / 0.24); cam.fy = lerp(cam.fy0, cam.fy1, easeInOut(cam.ft)); }
-    const goAhead = planOn ? 56 : summitView ? 50 : atStart ? 40 : 0;
-    cam.ahead += (goAhead - cam.ahead) * (1 - Math.exp(-dt * 3));
+    const goAhead = campAhead || (planOn ? 56 : summitView ? 50 : atStart ? 40 : 0);
+    cam.ahead += (goAhead - cam.ahead) * (1 - Math.exp(-dt * (campAhead ? 6 : 3)));
     cam.z += (cam.z1 - cam.z) * (1 - Math.exp(-dt * 2.2));
     // the background dims a little while an MCQ is open, so the eye goes to the climber
     const dim = cam.fy1 < 0.4 && !summitView ? 0.82 : 1; bgDim += (dim - bgDim) * (1 - Math.exp(-dt * 6));
@@ -658,8 +659,8 @@
     }
     for (let j = 0; j <= sK; j++) decorate(j);
     // the start: a wooden sign (START, or the stage number) and a fence
-    shadowAt(-150, 4, 40);
-    startSign = spr('ui/plate', -150, 6, 0.5, 1, midC, 0.62); startSign.wx = -200; startSign.ww = 100;
+    shadowAt(-130, 4, 40);
+    startSign = spr('ui/plate', -130, 6, 0.5, 1, midC, 0.62); startSign.wx = -180; startSign.ww = 100;
     const stt = btext(stage ? 'Stage ' + (stage + 1) : 'START', stage ? 22 : 24, 0xfff4dc, null); stt.y = -82; startSign.addChild(stt);
     const fence = spr('bg/fence', -235, 6, 0.5, 1, backDeco, 0.4); fence.wx = -300; fence.ww = 120;
     // lifts: a braced wooden tower on the upper ledge, an arm with a pulley over the shaft, two ropes to a gondola,
@@ -824,7 +825,8 @@
     wipeC = new PIXI.Container(); fgC.addChild(wipeC); seed = 31;
     for (let k = 0; k < 7; k++) { const c = spr('bg/cloud' + [1, 2, 3, 5, 6, 8, 3][k], VW * ((k % 3) * 0.42 + 0.08 + rnd() * 0.12), VH * (0.04 + k * 0.14), 0.5, 0.5, wipeC, (0.95 + rnd() * 0.4) * Z); c.alpha = 0.92; }
     wipeCap = new PIXI.Container(); wipeCap.x = VW / 2; wipeCap.y = VH * 0.44; fgC.addChild(wipeCap);
-    wipeCap.t1 = btext('Next mountain', 22, 0xfff4dc, wipeCap); wipeCap.t1.y = -40; wipeCap.t2 = btext('Stage 2', 42, 0xffffff, wipeCap);
+    wipeCap.t1s = btext('Next mountain', 26, 0x000000, wipeCap); wipeCap.t1s.alpha = 0.3; wipeCap.t1s.x = 2; wipeCap.t1s.y = -40;
+    wipeCap.t1 = btext('Next mountain', 26, 0xffd36b, wipeCap); wipeCap.t1.y = -42; wipeCap.t2 = btext('Stage 2', 42, 0xffffff, wipeCap);
     wipeC.visible = wipeCap.visible = false;
 
     // floaters: leaves by day, fireflies by night (screen space)
@@ -988,6 +990,7 @@
       const j = J(i); plan.length = 0; raiseFlag(j); planMove(j);
       if (j === sK - 1 && !lastStage()) {
         const b = L[sK]; caption(stage + 1); Wp(b.x + 16, b.y, RM ? 1 : 860); Wk(START_X0, 0, stand(0), 0, 450, 2);
+        const W = VW / (Z * cam.z); campAhead = clamp(landmark.x + 84 - (b.x + 16) - 0.64 * W + 30, 56, W * 0.3);
         // reduced motion: the new stage is built in this task and the app opens the next MCQ in the next one
         if (RM) { const c = cb; cb = () => setTimeout(c, 0); }
       }
@@ -1027,16 +1030,18 @@
       else if (p === 'calm') { H.after = 'read'; heroState('calm'); if (!RM) kick(); else renderLater(); }
       else if (p === 'read') heroState('read');
     },
-    frame(f) {
+    // 'card' (the start and summary cards): the climber stands just above the card's top edge (px from the top)
+    frame(f, px) {
+      if (f === 'card') cardFy = clamp((px - 18) / VH, 0.2, 0.62);
       cam.fy0 = cam.fy; cam.fy1 = feetY(f); cam.ft = RM ? 1 : 0;
-      if (RM) snapCam(); else kick();   // reduced motion: drawn once when the sheet is open (sleep), not per framing
+      if (RM) { snapCam(); if (f === 'card') renderOnce(); } else kick();   // reduced motion: drawn once when the sheet is open (sleep), not per framing
     },
     // Strip and Classic jump straight to a question (the world is behind the sheet); this may change the stage.
     place(i) {
       const sg = i === 'summit' ? STG.length - 1 : stageIdx(i);
       if (sg !== stage) setStage(sg, true);
       const k = i === 'summit' ? sK : J(i);
-      H.x = i === 'summit' ? L[sK].x + SUMW - 228 : stand(k); H.y = H.gy = L[k].y; wipeK = 0;
+      H.x = i === 'summit' ? L[sK].x + SUMW - 228 : stand(k); H.y = H.gy = L[k].y; wipeK = 0; campAhead = 0;
       atStart = false; if (i === 'summit') { summitView = true; cam.z1 = 0.84; }
       for (const l of lifts) { l.y = l.y0; l.on = false; l.ret = false; }
       const after = () => {
@@ -1068,7 +1073,7 @@
       settle = 0.6; kick();                                          // Story: the reading pose settles, then the loop stops
     },
     wake,
-    reset() { ready(); if (stage !== 0) setStage(0); resetState(); renderOnce(); if (!RM) kick(); },
+    reset() { ready(); campAhead = 0; if (stage !== 0) setStage(0); resetState(); renderOnce(); if (!RM) kick(); },
     resize(w, h) {
       if (!app || !built) return;
       ready(); dropAhead();

@@ -273,14 +273,15 @@
     const t = now(); gameT += t - tNext; lab.state = 'done'; skipOn(false); hud(true);
     if (mode === 'strip') drawStrip();
     const c = RS.filter(r => r.correct).length, sec = Math.round(readT / 1000), per = gameT / N / 1000;
-    $('dS').textContent = N + (N === 1 ? ' MCQ · ' : ' MCQs · ') + c + ' correct · +' + xp + ' XP';
+    // numbers only, so markup is safe; each part stays on one line
+    $('dS').innerHTML = [N + (N === 1 ? ' MCQ' : ' MCQs'), c + ' correct', '+' + xp + ' XP'].map(t => '<span class="nw">' + t + '</span>').join(' · ');
     const L2 = $('dL'); L2.textContent = '';
-    const dur = s => s < 60 ? s.toFixed(1) + ' s' : Math.floor(Math.round(s) / 60) + ' min ' + (Math.round(s) % 60) + ' s';
+    const dur = s => s < 0.1 ? 'under 0.1 s' : s < 60 ? s.toFixed(1) + ' s' : Math.floor(Math.round(s) / 60) + ' min ' + (Math.round(s) % 60) + ' s';
     ['Time reading and answering: ' + Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0'),
       'Time added by the game: ' + dur(gameT / 1000) + ' (' + (per < 0.1 ? 'under 0.1' : per.toFixed(1)) + ' s per MCQ)']
       .concat(N === 100 ? [] : ['At this pace 100 MCQs would add about ' + dur(per * 100)], ['Animations skipped: ' + skips])
       .forEach(s => L2.append(h('li', null, s)));
-    sheet.classList.remove('open'); doneC.classList.remove('off'); World.sleep();
+    sheet.classList.remove('open'); doneC.classList.remove('off'); World.sleep(); cardFrame();
     try { $('t2').focus({ preventScroll: true }); } catch (e) {}
   }
   function reset() {
@@ -289,7 +290,7 @@
     World.reset();
     sheet.classList.remove('open'); doneC.classList.add('off'); startp.classList.remove('off');
     PG.forEach(p => { p.el.classList.remove('on'); p.q = -1; });
-    lab.state = 'start'; hud(); hudXP(); drawStrip(); setTimeout(() => prebuild(0), 0);
+    lab.state = 'start'; hud(); hudXP(); drawStrip(); cardFrame(); setTimeout(() => prebuild(0), 0);
     try { goB.focus({ preventScroll: true }); } catch (e) {}
   }
   function skipOn(v) { const on = !!v && !RM && mode !== 'classic'; skipH.classList.toggle('on', on); skipH.tabIndex = on ? 0 : -1; skipH.setAttribute('aria-hidden', String(!on)); }
@@ -350,7 +351,7 @@
       if (art && st[i]) { const cx = smx(j) + bw * 0.2, cy = smy(j) - 9; art.coin(c, st[i] === 1, cx, cy, 9); stripMark(c, st[i], cx, cy); }
       else { c.fillStyle = 'rgba(255,255,255,.75)'; c.fillRect(smx(j) + bw * 0.2 - 3, smy(j) - 10, 6, 6); }
     }
-    if (art) art.flag(c, smx(sk) + 6, smy(sk));
+    if (art) art.flag(c, smx(sk) + 6, smy(sk), last);
     if (STAGES.length > 1) {
       c.font = '800 11px Nunito, ui-rounded, system-ui, sans-serif'; c.lineWidth = 3; c.strokeStyle = 'rgba(24,32,50,.7)'; c.fillStyle = '#fff';
       // bottom right, inside the rock: the climber and the coins stand on the ledges above it, so they never cover it
@@ -433,7 +434,12 @@
   D.addEventListener('keydown', e => { if (lab.state === 'moving' && (e.key === ' ' || e.key === 'Enter')) { e.preventDefault(); skip(); } });
   const pause = () => { World.pause(); Sound.pause(); }, resume = () => { World.resume(); Sound.resume(); };
   D.addEventListener('visibilitychange', () => { D.hidden ? pause() : resume(); });
-  function resize() { W = innerWidth; H = innerHeight; S = Math.min(2, window.devicePixelRatio || 1); World.resize(W, H); sizeStrip(); }
+  function resize() { W = innerWidth; H = innerHeight; S = Math.min(2, window.devicePixelRatio || 1); World.resize(W, H); sizeStrip(); cardFrame(); }
+  // On the start and summary cards the climber stands above the card (offsetTop: its place without the slide-in)
+  function cardFrame() {
+    const c = lab.state === 'done' ? doneC : lab.state === 'start' ? startp : null;
+    if (c && !c.classList.contains('off') && World.frame) World.frame('card', c.offsetTop);
+  }
   let rq = 0;
   addEventListener('resize', () => { if (!rq) { rq = 1; requestAnimationFrame(() => { rq = 0; resize(); }); } });
   const theme = () => World.theme(getComputedStyle(R).getPropertyValue('--world-night').trim() === '1');
@@ -479,6 +485,7 @@
     .then(() => {
       R.classList.add('ready'); goB.disabled = false; lab.state = 'start'; drawStrip();
       if (saved) { const b = $('resume'); b.textContent = 'Continue at Q' + (saved.next + 1) + ' of ' + N; b.hidden = false; }
+      cardFrame();
       if (DBG) console.info('[lab] game ready', Math.round(performance.getEntriesByName('lab:game-ready')[0].startTime), 'ms');
     })
     .catch(e => { $('mdesc').textContent = 'The game could not load: ' + e.message; throw e; });

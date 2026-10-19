@@ -165,7 +165,7 @@
   // and the fade lifts on the climber at the next START island (about 0.8 s, skippable, instant with reduced motion).
   const Fd = d => plan.push({ k: 5, x0: HOME_X, y0: 0, x1: HOME_X, y1: 0, d, swapped: false });
   let fadeK = 0;
-  function swapStage(s) { s.swapped = true; setStage(stage + 1); H.x = HOME_X; H.y = H.gy = 0; heroAnim('idle'); cam.fy = cam.fy1 = feetY('walk'); snapCam(); }
+  function swapStage(s) { s.swapped = true; setStage(stage + 1); H.x = HOME_X; H.y = H.gy = 0; heroAnim('idle'); cam.fy = cam.fy1 = feetY('walk'); cam.look = startSign.x + startSign.w; snapCam(); }
   function planMove(j) {
     const a = L[j], b = L[j + 1];
     if (j === liftJ()) {
@@ -239,7 +239,7 @@
     const lines = [k === STG.length - 1 ? 'LAST MOUNTAIN' : 'NEXT MOUNTAIN', 'STAGE ' + (k + 1) + ' OF ' + STG.length];
     capC.removeChildren().forEach(g => g.destroy());
     lines.forEach((s, r) => {
-      const sc = r ? S : Math.max(1, S - 1), y = r ? 0 : -16 * sc;
+      const sc = Math.max(1, Math.min(r ? S : S - 1, Math.floor((VW - 24) / (8 * s.length)))), y = r ? 0 : -16 * sc;
       for (let i = 0; i < s.length; i++) {
         const name = 'font-w/' + s.charCodeAt(i);
         if (!kit.atlas.frames[name]) continue;
@@ -266,7 +266,7 @@
       const p = parts[i]; if (p.s.visible) continue; k++;
       const a = -Math.PI / 2 + (Math.random() - 0.5) * (kind === 'confetti' ? 2.2 : 3), v = kind === 'confetti' ? 90 + Math.random() * 90 : 30 + Math.random() * 30;
       p.s.visible = true; p.s.x = x; p.s.y = y; p.vx = Math.cos(a) * v; p.vy = Math.sin(a) * v; p.t = 0; p.l = kind === 'confetti' ? 1.3 : 0.45;
-      p.g = kind === 'confetti' ? 160 : 40; p.s.texture = kind === 'confetti' ? frame('confetti/' + (k % 6)) : frame('puff'); p.s.alpha = 1; p.s.rotation = 0; p.spin = kind === 'confetti' ? (Math.random() - 0.5) * 12 : 0;
+      p.g = kind === 'confetti' ? 160 : 40; p.s.texture = kind === 'confetti' ? frame('confetti/' + (k % 6)) : frame('puff'); p.s.alpha = 1; p.s.rotation = 0; p.r = 0; p.spin = kind === 'confetti' ? (Math.random() - 0.5) * 12 : 0;
       p.s.scale.set(kind === 'confetti' ? 0.5 : 0.6);
     }
   }
@@ -279,7 +279,7 @@
   function coinCollect() {
     const c = coins[coin.i];
     c.visible = false; c.got = true; coin.on = false;
-    if (!RM && !LOW) oneShot('coin/fx', H.x, H.y - 22, fx, 0.5, 0.5).s.scale.set(1.6);
+    if (!RM && !LOW) oneShot('coin/fx', H.x, H.y - 18, back, 0.5, 0.5).s.scale.set(1.3);   // behind the climber
     if (!RM) { xpLabel.visible = true; xpLabel.x = H.x; xpLabel.y = H.y - 34; xpLabel.alpha = 1; xpT = 0; }
     const cb = coin.cb; coin.cb = null;
     if (cb) cb();
@@ -299,9 +299,15 @@
   }
 
   /* ---------- camera ---------- */
-  const cam = { x: 0, y: 0, fy: 0.52, fy0: 0.52, fy1: 0.52, ft: 1 };
-  function feetY(mode) { return mode === 'sheet' ? Math.max(130, Math.round(VH * 0.22)) / VH : 0.5; }
-  function camTarget() { return [H.x - (VW / S) * 0.36, H.y - (VH / S) * cam.fy]; }
+  // look: a world x that must stay in view on the right (the camp's flag, the next stage's plate), or null
+  const cam = { x: 0, y: 0, fy: 0.52, fy0: 0.52, fy1: 0.52, ft: 1, look: null };
+  let cardFy = 0.5;
+  function feetY(mode) { return mode === 'sheet' ? Math.max(130, Math.round(VH * 0.22)) / VH : mode === 'card' ? cardFy : 0.5; }
+  function camTarget() {
+    const W = VW / S; let x = H.x - W * 0.36;
+    if (cam.look != null) x = Math.max(x, Math.min(cam.look + 4 - W, H.x - 16));   // the climber stays in view too
+    return [x, H.y - (VH / S) * cam.fy];
+  }
   function snapCam() { cam.fy = cam.fy1; cam.ft = 1; const t = camTarget(); cam.x = t[0]; cam.y = t[1]; }
 
   /* ---------- the loop ---------- */
@@ -348,7 +354,7 @@
     for (let i = 0; i < parts.length; i++) {
       const p = parts[i]; if (!p.s.visible) continue;
       p.t += dt; if (p.t >= p.l) { p.s.visible = false; continue; }
-      p.vy += p.g * dt; p.s.x += p.vx * dt; p.s.y += p.vy * dt; p.s.rotation += p.spin * dt; p.s.alpha = 1 - (p.t / p.l) ** 2;
+      p.vy += p.g * dt; p.s.x += p.vx * dt; p.s.y += p.vy * dt; p.r += p.spin * dt; p.s.rotation = Math.round(p.r / 1.5708) * 1.5708; p.s.alpha = 1 - (p.t / p.l) ** 2;
     }
     for (const l of lifts) { l.s.y = l.y; l.chain.height = Math.max(8, l.y - l.top); l.chain.y = l.top; if (l.on) l.s.texture = l.fr[Math.floor(ambientT * 16) % 8]; }
     if (!LOW && !RM) {
@@ -375,13 +381,13 @@
     // horizon = the screen row of the sea line; it sinks slowly as the hero climbs.
     const horizon = Math.round(VH * 0.6 - dy * 0.12 * S);
     const drift = RM || LOW ? 0 : ambientT;
-    layer.bg.y = horizon - kit.colors.sea * S; layer.bg.tilePosition.x = -(cam.x * 0.04 + so * 0.4) * S;
+    layer.bg.y = Math.round(horizon - kit.colors.sea * S); layer.bg.tilePosition.x = -(cam.x * 0.04 + so * 0.4) * S;
     waterFill.y = layer.bg.y + kit.colors.height * S - 1; waterFill.height = Math.max(0, VH - waterFill.y);
-    layer.cb.y = horizon - tex.cloudsBig.height * S + 6 * S; layer.cb.tilePosition.x = -(cam.x * 0.08 + drift * 3 + so) * S;
+    layer.cb.y = Math.round(horizon - tex.cloudsBig.height * S + 6 * S); layer.cb.tilePosition.x = -(cam.x * 0.08 + drift * 3 + so) * S;
     if (layer.cs) { layer.cs.y = Math.round(VH * 0.12 - dy * 0.16 * S); layer.cs.tilePosition.x = -(cam.x * 0.16 + drift * 6 + so) * S; }
     if (layer.stars.visible) { layer.stars.y = Math.round(VH * 0.04 - dy * 0.05 * S); layer.stars.tilePosition.x = -(cam.x * 0.02 + so * 0.5) * S; }
-    if (layer.mb) { layer.mb.y = horizon + 2 * S - layer.mb.height; layer.mb.tilePosition.x = -(cam.x * 0.03 + so * 1.3) * S; }
-    layer.mf.y = horizon + 2 * S - layer.mf.height; layer.mf.tilePosition.x = -(cam.x * 0.07 + so * 2.1) * S;
+    if (layer.mb) { layer.mb.y = Math.round(horizon + 2 * S - layer.mb.height); layer.mb.tilePosition.x = -(cam.x * 0.03 + so * 1.3) * S; }
+    layer.mf.y = Math.round(horizon + 2 * S - layer.mf.height); layer.mf.tilePosition.x = -(cam.x * 0.07 + so * 2.1) * S;
     for (const g of glints) g.s.y = horizon + g.dy * S;
     // Cull world sprites outside the view (cheap: a few dozen objects).
     const x0 = cam.x - 80, x1 = cam.x + VW / S + 80;
@@ -450,7 +456,7 @@
     lbl10 = lbl10 || label('+10 XP', 'w'); lbl5 = lbl5 || label('+5 XP', 'w');
     xpLabel = spr(lbl10, 0, 0, 0.5, 1, fx); xpLabel.visible = false;
     anims.length = 0; parts.length = 0;
-    for (let i = 0; i < 36; i++) { const s = spr(frame('puff'), 0, 0, 0.5, 0.5, fx); s.visible = false; parts.push({ s, vx: 0, vy: 0, t: 0, l: 1, g: 0, spin: 0 }); }
+    for (let i = 0; i < 36; i++) { const s = spr(frame('puff'), 0, 0, 0.5, 0.5, fx); s.visible = false; parts.push({ s, vx: 0, vy: 0, t: 0, l: 1, g: 0, spin: 0, r: 0 }); }
     buildStage();
     built = true;
   }
@@ -468,16 +474,16 @@
     for (const s of slabs) { s.s = spr(slabTex(), s.x, s.y, 0, 0, stB); }
     // Decorations: palms behind, a front palm at the start.
     const palm = (k, x, y, o) => { const s = spr(frame('palm/' + k + '/0'), x, y + 4, 0.5, 1, stB); stB.setChildIndex(s, 0); palms.push({ s, fr: animFrames('palm/' + k), o }); };
-    palm('regular', START_X - 20, 0, 0); palm('left', START_X + 60, 0, 1); palm('right', L[sK].x + 96, L[sK].y, 2);
+    palm('regular', START_X - 20, 0, 0); palm('left', START_X + 60, 0, 1); palm('right', L[sK].x + 4, L[sK].y, 2);
     if (sK > 4) palm('regular', L[4].x + 40, L[4].y, 3);
     // START (the first stage) or the stage number on a plate (the next ones; it is wider, so it stands right of the
     // climber's start, where the camera always shows it).
-    startSign = stage ? plate('STAGE ' + (stage + 1), HOME_X + 52, 3, stM) : spr(frame('start/idle'), START_X - 4, 3, 0.5, 1, stM);
+    startSign = stage ? plate('STAGE ' + (stage + 1), HOME_X + 16 + plateW(String(stage + 1).length + 6) / 2, 3, stM) : spr(frame('start/idle'), START_X - 4, 3, 0.5, 1, stM);
     // The top of the stage: the trophy on the summit, or a camp (a CAMP plate and a checkpoint flag that runs up).
     trophy = spr(frame('end/idle'), L[sK].x + SUMW - 38, L[sK].y + 4, 0.5, 1, stM); trophy.visible = lastStage();
     if (!lastStage()) {
       plate('CAMP', signX(sK) + 4, L[sK].y + 3, stM);
-      camp = spr(frame('flag/pole'), L[sK].x + SUMW - 34, L[sK].y + 4, 0.5, 1, stM); camp.up = false; camp.fr = animFrames('flag/idle');
+      camp = spr(frame('flag/pole'), L[sK].x + 86, L[sK].y + 4, 0.5, 1, stM); camp.up = false; camp.fr = animFrames('flag/idle');
     }
     // Lifts: a platform on a chain that reaches above the view.
     for (const l of lifts) {
@@ -614,9 +620,10 @@
     // screen fades with the next stage's number, and she walks in from the next START island.
     travel(i, cb) {
       ready();
-      const j = J(i); plan.length = 0; planMove(j);
+      const j = J(i); plan.length = 0; planMove(j); cam.look = null;
       if (j === sK - 1 && !lastStage()) {
         caption(stage + 1); Wt(stand(sK), L[sK].y, 260); Fd(RM ? 1 : 820); Wk(HOME_X, 0, stand(0), 0, 520, 2);
+        cam.look = camp.x + 17; if (!RM) raiseCamp();
         // reduced motion: the new stage is built in this task and the app opens the next MCQ in the next one
         if (RM) { const c = cb; cb = () => setTimeout(c, 0); }
       }
@@ -624,7 +631,7 @@
     },
     toSummit(cb) {
       ready();
-      const j = sK - 1; plan.length = 0; planMove(j);
+      const j = sK - 1; plan.length = 0; planMove(j); cam.look = null;
       const end = trophy.x - 22;
       Wk(stand(sK), L[sK].y, end, L[sK].y, 260, 1);
       begin(() => {
@@ -651,16 +658,18 @@
       if (p === 'happy' && !RM) { squash(0.22, 0.14); kick(); }
       else if (p === 'read') heroAnim('idle');
     },
-    frame(f) {
+    // 'card' (the start and summary cards): the climber stands just above the card's top edge (px from the top)
+    frame(f, px) {
+      if (f === 'card') cardFy = clamp((px - 18) / VH, 0.2, 0.62);
       cam.fy0 = cam.fy; cam.fy1 = feetY(f); cam.ft = RM ? 1 : 0;
-      if (RM) snapCam(); else kick();   // reduced motion: drawn once when the sheet is open (sleep), not per framing
+      if (RM) { snapCam(); if (f === 'card') renderOnce(); } else kick();   // reduced motion: drawn once when the sheet is open (sleep), not per framing
     },
     // Strip and Classic jump straight to a question (the world is behind the sheet); this may change the stage.
     place(i) {
       const sg = i === 'summit' ? STG.length - 1 : stageIdx(i);
       if (sg !== stage) setStage(sg, true);
       const k = i === 'summit' ? sK : J(i);
-      H.x = i === 'summit' ? L[sK].x + SUMW - 60 : stand(k); H.y = H.gy = L[k].y;
+      H.x = i === 'summit' ? L[sK].x + SUMW - 60 : stand(k); H.y = H.gy = L[k].y; cam.look = null;
       const after = () => { fade(0); for (const l of lifts) if (l.j < k) { l.y = l.y1; liftAnim(l, false); } };
       if (pend) pendAfter = after; else after();
       heroAnim('idle'); snapCam(); renderLater();
@@ -685,7 +694,7 @@
       if (window.__lab && window.__lab.state === 'question') aheadSoon();   // while the MCQ is read
     },
     wake,
-    reset() { ready(); if (stage !== 0) setStage(0); resetState(); renderOnce(); if (!RM) wake(); },
+    reset() { ready(); cam.look = null; if (stage !== 0) setStage(0); resetState(); renderOnce(); if (!RM) wake(); },
     resize(w, h) {
       if (!app || !built) return;
       ready(); dropAhead();
@@ -713,7 +722,7 @@
     stageInfo: () => ({ stage, stages: STG.length, buildMs, aheadMs, ahead: ahead ? ahead[0] : -1, wipe: fadeK }),
     stripArt: () => kit && {
       coin(c, gold, x, y, size) { const f = kit.atlas.frames[(gold ? 'coin/gold' : 'coin/silver') + '/0']; c.imageSmoothingEnabled = false; c.drawImage(atlasImg.source.resource, f[0], f[1], f[2], f[3], x - size / 2, y - size / 2, size, size); },
-      flag(c, x, y) { const f = kit.atlas.frames['end/idle']; c.imageSmoothingEnabled = false; c.drawImage(atlasImg.source.resource, f[0], f[1], f[2], f[3], x - 14, y - 26, 28, 28); },
+      flag(c, x, y, last) { const f = kit.atlas.frames[last ? 'end/idle' : 'flag/idle/0']; c.imageSmoothingEnabled = false; c.drawImage(atlasImg.source.resource, f[0], f[1], f[2], f[3], x - 14, y - 26, 28, 28); },
       hero(c, x, y, pose, size) {
         const a = kit.atlas.anims[heroKey + '/' + (pose === 'jump' ? 'jump' : 'idle')], f = kit.atlas.frames[a.frames[0]], d = heroDef;
         const k = size / (d.foot.y - d.foot.top); c.imageSmoothingEnabled = false;
