@@ -116,7 +116,7 @@
   }
   function openSheet() {
     activate(idx); sheet.classList.add('open'); skipOn(false);
-    World.frame('sheet');
+    World.frame(mode === 'story' ? 'sheet' : 'band');   // Strip, Classic: only sky above the bar
     opT = after(RM || mode === 'classic' ? 0 : 200, sheetVisible);
   }
   function sheetVisible() {
@@ -195,7 +195,7 @@
   function go() {
     if (lab.state !== 'start') return;
     tGo = now(); firstOpen = true; lab.state = 'moving'; startp.classList.add('off'); Sound.unlock();
-    saved = null; $('resume').hidden = true; from = 0;
+    saved = null; $('resume').hidden = true; from = 0; $('ledge').hidden = false;
     if (mode === 'classic') { hud(); openSheet(); return; }
     if (!RM) World.wake(); skipOn(true);   // reduced motion: no loop at all, the world is drawn once per MCQ
     World.walkToFirst(arrived);
@@ -287,6 +287,7 @@
     try { $('t2').focus({ preventScroll: true }); } catch (e) {}
   }
   function reset() {
+    if (rmChanged) { location.reload(); return; }   // the reduced-motion setting changed during the chapter
     [opT, clT, xfT, celebT].forEach(cancel); opT = clT = xfT = celebT = null;
     idx = 0; xp = 0; skips = 0; gameT = readT = 0; RS = Q.map(fresh); st.fill(0);
     World.reset();
@@ -298,6 +299,7 @@
   function skipOn(v) { const on = !!v && !RM && mode !== 'classic'; skipH.classList.toggle('on', on); skipH.tabIndex = on ? 0 : -1; skipH.setAttribute('aria-hidden', String(!on)); }
   function hud(top) {
     const n = lab.state === 'start' || lab.state === 'loading' ? 0 : idx + 1, el = $('ledge');
+    el.hidden = lab.state === 'start' && !!saved;
     if (top) el.textContent = 'Summit'; else el.innerHTML = '<span class="lw">Ledge </span>' + n + '/' + N;
     el.setAttribute('aria-label', top ? 'Summit' : 'Ledge ' + n + ' of ' + N);
   }
@@ -351,7 +353,7 @@
     for (let j = 0; j < sk; j++) {
       const i = s0 + j;
       if (art && st[i]) { const cx = smx(j) + bw * 0.2, cy = smy(j) - 9; art.coin(c, st[i] === 1, cx, cy, 9); stripMark(c, st[i], cx, cy); }
-      else { c.fillStyle = 'rgba(255,255,255,.75)'; c.fillRect(smx(j) + bw * 0.2 - 3, smy(j) - 10, 6, 6); }
+      else { c.strokeStyle = 'rgba(255,255,255,.8)'; c.lineWidth = 1.5; c.beginPath(); c.arc(smx(j) + bw * 0.2, smy(j) - 9, 3.6, 0, 6.2832); c.stroke(); }
     }
     if (art) art.flag(c, smx(sk) + 6, smy(sk), last);
     if (STAGES.length > 1) {
@@ -446,6 +448,8 @@
   addEventListener('resize', () => { if (!rq) { rq = 1; requestAnimationFrame(() => { rq = 0; resize(); }); } });
   const theme = () => World.theme(getComputedStyle(R).getPropertyValue('--world-night').trim() === '1');
   try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readStripCol(); theme(); drawStrip(); }); } catch (e) {}
+  let rmChanged = false;
+  try { matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', () => { if (lab.state === 'start') location.reload(); else rmChanged = true; }); } catch (e) {}
   try { new MutationObserver(() => { readStripCol(); theme(); drawStrip(); }).observe(R, { attributes: true, attributeFilter: ['data-theme'] }); } catch (e) {}
   if (TG) {
     try { if (TG.colorScheme) R.setAttribute('data-theme', TG.colorScheme); TG.ready(); TG.expand(); } catch (e) {}
@@ -487,7 +491,7 @@
     })
     .then(() => {
       R.classList.add('ready'); goB.disabled = false; lab.state = 'start'; drawStrip();
-      if (saved) { const b = $('resume'); b.textContent = 'Continue at Q' + (saved.next + 1) + ' of ' + N; b.hidden = false; }
+      if (saved) { const b = $('resume'); b.textContent = 'Continue at Q' + (saved.next + 1) + ' of ' + N; b.hidden = false; hud(); }
       cardFrame();
       if (DBG) console.info('[lab] game ready', Math.round(performance.getEntriesByName('lab:game-ready')[0].startTime), 'ms');
     })

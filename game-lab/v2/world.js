@@ -288,6 +288,10 @@
 
   /* ---------- lifts and signs ---------- */
   function liftAnim(l, on) { l.on = on; l.s.texture = on ? l.fr[0] : frame('lift/off'); }
+  function quietHere() {
+    if (!window.__lab || window.__lab.state !== 'question') return;
+    for (let j = 0; j < signs.length; j++) if (signs[j].st === 0 && Math.abs(stand(j) - H.x) < 1) signs[j].bubble.visible = false;
+  }
   function setSign(j, st) {
     const s = signs[j];
     s.st = st; s.badge.visible = st !== 0; if (st) s.badge.texture = badgeTex(st);
@@ -302,7 +306,7 @@
   // look: a world x that must stay in view on the right (the camp's flag, the next stage's plate), or null
   const cam = { x: 0, y: 0, fy: 0.52, fy0: 0.52, fy1: 0.52, ft: 1, look: null };
   let cardFy = 0.5;
-  function feetY(mode) { return mode === 'sheet' ? Math.max(130, Math.round(VH * 0.22)) / VH : mode === 'card' ? cardFy : 0.5; }
+  function feetY(mode) { return mode === 'sheet' ? Math.max(130, Math.round(VH * 0.22)) / VH : mode === 'card' ? cardFy : mode === 'band' ? 0.86 : 0.5; }
   function camTarget() {
     const W = VW / S; let x = H.x - W * 0.36;
     if (cam.look != null) x = Math.max(x, Math.min(cam.look + 4 - W, H.x - 16));   // the climber stays in view too
@@ -692,7 +696,7 @@
       return did;
     },
     sleep() {
-      awake = false; cam.ft = 1; cam.fy = cam.fy1; snapCam(); renderOnce();
+      awake = false; cam.ft = 1; cam.fy = cam.fy1; snapCam(); quietHere(); renderOnce();
       if (window.__lab && window.__lab.state === 'question') aheadSoon();   // while the MCQ is read
     },
     wake,
@@ -710,7 +714,7 @@
       if (up) raiseCamp(true);
       H.x = keep.x; H.y = keep.y; H.gy = keep.gy;
       if (f > 0) { const w = plan[pi]; caption(w && w.k === 5 && w.swapped ? stage : stage + 1); }
-      fade(f);
+      fade(f); quietHere();
       snapCam(); renderOnce(); aheadAgain();
     },
     theme(n) { night = n; if (built) { applyNight(); renderOnce(); } },

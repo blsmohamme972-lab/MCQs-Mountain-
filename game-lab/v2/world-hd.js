@@ -366,7 +366,7 @@
   // Feet height on screen: walking 56%, at the start 47% (above the start card), MCQ open 40 px above the sheet
   // (in the HD tier the Story sheet covers the bottom 72%), never higher than 120 px so the head clears the top bar.
   let cardFy = 0.47;
-  function feetY(mode) { return mode === 'sheet' ? Math.max(120, Math.round(VH * 0.28) - 40) / VH : mode === 'start' ? 0.47 : mode === 'card' ? cardFy : 0.56; }
+  function feetY(mode) { return mode === 'sheet' ? Math.max(120, Math.round(VH * 0.28) - 40) / VH : mode === 'start' ? 0.47 : mode === 'card' ? cardFy : mode === 'band' ? 0.86 : 0.56; }
   function camTarget(out) { const zc = Z * cam.z; out[0] = H.x + cam.ahead - (VW / zc) * (summitView ? 0.5 : 0.36); out[1] = H.y - (VH / zc) * cam.fy; return out; }
   const tgt = [0, 0];
   function snapCam() { cam.fy = cam.fy1; cam.ft = 1; cam.z = cam.z1; cam.ahead = atStart ? 40 : summitView ? 50 : 0; camTarget(tgt); cam.x = tgt[0]; cam.y = tgt[1]; cam.vx = cam.vy = 0; }
@@ -381,9 +381,10 @@
     bgC.tint = (ch(st, 16) << 16) | (ch(st, 8) << 8) | Math.min(255, ch(st, 0) + 6);   // the stage's light, dimmed under a sheet
     camTarget(tgt);
     // critically damped springs (no overshoot), a little softer vertically
-    const sp = (pos, vel, to, w) => { const x = pos - to, e = Math.exp(-w * dt), a = (vel + w * x) * dt; return [to + (x + a) * e, (vel - w * a) * e]; };
-    const X = sp(cam.x, cam.vx, tgt[0], 9), Y = sp(cam.y, cam.vy, tgt[1], 7.5);
-    cam.x = X[0]; cam.vx = X[1]; cam.y = Y[0]; cam.vy = Y[1];
+    let x = cam.x - tgt[0], e = Math.exp(-9 * dt), a = (cam.vx + 9 * x) * dt;
+    cam.x = tgt[0] + (x + a) * e; cam.vx = (cam.vx - 9 * a) * e;
+    x = cam.y - tgt[1]; e = Math.exp(-7.5 * dt); a = (cam.vy + 7.5 * x) * dt;
+    cam.y = tgt[1] + (x + a) * e; cam.vy = (cam.vy - 7.5 * a) * e;
     camMoving = Math.abs(tgt[0] - cam.x) + Math.abs(tgt[1] - cam.y) > 0.25 || Math.abs(cam.vx) + Math.abs(cam.vy) > 1 || Math.abs(cam.z1 - cam.z) > 0.002 || Math.abs(dim - bgDim) > 0.005;
     if (!camMoving) { cam.x = tgt[0]; cam.y = tgt[1]; cam.vx = cam.vy = 0; }
   }
@@ -441,9 +442,9 @@
     // checkpoint posts: once a ledge is passed its pennant runs up the post and unfurls, then waves
     for (const f of flags) {
       if (!f.up) continue;
-      if (f.big) { if (!RM) f.pen.texture = frame((f.gold ? 'ui/gold' : 'ui/pen') + (((ambT * 7 + f.o) | 0) % 3)); continue; }
+      if (f.big) { if (!RM) f.pen.texture = frame((f.gold ? GOLD : PEN)[((ambT * 7 + f.o) | 0) % 3]); continue; }
       if (f.t < 1) { f.t = Math.min(1, f.t + dt / 0.6); f.pen.y = lerp(-36, -148, easeOut(f.t)); if (f.t >= 1) sparkle(f.x + 18, f.y - 72, 8, 50); }
-      if (f.t > 0.15) { const k = RM ? 0 : ((ambT * 7 + f.o) | 0) % 3; const t = frame('ui/pen' + k); if (f.pen.texture !== t) { f.pen.texture = t; f.pen.anchor.set(0.03, 0.5); } }
+      if (f.t > 0.15) { const k = RM ? 0 : ((ambT * 7 + f.o) | 0) % 3; const t = frame(PEN[k]); if (f.pen.texture !== t) { f.pen.texture = t; f.pen.anchor.set(0.03, 0.5); } }
     }
     for (const l of lifts) {
       if (l.ret) { l.y += (l.y0 - l.y) * (1 - Math.exp(-dt * 1.6)); if (Math.abs(l.y - l.y0) < 0.5) { l.y = l.y0; l.ret = false; } }
@@ -460,13 +461,14 @@
   // Ambient life: clouds drift, birds cross the sky now and then, waterfalls run, leaves (day) or fireflies (night)
   // float, torches flicker, stars twinkle, the beacon pulses.
   const birds = { t: 4, on: false, x: 0, y: 0, v: 0, list: [] }, floaters = [];
+  const BIRD = ['fx/bird0', 'fx/bird1', 'fx/bird2'], PEN = ['ui/pen0', 'ui/pen1', 'ui/pen2'], GOLD = ['ui/gold0', 'ui/gold1', 'ui/gold2'];
   function stepAmbient(dt) {
     for (const c of cloudsC.children) { c.x += c.v * dt; if (c.x > c.span) c.x -= c.span + 400; }
     birds.t -= dt;
     if (!birds.on && birds.t < 0) { birds.on = true; birds.x = -80; birds.y = VH * (0.12 + rnd() * 0.18); birds.v = 46 + rnd() * 20; birds.list.forEach((b, k) => { b.visible = true; b.o = rnd() * 6; b.dx = -k * 34 - rnd() * 10; b.dy = (k % 2 ? 1 : -1) * (k * 9 + rnd() * 6); }); }
     if (birds.on) {
       birds.x += birds.v * dt;
-      birds.list.forEach(b => { b.x = birds.x + b.dx; b.y = birds.y + b.dy + Math.sin(ambT * 2 + b.o) * 4; b.texture = frame('fx/bird' + (((ambT * 9 + b.o) | 0) % 3)); });
+      for (const b of birds.list) { b.x = birds.x + b.dx; b.y = birds.y + b.dy + Math.sin(ambT * 2 + b.o) * 4; b.texture = frame(BIRD[((ambT * 9 + b.o) | 0) % 3]); }
       if (birds.x > VW + 220) { birds.on = false; birds.t = 9 + rnd() * 8; birds.list.forEach(b => { b.visible = false; }); }
     }
     for (const w of falls) {
@@ -555,8 +557,9 @@
   function tickEnd() {
     ST[stN % ST.length] = performance.now() - stT0; stN++;
     const amb = ambient();
-    if (!awake && !busy() && !amb) { app.ticker.stop(); running = false; }
-    app.ticker.maxFPS = awake || busy() ? 0 : 30;
+    const b = busy();
+    if (!awake && !b && !amb) { app.ticker.stop(); running = false; }
+    app.ticker.maxFPS = awake || b ? 0 : 30;
   }
   function wake() { awake = true; app && (app.ticker.maxFPS = 0); if (!running && !paused && app) { running = true; app.ticker.start(); } }
   function kick() { if (!running && !paused && app) { running = true; app.ticker.start(); } }
@@ -691,7 +694,7 @@
       const sxi = signX(j);
       shadowAt(sxi, L[j].y, 34);
       const s = spr('ui/plate', sxi, L[j].y + 4, 0.5, 1, midC, 0.5); s.wx = sxi - 40; s.ww = 80;
-      const n = sA + j + 1, tq = btext('Q' + n, n > 99 ? 28 : 34, 0xfff4dc, null); tq.y = -80; s.addChild(tq);
+      const n = sA + j + 1, tq = btext('Q' + n, n > 99 ? 31 : 34, 0xfff4dc, null); tq.y = -80; s.addChild(tq);
       const badge = spr('ui/ok', 40, -112, 0.5, 0.5, s, 0.36); badge.visible = false; badge.pop = 1;
       signs.push({ s, badge, st: 0 });
       const c = new PIXI.Container(); c.x = sxi; c.y = L[j].y - 76; c.wx = sxi - 40; c.ww = 80;
@@ -940,7 +943,7 @@
     for (const b of blocks) b.tint = rock;
     for (const d of backDeco.children) if (d !== beaconGlow && d !== beacon) d.tint = night ? 0x8d97c9 : 0xffffff;
     for (const f of flags) if (f.big) { f.s.tint = night ? 0xb8c0e0 : 0xffffff; f.pen.tint = night ? (f.gold ? 0xfff0c0 : 0x9aa6d8) : 0xffffff; }
-    for (const sg of signs) sg.s.tint = night ? 0xb0b8e0 : 0xffffff;
+    for (const sg of signs) sg.s.tint = night ? 0xd4d9f2 : 0xffffff;
     for (const f of falls) { f.s.tint = night ? 0x7084c8 : 0xd6f0ff; f.s.alpha = night ? 0.7 : 0.92; }
     for (const b of fgW.children) b.tint = night ? 0x2a3360 : 0xffffff;
   }
