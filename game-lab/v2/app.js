@@ -458,7 +458,7 @@
   // Lab-only switches on the start card (for the phone link): the tier and the chapter size, kept in localStorage.
   D.querySelectorAll('#labo [data-tier]').forEach(b => { b.setAttribute('aria-pressed', b.dataset.tier === TIER); b.addEventListener('click', () => { try { localStorage.setItem('mcqm-tier', b.dataset.tier); } catch (e) {} relaunch('tier'); }); });
   D.querySelectorAll('#labo [data-n]').forEach(b => { b.setAttribute('aria-pressed', +b.dataset.n === N); b.addEventListener('click', () => { try { localStorage.setItem('mcqm-n', b.dataset.n); } catch (e) {} relaunch('n'); }); });
-  function relaunch(p) { const u = new URL(location.href); u.searchParams.delete(p); location.replace(u.href); }
+  function relaunch(p) { const u = new URL(location.href); if (!u.searchParams.has(p)) { location.reload(); return; } u.searchParams.delete(p); location.replace(u.href); }
   S = Math.min(2, window.devicePixelRatio || 1); sizeStrip();
 
   // Load the tier's scripts in order (engine, runtimes, world), then the world; it marks lab:game-ready on its first
