@@ -30,9 +30,10 @@ WORLDS = [
     {"id": "snowforest", "name": "Snow forest", "pack": "winter", "dir": "PNG/BG_01/Layers",
      "layers": [("Sky.png", 0, 0.25), ("BG.png", 0.1, 0.75), ("Middle.png", 0.25, 0.75), ("Foreground.png", 0.45, 1)],
      "fx": "snow", "lit": "day"},
-    {"id": "skycastle", "name": "Castle in the clouds", "pack": "parallax2d", "dir": "platformer_background_2/Layers",
+    # the scene's gingerbread castle is left out (too childish, and it loomed behind the climber): stars over clouds
+    {"id": "skycastle", "name": "Starry clouds", "pack": "parallax2d", "dir": "platformer_background_2/Layers",
      "layers": [("layer09_Sky.png", 0, 0.25), ("layer08_Stars_1.png", 0.02, 0.75), ("layer07_Stars_2.png", 0.03, 0.75), ("layer06_Stars_3.png", 0.04, 0.75),
-                ("layer05_Castle.png", 0.08, 0.75), ("layer03_Clouds_3.png", 0.16, 0.75), ("layer02_Clouds_2.png", 0.26, 0.75), ("layer01_Clouds_1.png", 0.4, 1)],
+                ("layer03_Clouds_3.png", 0.16, 0.75), ("layer02_Clouds_2.png", 0.26, 0.75), ("layer01_Clouds_1.png", 0.4, 1)],
      "fx": "stars", "lit": "night"},
 ]
 
