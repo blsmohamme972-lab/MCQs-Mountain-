@@ -395,6 +395,8 @@ fast, even if you use non-commercial stock, for some of the game's new stages." 
   (lilac in the purple forest, red smoke at the volcano); and a fifth world, a volcano, is composed in
   `build_worlds_hd.py` from LudicArts' volcano pack (CC BY 3.0, credit "LudicArts.com" wherever it ships): its painted
   mountains made seamless and lit red from below, a lava lake, dead trees, rocks and crystals (125 KB, 7 MB of GPU
-  memory). Six stages measured here: swap 0.5-2.1 ms, look-ahead 1.2-9 ms, warm-up 2-21 ms, no errors. Still to do:
-  cliff tops per world (snow and lava rock: only a tint so far), crystal caverns and ice, the light tier's pixel
+  memory); and a sixth, an ice kingdom, from LudicArts' ice forest pack (CC BY 4.0, same credit): its mountains at
+  night under an aurora painted by the build, ice blocks with blue crystals, snowy trees and bushes, falling snow
+  (129 KB, 6 MB). Seven stages measured here: swap 0.5-3.2 ms, look-ahead 1.2-9.6 ms, warm-up 2-21 ms, no errors.
+  Still to do: cliff tops per world (snow and lava rock: only a tint so far), crystal caverns, the light tier's pixel
   worlds, and a visual and speed review of the worlds.

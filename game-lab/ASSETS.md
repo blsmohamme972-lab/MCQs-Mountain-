@@ -62,7 +62,7 @@ Fetched by `tools/fetch_worlds.py` from each author's free itch.io page (no paym
 | Free Parallax 2D Backgrounds | castle on the clouds at night, teal hills | CraftPix (Free Game Assets) | CraftPix file licence | itch page, as above |
 | Free Winter Holiday 2D Backgrounds | snowy pine forest (scene 1 only) | CraftPix (Free Game Assets) | CraftPix file licence | the pack's `TXT/license.txt` |
 | Volcano - Free Platform Tileset | the volcano world (HD, stage 6): its painted mountains, lava, dead trees, rocks, crystals | Franco Giachetti (LudicArts) | CC BY 3.0, credit "LudicArts.com" | the pack's `License.txt` |
-| Free Ice Forest - Platformer Tileset | ice-brick tiles, snowy trees and bushes | LudicArts | CC BY 4.0, credit "LudicArts.com" | the pack's `License.txt` |
+| Free Ice Forest - Platformer Tileset | the ice kingdom world (HD, stage 7): its mountains, ice blocks, crystals, snowy trees and bushes | LudicArts | CC BY 4.0, credit "LudicArts.com" | the pack's `License.txt` |
 
 Left out on purpose: the CraftPix Halloween backgrounds (ghosts, graves with crosses) and the winter scenes with
 holiday decorations (not neutral for the audience), the Fairy-Tale mushroom scene (red spotted mushrooms read as a

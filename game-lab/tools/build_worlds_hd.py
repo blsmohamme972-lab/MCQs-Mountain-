@@ -43,6 +43,11 @@ WORLDS = [
     {"id": "volcano", "name": "Volcano", "pack": "volcano", "compose": "volcano",
      "layers": [("sky", 0, 0.25), ("mountains", 0.05, 0.5), ("lava", 0.16, 0.5), ("props", 0.32, 0.75)],
      "fx": "embers", "lit": "dusk", "zoom": 1.0, "rock": "#d6a088", "plant": "#c09a6a", "fill": "#7a1e0c", "mist": "#a8706a", "credit": "LudicArts.com"},
+    # composed (compose_ice) from LudicArts' ice forest pack: its mountains at night under a painted aurora, ice
+    # blocks, snowy trees and bushes, blue crystals (CC BY 4.0: credit LudicArts.com)
+    {"id": "ice", "name": "Ice kingdom", "pack": "iceforest", "compose": "ice",
+     "layers": [("sky", 0, 0.25), ("mountains", 0.05, 0.5), ("props", 0.3, 0.75)],
+     "fx": "snow", "lit": "night", "zoom": 1.0, "rock": "#cfe0ff", "plant": "#e4f0ff", "fill": "#24365e", "mist": "#b8c8ff", "credit": "LudicArts.com"},
 ]
 
 
@@ -57,6 +62,56 @@ def _grad(w: int, h: int, stops: list[tuple[float, tuple]]) -> Image.Image:
                 col.putpixel((0, y), tuple(round(ca[c] + (cb[c] - ca[c]) * k) for c in range(len(ca))))
                 break
     return col.resize((w, h))
+
+
+def _aurora(w: int, h: int) -> Image.Image:
+    """Soft aurora curtains (green to teal, a touch of violet at the top) over a transparent frame, seamless sideways."""
+    import math
+    a = Image.new("RGBA", (w, h))
+    px = a.load()
+    for x in range(w):
+        u = x / w * 2 * math.pi
+        for band, (amp, base, thick, col) in enumerate([(0.05, 0.17, 0.06, (90, 255, 170)), (0.035, 0.25, 0.04, (70, 220, 230))]):
+            amp, thick = amp * h, thick * h
+            yc = h * base + amp * math.sin(u * (2 + band) + band) + 0.3 * amp * math.sin(u * 7 + band * 2)
+            for y in range(max(0, int(yc - thick * 2.2)), min(h, int(yc + thick * 0.5))):
+                d = (yc - y) / thick          # 0 at the curtain's foot, rising above it
+                k = (math.exp(-d * 1.1) if d >= 0 else max(0.0, 1 + d * 2)) * (0.55 + 0.45 * math.sin(u * 11 + band * 3) ** 2)
+                r, g, b, al = px[x, y]
+                c = col if d < 1.3 else (150, 120, 255)
+                na = min(255, al + int(160 * k))
+                px[x, y] = (max(r, c[0]), max(g, c[1]), max(b, c[2]), na)
+    return a
+
+
+def compose_ice(src: Path) -> dict:
+    """The ice kingdom's layers at frame size (the mountains 3840 wide, mirrored so they tile)."""
+    img = src / "_pack"
+    obj = lambda n: Image.open(img / n).convert("RGBA")
+    bg = Image.open(img / "Background.png").convert("RGBA")
+    h = round(bg.width * 9 / 16)
+    bg = bg.crop((0, 0, bg.width, h)).resize((1920, 1080), Image.LANCZOS)
+    wide = Image.new("RGBA", (3840, 1080)); wide.paste(bg, (0, 0)); wide.paste(bg.transpose(Image.FLIP_LEFT_RIGHT), (1920, 0))
+    # night: multiply by moonlight blue, then the aurora's light on top
+    wide = ImageChops.multiply(wide, Image.new("RGBA", wide.size, (96, 120, 190, 255)))
+    au = _aurora(3840 // 4, 1080 // 4).resize((3840, 1080), Image.BILINEAR)
+    glow = Image.new("RGBA", wide.size, (0, 0, 0, 255)); glow.alpha_composite(au)
+    wide = ImageChops.screen(wide, glow.point(lambda v: int(v * 0.55)))
+    wide.putalpha(255)
+    props = Image.new("RGBA", (1920, 1080))
+    def put(im, x, foot, sc):
+        im = im.crop(im.getbbox()); im = im.resize((max(1, round(im.width * sc)), max(1, round(im.height * sc))), Image.LANCZOS)
+        props.alpha_composite(im, (x, foot - im.height))
+        return foot - im.height
+    # (a crystal stands on each ice block: its foot sinks a little into the block's snow)
+    for n, x, foot, sc in [("Obj02.png", 30, 600, 0.55), ("37.png", 380, 610, 0.7), ("Obj10.png", 410, None, 0.7), ("Obj03.png", 600, 604, 1.2),
+                           ("Obj02.png", 860, 596, 0.45), ("Obj07.png", 1120, 606, 0.8), ("38.png", 1450, 610, 0.65), ("Obj10.png", 1478, None, 0.55),
+                           ("Obj05.png", 1700, 604, 1.2)]:
+        top = put(obj(n), x, top + 14 if foot is None else foot, sc)
+    # moonlit props
+    props = Image.merge("RGBA", (*ImageChops.multiply(props.convert("RGB"), Image.new("RGB", props.size, (150, 170, 230))).split(), props.split()[3]))
+    sky = _grad(64, 1080, [(0, (8, 14, 40, 255)), (0.6, (22, 44, 86, 255)), (1, (40, 70, 120, 255))])
+    return {"sky": sky, "mountains": wide, "props": props}
 
 
 def compose_volcano(src: Path) -> dict:
