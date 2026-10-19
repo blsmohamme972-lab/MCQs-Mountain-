@@ -1,13 +1,13 @@
 {
  "tier": "light",
  "chapter_mcqs": 200,
- "date": "2026-10-18",
+ "date": "2026-10-19",
  "harness": "tools/measure.mjs --cpu 4 --n 200",
  "device": "Chromium 360 x 740 at DPR 3, 4x CPU throttling, container without a GPU (Canvas 2D on the CPU)",
  "budgets_d27": {
   "load_vs_n8": "game ready within 10% of the N = 8 value (median of the runs at this size)",
   "hd_load_ms_max": 1500,
-  "heap": "JS heap after a full GC flat with N (end of a whole chapter, reduced motion)",
+  "heap": "JS heap after a full GC flat with N (end of a whole chapter, reduced motion): within 3 MB of the N = 8 chapter",
   "hd_script_ms_p95_max": 8,
   "long_task_ms_max_in_transitions": 50,
   "story_step_ms": "about 1000",
@@ -20,6 +20,7 @@
   "load_within_10pct_of_n8": true,
   "hd_load_at_most_1500ms": null,
   "hd_script_ms_p95_at_most_8": null,
+  "heap_flat_with_n": true,
   "no_long_task_over_50ms_in_moves": false,
   "story_step_about_1s": true,
   "story_lift_about_1600ms": true,
@@ -29,67 +30,73 @@
   "story_added_per_mcq_about_1200ms": true
  },
  "load": {
-  "game_ready_ms_median": 610.2,
+  "game_ready_ms_median": 965.6,
   "game_ready_ms_runs": [
-   621.7,
-   598.7,
-   588.8,
-   708.4
+   872.1,
+   1018.1,
+   913.1,
+   1124.4
   ],
-  "n8_median_ms": 637.75
+  "n8_median_ms": 1045.4
  },
  "heap_after_gc_mb": {
-  "at_start": 3.65,
-  "after_whole_chapter": 5.74,
+  "at_start": 3.69,
+  "after_whole_chapter": 5.29,
+  "n8_after_whole_chapter": 4.66,
   "note": "whole chapter answered with reduced motion (?rm=1), heap read after a forced GC (CDP)"
  },
  "story": {
   "answered": 12,
   "stages": 20,
-  "game_ready_ms": 621.7,
+  "game_ready_ms": 872.1,
   "by_kind": {
    "step": {
     "count": 9,
-    "avg_ms": 887.3,
-    "max_ms": 907.8,
+    "avg_ms": 918,
+    "max_ms": 944.1,
     "long_tasks": 0,
     "long_task_ms_max": 0
    },
    "lift": {
     "count": 1,
-    "avg_ms": 1625,
-    "max_ms": 1625,
+    "avg_ms": 1627.2,
+    "max_ms": 1627.2,
     "long_tasks": 0,
     "long_task_ms_max": 0
    },
    "stage": {
     "count": 1,
-    "avg_ms": 2475.2,
-    "max_ms": 2475.2,
+    "avg_ms": 2522.4,
+    "max_ms": 2522.4,
     "long_tasks": 0,
     "long_task_ms_max": 0
    }
   },
-  "added_per_mcq_ms": 1098.7,
+  "added_per_mcq_ms": 1128.4,
   "next_input_to_first_frame_ms": {
-   "avg": 7.1,
-   "max": 8.7
+   "avg": 5.7,
+   "max": 16.3
   },
-  "frame_ms_p95": 16.7,
-  "frame_ms_p99": 16.8,
-  "script_ms_p50": 1.2,
-  "script_ms_p95": 2.7,
-  "script_ms_p99": 4.6,
-  "long_tasks": 0,
-  "long_task_ms_max": 0,
+  "frame_ms_p95": 33.4,
+  "frame_ms_p99": 33.5,
+  "script_ms_p50": 2.5,
+  "script_ms_p95": 5.5,
+  "script_ms_p99": 8.2,
+  "long_tasks": 1,
+  "long_task_ms_max": 69,
   "stage_build_ms": {
    "count": 1,
-   "max": 9.1,
-   "avg": 9.1
+   "max": 1.8,
+   "avg": 1.8
+  },
+  "stage_ahead_ms": {
+   "count": 2,
+   "max": 9.8,
+   "avg": 7.7
   },
   "js_heap_after_gc_mb": {
-   "at_start": 3.77,
-   "at_end": 5.25
+   "at_start": 3.81,
+   "at_end": 5.35
   },
   "errors": []
  },
@@ -97,89 +104,99 @@
  "strip": {
   "answered": 12,
   "stages": 20,
-  "game_ready_ms": 598.7,
+  "game_ready_ms": 1018.1,
   "by_kind": {
    "step": {
     "count": 10,
-    "avg_ms": 139.8,
-    "max_ms": 142.9,
+    "avg_ms": 106.2,
+    "max_ms": 124,
     "long_tasks": 0,
     "long_task_ms_max": 0
    },
    "stage": {
     "count": 1,
-    "avg_ms": 140.8,
-    "max_ms": 140.8,
+    "avg_ms": 111.2,
+    "max_ms": 111.2,
     "long_tasks": 0,
     "long_task_ms_max": 0
    }
   },
-  "added_per_mcq_ms": 139.9,
+  "added_per_mcq_ms": 106.6,
   "next_input_to_first_frame_ms": {
-   "avg": 6.9,
-   "max": 12.6
+   "avg": 7.4,
+   "max": 24.5
   },
-  "frame_ms_p95": 16.7,
-  "frame_ms_p99": 16.8,
-  "script_ms_p50": 1.4,
-  "script_ms_p95": 4,
-  "script_ms_p99": 5,
+  "frame_ms_p95": 16.8,
+  "frame_ms_p99": 33.4,
+  "script_ms_p50": 3.4,
+  "script_ms_p95": 5.9,
+  "script_ms_p99": 6,
   "long_tasks": 0,
   "long_task_ms_max": 0,
   "stage_build_ms": {
    "count": 1,
-   "max": 12.6,
-   "avg": 12.6
+   "max": 1.9,
+   "avg": 1.9
+  },
+  "stage_ahead_ms": {
+   "count": 2,
+   "max": 8.1,
+   "avg": 6.3
   },
   "js_heap_after_gc_mb": {
-   "at_start": 3.79,
-   "at_end": 4.97
+   "at_start": 3.82,
+   "at_end": 5.1
   },
   "errors": []
  },
  "classic": {
   "answered": 12,
   "stages": 20,
-  "game_ready_ms": 588.8,
+  "game_ready_ms": 913.1,
   "by_kind": {
    "step": {
     "count": 10,
-    "avg_ms": 23.7,
-    "max_ms": 27.8,
-    "long_tasks": 0,
-    "long_task_ms_max": 0
+    "avg_ms": 35.5,
+    "max_ms": 61.6,
+    "long_tasks": 1,
+    "long_task_ms_max": 59
    },
    "stage": {
     "count": 1,
-    "avg_ms": 24.1,
-    "max_ms": 24.1,
-    "long_tasks": 1,
-    "long_task_ms_max": 53
+    "avg_ms": 30.4,
+    "max_ms": 30.4,
+    "long_tasks": 0,
+    "long_task_ms_max": 0
    }
   },
-  "added_per_mcq_ms": 23.7,
+  "added_per_mcq_ms": 35,
   "next_input_to_first_frame_ms": {
-   "avg": 6,
-   "max": 8.6
+   "avg": 22.4,
+   "max": 50.9
   },
   "frame_ms_p95": 16.8,
-  "frame_ms_p99": 16.8,
-  "script_ms_p50": 1.2,
-  "script_ms_p95": 2.9,
-  "script_ms_p99": 2.9,
+  "frame_ms_p99": 33.4,
+  "script_ms_p50": 4.4,
+  "script_ms_p95": 6.3,
+  "script_ms_p99": 6.3,
   "long_tasks": 1,
-  "long_task_ms_max": 53,
+  "long_task_ms_max": 59,
   "stage_build_ms": {
    "count": 1,
-   "max": 10.2,
-   "avg": 10.2
+   "max": 3.3,
+   "avg": 3.3
+  },
+  "stage_ahead_ms": {
+   "count": 2,
+   "max": 12.3,
+   "avg": 9.9
   },
   "js_heap_after_gc_mb": {
-   "at_start": 3.76,
-   "at_end": 4.89
+   "at_start": 3.82,
+   "at_end": 5.02
   },
   "errors": []
  },
- "note": "The light tier runs on the CPU, so every number here is meaningful at 4x CPU.",
- "measured_at": "commit c218a9e, before the stage-build split (Strip/Classic build a new stage in its own task; reduced motion opens the next MCQ one task later). Intermediate: the final run after the four reviews replaces these numbers."
+ "machine": "Measured 2026-10-19 08:42-09:05 UTC on a container that runs the same code 1.4-1.6x slower than the one behind the earlier numbers: an A/B here gave the commit measured before (c218a9e) a load of 1.04 s (light) and 1.97 s (HD) median, against 0.64 s and 1.39 s on that container, and the final code 0.97 s and 2.02 s. The checks against N = 8 (load, heap, per-move times at every size) hold here; the absolute budgets (HD load 1.5 s, script p95 8 ms, 1 s per step) are judged on a phone.",
+ "note": "The light tier runs on the CPU, so every number here is meaningful at 4x CPU."
 }

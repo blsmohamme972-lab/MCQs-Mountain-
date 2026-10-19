@@ -1,13 +1,13 @@
 {
  "tier": "hd",
  "chapter_mcqs": 200,
- "date": "2026-10-18",
+ "date": "2026-10-19",
  "harness": "tools/measure.mjs --cpu 4 --n 200",
  "device": "Chromium 360 x 740 at DPR 3, 4x CPU throttling, container without a GPU (HD: WebGL on SwiftShader)",
  "budgets_d27": {
   "load_vs_n8": "game ready within 10% of the N = 8 value (median of the runs at this size)",
   "hd_load_ms_max": 1500,
-  "heap": "JS heap after a full GC flat with N (end of a whole chapter, reduced motion)",
+  "heap": "JS heap after a full GC flat with N (end of a whole chapter, reduced motion): within 3 MB of the N = 8 chapter",
   "hd_script_ms_p95_max": 8,
   "long_task_ms_max_in_transitions": 50,
   "story_step_ms": "about 1000",
@@ -18,217 +18,239 @@
  },
  "checks": {
   "load_within_10pct_of_n8": true,
-  "hd_load_at_most_1500ms": true,
+  "hd_load_at_most_1500ms": false,
   "hd_script_ms_p95_at_most_8": false,
+  "heap_flat_with_n": true,
   "no_long_task_over_50ms_in_moves": true,
   "story_step_about_1s": true,
   "story_lift_about_1600ms": true,
-  "story_stage_about_2500ms": true,
+  "story_stage_about_2500ms": false,
   "strip_under_150ms": true,
   "classic_under_150ms": true,
-  "story_added_per_mcq_about_1200ms": true
+  "story_added_per_mcq_about_1200ms": false
  },
  "load": {
-  "game_ready_ms_median": 1471.5,
+  "game_ready_ms_median": 1928.1,
   "game_ready_ms_runs": [
-   1448.7,
-   1386.4,
-   1494.3,
-   1636
+   1944.2,
+   2009.1,
+   1912,
+   1796.8
   ],
-  "n8_median_ms": 1386.6
+  "n8_median_ms": 1801.4
  },
  "heap_after_gc_mb": {
-  "at_start": 5.67,
-  "after_whole_chapter": 8.54,
+  "at_start": 5.72,
+  "after_whole_chapter": 8.11,
+  "n8_after_whole_chapter": 6.58,
   "note": "whole chapter answered with reduced motion (?rm=1), heap read after a forced GC (CDP)"
  },
  "story": {
   "answered": 12,
   "stages": 20,
-  "game_ready_ms": 1448.7,
+  "game_ready_ms": 1944.2,
   "by_kind": {
    "step": {
     "count": 9,
-    "avg_ms": 2712.1,
-    "max_ms": 3588.5,
+    "avg_ms": 4258.9,
+    "max_ms": 6117.6,
     "long_tasks": 0,
     "long_task_ms_max": 0
    },
    "lift": {
     "count": 1,
-    "avg_ms": 3486.9,
-    "max_ms": 3486.9,
+    "avg_ms": 5378.9,
+    "max_ms": 5378.9,
     "long_tasks": 0,
     "long_task_ms_max": 0
    },
    "stage": {
     "count": 1,
-    "avg_ms": 4877.6,
-    "max_ms": 4877.6,
+    "avg_ms": 6876.3,
+    "max_ms": 6876.3,
     "long_tasks": 0,
     "long_task_ms_max": 0
    }
   },
-  "added_per_mcq_ms": 2979.4,
+  "added_per_mcq_ms": 4598.7,
   "next_input_to_first_frame_ms": {
-   "avg": 189.6,
-   "max": 554.8
+   "avg": 158.9,
+   "max": 624.6
   },
-  "frame_ms_p95": 733.4,
-  "frame_ms_p99": 1100,
-  "script_ms_p50": 3.9,
-  "script_ms_p95": 10.5,
-  "script_ms_p99": 15.1,
-  "long_tasks": 0,
-  "long_task_ms_max": 0,
+  "frame_ms_p95": 1149.9,
+  "frame_ms_p99": 1983.3,
+  "script_ms_p50": 5.4,
+  "script_ms_p95": 13.8,
+  "script_ms_p99": 18.6,
+  "long_tasks": 1,
+  "long_task_ms_max": 58,
   "stage_build_ms": {
    "count": 1,
+   "max": 0.8,
+   "avg": 0.8
+  },
+  "stage_ahead_ms": {
+   "count": 2,
    "max": 40,
-   "avg": 40
+   "avg": 23.7
   },
   "js_heap_after_gc_mb": {
-   "at_start": 5.95,
-   "at_end": 7.43
+   "at_start": 5.94,
+   "at_end": 8.1
   },
   "errors": []
  },
  "story_without_gpu_load": {
   "answered": 12,
   "stages": 20,
-  "game_ready_ms": 1253.5,
+  "game_ready_ms": 1563.9,
   "by_kind": {
    "step": {
     "count": 9,
-    "avg_ms": 1042.8,
-    "max_ms": 1073.7,
+    "avg_ms": 1138.4,
+    "max_ms": 1301.2,
     "long_tasks": 0,
     "long_task_ms_max": 0
    },
    "lift": {
     "count": 1,
-    "avg_ms": 1637.1,
-    "max_ms": 1637.1,
+    "avg_ms": 1656.1,
+    "max_ms": 1656.1,
     "long_tasks": 0,
     "long_task_ms_max": 0
    },
    "stage": {
     "count": 1,
-    "avg_ms": 2330,
-    "max_ms": 2330,
+    "avg_ms": 2665.1,
+    "max_ms": 2665.1,
     "long_tasks": 0,
     "long_task_ms_max": 0
    }
   },
-  "added_per_mcq_ms": 1213.8,
+  "added_per_mcq_ms": 1324.2,
   "next_input_to_first_frame_ms": {
-   "avg": 4.6,
-   "max": 15
+   "avg": 19.9,
+   "max": 62.2
   },
-  "frame_ms_p95": 50.1,
-  "frame_ms_p99": 100,
-  "script_ms_p50": 1.6,
-  "script_ms_p95": 4.7,
-  "script_ms_p99": 8.6,
+  "frame_ms_p95": 100,
+  "frame_ms_p99": 183.2,
+  "script_ms_p50": 4.6,
+  "script_ms_p95": 11.1,
+  "script_ms_p99": 14.9,
   "long_tasks": 0,
   "long_task_ms_max": 0,
   "stage_build_ms": {
    "count": 1,
-   "max": 24.5,
-   "avg": 24.5
+   "max": 2.9,
+   "avg": 2.9
+  },
+  "stage_ahead_ms": {
+   "count": 2,
+   "max": 7.1,
+   "avg": 5.7
   },
   "js_heap_after_gc_mb": {
-   "at_start": 5.48,
-   "at_end": 7.3
+   "at_start": 5.57,
+   "at_end": 7.94
   },
   "errors": []
  },
  "strip": {
   "answered": 12,
   "stages": 20,
-  "game_ready_ms": 1386.4,
+  "game_ready_ms": 2009.1,
   "by_kind": {
    "step": {
     "count": 10,
-    "avg_ms": 139.5,
-    "max_ms": 146.2,
+    "avg_ms": 106.8,
+    "max_ms": 126.6,
     "long_tasks": 0,
     "long_task_ms_max": 0
    },
    "stage": {
     "count": 1,
-    "avg_ms": 145.8,
-    "max_ms": 145.8,
+    "avg_ms": 93.4,
+    "max_ms": 93.4,
     "long_tasks": 0,
     "long_task_ms_max": 0
    }
   },
-  "added_per_mcq_ms": 140.1,
+  "added_per_mcq_ms": 105.6,
   "next_input_to_first_frame_ms": {
-   "avg": 5.6,
-   "max": 11.8
+   "avg": 13.4,
+   "max": 29.5
   },
-  "frame_ms_p95": 33.4,
-  "frame_ms_p99": 183.4,
-  "script_ms_p50": 5.1,
-  "script_ms_p95": 16,
-  "script_ms_p99": 16,
+  "frame_ms_p95": 83.3,
+  "frame_ms_p99": 366.6,
+  "script_ms_p50": 5.7,
+  "script_ms_p95": 19.3,
+  "script_ms_p99": 19.3,
   "long_tasks": 0,
   "long_task_ms_max": 0,
   "stage_build_ms": {
    "count": 1,
-   "max": 31.9,
-   "avg": 31.9
+   "max": 2.9,
+   "avg": 2.9
+  },
+  "stage_ahead_ms": {
+   "count": 2,
+   "max": 29.1,
+   "avg": 16
   },
   "js_heap_after_gc_mb": {
-   "at_start": 5.9,
-   "at_end": 7.01
+   "at_start": 5.95,
+   "at_end": 7.65
   },
   "errors": []
  },
  "classic": {
   "answered": 12,
   "stages": 20,
-  "game_ready_ms": 1494.3,
+  "game_ready_ms": 1912,
   "by_kind": {
    "step": {
     "count": 10,
-    "avg_ms": 26,
-    "max_ms": 58.4,
+    "avg_ms": 25,
+    "max_ms": 42.1,
     "long_tasks": 0,
     "long_task_ms_max": 0
    },
    "stage": {
     "count": 1,
-    "avg_ms": 49.9,
-    "max_ms": 49.9,
+    "avg_ms": 27.5,
+    "max_ms": 27.5,
     "long_tasks": 0,
     "long_task_ms_max": 0
    }
   },
-  "added_per_mcq_ms": 28.2,
+  "added_per_mcq_ms": 25.2,
   "next_input_to_first_frame_ms": {
-   "avg": 10.4,
-   "max": 35.2
+   "avg": 8.1,
+   "max": 16
   },
-  "frame_ms_p95": 66.6,
-  "frame_ms_p99": 233.4,
-  "script_ms_p50": 6.3,
-  "script_ms_p95": 14.7,
-  "script_ms_p99": 14.7,
-  "long_tasks": 1,
-  "long_task_ms_max": 50,
+  "frame_ms_p95": 33.4,
+  "frame_ms_p99": 266.7,
+  "script_ms_p50": 9.9,
+  "script_ms_p95": 16.2,
+  "script_ms_p99": 16.2,
+  "long_tasks": 0,
+  "long_task_ms_max": 0,
   "stage_build_ms": {
    "count": 1,
-   "max": 34.1,
-   "avg": 34.1
+   "max": 3.8,
+   "avg": 3.8
+  },
+  "stage_ahead_ms": {
+   "count": 2,
+   "max": 26.1,
+   "avg": 24.6
   },
   "js_heap_after_gc_mb": {
-   "at_start": 5.85,
-   "at_end": 6.96
+   "at_start": 5.95,
+   "at_end": 7.59
   },
   "errors": []
  },
- "note": "HD transition times come from story_without_gpu_load (?res=0.5&fx=0): with full resolution SwiftShader draws a frame in 0.3-0.75 s here, which stretches every timed move; the main-thread numbers (script time, long tasks, load) come from the full-quality run. Frame rate is judged on a phone (D25).",
- "measured_at": "commit c218a9e, before the stage-build split (Strip/Classic build a new stage in its own task; reduced motion opens the next MCQ one task later). Intermediate: the final run after the four reviews replaces these numbers."
+ "machine": "Measured 2026-10-19 08:42-09:05 UTC on a container that runs the same code 1.4-1.6x slower than the one behind the earlier numbers: an A/B here gave the commit measured before (c218a9e) a load of 1.04 s (light) and 1.97 s (HD) median, against 0.64 s and 1.39 s on that container, and the final code 0.97 s and 2.02 s. The checks against N = 8 (load, heap, per-move times at every size) hold here; the absolute budgets (HD load 1.5 s, script p95 8 ms, 1 s per step) are judged on a phone.",
+ "note": "HD transition times come from story_without_gpu_load (?res=0.5&fx=0): with full resolution SwiftShader draws a frame in 0.3-0.75 s here, which stretches every timed move and adds its own stalls to the script time per frame; long tasks and load come from both runs. Frame rate and the filters' cost are judged on a phone (D25)."
 }
