@@ -195,7 +195,7 @@
   function go() {
     if (lab.state !== 'start') return;
     tGo = now(); firstOpen = true; lab.state = 'moving'; startp.classList.add('off'); Sound.unlock();
-    saved = null; $('resume').hidden = true; from = 0; $('ledge').hidden = false;
+    saved = null; $('resume').hidden = true; from = 0; $('ledge').hidden = $('xpP').hidden = false;
     if (mode === 'classic') { hud(); openSheet(); return; }
     if (!RM) World.wake(); skipOn(true);   // reduced motion: no loop at all, the world is drawn once per MCQ
     World.walkToFirst(arrived);
@@ -299,7 +299,7 @@
   function skipOn(v) { const on = !!v && !RM && mode !== 'classic'; skipH.classList.toggle('on', on); skipH.tabIndex = on ? 0 : -1; skipH.setAttribute('aria-hidden', String(!on)); }
   function hud(top) {
     const n = lab.state === 'start' || lab.state === 'loading' ? 0 : idx + 1, el = $('ledge');
-    el.hidden = lab.state === 'start' && !!saved;
+    el.hidden = $('xpP').hidden = lab.state === 'start' && !!saved;   // the card's Continue says where and how far
     if (top) el.textContent = 'Summit'; else el.innerHTML = '<span class="lw">Ledge </span>' + n + '/' + N;
     el.setAttribute('aria-label', top ? 'Summit' : 'Ledge ' + n + ' of ' + N);
   }

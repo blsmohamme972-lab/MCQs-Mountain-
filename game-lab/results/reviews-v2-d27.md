@@ -24,7 +24,7 @@ first frame 25 ms average at 6x); full-filter frame rate is GPU-bound here and j
 | S7 | light | minor | Light frames over 33 ms at 6x are mostly the software canvas commit in this container | phone check (chrome://gpu) |
 | S8 | both | minor | Story built the next MCQ's DOM during the climb; scrollTop forced a layout in the transition | fixed (b764c34) |
 | S9 | both | minor | Reduced motion still wakes the loop and renders several times per MCQ | fixed: no loop under reduced motion, one render per MCQ (HD 25 MCQs: 23 s -> 6.6 s here) |
-| S10 | HD | minor | Per-frame allocations (pose closures and arrays, busy() twice, texture name strings); culling walks every child each frame; script p95 over 8 ms | open |
+| S10 | HD | minor | Per-frame allocations (pose closures and arrays, busy() twice, texture name strings); culling walks every child each frame; script p95 over 8 ms | partly fixed (7936d66): the camera springs, birds and pennants allocate nothing per frame and busy() runs once; the pose code and culling are unchanged. Script p95: see the D27 summaries |
 | S11 | both | minor | The harness's frame log skewed the heap; the heap check was missing | fixed (b764c34) in the harness; the D27 summaries check it (heap_flat_with_n: within 3 MB of the 8-MCQ chapter) |
 | S12 | HD | minor | A new GlowFilter per last-stage build and per resize, never destroyed | fixed (a112d49): one filter, made once |
 | S13 | HD | info | Load at 6x flat with N (about 2.0-2.2 s with res=0.5&fx=0) | - |
@@ -48,9 +48,9 @@ and skipping all pass; violations below.
 | R6 | both | major (200 MCQs) | No break or resume point in a long chapter | fixed: the place is kept after every MCQ; the start card of the same chapter offers "Continue at Q57 of 200" |
 | R7 | both | minor | Summary time lines awkward for long and short chapters | fixed (a112d49) |
 | R8 | both | minor | The app's fonts are not loaded in the repo copy (system fallback); Nunito 600/800 used | open (the phone copy loads Fredoka and Nunito from Google Fonts) |
-| R9 | both | minor | Some literal colours and timings outside the tokens; the token copy drifts from app/design/tokens.css | open |
-| R10 | both | minor | Buttons transition box-shadow on press (as the app does) | open |
-| R11 | both | minor | Reduced motion did not zero the duration tokens; read once at load | fixed (a112d49) for the tokens; the change listener is open |
+| R9 | both | minor | Some literal colours and timings outside the tokens; the token copy drifts from app/design/tokens.css | open (to settle when the game is integrated, from the app's own tokens) |
+| R10 | both | minor | Buttons transition box-shadow on press (as the app does) | fixed (7936d66): transform only |
+| R11 | both | minor | Reduced motion did not zero the duration tokens; read once at load | fixed (a112d49, 7936d66): the tokens; a change of the setting applies on the start card, or at Climb again |
 | R12 | both | minor | The Strip showed correct vs wrong by coin colour alone | fixed (b764c34): a tick or a pennant on each coin |
 | R13 | both | minor | Sound uses audio files and looping music, against D13 | owner: D19 asked for music and sound; a decision should supersede D13 for the lab |
 | R14 | HD | minor | The summit celebration was larger than one burst | fixed (a112d49): confetti and one firework |
@@ -72,7 +72,7 @@ camp, the stage change, the lift tower and the stairs read well; framing bugs). 
 | V5 | HD | minor | The camp's tent and pennant were cut at the right edge | fixed (cb13aba): the camera looks further ahead on the way to a camp |
 | V6 | HD | minor | "Stage 11" was cut at the left at 320 px | fixed (cb13aba) |
 | V7 | both | minor | The start and summary cards hid the climber and the summit | fixed (cb13aba): the climber stands above the card |
-| V8 | both | minor | At 320 x 568 with the sheet open the Q plate and the "?" bubble sit under the top bar | open |
+| V8 | both | minor | At 320 x 568 with the sheet open the Q plate and the "?" bubble sit under the top bar | fixed (7936d66): the "?" over the open MCQ's sign is put away while it is read; the plate's top can still touch the bar at 320 x 568 |
 | V9 | both | minor | The question header left the XP alone on a second line | fixed (cb13aba): under 420 px the header drops its XP (it is in the top bar) when it shows the stage |
 | V10 | light | minor | 1 px seams across the sky | fixed (cb13aba): the painted layers sit on whole pixels |
 | V11 | light | minor | The coin flash covered the face | fixed (cb13aba): behind the climber |
@@ -80,11 +80,11 @@ camp, the stage change, the lift tower and the stairs read well; framing bugs). 
 | V13 | light | minor | Smooth-rotating confetti in a pixel-art scene | fixed (cb13aba): quarter turns |
 | V14 | light | minor | The font's slashed 0 (Q200 read as Q288) and rounded E | fixed (1157f83): redrawn at build time |
 | V15 | HD | minor | "Next mountain" had almost no contrast on the day clouds | fixed (cb13aba): gold with a soft shadow |
-| V16 | HD | minor | Q100+ labels are smaller; plate labels dim at night | open |
-| V17 | light | minor | In Strip the world's sprites show in the band above the bar | open |
+| V16 | HD | minor | Q100+ labels are smaller; plate labels dim at night | fixed (7936d66): a size up; the plates keep more light at night |
+| V17 | light | minor | In Strip the world's sprites show in the band above the bar | fixed (7936d66): Strip and Classic frame the world low, only sky in the band |
 | V18 | both | minor | "about under 0.1 min"; "+1995 XP" broke over two lines | fixed (f646e7f, cb13aba) |
-| V19 | both | minor | Strip: ungraded ledges are grey squares; the current coin hides under the climber | open |
-| V20 | both | minor | The top bar shows "Ledge 0/200" beside "Continue at Q57 of 200" | open |
+| V19 | both | minor | Strip: ungraded ledges are grey squares; the current coin hides under the climber | fixed (7936d66) for the squares (a faint coin ring); the light tier's small Strip coin reads weaker than the rings: open |
+| V20 | both | minor | The top bar shows "Ledge 0/200" beside "Continue at Q57 of 200" | fixed (7936d66 and the next commit): the top bar's pills wait until Continue or First MCQ |
 
 ## QA (round 2)
 
@@ -102,6 +102,10 @@ machine (SwiftShader).
 | A1 | both | minor | A resize, a theme change or a deferred build dropped the stage built ahead for good | fixed (98c61e8): planned again |
 | M1 | both | minor | The lab switches did nothing when ?n= or ?tier= was in the URL | fixed (98c61e8) |
 | M2 | both | minor | After Continue the per-MCQ times were divided by the whole chapter | fixed (98c61e8) |
-| M3 | both | minor | Landscape 568 x 320: the summary scrolls inside its card with no hint | open |
+| M3 | both | minor | Landscape 568 x 320: the summary scrolls inside its card with no hint | fixed (7936d66): a compact summary on short screens; at 568 x 320 the world above it is only about 60 px (the climber sits behind the top bar): open |
 | M4 | both | minor | The question header wraps in multi-stage chapters at 390 px or less | fixed with V9 |
 | M5 | both | minor | Classic's summary said "Summit reached" | fixed (98c61e8): "Chapter done" |
+
+A last check of these minors (2026-10-19, 05:02-05:13 UTC, two read-only checkers, function and visuals) passed with
+no blocker or major. Open from it (minor): in Story, rotating to landscape and back with an MCQ open can leave the
+climber mostly behind the sheet (also before these changes); at 568 x 320 the climber sits half behind the top bar.
