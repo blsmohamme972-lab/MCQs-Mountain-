@@ -19,23 +19,24 @@ SRC = LAB / "assets-test" / "src" / "worlds"
 OUT = LAB / "assets-test" / "build-hd" / "worlds"
 FRAME_H = 1080   # every scene is drawn in a 1920 x 1080 frame
 
+# zoom: how tall the scene's frame is drawn, in screens (forests fill the screen; open skies show more of the scene).
 # A layer: (file, parallax factor x, scale). The factor is how fast it follows the camera (0 = fixed, 1 = with the
 # world); the sky is fixed and stretched to the screen. 'over' marks a layer drawn in front of the path (snow).
 WORLDS = [
     {"id": "magicforest", "name": "Magic forest", "pack": "cartoonforest", "dir": "PNG/Cartoon_Forest_BG_04/Layers",
      "layers": [("Sky.png", 0, 0.25), ("BG_Decor.png", 0.12, 0.75), ("Middle_Decor.png", 0.25, 0.75), ("Foreground.png", 0.45, 1)],
-     "fx": "fireflies", "lit": "night"},
+     "fx": "fireflies", "lit": "night", "zoom": 1.05, "rock": "#b98f86", "plant": "#c9b27a"},
     {"id": "purpleforest", "name": "Purple forest", "pack": "fairytale", "dir": "_PNG/2",
      "layers": [("7.png", 0, 0.25), ("6.png", 0.06, 0.75), ("5.png", 0.12, 0.75), ("4.png", 0.22, 0.75), ("3.png", 0.36, 0.85), ("2.png", 0.5, 0.75)],
-     "fx": "sparkles", "lit": "dusk"},
+     "fx": "sparkles", "lit": "dusk", "zoom": 1.05, "rock": "#b49ac4", "plant": "#c8a6e0"},
     {"id": "snowforest", "name": "Snow forest", "pack": "winter", "dir": "PNG/BG_01/Layers",
      "layers": [("Sky.png", 0, 0.25), ("BG.png", 0.1, 0.75), ("Middle.png", 0.25, 0.75), ("Foreground.png", 0.45, 1)],
-     "fx": "snow", "lit": "day"},
+     "fx": "snow", "lit": "day", "zoom": 0.8, "rock": "#dfe9f6", "plant": "#f0f6ff"},
     # the scene's gingerbread castle is left out (too childish, and it loomed behind the climber): stars over clouds
     {"id": "skycastle", "name": "Starry clouds", "pack": "parallax2d", "dir": "platformer_background_2/Layers",
      "layers": [("layer09_Sky.png", 0, 0.25), ("layer08_Stars_1.png", 0.02, 0.75), ("layer07_Stars_2.png", 0.03, 0.75), ("layer06_Stars_3.png", 0.04, 0.75),
                 ("layer03_Clouds_3.png", 0.16, 0.75), ("layer02_Clouds_2.png", 0.26, 0.75), ("layer01_Clouds_1.png", 0.4, 1)],
-     "fx": "stars", "lit": "night"},
+     "fx": "stars", "lit": "night", "zoom": 0.8, "rock": "#9aa4d0", "plant": "#a6b4dc"},
 ]
 
 
@@ -64,7 +65,7 @@ def build() -> dict:
         near = Image.open(d / layers[-1]["file"].split("/")[-1]).convert("RGBA")
         row = [p for p in (near.getpixel((x, near.height - 2)) for x in range(0, near.width, 7)) if p[3] > 200] or [(40, 40, 40, 255)]
         fill = "#%02x%02x%02x" % tuple(sum(p[c] for p in row) // len(row) for c in range(3))
-        out["worlds"].append({k: w[k] for k in ("id", "name", "fx", "lit")} | {"fill": fill, "layers": layers,
+        out["worlds"].append({k: w[k] for k in ("id", "name", "fx", "lit", "zoom", "rock", "plant")} | {"fill": fill, "layers": layers,
                               "bytes": sum(l["bytes"] for l in layers), "gpuMB": round(sum(l["w"] * l["h"] * 4 for l in layers) / 1e6, 1)})
         print(f"[worlds] {w['id']}: {len(layers)} layers, {out['worlds'][-1]['bytes'] // 1024} KB, GPU {out['worlds'][-1]['gpuMB']} MB")
     (OUT.parent / "worlds.json").write_text(json.dumps(out, indent=1))

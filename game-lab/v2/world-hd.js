@@ -830,16 +830,17 @@
     }
     for (const id in wTex) if (!worldWanted(id)) idle(() => { if (!worldWanted(id) && wTex[id]) { const ww = WORLDS.find(x => x.id === id); delete wTex[id]; if (ww) PIXI.Assets.unload(wUrls(ww)).catch(() => {}); } });
   }
-  // world layers: the scene's 1920 x 1080 frame is drawn about one screen tall, its foot just above the bottom; each
+  // world layers: the scene's 1920 x 1080 frame is drawn 'zoom' screens tall, its foot just above the bottom; each
   // layer slides sideways at its own factor and sinks as the climber rises (far ones less), like the painted ranges
   function placeWorld(cx, dy) {
-    const ch = wbg.children, fs = VH * 1.05 / 1080, top0 = VH * 0.98 - 1080 * fs;
+    const ch = wbg.children, fs = VH * (wNow.zoom || 1) / 1080, top0 = VH * 0.98 - 1080 * fs;
     ch[0].width = VW; ch[0].height = VH;
     let low = 0;
     for (let i = 1; i < ch.length - 1; i++) {
       const s = ch[i], L = s.L;
       s.width = VW; s.height = Math.ceil(L.rows * fs); s.tileScale.set(fs / L.scale);
       s.y = Math.round(top0 + L.top * fs - dy * (0.08 + L.par * 1.05));
+      if (L.top === 0 && s.y > 0) s.y = 0;   // a layer that fills its frame to the top never shows its top edge
       s.tilePosition.x = -(cx * L.par * Z + stage * 397 * L.par);
       if (s.y + s.height > low) low = s.y + s.height;
     }
@@ -1003,8 +1004,10 @@
   }
 
   // night: the stage's rock and plants take the moonlight (cool, darker); lamps and the beacon keep their warm light
+  const tintMul = (a, b) => (((a >> 16) * (b >> 16) / 255) << 16) | ((((a >> 8) & 255) * ((b >> 8) & 255) / 255) << 8) | ((a & 255) * (b & 255) / 255);
   function nightStage() {
-    const rock = night ? 0x7a84b8 : 0xffffff, plant = night ? 0x7f8bc0 : 0xffffff;
+    const wd = worldFor(stage), wr = wd && wd.rock ? parseInt(wd.rock.slice(1), 16) : 0xffffff, wp = wd && wd.plant ? parseInt(wd.plant.slice(1), 16) : 0xffffff;
+    const rock = tintMul(night ? 0x7a84b8 : 0xffffff, wr), plant = tintMul(night ? 0x7f8bc0 : 0xffffff, wp);
     for (const c of cols) { c.body.tint = rock; for (const k of c.lips) k.tint = plant; }
     for (const b of blocks) b.tint = rock;
     for (const d of backDeco.children) if (d !== beaconGlow && d !== beacon) d.tint = night ? 0x8d97c9 : 0xffffff;
