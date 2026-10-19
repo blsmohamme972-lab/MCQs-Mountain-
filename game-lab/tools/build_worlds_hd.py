@@ -10,6 +10,7 @@ Usage: python3 game-lab/tools/build_worlds_hd.py
 """
 from __future__ import annotations
 import json
+import shutil
 from pathlib import Path
 from PIL import Image
 
@@ -43,7 +44,8 @@ def build() -> dict:
     total = 0
     for w in WORLDS:
         d = OUT / w["id"]
-        d.mkdir(parents=True, exist_ok=True)
+        shutil.rmtree(d, ignore_errors=True)   # no stale layers from an earlier build
+        d.mkdir(parents=True)
         layers = []
         for i, (fn, par, sc) in enumerate(w["layers"]):
             im = Image.open(SRC / w["pack"] / "x" / w["dir"] / fn).convert("RGBA")
