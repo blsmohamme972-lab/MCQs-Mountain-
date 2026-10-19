@@ -383,6 +383,9 @@ fast, even if you use non-commercial stock, for some of the game's new stages." 
   register in `ASSETS.md`) and `tools/build_worlds_hd.py` (layers cropped, scaled, WebP; `worlds.json`). The HD tier
   shows, from the second stage on, a magic forest, a purple forest, a snow forest and starry clouds, in that order:
   230-600 KB to download and 15-22 MB of GPU memory each; the swap stays at 0.6-2.8 ms and the warm-up 5-18 ms here.
-  Still to do: the painted worlds (volcano, crystal caverns, ice) and the LudicArts cliff tops, the worlds' own
-  particles (fireflies, snow, sparkles), a matching cloud bank per world, the light tier's pixel worlds, and a visual
-  and speed review of the worlds.
+  First look (screenshots in the session scratchpad): the scenes read well, but they are drawn too large (about a
+  quarter of each scene's width fills a phone, so trees are huge: show more of it), the same orange cliffs stand in
+  every world (tint them, or use the LudicArts ice and lava-rock tops), and in the starry world a large cloud sits
+  right beside the climber. Still to do: those three, the painted worlds (volcano, crystal caverns, ice), the
+  worlds' own particles (fireflies, snow, sparkles), a matching cloud bank per world, the light tier's pixel worlds,
+  and a visual and speed review of the worlds.
