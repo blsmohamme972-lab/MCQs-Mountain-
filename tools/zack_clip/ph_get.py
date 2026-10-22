@@ -18,7 +18,12 @@ def get(url, path=None):
 
 out, hdri, models = sys.argv[1], sys.argv[2], sys.argv[3:]
 for m in models:
+    if os.path.isdir(os.path.join(out, m)):
+        continue
     files = json.loads(get(f"https://api.polyhaven.com/files/{m}"))
+    if "gltf" not in files:
+        print("no gltf:", m)
+        continue
     g = files["gltf"]["1k"]["gltf"]
     d = os.path.join(out, m)
     get(g["url"], os.path.join(d, os.path.basename(g["url"])))

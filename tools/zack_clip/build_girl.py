@@ -11,29 +11,34 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from mhdata import fit_proxy, read_mhclo, read_obj, read_target, to_blender  # noqa: E402
 
-DATA, ASSETS, FU, OUT = sys.argv[sys.argv.index("--") + 1:][:4]
+ARGS = sys.argv[sys.argv.index("--") + 1:]
+DATA, ASSETS, FU, OUT = ARGS[:4]
+CFG = json.load(open(ARGS[4])) if len(ARGS) > 4 else {}
 T = os.path.join(DATA, "targets", "macrodetails")
 
-CHILD, YOUNG = 0.93, 0.07
-RACE = dict(caucasian=0.6, asian=0.25, african=0.15)
-TARGETS = [
-    ("universal-female-child-averagemuscle-averageweight", CHILD),
-    ("universal-female-young-averagemuscle-averageweight", YOUNG),
-    ("proportions/female-child-averagemuscle-averageweight-idealproportions", 0.5 * CHILD),
-]
+GENDER = CFG.get("gender", "female")
+AGE = CFG.get("age", "child")            # MakeHuman age bucket blended with "young"
+CHILD = CFG.get("age_weight", 0.93)
+YOUNG = 1.0 - CHILD
+RACE = CFG.get("race", dict(caucasian=0.6, asian=0.25, african=0.15))
+HEIGHT_M = CFG.get("height_m", 1.40)
+TARGETS = [(f"proportions/{GENDER}-{AGE}-averagemuscle-averageweight-idealproportions", 0.5 * CHILD)]
 for race, f in RACE.items():
-    TARGETS += [(f"{race}-female-child", f * CHILD), (f"{race}-female-young", f * YOUNG)]
+    TARGETS += [(f"{race}-{GENDER}-{AGE}", f * CHILD), (f"{race}-{GENDER}-young", f * YOUNG)]
 
-PROXIES = [  # (folder, name, material color fallback)
+PROXIES = [  # (folder, object name, unused)
     ("eyes/high-poly", "eyes", None),
-    ("eyebrows/eyebrow001", "eyebrows", None),
+    (CFG.get("eyebrows", "eyebrows/eyebrow001"), "eyebrows", None),
     ("eyelashes/eyelashes01", "eyelashes", None),
     ("teeth/teeth_base", "teeth", None),
     ("tongue/tongue01", "tongue", None),
-    ("hair/ponytail01", "hair", None),
-    ("clothes/female_casualsuit01", "suit", None),
-    ("clothes/shoes01", "shoes", None),
+    (CFG.get("hair", "hair/ponytail01"), "hair", None),
+    (CFG.get("suit", "clothes/female_casualsuit01"), "suit", None),
+    (CFG.get("shoes", "clothes/shoes01"), "shoes", None),
 ]
+SKIN = CFG.get("skin", "young_caucasian_female")
+EYE_TEX = CFG.get("eye_texture", "brown_eye.png")
+HAIR_TINT = CFG.get("hair_hsv")          # optional (hue, sat, value) for the hair texture
 
 # ---------------------------------------------------------------- morph
 base = read_obj(os.path.join(DATA, "3dobjs", "base.obj"))
@@ -42,12 +47,12 @@ for name, w in TARGETS:
     idx, d = read_target(os.path.join(T, name + ".target.gz"))
     if len(idx):
         V[idx] += w * d
-HEIGHT_T = "height/female-child-averagemuscle-averageweight-maxheight"
+HEIGHT_T = f"height/{GENDER}-{AGE}-averagemuscle-averageweight-maxheight"
 body_ids = sorted(base["groups"]["body"])
 hidx, hd = read_target(os.path.join(T, HEIGHT_T + ".target.gz"))
 h0 = np.ptp(V[body_ids, 1])
 Vt = V.copy(); Vt[hidx] += hd
-hw = (14.0 - h0) / (np.ptp(Vt[body_ids, 1]) - h0)
+hw = (HEIGHT_M * 10 - h0) / (np.ptp(Vt[body_ids, 1]) - h0)
 print("height target weight", hw)
 V[hidx] += hw * hd
 VB = to_blender(V)
@@ -113,7 +118,7 @@ def mhmat_tex(folder, mat):
 bfaces = [f for f, g in zip(base["faces"], base["fgrp"]) if g == "body"]
 bfuv = [f for f, g in zip(base["fuv"], base["fgrp"]) if g == "body"]
 body = make_mesh("Girl", VB, bfaces, bfuv, base["vt"])
-skin = mhmat_tex(os.path.join(ASSETS, "skins", "young_caucasian_female"), None)
+skin = mhmat_tex(os.path.join(ASSETS, "skins", SKIN), None)
 body.data.materials.append(material("Skin", skin, rough=0.5))
 
 # ---------------------------------------------------------------- rig
@@ -217,10 +222,10 @@ for folder, name, _ in PROXIES:
     ob = make_mesh(name, pb, obj["faces"], obj["fuv"], obj["vt"])
     tex = mhmat_tex(fdir, clo["material"])
     if name == "eyes":
-        tex = os.path.join(ASSETS, "eyes", "materials", "brown_eye.png")
+        tex = os.path.join(ASSETS, "eyes", "materials", EYE_TEX)
     alpha = name in ("hair", "eyebrows", "eyelashes", "eyes")
     ob.data.materials.append(material(name, tex, rough={"eyes": 0.25, "hair": 0.85}.get(name, 0.5), alpha=alpha,
-                                              hsv=(0.53, 0.55, 0.75) if name == "eyes" else None))
+                                              hsv=(0.53, 0.55, 0.75) if name == "eyes" else (HAIR_TINT if name == "hair" else None)))
     apply_weights(ob, (W[idx] * w[:, :, None]).sum(1))
     if name in ("eyebrows", "eyelashes", "teeth", "tongue", "eyes"):
         add_keys(ob, lambda full: (full[idx] * w[:, :, None]).sum(1))
