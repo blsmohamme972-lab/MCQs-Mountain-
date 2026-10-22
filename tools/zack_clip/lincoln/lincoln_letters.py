@@ -80,6 +80,19 @@ for f in range(1, 301):
     nib[f] = (float(xr / W), float(1 - prev_y / H), lift)
 json.dump(nib, open(os.path.join(OUT, "nib.json"), "w"))
 
+def hand_line(d, x, y, line, fnt, ink, rng_):
+    """Write a line word by word with a wavy baseline and uneven ink, so it reads as a pen, not a font."""
+    for w in line.split(" "):
+        if not w:
+            x += d.textlength(" ", font=fnt)
+            continue
+        dy = rng_.normal(0, 3.0) + 4 * np.sin(x / 260.0)
+        a = rng_.uniform(0.78, 1.0)
+        col = tuple(int(c * a + 234 * (1 - a)) for c in ink)
+        d.text((x, y + dy), w, font=fnt, fill=col)
+        x += d.textlength(w + " ", font=fnt) + rng_.normal(0, 2.5)
+
+
 # ---------------------------------------------------------------- Lincoln's reply (real text, 19 Oct 1860)
 INK_L = (62, 40, 28)
 lf = font("PinyonScript-Regular.ttf", 84)
@@ -89,17 +102,18 @@ d = ImageDraw.Draw(rep)
 y = 110
 d.text((W - 90 - d.textlength("Springfield, Ills. Oct 19. 1860", font=lf), y), "Springfield, Ills. Oct 19. 1860", font=lf, fill=INK_L)
 y += 150
+hr = np.random.default_rng(21)
 for line in ["Miss. Grace Bedell", "My dear little Miss.", "    Your very agreeable letter",
              "of the 15th. is received.", "    I regret the necessity of saying",
              "I have no daughters..."]:
-    d.text((110, y), line, font=lf, fill=INK_L)
+    hand_line(d, 110, y, line, lf, INK_L, hr)
     y += 108
 y += 40
 key = ["    As to the whiskers, having", "never worn any, do you not think", "people would call it a piece of",
        "silly affection if I were to", "begin it now?"]
 rows = {}
 for line in key:
-    d.text((100, y), line, font=lf_big, fill=INK_L)
+    hand_line(d, 100, y, line, lf_big, INK_L, hr)
     rows[line.strip()] = y
     y += 132
 y += 40

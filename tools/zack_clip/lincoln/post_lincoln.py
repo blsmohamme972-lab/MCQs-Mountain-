@@ -18,7 +18,25 @@ CAPS = [(0.00, "In 1860,"), (1.06, "an 11-year-old girl"), (2.34, "wrote to"), (
         (4.22, "Her advice?"), (4.88, "Grow a beard."), (5.78, "He replied:"), (6.18, "wouldn't people"),
         (6.62, "call it silly?"), (7.74, "Then he grew"), (8.50, "one anyway.")]
 BULB_F, SPARK_F = 140, 258
-CAP_Y = {"Her advice?": 0.86}                      # keep her smirk clear
+CAP_Y = {}                                         # one baseline for every caption
+INSERTS = [(74, 124), (149, 174), (175, 231), (232, 270)]   # paper/photo macros: re-level the lifted blacks
+
+
+def shot_levels(a, b):
+    lum = []
+    for f in range(a, b + 1, 4):
+        g = np.asarray(Image.open(os.path.join(FR, f"f_{f:04d}.png")).convert("L"), np.float32)
+        lum.append(g[::4, ::4].ravel())
+    lum = np.concatenate(lum)
+    return float(np.percentile(lum, 1.0)), float(np.percentile(lum, 99.7))
+
+
+LEVELS = {}
+for a, b in INSERTS:
+    lo, hi = shot_levels(a, b)
+    for f in range(a, b + 1):
+        LEVELS[f] = (max(0.0, lo - 10), min(255.0, hi + 4))
+    print("levels", a, b, round(lo), round(hi))
 post = json.load(open(POSTJ))
 bulb = Image.open(os.path.join(TEX, "bulb.png")).convert("RGBA")
 spark = Image.open(os.path.join(TEX, "sparkle.png")).convert("RGBA")
@@ -50,7 +68,11 @@ for f in (ONLY or range(1, N + 1)):
         y, x = np.mgrid[0:H, 0:W]
         r = np.sqrt(((x - W / 2) / (W / 2)) ** 2 + ((y - H / 2) / (H / 2)) ** 2)
         vign = np.clip(1 - 0.38 * np.clip(r - 0.55, 0, None) ** 1.6, 0, 1)[..., None]
-    a = np.asarray(im, np.float32) * vign + grain_rng.normal(0, 2.4, (H, W, 1))
+    a = np.asarray(im, np.float32)
+    if f in LEVELS:
+        lo, hi = LEVELS[f]
+        a = np.clip((a - lo) / (hi - lo), 0, 1) ** 1.05 * 252
+    a = a * vign + grain_rng.normal(0, 2.4, (H, W, 1))
     im = Image.fromarray(a.clip(0, 255).astype(np.uint8)).convert("RGBA")
     # pop graphics
     if BULB_F <= f and str(f) in post["bulb"]:
@@ -77,7 +99,7 @@ for f in (ONLY or range(1, N + 1)):
         layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         d = ImageDraw.Draw(layer)
         tw = d.textlength(txt, font=ft)
-        x0, y0 = (W - tw) / 2, H * CAP_Y.get(txt, 0.78) - px * 0.6
+        x0, y0 = (W - tw) / 2, H * CAP_Y.get(txt, 0.80) - px * 0.6
         sh = Image.new("L", (W, H), 0)
         ImageDraw.Draw(sh).text((x0 + 2, y0 + 4), txt, font=ft, fill=170, stroke_width=5, stroke_fill=170)
         sh = sh.filter(ImageFilter.GaussianBlur(5))

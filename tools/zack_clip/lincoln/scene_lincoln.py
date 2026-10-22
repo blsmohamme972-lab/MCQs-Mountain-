@@ -167,8 +167,8 @@ for ob in (girl,):                               # softer, younger skin
     sb.inputs["Subsurface Weight"].default_value = 0.25
     sb.inputs["Subsurface Scale"].default_value = 0.008
 eb = bpy.data.objects["eyes"].data.materials[0].node_tree.nodes["Principled BSDF"]
-eb.inputs["Roughness"].default_value = 0.04       # wet eyes: catchlights from the lamp
-eb.inputs["Specular IOR Level"].default_value = 0.8
+eb.inputs["Roughness"].default_value = 0.16       # soft catchlight, not mirror blobs
+eb.inputs["Specular IOR Level"].default_value = 0.45
 
 # ------------------------------------------------------------------ measure Grace while writing
 sc.frame_set(40)
@@ -333,7 +333,7 @@ def make_pen(name):
     me_n = bpy.data.meshes.new(name + "_nib")
     bm.to_mesh(me_n)
     nib_o = link(bpy.data.objects.new(name, me_n))
-    steel = mat(name + "Steel", (0.6, 0.6, 0.62), 0.2)
+    steel = mat(name + "Steel", (0.16, 0.16, 0.17), 0.32)
     steel.node_tree.nodes["Principled BSDF"].inputs["Metallic"].default_value = 1.0
     me_n.materials.append(steel)
     bm2 = bmesh.new()
@@ -416,7 +416,7 @@ box("Skirting", (2 * RX, 0.03, 0.14), (0, RYB - 0.04, 0.07), trim)
 def window(name, center, normal_axis, w=0.8, h=1.0):
     """Four-pane window: wood frame, night sky plane outside (emissive)."""
     cx, cy, cz = center
-    sky = mat(name + "Sky", (0, 0, 0), 1.0, emit=(0.10, 0.18, 0.42), emit_strength=2.2)
+    sky = mat(name + "Sky", (0, 0, 0), 1.0, emit=(0.04, 0.08, 0.22), emit_strength=1.0)
     if normal_axis == "Y":
         box(name + "Sky", (w, 0.01, h), (cx, cy + 0.04, cz), sky)
         for dx in (-w / 2, 0, w / 2):
@@ -497,7 +497,7 @@ wn = world.node_tree
 env = wn.nodes.new("ShaderNodeTexEnvironment")
 env.image = bpy.data.images.load(os.path.join(PH, "hdri", "rogland_moonlit_night.hdr"))
 wn.links.new(env.outputs["Color"], wn.nodes["Background"].inputs["Color"])
-wn.nodes["Background"].inputs["Strength"].default_value = 0.35
+wn.nodes["Background"].inputs["Strength"].default_value = 0.18
 
 
 def light(name, kind, loc, energy, color, size=0.1, target=None):
@@ -521,7 +521,7 @@ for f in range(1, 301):                       # baked flicker (drivers are off w
     lampL.data.energy = 22 * (1 + 0.07 * flick[f] + 0.03 * math.sin(f * 1.3))
     lampL.data.keyframe_insert("energy", frame=f)
 moon = light("MoonRim", "AREA", (-0.85, RYB - 0.25, 1.45), 70, (0.45, 0.6, 1.0), 0.9, target=EYES40)
-moon2 = light("MoonFront", "AREA", (0.55, RYF + 0.3, 1.5), 25, (0.40, 0.55, 1.0), 0.9, target=(0, 0, 0.7))
+moon2 = light("MoonFront", "AREA", (0.55, RYF + 0.3, 1.5), 10, (0.40, 0.55, 1.0), 0.9, target=(0, 0, 0.7))
 bounce = light("LampBounce", "AREA", (FLAME.x - 0.1, FLAME.y + 0.05, DT + 0.02), 6, (1.0, 0.6, 0.3), 0.3,
                target=EYES40)
 cardfill = light("CardFill", "AREA", (CARD_XY.x + 0.15, CARD_XY.y + 0.30, DT + 0.22), 9, (1.0, 0.68, 0.38), 0.25,
@@ -542,11 +542,11 @@ def head_target(f, eyes):
     """Where Grace looks (world point) and how strongly the head turns to it."""
     if f <= SHOTS["s2"][1]:
         return uv_world(*nib[str(max(f, 76))][:2]) + Vector((0, 0, 0.02)), 0.9
-    if f <= SHOTS["s3"][1]:                       # thinking: up and to her right, then back down with a smirk
-        up = eyes + Vector((-0.40, -0.7, 0.28))
-        t = np.clip((f - 136) / 6, 0, 1)
-        return up.lerp(eyes + Vector((-0.12, -0.8, -0.06)), t), 0.8
-    return CARD + Vector((0, 0, 0.0)), 0.85       # final: she looks at the portrait
+    if f <= SHOTS["s3"][1]:                       # thinking: up and away from the lens, then the smirk to the lens
+        up = eyes + Vector((0.38, -0.55, 0.32))
+        t = np.clip((f - 137) / 4, 0, 1)
+        return up.lerp(Vector((-0.25, -0.70, 0.99)), t), 0.85
+    return Vector((-0.27, -0.75, 1.02)), 0.8      # final: proud, chin up, straight to the lens
 
 
 new = []
@@ -584,6 +584,8 @@ face(1, **{k: 0.0 for k in ALL})
 writing = dict(eyeLookDownLeft=0.45, eyeLookDownRight=0.45, browDownLeft=0.2, browDownRight=0.2,
                mouthPressLeft=0.25, mouthPressRight=0.25, mouthPucker=0.1)
 face(2, **writing)
+for f0, io in ((44, 0.0), (50, 0.18), (62, 0.3), (69, 0.1)):
+    face(f0, eyeLookInLeft=io, eyeLookOutRight=io)
 face(73, **writing)
 # shot 3: thinking -> sly smirk
 face(125, eyeLookDownLeft=0.0, eyeLookDownRight=0.0, eyeLookUpLeft=0.6, eyeLookUpRight=0.6, eyeLookOutRight=0.35,
@@ -595,14 +597,14 @@ face(139, eyeLookUpLeft=0.0, eyeLookUpRight=0.0, eyeLookOutRight=0.0, eyeLookInL
      browOuterUpRight=0.4, cheekSquintLeft=0.35, browDownLeft=0.25, mouthPressLeft=0.0, mouthPressRight=0.0)
 face(148, mouthSmileLeft=0.85, mouthSmileRight=0.35)
 # shot 7: delighted, proud
-face(271, mouthSmileLeft=0.3, mouthSmileRight=0.3, eyeLookDownLeft=0.2, eyeLookDownRight=0.2, eyeSquintLeft=0.0,
+face(271, eyeLookInLeft=0.0, eyeLookOutRight=0.0, mouthSmileLeft=0.3, mouthSmileRight=0.3, eyeLookDownLeft=0.2, eyeLookDownRight=0.2, eyeSquintLeft=0.0,
      eyeSquintRight=0.0, browOuterUpRight=0.0, cheekSquintLeft=0.0, browDownLeft=0.0, eyeWideLeft=0.0, eyeWideRight=0.0, jawOpen=0.0)
 face(276, mouthSmileLeft=0.9, mouthSmileRight=0.9, eyeWideLeft=0.35, eyeWideRight=0.35, browInnerUp=0.35,
      browOuterUpLeft=0.35, browOuterUpRight=0.35, jawOpen=0.08, eyeSquintLeft=0.2, eyeSquintRight=0.2,
      cheekSquintLeft=0.3, cheekSquintRight=0.3)
 face(300, mouthSmileLeft=0.95, mouthSmileRight=0.95, eyeWideLeft=0.15, eyeWideRight=0.15, eyeSquintLeft=0.4,
      eyeSquintRight=0.4, cheekSquintLeft=0.4, cheekSquintRight=0.4, jawOpen=0.1, browInnerUp=0.3)
-for bl in (30, 287):
+for bl in (30, 57):
     face(bl - 2, eyeBlinkLeft=0.0, eyeBlinkRight=0.0)
     face(bl, eyeBlinkLeft=1.0, eyeBlinkRight=1.0)
     face(bl + 3, eyeBlinkLeft=0.0, eyeBlinkRight=0.0)
@@ -613,6 +615,17 @@ key_hide([pen_free, bpy.data.objects["PenFree_holder"]], set(range(1, 301)) - fr
 key_hide([reply], set(range(1, 301)) - set(range(SHOTS["s5"][0], 301)))
 key_hide([letter], set(range(SHOTS["s5"][0], 301)))
 key_hide([envelope], set(range(1, SHOTS["s5"][0])))
+key_hide([frame] + frame_m, frames_of("s1a"))         # its dark back blocked the wide shot's foreground
+for lt, shots_on in ((paperbounce, ("s1a", "s1b", "s3", "s7")), (cardfill, ("s4", "s6"))):
+    on = frames_of(*shots_on)
+    e0 = lt.data.energy
+    for f in range(1, 301):
+        if f == 1 or (f in on) != ((f - 1) in on):
+            lt.data.energy = e0 if f in on else 0.0
+            lt.data.keyframe_insert("energy", frame=f)
+    for fcv in lt.data.animation_data.action.fcurves:
+        for kp in fcv.keyframe_points:
+            kp.interpolation = "CONSTANT"
 # reply lands on the table at the start of shot 5
 r0 = reply.location.copy()
 for f, dz, yaw in ((SHOTS["s5"][0], 0.025, 8), (SHOTS["s5"][0] + 4, 0.002, 3), (SHOTS["s5"][0] + 6, 0.0, 2)):
@@ -726,7 +739,11 @@ for f in range(1, 301):
     elif f <= SHOTS["s2"][1]:
         a, b = SHOTS["s2"]; t = ease((f - a) / (b - a), "inout")
         n = nib_ema[f]
-        frm = n + (-vy * 0.16 + Vector((0, 0, 0.0))).lerp(-vy * 0.12, t) + Vector((0, 0, 0.17 - 0.03 * t)) - ux * 0.03
+        k = float(np.clip((f - 110) / 12, 0, 1))
+        k = k * k * (3 - 2 * k)
+        word = uv_world(0.57, nib["118"][1])
+        n = n.lerp(word, k)
+        frm = n + (-vy * 0.16).lerp(-vy * 0.12, t) + Vector((0, 0, 0.17 - 0.03 * t + 0.06 * k)) - ux * 0.03
         to = n
         lens, fs, up = 60, 3.2, vy
     elif f <= SHOTS["s3"][1]:
@@ -742,9 +759,9 @@ for f in range(1, 301):
     elif f <= SHOTS["s5"][1]:
         a, b = SHOTS["s5"]; t = ease((f - a) / (b - a), "inout")
         top = reply_uv(0.36, reply_lay["whiskers_v"] + 0.04)
-        bot = reply_uv(0.28, reply_lay["silly_v"])
+        bot = reply_uv(0.23, reply_lay["silly_v"])
         to = top.lerp(bot, t)
-        frm = to + vy * (-0.10) + Vector((0, 0, 0.20 - 0.03 * t))
+        frm = to + vy * (-0.10) + Vector((0, 0, 0.23 - 0.02 * t))
         lens, fs, up = 55, 5.6, vy
     elif f <= SHOTS["s6"][1]:
         a, b = SHOTS["s6"]
@@ -779,7 +796,7 @@ for fcv in list(cam.animation_data.action.fcurves) + list(cd.animation_data.acti
 # ------------------------------------------------------------------ render + look
 look.render_settings(sc, 540, 960, 80, 12)
 look.compositor(sc, fog=(0.03, 0.07, 0.17), fog_amount=0.5, mist_start=0.8, mist_depth=4.0, glow=3.0)
-EXPO = dict(s1a=0.0, s1b=-0.25, s2=-0.35, s3=-0.25, s4=-0.9, s5=-0.75, s6=-0.9, s7=-0.25)   # paper/photo macros run hot
+EXPO = dict(s1a=0.0, s1b=-0.55, s2=-0.35, s3=-0.55, s4=-0.9, s5=-0.75, s6=-0.9, s7=-0.55)   # paper/photo macros run hot
 for name, (a, b) in SHOTS.items():
     for f in (a, b):
         sc.view_settings.exposure = EXPO[name]
